@@ -1,0 +1,49 @@
+{
+  "_lisez_moi": "Catalogue de l'entrepot brut. Ajouter une source = ajouter une entree. 'lourd' = plus de 100 Mo, collecte seulement avec --lourd. 'personnes_physiques' = contient des noms de personnes : collecte possible, affichage interdit.",
+  "portails": {
+    "economie": "https://data.economie.gouv.fr",
+    "ofgl": "https://data.ofgl.fr",
+    "drees": "https://data.drees.solidarites-sante.gouv.fr",
+    "ameli": "https://data.ameli.fr",
+    "caf": "https://data.caf.fr",
+    "eurostat": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data"
+  },
+  "sources": [
+    {"id": "etat_plf25_destination_nature", "domaine": "etat", "type": "ods_export", "portail": "economie", "dataset": "plf25-depenses-2025-du-bg-et-des-ba-selon-nomenclatures-destination-et-nature", "titre": "Budget de l'Etat PLF 2025, destination x nature", "licence": "Licence Ouverte 2.0"},
+    {"id": "etat_budget_vert_2026", "domaine": "etat", "type": "ods_export", "portail": "economie", "dataset": "plf-2026-budget-vert", "titre": "Execution 2024, LFI 2025, PLF 2026 par action (budget vert)", "licence": "Licence Ouverte 2.0"},
+    {"id": "etat_nomenclature_nature", "domaine": "etat", "type": "ods_export", "portail": "economie", "dataset": "nomenclature-titres-categories-comptabilite-budgetaire", "titre": "Nomenclature officielle titres et categories", "licence": "Licence Ouverte 2.0"},
+    {"id": "etat_performance_rap_2025", "domaine": "etat", "type": "ods_export", "portail": "economie", "dataset": "performance-de-la-depense-rap-2025", "titre": "Performance de la depense (RAP)", "licence": "Licence Ouverte 2.0"},
+    {"id": "etat_situations_mensuelles", "domaine": "etat", "type": "ods_export", "portail": "economie", "dataset": "situations-mensuelles-budgetaires-series-longues", "titre": "Situations mensuelles budgetaires, series longues", "licence": "Licence Ouverte 2.0"},
+    {"id": "etat_etpt_lfi_2023", "domaine": "etat", "type": "ods_export", "portail": "economie", "dataset": "etpt-par-ministere-mission-programme-pour-le-bg-et-les-ba-lfi-2023", "titre": "Effectifs (ETPT) par programme, LFI 2023", "licence": "Licence Ouverte 2.0"},
+    {"id": "etat_plrg_2025", "domaine": "etat", "type": "ods_pieces_jointes", "portail": "economie", "dataset": "projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025", "titre": "Execution reelle (PLRG 2025), pieces jointes CSV", "licence": "Licence Ouverte 2.0"},
+    {"id": "etat_plr_2018", "domaine": "etat", "type": "ods_export", "portail": "economie", "dataset": "projet-de-loi-de-reglement-2019-plr-20190", "titre": "Execution 2018 par action x categorie (PLR)", "licence": "Licence Ouverte 2.0"},
+    {"id": "etat_plr_2019", "domaine": "etat", "type": "ods_pieces_jointes", "portail": "economie", "dataset": "projet-de-loi-de-reglement-2019-plr-20192", "titre": "Execution 2019 (PLR), pieces jointes", "licence": "Licence Ouverte 2.0"},
+    {"id": "etat_plr_2020", "domaine": "etat", "type": "ods_pieces_jointes", "portail": "economie", "dataset": "projet-de-loi-de-reglement-2020-plr-2020", "titre": "Execution 2020 (PLR), pieces jointes", "licence": "Licence Ouverte 2.0"},
+    {"id": "etat_operateurs_2026", "domaine": "etat", "type": "datagouv", "dataset": "69665c766034b48d897c47be", "titre": "Jaune operateurs de l'Etat PLF 2026", "licence": "a verifier"},
+
+    {"id": "benef_associations_plf25", "domaine": "beneficiaires", "type": "ods_export", "portail": "economie", "dataset": "plf25-donnees-de-l-annexe-jaune-effort-financier-de-l-etat-en-faveur-des-associations", "titre": "Subventions de l'Etat aux associations (jaune PLF 2025)", "licence": "Licence Ouverte 2.0"},
+    {"id": "benef_aides_minimis", "domaine": "beneficiaires", "type": "ods_export", "portail": "economie", "dataset": "aides_minimis", "titre": "Aides de minimis aux entreprises", "licence": "Licence Ouverte 2.0", "personnes_physiques": true},
+    {"id": "benef_plan_de_relance", "domaine": "beneficiaires", "type": "ods_export", "portail": "economie", "dataset": "plan-de-relance", "titre": "Plan de relance, projets", "licence": "Licence Ouverte 2.0"},
+    {"id": "benef_france_relance_agregees", "domaine": "beneficiaires", "type": "ods_export", "portail": "economie", "dataset": "france-relance-donnees-agregees", "titre": "France Relance, donnees agregees par territoire", "licence": "Licence Ouverte 2.0"},
+    {"id": "benef_decp", "domaine": "beneficiaires", "type": "datagouv", "dataset": "608c055b35eb4e6ee20eb325", "format": "parquet", "titre": "Marches publics (DECP consolidees)", "licence": "Licence Ouverte 2.0", "personnes_physiques": true, "lourd": true},
+
+    {"id": "local_fiscalite_particuliers", "domaine": "collectivites", "type": "ods_export", "portail": "economie", "dataset": "fiscalite-locale-des-particuliers", "titre": "Taux de fiscalite locale par commune", "licence": "Licence Ouverte 2.0"},
+    {"id": "local_regions", "domaine": "collectivites", "type": "ods_export", "portail": "ofgl", "dataset": "ofgl-base-regions-consolidee", "titre": "Comptes des regions (OFGL)", "licence": "Licence Ouverte 2.0"},
+    {"id": "local_departements", "domaine": "collectivites", "type": "ods_export", "portail": "ofgl", "dataset": "ofgl-base-departements-consolidee", "titre": "Comptes des departements (OFGL)", "licence": "Licence Ouverte 2.0"},
+    {"id": "local_departements_fonction", "domaine": "collectivites", "type": "ods_export", "portail": "ofgl", "dataset": "ofgl-base-departements-fonctionnelle", "titre": "Comptes des departements par fonction (OFGL)", "licence": "Licence Ouverte 2.0"},
+    {"id": "local_intercos", "domaine": "collectivites", "type": "ods_export", "portail": "ofgl", "dataset": "ofgl-base-gfp-consolidee", "titre": "Comptes des intercommunalites (OFGL)", "licence": "Licence Ouverte 2.0"},
+    {"id": "local_ensembles_intercommunaux", "domaine": "collectivites", "type": "ods_export", "portail": "ofgl", "dataset": "ofgl-base-ei", "titre": "Ensembles intercommunaux consolides (OFGL)", "licence": "Licence Ouverte 2.0"},
+    {"id": "local_communes", "domaine": "collectivites", "type": "ods_export", "portail": "ofgl", "dataset": "ofgl-base-communes-consolidee", "titre": "Comptes des communes (OFGL)", "licence": "Licence Ouverte 2.0", "lourd": true},
+    {"id": "local_dotations_departements", "domaine": "collectivites", "type": "ods_export", "portail": "ofgl", "dataset": "dotations-departements", "titre": "Dotations de l'Etat aux departements", "licence": "Licence Ouverte 2.0"},
+    {"id": "local_dotations_communes", "domaine": "collectivites", "type": "ods_export", "portail": "ofgl", "dataset": "dotations-communes", "titre": "Dotations de l'Etat aux communes", "licence": "Licence Ouverte 2.0", "lourd": true},
+    {"id": "local_balances_nature_fonction_2024", "domaine": "collectivites", "type": "ods_export", "portail": "economie", "dataset": "balances-comptables-des-collectivites-et-des-etablissements-publics-locaux-avec-la-presentation-croisee-nature-fonction-2024", "titre": "Balances comptables nature x fonction 2024 (DGFiP)", "licence": "Licence Ouverte 2.0", "lourd": true},
+
+    {"id": "secu_protection_sociale", "domaine": "secu", "type": "ods_export", "portail": "drees", "dataset": "305_les-comptes-de-la-protection-sociale", "titre": "Comptes de la protection sociale 1959-2024 (DREES)", "licence": "Licence Ouverte 2.0"},
+    {"id": "secu_ameli_depenses", "domaine": "secu", "type": "ods_export", "portail": "ameli", "dataset": "depenses", "titre": "Depenses d'assurance maladie par pathologie (Ameli)", "licence": "Licence Ouverte 2.0"},
+
+    {"id": "eu_depenses_cofog", "domaine": "europe", "type": "eurostat", "dataset": "gov_10a_exp", "params": {"geo": "FR", "unit": ["MIO_EUR", "PC_GDP"], "lang": "fr"}, "titre": "Depenses publiques par fonction, France, toutes series", "licence": "Eurostat, reutilisation libre avec mention"},
+    {"id": "eu_comptes_apu", "domaine": "europe", "type": "eurostat", "dataset": "gov_10a_main", "params": {"geo": "FR", "unit": ["MIO_EUR", "PC_GDP"], "lang": "fr"}, "titre": "Comptes des administrations publiques, France", "licence": "Eurostat, reutilisation libre avec mention"},
+    {"id": "eu_recettes_impots", "domaine": "europe", "type": "eurostat", "dataset": "gov_10a_taxag", "params": {"geo": "FR", "unit": ["MIO_EUR", "PC_GDP"], "lang": "fr"}, "titre": "Recettes par impot, France", "licence": "Eurostat, reutilisation libre avec mention"},
+    {"id": "eu_deficit_dette", "domaine": "europe", "type": "eurostat", "dataset": "gov_10dd_edpt1", "params": {"geo": "FR", "lang": "fr"}, "titre": "Deficit et dette (notification PDE), France", "licence": "Eurostat, reutilisation libre avec mention"}
+  ]
+}

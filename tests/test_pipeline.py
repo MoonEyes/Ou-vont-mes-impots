@@ -126,8 +126,8 @@ def test_mission_inconnue_fait_echouer(monkeypatch):
 def test_codes_insee_et_commune_connue():
     dep44 = json.loads((SITE / "communes" / "44.json").read_text(encoding="utf-8"))
     assert all(len(code) == 5 for code in dep44)
-    nom, tfb, _ = dep44["44066"]
-    assert nom == "GRANDCHAMP DES FONTAINES" and 0 < tfb < 100
+    nom, tfb, _ = dep44["44109"]
+    assert nom == "NANTES" and 0 < tfb < 100
 
 
 def test_jsonstat_extraction():
