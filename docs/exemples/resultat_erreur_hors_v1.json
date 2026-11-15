@@ -1,0 +1,14 @@
+{
+ "statut": "erreur",
+ "version_contrat": "1.0",
+ "erreur": {
+  "code": "PROFIL_HORS_V1",
+  "motif": "fonctionnaire",
+  "message": "Pour l'instant, le calcul ne couvre que les salaries du prive en metropole (hors Alsace-Moselle). Les fonctionnaires ont des cotisations differentes (pension civile, RAFP) : on prefere ne rien afficher plutot qu'un chiffre faux. Tu peux quand meme explorer le budget de l'Etat et de la Securite sociale.",
+  "champ": "/personnes/0/statut_activite",
+  "redirection": {
+   "libelle": "Explorer le budget sans calcul personnel",
+   "url": "https://ou-vont-mes-impots.fr/budget"
+  }
+ }
+}

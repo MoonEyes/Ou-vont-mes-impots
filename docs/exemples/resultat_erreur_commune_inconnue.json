@@ -1,0 +1,10 @@
+{
+ "statut": "erreur",
+ "version_contrat": "1.0",
+ "erreur": {
+  "code": "COMMUNE_INCONNUE",
+  "message": "On ne trouve pas cette commune dans les taux de taxe fonciere. Verifie le code ou choisis-la dans la liste.",
+  "champ": "/residence/commune_insee",
+  "fichier": "communes/44.json"
+ }
+}

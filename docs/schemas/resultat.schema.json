@@ -1,0 +1,637 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/resultat.schema.json",
+  "title": "Sortie du module de calcul personnel (succes ou erreur)",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/succes"
+    },
+    {
+      "$ref": "#/$defs/erreur"
+    }
+  ],
+  "$defs": {
+    "fourchette": {
+      "type": "object",
+      "required": [
+        "bas",
+        "central",
+        "haut"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "bas": {
+          "type": "number",
+          "minimum": 0
+        },
+        "central": {
+          "type": "number",
+          "minimum": 0
+        },
+        "haut": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "description": "Fourchette annuelle en euros, bas <= central <= haut (verifie par le site, pas exprimable en JSON Schema)"
+    },
+    "destinataire": {
+      "type": "object",
+      "required": [
+        "id",
+        "nom",
+        "administration"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "enum": [
+            "cnam",
+            "cnav",
+            "cnaf",
+            "branche_atmp",
+            "cnsa",
+            "cades",
+            "agirc_arrco",
+            "unedic",
+            "ags",
+            "apec",
+            "fnal",
+            "france_competences",
+            "aom",
+            "etat",
+            "commune",
+            "epci",
+            "departement",
+            "plusieurs"
+          ],
+          "description": "'plusieurs' : prelevement partage (CSG...), detail dans 'ventilation' quand affectation_prelevements.json est disponible"
+        },
+        "nom": {
+          "type": "string"
+        },
+        "administration": {
+          "enum": [
+            "Etat",
+            "Collectivites locales",
+            "Securite sociale"
+          ],
+          "description": "Meme libelle que administrations.json et recettes.json"
+        }
+      }
+    },
+    "prelevement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "libelle",
+        "famille",
+        "personne",
+        "montant_annuel_eur",
+        "destinataire",
+        "inclus_dans_total_paye",
+        "regle"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "libelle": {
+          "type": "string"
+        },
+        "famille": {
+          "enum": [
+            "cotisation_salariale",
+            "csg_crds",
+            "impot_revenu",
+            "cotisation_patronale",
+            "impot_local"
+          ]
+        },
+        "personne": {
+          "type": "string",
+          "pattern": "^(declarant1|declarant2|foyer|logement)$"
+        },
+        "assiette_annuelle_eur": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "taux": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Taux applique (0.068 = 6,8 %) ; null si bareme progressif"
+        },
+        "montant_annuel_eur": {
+          "$ref": "#/$defs/fourchette"
+        },
+        "destinataire": {
+          "$ref": "#/$defs/destinataire"
+        },
+        "ventilation": {
+          "type": "array",
+          "description": "Si le prelevement est partage (ex. CSG) : parts par destinataire, somme = 1",
+          "items": {
+            "type": "object",
+            "required": [
+              "destinataire",
+              "part"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "destinataire": {
+                "enum": [
+                  "cnam",
+                  "cnav",
+                  "cnaf",
+                  "branche_atmp",
+                  "cnsa",
+                  "cades",
+                  "agirc_arrco",
+                  "unedic",
+                  "ags",
+                  "apec",
+                  "fnal",
+                  "france_competences",
+                  "aom",
+                  "etat",
+                  "commune",
+                  "epci",
+                  "departement"
+                ]
+              },
+              "part": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1
+              }
+            }
+          }
+        },
+        "inclus_dans_total_paye": {
+          "type": "boolean",
+          "description": "false pour les cotisations patronales (bloc separe)"
+        },
+        "regle": {
+          "type": "string",
+          "description": "Regle modele-social (publicodes) ou variable OpenFisca a l'origine du chiffre"
+        },
+        "hypothese_fourchette": {
+          "type": "string"
+        },
+        "nature": {
+          "enum": [
+            "prelevement",
+            "reduction"
+          ],
+          "default": "prelevement",
+          "description": "reduction : montant positif a soustraire (ex. reduction generale des cotisations patronales)"
+        }
+      }
+    },
+    "avertissement": {
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "RECOUPEMENT_DIVERGENT",
+            "RECOUPEMENT_INDISPONIBLE",
+            "DONNEE_ABSENTE",
+            "COMMUNE_INCONNUE",
+            "TEOM_ABSENTE",
+            "SAISIE_ATYPIQUE"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "champ": {
+          "type": "string"
+        },
+        "details": {
+          "type": "object"
+        }
+      }
+    },
+    "succes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statut",
+        "version_contrat",
+        "annee_legislation",
+        "moteur",
+        "entree",
+        "prelevements",
+        "totaux",
+        "avertissements"
+      ],
+      "properties": {
+        "statut": {
+          "const": "ok"
+        },
+        "version_contrat": {
+          "const": "1.0"
+        },
+        "annee_legislation": {
+          "type": "integer"
+        },
+        "moteur": {
+          "type": "object",
+          "required": [
+            "nom",
+            "version"
+          ],
+          "properties": {
+            "nom": {
+              "const": "modele-social"
+            },
+            "version": {
+              "type": "string"
+            },
+            "publicodes": {
+              "type": "string"
+            }
+          }
+        },
+        "entree": {
+          "type": "object",
+          "required": [
+            "personnes"
+          ],
+          "properties": {
+            "personnes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "role",
+                  "salaire_net_avant_impot_annuel",
+                  "salaire_brut_annuel_estime"
+                ],
+                "properties": {
+                  "role": {
+                    "enum": [
+                      "declarant1",
+                      "declarant2"
+                    ]
+                  },
+                  "salaire_net_avant_impot_annuel": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "salaire_brut_annuel_estime": {
+                    "type": "object",
+                    "required": [
+                      "bas",
+                      "central",
+                      "haut"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "bas": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "central": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "haut": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    },
+                    "description": "Fourchette annuelle en euros, bas <= central <= haut (verifie par le site, pas exprimable en JSON Schema)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "prelevements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/prelevement"
+          }
+        },
+        "totaux": {
+          "type": "object",
+          "required": [
+            "paye_par_le_foyer",
+            "patronal",
+            "par_destinataire"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "paye_par_le_foyer": {
+              "type": "object",
+              "required": [
+                "bas",
+                "central",
+                "haut"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "bas": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "central": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "haut": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "description": "Fourchette annuelle en euros, bas <= central <= haut (verifie par le site, pas exprimable en JSON Schema)"
+            },
+            "patronal": {
+              "type": "object",
+              "required": [
+                "bas",
+                "central",
+                "haut"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "bas": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "central": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "haut": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "description": "Fourchette annuelle en euros, bas <= central <= haut (verifie par le site, pas exprimable en JSON Schema)"
+            },
+            "cout_total_employeur": {
+              "type": "object",
+              "required": [
+                "bas",
+                "central",
+                "haut"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "bas": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "central": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "haut": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "description": "Fourchette annuelle en euros, bas <= central <= haut (verifie par le site, pas exprimable en JSON Schema)"
+            },
+            "par_destinataire": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "destinataire",
+                  "montant_annuel_eur",
+                  "inclut_patronal"
+                ],
+                "properties": {
+                  "destinataire": {
+                    "enum": [
+                      "cnam",
+                      "cnav",
+                      "cnaf",
+                      "branche_atmp",
+                      "cnsa",
+                      "cades",
+                      "agirc_arrco",
+                      "unedic",
+                      "ags",
+                      "apec",
+                      "fnal",
+                      "france_competences",
+                      "aom",
+                      "etat",
+                      "commune",
+                      "epci",
+                      "departement",
+                      "plusieurs"
+                    ]
+                  },
+                  "montant_annuel_eur": {
+                    "type": "object",
+                    "required": [
+                      "bas",
+                      "central",
+                      "haut"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "bas": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "central": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "haut": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    },
+                    "description": "Fourchette annuelle en euros, bas <= central <= haut (verifie par le site, pas exprimable en JSON Schema)"
+                  },
+                  "inclut_patronal": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "recoupement": {
+          "type": "object",
+          "required": [
+            "source",
+            "statut"
+          ],
+          "properties": {
+            "source": {
+              "const": "openfisca"
+            },
+            "statut": {
+              "enum": [
+                "concordant",
+                "divergent",
+                "indisponible",
+                "non_demande"
+              ]
+            },
+            "country_package_version": {
+              "type": "string"
+            },
+            "tolerance_relative": {
+              "type": "number"
+            },
+            "ecarts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "modele_social",
+                  "openfisca",
+                  "ecart_relatif"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "modele_social": {
+                    "type": "number"
+                  },
+                  "openfisca": {
+                    "type": "number"
+                  },
+                  "ecart_relatif": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "avertissements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/avertissement"
+          }
+        }
+      }
+    },
+    "erreur": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statut",
+        "version_contrat",
+        "erreur"
+      ],
+      "properties": {
+        "statut": {
+          "const": "erreur"
+        },
+        "version_contrat": {
+          "const": "1.0"
+        },
+        "erreur": {
+          "type": "object",
+          "required": [
+            "code",
+            "message"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "enum": [
+                "PROFIL_HORS_V1",
+                "SAISIE_INVALIDE",
+                "COMMUNE_INCONNUE",
+                "DONNEE_ABSENTE",
+                "MOTEUR_INDISPONIBLE",
+                "CONTRAT_INCOMPATIBLE"
+              ]
+            },
+            "motif": {
+              "enum": [
+                "fonctionnaire",
+                "contractuel_public",
+                "independant",
+                "retraite",
+                "demandeur_emploi",
+                "apprenti",
+                "etudiant",
+                "sans_activite_seul",
+                "dom",
+                "etranger",
+                "frontalier",
+                "alsace_moselle"
+              ],
+              "description": "Requis pour PROFIL_HORS_V1"
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Texte affichable tel quel, tutoiement"
+            },
+            "champ": {
+              "type": "string",
+              "description": "Chemin JSON Pointer du champ fautif, ex. /personnes/0/statut_activite"
+            },
+            "fichier": {
+              "type": "string",
+              "description": "Pour DONNEE_ABSENTE : fichier site/data concerne"
+            },
+            "redirection": {
+              "type": "object",
+              "required": [
+                "libelle",
+                "url"
+              ],
+              "properties": {
+                "libelle": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "code": {
+                    "const": "PROFIL_HORS_V1"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "motif"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

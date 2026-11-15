@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/cofog.schema.json",
+  "title": "site/data/cofog.json : depenses publiques consolidees par fonction (COFOG niveau 1)",
+  "type": "object",
+  "required": [
+    "annee",
+    "unite",
+    "fonctions",
+    "total"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "annee": {
+      "type": "string",
+      "pattern": "^(19|20)[0-9]{2}$"
+    },
+    "unite": {
+      "const": "milliards d'euros"
+    },
+    "total": {
+      "type": "number",
+      "description": "Montant en milliards d'euros"
+    },
+    "fonctions": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "nom",
+          "md"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^GF(0[1-9]|10)$"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "md": {
+            "type": "number",
+            "description": "Montant en milliards d'euros"
+          }
+        }
+      }
+    }
+  }
+}

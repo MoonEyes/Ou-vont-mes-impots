@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/arbre_administrations.schema.json",
+  "title": "site/data/arbre_administrations/racine.json : depenses par administration > fonction COFOG > sous-fonction",
+  "$ref": "#/$defs/noeud",
+  "$defs": {
+    "noeud": {
+      "type": "object",
+      "required": [
+        "id",
+        "nom",
+        "niveau",
+        "md"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nom": {
+          "type": "string"
+        },
+        "niveau": {
+          "enum": [
+            "racine",
+            "administration",
+            "fonction",
+            "sous_fonction"
+          ]
+        },
+        "md": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Milliards d'euros, 6 decimales"
+        },
+        "enfants": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/noeud"
+          }
+        },
+        "fichier": {
+          "type": "string",
+          "pattern": "^arbre/[0-9A-Za-z_-]+\\.json$",
+          "description": "Sous-arbre a charger a la demande (chemin relatif a site/data/)"
+        },
+        "nb_enfants": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "dependentRequired": {
+        "fichier": [
+          "nb_enfants"
+        ],
+        "nb_enfants": [
+          "fichier"
+        ]
+      },
+      "not": {
+        "required": [
+          "enfants",
+          "fichier"
+        ]
+      }
+    }
+  }
+}

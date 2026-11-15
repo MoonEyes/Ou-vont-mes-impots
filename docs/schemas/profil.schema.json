@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/profil.schema.json",
+  "title": "Entree du module de calcul personnel : profil saisi par l'utilisateur",
+  "description": "Le schema accepte les profils hors V1 (fonctionnaire, DOM, Alsace-Moselle...) pour que le moteur puisse renvoyer l'erreur PROFIL_HORS_V1 avec le bon motif plutot qu'une erreur de saisie.",
+  "type": "object",
+  "required": [
+    "version_contrat",
+    "annee_revenus",
+    "residence",
+    "foyer",
+    "personnes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version_contrat": {
+      "const": "1.0"
+    },
+    "annee_revenus": {
+      "type": "integer",
+      "minimum": 2025,
+      "maximum": 2030
+    },
+    "residence": {
+      "type": "object",
+      "required": [
+        "zone",
+        "alsace_moselle"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "zone": {
+          "enum": [
+            "metropole",
+            "dom",
+            "etranger"
+          ]
+        },
+        "alsace_moselle": {
+          "type": "boolean",
+          "description": "Regime local (departements 57, 67, 68)"
+        },
+        "commune_insee": {
+          "type": "string",
+          "pattern": "^([0-9]{2}|2[AB])[0-9]{3}$|^97[0-9]{3}$",
+          "description": "Optionnelle : sert a la taxe fonciere et a la TEOM"
+        }
+      }
+    },
+    "foyer": {
+      "type": "object",
+      "required": [
+        "situation",
+        "enfants"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "situation": {
+          "enum": [
+            "celibataire",
+            "parent_isole",
+            "couple_marie_pacse",
+            "couple_union_libre"
+          ],
+          "description": "couple_union_libre : deux foyers fiscaux, les enfants sont rattaches au declarant1"
+        },
+        "enfants": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "type": "object",
+            "required": [
+              "annee_naissance"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "annee_naissance": {
+                "type": "integer",
+                "minimum": 1990,
+                "maximum": 2030
+              },
+              "garde_alternee": {
+                "type": "boolean",
+                "default": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "logement": {
+      "type": "object",
+      "required": [
+        "statut"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "statut": {
+          "enum": [
+            "locataire",
+            "proprietaire",
+            "loge_gratuitement"
+          ]
+        },
+        "taxe_fonciere_annuelle_eur": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "Montant lu sur l'avis de taxe fonciere (proprietaire). Absent : la taxe fonciere n'est pas chiffree, seul le taux communal est affiche."
+        }
+      }
+    },
+    "personnes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/personne"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "foyer": {
+            "properties": {
+              "situation": {
+                "enum": [
+                  "couple_marie_pacse",
+                  "couple_union_libre"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "personnes": {
+            "minItems": 2
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "personnes": {
+            "maxItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "personne": {
+      "type": "object",
+      "required": [
+        "role",
+        "statut_activite"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "enum": [
+            "declarant1",
+            "declarant2"
+          ]
+        },
+        "annee_naissance": {
+          "type": "integer",
+          "minimum": 1920,
+          "maximum": 2012
+        },
+        "statut_activite": {
+          "enum": [
+            "salarie_prive",
+            "sans_activite",
+            "fonctionnaire",
+            "contractuel_public",
+            "independant",
+            "retraite",
+            "demandeur_emploi",
+            "apprenti",
+            "etudiant"
+          ]
+        },
+        "frontalier": {
+          "type": "boolean",
+          "default": false,
+          "description": "Travaille hors de France (Suisse, Luxembourg...)"
+        },
+        "cadre": {
+          "type": "boolean",
+          "default": false
+        },
+        "temps_travail": {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": [
+                "temps_plein",
+                "temps_partiel"
+              ]
+            },
+            "quotite": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1,
+              "description": "Part d'un temps plein (0.8 = 80 %). Requis si temps_partiel."
+            }
+          },
+          "if": {
+            "properties": {
+              "type": {
+                "const": "temps_partiel"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "quotite"
+            ]
+          }
+        },
+        "salaire_net_avant_impot_mensuel": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "description": "Net a payer avant impot sur le revenu, en euros par mois, moyenne sur 12 mois (primes et 13e mois lisses : cumul annuel 'net a payer avant impot' de la fiche de paie de decembre divise par 12)."
+        }
+      },
+      "if": {
+        "properties": {
+          "statut_activite": {
+            "const": "salarie_prive"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "salaire_net_avant_impot_mensuel",
+          "temps_travail",
+          "cadre"
+        ]
+      }
+    }
+  }
+}

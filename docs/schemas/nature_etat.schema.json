@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/nature_etat.schema.json",
+  "title": "site/data/nature_etat.json : budget de l'Etat par nature (titres et categories LOLF)",
+  "type": "object",
+  "required": [
+    "unite",
+    "titres"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "unite": {
+      "const": "milliards d'euros (credits de paiement)"
+    },
+    "titres": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "titre",
+          "nom",
+          "md",
+          "categories"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "titre": {
+            "enum": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7"
+            ]
+          },
+          "nom": {
+            "type": "string"
+          },
+          "md": {
+            "type": "number",
+            "description": "Montant en milliards d'euros"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "nom",
+                "md"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "pattern": "^[0-9]{2}$"
+                },
+                "nom": {
+                  "type": "string"
+                },
+                "md": {
+                  "type": "number",
+                  "description": "Montant en milliards d'euros"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

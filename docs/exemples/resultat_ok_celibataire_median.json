@@ -1,0 +1,557 @@
+{
+ "statut": "ok",
+ "version_contrat": "1.0",
+ "annee_legislation": 2025,
+ "moteur": {
+  "nom": "modele-social",
+  "version": "x.y.z",
+  "publicodes": "x.y.z"
+ },
+ "entree": {
+  "personnes": [
+   {
+    "role": "declarant1",
+    "salaire_net_avant_impot_annuel": 25200.0,
+    "salaire_brut_annuel_estime": {
+     "bas": 31834.38,
+     "central": 31834.38,
+     "haut": 31834.38
+    }
+   }
+  ]
+ },
+ "prelevements": [
+  {
+   "id": "vieillesse_plafonnee_salarie",
+   "libelle": "Retraite de base (plafonnee)",
+   "famille": "cotisation_salariale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.069,
+   "montant_annuel_eur": {
+    "bas": 2196.57,
+    "central": 2196.57,
+    "haut": 2196.57
+   },
+   "destinataire": {
+    "id": "cnav",
+    "nom": "Assurance retraite (CNAV)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": true,
+   "regle": "salarie . cotisations . vieillesse"
+  },
+  {
+   "id": "vieillesse_deplafonnee_salarie",
+   "libelle": "Retraite de base (deplafonnee)",
+   "famille": "cotisation_salariale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.004,
+   "montant_annuel_eur": {
+    "bas": 127.34,
+    "central": 127.34,
+    "haut": 127.34
+   },
+   "destinataire": {
+    "id": "cnav",
+    "nom": "Assurance retraite (CNAV)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": true,
+   "regle": "salarie . cotisations . vieillesse"
+  },
+  {
+   "id": "retraite_complementaire_salarie",
+   "libelle": "Retraite complementaire tranche 1",
+   "famille": "cotisation_salariale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.0315,
+   "montant_annuel_eur": {
+    "bas": 1002.78,
+    "central": 1002.78,
+    "haut": 1002.78
+   },
+   "destinataire": {
+    "id": "agirc_arrco",
+    "nom": "Agirc-Arrco (retraite complementaire)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": true,
+   "regle": "salarie . cotisations . retraite complementaire"
+  },
+  {
+   "id": "ceg_salarie",
+   "libelle": "Contribution d'equilibre general",
+   "famille": "cotisation_salariale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.0086,
+   "montant_annuel_eur": {
+    "bas": 273.78,
+    "central": 273.78,
+    "haut": 273.78
+   },
+   "destinataire": {
+    "id": "agirc_arrco",
+    "nom": "Agirc-Arrco (retraite complementaire)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": true,
+   "regle": "salarie . cotisations . CEG"
+  },
+  {
+   "id": "csg_deductible",
+   "libelle": "CSG deductible",
+   "famille": "csg_crds",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31277.28,
+   "taux": 0.068,
+   "montant_annuel_eur": {
+    "bas": 2126.85,
+    "central": 2126.85,
+    "haut": 2126.85
+   },
+   "destinataire": {
+    "id": "plusieurs",
+    "nom": "Securite sociale (plusieurs branches)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": true,
+   "regle": "salarie . cotisations . CSG-CRDS"
+  },
+  {
+   "id": "csg_non_deductible",
+   "libelle": "CSG non deductible",
+   "famille": "csg_crds",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31277.28,
+   "taux": 0.024,
+   "montant_annuel_eur": {
+    "bas": 750.65,
+    "central": 750.65,
+    "haut": 750.65
+   },
+   "destinataire": {
+    "id": "plusieurs",
+    "nom": "Securite sociale (plusieurs branches)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": true,
+   "regle": "salarie . cotisations . CSG-CRDS"
+  },
+  {
+   "id": "crds",
+   "libelle": "CRDS",
+   "famille": "csg_crds",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31277.28,
+   "taux": 0.005,
+   "montant_annuel_eur": {
+    "bas": 156.39,
+    "central": 156.39,
+    "haut": 156.39
+   },
+   "destinataire": {
+    "id": "cades",
+    "nom": "Caisse d'amortissement de la dette sociale (CADES)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": true,
+   "regle": "salarie . cotisations . CSG-CRDS"
+  },
+  {
+   "id": "impot_revenu",
+   "libelle": "Impot sur le revenu du foyer",
+   "famille": "impot_revenu",
+   "personne": "foyer",
+   "assiette_annuelle_eur": null,
+   "taux": null,
+   "montant_annuel_eur": {
+    "bas": 1004.0,
+    "central": 1004.0,
+    "haut": 1004.0
+   },
+   "destinataire": {
+    "id": "etat",
+    "nom": "Etat",
+    "administration": "Etat"
+   },
+   "inclus_dans_total_paye": true,
+   "regle": "impot . montant"
+  },
+  {
+   "id": "maladie_employeur",
+   "libelle": "Assurance maladie",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.07,
+   "montant_annuel_eur": {
+    "bas": 2228.41,
+    "central": 2228.41,
+    "haut": 2228.41
+   },
+   "destinataire": {
+    "id": "cnam",
+    "nom": "Assurance maladie (CNAM)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . employeur"
+  },
+  {
+   "id": "vieillesse_plafonnee_employeur",
+   "libelle": "Retraite de base (plafonnee)",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.0855,
+   "montant_annuel_eur": {
+    "bas": 2721.84,
+    "central": 2721.84,
+    "haut": 2721.84
+   },
+   "destinataire": {
+    "id": "cnav",
+    "nom": "Assurance retraite (CNAV)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . employeur"
+  },
+  {
+   "id": "vieillesse_deplafonnee_employeur",
+   "libelle": "Retraite de base (deplafonnee)",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.0211,
+   "montant_annuel_eur": {
+    "bas": 671.71,
+    "central": 671.71,
+    "haut": 671.71
+   },
+   "destinataire": {
+    "id": "cnav",
+    "nom": "Assurance retraite (CNAV)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . employeur"
+  },
+  {
+   "id": "famille_employeur",
+   "libelle": "Allocations familiales",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.0345,
+   "montant_annuel_eur": {
+    "bas": 1098.29,
+    "central": 1098.29,
+    "haut": 1098.29
+   },
+   "destinataire": {
+    "id": "cnaf",
+    "nom": "Allocations familiales (CNAF)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . employeur"
+  },
+  {
+   "id": "csa",
+   "libelle": "Contribution solidarite autonomie",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.003,
+   "montant_annuel_eur": {
+    "bas": 95.5,
+    "central": 95.5,
+    "haut": 95.5
+   },
+   "destinataire": {
+    "id": "cnsa",
+    "nom": "Caisse nationale de solidarite pour l'autonomie",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . employeur"
+  },
+  {
+   "id": "fnal",
+   "libelle": "FNAL",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.005,
+   "montant_annuel_eur": {
+    "bas": 31.83,
+    "central": 159.17,
+    "haut": 159.17
+   },
+   "destinataire": {
+    "id": "fnal",
+    "nom": "Fonds national d'aide au logement",
+    "administration": "Etat"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . employeur",
+   "hypothese_fourchette": "0,10 % plafonne (moins de 50 salaries) a 0,50 % deplafonne"
+  },
+  {
+   "id": "chomage_employeur",
+   "libelle": "Assurance chomage",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.0405,
+   "montant_annuel_eur": {
+    "bas": 1289.29,
+    "central": 1289.29,
+    "haut": 1289.29
+   },
+   "destinataire": {
+    "id": "unedic",
+    "nom": "Unedic (assurance chomage)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . employeur"
+  },
+  {
+   "id": "ags",
+   "libelle": "Garantie des salaires",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.0025,
+   "montant_annuel_eur": {
+    "bas": 79.59,
+    "central": 79.59,
+    "haut": 79.59
+   },
+   "destinataire": {
+    "id": "ags",
+    "nom": "AGS (garantie des salaires)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . employeur"
+  },
+  {
+   "id": "retraite_complementaire_employeur",
+   "libelle": "Retraite complementaire tranche 1 + CEG",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.0601,
+   "montant_annuel_eur": {
+    "bas": 1913.25,
+    "central": 1913.25,
+    "haut": 1913.25
+   },
+   "destinataire": {
+    "id": "agirc_arrco",
+    "nom": "Agirc-Arrco (retraite complementaire)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . employeur"
+  },
+  {
+   "id": "formation_apprentissage",
+   "libelle": "Formation professionnelle et taxe d'apprentissage",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.0168,
+   "montant_annuel_eur": {
+    "bas": 391.56,
+    "central": 534.82,
+    "haut": 534.82
+   },
+   "destinataire": {
+    "id": "france_competences",
+    "nom": "France competences (formation, apprentissage)",
+    "administration": "Etat"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . employeur",
+   "hypothese_fourchette": "1,23 % (moins de 11 salaries) a 1,68 %"
+  },
+  {
+   "id": "atmp",
+   "libelle": "Accidents du travail et maladies professionnelles",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.007,
+   "montant_annuel_eur": {
+    "bas": 143.25,
+    "central": 222.84,
+    "haut": 1273.38
+   },
+   "destinataire": {
+    "id": "branche_atmp",
+    "nom": "Branche accidents du travail (AT-MP)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . ATMP",
+   "hypothese_fourchette": "taux AT-MP de l'entreprise inconnu : 0,45 % a 4 %"
+  },
+  {
+   "id": "versement_mobilite",
+   "libelle": "Versement mobilite",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": 31834.38,
+   "taux": 0.0,
+   "montant_annuel_eur": {
+    "bas": 0,
+    "central": 0.0,
+    "haut": 1018.7
+   },
+   "destinataire": {
+    "id": "aom",
+    "nom": "Autorite organisatrice de la mobilite",
+    "administration": "Collectivites locales"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . versement mobilite",
+   "hypothese_fourchette": "0 (moins de 11 salaries ou hors perimetre) a 3,2 % (Paris)"
+  },
+  {
+   "id": "reduction_generale",
+   "libelle": "Reduction generale des cotisations patronales",
+   "famille": "cotisation_patronale",
+   "personne": "declarant1",
+   "assiette_annuelle_eur": null,
+   "taux": null,
+   "montant_annuel_eur": {
+    "bas": 0,
+    "central": 1486.67,
+    "haut": 1486.67
+   },
+   "destinataire": {
+    "id": "plusieurs",
+    "nom": "Securite sociale (plusieurs branches)",
+    "administration": "Securite sociale"
+   },
+   "inclus_dans_total_paye": false,
+   "regle": "salarie . cotisations . exonerations . reduction generale",
+   "nature": "reduction",
+   "hypothese_fourchette": "0 si l'employeur n'y a pas droit"
+  }
+ ],
+ "totaux": {
+  "paye_par_le_foyer": {
+   "bas": 7638.36,
+   "central": 7638.36,
+   "haut": 7638.36
+  },
+  "patronal": {
+   "bas": 9177.85,
+   "central": 9528.04,
+   "haut": 13083.95
+  },
+  "cout_total_employeur": {
+   "bas": 41012.23,
+   "central": 41362.42,
+   "haut": 44918.33
+  },
+  "par_destinataire": [
+   {
+    "destinataire": "cnav",
+    "montant_annuel_eur": {
+     "bas": 2323.91,
+     "central": 2323.91,
+     "haut": 2323.91
+    },
+    "inclut_patronal": false
+   },
+   {
+    "destinataire": "agirc_arrco",
+    "montant_annuel_eur": {
+     "bas": 1276.56,
+     "central": 1276.56,
+     "haut": 1276.56
+    },
+    "inclut_patronal": false
+   },
+   {
+    "destinataire": "plusieurs",
+    "montant_annuel_eur": {
+     "bas": 2877.5,
+     "central": 2877.5,
+     "haut": 2877.5
+    },
+    "inclut_patronal": false
+   },
+   {
+    "destinataire": "cades",
+    "montant_annuel_eur": {
+     "bas": 156.39,
+     "central": 156.39,
+     "haut": 156.39
+    },
+    "inclut_patronal": false
+   },
+   {
+    "destinataire": "etat",
+    "montant_annuel_eur": {
+     "bas": 1004.0,
+     "central": 1004.0,
+     "haut": 1004.0
+    },
+    "inclut_patronal": false
+   }
+  ]
+ },
+ "recoupement": {
+  "source": "openfisca",
+  "statut": "concordant",
+  "country_package_version": "175.0.45",
+  "tolerance_relative": 0.01,
+  "ecarts": [
+   {
+    "id": "cotisations_salariales",
+    "modele_social": 3600.47,
+    "openfisca": 3600.48,
+    "ecart_relatif": -0.0
+   },
+   {
+    "id": "csg",
+    "modele_social": 2877.5,
+    "openfisca": 2877.5,
+    "ecart_relatif": 0.0
+   },
+   {
+    "id": "cotisations_patronales",
+    "modele_social": 9528.04,
+    "openfisca": 9621.12,
+    "ecart_relatif": -0.0097
+   },
+   {
+    "id": "impot_revenu",
+    "modele_social": 1004.0,
+    "openfisca": 1004.0,
+    "ecart_relatif": 0.0
+   }
+  ]
+ },
+ "avertissements": [
+  {
+   "code": "DONNEE_ABSENTE",
+   "message": "La repartition de la CSG entre les branches de la Securite sociale n'est pas encore disponible : elle est affichee en un seul bloc.",
+   "champ": "/prelevements/4/ventilation",
+   "details": {
+    "fichier": "affectation_prelevements.json"
+   }
+  }
+ ]
+}

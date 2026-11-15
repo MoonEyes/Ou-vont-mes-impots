@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/programme.schema.json",
+  "title": "site/data/programmes/<numero>.json : detail d'un programme (actions, sous-actions, nature)",
+  "type": "object",
+  "required": [
+    "programme",
+    "actions",
+    "nature"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "programme": {
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 999
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "nom",
+          "md",
+          "sous_actions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "md": {
+            "type": "number",
+            "description": "Montant en milliards d'euros"
+          },
+          "sous_actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "nom",
+                "md"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "nom": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "md": {
+                  "type": "number",
+                  "description": "Montant en milliards d'euros"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "nature": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "description": "Montant en milliards d'euros"
+      }
+    }
+  }
+}

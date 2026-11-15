@@ -1,0 +1,53 @@
+{
+ "version_contrat": "1.0",
+ "annee_revenus": 2025,
+ "residence": {
+  "zone": "metropole",
+  "alsace_moselle": false,
+  "commune_insee": "33063"
+ },
+ "foyer": {
+  "situation": "couple_marie_pacse",
+  "enfants": [
+   {
+    "annee_naissance": 2014,
+    "garde_alternee": false
+   },
+   {
+    "annee_naissance": 2017,
+    "garde_alternee": false
+   },
+   {
+    "annee_naissance": 2020,
+    "garde_alternee": false
+   }
+  ]
+ },
+ "logement": {
+  "statut": "proprietaire"
+ },
+ "personnes": [
+  {
+   "role": "declarant1",
+   "annee_naissance": 1985,
+   "statut_activite": "salarie_prive",
+   "frontalier": false,
+   "cadre": true,
+   "temps_travail": {
+    "type": "temps_plein"
+   },
+   "salaire_net_avant_impot_mensuel": 3800.0
+  },
+  {
+   "role": "declarant2",
+   "annee_naissance": 1987,
+   "statut_activite": "salarie_prive",
+   "frontalier": false,
+   "cadre": false,
+   "temps_travail": {
+    "type": "temps_plein"
+   },
+   "salaire_net_avant_impot_mensuel": 2100.0
+  }
+ ]
+}

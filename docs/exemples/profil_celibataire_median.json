@@ -1,0 +1,29 @@
+{
+ "version_contrat": "1.0",
+ "annee_revenus": 2025,
+ "residence": {
+  "zone": "metropole",
+  "alsace_moselle": false,
+  "commune_insee": "69123"
+ },
+ "foyer": {
+  "situation": "celibataire",
+  "enfants": []
+ },
+ "logement": {
+  "statut": "locataire"
+ },
+ "personnes": [
+  {
+   "role": "declarant1",
+   "annee_naissance": 1985,
+   "statut_activite": "salarie_prive",
+   "frontalier": false,
+   "cadre": false,
+   "temps_travail": {
+    "type": "temps_plein"
+   },
+   "salaire_net_avant_impot_mensuel": 2100.0
+  }
+ ]
+}

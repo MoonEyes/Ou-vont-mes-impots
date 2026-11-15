@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/meta.schema.json",
+  "title": "site/data/meta.json : provenance et totaux de controle",
+  "type": "object",
+  "required": [
+    "genere_le",
+    "sources",
+    "controle"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version_contrat": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "description": "PREVU : version de docs/contrat_interface.md respectee par le pipeline"
+    },
+    "genere_le": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sources": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "source",
+          "maj_source"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 3
+          },
+          "maj_source": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Date de mise a jour declaree par la source amont (ISO 8601)"
+          }
+        }
+      }
+    },
+    "controle": {
+      "type": "object",
+      "required": [
+        "total_md",
+        "exercice",
+        "communes",
+        "departements",
+        "annee_cofog",
+        "deficit_derniere_annee",
+        "arbre"
+      ],
+      "properties": {
+        "total_md": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "exclu_remboursements_md": {
+          "type": "number",
+          "minimum": 0
+        },
+        "exercice": {
+          "type": "string",
+          "pattern": "^(19|20)[0-9]{2}$"
+        },
+        "annee_cofog": {
+          "type": "string",
+          "pattern": "^(19|20)[0-9]{2}$"
+        },
+        "administrations_derniere_annee": {
+          "type": "string",
+          "pattern": "^(19|20)[0-9]{2}$"
+        },
+        "tva_annee": {
+          "type": "string",
+          "pattern": "^(19|20)[0-9]{2}$"
+        },
+        "recettes_annees": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{4}$"
+        },
+        "communes": {
+          "type": "integer",
+          "minimum": 30000
+        },
+        "departements": {
+          "type": "integer",
+          "minimum": 96
+        },
+        "missions": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "programmes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "postes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "deficit_derniere_annee": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "string",
+              "pattern": "^(19|20)[0-9]{2}$"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 2
+        },
+        "tva_derniere_annee": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "arbre": {
+          "$ref": "#/$defs/stats_arbre"
+        },
+        "arbre_administrations": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/stats_arbre"
+            }
+          ],
+          "properties": {
+            "annee": {
+              "type": "string",
+              "pattern": "^(19|20)[0-9]{2}$"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "stats_arbre": {
+      "type": "object",
+      "required": [
+        "noeuds",
+        "feuilles",
+        "profondeur",
+        "fichiers"
+      ],
+      "properties": {
+        "noeuds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "feuilles": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "profondeur": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fichiers": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

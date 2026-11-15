@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/affectation_prelevements.schema.json",
+  "title": "PREVU site/data/affectation_prelevements.json : qui recoit chaque prelevement (ventilation par destinataire)",
+  "type": "object",
+  "required": [
+    "annee",
+    "source",
+    "destinataires",
+    "prelevements"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "annee": {
+      "type": "string",
+      "pattern": "^(19|20)[0-9]{2}$"
+    },
+    "source": {
+      "type": "string"
+    },
+    "destinataires": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "cnam",
+          "cnav",
+          "cnaf",
+          "branche_atmp",
+          "cnsa",
+          "cades",
+          "agirc_arrco",
+          "unedic",
+          "ags",
+          "apec",
+          "fnal",
+          "france_competences",
+          "aom",
+          "etat",
+          "commune",
+          "epci",
+          "departement"
+        ]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "nom",
+          "administration"
+        ],
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "administration": {
+            "enum": [
+              "Ensemble",
+              "Etat",
+              "Collectivites locales",
+              "Securite sociale"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "prelevements": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "ventilation"
+        ],
+        "properties": {
+          "libelle": {
+            "type": "string"
+          },
+          "ventilation": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "destinataire",
+                "part"
+              ],
+              "properties": {
+                "destinataire": {
+                  "enum": [
+                    "cnam",
+                    "cnav",
+                    "cnaf",
+                    "branche_atmp",
+                    "cnsa",
+                    "cades",
+                    "agirc_arrco",
+                    "unedic",
+                    "ags",
+                    "apec",
+                    "fnal",
+                    "france_competences",
+                    "aom",
+                    "etat",
+                    "commune",
+                    "epci",
+                    "departement"
+                  ]
+                },
+                "part": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "reference_juridique": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
