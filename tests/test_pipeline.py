@@ -47,6 +47,43 @@ def test_detail_et_nature_retombent_sur_le_total():
     assert total_prog == pytest.approx(s["total"], abs=0.05)
 
 
+def _charger_arbre(n):
+    if "fichier" in n:
+        n = json.loads((SITE / n["fichier"]).read_text(encoding="utf-8"))
+    return n
+
+
+def test_arbre_chaque_noeud_egal_somme_enfants_jusqu_aux_feuilles():
+    racine = json.loads((SITE / "arbre" / "racine.json").read_text(encoding="utf-8"))
+    profondeurs, feuilles = [], []
+
+    def visite(n, d):
+        n = _charger_arbre(n)
+        enfants = n.get("enfants", [])
+        assert n["nom"] != "?", n["id"]
+        if enfants:
+            assert sum(e["md"] for e in enfants) == pytest.approx(n["md"], abs=1e-4), n["id"]
+            for e in enfants:
+                visite(e, d + 1)
+        else:
+            profondeurs.append(d)
+            feuilles.append(n["md"])
+
+    visite(racine, 0)
+    assert sum(feuilles) == pytest.approx(racine["md"], abs=0.01)
+    assert max(profondeurs) >= 6  # descend bien sous le programme
+
+
+def test_arbre_generique_profondeur_libre():
+    import arbre
+    rows = [{"a": "X", "b": "1", "c": None, "v": 2e9}, {"a": "X", "b": "2", "c": "z", "v": 1e9}]
+    niveaux = [{"id": n, "cle": n, "libelle": n} for n in "abc"]
+    r = arbre.construire(rows, niveaux, "v")
+    x = r["enfants"]["X"]
+    assert x["eur"] == 3e9 and x["enfants"]["1"]["enfants"] == {}  # c absent : branche plus courte
+    assert x["enfants"]["2"]["enfants"]["z"]["eur"] == 1e9
+
+
 def test_remboursements_exclus():
     s = json.loads((SITE / "sankey_etat.json").read_text(encoding="utf-8"))
     assert not any("Remboursements" in n["name"] for n in s["nodes"])

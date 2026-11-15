@@ -1,0 +1,14 @@
+{
+  "_lisez_moi": "Ordre des niveaux de l'arbre de depense de l'Etat, du plus large au plus fin. Ajouter, retirer ou permuter un niveau ici suffit : le code est generique. 'decoupe_apres' : au-dela de ce niveau, chaque sous-arbre est ecrit dans son propre fichier, charge par le site a la demande.",
+  "racine": "Budget de l'Etat",
+  "decoupe_apres": "programme",
+  "niveaux": [
+    {"id": "grand_poste", "cle": "grand_poste", "libelle": "grand_poste"},
+    {"id": "mission", "cle": "code_mission", "libelle": "mission"},
+    {"id": "programme", "cle": "programme", "libelle": "libelle_programme"},
+    {"id": "action", "cle": "action", "libelle": "libelle_action"},
+    {"id": "sous_action", "cle": "sous_action", "libelle": "libelle_sousaction"},
+    {"id": "titre", "cle": "code_titre", "libelle": "libelle_titre"},
+    {"id": "categorie", "cle": "categorie", "libelle": "libelle_categorie"}
+  ]
+}

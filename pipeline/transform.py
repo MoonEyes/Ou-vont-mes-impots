@@ -16,11 +16,14 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+import arbre
+
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "data" / "raw"
 PROCESSED = ROOT / "data" / "processed"
 SITE = ROOT / "site" / "data"
 POSTES = json.loads((Path(__file__).parent / "grands_postes.json").read_text(encoding="utf-8"))
+NIVEAUX = json.loads((Path(__file__).parent / "niveaux.json").read_text(encoding="utf-8"))
 NATURE = json.loads((Path(__file__).parent / "nomenclature_nature.json").read_text(encoding="utf-8"))
 
 COFOG_FR = {
@@ -69,7 +72,15 @@ def budget_etat() -> dict:
         for (poste, mission, num, lib), cp in sorted(prog.items()):
             w.writerow([poste, mission, num, lib, round(cp, 2)])
 
-    budget_detail([r for r in rows if POSTES[r["mission"]] != "exclu"])
+    retenues = [r for r in rows if POSTES[r["mission"]] != "exclu"]
+    budget_detail(retenues)
+
+    # Arbre a profondeur libre (niveaux definis dans niveaux.json).
+    enrichies = [{**r, "grand_poste": POSTES[r["mission"]], "categorie": code_cat(r),
+                  "libelle_titre": NATURE["titres"][r["code_titre"]],
+                  "libelle_categorie": NATURE["categories"][code_cat(r)]} for r in retenues]
+    stats_arbre = arbre.ecrire(arbre.construire(enrichies, NIVEAUX["niveaux"], "cp_plf"),
+                               NIVEAUX["racine"], NIVEAUX["decoupe_apres"], SITE / "arbre")
 
     # Sankey : un noeud par niveau, identifiants prefixes pour eviter les collisions de noms.
     nodes, index, links = [], {}, defaultdict(float)
@@ -97,7 +108,7 @@ def budget_etat() -> dict:
         "links": [{"source": s, "target": t, "value": md(v)} for (s, t), v in sorted(links.items()) if v > 0],
     }
     dump(SITE / "sankey_etat.json", sankey)
-    return {"total_md": md(total), "exclu_remboursements_md": md(exclu),
+    return {"total_md": md(total), "exclu_remboursements_md": md(exclu), "arbre": stats_arbre,
             "postes": len({k[0] for k in prog}), "missions": len({k[1] for k in prog}), "programmes": len(prog)}
 
 
