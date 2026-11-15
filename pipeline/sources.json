@@ -23,13 +23,96 @@
       "id": "cofog_france",
       "dataset": "gov_10a_exp",
       "description": "Depenses publiques par fonction (COFOG niveau 1), France, toutes administrations (S13)",
-      "params": {"geo": "FR", "unit": "MIO_EUR", "sector": "S13", "na_item": "TE", "lastTimePeriod": "3"}
+      "params": {
+        "geo": "FR",
+        "unit": "MIO_EUR",
+        "sector": "S13",
+        "na_item": "TE",
+        "lastTimePeriod": "3"
+      }
     },
     {
       "id": "deficit_france",
       "dataset": "gov_10dd_edpt1",
       "description": "Solde public (B9) et dette, France, toutes administrations",
-      "params": {"geo": "FR", "unit": "MIO_EUR", "sector": "S13", "na_item": "B9", "lastTimePeriod": "3"}
+      "params": {
+        "geo": "FR",
+        "unit": "MIO_EUR",
+        "sector": "S13",
+        "na_item": "B9",
+        "lastTimePeriod": "3"
+      }
+    },
+    {
+      "id": "cofog_administrations",
+      "dataset": "gov_10a_exp",
+      "description": "Depenses par fonction COFOG niveaux 1 et 2, par administration (Etat, local, Secu), depuis 2005",
+      "params": {
+        "geo": "FR",
+        "unit": "MIO_EUR",
+        "sector": [
+          "S13",
+          "S1311",
+          "S1313",
+          "S1314"
+        ],
+        "na_item": "TE",
+        "sinceTimePeriod": "2005",
+        "lang": "fr"
+      }
+    },
+    {
+      "id": "comptes_administrations",
+      "dataset": "gov_10a_main",
+      "description": "Recettes (TR), depenses (TE) et solde (B9) par administration, depuis 2005",
+      "params": {
+        "geo": "FR",
+        "unit": "MIO_EUR",
+        "sector": [
+          "S13",
+          "S1311",
+          "S1313",
+          "S1314"
+        ],
+        "na_item": [
+          "TR",
+          "TE",
+          "B9",
+          "D73PAY",
+          "D92PAY",
+          "D99PAY"
+        ],
+        "sinceTimePeriod": "2005",
+        "lang": "fr"
+      }
+    },
+    {
+      "id": "recettes_impots",
+      "dataset": "gov_10a_taxag",
+      "description": "Recettes par impot et administration beneficiaire, depuis 2005",
+      "params": {
+        "geo": "FR",
+        "unit": "MIO_EUR",
+        "sector": [
+          "S13",
+          "S1311",
+          "S1313",
+          "S1314"
+        ],
+        "na_item": [
+          "D211",
+          "D214A",
+          "D29",
+          "D2",
+          "D51A_C1",
+          "D51B",
+          "D5",
+          "D61",
+          "D91"
+        ],
+        "sinceTimePeriod": "2005",
+        "lang": "fr"
+      }
     }
   ]
 }

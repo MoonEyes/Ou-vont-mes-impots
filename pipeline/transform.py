@@ -216,6 +216,100 @@ def jsonstat_series(data: dict, dim: str) -> dict:
     return out
 
 
+ADMINS = {"S1311": "Etat", "S1313": "Collectivites locales", "S1314": "Securite sociale", "S13": "Ensemble"}
+
+
+def jsonstat_records(data: dict) -> list[dict]:
+    """JSON-stat Eurostat a N dimensions -> lignes {dim: code, ..., 'libelles': {dim: libelle}, 'valeur': v}."""
+    ids, sizes = data["id"], data["size"]
+    cats = []
+    for d in ids:
+        index = data["dimension"][d]["category"]["index"]
+        par_pos = sorted(index.items(), key=lambda kv: kv[1])
+        cats.append([code for code, _ in par_pos])
+    strides = [1] * len(ids)
+    for i in range(len(ids) - 2, -1, -1):
+        strides[i] = strides[i + 1] * sizes[i + 1]
+    lignes = []
+    for flat, v in data["value"].items():
+        flat = int(flat)
+        ligne = {}
+        for d, cs, st, sz in zip(ids, cats, strides, sizes):
+            ligne[d] = cs[(flat // st) % sz]
+        ligne["libelles"] = {d: data["dimension"][d]["category"]["label"].get(ligne[d], ligne[d]) for d in ids}
+        ligne["valeur"] = v
+        lignes.append(ligne)
+    return lignes
+
+
+def administrations() -> dict:
+    """Recettes, depenses et solde de chaque administration, par annee (Md EUR)."""
+    out = defaultdict(lambda: defaultdict(dict))
+    for r in jsonstat_records(load("comptes_administrations")):
+        out[r["time"]][ADMINS[r["sector"]]][r["na_item"]] = round(r["valeur"] / 1000, 1)
+    dump(SITE / "administrations.json", {"unite": "milliards d'euros", "TR": "recettes", "TE": "depenses",
+                                         "B9": "solde (negatif = deficit)", "annees": dict(sorted(out.items()))})
+    derniere = max(out)
+    return {"administrations_derniere_annee": derniere}
+
+
+def recettes() -> dict:
+    """Chaque impot, par administration beneficiaire et par annee (Md EUR)."""
+    impots = {}
+    for r in jsonstat_records(load("recettes_impots")):
+        imp = impots.setdefault(r["na_item"], {"nom": r["libelles"]["na_item"], "par_administration": defaultdict(dict)})
+        imp["par_administration"][ADMINS[r["sector"]]][r["time"]] = round(r["valeur"] / 1000, 2)
+    annees = sorted({a for i in impots.values() for s in i["par_administration"].values() for a in s})
+    dump(SITE / "recettes.json", {"unite": "milliards d'euros", "annees": annees, "impots": impots})
+    tva = impots["D211"]["par_administration"]
+    a = max(tva["Ensemble"])
+    return {"recettes_annees": f"{annees[0]}-{annees[-1]}",
+            "tva_derniere_annee": {k: v.get(a) for k, v in tva.items()}, "tva_annee": a}
+
+
+def arbre_administrations() -> dict:
+    """Arbre Depenses publiques > administration > fonction > sous-fonction (COFOG niveau 2).
+
+    La sous-fonction GF0108 (transferts generaux entre administrations) est retiree :
+    c'est de l'argent qu'une administration verse a une autre, qui le depense ensuite.
+    """
+    lignes = [r for r in jsonstat_records(load("cofog_administrations")) if r["sector"] != "S13"]
+    niv2 = [r for r in lignes if len(r["cofog99"]) == 6]
+    annees_completes = [a for a in sorted({r["time"] for r in niv2})
+                        if {r["sector"] for r in niv2 if r["time"] == a} == {"S1311", "S1313", "S1314"}]
+    annee = annees_completes[-1]
+    libelle_niv1 = {r["cofog99"]: r["libelles"]["cofog99"] for r in lignes if len(r["cofog99"]) == 4}
+    rows = [{"admin": r["sector"], "admin_nom": ADMINS[r["sector"]],
+             "f1": r["cofog99"][:4], "f1_nom": libelle_niv1.get(r["cofog99"][:4], r["cofog99"][:4]),
+             "f2": r["cofog99"], "f2_nom": r["libelles"]["cofog99"], "eur": r["valeur"] * 1e6}
+            for r in niv2 if r["time"] == annee and r["cofog99"] != "GF0108"]
+    niveaux = [{"id": "administration", "cle": "admin", "libelle": "admin_nom"},
+               {"id": "fonction", "cle": "f1", "libelle": "f1_nom"},
+               {"id": "sous_fonction", "cle": "f2", "libelle": "f2_nom"}]
+    stats = arbre.ecrire(arbre.construire(rows, niveaux, "eur"), f"Depenses publiques {annee}", "aucun",
+                         SITE / "arbre_administrations")
+    # Controle : somme des administrations hors transferts vs total consolide publie (S13).
+    total_s13 = sum(r["valeur"] for r in jsonstat_records(load("cofog_administrations"))
+                    if r["sector"] == "S13" and r["cofog99"] == "TOTAL" and r["time"] == annee) / 1000
+    somme = sum(r["eur"] for r in rows) / 1e9
+    comptes = jsonstat_records(load("comptes_administrations"))
+    te = {r["sector"]: r["valeur"] / 1000 for r in comptes if r["na_item"] == "TE" and r["time"] == annee}
+    d73 = sum(r["valeur"] for r in comptes if r["na_item"] == "D73PAY" and r["time"] == annee
+              and r["sector"] != "S13") / 1000
+    ecart_comptable = te["S1311"] + te["S1313"] + te["S1314"] - te["S13"]
+    dump(SITE / "arbre_administrations" / "methode.json", {
+        "annee": annee,
+        "lecture": "Chaque administration est montree avec ses depenses propres. Une partie est reversee a une autre "
+                   "administration, qui la depense a son tour : la vue nationale utilise donc le total consolide.",
+        "somme_administrations_md": round(somme, 1), "total_consolide_md": round(total_s13, 1),
+        "transferts_courants_entre_administrations_md": round(d73, 1),
+        "ecart_consolidation_md": round(ecart_comptable, 1)})
+    return {"arbre_administrations": {**stats, "annee": annee, "somme_md": round(somme, 1),
+                                      "total_consolide_s13_md": round(total_s13, 1),
+                                      "ecart_consolidation_md": round(ecart_comptable, 1),
+                                      "transferts_d73_md": round(d73, 1)}}
+
+
 def cofog() -> dict:
     series = jsonstat_series(load("cofog_france"), "cofog99")
     annees = sorted({y for c in COFOG_FR for y in series.get(c, {})})
@@ -235,7 +329,8 @@ def deficit() -> dict:
 
 
 def main() -> None:
-    controle = {**budget_etat(), **communes(), **cofog(), **deficit()}
+    controle = {**budget_etat(), **communes(), **cofog(), **deficit(), **administrations(), **recettes(),
+                **arbre_administrations()}
     sources = {p.stem.replace(".schema", ""): json.loads(p.read_text(encoding="utf-8"))
                for p in sorted(RAW.glob("*.schema.json"))}
     dump(SITE / "meta.json", {

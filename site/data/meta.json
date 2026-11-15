@@ -1,11 +1,23 @@
 {
  "controle": {
+  "administrations_derniere_annee": "2025",
   "annee_cofog": "2024",
   "arbre": {
    "feuilles": 2262,
    "fichiers": 134,
    "noeuds": 4781,
    "profondeur": 7
+  },
+  "arbre_administrations": {
+   "annee": "2024",
+   "ecart_consolidation_md": 106.3,
+   "feuilles": 118,
+   "fichiers": 1,
+   "noeuds": 145,
+   "profondeur": 3,
+   "somme_md": 1732.7,
+   "total_consolide_s13_md": 1671.8,
+   "transferts_d73_md": 90.5
   },
   "communes": 34874,
   "deficit_derniere_annee": [
@@ -18,21 +30,41 @@
   "missions": 33,
   "postes": 11,
   "programmes": 133,
-  "total_md": 446.8956
+  "recettes_annees": "2005-2025",
+  "total_md": 446.8956,
+  "tva_annee": "2025",
+  "tva_derniere_annee": {
+   "Collectivites locales": 52.75,
+   "Ensemble": 208.82,
+   "Etat": 98.7,
+   "Securite sociale": 57.37
+  }
  },
- "genere_le": "2026-11-15T15:08:30+00:00",
+ "genere_le": "2026-11-15T15:18:10+00:00",
  "sources": {
   "budget_etat_plf": {
    "maj_source": "2024-10-11T11:49:23+00:00",
    "source": "data.economie.gouv.fr/plf25-depenses-2025-du-bg-et-des-ba-selon-nomenclatures-destination-et-nature"
   },
+  "cofog_administrations": {
+   "maj_source": "2026-10-21T23:00:00+0200",
+   "source": "eurostat/gov_10a_exp"
+  },
   "cofog_france": {
    "maj_source": "2026-10-21T23:00:00+0200",
    "source": "eurostat/gov_10a_exp"
   },
+  "comptes_administrations": {
+   "maj_source": "2026-10-21T11:00:00+0200",
+   "source": "eurostat/gov_10a_main"
+  },
   "deficit_france": {
    "maj_source": "2026-10-21T11:00:00+0200",
    "source": "eurostat/gov_10dd_edpt1"
+  },
+  "recettes_impots": {
+   "maj_source": "2026-11-05T23:00:00+0100",
+   "source": "eurostat/gov_10a_taxag"
   },
   "taux_communes": {
    "maj_source": "2026-05-21T15:52:39.774000+00:00",

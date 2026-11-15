@@ -1,0 +1,9 @@
+{
+ "cofog99": "dimension",
+ "freq": "dimension",
+ "geo": "dimension",
+ "na_item": "dimension",
+ "sector": "dimension",
+ "time": "dimension",
+ "unit": "dimension"
+}

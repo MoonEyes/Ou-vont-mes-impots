@@ -1,0 +1,12 @@
+{
+ "fields": {
+  "freq": "dimension",
+  "geo": "dimension",
+  "na_item": "dimension",
+  "sector": "dimension",
+  "time": "dimension",
+  "unit": "dimension"
+ },
+ "modified": "2026-11-05T23:00:00+0100",
+ "source": "eurostat/gov_10a_taxag"
+}

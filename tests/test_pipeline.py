@@ -84,6 +84,32 @@ def test_arbre_generique_profondeur_libre():
     assert x["enfants"]["2"]["enfants"]["z"]["eur"] == 1e9
 
 
+def test_arbre_administrations_coherent_et_double_compte_explique():
+    racine = json.loads((SITE / "arbre_administrations" / "racine.json").read_text(encoding="utf-8"))
+    assert {e["nom"] for e in racine["enfants"]} == {"Etat", "Collectivites locales", "Securite sociale"}
+
+    def visite(n):
+        if n.get("enfants"):
+            assert sum(e["md"] for e in n["enfants"]) == pytest.approx(n["md"], abs=1e-3), n["id"]
+            for e in n["enfants"]:
+                visite(e)
+    visite(racine)
+    m = json.loads((SITE / "arbre_administrations" / "methode.json").read_text(encoding="utf-8"))
+    surplus = m["somme_administrations_md"] - m["total_consolide_md"]
+    # Le surplus restant est positif et ne depasse pas les transferts entre administrations publies.
+    assert 0 <= surplus <= m["ecart_consolidation_md"]
+    assert m["ecart_consolidation_md"] >= m["transferts_courants_entre_administrations_md"]
+
+
+def test_recettes_un_impot_va_a_une_seule_administration():
+    r = json.loads((SITE / "recettes.json").read_text(encoding="utf-8"))
+    for code in ("D211", "D51A_C1", "D61"):
+        par = r["impots"][code]["par_administration"]
+        for annee, total in par["Ensemble"].items():
+            somme = sum(par[a].get(annee, 0) for a in ("Etat", "Collectivites locales", "Securite sociale"))
+            assert somme == pytest.approx(total, rel=0.01), (code, annee)
+
+
 def test_remboursements_exclus():
     s = json.loads((SITE / "sankey_etat.json").read_text(encoding="utf-8"))
     assert not any("Remboursements" in n["name"] for n in s["nodes"])
