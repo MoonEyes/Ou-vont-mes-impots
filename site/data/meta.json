@@ -1,0 +1,36 @@
+{
+ "controle": {
+  "annee_cofog": "2024",
+  "communes": 34874,
+  "deficit_derniere_annee": [
+   "2025",
+   -151.6
+  ],
+  "departements": 101,
+  "exclu_remboursements_md": 147.1408,
+  "exercice": "2025",
+  "missions": 33,
+  "postes": 11,
+  "programmes": 133,
+  "total_md": 446.8956
+ },
+ "genere_le": "2026-11-15T15:01:39+00:00",
+ "sources": {
+  "budget_etat_plf": {
+   "maj_source": "2024-10-11T11:49:23+00:00",
+   "source": "data.economie.gouv.fr/plf25-depenses-2025-du-bg-et-des-ba-selon-nomenclatures-destination-et-nature"
+  },
+  "cofog_france": {
+   "maj_source": "2026-10-21T23:00:00+0200",
+   "source": "eurostat/gov_10a_exp"
+  },
+  "deficit_france": {
+   "maj_source": "2026-10-21T11:00:00+0200",
+   "source": "eurostat/gov_10dd_edpt1"
+  },
+  "taux_communes": {
+   "maj_source": "2026-05-21T15:52:39.774000+00:00",
+   "source": "data.economie.gouv.fr/fiscalite-locale-des-particuliers"
+  }
+ }
+}

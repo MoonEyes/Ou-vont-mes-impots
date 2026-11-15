@@ -1,0 +1,35 @@
+{
+  "ods_base": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets",
+  "eurostat_base": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data",
+  "ods": [
+    {
+      "id": "budget_etat_plf",
+      "dataset": "plf25-depenses-2025-du-bg-et-des-ba-selon-nomenclatures-destination-et-nature",
+      "description": "Budget de l'Etat vote (PLF 2025) : mission > programme > action, credits de paiement",
+      "select": "type_mission,code_mission,mission,programme,libelle_programme,action,libelle_action,cp_plf,ministere",
+      "where": "type_mission='BG'"
+    },
+    {
+      "id": "taux_communes",
+      "dataset": "fiscalite-locale-des-particuliers",
+      "description": "Taux de taxe fonciere (bati) et TEOM par commune, dernier exercice",
+      "select": "exercice,com,libcom,dep,taux_global_tfb,taux_plein_teom",
+      "latest_of": "exercice",
+      "where": "exercice='{latest}'"
+    }
+  ],
+  "eurostat": [
+    {
+      "id": "cofog_france",
+      "dataset": "gov_10a_exp",
+      "description": "Depenses publiques par fonction (COFOG niveau 1), France, toutes administrations (S13)",
+      "params": {"geo": "FR", "unit": "MIO_EUR", "sector": "S13", "na_item": "TE", "lastTimePeriod": "3"}
+    },
+    {
+      "id": "deficit_france",
+      "dataset": "gov_10dd_edpt1",
+      "description": "Solde public (B9) et dette, France, toutes administrations",
+      "params": {"geo": "FR", "unit": "MIO_EUR", "sector": "S13", "na_item": "B9", "lastTimePeriod": "3"}
+    }
+  ]
+}

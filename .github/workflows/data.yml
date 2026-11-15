@@ -1,0 +1,72 @@
+name: Mise a jour des donnees
+
+# Pattern "git scraping" : telecharger, verifier, transformer, committer seulement s'il y a un diff.
+on:
+  schedule:
+    - cron: "17 4 * * 1"   # chaque lundi 04:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Installer les dependances
+        run: pip install -r requirements.txt
+
+      - name: Telecharger les donnees brutes
+        run: python pipeline/fetch.py
+
+      - name: Detecter un changement de schema a la source
+        run: python pipeline/check_schema.py
+
+      - name: Transformer pour le site
+        run: python pipeline/transform.py
+
+      - name: Valider les tables (Frictionless)
+        run: frictionless validate datapackage.json
+
+      - name: Tests
+        run: pytest -q
+
+      - name: Committer si les donnees ont change
+        run: |
+          git config user.name "data-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data site/data
+          if git diff --cached --quiet; then
+            echo "Aucun changement dans les donnees."
+          else
+            git commit -m "data: mise a jour automatique $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - name: Ouvrir une issue en cas d'echec
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          body="Le pipeline de donnees a echoue : ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          if [ -f schema_drift.md ]; then body="$body"$'\n\n'"$(cat schema_drift.md)"; fi
+          existing=$(gh issue list --label pipeline-donnees --state open --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh label create pipeline-donnees --color B60205 --force
+            gh issue create --title "Pipeline de donnees en echec" --label pipeline-donnees --body "$body"
+          fi

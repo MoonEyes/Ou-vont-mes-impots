@@ -1,0 +1,8 @@
+{
+ "com": "text",
+ "dep": "text",
+ "exercice": "text",
+ "libcom": "text",
+ "taux_global_tfb": "double",
+ "taux_plein_teom": "double"
+}

@@ -1,0 +1,15 @@
+{
+ "fields": {
+  "action": "text",
+  "code_mission": "text",
+  "cp_plf": "double",
+  "libelle_action": "text",
+  "libelle_programme": "text",
+  "ministere": "text",
+  "mission": "text",
+  "programme": "double",
+  "type_mission": "text"
+ },
+ "modified": "2024-10-11T11:49:23+00:00",
+ "source": "data.economie.gouv.fr/plf25-depenses-2025-du-bg-et-des-ba-selon-nomenclatures-destination-et-nature"
+}

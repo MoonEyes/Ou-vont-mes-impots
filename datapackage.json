@@ -1,0 +1,34 @@
+{
+  "name": "ou-vont-mes-impots",
+  "title": "Donnees transformees du site Ou vont mes impots",
+  "licenses": [{"name": "etalab-2.0", "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/", "title": "Licence Ouverte 2.0"}],
+  "resources": [
+    {
+      "name": "budget_etat",
+      "path": "data/processed/budget_etat.csv",
+      "schema": {
+        "fields": [
+          {"name": "grand_poste", "type": "string", "constraints": {"required": true}},
+          {"name": "mission", "type": "string", "constraints": {"required": true}},
+          {"name": "programme", "type": "integer", "constraints": {"required": true, "minimum": 100, "maximum": 999}},
+          {"name": "libelle_programme", "type": "string", "constraints": {"required": true}},
+          {"name": "cp_euros", "type": "number", "constraints": {"required": true}}
+        ],
+        "primaryKey": ["programme"]
+      }
+    },
+    {
+      "name": "communes",
+      "path": "data/processed/communes.csv",
+      "schema": {
+        "fields": [
+          {"name": "code_insee", "type": "string", "constraints": {"required": true, "pattern": "^[0-9][0-9AB][0-9]{3}$"}},
+          {"name": "nom", "type": "string", "constraints": {"required": true}},
+          {"name": "taux_tfb", "type": "number", "constraints": {"minimum": 0, "maximum": 150}},
+          {"name": "taux_teom", "type": "number", "constraints": {"minimum": 0, "maximum": 100}}
+        ],
+        "primaryKey": ["code_insee"]
+      }
+    }
+  ]
+}

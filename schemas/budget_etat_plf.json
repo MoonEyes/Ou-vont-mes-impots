@@ -1,0 +1,11 @@
+{
+ "action": "text",
+ "code_mission": "text",
+ "cp_plf": "double",
+ "libelle_action": "text",
+ "libelle_programme": "text",
+ "ministere": "text",
+ "mission": "text",
+ "programme": "double",
+ "type_mission": "text"
+}
