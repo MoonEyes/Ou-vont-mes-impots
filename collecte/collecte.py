@@ -121,6 +121,9 @@ class Client:
         self.timeouts = (connect_timeout, read_timeout)
         self.essais = essais
         self._dernier = 0.0
+        self.echecs_hote: dict[str, int] = {}  # hotes injoignables dans ce passage : on cesse d'insister
+
+    SEUIL_HOTE_MORT = 3
 
     def _attendre_tour(self):
         reste = self.pause - (time.time() - self._dernier)
@@ -131,6 +134,22 @@ class Client:
     def get(self, url: str, *, stream: bool = False, headers: dict | None = None,
             deadline: float | None = None, essais: int | None = None, params: dict | None = None) -> requests.Response:
         essais = essais or self.essais
+        erreur = None
+        hote = url.split("/")[2] if "//" in url else url
+        if self.echecs_hote.get(hote, 0) >= self.SEUIL_HOTE_MORT:
+            raise RuntimeError(f"hote {hote} injoignable a plusieurs reprises dans ce passage, source reportee")
+        try:
+            return self._get(url, stream, headers, deadline, essais, params)
+        except DelaiDepasse as exc:
+            if "Error" in str(exc) or "Timeout" in str(exc):
+                self.echecs_hote[hote] = self.echecs_hote.get(hote, 0) + 1
+            raise
+        except RuntimeError as exc:
+            if "injoignable" in str(exc):
+                self.echecs_hote[hote] = self.echecs_hote.get(hote, 0) + 1
+            raise
+
+    def _get(self, url, stream, headers, deadline, essais, params) -> requests.Response:
         erreur = None
         for tentative in range(1, essais + 1):
             if deadline and time.time() > deadline:
@@ -506,7 +525,7 @@ def sources_depuis_decouvertes(decouvertes: list[dict], catalogue: list[dict], s
     deja = {(s.get("portail") or ("datagouv" if s["type"] == "datagouv" else None), s.get("dataset")) for s in catalogue}
     sorties = []
     for d in decouvertes:
-        if d.get("score", 0) < score_min or d.get("doublon_de"):
+        if d.get("score", 0) < score_min or d.get("doublon_de") or EXCLUSIONS.search(d.get("titre") or ""):
             continue
         if portails_inclus and d["portail"] not in portails_inclus:
             continue
@@ -527,6 +546,11 @@ def sources_depuis_decouvertes(decouvertes: list[dict], catalogue: list[dict], s
     rang = {d["id"]: (priorite_producteur(d), d.get("score", 0)) for d in decouvertes}
     return sorted(sorties, key=lambda s: (-rang[s["id"]][0], -rang[s["id"]][1], s["id"]))
 
+
+# exclusions volontaires : aides PAC et registre parcellaire (publication legale limitee, donnees agricoles
+# nominatives), declarations de patrimoine des elus (HATVP, hors objet)
+EXCLUSIONS = re.compile(r"registre parcellaire|\brpg\b|politique agricole commune|\bpac\b|ilots culturaux|"
+                        r"declarations? de (situation )?patrimoine", re.I)
 
 PORTAILS_FINANCIERS = {"economie", "ofgl", "urssaf", "cdc"}
 PRODUCTEURS_FINANCIERS = re.compile(r"dgfip|finances publiques|budget|\bdb\b|dgcl|ofgl|urssaf|cnccfp|hatvp|cour des comptes|"

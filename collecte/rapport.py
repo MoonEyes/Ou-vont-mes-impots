@@ -65,9 +65,23 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
     L += ["", f"## Erreurs ({len(err)})", ""]
     if not err:
         L.append("Aucune.")
-    for k, e in sorted(err.items()):
+    def cause(e):
+        t = (e.get("erreur") or "") + " " + e.get("statut", "")
+        for motif, lib in [("delai_depasse", "budget de temps depasse"), ("incomplet", "parquet tronque"),
+                           ("HTTP 404", "lien mort (404)"), ("HTTP 410", "lien mort (410)"), ("acces refuse", "acces refuse (non contourne)"),
+                           ("injoignable", "hote injoignable"), ("HTTP 5", "erreur serveur (5xx)")]:
+            if motif in t:
+                return lib
+        return "autre"
+    from collections import Counter
+    if err:
+        L.append("Par cause : " + ", ".join(f"{c} {n}" for c, n in Counter(cause(e) for e in err.values()).most_common()) + ".")
+        L.append("")
+    for k, e in sorted(err.items())[:80]:
         ant = " (fichiers d'une collecte precedente conserves)" if any(f.get("donnees_anterieures") for f in e.get("fichiers", [])) else ""
-        L.append(f"- `{k}` [{e.get('statut')}] : {(e.get('erreur') or '').replace(chr(10), ' ')[:200]}{ant}")
+        L.append(f"- `{k}` [{e.get('statut')}] : {(e.get('erreur') or '').replace(chr(10), ' ')[:160]}{ant}")
+    if len(err) > 80:
+        L.append(f"- ... et {len(err) - 80} autres (detail dans le manifeste)")
 
     vides = sorted(k for k, e in manifeste.items() if e.get("statut") == "sans_ressource")
     if vides:
@@ -78,7 +92,7 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
     part = {k: e for k, e in manifeste.items() if e.get("erreurs_fichiers")}
     if part:
         L += ["", f"## Sources partielles ({len(part)}) : ressources en echec, les autres collectees", ""]
-        for k, e in sorted(part.items()):
+        for k, e in sorted(part.items())[:40]:
             L.append(f"- `{k}` : {len(e['erreurs_fichiers'])} ressource(s) en echec, ex. {e['erreurs_fichiers'][0]['erreur'][:150]}")
 
     pp = {k: e for k, e in manifeste.items() if e.get("personnes_physiques")}
@@ -99,6 +113,21 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
         L.append(f"- `{s_['id']}` (catalogue, lourde) : {s_['titre']}")
     for k, i in ign:
         L.append(f"- `{k}` : ressource {i.get('titre')} ({(i.get('octets') or 0) / 1e6:,.0f} Mo, {i.get('motif')})")
+
+    if decouvertes:
+        restants = sorted((j for j in decouvertes.get("jeux", []) if j.get("lourd") and not j.get("doublon_de")
+                           and j.get("score", 0) >= 2 and manifeste.get(j["id"], {}).get("statut") not in ("ok", "partiel")),
+                          key=lambda j: -(j.get("taille_estimee_mo") or 0))
+        if restants:
+            L += ["", f"### Jeux decouverts lourds non pris ({len(restants)}, "
+                      f"environ {sum(j.get('taille_estimee_mo') or 0 for j in restants) / 1e3:,.0f} Go estimes)", "",
+                  "Estimation grossiere (lignes x champs). Les exports ODS de plus de 300 Mo sont souvent coupes par le reseau "
+                  "ou trop lents (environ 0,3 Mo/s) : statut delai_depasse ou parquet incomplet.", ""]
+            for j in restants[:25]:
+                st = manifeste.get(j["id"], {}).get("statut", "non tente")
+                L.append(f"- `{j['id']}` ({j.get('taille_estimee_mo') or 0:,.0f} Mo estimes, {st}) : {j['titre'][:100]}")
+            if len(restants) > 25:
+                L.append(f"- ... et {len(restants) - 25} autres")
 
     if catalogue and catalogue.get("non_collectables"):
         L += ["", "## Sources identifiees mais non collectables automatiquement", ""]

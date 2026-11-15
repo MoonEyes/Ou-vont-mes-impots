@@ -1698,6 +1698,18 @@
   {
    "source": "Declarations de patrimoine des elus (HATVP)",
    "motif": "hors objet, donnees personnelles sensibles : exclu volontairement"
+  },
+  {
+   "source": "Banque de France Webstat (ODS, sans cle)",
+   "motif": "43 000 series publiees chacune comme un jeu sans enregistrements ODS : non parcouru par la decouverte, a traiter par une selection de series"
+  },
+  {
+   "source": "data.ccomptes.fr, data.anct.gouv.fr",
+   "motif": "portails inexistants (nom de domaine non resolu) ; Cour des comptes et ANCT couvertes via leurs organisations data.gouv.fr"
+  },
+  {
+   "source": "Exports ODS de plus de 300 Mo (balances comptables par annee, comptes des communes OFGL)",
+   "motif": "transferts coupes ou trop lents via le reseau de collecte (environ 0,3 Mo/s) : a reprendre depuis une machine sans proxy"
   }
  ]
 }

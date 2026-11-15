@@ -234,3 +234,26 @@ def test_parquet_tronque_refuse(lac):
                     src, {}, PORTAILS, timeout_s=60)
     assert e["statut"] == "erreur" and "incomplet" in e["erreur"]
     assert not (lac / "etat" / "s.parquet").exists()
+
+
+def test_hote_injoignable_abandonne_apres_seuil(lac):
+    import requests as rq
+
+    def coupe(h, p):
+        raise rq.ConnectionError("reset")
+    c = client({f"https://mort/{i}": coupe for i in range(5)})
+    c.essais = 1
+    for i in range(3):
+        with pytest.raises(RuntimeError):
+            c.get(f"https://mort/{i}")
+    n = len(c.s.appels)
+    with pytest.raises(RuntimeError, match="reportee"):
+        c.get("https://mort/4")
+    assert len(c.s.appels) == n
+
+
+def test_exclusions_pac_et_patrimoine():
+    dec = [{"id": "a", "portail": "datagouv", "dataset": "a", "score": 9, "titre": "Registre parcellaire graphique 2010"},
+           {"id": "b", "portail": "datagouv", "dataset": "b", "score": 9, "titre": "Declarations de patrimoine des elus"},
+           {"id": "c", "portail": "datagouv", "dataset": "c", "score": 9, "titre": "Budget primitif 2020"}]
+    assert [s["id"] for s in C.sources_depuis_decouvertes(dec, [], 1)] == ["c"]
