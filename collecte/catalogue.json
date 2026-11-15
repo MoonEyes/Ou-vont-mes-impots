@@ -149,7 +149,8 @@
    "titre": "Marches publics (DECP consolidees)",
    "licence": "Licence Ouverte 2.0",
    "personnes_physiques": true,
-   "lourd": true
+   "lourd": true,
+   "titre_contient": "decp.parquet"
   },
   {
    "id": "local_fiscalite_particuliers",
@@ -691,6 +692,126 @@
    "licence": "Licence Ouverte 2.0",
    "personnes_physiques": true,
    "lourd": true
+  },
+  {
+   "id": "insee_dd_cna_apu",
+   "domaine": "comptes_nationaux",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DD_CNA_APU/DD_CNA_APU_CSV_FR",
+   "titre": "Comptes des administrations publiques (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
+  },
+  {
+   "id": "insee_dd_cna_tee",
+   "domaine": "comptes_nationaux",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DD_CNA_TEE/DD_CNA_TEE_CSV_FR",
+   "titre": "Tableau économique d'ensemble (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
+  },
+  {
+   "id": "insee_dd_cna_agregats",
+   "domaine": "comptes_nationaux",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DD_CNA_AGREGATS/DD_CNA_AGREGATS_CSV_FR",
+   "titre": "Produit Intérieur Brut (PIB) et grands agrégats économiques (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
+  },
+  {
+   "id": "insee_dd_cna_patrimoine",
+   "domaine": "comptes_nationaux",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DD_CNA_PATRIMOINE/DD_CNA_PATRIMOINE_CSV_FR",
+   "titre": "Comptes de patrimoine (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
+  },
+  {
+   "id": "insee_ds_cnt_csi",
+   "domaine": "comptes_nationaux",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DS_CNT_CSI/DS_CNT_CSI_CSV_FR",
+   "titre": "Comptes de secteurs institutionnels (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
+  },
+  {
+   "id": "insee_ds_dera_public_annuel",
+   "domaine": "etat",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DS_DERA_PUBLIC_ANNUEL/DS_DERA_PUBLIC_ANNUEL_2023_CSV_FR",
+   "titre": "Salaires dans la fonction publique par catégorie socioprofessionnelle détaillée (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
+  },
+  {
+   "id": "insee_ds_comptes_regionaux",
+   "domaine": "comptes_nationaux",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DS_COMPTES_REGIONAUX/DS_COMPTES_REGIONAUX_CSV_FR",
+   "titre": "Comptes régionaux annuels (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
+  },
+  {
+   "id": "insee_ds_erfs_retropole",
+   "domaine": "comptes_nationaux",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DS_ERFS_RETROPOLE/DS_ERFS_RETROPOLE_CSV_FR",
+   "titre": "Indicateurs de pauvreté et de niveau de vie de 1996 à 2024 (données rétropolées) (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
+  },
+  {
+   "id": "insee_ds_erfs_non_retropole",
+   "domaine": "comptes_nationaux",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DS_ERFS_NON_RETROPOLE/DS_ERFS_NON_RETROPOLE_CSV_FR",
+   "titre": "Indicateurs de pauvreté et de niveau de vie de 1975 à 2024 (données non rétropolées) (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
+  },
+  {
+   "id": "insee_ds_filosofi_cc",
+   "domaine": "comptes_nationaux",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DS_FILOSOFI_CC/DS_FILOSOFI_CC_2023_CSV_FR",
+   "titre": "Niveau de vie, taux de pauvreté, décomposition du revenu disponible en 2023 (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
+  },
+  {
+   "id": "insee_ds_populations_reference",
+   "domaine": "collectivites",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DS_POPULATIONS_REFERENCE/DS_POPULATIONS_REFERENCE_2023_CSV_FR",
+   "titre": "Populations de référence (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
+  },
+  {
+   "id": "insee_ds_populations_historiques",
+   "domaine": "collectivites",
+   "type": "url",
+   "format": "zip",
+   "url": "https://api.insee.fr/melodi/file/DS_POPULATIONS_HISTORIQUES/DS_POPULATIONS_HISTORIQUES_CSV_FR",
+   "titre": "Populations municipales de 1968 à 2023 (Insee Melodi)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": false
   }
  ],
  "non_collectables": [

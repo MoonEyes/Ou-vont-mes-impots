@@ -11,9 +11,12 @@ from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from collecte import DECOUVERTES_PATH, LAKE, MANIFEST, charger_catalogue, lire_manifeste, maintenant  # noqa: E402
+from collecte import LAKE, MANIFEST, charger_catalogue, lire_decouvertes, lire_manifeste, maintenant  # noqa: E402
 
 RAPPORT = Path(__file__).resolve().parent / "RAPPORT_COLLECTE.md"
+
+
+NEUTRES = ("sans_ressource", "lourd_ignore")  # ni succes ni erreur : rien a telecharger ou volontairement differe
 
 
 def fichiers_valides(e: dict) -> list[dict]:
@@ -21,12 +24,15 @@ def fichiers_valides(e: dict) -> list[dict]:
 
 
 def synthese(manifeste: dict) -> dict:
-    dom = defaultdict(lambda: {"sources": 0, "ok": 0, "erreurs": 0, "octets": 0, "lignes": 0, "fichiers": 0})
-    tot = {"sources": 0, "ok": 0, "erreurs": 0, "octets": 0, "lignes": 0, "fichiers": 0}
+    dom = defaultdict(lambda: {"sources": 0, "ok": 0, "erreurs": 0, "neutres": 0, "octets": 0, "lignes": 0, "fichiers": 0})
+    tot = {"sources": 0, "ok": 0, "erreurs": 0, "neutres": 0, "octets": 0, "lignes": 0, "fichiers": 0}
     for e in manifeste.values():
-        for agg in (dom[e.get("domaine", "?")], tot):
+        if not e.get("domaine"):
+            continue  # entree incomplete (jamais ecrite par collecter) : ignoree
+        for agg in (dom[e["domaine"]], tot):
             agg["sources"] += 1
-            agg["ok" if e.get("statut") in ("ok", "partiel") else "erreurs"] += 1
+            st = e.get("statut")
+            agg["ok" if st in ("ok", "partiel") else "neutres" if st in NEUTRES else "erreurs"] += 1
             for f in fichiers_valides(e):
                 agg["octets"] += f["octets"]
                 agg["lignes"] += f.get("lignes") or 0
@@ -40,7 +46,8 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
     L = ["# Rapport de collecte de l'entrepot brut", "",
          f"Genere le {maintenant()} par `collecte/rapport.py` a partir de `{MANIFEST.relative_to(LAKE.parent.parent)}`.", "",
          "## Vue d'ensemble", "",
-         f"- Sources suivies : {t['sources']} (ok : {t['ok']}, en erreur ou delai depasse : {t['erreurs']})",
+         f"- Sources suivies : {t['sources']} (ok : {t['ok']}, en erreur ou delai depasse : {t['erreurs']}, "
+         f"sans fichier ou lourdes differees : {t['neutres']})",
          f"- Fichiers : {t['fichiers']}, volume : {t['octets'] / 1e6:,.1f} Mo",
          f"- Lignes comptees (Parquet et CSV) : {t['lignes']:,}".replace(",", " "),
          f"- Origine : {sum(1 for e in manifeste.values() if e.get('origine') != 'decouverte')} du catalogue manuel, "
@@ -54,13 +61,19 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
     for d, a in s["domaines"].items():
         L.append(f"| {d} | {a['sources']} | {a['ok']} | {a['erreurs']} | {a['fichiers']} | {a['octets'] / 1e6:,.1f} | {a['lignes']:,} |".replace(",", " "))
 
-    err = {k: e for k, e in manifeste.items() if e.get("statut") not in ("ok", "partiel")}
+    err = {k: e for k, e in manifeste.items() if e.get("domaine") and e.get("statut") not in ("ok", "partiel") + NEUTRES}
     L += ["", f"## Erreurs ({len(err)})", ""]
     if not err:
         L.append("Aucune.")
     for k, e in sorted(err.items()):
         ant = " (fichiers d'une collecte precedente conserves)" if any(f.get("donnees_anterieures") for f in e.get("fichiers", [])) else ""
         L.append(f"- `{k}` [{e.get('statut')}] : {(e.get('erreur') or '').replace(chr(10), ' ')[:200]}{ant}")
+
+    vides = sorted(k for k, e in manifeste.items() if e.get("statut") == "sans_ressource")
+    if vides:
+        L += ["", f"## Jeux sans fichier telechargeable ({len(vides)})", "",
+              "Jeux catalogues mais vides ou publies seulement en page web / API : " + ", ".join(f"`{k}`" for k in vides[:60])
+              + (" ..." if len(vides) > 60 else "")]
 
     part = {k: e for k, e in manifeste.items() if e.get("erreurs_fichiers")}
     if part:
@@ -75,7 +88,7 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
         mo = sum(f["octets"] for f in fichiers_valides(e)) / 1e6
         L.append(f"- `{k}` ({e.get('domaine')}, {e.get('statut')}, {mo:,.1f} Mo) : {e.get('titre')}")
 
-    ign = [(k, i) for k, e in manifeste.items() for i in e.get("ignores", [])]
+    ign = [(k, i) for k, e in manifeste.items() for i in e.get("ignores", []) if e.get("statut") != "ok" or True]
     lourdes = []
     if catalogue:
         lourdes = [s_ for s_ in catalogue.get("sources", []) if s_.get("lourd") and manifeste.get(s_["id"], {}).get("statut") not in ("ok", "partiel")]
@@ -109,7 +122,7 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
 
 
 def main() -> int:
-    dec = json.loads(DECOUVERTES_PATH.read_text(encoding="utf-8")) if DECOUVERTES_PATH.exists() else None
+    dec = lire_decouvertes()
     RAPPORT.write_text(generer(lire_manifeste(), dec, charger_catalogue()), encoding="utf-8")
     print(f"ecrit : {RAPPORT}")
     return 0

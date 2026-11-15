@@ -179,3 +179,26 @@ def test_ressource_en_echec_donne_statut_partiel(lac):
                     src, {}, {}, timeout_s=60)
     assert e["statut"] == "partiel" and len(e["fichiers"]) == 1
     assert "acces refuse" in e["erreurs_fichiers"][0]["erreur"]
+
+
+def test_jeu_sans_ressource_neutre_et_lourd_differe(lac):
+    url = f"{C.DATAGOUV_API}/datasets/v/"
+    src = {"id": "v", "type": "datagouv", "dataset": "v", "domaine": "etat", "titre": "T", "toutes": True}
+    e = C.collecter(client({url: FauxResp(json_data={"resources": []})}), src, {}, {}, timeout_s=60)
+    assert e["statut"] == "sans_ressource"
+    gros = {"resources": [{"id": "r1234567", "title": "g", "format": "csv", "url": "https://x/g", "filesize": 10**9}]}
+    e = C.collecter(client({url: FauxResp(json_data=gros)}), src, {}, {}, timeout_s=60, max_octets=10**8)
+    assert e["statut"] == "lourd_ignore" and e["ignores"][0]["octets"] == 10**9
+
+
+def test_tests_ne_touchent_pas_le_vrai_manifeste(lac):
+    assert C.MANIFEST == lac / "manifest.json"
+    C.maj_manifeste("z", {"statut": "ok", "domaine": "etat"})
+    assert (lac / "manifest.json").exists()
+
+
+def test_fichier_trop_lourd_interrompu_et_differe(lac):
+    src = {"id": "g", "type": "url", "url": "https://x/g.bin", "domaine": "etat", "titre": "T"}
+    e = C.collecter(client({"https://x/g.bin": FauxResp(200, b"x" * 40)}), src, {}, {}, timeout_s=60, max_octets=10)
+    assert e["statut"] == "lourd_ignore"
+    assert not list(lac.rglob("*.part"))

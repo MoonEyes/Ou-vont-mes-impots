@@ -1,0 +1,269 @@
+{
+ "_lisez_moi": "Portails Opendatasoft supplementaires parcourus par decouverte.py (collectivites, ministeres, organismes). Trouves via les sources de moissonnage data.gouv.fr (/api/1/harvest/sources/) et une liste de portails connus, verifies par appel a /api/explore/v2.1/catalog/datasets le 15/11/2026. Exclus : Webstat Banque de France (43 000 series sans enregistrements ODS), ODRE, portails injoignables. Exclus aussi : portails prives (BPCE, Infogreffe) et portails de transport ou de vaccination.",
+ "portails": {
+  "ods_anglet_opendatapaysbasque": {
+   "base": "https://anglet-opendatapaysbasque.opendatasoft.com",
+   "nb_jeux": 145
+  },
+  "ods_boulognebillancourt_seineouest": {
+   "base": "https://boulognebillancourt-seineouest.opendatasoft.com",
+   "nb_jeux": 83
+  },
+  "ods_chaville_seineouest": {
+   "base": "https://chaville-seineouest.opendatasoft.com",
+   "nb_jeux": 72
+  },
+  "ods_agglo_carene": {
+   "base": "https://data.agglo-carene.fr",
+   "nb_jeux": 132
+  },
+  "ods_agglo_montargoise": {
+   "base": "https://data.agglo-montargoise.fr",
+   "nb_jeux": 22
+  },
+  "ods_ampmetropole": {
+   "base": "https://data.ampmetropole.fr",
+   "nb_jeux": 198
+  },
+  "ods_angers": {
+   "base": "https://data.angers.fr",
+   "nb_jeux": 151
+  },
+  "ods_bretagne": {
+   "base": "https://data.bretagne.bzh",
+   "nb_jeux": 189
+  },
+  "ods_cannes": {
+   "base": "https://data.cannes.fr",
+   "nb_jeux": 154
+  },
+  "ods_capatlantique": {
+   "base": "https://data.capatlantique.fr",
+   "nb_jeux": 160
+  },
+  "ods_cc_autourdechenonceaux": {
+   "base": "https://data.cc-autourdechenonceaux.fr",
+   "nb_jeux": 19
+  },
+  "ods_centrevaldeloire": {
+   "base": "https://data.centrevaldeloire.fr",
+   "nb_jeux": 382
+  },
+  "ods_chateauroux_metropole": {
+   "base": "https://data.chateauroux-metropole.fr",
+   "nb_jeux": 113
+  },
+  "ods_dares_travail_emploi": {
+   "base": "https://data.dares.travail-emploi.gouv.fr",
+   "nb_jeux": 33
+  },
+  "ods_education": {
+   "base": "https://data.education.gouv.fr",
+   "nb_jeux": 314
+  },
+  "ods_eurelien": {
+   "base": "https://data.eurelien.fr",
+   "nb_jeux": 53
+  },
+  "ods_evrycourcouronnes": {
+   "base": "https://data.evrycourcouronnes.fr",
+   "nb_jeux": 40
+  },
+  "ods_fleurysurorne": {
+   "base": "https://data.fleurysurorne.fr",
+   "nb_jeux": 123
+  },
+  "ods_gers": {
+   "base": "https://data.gers.fr",
+   "nb_jeux": 82
+  },
+  "ods_grandparissud": {
+   "base": "https://data.grandparissud.fr",
+   "nb_jeux": 427
+  },
+  "ods_haute_garonne": {
+   "base": "https://data.haute-garonne.fr",
+   "nb_jeux": 287
+  },
+  "ods_iledefrance_mobilites": {
+   "base": "https://data.iledefrance-mobilites.fr",
+   "nb_jeux": 94
+  },
+  "ods_iledefrance": {
+   "base": "https://data.iledefrance.fr",
+   "nb_jeux": 1039
+  },
+  "ods_issy": {
+   "base": "https://data.issy.com",
+   "nb_jeux": 327
+  },
+  "ods_lamayenne": {
+   "base": "https://data.lamayenne.fr",
+   "nb_jeux": 106
+  },
+  "ods_laregion": {
+   "base": "https://data.laregion.fr",
+   "nb_jeux": 205
+  },
+  "ods_loire_atlantique": {
+   "base": "https://data.loire-atlantique.fr",
+   "nb_jeux": 342
+  },
+  "ods_maine_et_loire": {
+   "base": "https://data.maine-et-loire.fr",
+   "nb_jeux": 128
+  },
+  "ods_metropole_rouen_normandie": {
+   "base": "https://data.metropole-rouen-normandie.fr",
+   "nb_jeux": 114
+  },
+  "ods_meudon": {
+   "base": "https://data.meudon.fr",
+   "nb_jeux": 113
+  },
+  "ods_mulhouse_alsace": {
+   "base": "https://data.mulhouse-alsace.fr",
+   "nb_jeux": 146
+  },
+  "ods_nantesmetropole": {
+   "base": "https://data.nantesmetropole.fr",
+   "nb_jeux": 592
+  },
+  "ods_normandie_education": {
+   "base": "https://data.normandie.education.gouv.fr",
+   "nb_jeux": 58
+  },
+  "ods_orleans_metropole": {
+   "base": "https://data.orleans-metropole.fr",
+   "nb_jeux": 216
+  },
+  "ods_paysdelaloire": {
+   "base": "https://data.paysdelaloire.fr",
+   "nb_jeux": 213
+  },
+  "ods_regionreunion": {
+   "base": "https://data.regionreunion.com",
+   "nb_jeux": 285
+  },
+  "ods_rennesmetropole": {
+   "base": "https://data.rennesmetropole.fr",
+   "nb_jeux": 673
+  },
+  "ods_saintnazaireagglo": {
+   "base": "https://data.saintnazaireagglo.fr",
+   "nb_jeux": 132
+  },
+  "ods_sarthe": {
+   "base": "https://data.sarthe.fr",
+   "nb_jeux": 80
+  },
+  "ods_seineouest": {
+   "base": "https://data.seineouest.fr",
+   "nb_jeux": 195
+  },
+  "ods_seinesaintdenis": {
+   "base": "https://data.seinesaintdenis.fr",
+   "nb_jeux": 74
+  },
+  "ods_sicoval": {
+   "base": "https://data.sicoval.fr",
+   "nb_jeux": 49
+  },
+  "ods_strasbourg": {
+   "base": "https://data.strasbourg.eu",
+   "nb_jeux": 401
+  },
+  "ods_te44": {
+   "base": "https://data.te44.fr",
+   "nb_jeux": 5
+  },
+  "ods_teo_paysdelaloire": {
+   "base": "https://data.teo-paysdelaloire.fr",
+   "nb_jeux": 134
+  },
+  "ods_toulouse_metropole": {
+   "base": "https://data.toulouse-metropole.fr",
+   "nb_jeux": 844
+  },
+  "ods_tours_metropole": {
+   "base": "https://data.tours-metropole.fr",
+   "nb_jeux": 234
+  },
+  "ods_unedic": {
+   "base": "https://data.unedic.org",
+   "nb_jeux": 50
+  },
+  "ods_vendee": {
+   "base": "https://data.vendee.fr",
+   "nb_jeux": 52
+  },
+  "ods_villedavray": {
+   "base": "https://data.villedavray.fr",
+   "nb_jeux": 72
+  },
+  "ods_gpseo": {
+   "base": "https://gpseo.opendatasoft.com",
+   "nb_jeux": 30
+  },
+  "ods_afd": {
+   "base": "https://opendata.afd.fr",
+   "nb_jeux": 23
+  },
+  "ods_aude": {
+   "base": "https://opendata.aude.fr",
+   "nb_jeux": 29
+  },
+  "ods_bordeaux_metropole": {
+   "base": "https://opendata.bordeaux-metropole.fr",
+   "nb_jeux": 565
+  },
+  "ods_cc_coeurdefrance": {
+   "base": "https://opendata.cc-coeurdefrance.fr",
+   "nb_jeux": 81
+  },
+  "ods_clermontmetropole": {
+   "base": "https://opendata.clermontmetropole.eu",
+   "nb_jeux": 126
+  },
+  "ods_doubs": {
+   "base": "https://opendata.doubs.fr",
+   "nb_jeux": 50
+  },
+  "ods_ha_py": {
+   "base": "https://opendata.ha-py.fr",
+   "nb_jeux": 195
+  },
+  "ods_hauts_de_seine": {
+   "base": "https://opendata.hauts-de-seine.fr",
+   "nb_jeux": 254
+  },
+  "ods_isere": {
+   "base": "https://opendata.isere.fr",
+   "nb_jeux": 110
+  },
+  "ods_paris": {
+   "base": "https://opendata.paris.fr",
+   "nb_jeux": 484
+  },
+  "ods_saint_louis_agglo": {
+   "base": "https://saint-louis-agglo.opendatasoft.com",
+   "nb_jeux": 67
+  },
+  "ods_sevres_seineouest": {
+   "base": "https://sevres-seineouest.opendatasoft.com",
+   "nb_jeux": 73
+  },
+  "ods_vanves_seineouest": {
+   "base": "https://vanves-seineouest.opendatasoft.com",
+   "nb_jeux": 58
+  },
+  "ods_herault_data": {
+   "base": "https://www.herault-data.fr",
+   "nb_jeux": 328
+  },
+  "ods_opendata56": {
+   "base": "https://www.opendata56.fr",
+   "nb_jeux": 89
+  }
+ }
+}

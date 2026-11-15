@@ -90,3 +90,11 @@ def test_rapport_genere_depuis_manifeste():
                     {"sources": [], "non_collectables": [{"source": "AFT", "motif": "403"}]})
     assert "`b` [erreur] : HTTP 500" in txt and "gros" in txt and "AFT : 403" in txt
     assert "—" not in txt
+
+
+def test_domaine_politique_strict_et_estimation_geo():
+    assert D.domaine_presume("Consommation d'electricite des batiments", "") != "politique"
+    assert D.domaine_presume("Comptes de campagne des elections municipales", "") == "politique"
+    r = enregistrement_ods("geo", "Fiscalite locale geo", ["taux"], n=100000)
+    r["fields"].append({"name": "geo_shape", "label": "geo", "type": "geo_shape"})
+    assert D.jeu_ods("economie", "https://x", r)["taille_estimee_mo"] > 50

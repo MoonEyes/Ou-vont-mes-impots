@@ -26,7 +26,8 @@ from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from collecte import DATAGOUV_API, DECOUVERTES_PATH, Client, charger_catalogue, maintenant, nom_sur  # noqa: E402
+from collecte import (DATAGOUV_API, PORTAILS_SUPP_PATH, Client, charger_portails, ecrire_decouvertes,  # noqa: E402
+                      lire_decouvertes, maintenant, nom_sur)
 
 PORTAILS_ODS = ["economie", "ofgl", "drees", "caf", "ameli", "urssaf", "esr", "atih", "cdc"]
 BONUS_PORTAIL = {"economie": 1, "ofgl": 2, "urssaf": 1}
@@ -54,6 +55,7 @@ ORGANISATIONS = {
     "534fffa5a3a7292c64a7809e": ("Premier ministre", 0),
     "534fff59a3a7292c64a77cfd": ("Banque de France", 0),
     "534fff91a3a7292c64a77f53": ("Ministere de l'Interieur", 0),
+    "534fffa3a3a7292c64a78094": ("France Travail", 1),
 }
 
 MOTS_CLES_RECHERCHE = [
@@ -61,6 +63,8 @@ MOTS_CLES_RECHERCHE = [
     "campagne électorale", "parti politique", "fiscal", "impôt", "recette", "dette", "dépenses fiscales",
     "loi de finances", "aides d'État", "exonération", "fonds européens", "commande publique",
     "représentants d'intérêts", "comptes administratifs", "balance comptable", "taxe", "trésorerie",
+    "compte administratif", "budget primitif", "subventions versées", "données essentielles marchés",
+    "dotations de l'État", "indemnisation chômage", "rémunérations", "prestations sociales", "fonds social européen",
 ]
 
 # motif (sur texte normalise sans accents) -> etiquette
@@ -88,7 +92,8 @@ FORTS = {"budget", "subvention", "aide", "depense", "marche", "dotation", "finan
          "prelevement", "fonds", "plan_public", "lobbying", "compte"}
 
 DOMAINES = [  # (domaine, motifs) : premier qui correspond, sur le titre puis le texte
-    ("politique", r"campagne|parti|financements? politique|elect|candidat|representants? d.interets|lobby|hatvp|cnccfp|parlement|depute|senat"),
+    ("politique", r"campagnes? electorale|comptes de campagne|partis? politique|financements? politique|"
+                  r"representants? d.interets|\blobby|\bhatvp\b|\bcnccfp\b|\bcandidats?\b"),
     ("europe", r"\beurop|\bfeder\b|\bfeader\b|\bfse\b|kohesio|\bue\b"),
     ("dette", r"\bdette|\bemprunt|\btresor\b|\boat\b|agence france tresor"),
     ("fiscalite", r"\bimpot|\bfiscal|\btaxe|\btva\b|\bdgfip\b|\bniche|\bimposition|\bcontribuable"),
@@ -156,7 +161,8 @@ def personnes_physiques_ods(champs: list[dict]) -> tuple[bool, list[str]]:
 def lire_catalogue_ods(client: Client, base: str, par_page: int = 100) -> list[dict]:
     jeux, offset, total = [], 0, None
     while total is None or offset < total:
-        d = client.json(f"{base}/api/explore/v2.1/catalog/datasets", params={"limit": par_page, "offset": offset})
+        d = client.json(f"{base}/api/explore/v2.1/catalog/datasets",
+                        params={"limit": par_page, "offset": offset})
         total = d.get("total_count", 0)
         lot = d.get("results", [])
         if not lot:
@@ -176,7 +182,9 @@ def jeu_ods(portail: str, base: str, r: dict) -> dict:
     pp, champs_pp = personnes_physiques_ods(r.get("fields"))
     n = m.get("records_count") or 0
     nb_champs = len(r.get("fields") or [])
-    taille = round(n * max(nb_champs, 1) * 8 / 1e6, 2) if n else None  # estimation grossiere parquet
+    geo = any((c.get("type") in ("geo_shape", "geo_point_2d")) for c in r.get("fields") or [])
+    # estimation grossiere parquet ; une geometrie (geo_shape) pese des centaines d'octets par ligne
+    taille = round(n * (max(nb_champs, 1) * 8 + (600 if geo else 0)) / 1e6, 2) if n else None
     return {
         "id": nom_sur(f"{portail}__{r['dataset_id']}", 120), "portail": portail, "dataset": r["dataset_id"],
         "url": f"{base}/explore/dataset/{r['dataset_id']}/", "titre": titre, "producteur": m.get("publisher"),
@@ -235,24 +243,41 @@ def jeu_datagouv(d: dict, hotes_ods: dict) -> dict | None:
 
 # ---------------------------------------------------------------- programme
 
+def portails_ods_tous(portails: dict) -> list[str]:
+    supp = json.loads(PORTAILS_SUPP_PATH.read_text(encoding="utf-8"))["portails"] if PORTAILS_SUPP_PATH.exists() else {}
+    return PORTAILS_ODS + [k for k in supp if k not in PORTAILS_ODS]
+
+
 def decouvrir(client: Client, portails: dict, avec_datagouv: bool = True, pages_mot_cle: int = 3,
-              journal=print) -> dict:
+              journal=print, seulement: list[str] | None = None, precedent: dict | None = None,
+              paralleles: int = 8) -> dict:
+    """seulement : liste de portails a (re)parcourir ; les jeux des autres portails sont repris de `precedent`."""
     jeux: dict[str, dict] = {}
-    comptes = Counter()
-    hotes_ods = {}
-    for p in PORTAILS_ODS:
-        base = portails[p]
-        hotes_ods[base.split("//", 1)[1]] = p
+    comptes = Counter((precedent or {}).get("comptes_bruts", {}))
+    if seulement and precedent:
+        a_refaire = set(seulement) | ({"datagouv"} if avec_datagouv else set())
+        jeux = {j["id"]: j for j in precedent["jeux"] if j["portail"] not in a_refaire}
+    hotes_ods = {portails[p].split("//", 1)[1]: p for p in portails_ods_tous(portails) if p in portails}
+    from concurrent.futures import ThreadPoolExecutor
+
+    def un_portail(p):
+        # un client par portail : jamais deux appels simultanes vers le meme hote
         try:
-            brut = lire_catalogue_ods(client, base)
+            return p, lire_catalogue_ods(Client(pause=client.pause), portails[p]), None
         except Exception as exc:
-            journal(f"ERREUR catalogue {p} : {exc}")
-            continue
-        for r in brut:
-            j = jeu_ods(p, base, r)
-            jeux[j["id"]] = j
-        comptes[p] = len(brut)
-        journal(f"{p:<10} {len(brut):>5} jeux")
+            return p, [], exc
+
+    a_lire = [p for p in portails_ods_tous(portails) if not seulement or p in seulement]
+    with ThreadPoolExecutor(max_workers=paralleles) as ex:
+        for p, brut, exc in ex.map(un_portail, a_lire):
+            if exc:
+                journal(f"ERREUR catalogue {p} : {exc}")
+                continue
+            for r in brut:
+                j = jeu_ods(p, portails[p], r)
+                jeux[j["id"]] = j
+            comptes[p] = len(brut)
+            journal(f"{p:<10} {len(brut):>5} jeux")
     if avec_datagouv:
         vus = set()
         requetes = [({"organization": o}, None, f"org {n}") for o, (n, _) in ORGANISATIONS.items()]
@@ -288,12 +313,13 @@ def main(argv=None) -> int:
     ap.add_argument("--sans-datagouv", action="store_true")
     ap.add_argument("--pages-mot-cle", type=int, default=3, help="pages de 100 resultats par mot-cle data.gouv.fr")
     ap.add_argument("--pause", type=float, default=0.3)
-    ap.add_argument("--sortie", default=str(DECOUVERTES_PATH))
+    ap.add_argument("--portail", action="append", help="ne reparcourir que ce portail ODS (repetable), les autres sont repris")
     a = ap.parse_args(argv)
-    res = decouvrir(Client(pause=a.pause), charger_catalogue()["portails"], not a.sans_datagouv, a.pages_mot_cle)
-    Path(a.sortie).write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    res = decouvrir(Client(pause=a.pause), charger_portails(), not a.sans_datagouv, a.pages_mot_cle,
+                    seulement=a.portail, precedent=lire_decouvertes())
+    chemin = ecrire_decouvertes(res)
     sc = Counter(int(j["score"] >= 4) for j in res["jeux"])
-    print(f"{res['nb_jeux']} jeux decouverts, {sc[1]} avec score >= 4, ecrit dans {a.sortie}")
+    print(f"{res['nb_jeux']} jeux decouverts, {sc[1]} avec score >= 4, ecrit dans {chemin}")
     return 0
 
 

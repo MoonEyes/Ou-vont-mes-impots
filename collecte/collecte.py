@@ -42,6 +42,8 @@ LAKE = ROOT / "data" / "lake"
 MANIFEST = LAKE / "manifest.json"
 CATALOGUE_PATH = ICI / "catalogue.json"
 DECOUVERTES_PATH = ICI / "decouvertes.json"
+PORTAILS_SUPP_PATH = ICI / "portails_ods.json"
+TAILLE_MAX_DEPOT = 10 * 10**6  # au-dela, decouvertes.json est ecrit compresse (.json.gz)
 USER_AGENT = "ou-vont-mes-impots-collecte/0.3 (projet citoyen open source, collecte de donnees ouvertes)"
 DATAGOUV_API = "https://www.data.gouv.fr/api/1"
 TIMEOUT_DEFAUT_S = 900          # budget par source (non lourde)
@@ -58,10 +60,53 @@ def charger_catalogue(chemin: Path = CATALOGUE_PATH) -> dict:
     return json.loads(chemin.read_text(encoding="utf-8"))
 
 
+def charger_portails(catalogue: dict | None = None) -> dict:
+    """Portails du catalogue + portails Opendatasoft supplementaires (collectivites...) de portails_ods.json."""
+    portails = dict((catalogue or charger_catalogue())["portails"])
+    if PORTAILS_SUPP_PATH.exists():
+        for cle, p in json.loads(PORTAILS_SUPP_PATH.read_text(encoding="utf-8"))["portails"].items():
+            portails.setdefault(cle, p["base"])
+    return portails
+
+
+def lire_decouvertes(chemin: Path | None = None) -> dict | None:
+    import gzip
+    chemin = chemin or DECOUVERTES_PATH
+    gz = chemin.with_name(chemin.name + ".gz")
+    if gz.exists():
+        return json.loads(gzip.decompress(gz.read_bytes()).decode("utf-8"))
+    if chemin.exists():
+        return json.loads(chemin.read_text(encoding="utf-8"))
+    return None
+
+
+def ecrire_decouvertes(res: dict, chemin: Path | None = None) -> Path:
+    """Ecrit en clair si < 10 Mo, sinon en .json.gz (jamais de fichier > 10 Mo dans le depot)."""
+    import gzip
+    chemin = chemin or DECOUVERTES_PATH
+    gz = chemin.with_name(chemin.name + ".gz")
+    texte = json.dumps(res, ensure_ascii=False, indent=None, separators=(",", ":")) + "\n"
+    if len(texte.encode("utf-8")) <= TAILLE_MAX_DEPOT:
+        chemin.write_text(texte, encoding="utf-8")
+        gz.unlink(missing_ok=True)
+        return chemin
+    gz.write_bytes(gzip.compress(texte.encode("utf-8"), 9, mtime=0))
+    chemin.unlink(missing_ok=True)
+    return gz
+
+
 # ---------------------------------------------------------------- reseau
 
 class DelaiDepasse(RuntimeError):
     """Le budget de temps de la source est epuise."""
+
+
+class SansRessource(RuntimeError):
+    """Le jeu ne publie aucun fichier telechargeable (jeu vide, page web, API) : pas une erreur de collecte."""
+
+
+class TropLourd(RuntimeError):
+    """Le fichier depasse la taille maximale autorisee pour une source non lourde."""
 
 
 class Client:
@@ -129,7 +174,7 @@ def _hash_fichier(chemin: Path) -> tuple[hashlib._Hash, int]:
 
 
 def telecharger(client: Client, url: str, cible: Path, *, deadline: float | None = None,
-                ancien: dict | None = None, essais_flux: int = 6) -> dict:
+                ancien: dict | None = None, essais_flux: int = 6, max_octets: int | None = None) -> dict:
     """Telecharge url vers cible (fichier .part puis renommage atomique).
 
     - requete conditionnelle si `ancien` (entree de fichier du manifeste) porte etag/last_modified
@@ -171,10 +216,16 @@ def telecharger(client: Client, url: str, cible: Path, *, deadline: float | None
                         f.write(bloc)
                         h.update(bloc)
                         n += len(bloc)
+                        if max_octets and n > max_octets:
+                            raise TropLourd(f"plus de {max_octets / 1e6:.0f} Mo")
                 attendu = r.headers.get("Content-Length")
                 if attendu and r.status_code == 200 and int(attendu) != n and "gzip" not in r.headers.get("Content-Encoding", ""):
                     raise requests.exceptions.ChunkedEncodingError(f"transfert tronque {n}/{attendu}")
             break
+        except TropLourd:
+            tmp.unlink(missing_ok=True)
+            meta_tmp.unlink(missing_ok=True)
+            raise
         except (requests.exceptions.ChunkedEncodingError, requests.exceptions.ConnectionError,
                 requests.exceptions.Timeout) as exc:
             if tentative == essais_flux:
@@ -308,7 +359,8 @@ def plan_source(client: Client, src: dict, portails: dict, deadline=None, max_oc
         if src.get("types_ressource"):
             ressources = [r for r in ressources if r.get("type") in src["types_ressource"]]
         if not ressources:
-            raise RuntimeError("aucune ressource telechargeable correspondante")
+            raise SansRessource(f"aucune ressource telechargeable ({len(ds.get('resources', []))} ressource(s) publiee(s), "
+                                "aucune en fichier)")
         if not src.get("toutes"):
             ressources = ressources[:1]
         fichiers, ignores, noms = [], [], set()
@@ -391,7 +443,10 @@ def collecter(client: Client, src: dict, ancien: dict, portails: dict, *, timeou
                 continue
             try:
                 res = telecharger(client, spec["url"], cible, deadline=deadline,
-                                  ancien=vieux if vieux and cible.exists() else None)
+                                  ancien=vieux if vieux and cible.exists() else None, max_octets=max_octets)
+            except TropLourd as exc:
+                entree.setdefault("ignores", []).append({"url": spec["url"], "titre": spec["nom"], "motif": f"lourd ({exc})"})
+                continue
             except DelaiDepasse:
                 raise
             except Exception as exc:
@@ -410,9 +465,19 @@ def collecter(client: Client, src: dict, ancien: dict, portails: dict, *, timeou
             info["change"] = (vieux or {}).get("sha256") != info["sha256"]
             entree["fichiers"].append(info)
         if not entree["fichiers"]:
-            raise RuntimeError("aucun fichier collecte (toutes les ressources ignorees ?)")
+            if entree.get("erreurs_fichiers"):
+                raise RuntimeError("toutes les ressources en echec, ex. " + entree["erreurs_fichiers"][0]["erreur"])
+            if entree.get("ignores"):
+                entree["statut"] = "lourd_ignore"
+                entree["erreur"] = f"{len(entree['ignores'])} ressource(s) > seuil, a prendre avec --lourd"
+                entree["duree_s"] = round(time.time() - debut, 1)
+                return entree
+            raise RuntimeError("aucun fichier collecte")
         entree["statut"] = "partiel" if entree.get("erreurs_fichiers") else "ok"
         entree["inchange"] = inchanges == len(entree["fichiers"])
+    except SansRessource as exc:
+        entree["statut"] = "sans_ressource"
+        entree["erreur"] = str(exc)[:500]
     except DelaiDepasse as exc:
         entree["statut"] = "delai_depasse"
         entree["erreur"] = f"{exc} (budget {int(timeout_s)} s)"
@@ -445,6 +510,8 @@ def sources_depuis_decouvertes(decouvertes: list[dict], catalogue: list[dict], s
                 "personnes_physiques": bool(d.get("personnes_physiques")), "origine": "decouverte",
                 "lourd": bool(d.get("lourd"))}
         if d["portail"] == "datagouv":
+            if d.get("nb_ressources") == 0:
+                continue
             sorties.append({**base, "type": "datagouv", "portail": "datagouv", "toutes": True, "types_ressource": ["main"]})
         elif d.get("nb_lignes"):
             sorties.append({**base, "type": "ods_export", "portail": d["portail"]})
@@ -470,14 +537,15 @@ def main(argv=None) -> int:
     ap.add_argument("--limite", type=int, help="nombre maximal de sources dans ce lot")
     ap.add_argument("--tranche", help="i/n : ne traiter qu'une source sur n (decalage i), pour paralleliser")
     ap.add_argument("--sauter-ok", action="store_true", help="ignorer les sources deja ok dans le manifeste (sans verifier l'amont)")
-    ap.add_argument("--reserve-go", type=float, default=8, help="espace disque libre a preserver (Go) : en dessous, les sources sont sautees")
+    ap.add_argument("--reserve-go", type=float, default=10, help="espace disque libre a preserver (Go) : en dessous, les sources sont sautees")
+    ap.add_argument("--plafond-go", type=float, default=15, help="taille maximale de l'entrepot (Go, d'apres le manifeste)")
     ap.add_argument("--max-mo", type=float, default=100, help="taille max par fichier data.gouv.fr sans --lourd (Mo)")
     a = ap.parse_args(argv)
 
     cat = charger_catalogue()
-    portails = cat["portails"]
+    portails = charger_portails(cat)
     if a.decouvertes:
-        dec = json.loads(DECOUVERTES_PATH.read_text(encoding="utf-8"))["jeux"]
+        dec = lire_decouvertes()["jeux"]
         sources = sources_depuis_decouvertes(dec, cat["sources"], a.score_min, a.portail)
     else:
         sources = cat["sources"]
@@ -503,6 +571,11 @@ def main(argv=None) -> int:
     import shutil
     for s in choix:
         libre = shutil.disk_usage(LAKE if LAKE.exists() else ROOT).free
+        volume = sum(f.get("octets", 0) for e in manifeste.values() for f in e.get("fichiers", []))
+        if volume > a.plafond_go * 1e9:
+            print(f"PLAFOND  {s['id']:<48} saute : entrepot {volume / 1e9:.1f} Go > plafond {a.plafond_go} Go", flush=True)
+            erreurs += 1
+            continue
         if libre < a.reserve_go * 1e9:
             print(f"ESPACE   {s['id']:<48} saute : {libre / 1e9:.1f} Go libres < reserve {a.reserve_go} Go", flush=True)
             erreurs += 1
