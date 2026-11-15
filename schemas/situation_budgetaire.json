@@ -1,0 +1,8 @@
+{
+ "31_12_2024": "double",
+ "31_12_2025": "double",
+ "categorie": "text",
+ "ligne_d_information": "text",
+ "niveau_hierarchique": "int",
+ "sous_categorie": "text"
+}

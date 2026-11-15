@@ -1,0 +1,210 @@
+[
+ {
+  "31_12_2024": -155929972365.41,
+  "31_12_2025": -124205673501.55,
+  "categorie": "Solde budgétaire",
+  "ligne_d_information": "Solde budgétaire",
+  "niveau_hierarchique": 0,
+  "sous_categorie": "Solde budgétaire"
+ },
+ {
+  "31_12_2024": -2349966842.78,
+  "31_12_2025": -2254711989.16,
+  "categorie": "Soldes",
+  "ligne_d_information": "Solde des comptes spéciaux",
+  "niveau_hierarchique": 1,
+  "sous_categorie": "Comptes spéciaux"
+ },
+ {
+  "31_12_2024": 1110339515.6,
+  "31_12_2025": 1025963895.02,
+  "categorie": "Dépenses",
+  "ligne_d_information": "Dépenses d’opérations financières",
+  "niveau_hierarchique": 2,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 1157376416.0,
+  "31_12_2025": 1137842146.81,
+  "categorie": "Dépenses",
+  "ligne_d_information": "Dotation des pouvoirs publics",
+  "niveau_hierarchique": 2,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 141568330580.19,
+  "31_12_2025": 136844347947.57,
+  "categorie": "Dépenses",
+  "ligne_d_information": "Remboursements et dégrèvements d'impôts d'Etat",
+  "niveau_hierarchique": 4,
+  "sous_categorie": "Remboursements et dégrèvements"
+ },
+ {
+  "31_12_2024": 141726812800.5,
+  "31_12_2025": 138996007925.74,
+  "categorie": "Dépenses",
+  "ligne_d_information": "Dépenses d’intervention",
+  "niveau_hierarchique": 2,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 152818973789.54,
+  "31_12_2025": 156182829225.88,
+  "categorie": "Dépenses",
+  "ligne_d_information": "Dépenses de personnel",
+  "niveau_hierarchique": 2,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 15969195151.58,
+  "31_12_2025": 16276657082.77,
+  "categorie": "Recettes",
+  "ligne_d_information": "Taxe intérieure de consommation sur les produits énergétiques",
+  "niveau_hierarchique": 3,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 162503237.729996,
+  "31_12_2025": 258674031.059998,
+  "categorie": "Soldes",
+  "ligne_d_information": "CCF Avances aux collectivités territoriales",
+  "niveau_hierarchique": 4,
+  "sous_categorie": "Comptes spéciaux"
+ },
+ {
+  "31_12_2024": 19711586261.24,
+  "31_12_2025": 22194569749.79,
+  "categorie": "Dépenses",
+  "ligne_d_information": "Dépenses d’investissement",
+  "niveau_hierarchique": 2,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 22276393818.24,
+  "31_12_2025": 22961730323.08,
+  "categorie": "Dépenses",
+  "ligne_d_information": "PSR au profit de l'Union européenne",
+  "niveau_hierarchique": 2,
+  "sous_categorie": "Prélèvements sur recettes"
+ },
+ {
+  "31_12_2024": 23211606094.11,
+  "31_12_2025": 23991731873.59,
+  "categorie": "Recettes",
+  "ligne_d_information": "Total recettes non fiscales",
+  "niveau_hierarchique": 2,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 325679295289.64,
+  "31_12_2025": 356397925509.5,
+  "categorie": "Recettes",
+  "ligne_d_information": "Total recettes fiscales",
+  "niveau_hierarchique": 2,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 348890901383.75,
+  "31_12_2025": 380389657383.09,
+  "categorie": "Recettes",
+  "ligne_d_information": "Total recettes nettes du budget général",
+  "niveau_hierarchique": 1,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 366390520.79,
+  "31_12_2025": 536565607.06,
+  "categorie": "Soldes",
+  "ligne_d_information": "Solde des Budgets annexes",
+  "niveau_hierarchique": 1,
+  "sous_categorie": "Budgets annexes"
+ },
+ {
+  "31_12_2024": 443413251207.98,
+  "31_12_2025": 441194313369.76,
+  "categorie": "Dépenses",
+  "ligne_d_information": "Total dépenses nettes du budget général",
+  "niveau_hierarchique": 1,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 45456844973.56,
+  "31_12_2025": 46074157228.33,
+  "categorie": "Dépenses",
+  "ligne_d_information": "PSR au profit des collectivités territoriales",
+  "niveau_hierarchique": 2,
+  "sous_categorie": "Prélèvements sur recettes"
+ },
+ {
+  "31_12_2024": 4955165409.84,
+  "31_12_2025": 4519874583.48,
+  "categorie": "Dépenses",
+  "ligne_d_information": "Remboursements et dégrèvements d'impôts locaux",
+  "niveau_hierarchique": 4,
+  "sous_categorie": "Remboursements et dégrèvements"
+ },
+ {
+  "31_12_2024": 50084696306.1,
+  "31_12_2025": 51583057726.03,
+  "categorie": "Dépenses",
+  "ligne_d_information": "Charges de la dette de l’Etat",
+  "niveau_hierarchique": 2,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 57420121750.89,
+  "31_12_2025": 59917571411.89,
+  "categorie": "Recettes",
+  "ligne_d_information": "Impôt sur les sociétés",
+  "niveau_hierarchique": 3,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 67544157289.24,
+  "31_12_2025": 87193027534.7701,
+  "categorie": "Recettes",
+  "ligne_d_information": "Autres recettes fiscales",
+  "niveau_hierarchique": 3,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 67733238791.8,
+  "31_12_2025": 69035887551.41,
+  "categorie": "Dépenses",
+  "ligne_d_information": "Total prélèvements sur recettes",
+  "niveau_hierarchique": 1,
+  "sous_categorie": "Prélèvements sur recettes"
+ },
+ {
+  "31_12_2024": 76803466119.0,
+  "31_12_2025": 70074042700.49,
+  "categorie": "Dépenses",
+  "ligne_d_information": "Dépenses de fonctionnement",
+  "niveau_hierarchique": 2,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 8309192572.61,
+  "31_12_2025": 7353016418.63,
+  "categorie": "Recettes",
+  "ligne_d_information": "Fonds de concours et attribution de produits",
+  "niveau_hierarchique": 1,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 87987247678.47,
+  "31_12_2025": 94943503972.64,
+  "categorie": "Recettes",
+  "ligne_d_information": "Impôt sur le revenu",
+  "niveau_hierarchique": 3,
+  "sous_categorie": "Budget général"
+ },
+ {
+  "31_12_2024": 96758573419.46,
+  "31_12_2025": 98067165507.43,
+  "categorie": "Recettes",
+  "ligne_d_information": "Taxe sur la valeur ajoutée",
+  "niveau_hierarchique": 3,
+  "sous_categorie": "Budget général"
+ }
+]

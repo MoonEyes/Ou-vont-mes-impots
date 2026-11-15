@@ -1,0 +1,16 @@
+{
+ "Depenses_constatees": "csv",
+ "FDC_et_ADP": "csv",
+ "Fongibilite_asymetrique": "csv",
+ "LFI": "csv",
+ "LFR": "csv",
+ "Mission": "csv",
+ "Modif_Annulations": "csv",
+ "Modif_Ouvertures": "csv",
+ "Mvts_reglementaires": "csv",
+ "Programme": "csv",
+ "Report_N+1": "csv",
+ "Report_N-1": "csv",
+ "Titre": "csv",
+ "Total_CP_Ouverts": "csv"
+}

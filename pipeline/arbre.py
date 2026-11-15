@@ -47,8 +47,12 @@ def _slug(chemin: list[str]) -> str:
     return re.sub(r"[^0-9A-Za-z_-]+", "-", "_".join(chemin)).strip("-")
 
 
-def ecrire(racine: dict, nom_racine: str, decoupe_apres: str, dossier: Path) -> dict:
-    """Serialise l'arbre, decoupe en fichiers, et renvoie des statistiques de controle."""
+def ecrire(racine: dict, nom_racine: str, decoupe_apres: str, dossier: Path, entete: dict | None = None) -> dict:
+    """Serialise l'arbre, decoupe en fichiers, et renvoie des statistiques de controle.
+
+    `entete` (ex. {"millesime": ..., "source": ...}) est recopie en tete de chaque fichier ecrit.
+    """
+    entete = entete or {}
     dossier.mkdir(parents=True, exist_ok=True)
     for old in dossier.glob("*.json"):
         old.unlink()
@@ -68,16 +72,17 @@ def ecrire(racine: dict, nom_racine: str, decoupe_apres: str, dossier: Path) -> 
             return out
         if coupe:
             fichier = f"{_slug(chemin)}.json"
-            sous = {**out, "enfants": [serialiser(e, chemin + [e["cle"]], profondeur + 1, False) for e in enfants]}
+            prefixe = f"{dossier.name}/"
+            sous = {**entete, **out, "enfants": [serialiser(e, chemin + [e["cle"]], profondeur + 1, False) for e in enfants]}
             (dossier / fichier).write_text(json.dumps(sous, ensure_ascii=False, separators=(",", ":")) + "\n",
                                            encoding="utf-8")
             stats["fichiers"] += 1
-            return {**out, "fichier": f"arbre/{fichier}", "nb_enfants": len(enfants)}
+            return {**out, "fichier": prefixe + fichier, "nb_enfants": len(enfants)}
         out["enfants"] = [serialiser(e, chemin + [e["cle"]], profondeur + 1, e["niveau"] == decoupe_apres)
                           for e in enfants]
         return out
 
-    arbre = serialiser(racine, [], 0, False)
+    arbre = {**entete, **serialiser(racine, [], 0, False)}
     (dossier / "racine.json").write_text(json.dumps(arbre, ensure_ascii=False, separators=(",", ":")) + "\n",
                                          encoding="utf-8")
     stats["fichiers"] += 1

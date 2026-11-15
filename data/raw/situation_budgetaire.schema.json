@@ -1,0 +1,12 @@
+{
+ "fields": {
+  "31_12_2024": "double",
+  "31_12_2025": "double",
+  "categorie": "text",
+  "ligne_d_information": "text",
+  "niveau_hierarchique": "int",
+  "sous_categorie": "text"
+ },
+ "modified": "2026-11-04T10:38:44.703000+00:00",
+ "source": "data.economie.gouv.fr/situations-mensuelles-budgetaires-series-longues"
+}

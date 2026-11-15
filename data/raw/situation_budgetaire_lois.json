@@ -1,0 +1,602 @@
+[
+ {
+  "2024": "-146891455306,548",
+  "2025": "-138995864047,872",
+  "Catégorie": "Solde budgétaire",
+  "Ligne d'information": "Solde budgétaire",
+  "Niveau hiérarchique": "0",
+  "Niveau hiérarchique de la ligne": "Nul",
+  "Sous-catégorie": "Solde budgétaire",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "-155929972365,41",
+  "2025": "-124205673501,55",
+  "Catégorie": "Solde budgétaire",
+  "Ligne d'information": "Solde budgétaire",
+  "Niveau hiérarchique": "0",
+  "Niveau hiérarchique de la ligne": "Nul",
+  "Sous-catégorie": "Solde budgétaire",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "-168790047566,387",
+  "2025": "-133063696693",
+  "Catégorie": "Solde budgétaire",
+  "Ligne d'information": "Solde budgétaire",
+  "Niveau hiérarchique": "0",
+  "Niveau hiérarchique de la ligne": "Nul",
+  "Sous-catégorie": "Solde budgétaire",
+  "Texte législatif": "Dernière LFR/LFG"
+ },
+ {
+  "2024": "-2349966842,78",
+  "2025": "-2254711989,16",
+  "Catégorie": "Soldes",
+  "Ligne d'information": "Solde des comptes spéciaux",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Comptes spéciaux",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "-2414976071",
+  "2025": "-569061011",
+  "Catégorie": "Soldes",
+  "Ligne d'information": "CCF Avances aux collectivités territoriales",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Comptes spéciaux",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "-4723606304",
+  "2025": "-6014846941",
+  "Catégorie": "Soldes",
+  "Ligne d'information": "Solde des comptes spéciaux",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Comptes spéciaux",
+  "Texte législatif": "Dernière LFR/LFG"
+ },
+ {
+  "2024": "-5727870225",
+  "2025": "-2780815287",
+  "Catégorie": "Soldes",
+  "Ligne d'information": "Solde des comptes spéciaux",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Comptes spéciaux",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "100805811240",
+  "2025": "101436359971,968",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Taxe sur la valeur ajoutée",
+  "Niveau hiérarchique": "3",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 3",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "1110339515,6",
+  "2025": "1025963895,02",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dépenses d’opérations financières",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "1137842143",
+  "2025": "1137842143",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dotation des pouvoirs publics",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "1157376416",
+  "2025": "1137842146,81",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dotation des pouvoirs publics",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "136189146022",
+  "2025": "143576796000",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Remboursements et dégrèvements d'impôts d'Etat",
+  "Niveau hiérarchique": "4",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 4",
+  "Sous-catégorie": "Remboursements et dégrèvements",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "141353210875",
+  "2025": "135379464100",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dépenses d’intervention",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "141568330580,19",
+  "2025": "136844347947,57",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Remboursements et dégrèvements d'impôts d'Etat",
+  "Niveau hiérarchique": "4",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 4",
+  "Sous-catégorie": "Remboursements et dégrèvements",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "141726812800,5",
+  "2025": "138996007925,74",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dépenses d’intervention",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "152818973789,54",
+  "2025": "156182829225,88",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dépenses de personnel",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "153542204077",
+  "2025": "157015553904",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dépenses de personnel",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "15390076907,71",
+  "2025": "16474245144,5511",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Taxe intérieure de consommation sur les produits énergétiques",
+  "Niveau hiérarchique": "3",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 3",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "15969195151,58",
+  "2025": "16276657082,77",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Taxe intérieure de consommation sur les produits énergétiques",
+  "Niveau hiérarchique": "3",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 3",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "159812001",
+  "2025": "358220989",
+  "Catégorie": "Soldes",
+  "Ligne d'information": "Solde des Budgets annexes",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Budgets annexes",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "162503237,729996",
+  "2025": "258674031,059998",
+  "Catégorie": "Soldes",
+  "Ligne d'information": "CCF Avances aux collectivités territoriales",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Comptes spéciaux",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "19711586261,24",
+  "2025": "22194569749,79",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dépenses d’investissement",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "21609624014",
+  "2025": "23098097974",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "PSR au profit de l'Union européenne",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Prélèvements sur recettes",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "21719955820",
+  "2025": "23552661849",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dépenses d’investissement",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "22276393818,24",
+  "2025": "22961730323,08",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "PSR au profit de l'Union européenne",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Prélèvements sur recettes",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "22703930278",
+  "2025": "20967548212",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Total recettes non fiscales",
+  "Niveau hiérarchique": "3",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 3",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "23211606094,11",
+  "2025": "23991731873,59",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Total recettes non fiscales",
+  "Niveau hiérarchique": "3",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 3",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "23712483911,71",
+  "2025": "23115537183",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Total recettes non fiscales",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Dernière LFR/LFG"
+ },
+ {
+  "2024": "246096554",
+  "2025": "473112368",
+  "Catégorie": "Soldes",
+  "Ligne d'information": "Solde des Budgets annexes",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Budgets annexes",
+  "Texte législatif": "Dernière LFR/LFG"
+ },
+ {
+  "2024": "323256249472",
+  "2025": "353342413547",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Total recettes fiscales",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Dernière LFR/LFG"
+ },
+ {
+  "2024": "325679295289,64",
+  "2025": "356397925509,5",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Total recettes fiscales",
+  "Niveau hiérarchique": "3",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 3",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "346968733383,71",
+  "2025": "376457950730",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Total recettes nettes du budget général",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Dernière LFR/LFG"
+ },
+ {
+  "2024": "348482123995,452",
+  "2025": "349609365207,128",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Total recettes fiscales",
+  "Niveau hiérarchique": "3",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 3",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "348890901383,75",
+  "2025": "380389657383,09",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Total recettes nettes du budget général",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "366390520,79",
+  "2025": "536565607,06",
+  "Catégorie": "Soldes",
+  "Ligne d'information": "Solde des Budgets annexes",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Budgets annexes",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "371186054273,452",
+  "2025": "370576913419,128",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Total recettes nettes du budget général",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "4291000000",
+  "2025": "4728824991",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Remboursements et dégrèvements d'impôts locaux",
+  "Niveau hiérarchique": "4",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 4",
+  "Sous-catégorie": "Remboursements et dégrèvements",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "443413251207,98",
+  "2025": "441194313369,76",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Total dépenses nettes du budget général",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "443943936135",
+  "2025": "434849973043",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Total dépenses nettes du budget général",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Dernière LFR/LFG"
+ },
+ {
+  "2024": "445842001822",
+  "2025": "438820187244",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Total dépenses nettes du budget général",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "45057825520",
+  "2025": "45231897951",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "PSR au profit des collectivités territoriales",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Prélèvements sur recettes",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "45456844973,56",
+  "2025": "46074157228,33",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "PSR au profit des collectivités territoriales",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Prélèvements sur recettes",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "4955165409,84",
+  "2025": "4519874583,48",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Remboursements et dégrèvements d'impôts locaux",
+  "Niveau hiérarchique": "4",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 4",
+  "Sous-catégorie": "Remboursements et dégrèvements",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "50084696306,1",
+  "2025": "51583057726,03",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Charges de la dette de l’Etat",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "52182000000",
+  "2025": "54899000000",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Charges de la dette de l’Etat",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "57420121750,89",
+  "2025": "59917571411,89",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Impôt sur les sociétés",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "66667449534",
+  "2025": "68329995925",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Total prélèvements sur recettes",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Prélèvements sur recettes",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "66874913131,742",
+  "2025": "84137029460,6217",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Autres recettes fiscales",
+  "Niveau hiérarchique": "3",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 3",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "67337335065,0968",
+  "2025": "69129939807",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Total prélèvements sur recettes",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Prélèvements sur recettes",
+  "Texte législatif": "Dernière LFR/LFG"
+ },
+ {
+  "2024": "67544157289,24",
+  "2025": "87193027534,7701",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Autres recettes fiscales",
+  "Niveau hiérarchique": "3",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 3",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "67733238791,8",
+  "2025": "69035887551,41",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Total prélèvements sur recettes",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Prélèvements sur recettes",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "68236781251",
+  "2025": "65816053057",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dépenses de fonctionnement",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "72046845041",
+  "2025": "53042833029,9031",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Impôt sur les sociétés",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "7398632983",
+  "2025": "6150298778",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Fonds de concours et attribution de produits",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "7670007656",
+  "2025": "1019612191",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dépenses d’opérations financières",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "76803466119",
+  "2025": "70074042700,49",
+  "Catégorie": "Dépenses",
+  "Ligne d'information": "Dépenses de fonctionnement",
+  "Niveau hiérarchique": "2",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 2",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "8309192572,61",
+  "2025": "7353016418,63",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Fonds de concours et attribution de produits",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "87987247678,47",
+  "2025": "94943503972,64",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Impôt sur le revenu",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ },
+ {
+  "2024": "93364477675",
+  "2025": "94518897600,084",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Impôt sur le revenu",
+  "Niveau hiérarchique": "1",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 1",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "LFI"
+ },
+ {
+  "2024": "96758573419,46",
+  "2025": "98067165507,43",
+  "Catégorie": "Recettes",
+  "Ligne d'information": "Taxe sur la valeur ajoutée",
+  "Niveau hiérarchique": "3",
+  "Niveau hiérarchique de la ligne": "Sous-total de niveau 3",
+  "Sous-catégorie": "Budget général",
+  "Texte législatif": "Exécution"
+ }
+]

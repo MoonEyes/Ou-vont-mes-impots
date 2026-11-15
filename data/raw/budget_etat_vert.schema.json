@@ -1,0 +1,16 @@
+{
+ "fields": {
+  "action_si_credit_budgetaire": "text",
+  "code_action_si_credit_budgetaire": "text",
+  "code_depense": "text",
+  "execution_2024_cp": "double",
+  "lfi_2025_cp_ou_prevision_2025_si_depense_fiscale": "double",
+  "libelle": "text",
+  "mission": "text",
+  "numero_programme": "int",
+  "programme": "text",
+  "type_depense": "text"
+ },
+ "modified": "2025-11-13T12:23:21+00:00",
+ "source": "data.economie.gouv.fr/plf-2026-budget-vert"
+}

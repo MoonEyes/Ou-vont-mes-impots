@@ -1,5 +1,5 @@
 {
-  "_lisez_moi": "Rattache chaque mission du budget general a un grand poste lisible. Une mission absente fait echouer le pipeline : c'est voulu, pour ne jamais perdre d'argent en route. 'exclu' = hors depenses (remboursements d'impots).",
+  "_lisez_moi": "Rattache chaque mission a un grand poste lisible. Une mission absente fait echouer le pipeline : c'est voulu, pour ne jamais perdre d'argent en route. 'exclu' = retire par convention (remboursements et degrevements : restitutions d'impots, pas des depenses). 'hors_perimetre' = hors budget general (budget annexe ou compte special), montants publies dans meta.json. Perimetre retenu : budget general (comme le PLRG et la situation mensuelle budgetaire), plus les avances a l'audiovisuel public (financees par une fraction de TVA) et les prelevements sur recettes. Les pensions des fonctionnaires restent dans chaque ministere (contributions employeur au CAS Pensions, titre 2) : la mission Pensions (CAS) est donc hors perimetre pour eviter un double compte.",
   "Enseignement scolaire": "Education et recherche",
   "Recherche et enseignement supérieur": "Education et recherche",
   "Sport, jeunesse et vie associative": "Education et recherche",
@@ -9,11 +9,13 @@
   "Justice": "Justice",
   "Solidarité, insertion et égalité des chances": "Solidarite, travail et sante",
   "Travail, emploi et administration des ministères sociaux": "Solidarite, travail et sante",
+  "Travail et emploi": "Solidarite, travail et sante",
   "Santé": "Solidarite, travail et sante",
   "Régimes sociaux et de retraite": "Solidarite, travail et sante",
   "Cohésion des territoires": "Logement et territoires",
   "Relations avec les collectivités territoriales": "Logement et territoires",
   "Outre-mer": "Logement et territoires",
+  "Outre-Mer": "Logement et territoires",
   "Écologie, développement et mobilité durables": "Ecologie et transports",
   "Économie": "Economie et agriculture",
   "Investir pour la France de 2030": "Economie et agriculture",
@@ -33,5 +35,46 @@
   "Conseil et contrôle de l'État": "Fonctionnement de l'Etat",
   "Transformation et fonction publiques": "Fonctionnement de l'Etat",
   "Crédits non répartis": "Fonctionnement de l'Etat",
-  "Remboursements et dégrèvements": "exclu"
+  "Remboursements et dégrèvements": "exclu",
+  "Monde combattant, mémoire et liens avec la Nation": "Defense et securite",
+  "Écologie, développement et mobilité durables - Plan de relance": "Ecologie et transports",
+  "Avances à l'audiovisuel public": "Culture et medias",
+  "Pensions": "hors_perimetre",
+  "T3_CAS": "hors_perimetre",
+  "PSRCT": "Prelevements sur recettes",
+  "PSRUE": "Prelevements sur recettes",
+  "Contrôle de la circulation et du stationnement routiers": "hors_perimetre",
+  "Contrôle et exploitation aériens": "hors_perimetre",
+  "Publications officielles et information administrative": "hors_perimetre",
+  "Gestion du patrimoine immobilier de l'État": "hors_perimetre",
+  "Développement agricole et rural": "hors_perimetre",
+  "Financement des aides aux collectivités pour l'électrification rurale": "hors_perimetre",
+  "_lignes_speciales": {
+    "_lisez_moi": "Lignes du budget vert sans programme : rattachement explicite (mission affichee, programme, libelle).",
+    "PSRCT": {
+      "mission": "Collectivités territoriales",
+      "programme": null,
+      "libelle": "Prélèvements sur recettes au profit des collectivités territoriales"
+    },
+    "PSRUE": {
+      "mission": "Union européenne",
+      "programme": null,
+      "libelle": "Prélèvement sur recettes au profit de l'Union européenne"
+    }
+  },
+  "_complements_plrg": {
+    "_lisez_moi": "Programmes du budget general absents du jeu budget vert, repris du PLRG (annexe 1) au niveau programme. Tout autre programme absent fait echouer le pipeline (risque de double compte apres fusion).",
+    "117": "Charge de la dette et tresorerie de l'Etat",
+    "355": "Charge de la dette de SNCF Reseau reprise par l'Etat",
+    "369": "Amortissement de la dette de l'Etat liee a la covid-19"
+  },
+  "_neutralisations_budget_vert": {
+    "_lisez_moi": "Lignes de retraitement du budget vert ecartees (code action commencant par la cle). Montants publies dans meta.json.",
+    "T2_CAS": "Neutralisation des contributions employeur au CAS Pensions (le budget vert montre les pensions dans la mission Pensions ; ici elles restent dans chaque ministere)",
+    "FDC/": "Neutralisation des fonds de concours et attributions de produits (les depenses constatees du PLRG et de la situation mensuelle les incluent)",
+    "MP/MT": "Mesures de perimetre et de transfert ajoutees pour comparer au format PLF 2026 : pas une depense de l'annee consideree"
+  },
+  "_hors_budget_general_inclus": {
+    "Avances à l'audiovisuel public": "Compte de concours financiers alimente par une fraction de TVA depuis la suppression de la redevance : argent de l'impot, garde dans l'arbre."
+  }
 }

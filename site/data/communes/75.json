@@ -1,1 +1,1 @@
-{"75056":["VILLE DE PARIS",21.21,6.21]}
+{"millesime":"Exercice 2025","source":"data.economie.gouv.fr/fiscalite-locale-des-particuliers (DGFiP, REI)","format":"communes : {code INSEE: [nom, taux TFB %, taux TEOM % ou null]}","communes":{"75056":["VILLE DE PARIS",21.21,6.21]}}

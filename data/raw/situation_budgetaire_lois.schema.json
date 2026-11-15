@@ -1,0 +1,14 @@
+{
+ "fields": {
+  "2024": "csv",
+  "2025": "csv",
+  "Catégorie": "csv",
+  "Ligne d'information": "csv",
+  "Niveau hiérarchique": "csv",
+  "Niveau hiérarchique de la ligne": "csv",
+  "Sous-catégorie": "csv",
+  "Texte législatif": "csv"
+ },
+ "modified": "2026-11-04T10:38:44.703000+00:00",
+ "source": "data.economie.gouv.fr/situations-mensuelles-budgetaires-series-longues/attachments/textes_legislatifs_2024_xxcsv"
+}

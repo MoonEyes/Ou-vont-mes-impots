@@ -1,53 +1,221 @@
 {
   "name": "ou-vont-mes-impots",
   "title": "Donnees transformees du site Ou vont mes impots",
-  "licenses": [{"name": "etalab-2.0", "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/", "title": "Licence Ouverte 2.0"}],
+  "licenses": [
+    {
+      "name": "etalab-2.0",
+      "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+      "title": "Licence Ouverte 2.0"
+    }
+  ],
   "resources": [
     {
       "name": "budget_etat",
       "path": "data/processed/budget_etat.csv",
       "schema": {
         "fields": [
-          {"name": "grand_poste", "type": "string", "constraints": {"required": true}},
-          {"name": "mission", "type": "string", "constraints": {"required": true}},
-          {"name": "programme", "type": "integer", "constraints": {"required": true, "minimum": 100, "maximum": 999}},
-          {"name": "libelle_programme", "type": "string", "constraints": {"required": true}},
-          {"name": "cp_euros", "type": "number", "constraints": {"required": true}}
+          {
+            "name": "cle",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "unique": true
+            }
+          },
+          {
+            "name": "millesime",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "enum": [
+                "Exécution 2024",
+                "LFI 2025"
+              ]
+            }
+          },
+          {
+            "name": "grand_poste",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "mission",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "programme",
+            "type": "string",
+            "constraints": {
+              "pattern": "^[0-9]{3}$"
+            }
+          },
+          {
+            "name": "libelle_programme",
+            "type": "string"
+          },
+          {
+            "name": "action",
+            "type": "string"
+          },
+          {
+            "name": "libelle_action",
+            "type": "string"
+          },
+          {
+            "name": "cp_euros",
+            "type": "number",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "source",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          }
         ],
-        "primaryKey": ["programme"]
-      }
+        "primaryKey": [
+          "cle"
+        ]
+      },
+      "description": "Arbre Etat a plat : execution 2024 et LFI 2025, grand poste > mission > programme > action. Source : data.economie.gouv.fr/plf-2026-budget-vert (credits budgetaires) ; programmes absents (charge de la dette...) repris du PLRG ; prelevements sur recettes inclus."
     },
     {
       "name": "budget_etat_detail",
       "path": "data/processed/budget_etat_detail.csv",
       "schema": {
         "fields": [
-          {"name": "programme", "type": "integer", "constraints": {"required": true}},
-          {"name": "action", "type": "string", "constraints": {"required": true}},
-          {"name": "libelle_action", "type": "string"},
-          {"name": "sous_action", "type": "string"},
-          {"name": "libelle_sous_action", "type": "string"},
-          {"name": "titre", "type": "string", "constraints": {"required": true, "enum": ["1", "2", "3", "4", "5", "6", "7"]}},
-          {"name": "libelle_titre", "type": "string", "constraints": {"required": true}},
-          {"name": "categorie", "type": "string", "constraints": {"required": true, "pattern": "^[1-7][0-9]$"}},
-          {"name": "libelle_categorie", "type": "string", "constraints": {"required": true}},
-          {"name": "cp_euros", "type": "number", "constraints": {"required": true}}
+          {
+            "name": "programme",
+            "type": "integer",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "action",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "libelle_action",
+            "type": "string"
+          },
+          {
+            "name": "sous_action",
+            "type": "string"
+          },
+          {
+            "name": "libelle_sous_action",
+            "type": "string"
+          },
+          {
+            "name": "titre",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "enum": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7"
+              ]
+            }
+          },
+          {
+            "name": "libelle_titre",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "categorie",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "pattern": "^[1-7][0-9]$"
+            }
+          },
+          {
+            "name": "libelle_categorie",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "cp_euros",
+            "type": "number",
+            "constraints": {
+              "required": true
+            }
+          }
         ],
-        "primaryKey": ["programme", "action", "sous_action", "titre", "categorie"]
-      }
+        "primaryKey": [
+          "programme",
+          "action",
+          "sous_action",
+          "titre",
+          "categorie"
+        ]
+      },
+      "description": "Repartition par nature d'apres le PLF 2025 (projet de loi, pas le budget vote) : sous-action x titre x categorie. Vue separee, sans prorata."
     },
     {
       "name": "communes",
       "path": "data/processed/communes.csv",
       "schema": {
         "fields": [
-          {"name": "code_insee", "type": "string", "constraints": {"required": true, "pattern": "^[0-9][0-9AB][0-9]{3}$"}},
-          {"name": "nom", "type": "string", "constraints": {"required": true}},
-          {"name": "taux_tfb", "type": "number", "constraints": {"minimum": 0, "maximum": 150}},
-          {"name": "taux_teom", "type": "number", "constraints": {"minimum": 0, "maximum": 100}}
+          {
+            "name": "code_insee",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "pattern": "^[0-9][0-9AB][0-9]{3}$"
+            }
+          },
+          {
+            "name": "nom",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "taux_tfb",
+            "type": "number",
+            "constraints": {
+              "minimum": 0,
+              "maximum": 150
+            }
+          },
+          {
+            "name": "taux_teom",
+            "type": "number",
+            "constraints": {
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
         ],
-        "primaryKey": ["code_insee"]
-      }
+        "primaryKey": [
+          "code_insee"
+        ]
+      },
+      "description": "Taux de taxe fonciere bati et TEOM par commune, dernier exercice publie (DGFiP, fiscalite locale des particuliers)."
     }
   ]
 }

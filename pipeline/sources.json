@@ -3,9 +3,22 @@
   "eurostat_base": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data",
   "ods": [
     {
+      "id": "budget_etat_vert",
+      "dataset": "plf-2026-budget-vert",
+      "description": "Credits budgetaires de l'Etat par mission > programme > action : execution 2024 et LFI 2025 (CP), retraites au format PLF 2026 par la direction du budget. Base de l'arbre Etat.",
+      "select": "type_depense,mission,numero_programme,programme,code_action_si_credit_budgetaire,action_si_credit_budgetaire,code_depense,libelle,execution_2024_cp,lfi_2025_cp_ou_prevision_2025_si_depense_fiscale",
+      "where": "type_depense='Crédits budgétaires'"
+    },
+    {
+      "id": "situation_budgetaire",
+      "dataset": "situations-mensuelles-budgetaires-series-longues",
+      "description": "Situation mensuelle budgetaire de l'Etat (DGFiP), execution au 31 decembre : solde budgetaire, depenses nettes, prelevements sur recettes, remboursements et degrevements",
+      "select": "niveau_hierarchique,categorie,sous_categorie,ligne_d_information,`31_12_2024`,`31_12_2025`"
+    },
+    {
       "id": "budget_etat_plf",
       "dataset": "plf25-depenses-2025-du-bg-et-des-ba-selon-nomenclatures-destination-et-nature",
-      "description": "Budget de l'Etat vote (PLF 2025) : mission > programme > action, credits de paiement",
+      "description": "Detail PLF 2025 (projet, pas le budget vote) : sous-action x nature (titre, categorie). Sert uniquement a la vue complementaire 'repartition par nature d'apres le PLF 2025'",
       "select": "type_mission,code_mission,mission,programme,libelle_programme,action,libelle_action,sous_action,libelle_sousaction,code_titre,categorie,ae_plf,cp_plf,ministere",
       "where": "type_mission='BG'"
     },
@@ -113,6 +126,48 @@
         "sinceTimePeriod": "2005",
         "lang": "fr"
       }
+    }
+  ],
+  "ods_pieces_jointes": [
+    {
+      "id": "situation_budgetaire_lois",
+      "dataset": "situations-mensuelles-budgetaires-series-longues",
+      "piece_jointe": "textes_legislatifs_2024_xxcsv",
+      "description": "Memes agregats que la situation mensuelle, en prevision : LFI, derniere LFR/LFG et execution, 2024 et 2025",
+      "colonnes": [
+        "Catégorie",
+        "Sous-catégorie",
+        "Ligne d'information",
+        "Texte législatif",
+        "2024",
+        "2025"
+      ]
+    },
+    {
+      "id": "plrg_2024_cp",
+      "dataset": "plrg-2024",
+      "piece_jointe": "annexe1_etat_cp_2024_csv",
+      "description": "PLRG 2024, annexe 1 : credits de paiement par programme du budget general (LFI 2024 et depenses constatees 2024)",
+      "colonnes": [
+        "Mission",
+        "Programme",
+        "Titre",
+        "LFI",
+        "Depenses_constatees"
+      ]
+    },
+    {
+      "id": "plrg_2025_cp",
+      "dataset": "projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025",
+      "piece_jointe": "annexe1_etat_cp_2025csv",
+      "description": "PLRG 2025, annexe 1 : credits de paiement par programme du budget general (LFI 2025 votee et depenses constatees 2025)",
+      "colonnes": [
+        "Mission",
+        "Programme",
+        "Titre",
+        "LFI",
+        "Depenses_constatees"
+      ]
     }
   ]
 }

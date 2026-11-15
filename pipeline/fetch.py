@@ -6,6 +6,8 @@ Aucune ecriture si le telechargement echoue : le job s'arrete en erreur.
 """
 from __future__ import annotations
 
+import csv
+import io
 import json
 import sys
 import time
@@ -50,7 +52,7 @@ def fetch_ods(src: dict) -> None:
     base = f"{CONFIG['ods_base']}/{src['dataset']}"
     meta = get(base).json()
     fields = {f["name"]: f["type"] for f in meta["fields"]}
-    wanted = src["select"].split(",")
+    wanted = [f.strip("`") for f in src["select"].split(",")]
     missing = [f for f in wanted if f not in fields]
     if missing:
         raise SystemExit(f"[{src['id']}] champs disparus a la source : {missing}")
@@ -81,6 +83,37 @@ def fetch_ods(src: dict) -> None:
     print(f"  {src['id']} : {len(rows)} lignes")
 
 
+def decode_csv(contenu: bytes) -> str:
+    """Les pieces jointes publiees melangent UTF-8 (avec ou sans BOM) et UTF-16."""
+    if contenu[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        return contenu.decode("utf-16")
+    return contenu.decode("utf-8-sig")
+
+
+def fetch_ods_attachment(src: dict) -> None:
+    """Piece jointe CSV d'un jeu Opendatasoft (annexes PLRG, series SMB), convertie en lignes JSON."""
+    base = f"{CONFIG['ods_base']}/{src['dataset']}"
+    meta = get(base).json()
+    texte = decode_csv(get(f"{base}/attachments/{src['piece_jointe']}").content)
+    lecteur = csv.DictReader(io.StringIO(texte.replace("\r\n", "\n")), delimiter=";")
+    colonnes = [c.strip() for c in (lecteur.fieldnames or [])]
+    manquantes = [c for c in src["colonnes"] if c not in colonnes]
+    if manquantes:
+        raise SystemExit(f"[{src['id']}] colonnes disparues dans la piece jointe : {manquantes}")
+    rows = [{k.strip(): (v or "").strip() for k, v in r.items() if k} for r in lecteur]
+    rows = [r for r in rows if any(r.values())]
+    if not rows:
+        raise SystemExit(f"[{src['id']}] piece jointe vide")
+    rows.sort(key=lambda r: json.dumps(r, sort_keys=True, ensure_ascii=False))
+    write_json(RAW / f"{src['id']}.json", rows)
+    write_json(RAW / f"{src['id']}.schema.json", {
+        "source": f"data.economie.gouv.fr/{src['dataset']}/attachments/{src['piece_jointe']}",
+        "modified": meta["metas"]["default"].get("modified"),
+        "fields": {c: "csv" for c in colonnes},
+    })
+    print(f"  {src['id']} : {len(rows)} lignes")
+
+
 def fetch_eurostat(src: dict) -> None:
     data = get(f"{CONFIG['eurostat_base']}/{src['dataset']}", src["params"]).json()
     if not data.get("value"):
@@ -100,6 +133,9 @@ def main() -> None:
     for src in CONFIG["ods"]:
         if not only or src["id"] in only:
             fetch_ods(src)
+    for src in CONFIG.get("ods_pieces_jointes", []):
+        if not only or src["id"] in only:
+            fetch_ods_attachment(src)
     for src in CONFIG["eurostat"]:
         if not only or src["id"] in only:
             fetch_eurostat(src)
