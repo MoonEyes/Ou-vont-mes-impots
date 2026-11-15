@@ -269,13 +269,23 @@
    "dataset": "gov_10a_exp",
    "params": {
     "geo": "FR",
-    "unit": [
-     "MIO_EUR",
-     "PC_GDP"
-    ],
+    "unit": "MIO_EUR",
     "lang": "fr"
    },
-   "titre": "Depenses publiques par fonction, France, toutes series",
+   "titre": "Depenses publiques par fonction, France, millions d'euros (toutes series)",
+   "licence": "Eurostat, reutilisation libre avec mention"
+  },
+  {
+   "id": "eu_depenses_cofog_pib",
+   "domaine": "europe",
+   "type": "eurostat",
+   "dataset": "gov_10a_exp",
+   "params": {
+    "geo": "FR",
+    "unit": "PC_GDP",
+    "lang": "fr"
+   },
+   "titre": "Depenses publiques par fonction, France, en % du PIB (toutes series)",
    "licence": "Eurostat, reutilisation libre avec mention"
   },
   {

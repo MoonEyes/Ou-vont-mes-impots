@@ -26,7 +26,7 @@ def synthese(manifeste: dict) -> dict:
     for e in manifeste.values():
         for agg in (dom[e.get("domaine", "?")], tot):
             agg["sources"] += 1
-            agg["ok" if e.get("statut") == "ok" else "erreurs"] += 1
+            agg["ok" if e.get("statut") in ("ok", "partiel") else "erreurs"] += 1
             for f in fichiers_valides(e):
                 agg["octets"] += f["octets"]
                 agg["lignes"] += f.get("lignes") or 0
@@ -54,13 +54,19 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
     for d, a in s["domaines"].items():
         L.append(f"| {d} | {a['sources']} | {a['ok']} | {a['erreurs']} | {a['fichiers']} | {a['octets'] / 1e6:,.1f} | {a['lignes']:,} |".replace(",", " "))
 
-    err = {k: e for k, e in manifeste.items() if e.get("statut") != "ok"}
+    err = {k: e for k, e in manifeste.items() if e.get("statut") not in ("ok", "partiel")}
     L += ["", f"## Erreurs ({len(err)})", ""]
     if not err:
         L.append("Aucune.")
     for k, e in sorted(err.items()):
         ant = " (fichiers d'une collecte precedente conserves)" if any(f.get("donnees_anterieures") for f in e.get("fichiers", [])) else ""
         L.append(f"- `{k}` [{e.get('statut')}] : {(e.get('erreur') or '').replace(chr(10), ' ')[:200]}{ant}")
+
+    part = {k: e for k, e in manifeste.items() if e.get("erreurs_fichiers")}
+    if part:
+        L += ["", f"## Sources partielles ({len(part)}) : ressources en echec, les autres collectees", ""]
+        for k, e in sorted(part.items()):
+            L.append(f"- `{k}` : {len(e['erreurs_fichiers'])} ressource(s) en echec, ex. {e['erreurs_fichiers'][0]['erreur'][:150]}")
 
     pp = {k: e for k, e in manifeste.items() if e.get("personnes_physiques")}
     L += ["", f"## Sources avec donnees de personnes physiques ({len(pp)})", "",
@@ -72,7 +78,7 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
     ign = [(k, i) for k, e in manifeste.items() for i in e.get("ignores", [])]
     lourdes = []
     if catalogue:
-        lourdes = [s_ for s_ in catalogue.get("sources", []) if s_.get("lourd") and manifeste.get(s_["id"], {}).get("statut") != "ok"]
+        lourdes = [s_ for s_ in catalogue.get("sources", []) if s_.get("lourd") and manifeste.get(s_["id"], {}).get("statut") not in ("ok", "partiel")]
     L += ["", "## Sources lourdes non prises", ""]
     if not ign and not lourdes:
         L.append("Aucune.")
@@ -92,7 +98,7 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
             p = par_portail[j["portail"]]
             p[0] += 1
             p[1] += j["score"] >= 4
-            p[2] += manifeste.get(j["id"], {}).get("statut") == "ok"
+            p[2] += manifeste.get(j["id"], {}).get("statut") in ("ok", "partiel")
         L += ["", "## Decouvertes automatiques", "",
               f"`collecte/decouvertes.json` genere le {decouvertes.get('genere_le')} : {len(jeux)} jeux, "
               f"dont {sum(1 for j in jeux if j.get('doublon_de'))} doublons data.gouv.fr de portails ODS.", "",

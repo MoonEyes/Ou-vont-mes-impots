@@ -389,8 +389,17 @@ def collecter(client: Client, src: dict, ancien: dict, portails: dict, *, timeou
                 entree["fichiers"].append({**vieux, "change": False, "verifie_le": maintenant()})
                 inchanges += 1
                 continue
-            res = telecharger(client, spec["url"], cible, deadline=deadline,
-                              ancien=vieux if vieux and cible.exists() else None)
+            try:
+                res = telecharger(client, spec["url"], cible, deadline=deadline,
+                                  ancien=vieux if vieux and cible.exists() else None)
+            except DelaiDepasse:
+                raise
+            except Exception as exc:
+                if len(plan["fichiers"]) == 1:
+                    raise
+                # une ressource en echec (lien mort, page web, refus) n'annule pas les autres
+                entree.setdefault("erreurs_fichiers", []).append({"url": spec["url"], "erreur": str(exc)[:300]})
+                continue
             if res.get("inchange"):
                 entree["fichiers"].append({**vieux, "change": False, "verifie_le": maintenant(),
                                            "signature": spec.get("signature")})
@@ -402,7 +411,7 @@ def collecter(client: Client, src: dict, ancien: dict, portails: dict, *, timeou
             entree["fichiers"].append(info)
         if not entree["fichiers"]:
             raise RuntimeError("aucun fichier collecte (toutes les ressources ignorees ?)")
-        entree["statut"] = "ok"
+        entree["statut"] = "partiel" if entree.get("erreurs_fichiers") else "ok"
         entree["inchange"] = inchanges == len(entree["fichiers"])
     except DelaiDepasse as exc:
         entree["statut"] = "delai_depasse"
@@ -410,7 +419,7 @@ def collecter(client: Client, src: dict, ancien: dict, portails: dict, *, timeou
     except Exception as exc:
         entree["statut"] = "erreur"
         entree["erreur"] = str(exc)[:500]
-    if entree["statut"] != "ok" and ancien.get("statut") == "ok" and not entree["fichiers"]:
+    if entree["statut"] not in ("ok", "partiel") and ancien.get("statut") in ("ok", "partiel") and not entree["fichiers"]:
         # les fichiers d'une collecte precedente restent sur disque : on garde leur trace
         entree["fichiers"] = [{**f, "donnees_anterieures": True} for f in ancien.get("fichiers", [])]
     entree["duree_s"] = round(time.time() - debut, 1)
@@ -459,7 +468,9 @@ def main(argv=None) -> int:
     ap.add_argument("--score-min", type=float, default=4)
     ap.add_argument("--portail", action="append", help="limiter les decouvertes a un portail (repetable)")
     ap.add_argument("--limite", type=int, help="nombre maximal de sources dans ce lot")
+    ap.add_argument("--tranche", help="i/n : ne traiter qu'une source sur n (decalage i), pour paralleliser")
     ap.add_argument("--sauter-ok", action="store_true", help="ignorer les sources deja ok dans le manifeste (sans verifier l'amont)")
+    ap.add_argument("--reserve-go", type=float, default=8, help="espace disque libre a preserver (Go) : en dessous, les sources sont sautees")
     ap.add_argument("--max-mo", type=float, default=100, help="taille max par fichier data.gouv.fr sans --lourd (Mo)")
     a = ap.parse_args(argv)
 
@@ -481,21 +492,30 @@ def main(argv=None) -> int:
              and (a.lourd or a.ids or not s.get("lourd"))]
     manifeste = lire_manifeste()
     if a.sauter_ok:
-        choix = [s for s in choix if manifeste.get(s["id"], {}).get("statut") != "ok"]
+        choix = [s for s in choix if manifeste.get(s["id"], {}).get("statut") not in ("ok", "partiel")]
+    if a.tranche:
+        i, n = (int(x) for x in a.tranche.split("/"))
+        choix = [s for k, s in enumerate(choix) if k % n == i]
     if a.limite:
         choix = choix[: a.limite]
     client = Client(pause=a.pause)
     erreurs = 0
+    import shutil
     for s in choix:
+        libre = shutil.disk_usage(LAKE if LAKE.exists() else ROOT).free
+        if libre < a.reserve_go * 1e9:
+            print(f"ESPACE   {s['id']:<48} saute : {libre / 1e9:.1f} Go libres < reserve {a.reserve_go} Go", flush=True)
+            erreurs += 1
+            continue
         budget = a.timeout or s.get("timeout_s") or (TIMEOUT_LOURD_S if s.get("lourd") else TIMEOUT_DEFAUT_S)
         max_octets = None if (a.lourd or s.get("lourd") is True and a.ids) else int(a.max_mo * 1e6)
         e = collecter(client, s, manifeste.get(s["id"], {}), portails, timeout_s=budget, force=a.force,
                       max_octets=max_octets)
         manifeste = maj_manifeste(s["id"], e)
-        if e["statut"] == "ok":
+        if e["statut"] in ("ok", "partiel"):
             mo = sum(f.get("octets", 0) for f in e["fichiers"]) / 1e6
             lignes = sum(f.get("lignes", 0) or 0 for f in e["fichiers"])
-            etat = "INCHANGE" if e.get("inchange") else "OK"
+            etat = "INCHANGE" if e.get("inchange") else e["statut"].upper()
             print(f"{etat:<8} {s['id']:<48} {mo:9.1f} Mo {lignes:>11,} lignes  {e['duree_s']}s", flush=True)
         else:
             erreurs += 1

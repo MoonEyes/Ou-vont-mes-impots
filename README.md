@@ -33,6 +33,21 @@ pytest -q
 Changement de schéma attendu : `python pipeline/check_schema.py --accept`.
 Nouvelle mission au budget : l'ajouter dans `pipeline/grands_postes.json` (le pipeline échoue tant qu'elle n'est pas rattachée).
 
+## Entrepôt brut (collecte/)
+
+Collecte large et brute de tout ce qui touche à l'argent public, tracée dans `data/lake/manifest.json` (non versionné).
+
+```bash
+python collecte/decouverte.py                         # recense les jeux des portails (collecte/decouvertes.json)
+python collecte/collecte.py --domaine etat            # catalogue manuel (collecte/catalogue.json), par domaine
+python collecte/collecte.py --decouvertes --score-min 4 --portail economie
+python collecte/collecte.py --lourd                   # sources > 100 Mo (garde --reserve-go libres)
+python collecte/rapport.py                            # collecte/RAPPORT_COLLECTE.md
+pytest -q collecte/tests                              # tests sans réseau
+```
+
+Une source déjà collectée et inchangée en amont n'est pas retéléchargée. Les données de personnes physiques (publiées en open data officiel) vont dans `data/lake/_restreint/` et ne doivent pas être affichées nominativement.
+
 ## Choix de méthode
 
 - Les remboursements et dégrèvements d'impôts (147 Md€) sont exclus : ce sont des restitutions, pas des dépenses.

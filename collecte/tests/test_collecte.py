@@ -170,3 +170,12 @@ def test_catalogue_reel_coherent():
         if s["type"].startswith("ods"):
             assert s["portail"] in cat["portails"]
         assert "—" not in json.dumps(s, ensure_ascii=False)
+
+
+def test_ressource_en_echec_donne_statut_partiel(lac):
+    src = {"id": "m", "type": "urls", "domaine": "etat", "titre": "T",
+           "urls": [{"url": "https://x/a.csv", "nom": "a.csv"}, {"url": "https://x/b.pdf", "nom": "b.pdf"}]}
+    e = C.collecter(client({"https://x/a.csv": FauxResp(200, b"a\n1\n"), "https://x/b.pdf": FauxResp(403, b"non")}),
+                    src, {}, {}, timeout_s=60)
+    assert e["statut"] == "partiel" and len(e["fichiers"]) == 1
+    assert "acces refuse" in e["erreurs_fichiers"][0]["erreur"]
