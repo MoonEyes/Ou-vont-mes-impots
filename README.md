@@ -36,7 +36,7 @@ Nouvelle mission au budget : l'ajouter dans `pipeline/grands_postes.json` (le pi
 ## Choix de méthode
 
 - Les remboursements et dégrèvements d'impôts (147 Md€) sont exclus : ce sont des restitutions, pas des dépenses.
-- Montants en crédits de paiement du budget voté.
+- Montants en crédits de paiement du projet de loi de finances (PLF 2025). Passage à la LFI votée ou à la dépense exécutée prévu (jeu budget vert 2026).
 - En cas d'échec, le workflow ouvre (ou commente) une issue `pipeline-donnees`.
 
 ## Licences
