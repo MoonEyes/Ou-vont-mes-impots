@@ -812,6 +812,858 @@
    "titre": "Populations municipales de 1968 à 2023 (Insee Melodi)",
    "licence": "Licence Ouverte 2.0",
    "lourd": false
+  },
+  {
+   "id": "eu_gov_10a_exp_ue27",
+   "domaine": "europe",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=AT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_AT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=AT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_AT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=BE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_BE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=BE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_BE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=BG&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_BG_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=BG&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_BG_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=CY&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_CY_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=CY&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_CY_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=CZ&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_CZ_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=CZ&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_CZ_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=DE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_DE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=DE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_DE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=DK&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_DK_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=DK&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_DK_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=EE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_EE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=EE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_EE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=EL&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_EL_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=EL&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_EL_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=ES&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_ES_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=ES&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_ES_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=FI&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_FI_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=FI&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_FI_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=FR&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_FR_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=FR&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_FR_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=HR&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_HR_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=HR&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_HR_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=HU&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_HU_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=HU&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_HU_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=IE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_IE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=IE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_IE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=IT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_IT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=IT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_IT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=LT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_LT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=LT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_LT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=LU&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_LU_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=LU&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_LU_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=LV&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_LV_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=LV&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_LV_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=MT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_MT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=MT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_MT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=NL&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_NL_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=NL&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_NL_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=PL&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_PL_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=PL&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_PL_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=PT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_PT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=PT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_PT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=RO&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_RO_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=RO&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_RO_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=SE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_SE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=SE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_SE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=SI&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_SI_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=SI&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_SI_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=SK&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_SK_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=SK&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_SK_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=EU27_2020&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_EU27_2020_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=EU27_2020&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_EU27_2020_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=EA20&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_exp_EA20_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=EA20&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_exp_EA20_PC_GDP.json"
+    }
+   ],
+   "titre": "Depenses publiques par fonction (COFOG), 27 pays de l'UE + zones UE27 et euro (Eurostat, comparaison europeenne)",
+   "licence": "Eurostat, reutilisation libre avec mention",
+   "timeout_s": 2400
+  },
+  {
+   "id": "eu_gov_10a_main_ue27",
+   "domaine": "europe",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=AT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_AT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=AT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_AT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=BE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_BE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=BE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_BE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=BG&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_BG_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=BG&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_BG_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=CY&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_CY_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=CY&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_CY_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=CZ&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_CZ_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=CZ&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_CZ_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=DE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_DE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=DE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_DE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=DK&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_DK_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=DK&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_DK_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=EE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_EE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=EE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_EE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=EL&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_EL_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=EL&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_EL_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=ES&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_ES_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=ES&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_ES_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FI&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_FI_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FI&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_FI_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FR&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_FR_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FR&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_FR_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=HR&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_HR_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=HR&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_HR_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=HU&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_HU_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=HU&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_HU_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=IE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_IE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=IE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_IE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=IT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_IT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=IT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_IT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=LT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_LT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=LT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_LT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=LU&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_LU_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=LU&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_LU_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=LV&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_LV_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=LV&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_LV_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=MT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_MT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=MT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_MT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=NL&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_NL_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=NL&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_NL_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=PL&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_PL_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=PL&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_PL_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=PT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_PT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=PT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_PT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=RO&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_RO_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=RO&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_RO_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=SE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_SE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=SE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_SE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=SI&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_SI_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=SI&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_SI_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=SK&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_SK_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=SK&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_SK_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=EU27_2020&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_EU27_2020_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=EU27_2020&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_EU27_2020_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=EA20&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_main_EA20_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=EA20&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_main_EA20_PC_GDP.json"
+    }
+   ],
+   "titre": "Comptes des administrations publiques, 27 pays de l'UE + zones UE27 et euro (Eurostat, comparaison europeenne)",
+   "licence": "Eurostat, reutilisation libre avec mention",
+   "timeout_s": 2400
+  },
+  {
+   "id": "eu_gov_10a_taxag_ue27",
+   "domaine": "europe",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=AT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_AT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=AT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_AT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=BE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_BE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=BE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_BE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=BG&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_BG_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=BG&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_BG_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=CY&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_CY_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=CY&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_CY_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=CZ&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_CZ_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=CZ&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_CZ_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=DE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_DE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=DE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_DE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=DK&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_DK_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=DK&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_DK_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=EE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_EE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=EE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_EE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=EL&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_EL_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=EL&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_EL_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=ES&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_ES_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=ES&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_ES_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=FI&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_FI_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=FI&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_FI_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=FR&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_FR_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=FR&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_FR_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=HR&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_HR_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=HR&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_HR_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=HU&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_HU_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=HU&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_HU_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=IE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_IE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=IE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_IE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=IT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_IT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=IT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_IT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=LT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_LT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=LT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_LT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=LU&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_LU_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=LU&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_LU_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=LV&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_LV_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=LV&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_LV_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=MT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_MT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=MT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_MT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=NL&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_NL_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=NL&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_NL_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=PL&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_PL_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=PL&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_PL_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=PT&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_PT_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=PT&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_PT_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=RO&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_RO_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=RO&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_RO_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=SE&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_SE_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=SE&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_SE_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=SI&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_SI_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=SI&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_SI_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=SK&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_SK_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=SK&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_SK_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=EU27_2020&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_EU27_2020_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=EU27_2020&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_EU27_2020_PC_GDP.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=EA20&unit=MIO_EUR&lang=fr",
+     "nom": "gov_10a_taxag_EA20_MIO_EUR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=EA20&unit=PC_GDP&lang=fr",
+     "nom": "gov_10a_taxag_EA20_PC_GDP.json"
+    }
+   ],
+   "titre": "Recettes par impot, 27 pays de l'UE + zones UE27 et euro (Eurostat, comparaison europeenne)",
+   "licence": "Eurostat, reutilisation libre avec mention",
+   "timeout_s": 2400
+  },
+  {
+   "id": "eu_gov_10dd_edpt1_ue27",
+   "domaine": "europe",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=AT&lang=fr",
+     "nom": "gov_10dd_edpt1_AT.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=BE&lang=fr",
+     "nom": "gov_10dd_edpt1_BE.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=BG&lang=fr",
+     "nom": "gov_10dd_edpt1_BG.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=CY&lang=fr",
+     "nom": "gov_10dd_edpt1_CY.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=CZ&lang=fr",
+     "nom": "gov_10dd_edpt1_CZ.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=DE&lang=fr",
+     "nom": "gov_10dd_edpt1_DE.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=DK&lang=fr",
+     "nom": "gov_10dd_edpt1_DK.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=EE&lang=fr",
+     "nom": "gov_10dd_edpt1_EE.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=EL&lang=fr",
+     "nom": "gov_10dd_edpt1_EL.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=ES&lang=fr",
+     "nom": "gov_10dd_edpt1_ES.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=FI&lang=fr",
+     "nom": "gov_10dd_edpt1_FI.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=FR&lang=fr",
+     "nom": "gov_10dd_edpt1_FR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=HR&lang=fr",
+     "nom": "gov_10dd_edpt1_HR.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=HU&lang=fr",
+     "nom": "gov_10dd_edpt1_HU.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=IE&lang=fr",
+     "nom": "gov_10dd_edpt1_IE.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=IT&lang=fr",
+     "nom": "gov_10dd_edpt1_IT.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=LT&lang=fr",
+     "nom": "gov_10dd_edpt1_LT.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=LU&lang=fr",
+     "nom": "gov_10dd_edpt1_LU.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=LV&lang=fr",
+     "nom": "gov_10dd_edpt1_LV.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=MT&lang=fr",
+     "nom": "gov_10dd_edpt1_MT.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=NL&lang=fr",
+     "nom": "gov_10dd_edpt1_NL.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=PL&lang=fr",
+     "nom": "gov_10dd_edpt1_PL.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=PT&lang=fr",
+     "nom": "gov_10dd_edpt1_PT.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=RO&lang=fr",
+     "nom": "gov_10dd_edpt1_RO.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=SE&lang=fr",
+     "nom": "gov_10dd_edpt1_SE.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=SI&lang=fr",
+     "nom": "gov_10dd_edpt1_SI.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=SK&lang=fr",
+     "nom": "gov_10dd_edpt1_SK.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=EU27_2020&lang=fr",
+     "nom": "gov_10dd_edpt1_EU27_2020.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=EA20&lang=fr",
+     "nom": "gov_10dd_edpt1_EA20.json"
+    }
+   ],
+   "titre": "Deficit et dette (notification PDE), 27 pays de l'UE + zones UE27 et euro (Eurostat, comparaison europeenne)",
+   "licence": "Eurostat, reutilisation libre avec mention",
+   "timeout_s": 2400
   }
  ],
  "non_collectables": [

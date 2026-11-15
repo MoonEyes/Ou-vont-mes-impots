@@ -138,7 +138,11 @@ class Client:
             self._attendre_tour()
             attente = min(2 ** tentative, 30)
             try:
-                r = self.s.get(url, headers=headers, stream=stream, timeout=self.timeouts, params=params)
+                timeouts = self.timeouts
+                if deadline:
+                    reste = max(5.0, deadline - time.time())
+                    timeouts = (min(self.timeouts[0], reste), min(self.timeouts[1], reste))
+                r = self.s.get(url, headers=headers, stream=stream, timeout=timeouts, params=params)
             except (requests.ConnectionError, requests.Timeout) as exc:
                 erreur = f"{type(exc).__name__}: {str(exc)[:150]}"
             else:
@@ -462,6 +466,9 @@ def collecter(client: Client, src: dict, ancien: dict, portails: dict, *, timeou
                 continue
             info = {"url": spec["url"], "chemin": chemin, "signature": spec.get("signature"), **res}
             info.update(decrire(cible))
+            if cible.suffix == ".parquet" and "lecture" in info:
+                cible.unlink(missing_ok=True)
+                raise RuntimeError("parquet incomplet (transfert tronque en cours de route), a reprendre")
             info["change"] = (vieux or {}).get("sha256") != info["sha256"]
             entree["fichiers"].append(info)
         if not entree["fichiers"]:
@@ -517,7 +524,56 @@ def sources_depuis_decouvertes(decouvertes: list[dict], catalogue: list[dict], s
             sorties.append({**base, "type": "ods_export", "portail": d["portail"]})
         elif d.get("nb_pieces_jointes"):
             sorties.append({**base, "type": "ods_pieces_jointes", "portail": d["portail"]})
-    return sorties
+    rang = {d["id"]: (priorite_producteur(d), d.get("score", 0)) for d in decouvertes}
+    return sorted(sorties, key=lambda s: (-rang[s["id"]][0], -rang[s["id"]][1], s["id"]))
+
+
+PORTAILS_FINANCIERS = {"economie", "ofgl", "urssaf", "cdc"}
+PRODUCTEURS_FINANCIERS = re.compile(r"dgfip|finances publiques|budget|\bdb\b|dgcl|ofgl|urssaf|cnccfp|hatvp|cour des comptes|"
+                                    r"tresor|economiques et financiers|bpifrance|caisse des depots|agence de services", re.I)
+PRODUCTEURS_LOCAUX = re.compile(r"r[ée]gion|d[ée]partement|m[ée]tropole|ville de|mairie|commune|agglom|conseil", re.I)
+
+
+def priorite_producteur(d: dict) -> int:
+    """3 = producteur public financier, 2 = ministere ou collectivite, 1 = autre."""
+    prod = d.get("producteur") or ""
+    if d["portail"] in PORTAILS_FINANCIERS or PRODUCTEURS_FINANCIERS.search(prod):
+        return 3
+    if d["portail"].startswith("ods_") or re.search(r"minist", prod, re.I) or PRODUCTEURS_LOCAUX.search(prod):
+        return 2
+    return 1
+
+
+def reclasser(decouvertes: list[dict]) -> int:
+    """Aligne le domaine (et donc le dossier) des sources decouvertes deja collectees sur le domaine
+    presume de la derniere decouverte : deplace les fichiers et met a jour le manifeste. A lancer
+    quand aucune collecte ne tourne."""
+    domaines = {d["id"]: d.get("domaine", "divers") for d in decouvertes}
+    n = 0
+    with _verrou(MANIFEST):
+        m = lire_manifeste()
+        for sid, e in m.items():
+            nouveau = domaines.get(sid)
+            if e.get("origine") != "decouverte" or not nouveau or nouveau == e.get("domaine"):
+                continue
+            racine = dossier_source({"domaine": nouveau, "personnes_physiques": e.get("personnes_physiques")})
+            ancienne = dossier_source({"domaine": e["domaine"], "personnes_physiques": e.get("personnes_physiques")})
+            for f in e.get("fichiers", []):
+                src = ROOT / f["chemin"]
+                dst = racine / src.relative_to(ancienne)
+                if src.exists():
+                    dst.parent.mkdir(parents=True, exist_ok=True)
+                    os.replace(src, dst)
+                f["chemin"] = str(dst.relative_to(ROOT))
+            vieux_dossier = ancienne / sid
+            if vieux_dossier.is_dir() and not any(vieux_dossier.iterdir()):
+                vieux_dossier.rmdir()
+            e["domaine"] = nouveau
+            n += 1
+        tmp = MANIFEST.with_name(MANIFEST.name + ".tmp")
+        tmp.write_text(json.dumps(m, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+        os.replace(tmp, MANIFEST)
+    return n
 
 
 # ---------------------------------------------------------------- programme
@@ -536,14 +592,19 @@ def main(argv=None) -> int:
     ap.add_argument("--portail", action="append", help="limiter les decouvertes a un portail (repetable)")
     ap.add_argument("--limite", type=int, help="nombre maximal de sources dans ce lot")
     ap.add_argument("--tranche", help="i/n : ne traiter qu'une source sur n (decalage i), pour paralleliser")
+    ap.add_argument("--sauter-traites", action="store_true", help="ignorer toute source deja presente dans le manifeste")
     ap.add_argument("--sauter-ok", action="store_true", help="ignorer les sources deja ok dans le manifeste (sans verifier l'amont)")
-    ap.add_argument("--reserve-go", type=float, default=10, help="espace disque libre a preserver (Go) : en dessous, les sources sont sautees")
-    ap.add_argument("--plafond-go", type=float, default=15, help="taille maximale de l'entrepot (Go, d'apres le manifeste)")
+    ap.add_argument("--reserve-go", type=float, default=4, help="espace disque libre a preserver (Go) : en dessous, les sources sont sautees")
+    ap.add_argument("--plafond-go", type=float, default=25, help="taille maximale de l'entrepot (Go, d'apres le manifeste)")
+    ap.add_argument("--reclasser", action="store_true", help="aligner les domaines des sources decouvertes sur decouvertes.json")
     ap.add_argument("--max-mo", type=float, default=100, help="taille max par fichier data.gouv.fr sans --lourd (Mo)")
     a = ap.parse_args(argv)
 
     cat = charger_catalogue()
     portails = charger_portails(cat)
+    if a.reclasser:
+        print(f"{reclasser(lire_decouvertes()['jeux'])} sources decouvertes reclassees")
+        return 0
     if a.decouvertes:
         dec = lire_decouvertes()["jeux"]
         sources = sources_depuis_decouvertes(dec, cat["sources"], a.score_min, a.portail)
@@ -559,6 +620,8 @@ def main(argv=None) -> int:
              and (not a.domaine or s["domaine"] == a.domaine)
              and (a.lourd or a.ids or not s.get("lourd"))]
     manifeste = lire_manifeste()
+    if a.sauter_traites:
+        choix = [s for s in choix if s["id"] not in manifeste]
     if a.sauter_ok:
         choix = [s for s in choix if manifeste.get(s["id"], {}).get("statut") not in ("ok", "partiel")]
     if a.tranche:

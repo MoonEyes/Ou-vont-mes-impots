@@ -92,6 +92,8 @@ FORTS = {"budget", "subvention", "aide", "depense", "marche", "dotation", "finan
          "prelevement", "fonds", "plan_public", "lobbying", "compte"}
 
 DOMAINES = [  # (domaine, motifs) : premier qui correspond, sur le titre puis le texte
+    ("etat", r"loi de finances|\bplf\b|\bplr\b|\bplrg\b|\blfi\b|budget de l.etat|budget general|\bjaune\b|"
+             r"execution (du budget|budgetaire) de l.etat|comptes? de l.etat"),
     ("politique", r"campagnes? electorale|comptes de campagne|partis? politique|financements? politique|"
                   r"representants? d.interets|\blobby|\bhatvp\b|\bcnccfp\b|\bcandidats?\b"),
     ("europe", r"\beurop|\bfeder\b|\bfeader\b|\bfse\b|kohesio|\bue\b"),

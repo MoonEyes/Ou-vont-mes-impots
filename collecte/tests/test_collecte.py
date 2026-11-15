@@ -8,6 +8,18 @@ import collecte as C
 from conftest import FauxResp, client
 
 ODS = "https://ods.test"
+
+
+def _parquet_valide() -> bytes:
+    import io
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    b = io.BytesIO()
+    pq.write_table(pa.table({"a": [1, 2]}), b)
+    return b.getvalue()
+
+
+PARQUET_OK = _parquet_valide()
 PORTAILS = {"t": ODS}
 META = {"has_records": True, "metas": {"default": {"modified": "2025-01-01T00:00:00+00:00",
                                                    "data_processed": "x", "metadata_processed": "y"}}}
@@ -101,7 +113,7 @@ def test_plan_datagouv_ignore_lourd_et_html():
 
 def test_collecter_puis_reprise_sans_retelechargement(lac):
     api = f"{ODS}/api/explore/v2.1/catalog/datasets/ds"
-    routes = {api: FauxResp(json_data=META), f"{api}/exports/parquet": FauxResp(200, b"PAR1-faux")}
+    routes = {api: FauxResp(json_data=META), f"{api}/exports/parquet": FauxResp(200, PARQUET_OK)}
     src = {"id": "s", "type": "ods_export", "portail": "t", "dataset": "ds", "domaine": "etat", "titre": "T"}
     c = client(routes)
     e1 = C.collecter(c, src, {}, PORTAILS, timeout_s=60)
@@ -202,3 +214,23 @@ def test_fichier_trop_lourd_interrompu_et_differe(lac):
     e = C.collecter(client({"https://x/g.bin": FauxResp(200, b"x" * 40)}), src, {}, {}, timeout_s=60, max_octets=10)
     assert e["statut"] == "lourd_ignore"
     assert not list(lac.rglob("*.part"))
+
+
+def test_reclasser_deplace_les_fichiers(lac):
+    (lac / "politique").mkdir(parents=True)
+    (lac / "politique" / "economie__x.parquet").write_bytes(b"abc")
+    C.maj_manifeste("economie__x", {"statut": "ok", "domaine": "politique", "origine": "decouverte",
+                                    "fichiers": [{"chemin": "data/lake/politique/economie__x.parquet", "octets": 3}]})
+    assert C.reclasser([{"id": "economie__x", "domaine": "fiscalite"}]) == 1
+    e = C.lire_manifeste()["economie__x"]
+    assert e["domaine"] == "fiscalite" and e["fichiers"][0]["chemin"] == "data/lake/fiscalite/economie__x.parquet"
+    assert (lac / "fiscalite" / "economie__x.parquet").read_bytes() == b"abc"
+
+
+def test_parquet_tronque_refuse(lac):
+    api = f"{ODS}/api/explore/v2.1/catalog/datasets/ds"
+    src = {"id": "s", "type": "ods_export", "portail": "t", "dataset": "ds", "domaine": "etat", "titre": "T"}
+    e = C.collecter(client({api: FauxResp(json_data=META), f"{api}/exports/parquet": FauxResp(200, b"PAR1-coupe")}),
+                    src, {}, PORTAILS, timeout_s=60)
+    assert e["statut"] == "erreur" and "incomplet" in e["erreur"]
+    assert not (lac / "etat" / "s.parquet").exists()
