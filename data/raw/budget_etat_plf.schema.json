@@ -1,13 +1,18 @@
 {
  "fields": {
   "action": "text",
+  "ae_plf": "double",
+  "categorie": "double",
   "code_mission": "text",
+  "code_titre": "text",
   "cp_plf": "double",
   "libelle_action": "text",
   "libelle_programme": "text",
+  "libelle_sousaction": "text",
   "ministere": "text",
   "mission": "text",
   "programme": "double",
+  "sous_action": "text",
   "type_mission": "text"
  },
  "modified": "2024-10-11T11:49:23+00:00",

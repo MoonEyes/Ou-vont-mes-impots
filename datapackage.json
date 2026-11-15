@@ -18,6 +18,25 @@
       }
     },
     {
+      "name": "budget_etat_detail",
+      "path": "data/processed/budget_etat_detail.csv",
+      "schema": {
+        "fields": [
+          {"name": "programme", "type": "integer", "constraints": {"required": true}},
+          {"name": "action", "type": "string", "constraints": {"required": true}},
+          {"name": "libelle_action", "type": "string"},
+          {"name": "sous_action", "type": "string"},
+          {"name": "libelle_sous_action", "type": "string"},
+          {"name": "titre", "type": "string", "constraints": {"required": true, "enum": ["1", "2", "3", "4", "5", "6", "7"]}},
+          {"name": "libelle_titre", "type": "string", "constraints": {"required": true}},
+          {"name": "categorie", "type": "string", "constraints": {"required": true, "pattern": "^[1-7][0-9]$"}},
+          {"name": "libelle_categorie", "type": "string", "constraints": {"required": true}},
+          {"name": "cp_euros", "type": "number", "constraints": {"required": true}}
+        ],
+        "primaryKey": ["programme", "action", "sous_action", "titre", "categorie"]
+      }
+    },
+    {
       "name": "communes",
       "path": "data/processed/communes.csv",
       "schema": {

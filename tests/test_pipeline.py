@@ -35,6 +35,18 @@ def test_chaque_noeud_conserve_son_flux():
             assert entrant == pytest.approx(sortant, abs=0.01), n["name"]
 
 
+def test_detail_et_nature_retombent_sur_le_total():
+    s = json.loads((SITE / "sankey_etat.json").read_text(encoding="utf-8"))
+    n = json.loads((SITE / "nature_etat.json").read_text(encoding="utf-8"))
+    assert sum(t["md"] for t in n["titres"]) == pytest.approx(s["total"], abs=0.05)
+    total_prog = 0.0
+    for f in (SITE / "programmes").glob("*.json"):
+        p = json.loads(f.read_text(encoding="utf-8"))
+        assert sum(a["md"] for a in p["actions"]) == pytest.approx(sum(p["nature"].values()), abs=0.01), f.name
+        total_prog += sum(p["nature"].values())
+    assert total_prog == pytest.approx(s["total"], abs=0.05)
+
+
 def test_remboursements_exclus():
     s = json.loads((SITE / "sankey_etat.json").read_text(encoding="utf-8"))
     assert not any("Remboursements" in n["name"] for n in s["nodes"])

@@ -1,0 +1,34 @@
+{
+  "_source": "Nomenclature par nature de la LOLF (titres et categories, art. 5 de la loi organique 2001-692)",
+  "titres": {
+    "1": "Dotations des pouvoirs publics",
+    "2": "Depenses de personnel",
+    "3": "Depenses de fonctionnement",
+    "4": "Charges de la dette",
+    "5": "Depenses d'investissement",
+    "6": "Depenses d'intervention",
+    "7": "Depenses d'operations financieres"
+  },
+  "categories": {
+    "10": "Dotations des pouvoirs publics",
+    "21": "Remunerations d'activite",
+    "22": "Cotisations et contributions sociales",
+    "23": "Prestations sociales et allocations diverses",
+    "31": "Fonctionnement autre que personnel",
+    "32": "Subventions pour charges de service public (operateurs)",
+    "41": "Interets de la dette financiere negociable",
+    "42": "Interets de la dette financiere non negociable",
+    "43": "Charges financieres diverses",
+    "51": "Immobilisations corporelles de l'Etat",
+    "52": "Immobilisations incorporelles de l'Etat",
+    "53": "Subventions pour charges d'investissement",
+    "61": "Transferts aux menages",
+    "62": "Transferts aux entreprises",
+    "63": "Transferts aux collectivites territoriales",
+    "64": "Transferts aux autres collectivites",
+    "65": "Appels en garantie",
+    "71": "Prets et avances",
+    "72": "Dotations en fonds propres",
+    "73": "Participations financieres"
+  }
+}

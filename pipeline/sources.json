@@ -6,7 +6,7 @@
       "id": "budget_etat_plf",
       "dataset": "plf25-depenses-2025-du-bg-et-des-ba-selon-nomenclatures-destination-et-nature",
       "description": "Budget de l'Etat vote (PLF 2025) : mission > programme > action, credits de paiement",
-      "select": "type_mission,code_mission,mission,programme,libelle_programme,action,libelle_action,cp_plf,ministere",
+      "select": "type_mission,code_mission,mission,programme,libelle_programme,action,libelle_action,sous_action,libelle_sousaction,code_titre,categorie,ae_plf,cp_plf,ministere",
       "where": "type_mission='BG'"
     },
     {

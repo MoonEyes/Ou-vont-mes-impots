@@ -21,6 +21,7 @@ RAW = ROOT / "data" / "raw"
 PROCESSED = ROOT / "data" / "processed"
 SITE = ROOT / "site" / "data"
 POSTES = json.loads((Path(__file__).parent / "grands_postes.json").read_text(encoding="utf-8"))
+NATURE = json.loads((Path(__file__).parent / "nomenclature_nature.json").read_text(encoding="utf-8"))
 
 COFOG_FR = {
     "GF01": "Services publics generaux", "GF02": "Defense", "GF03": "Ordre et securite publics",
@@ -68,6 +69,8 @@ def budget_etat() -> dict:
         for (poste, mission, num, lib), cp in sorted(prog.items()):
             w.writerow([poste, mission, num, lib, round(cp, 2)])
 
+    budget_detail([r for r in rows if POSTES[r["mission"]] != "exclu"])
+
     # Sankey : un noeud par niveau, identifiants prefixes pour eviter les collisions de noms.
     nodes, index, links = [], {}, defaultdict(float)
 
@@ -96,6 +99,65 @@ def budget_etat() -> dict:
     dump(SITE / "sankey_etat.json", sankey)
     return {"total_md": md(total), "exclu_remboursements_md": md(exclu),
             "postes": len({k[0] for k in prog}), "missions": len({k[1] for k in prog}), "programmes": len(prog)}
+
+
+def code_cat(r: dict) -> str:
+    return str(int(r["categorie"])) if r.get("categorie") is not None else "?"
+
+
+def budget_detail(rows: list[dict]) -> None:
+    """Niveau le plus fin : sous-action x nature, plus un fichier par programme pour le site."""
+    titres, cats = NATURE["titres"], NATURE["categories"]
+    inconnus = sorted({code_cat(r) for r in rows} - set(cats)) + sorted({r["code_titre"] for r in rows} - set(titres))
+    if inconnus:
+        raise SystemExit(f"Codes de nature inconnus, a ajouter dans nomenclature_nature.json : {inconnus}")
+
+    detail = defaultdict(float)
+    for r in rows:
+        key = (int(r["programme"]), r["action"], r["libelle_action"], r["sous_action"], r["libelle_sousaction"],
+               r["code_titre"], code_cat(r))
+        detail[key] += r["cp_plf"] or 0.0
+
+    with (PROCESSED / "budget_etat_detail.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["programme", "action", "libelle_action", "sous_action", "libelle_sous_action",
+                    "titre", "libelle_titre", "categorie", "libelle_categorie", "cp_euros"])
+        for (num, act, lact, sact, lsact, t, c), cp in sorted(detail.items()):
+            w.writerow([num, act, lact, sact, lsact, t, titres[t], c, cats[c], round(cp, 2)])
+
+    # Un fichier par programme : actions > sous-actions, et repartition par nature.
+    par_prog = defaultdict(lambda: {"actions": defaultdict(lambda: {"cp": 0.0, "sous_actions": defaultdict(float)}),
+                                    "nature": defaultdict(float)})
+    nature_totale = defaultdict(float)
+    for (num, act, lact, sact, lsact, t, c), cp in detail.items():
+        p = par_prog[num]
+        a = p["actions"][(act, lact)]
+        a["cp"] += cp
+        a["sous_actions"][(sact, lsact)] += cp
+        p["nature"][c] += cp
+        nature_totale[(t, c)] += cp
+
+    out_dir = SITE / "programmes"
+    for old in out_dir.glob("*.json"):
+        old.unlink()
+    for num, p in par_prog.items():
+        dump(out_dir / f"{num}.json", {
+            "programme": num,
+            "actions": [{"code": code, "nom": nom, "md": md(a["cp"]),
+                         "sous_actions": [{"code": sc, "nom": sn, "md": md(v)}
+                                          for (sc, sn), v in sorted(a["sous_actions"].items()) if v]}
+                        for (code, nom), a in sorted(p["actions"].items()) if a["cp"]],
+            "nature": {cats[c]: md(v) for c, v in sorted(p["nature"].items()) if v},
+        })
+
+    dump(SITE / "nature_etat.json", {
+        "unite": "milliards d'euros (credits de paiement)",
+        "titres": [{"titre": t, "nom": titres[t],
+                    "md": md(sum(v for (tt, _), v in nature_totale.items() if tt == t)),
+                    "categories": [{"code": c, "nom": cats[c], "md": md(v)}
+                                   for (tt, c), v in sorted(nature_totale.items()) if tt == t and v]}
+                   for t in sorted({t for t, _ in nature_totale})],
+    })
 
 
 def communes() -> dict:
