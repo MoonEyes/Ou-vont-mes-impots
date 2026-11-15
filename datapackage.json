@@ -216,6 +216,140 @@
         ]
       },
       "description": "Taux de taxe fonciere bati et TEOM par commune, dernier exercice publie (DGFiP, fiscalite locale des particuliers)."
+    },
+    {
+      "name": "beneficiaires_publies",
+      "path": "site/data/beneficiaires/beneficiaires_publies.csv",
+      "description": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
+      "schema": {
+        "fields": [
+          {
+            "name": "source",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "enum": [
+                "associations",
+                "france2030",
+                "marches_etat"
+              ]
+            }
+          },
+          {
+            "name": "groupe",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "siren",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "pattern": "^[0-9]{9}$"
+            }
+          },
+          {
+            "name": "denomination",
+            "type": "string"
+          },
+          {
+            "name": "categorie_juridique",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "pattern": "^[2-9][0-9]{3}$"
+            }
+          },
+          {
+            "name": "montant_eur",
+            "type": "number",
+            "constraints": {
+              "required": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "nature_2024",
+      "path": "site/data/nature/nature_2024.csv",
+      "description": "Execution 2024 par programme et categorie LOLF (PLRG 2024, annexe 1, depenses constatees)",
+      "schema": {
+        "fields": [
+          {
+            "name": "programme",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "pattern": "^[0-9]{3}$"
+            }
+          },
+          {
+            "name": "categorie",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "pattern": "^[1-7][0-9]$"
+            }
+          },
+          {
+            "name": "libelle_categorie",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "eur",
+            "type": "number",
+            "constraints": {
+              "required": true
+            }
+          }
+        ],
+        "primaryKey": [
+          "programme",
+          "categorie"
+        ]
+      }
+    },
+    {
+      "name": "effectifs",
+      "path": "site/data/effectifs/effectifs.csv",
+      "description": "ETPT LFI 2023 par programme, titre 2 execution 2024 et cout moyen par ETPT (millesimes differents)",
+      "schema": {
+        "fields": [
+          {
+            "name": "programme",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "unique": true,
+              "pattern": "^[0-9]{3}$"
+            }
+          },
+          {
+            "name": "etpt_lfi_2023",
+            "type": "number",
+            "constraints": {
+              "minimum": 0
+            }
+          },
+          {
+            "name": "titre2_execution_2024_eur",
+            "type": "number"
+          },
+          {
+            "name": "cout_moyen_par_etpt_eur",
+            "type": "integer",
+            "constraints": {
+              "minimum": 0
+            }
+          }
+        ]
+      }
     }
   ]
 }
