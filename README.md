@@ -14,7 +14,9 @@ fetch.py  ->  check_schema.py  ->  transform.py  ->  frictionless validate  ->  
 
 | Source | Contenu | Accès |
 |---|---|---|
-| data.economie.gouv.fr `plf25-depenses-...` | Budget de l'État par mission et programme | API Opendatasoft v2.1, export JSON |
+| data.economie.gouv.fr `plf-2026-budget-vert` | Budget de l'État : exécution 2024 (vue par défaut) et LFI 2025, par action | API Opendatasoft v2.1 |
+| data.economie.gouv.fr `situations-mensuelles-budgetaires-series-longues` | Prélèvements sur recettes (UE, collectivités), solde de l'État | idem |
+| data.economie.gouv.fr `plf25-depenses-...` | Répartition par nature (personnel, fonctionnement...), vue séparée d'après le PLF 2025 | idem |
 | data.economie.gouv.fr `fiscalite-locale-des-particuliers` | Taux de taxe foncière et TEOM par commune (dernier exercice) | idem |
 | Eurostat `gov_10a_exp` | Dépenses publiques par fonction (COFOG) | API JSON-stat |
 | Eurostat `gov_10dd_edpt1` | Solde public (déficit) | API JSON-stat |
@@ -51,7 +53,9 @@ Une source déjà collectée et inchangée en amont n'est pas retéléchargée. 
 ## Choix de méthode
 
 - Les remboursements et dégrèvements d'impôts (147 Md€) sont exclus : ce sont des restitutions, pas des dépenses.
-- Montants en crédits de paiement du projet de loi de finances (PLF 2025). Passage à la LFI votée ou à la dépense exécutée prévu (jeu budget vert 2026).
+- Arbre État : dépense exécutée 2024 par défaut, LFI 2025 en option, budget général, avec la branche « prélèvements sur recettes ». Les règles de périmètre (mission Pensions, fonds de concours, mesures de périmètre) sont dans `pipeline/grands_postes.json` et chaque montant écarté est publié dans `site/data/meta.json`.
+- Part empruntée : comptabilité budgétaire pour l'État, comptabilité nationale (Eurostat B9) pour l'ensemble des administrations, jamais mélangées (`site/data/deficit.json`).
+- Calcul personnel : dans le navigateur uniquement ; OpenFisca sert seulement de référence dans les tests (`tests/cas_types/`). Contrat des fichiers : `docs/contrat_interface.md`.
 - En cas d'échec, le workflow ouvre (ou commente) une issue `pipeline-donnees`.
 
 ## Licences
