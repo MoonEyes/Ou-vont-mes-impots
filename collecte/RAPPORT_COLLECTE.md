@@ -1,34 +1,35 @@
 # Rapport de collecte de l'entrepot brut
 
-Genere le 2026-11-15T20:15:56+00:00 par `collecte/rapport.py` a partir de `data/lake/manifest.json`.
+Genere le 2026-11-16T12:36:00+00:00 par `collecte/rapport.py` a partir de `data/lake/manifest.json`.
 
 ## Vue d'ensemble
 
-- Sources suivies : 5908 (ok : 5435, en erreur ou delai depasse : 326, sans fichier ou lourdes differees : 147)
-- Fichiers : 10298, volume : 14,168.4 Mo
-- Lignes comptees (Parquet et CSV) : 53 080 869
-- Origine : 82 du catalogue manuel, 5826 des decouvertes automatiques
-- Espace disque libre : 17.0 Go
+- Sources suivies : 6152 (ok : 5676, en erreur ou delai depasse : 329, sans fichier ou lourdes differees : 147)
+- Fichiers : 11006, volume : 20,337.6 Mo
+- Lignes comptees (Parquet et CSV) : 63 471 022
+- Origine : 111 du catalogue manuel, 6041 des decouvertes automatiques
+- Espace disque libre : 10.0 Go
 
 ## Par domaine
 
 | Domaine | Sources | OK | Erreurs | Fichiers | Mo | Lignes |
 |---|---:|---:|---:|---:|---:|---:|
 | aides_entreprises | 15 | 15 | 0 | 27 | 15.7 | 167 692 |
-| beneficiaires | 1340 | 1217 | 67 | 2568 | 1 319.0 | 9 673 439 |
-| collectivites | 1987 | 1864 | 103 | 2585 | 5 289.2 | 25 862 590 |
+| beneficiaires | 1365 | 1242 | 67 | 2586 | 1 904.7 | 9 921 329 |
+| collectivites | 2124 | 1999 | 105 | 3004 | 7 216.0 | 35 022 769 |
 | comptes_nationaux | 9 | 9 | 0 | 9 | 21.7 | 0 |
+| decisions | 56 | 55 | 1 | 498 | 3 603.8 | 888 776 |
 | dette | 151 | 151 | 0 | 278 | 70.2 | 345 384 |
-| divers | 316 | 278 | 26 | 725 | 749.2 | 1 552 787 |
-| etat | 1409 | 1276 | 90 | 2546 | 1 443.2 | 4 994 343 |
-| europe | 107 | 104 | 2 | 428 | 741.4 | 1 654 116 |
-| fiscalite | 250 | 224 | 15 | 422 | 3 927.4 | 4 661 999 |
-| politique | 55 | 51 | 1 | 124 | 265.0 | 519 764 |
-| secu | 269 | 246 | 22 | 586 | 326.3 | 3 648 755 |
+| divers | 362 | 324 | 26 | 771 | 757.7 | 1 647 423 |
+| etat | 1390 | 1257 | 90 | 2277 | 1 351.2 | 4 970 552 |
+| europe | 106 | 103 | 2 | 426 | 740.8 | 1 651 038 |
+| fiscalite | 250 | 224 | 15 | 421 | 3 925.4 | 4 688 282 |
+| politique | 56 | 52 | 1 | 125 | 404.2 | 519 764 |
+| secu | 268 | 245 | 22 | 584 | 325.9 | 3 648 013 |
 
-## Erreurs (326)
+## Erreurs (329)
 
-Par cause : budget de temps depasse 133, hote injoignable 89, lien mort (404) 38, acces refuse (non contourne) 29, autre 20, parquet tronque 17.
+Par cause : budget de temps depasse 133, hote injoignable 90, lien mort (404) 38, acces refuse (non contourne) 29, autre 21, parquet tronque 18.
 
 - `caf__aah_s_sexe_age_5_dep` [erreur] : https://data.caf.fr/api/explore/v2.1/catalog/datasets/aah_s_sexe_age_5_dep injoignable apres 6 tentatives : ConnectionError: ('Connection aborted.', ConnectionR
 - `datagouv__1-2-million-de-travailleurs-sociaux-en-2011` [erreur] : toutes les ressources en echec, ex. http://www.drees.sante.gouv.fr/IMG/pdf/er893.pdf injoignable apres 6 tentatives : SSLError: HTTPSConnectionPool(host='www.dr
@@ -110,7 +111,7 @@ Par cause : budget de temps depasse 133, hote injoignable 89, lien mort (404) 38
 - `datagouv__budget-primitif-2021-du-budget-principal` [erreur] : toutes les ressources en echec, ex. HTTP 404 sur https://porto-vecchio.opendatasoft.com/api/explore/v2.1/catalog/datasets/budget-primitif1/exports/csv?use_label
 - `datagouv__budget-primitif-2022` [delai_depasse] : budget de temps epuise sur https://data.agen.fr/api/explore/v2.1/catalog/datasets/budget-primitif-2022/exports/json (ConnectionError: ('Connection aborted.', Co
 - `datagouv__budget-primitif-2022-de-la-communaute-urbaine-le-havre-seine-metropole` [delai_depasse] : budget de temps epuise sur https://data.lehavreseinemetropole.fr/api/v1/file/data/84238/BUDGET_PRIMITIF_LHSM_2022/json (SSLError: HTTPSConnectionPool(host='data
-- ... et 246 autres (detail dans le manifeste)
+- ... et 249 autres (detail dans le manifeste)
 
 ## Jeux sans fichier telechargeable (133)
 
@@ -161,7 +162,7 @@ Jeux catalogues mais vides ou publies seulement en page web / API : `datagouv__1
 - `datagouv__bp-2013-subventions-aux-associations-rm` : 3 ressource(s) en echec, ex. acces refuse HTTP 401 sur http://www.data.rennes-metropole.fr/fileadmin/user_upload/data/budget/bp2013/BP_2013_Open_DATA_Subventions_exceptionnelles.x
 - `datagouv__budget-2015-par-politique-publique1` : 2 ressource(s) en echec, ex. https://datacat.datalocale.fr/file/421808/raw/DownloadCsv%3Fcontainer%3Ddatabordeaux%26entitySet%3Dbudge injoignable apres 6 tentatives : ProxyError: 
 
-## Sources avec donnees de personnes physiques (241)
+## Sources avec donnees de personnes physiques (279)
 
 Publiees en open data officiel, stockees sous `data/lake/_restreint/`. Collecte autorisee, affichage nominatif interdit.
 
@@ -175,6 +176,7 @@ Publiees en open data officiel, stockees sous `data/lake/_restreint/`. Collecte 
 - `datagouv__1900-2020-comptes-de-gestion-commune-de-jouarre` (collectivites, ok, 0.2 Mo) : 1900 - 2020 Comptes de Gestion Commune de Jouarre
 - `datagouv__2014-62-verification-des-titres-de-sejour-par-les-employeurs-metropole` (politique, ok, 0.0 Mo) : 2014-62 - Vérification des titres de séjour par les employeurs (métropole)
 - `datagouv__acco-accords-dentreprise` (beneficiaires, ok, 0.2 Mo) : ACCO : Accords d’entreprise
+- `datagouv__actes-budgetaires-1` (decisions, ok, 25.9 Mo) : Actes Budgétaires
 - `datagouv__adresses-des-debits-de-tabac` (collectivites, ok, 0.3 Mo) :  Adresses des débits de tabac
 - `datagouv__aide-installation-des-jeunes-agriculteurs-annees-2013-et-2014` (beneficiaires, ok, 0.0 Mo) : Aide installation des jeunes agriculteurs - Années 2013 et 2014
 - `datagouv__aides-communes76-arr-2017-2019-1` (beneficiaires, delai_depasse, 0.0 Mo) : Aides communes76 Arr 2017 2019
@@ -186,6 +188,7 @@ Publiees en open data officiel, stockees sous `data/lake/_restreint/`. Collecte 
 - `datagouv__budgets-primitif-du-departement-de-la-gironde-2` (collectivites, delai_depasse, 0.0 Mo) : Budgets primitif du département de la Gironde
 - `datagouv__budgets-primitif-du-departement-de-la-gironde-3` (collectivites, delai_depasse, 0.0 Mo) : Budgets primitif du département de la Gironde
 - `datagouv__chiffres-officiels-de-la-societe-impot-sur-les-societes-dividendes-creation-sci-et-holding` (fiscalite, ok, 0.0 Mo) : Chiffres officiels de la société : impôt sur les sociétés, dividendes, création, SCI et holding
+- `datagouv__circonscritions-legislatives-74-2015` (decisions, ok, 30.6 Mo) : Circonscritions législatives 74 - 2015
 - `datagouv__compte-de-campagne-elections-partielles-pour-lannee-2016` (politique, erreur, 0.0 Mo) : Compte de campagne - Elections partielles pour l'année 2016
 - `datagouv__comptes-administratifs-du-departement-de-la-gironde` (collectivites, delai_depasse, 0.0 Mo) : Comptes administratifs du Département de la Gironde
 - `datagouv__comptes-administratifs-du-departement-de-la-gironde-1` (collectivites, delai_depasse, 0.0 Mo) : Comptes administratifs du Département de la Gironde
@@ -210,16 +213,43 @@ Publiees en open data officiel, stockees sous `data/lake/_restreint/`. Collecte 
 - `datagouv__comptes-de-campagne-elections-senatoriales-generales-du-24-septembre-2023` (politique, ok, 0.1 Mo) : Comptes de campagne – Élections sénatoriales générales du 24 septembre 2023
 - `datagouv__comptes-de-campagne-elections-territoriales-de-saint-martin-et-saint-barthelemy-des-20-et-27-mars-2022` (politique, ok, 0.0 Mo) : Comptes de campagne – Élections territoriales de Saint-Martin et Saint-Barthélemy des 20 et 27 mars 2022
 - `datagouv__comptes-de-campagnes-elections-partielles-pour-lannee-2016` (politique, sans_ressource, 0.0 Mo) : Comptes de campagnes - Elections partielles pour l'année 2016
+- `datagouv__comptes-de-sailly-lez-lannoy-2014-2021` (decisions, ok, 0.1 Mo) : Comptes de Sailly-Lez-Lannoy 2014-2021
+- `datagouv__conseils-municipaux-2026` (decisions, ok, 114.1 Mo) : Conseils Municipaux 2026
 - `datagouv__conventions-de-subvention-aux-associations-exercice-2020` (beneficiaires, ok, 0.0 Mo) : Conventions de subvention aux associations - Exercice 2020
+- `datagouv__deliberations-15` (decisions, ok, 131.1 Mo) : DELIBERATIONS
+- `datagouv__deliberations-16` (decisions, ok, 34.9 Mo) : Délibérations
+- `datagouv__deliberations-2019-du-departement-de-la-dordogne` (decisions, ok, 0.4 Mo) : Délibérations 2019 du Département de la Dordogne
+- `datagouv__deliberations-23` (decisions, ok, 0.4 Mo) : Délibérations
+- `datagouv__deliberations-de-la-commune-de-marseillan` (decisions, ok, 0.1 Mo) : Délibérations de la commune de Marseillan
+- `datagouv__deliberations-de-la-ville-de-saint-etienne` (decisions, ok, 7.7 Mo) : Délibérations de la ville de Saint-Etienne
+- `datagouv__deliberations-de-la-ville-du-pre-saint-gervais-sur-la-periode-2003-2021` (decisions, ok, 0.4 Mo) : Délibérations de la ville du Pré Saint-Gervais sur la période 2003 - 2021
+- `datagouv__deliberations-de-saint-etienne-metropole` (decisions, ok, 8.0 Mo) : Délibérations de Saint-Etienne Métropole
+- `datagouv__deliberations-decisions-et-arretes-de-brest-metropole-et-de-la-ville-de-brest` (decisions, ok, 19.3 Mo) : Délibérations, décisions et arrêtés de Brest métropole et de la Ville de Brest
+- `datagouv__deliberations-du-ccas` (decisions, ok, 74.0 Mo) : Délibérations du CCAS
+- `datagouv__deliberations-du-ccas-de-la-ville-de-brest` (decisions, ok, 0.4 Mo) : Délibérations du CCAS de la Ville de Brest
+- `datagouv__deliberations-du-conseil-departemental-du-cher-et-de-la-commission-permanente` (decisions, ok, 0.4 Mo) : Délibérations du conseil départemental du Cher et de la commission permanente
+- `datagouv__deliberations-du-conseil-municipal-de-la-commune-de-lys-saint-georges-pour-la-periode-2018-2022` (decisions, ok, 0.1 Mo) : Délibérations du conseil municipal de la commune de Lys-Saint-Georges pour la période 2018 - 2022 
+- `datagouv__deliberations-du-conseil-municipal-de-la-possession` (decisions, ok, 3.7 Mo) : Délibérations du conseil municipal de La Possession
+- `datagouv__deliberations-du-conseil-municipal-de-la-ville-dantibes` (decisions, ok, 10.9 Mo) : Délibérations du Conseil municipal de la Ville d'Antibes
+- `datagouv__deliberations-du-conseil-municipal-de-pontault-combault` (decisions, ok, 0.1 Mo) : Délibérations du Conseil municipal de Pontault-Combault
+- `datagouv__deliberations-du-sieeen-1` (decisions, ok, 0.3 Mo) : Délibérations du SIEEEN
+- `datagouv__deliberations-mairie-de-bouloc-1` (decisions, ok, 0.0 Mo) : Délibérations (Mairie de Bouloc)
+- `datagouv__deliberations-mairie-de-bouloc-2` (decisions, ok, 0.0 Mo) : Délibérations (Mairie de Bouloc)
+- `datagouv__deliberations-mairie-de-bouloc-3` (decisions, ok, 0.0 Mo) : Délibérations (Mairie de Bouloc)
+- `datagouv__deliberations-mairie-de-bouloc-4` (decisions, ok, 0.0 Mo) : Délibérations (Mairie de Bouloc)
+- `datagouv__deliberations-mairie-de-bouloc-5` (decisions, ok, 0.0 Mo) : Délibérations (Mairie de Bouloc)
+- `datagouv__deliberations-mairie-de-bouloc-6` (decisions, ok, 0.0 Mo) : Délibérations (Mairie de Bouloc)
+- `datagouv__deliberations-organisation-commune-de-taugon` (decisions, ok, 0.0 Mo) : Délibérations (organisation Commune de Taugon)
+- `datagouv__deliberations-ville-de-boe` (decisions, ok, 1.0 Mo) : Délibérations - Ville de Boé
 - `datagouv__departementales-les-depenses-retenues-et-les-voix-obtenues-des-candidats-par-canton` (politique, ok, 1.5 Mo) : Départementales. Les dépenses retenues et les voix obtenues des candidats par canton
 - `datagouv__depenses-de-lexecutif-et-du-cabinet-du-conseil-regional-hauts-de-france-2016-2021` (collectivites, ok, 1.9 Mo) : Dépenses de l’exécutif et du Cabinet du Conseil régional Hauts-de-France (2016-2021)
 - `datagouv__deputes-actifs` (politique, ok, 9.4 Mo) : Députés actifs
 - `datagouv__dispositif-villages-davenir` (collectivites, ok, 0.1 Mo) : Dispositif Villages d'avenir
 - `datagouv__donnees-du-hackathon-sur-les-donnees-essentielles-de-la-commande-publiques-reformatees-et-agregees` (beneficiaires, ok, 0.6 Mo) : Données du hackathon sur les données essentielles de la commande publiques reformatées et agrégées
-- `datagouv__elections-europeennes-du-9-juin-2024-candidatures-enregistrees` (europe, ok, 0.6 Mo) : Elections européennes du 9 juin 2024 — Candidatures enregistrées 
+- `datagouv__donnees-essentielles-des-conventions-de-subvention-de-la-region-bourgogne-franche-comte` (decisions, ok, 1.1 Mo) : Données essentielles des conventions de subvention de la Région Bourgogne-Franche-Comté
+- `datagouv__duree-des-phases-dinstruction-arcep-licences-telecoms-en-france` (decisions, ok, 0.0 Mo) : Durée des phases d'instruction ARCEP licences telecoms en France
 - `datagouv__elections-legislatives-generales-des-30-juin-et-7-juillet-2024` (politique, ok, 1.1 Mo) : Elections législatives générales des 30 juin et 7 juillet 2024
 - `datagouv__elections-municipales-2014-candidats-dans-les-communes-de-moins-de-1-000-habitants` (politique, ok, 69.5 Mo) : Elections municipales 2014 - Candidats dans les communes de moins de 1 000 habitants 
-- `datagouv__elections-municipales-2014-candidatures-listes-detaillees-dans-les-communes-de-1-000-habitants-et-pl` (collectivites, ok, 124.1 Mo) : Elections municipales 2014 – Candidatures - Listes détaillées dans les communes de 1 000 habitants et plus
 - `datagouv__elections-municipales-2014-elus-au-1er-tour-communes-de-1-000-habitants-et-plus` (collectivites, ok, 18.0 Mo) : Elections municipales 2014 - Elus au 1er tour (communes de 1 000 habitants et plus)
 - `datagouv__elections-municipales-2014-elus-au-1er-tour-communes-de-moins-de-1-000-habitants` (collectivites, ok, 35.5 Mo) : Elections municipales 2014 - Elus au 1er tour (communes de moins de 1 000 habitants)
 - `datagouv__elections-municipales-2014-liste-des-elus-communes-de-1-000-habitants-et-plus` (collectivites, ok, 37.8 Mo) : Elections municipales 2014 – Liste des élus (communes de 1 000 habitants et plus) 
@@ -240,14 +270,24 @@ Publiees en open data officiel, stockees sous `data/lake/_restreint/`. Collecte 
 - `datagouv__legislatives-2012-depenses-des-candidats` (politique, ok, 0.0 Mo) : Législatives 2012 - Dépenses des candidats
 - `datagouv__les-perspectives-financieres-du-haut-conseil-du-commissariat-aux-comptes` (secu, ok, 0.0 Mo) : Les perspectives financières du Haut Conseil du commissariat aux comptes 
 - `datagouv__linclusion-bancaire-et-la-prevention-du-surendettement-1` (etat, ok, 0.0 Mo) : L’inclusion bancaire et la prévention du surendettement
+- `datagouv__liste-des-deliberations-des-conseils-municipaux` (decisions, ok, 0.7 Mo) : Liste des délibérations des conseils municipaux
+- `datagouv__liste-des-deliberations-du-ccas-de-saint-ave-en-2019` (decisions, ok, 0.0 Mo) :  Liste des délibérations du CCAS de Saint-Avé en 2019
 - `datagouv__marches-publics-2012-toulouse-metropole-tm` (beneficiaires, ok, 0.3 Mo) : Marchés publics 2012 Toulouse Métropole
 - `datagouv__mesures-fiscales-des-candidats-a-lelection-presidentielle-2027` (politique, ok, 0.0 Mo) : Mesures fiscales des candidats à l'élection présidentielle 2027
 - `datagouv__municipales-2014-depenses-des-candidats` (politique, ok, 0.0 Mo) : Municipales 2014 - Dépenses des candidats
 - `datagouv__proces-verbal-et-compte-rendu-des-conseils-municipaux-2017` (divers, ok, 82.4 Mo) : Procès-verbal et compte-rendu des conseils municipaux 2017
+- `datagouv__recueil-des-actes-administratifs-1` (decisions, ok, 83.2 Mo) : Recueil des Actes Administratifs
+- `datagouv__recueil-des-actes-administratifs-raa-1` (decisions, ok, 434.0 Mo) : Recueil des Actes Administratifs (RAA)
+- `datagouv__reglement-local-de-publicite-le-val` (decisions, ok, 9.0 Mo) : Règlement Local de Publicité - Le Val
 - `datagouv__remuneration-du-dirigeant-de-sasu-ou-deurl-cotisations-net-et-impot-selon-le-montant` (fiscalite, ok, 0.0 Mo) : Rémunération du dirigeant de SASU ou d'EURL : cotisations, net et impôt selon le montant
 - `datagouv__repertoire-des-representants-dinterets` (politique, lourd_ignore, 0.0 Mo) : Répertoire des représentants d'intérêts
+- `datagouv__schema-directeur-des-infrastructures-de-recharge-de-vehicules-electriques-de-haute-vienne` (decisions, ok, 0.0 Mo) : Schéma directeur des infrastructures de récharge de véhicules électriques de Haute Vienne 
 - `datagouv__subventions-de-bourges-plus-en-2018-et-2019` (beneficiaires, partiel, 1.6 Mo) : Subventions de Bourges Plus en 2018 et 2019
 - `datagouv__tableau-general-des-elections-legislatives-des-10-et-17-juin-2012` (politique, ok, 0.8 Mo) : Tableau général des élections législatives des 10 et 17 juin 2012
+- `decisions_d44_deliberations` (decisions, ok, 0.5 Mo) : Rapports, deliberations et proces-verbaux du Conseil departemental de Loire-Atlantique
+- `decisions_megalis_deliberations` (decisions, ok, 212.8 Mo) : Deliberations des organismes adherents de Megalis Bretagne (un fichier par an)
+- `decisions_nantes_metropole_deliberations` (decisions, ok, 0.4 Mo) : Deliberations des instances de Nantes Metropole
+- `decisions_pdl_deliberations` (decisions, ok, 1.3 Mo) : Rapports, deliberations et proces-verbaux de la Region Pays de la Loire
 - `economie__ambassadeursia` (divers, ok, 0.1 Mo) : Ambassadeurs IA - Osez l'IA
 - `economie__dgccrf_annuaire_services_deconcentres` (collectivites, ok, 0.4 Mo) : DGCCRF - Annuaire des services déconcentrés
 - `economie__ir-declarations-2042-nat` (fiscalite, ok, 0.4 Mo) : L'impôt sur le revenu : les déclarations nationales
@@ -260,7 +300,6 @@ Publiees en open data officiel, stockees sous `data/lake/_restreint/`. Collecte 
 - `europe_feder_fse_2021_2027_regions` (europe, ok, 1.6 Mo) : Beneficiaires FEDER/FSE+ 2021-2027 (Ile-de-France, Bretagne, Normandie)
 - `europe_kohesio_2014_2020_fr` (europe, ok, 143.6 Mo) : Kohesio, projets de cohesion 2014-2020 en France
 - `ods_ampmetropole__fr-centre-ville-fragilise` (europe, ok, 0.1 Mo) : Centres-villes fragilisés éligibles au dispositif ITI-FEDER (2021-2027)
-- `ods_angers__stat_etat_civil_angers` (etat, ok, 0.0 Mo) : Statistiques état civil - Angers
 - `ods_anglet_opendatapaysbasque__20220407-perimetre_conseils_quartier-21640024200014_anglet` (collectivites, ok, 0.0 Mo) : Périmètre des conseils de quartier sur la commune d'Anglet
 - `ods_anglet_opendatapaysbasque__localisation-des-aires-de-jeux-pour-enfants-sur-la-commune-d-anglet` (collectivites, ok, 0.0 Mo) : Aires de jeux pour enfants sur la commune d'Anglet
 - `ods_anglet_opendatapaysbasque__regie_anglet` (collectivites, ok, 0.0 Mo) : Régies d'avances et de recettes
@@ -335,11 +374,9 @@ Publiees en open data officiel, stockees sous `data/lake/_restreint/`. Collecte 
 - `ods_meudon__sites-daccueil-du-public-en-matiere-daction-sociale-et-medico-sociale` (secu, ok, 0.0 Mo) : Sites d’accueil du public en matière d’action sociale et médico-sociale
 - `ods_mulhouse_alsace__68224_localisation_caracteristiques_points-daide-alimentaire_mulhouse` (beneficiaires, ok, 0.0 Mo) : Points d'aide alimentaire sur Mulhouse
 - `ods_nantesmetropole__244400404_communes-nantes-metropole` (collectivites, ok, 0.5 Mo) : Communes de Nantes Métropole
-- `ods_opendata56__25560110600024_fichier-des-prenoms-edition-2016-pour-le-departement-du-morbihan` (collectivites, ok, 0.2 Mo) : Fichier des prénoms - Edition 2016 pour le département du Morbihan
 - `ods_opendata56__56011_budget_2017_begannev4` (etat, ok, 0.0 Mo) : BUDGET 2017
 - `ods_opendata56__56232_budget-principal-2017` (etat, ok, 0.0 Mo) : Budget Principal 2017
 - `ods_opendata56__composition-de-lassemblee-deliberante-de-morbihan-energies` (fiscalite, ok, 0.0 Mo) : Composition de l'assemblée délibérante de Morbihan énergies
-- `ods_opendata56__fichier-des-prenoms-edition-2016-pour-le-departement-du-morbihan-copie` (collectivites, ok, 0.2 Mo) : Fichier des prénoms - Edition 2016 pour le département du Morbihan – copie
 - `ods_orleans_metropole__quartiers-participation-citoyenne-ville-orleans` (etat, ok, 0.1 Mo) : Participation citoyenne (quartiers et mairies de proximité) - Ville d'Orléans
 - `ods_paris__nombre-dassociations-subventionnees-par-la-ville-de-paris-copie` (beneficiaires, ok, 0.5 Mo) : Nombre d’associations subventionnées par la Ville de Paris
 - `ods_paris__subventions-associations-votees-` (beneficiaires, ok, 5.6 Mo) : Subventions aux associations votées
@@ -403,23 +440,28 @@ Publiees en open data officiel, stockees sous `data/lake/_restreint/`. Collecte 
 - `politique_campagne_legislatives_2024` (politique, ok, 1.1 Mo) : Comptes de campagne, legislatives 2024 (CNCCFP)
 - `politique_campagne_municipales_2020` (politique, ok, 1.5 Mo) : Comptes de campagne, municipales 2020 (CNCCFP)
 - `politique_hatvp_lobbying_csv` (politique, ok, 14.3 Mo) : Repertoire des representants d'interets (HATVP), vues separees CSV
+- `politique_hatvp_lobbying_json` (politique, ok, 139.2 Mo) : Repertoire des representants d'interets (HATVP), JSON complet
 - `recherche_anr_partenaires` (beneficiaires, ok, 18.8 Mo) : Partenaires des projets ANR
+- `recherche_anr_projets` (beneficiaires, ok, 141.9 Mo) : Projets finances par l'ANR
 - `urssaf__liste-des-directrices-et-des-directeurs` (secu, ok, 0.0 Mo) : Liste des directrices et des directeurs du réseau des Urssaf
 - `urssaf__liste-des-presidents` (secu, ok, 0.0 Mo) : Liste des présidentes et des présidents du réseau des Urssaf
+
+## Sources nommant des elus dans leur role public (7)
+
+Votes et amendements nominatifs des parlementaires : zone publique, mais marques `elus_nommes`.
+
+`decisions_an_l16_amendements`, `decisions_an_l16_scrutins`, `decisions_an_l17_amendements`, `decisions_an_l17_deputes`, `decisions_an_l17_scrutins`, `decisions_senat_ameli`, `decisions_senat_senateurs`
 
 ## Sources lourdes non prises
 
 - `local_communes` (catalogue, lourde) : Comptes des communes (OFGL)
 - `local_dotations_communes` (catalogue, lourde) : Dotations de l'Etat aux communes
 - `local_balances_nature_fonction_2024` (catalogue, lourde) : Balances comptables nature x fonction 2024 (DGFiP)
-- `recherche_anr_projets` (catalogue, lourde) : Projets finances par l'ANR
-- `politique_hatvp_lobbying_json` (catalogue, lourde) : Repertoire des representants d'interets (HATVP), JSON complet
+- `decisions_an_l16_amendements` (catalogue, lourde) : Assemblee nationale, amendements de la 16e legislature
 - `cdc__logements-sociaux-dans-les-communes` : ressource cdc__logements-sociaux-dans-les-communes.parquet (0 Mo, lourd (plus de 100 Mo))
 - `cdc__moncompteformation_catalogueformation` : ressource cdc__moncompteformation_catalogueformation.parquet (0 Mo, lourd (plus de 100 Mo))
 - `datagouv__comptes-rendus-du-senat` : ressource datagouv__comptes-rendus-du-senat/Comptes_rendus_int_graux_65875255.xml (0 Mo, lourd (plus de 100 Mo))
 - `datagouv__donnees-essentielles-de-la-commande-publique-transmises-via-le-pes-marche` : ressource datagouv__donnees-essentielles-de-la-commande-publique-transmises-via-le-pes-marche/Donn_es_essentielles_du_PES_march_consolid_es_bf069d35.xml (0 Mo, lourd (plus de 100 Mo))
-- `datagouv__donnees-vaccination-par-tranche-dage-type-de-vaccin-et-departement-region` : ressource datagouv__donnees-vaccination-par-tranche-dage-type-de-vaccin-et-departement-region/donnees-vaccination-par-tranche-dage-type-de-vaccin-et-depar_db612c6b.csv (0 Mo, lourd (plus de 100 Mo))
-- `datagouv__donnees-vaccination-par-tranche-dage-type-de-vaccin-et-departement-region` : ressource datagouv__donnees-vaccination-par-tranche-dage-type-de-vaccin-et-departement-region/donnees-vaccination-par-tranche-dage-type-de-vaccin-et-depar_d0d29c7d.json (0 Mo, lourd (plus de 100 Mo))
 - `datagouv__dreal-occitanie-zonages-a-b-c-applicables-a-certaines-aides-au-logement` : ressource datagouv__dreal-occitanie-zonages-a-b-c-applicables-a-certaines-aides-au-logement/API_Geojson_99579ece.zip (0 Mo, lourd (plus de 100 Mo))
 - `datagouv__repertoire-des-representants-dinterets` : ressource datagouv__repertoire-des-representants-dinterets/Fichier_complet_JSON_46cd8d72.json (0 Mo, lourd (plus de 100 Mo))
 - `datagouv__subventions-cd76-2008-2023v1` : ressource datagouv__subventions-cd76-2008-2023v1/GeoJSON_aa858fda.geojson (0 Mo, lourd (plus de 100 Mo))
@@ -454,9 +496,10 @@ Publiees en open data officiel, stockees sous `data/lake/_restreint/`. Collecte 
 - `ods_ha_py__effectifs-salaries-du-secteur-prive-par-commune` : ressource ods_ha_py__effectifs-salaries-du-secteur-prive-par-commune.parquet (0 Mo, lourd (plus de 100 Mo))
 - `ods_ha_py__etablissements-prives-employeurs-du-secteur-prive-par-commune` : ressource ods_ha_py__etablissements-prives-employeurs-du-secteur-prive-par-commune.parquet (0 Mo, lourd (plus de 100 Mo))
 - `ods_iledefrance__actes-administratifs` : ressource ods_iledefrance__actes-administratifs.parquet (0 Mo, lourd (plus de 100 Mo))
+- `ods_iledefrance__rapports-et-deliberations-du-conseil-regional-ile-de-france-et-de-sa-commission-` : ressource ods_iledefrance__rapports-et-deliberations-du-conseil-regional-ile-de-france-et-de-sa-commission-.parquet (0 Mo, lourd (plus de 100 Mo))
 - `ods_laregion__fonds-de-solidarite-occitanie` : ressource ods_laregion__fonds-de-solidarite-occitanie.parquet (0 Mo, lourd (plus de 100 Mo))
 
-### Jeux decouverts lourds non pris (124, environ 124 Go estimes)
+### Jeux decouverts lourds non pris (125, environ 126 Go estimes)
 
 Estimation grossiere (lignes x champs). Les exports ODS de plus de 300 Mo sont souvent coupes par le reseau ou trop lents (environ 0,3 Mo/s) : statut delai_depasse ou parquet incomplet.
 
@@ -471,6 +514,7 @@ Estimation grossiere (lignes x champs). Les exports ODS de plus de 300 Mo sont s
 - `ods_bretagne__sirene-v3-consolidee` (2,805 Mo estimes, non tente) : Base SIRENE - Région Bretagne
 - `datagouv__donnees-essentielles-de-la-commande-publique-transmises-via-le-pes-marche-depuis-2024` (2,229 Mo estimes, non tente) : Données essentielles de la commande publique transmises via le PES Marché depuis 2024
 - `esr__fr-esr-sise-effectifs-d-etudiants-inscrits-esr-public` (2,004 Mo estimes, non tente) : Effectifs d'étudiants inscrits dans les établissements publics sous tutelle du ministère en charge d
+- `datagouv__budgets-des-organismes-adherents-de-megalis-bretagne` (1,923 Mo estimes, non tente) : Budgets des organismes adhérents de Mégalis Bretagne
 - `economie__balances-comptables-des-etablissements-publics-locaux-depuis-2010` (1,876 Mo estimes, non tente) : Balances comptables des établissements publics locaux depuis 2010
 - `economie__balances-comptables-des-communes-en-2017` (1,645 Mo estimes, non tente) : Balances comptables des communes en 2017
 - `economie__balances-comptables-des-communes-en-2019` (1,621 Mo estimes, non tente) : Balances comptables des communes en 2019
@@ -484,8 +528,34 @@ Estimation grossiere (lignes x champs). Les exports ODS de plus de 300 Mo sont s
 - `economie__balances-comptables-des-communes-en-2016` (1,544 Mo estimes, non tente) : Balances comptables des communes en 2016
 - `economie__balances-comptables-des-groupements-a-fiscalite-propre-depuis-2010` (1,436 Mo estimes, delai_depasse) : Balances comptables des groupements à fiscalité propre depuis 2010
 - `economie__balances-comptables-des-communes-en-2015` (1,426 Mo estimes, non tente) : Balances comptables des communes en 2015
-- `economie__balances-comptables-des-communes-en-2014` (1,420 Mo estimes, delai_depasse) : Balances comptables des communes en 2014
-- ... et 99 autres
+- ... et 100 autres
+
+## Jeux decouverts exclus comme hors sujet (22)
+
+Filtre par mots-cles (`EXCLUSIONS` dans collecte.py : PAC, patrimoine, vaccination, transports, etat civil, resultats electoraux...) et score minimal de pertinence.
+
+- `datagouv__aides-percues-par-les-personnes-morales-au-titre-de-la-politique-agricole-commune` : Aides perçues par les personnes morales au titre de la Politique Agricole Commune
+- `datagouv__aides-de-la-politique-agricole-commune-pac-30379066` : Aides de la politique agricole commune (PAC)
+- `datagouv__aides-percues-au-titre-de-la-politique-agricole-commune-pac` : Aides perçues au titre de la Politique Agricole Commune (PAC
+- `datagouv__cours-deau-retenus-au-titre-des-bcae-conditionnalite-des-aides-pac-dans-le-departement-du-var` : Cours d'eau retenus au titre des BCAE (conditionnalité des aides PAC) dans le département du Var
+- `datagouv__montant-des-aides-percues-au-titre-de-la-pac` : Montant des aides perçues au titre de la PAC
+- `datagouv__agriculture-en-france-aides-pac-pour-la-campagne-2022-ja-bio-et-dpb-8000eur` : Agriculture en France - Aides PAC pour la campagne 2022 (JA, Bio, et DPB > 8000€)
+- `datagouv__aides-percus-par-les-beneficiaires-au-titre-de-la-pac` :  Aides perçus par les bénéficiaires au titre de la PAC
+- `datagouv__aides-percus-par-les-beneficiaires-au-titre-de-la-pac-1` : Aides perçus par les bénéficiaires au titre de la PAC
+- `datagouv__donnees-vaccination-par-pathologie-et-departement-region` : Données vaccination par pathologie et département / région
+- `datagouv__donnees-de-vaccination-par-indice-de-defavorisation-et-tranche-dage` : Données de vaccination par indice de défavorisation et tranche d'âge
+- `datagouv__donnees-vaccination-par-categorie-dinjecteur-hors-centres-de-vaccination-et-etablissements-de-sante` : Données vaccination par catégorie d'injecteur, hors centres de vaccination et établissements de sant
+- `datagouv__donnees-vaccination-par-commune-lyon-marseille-paris` : Données vaccination par commune (Lyon, Marseille, Paris)
+- `datagouv__donnees-vaccination-par-tranche-dage-type-de-vaccin-et-departement-region` : Données vaccination par tranche d'âge, type de vaccin et département / région
+- `economie__resultats-des-elections-professionnelles-pour-les-comites-techniques-dans-la-fp-` : Résultats des élections professionnelles pour les comités techniques dans la fonction publique en 20
+- `ods_angers__stat_etat_civil_angers` : Statistiques état civil - Angers
+- `ods_boulognebillancourt_seineouest__resultats-des-elections-par-commune` : Résultats des élections par commune
+- `ods_ha_py__departementdeshautespyrenees_numerisation_des_registres_d_etat_civil_empruntes_d` : Communes dont les registres d’état civil de 1893 à 1923 prêtés par les communes sont en ligne sur le
+- `ods_haute_garonne__episode-de-pollution-departement-haute-garonne` : Episode de pollution département de la Haute-Garonne - Qualité de l'air
+- `ods_herault_data__resultat-des-elections-presidentielles-de-la-commune-de-marseillan` : Résultat des élections présidentielles de la commune de Marseillan
+- `ods_issy__les-statistiques-des-actes-de-letat-civil` : Actes d'état civil effectués en ligne
+- `ods_opendata56__25560110600024_fichier-des-prenoms-edition-2016-pour-le-departement-du-morbihan` : Fichier des prénoms - Edition 2016 pour le département du Morbihan
+- `ods_opendata56__fichier-des-prenoms-edition-2016-pour-le-departement-du-morbihan-copie` : Fichier des prénoms - Edition 2016 pour le département du Morbihan – copie
 
 ## Sources identifiees mais non collectables automatiquement
 
@@ -500,10 +570,14 @@ Estimation grossiere (lignes x champs). Les exports ODS de plus de 300 Mo sont s
 - Banque de France Webstat (ODS, sans cle) : 43 000 series publiees chacune comme un jeu sans enregistrements ODS : non parcouru par la decouverte, a traiter par une selection de series
 - data.ccomptes.fr, data.anct.gouv.fr : portails inexistants (nom de domaine non resolu) ; Cour des comptes et ANCT couvertes via leurs organisations data.gouv.fr
 - Exports ODS de plus de 300 Mo (balances comptables par annee, comptes des communes OFGL) : transferts coupes ou trop lents via le reseau de collecte (environ 0,3 Mo/s) : a reprendre depuis une machine sans proxy
+- BOAMP brut (DILA, echanges.dila.gouv.fr/OPENDATA/BOAMP) : un fichier XML par avis, des dizaines de milliers par mois : non pris en l'etat ; les marches attribues sont couverts par les DECP
+- Cour des comptes, mouvements de credits 2015-2020 : les URL CSV redirigent vers une page web (302)
+- HATVP liste.csv (index des declarations) : index des declarations de patrimoine et d'interets des responsables publics : exclu par la regle sur le patrimoine
+- Legifrance, budget.gouv.fr (performance-publique), data.ccomptes.fr : refusent les scripts ou inexistants : non insiste
 
 ## Decouvertes automatiques
 
-`collecte/decouvertes.json` genere le 2026-11-15T16:31:27+00:00 : 20012 jeux, dont 2091 doublons data.gouv.fr de portails ODS.
+`collecte/decouvertes.json` genere le 2026-11-16T11:54:55+00:00 : 20093 jeux, dont 2099 doublons data.gouv.fr de portails ODS.
 
 | Portail | Jeux | Score >= 4 | Collectes |
 |---|---:|---:|---:|
@@ -511,71 +585,71 @@ Estimation grossiere (lignes x champs). Les exports ODS de plus de 300 Mo sont s
 | atih | 53 | 2 | 0 |
 | caf | 210 | 3 | 73 |
 | cdc | 89 | 20 | 63 |
-| datagouv | 5858 | 3211 | 2345 |
+| datagouv | 5939 | 3312 | 2400 |
 | drees | 264 | 17 | 41 |
-| economie | 619 | 447 | 528 |
+| economie | 619 | 447 | 524 |
 | esr | 217 | 11 | 29 |
 | ods_afd | 23 | 4 | 5 |
-| ods_agglo_carene | 132 | 14 | 26 |
-| ods_agglo_montargoise | 22 | 3 | 12 |
+| ods_agglo_carene | 132 | 14 | 39 |
+| ods_agglo_montargoise | 22 | 3 | 15 |
 | ods_ampmetropole | 198 | 9 | 14 |
-| ods_angers | 151 | 8 | 42 |
-| ods_anglet_opendatapaysbasque | 145 | 2 | 9 |
+| ods_angers | 151 | 8 | 41 |
+| ods_anglet_opendatapaysbasque | 145 | 2 | 10 |
 | ods_aude | 29 | 1 | 2 |
-| ods_bordeaux_metropole | 565 | 86 | 128 |
-| ods_boulognebillancourt_seineouest | 83 | 2 | 4 |
-| ods_bretagne | 189 | 14 | 23 |
-| ods_cannes | 154 | 29 | 40 |
-| ods_capatlantique | 160 | 24 | 27 |
-| ods_cc_autourdechenonceaux | 19 | 0 | 0 |
-| ods_cc_coeurdefrance | 81 | 4 | 10 |
-| ods_centrevaldeloire | 382 | 66 | 121 |
+| ods_bordeaux_metropole | 565 | 86 | 135 |
+| ods_boulognebillancourt_seineouest | 83 | 2 | 3 |
+| ods_bretagne | 189 | 14 | 25 |
+| ods_cannes | 154 | 29 | 41 |
+| ods_capatlantique | 160 | 24 | 63 |
+| ods_cc_autourdechenonceaux | 19 | 0 | 1 |
+| ods_cc_coeurdefrance | 81 | 4 | 11 |
+| ods_centrevaldeloire | 382 | 66 | 132 |
 | ods_chateauroux_metropole | 113 | 0 | 19 |
 | ods_chaville_seineouest | 72 | 0 | 0 |
-| ods_clermontmetropole | 126 | 13 | 15 |
+| ods_clermontmetropole | 126 | 13 | 16 |
 | ods_dares_travail_emploi | 33 | 0 | 0 |
-| ods_doubs | 50 | 6 | 9 |
+| ods_doubs | 50 | 6 | 15 |
 | ods_education | 314 | 3 | 8 |
-| ods_eurelien | 53 | 2 | 3 |
-| ods_evrycourcouronnes | 40 | 0 | 7 |
+| ods_eurelien | 53 | 2 | 4 |
+| ods_evrycourcouronnes | 40 | 0 | 8 |
 | ods_fleurysurorne | 123 | 13 | 17 |
 | ods_gers | 82 | 4 | 5 |
-| ods_gpseo | 30 | 0 | 1 |
+| ods_gpseo | 30 | 0 | 3 |
 | ods_grandparissud | 427 | 17 | 42 |
-| ods_ha_py | 195 | 16 | 32 |
-| ods_haute_garonne | 287 | 29 | 35 |
+| ods_ha_py | 195 | 16 | 31 |
+| ods_haute_garonne | 287 | 29 | 52 |
 | ods_hauts_de_seine | 254 | 12 | 29 |
-| ods_herault_data | 328 | 38 | 47 |
+| ods_herault_data | 328 | 38 | 48 |
 | ods_iledefrance | 1039 | 117 | 194 |
 | ods_iledefrance_mobilites | 94 | 1 | 3 |
 | ods_isere | 110 | 8 | 16 |
-| ods_issy | 327 | 32 | 40 |
+| ods_issy | 327 | 32 | 41 |
 | ods_lamayenne | 106 | 1 | 6 |
-| ods_laregion | 205 | 16 | 24 |
-| ods_loire_atlantique | 342 | 91 | 140 |
+| ods_laregion | 205 | 16 | 25 |
+| ods_loire_atlantique | 342 | 91 | 148 |
 | ods_maine_et_loire | 128 | 23 | 40 |
 | ods_metropole_rouen_normandie | 114 | 4 | 7 |
 | ods_meudon | 113 | 1 | 7 |
-| ods_mulhouse_alsace | 146 | 10 | 12 |
-| ods_nantesmetropole | 592 | 164 | 187 |
+| ods_mulhouse_alsace | 146 | 10 | 13 |
+| ods_nantesmetropole | 592 | 164 | 199 |
 | ods_normandie_education | 58 | 3 | 4 |
 | ods_opendata56 | 89 | 12 | 16 |
-| ods_orleans_metropole | 216 | 3 | 5 |
+| ods_orleans_metropole | 216 | 3 | 6 |
 | ods_paris | 484 | 42 | 70 |
-| ods_paysdelaloire | 213 | 25 | 38 |
-| ods_rennesmetropole | 673 | 101 | 142 |
-| ods_saint_louis_agglo | 67 | 15 | 20 |
-| ods_saintnazaireagglo | 132 | 14 | 26 |
+| ods_paysdelaloire | 213 | 25 | 39 |
+| ods_rennesmetropole | 673 | 101 | 144 |
+| ods_saint_louis_agglo | 67 | 15 | 27 |
+| ods_saintnazaireagglo | 132 | 14 | 39 |
 | ods_sarthe | 80 | 2 | 7 |
-| ods_seineouest | 195 | 14 | 22 |
+| ods_seineouest | 195 | 14 | 23 |
 | ods_seinesaintdenis | 74 | 2 | 9 |
 | ods_sevres_seineouest | 73 | 0 | 2 |
-| ods_sicoval | 49 | 2 | 4 |
+| ods_sicoval | 49 | 2 | 5 |
 | ods_strasbourg | 401 | 5 | 27 |
-| ods_te44 | 5 | 0 | 0 |
+| ods_te44 | 5 | 0 | 1 |
 | ods_teo_paysdelaloire | 134 | 2 | 6 |
-| ods_toulouse_metropole | 844 | 221 | 223 |
-| ods_tours_metropole | 234 | 10 | 22 |
+| ods_toulouse_metropole | 844 | 221 | 232 |
+| ods_tours_metropole | 234 | 10 | 23 |
 | ods_unedic | 50 | 2 | 10 |
 | ods_vanves_seineouest | 58 | 0 | 1 |
 | ods_vendee | 52 | 4 | 4 |
