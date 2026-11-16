@@ -113,7 +113,7 @@ Le script crée l'utilisateur système `ovmi` (sans shell ni sudo), clone le dé
 
 Ménagement du VPS partagé (`deploy/systemd/ovmi-collecte.service`) : `Nice=19`, ordonnancement `batch`, E/S `idle`, `CPUQuota=150%`, `MemoryHigh=1536M`, `MemoryMax=2G`, DuckDB limité à 1 Go et 2 cœurs, rclone `--bwlimit 8M` (`OVMI_BWLIMIT`), arrêt si moins de 10 Go libres (`OVMI_DISQUE_MIN_GO`), une seule collecte à la fois (verrou). Confinement : `ProtectSystem=strict`, seul `/var/lib/ovmi` est inscriptible, aucune capacité.
 
-Alerte : toute sortie non nulle (75 disque, 78 configuration, 2 envoi en échec, 1 toutes sources en échec) marque l'unité en échec dans `systemctl status` et `journalctl`, et déclenche `ovmi-collecte-alerte.service`. Si `GITHUB_TOKEN` est rempli (jeton à grain fin limité au dépôt, permission *Issues: write*), une issue étiquetée `collecte-echec` est ouverte (ou commentée si une est déjà ouverte), sans les lignes mentionnant la zone restreinte ou un secret. Journaux : `journalctl -u ovmi-collecte` et `/var/lib/ovmi/journaux/` (12 derniers).
+Alerte : toute sortie non nulle (75 disque, 78 configuration, 2 envoi en échec, 1 toutes sources en échec) marque l'unité en échec dans `systemctl status` et `journalctl`, et déclenche `ovmi-collecte-alerte.service`. Si `OVMI_ALERTE_GITHUB=1` et `OVMI_ALERTE_GITHUB_JETON` est rempli (jeton à grain fin limité au dépôt, permission *Issues: write*), une issue étiquetée `collecte-echec` est ouverte (ou commentée si une est déjà ouverte), sans les lignes mentionnant la zone restreinte ou un secret. Journaux : `journalctl -u ovmi-collecte` et `/var/lib/ovmi/journaux/` (12 derniers).
 
 ## Migration de l'entrepôt local existant
 

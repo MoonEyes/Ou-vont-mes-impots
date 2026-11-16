@@ -1,7 +1,7 @@
 """Alerte apres un echec de la collecte hebdomadaire (ovmi-collecte-alerte.service).
 
 Toujours : message d'erreur dans journalctl (journalctl -u ovmi-collecte-alerte).
-Optionnel : si GITHUB_TOKEN est defini, ouvre une issue sur OVMI_GITHUB_DEPOT (ou commente
+Optionnel : si OVMI_ALERTE_GITHUB=1 et OVMI_ALERTE_GITHUB_JETON sont definis, ouvre une issue sur OVMI_GITHUB_DEPOT (ou commente
 l'issue ouverte existante, etiquette « collecte-echec ») avec la fin du journal du jour.
 Les lignes mentionnant la zone restreinte ou un secret ne sont jamais publiees.
 """
@@ -56,7 +56,11 @@ def main() -> int:
     titre = f"Collecte hebdomadaire en echec ({socket.gethostname()}, {date.today().isoformat()})"
     extrait = extrait_journal(racine)
     print(f"ALERTE : {titre}\n{extrait}", file=sys.stderr)
-    jeton = os.environ.get("GITHUB_TOKEN", "").strip()
+    # Opt-in explicite : jamais declenche par un GITHUB_TOKEN generique present dans l'environnement
+    # (incident du 16/11/2026 : deux issues de test ouvertes sur le depot public).
+    if os.environ.get("OVMI_ALERTE_GITHUB") != "1":
+        return 0
+    jeton = os.environ.get("OVMI_ALERTE_GITHUB_JETON", "").strip()
     if not jeton:
         return 0
     corps = ("La collecte hebdomadaire s'est terminee avec un code non nul.\n\n"
