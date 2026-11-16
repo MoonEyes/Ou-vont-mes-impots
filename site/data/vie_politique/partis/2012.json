@@ -1,0 +1,283 @@
+{
+ "millesime": "Comptes des partis, exercice 2012",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-des-partis-et-groupements-politiques », fichier Comptes_partis_exercice_2012.xlsx",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "exercice": 2012,
+ "definition": "Aide publique de l'État (1re fraction : résultats aux législatives ; 2de fraction : parlementaires rattachés), telle que portée dans les comptes déposés par chaque parti. Personnes morales.",
+ "nombre_partis_beneficiaires": 38,
+ "total_premiere_fraction_eur": 34472083.0,
+ "total_seconde_fraction_eur": 36654208.0,
+ "total_eur": 71126291.0,
+ "partis": [
+  {
+   "code_cnccfp": "401",
+   "nom": "UNION POUR UN MOUVEMENT POPULAIRE",
+   "premiere_fraction_eur": 12449433.0,
+   "seconde_fraction_eur": 17693680.0,
+   "total_eur": 30143113.0
+  },
+  {
+   "code_cnccfp": "76",
+   "nom": "PARTI SOCIALISTE",
+   "premiere_fraction_eur": 9748355.0,
+   "seconde_fraction_eur": 13133018.0,
+   "total_eur": 22881373.0
+  },
+  {
+   "code_cnccfp": "529",
+   "nom": "MOUVEMENT DÉMOCRATE",
+   "premiere_fraction_eur": 2634666.0,
+   "seconde_fraction_eur": 929024.0,
+   "total_eur": 3563690.0
+  },
+  {
+   "code_cnccfp": "60",
+   "nom": "PARTI COMMUNISTE FRANCAIS",
+   "premiere_fraction_eur": 1779748.0,
+   "seconde_fraction_eur": 1562449.0,
+   "total_eur": 3342197.0
+  },
+  {
+   "code_cnccfp": "104",
+   "nom": "EUROPE ÉCOLOGIE LES VERTS",
+   "premiere_fraction_eur": 1368705.0,
+   "seconde_fraction_eur": 591197.0,
+   "total_eur": 1959902.0
+  },
+  {
+   "code_cnccfp": "40",
+   "nom": "FRONT NATIONAL",
+   "premiere_fraction_eur": 1744403.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 1744403.0
+  },
+  {
+   "code_cnccfp": "52",
+   "nom": "PARTI RADICAL DE GAUCHE",
+   "premiere_fraction_eur": 478966.0,
+   "seconde_fraction_eur": 844567.0,
+   "total_eur": 1323533.0
+  },
+  {
+   "code_cnccfp": "227",
+   "nom": "FETIA API",
+   "premiere_fraction_eur": 1183204.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 1183204.0
+  },
+  {
+   "code_cnccfp": "49",
+   "nom": "LE TRÈFLE-LES NOUVEAUX ÉCOLOGISTES-HOMME NATURE ANIMAUX",
+   "premiere_fraction_eur": 155223.0,
+   "seconde_fraction_eur": 802338.0,
+   "total_eur": 957561.0
+  },
+  {
+   "code_cnccfp": "197",
+   "nom": "LIGUE COMMUNISTE RÉVOLUTIONNAIRE",
+   "premiere_fraction_eur": 851147.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 851147.0
+  },
+  {
+   "code_cnccfp": "177",
+   "nom": "MOUVEMENT POUR LA FRANCE",
+   "premiere_fraction_eur": 567976.0,
+   "seconde_fraction_eur": 126685.0,
+   "total_eur": 694661.0
+  },
+  {
+   "code_cnccfp": "1",
+   "nom": "DÉMOCRATIE ET RÉPUBLIQUE",
+   "premiere_fraction_eur": 13923.0,
+   "seconde_fraction_eur": 506740.0,
+   "total_eur": 520663.0
+  },
+  {
+   "code_cnccfp": "96",
+   "nom": "LUTTE OUVRIÈRE",
+   "premiere_fraction_eur": 347410.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 347410.0
+  },
+  {
+   "code_cnccfp": "77",
+   "nom": "CHASSE PÊCHE NATURE ET TRADITIONS",
+   "premiere_fraction_eur": 341291.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 341291.0
+  },
+  {
+   "code_cnccfp": "116",
+   "nom": "SOLIDARITÉ ÉCOLOGIE GAUCHE ALTERNATIVE",
+   "premiere_fraction_eur": 187141.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 187141.0
+  },
+  {
+   "code_cnccfp": "65",
+   "nom": "PARTI COMMUNISTE RÉUNIONNAIS",
+   "premiere_fraction_eur": 155014.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 155014.0
+  },
+  {
+   "code_cnccfp": "69",
+   "nom": "PARTI PROGRESSISTE MARTINIQUAIS",
+   "premiere_fraction_eur": 26041.0,
+   "seconde_fraction_eur": 126684.0,
+   "total_eur": 152725.0
+  },
+  {
+   "code_cnccfp": "182",
+   "nom": "MOUVEMENT ÉCOLOGISTE INDÉPENDANT",
+   "premiere_fraction_eur": 121756.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 121756.0
+  },
+  {
+   "code_cnccfp": "121",
+   "nom": "TAHOERAA HUIRAATIRA",
+   "premiere_fraction_eur": 28767.0,
+   "seconde_fraction_eur": 84457.0,
+   "total_eur": 113224.0
+  },
+  {
+   "code_cnccfp": "162",
+   "nom": "WALWARI",
+   "premiere_fraction_eur": 4960.0,
+   "seconde_fraction_eur": 84457.0,
+   "total_eur": 89417.0
+  },
+  {
+   "code_cnccfp": "544",
+   "nom": "CAP SUR L'AVENIR",
+   "premiere_fraction_eur": 1538.0,
+   "seconde_fraction_eur": 84456.0,
+   "total_eur": 85994.0
+  },
+  {
+   "code_cnccfp": "119",
+   "nom": "TAVINI HUIRAATIRA NO TE AO MA'OHI (FRONT DE LIBÉRATION DE POLYNÉSIE)",
+   "premiere_fraction_eur": 68183.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 68183.0
+  },
+  {
+   "code_cnccfp": "133",
+   "nom": "MOUVEMENT INDÉPENDANTISTE MARTINIQUAIS",
+   "premiere_fraction_eur": 59631.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 59631.0
+  },
+  {
+   "code_cnccfp": "233",
+   "nom": "GUADELOUPE UNIE SOCIALISME ET RÉALITÉS",
+   "premiere_fraction_eur": 11072.0,
+   "seconde_fraction_eur": 42228.0,
+   "total_eur": 53300.0
+  },
+  {
+   "code_cnccfp": "283",
+   "nom": "MOUVEMENT LIBERAL POPULAIRE",
+   "premiere_fraction_eur": 45064.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 45064.0
+  },
+  {
+   "code_cnccfp": "63",
+   "nom": "PARTI COMMUNISTE GUADELOUPÉEN",
+   "premiere_fraction_eur": 1126.0,
+   "seconde_fraction_eur": 42228.0,
+   "total_eur": 43354.0
+  },
+  {
+   "code_cnccfp": "399",
+   "nom": "IDENTITÉ ET RÉPUBLIQUE",
+   "premiere_fraction_eur": 27091.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 27091.0
+  },
+  {
+   "code_cnccfp": "46",
+   "nom": "GROUPEMENT FRANCE-RÉUNION",
+   "premiere_fraction_eur": 18945.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 18945.0
+  },
+  {
+   "code_cnccfp": "488",
+   "nom": "RAUTAHI - RASSEMBLEMENT POUR LA POLYNÉSIE FRANÇAISE",
+   "premiere_fraction_eur": 8345.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 8345.0
+  },
+  {
+   "code_cnccfp": "152",
+   "nom": "L'ACTION",
+   "premiere_fraction_eur": 7832.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 7832.0
+  },
+  {
+   "code_cnccfp": "481",
+   "nom": "NO OE E TE NUNA'A",
+   "premiere_fraction_eur": 7550.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 7550.0
+  },
+  {
+   "code_cnccfp": "549",
+   "nom": "RASSEMBLEMENT POUR LA CALÉDONIE",
+   "premiere_fraction_eur": 6928.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 6928.0
+  },
+  {
+   "code_cnccfp": "498",
+   "nom": "NOFWAP, LA GUADELOUPE EN ACTION",
+   "premiere_fraction_eur": 5941.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 5941.0
+  },
+  {
+   "code_cnccfp": "516",
+   "nom": "RASSEMBLEMENT DÉMOCRATIQUE POUR LA MARTINIQUE",
+   "premiere_fraction_eur": 5024.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 5024.0
+  },
+  {
+   "code_cnccfp": "554",
+   "nom": "PARTI SOCIALISTE RÉUNIONNAIS",
+   "premiere_fraction_eur": 4195.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 4195.0
+  },
+  {
+   "code_cnccfp": "277",
+   "nom": "DROITE SOCIALE",
+   "premiere_fraction_eur": 2878.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 2878.0
+  },
+  {
+   "code_cnccfp": "148",
+   "nom": "ARCHIPEL DEMAIN",
+   "premiere_fraction_eur": 1748.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 1748.0
+  },
+  {
+   "code_cnccfp": "463",
+   "nom": "TE'AVEI'A",
+   "premiere_fraction_eur": 863.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 863.0
+  }
+ ],
+ "avertissements": [
+  "9 parti(s) sans ventilation par fraction dans la source : total porté en 1re fraction."
+ ]
+}

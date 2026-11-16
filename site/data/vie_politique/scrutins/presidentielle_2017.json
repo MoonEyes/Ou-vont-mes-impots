@@ -1,0 +1,36 @@
+{
+ "millesime": "Élection présidentielle de 2017 (comptes arrêtés par la CNCCFP)",
+ "source": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr : https://cnccfp.fr/wp-content/uploads/2022/04/De%CC%81cisions_pre%CC%81sidentielle_2017.pdf",
+ "format_source": "PDF (Journal officiel), tableaux extraits par pdfplumber",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "presidentielle",
+ "annee": 2017,
+ "libelle": "Élection présidentielle de 2017",
+ "nombre_candidats": 11,
+ "nombre_comptes_avec_depenses": 11,
+ "depenses_totales_eur": 72582946.0,
+ "recettes_totales_eur": 73397123.0,
+ "apport_personnel_total_eur": 42137594.0,
+ "dons_totaux_eur": 4700748.0,
+ "remboursement_etat_total_eur": 41069334.0,
+ "comptes_rejetes": 0,
+ "comptes_non_deposes": 0,
+ "comptes_hors_delai": 0,
+ "dispenses_de_depot": 0,
+ "decisions": {
+  "approuvé après réformation": {
+   "nombre": 11,
+   "libelle": "code source non documenté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

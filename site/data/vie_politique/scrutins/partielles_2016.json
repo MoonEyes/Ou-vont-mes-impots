@@ -1,0 +1,64 @@
+{
+ "millesime": "Élections partielles de 2016 (législatives, départementales, municipales) (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-partielles-pour-lannee-2016 », fichier departementale_uninominale_partielle_2016.csv ; data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-partielles-pour-lannee-2016 », fichier departementales_partielles_2016.csv ; data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-partielles-pour-lannee-2016-1 », fichier municipales_partielles_2016.csv ; data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-partielles-pour-lannee-2016-2 », fichier Legislatives_partielles_2016_LP_20170725171705.csv",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "partielles",
+ "annee": 2016,
+ "libelle": "Élections partielles de 2016 (législatives, départementales, municipales)",
+ "nombre_candidats": 149,
+ "nombre_comptes_avec_depenses": 134,
+ "depenses_totales_eur": 1260569.0,
+ "recettes_totales_eur": 1378223.0,
+ "apport_personnel_total_eur": 1060145.0,
+ "dons_totaux_eur": 245874.0,
+ "remboursement_etat_total_eur": 933177.0,
+ "comptes_rejetes": 2,
+ "comptes_non_deposes": 1,
+ "comptes_hors_delai": 2,
+ "dispenses_de_depot": 4,
+ "decisions": {
+  "A": {
+   "nombre": 78,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 1,
+   "libelle": "absence de dépôt"
+  },
+  "AM": {
+   "nombre": 2,
+   "libelle": "approuvé, remboursement minoré"
+  },
+  "AR": {
+   "nombre": 58,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 2,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "DD": {
+   "nombre": 4,
+   "libelle": "dispense de dépôt"
+  },
+  "HD": {
+   "nombre": 2,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 2,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

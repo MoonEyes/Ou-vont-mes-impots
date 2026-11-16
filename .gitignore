@@ -3,3 +3,6 @@ __pycache__/
 schema_drift.md
 data/lake/
 *.part
+
+# Detail nominatif non publie (vie politique, beneficiaires) : jamais versionne
+data/processed/_restreint/

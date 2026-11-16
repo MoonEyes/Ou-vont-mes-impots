@@ -1,0 +1,37 @@
+{
+ "millesime": "Élection présidentielle de 2012 (comptes arrêtés par la CNCCFP)",
+ "source": "JORF du 30 janvier 2013, textes 94 à 103 : publication des décisions de la CNCCFP du 19 décembre 2012 relatives aux comptes de campagne de l'élection présidentielle des 22 avril et 6 mai 2012 (NOR CCCX1300001S), copie cnccfp.fr : https://cnccfp.fr/wp-content/uploads/2022/04/cnccfp_presidentielle_2012_jo_20130130.pdf",
+ "format_source": "PDF (Journal officiel), tableaux extraits par pdfplumber",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "presidentielle",
+ "annee": 2012,
+ "libelle": "Élection présidentielle de 2012",
+ "nombre_candidats": 9,
+ "nombre_comptes_avec_depenses": 9,
+ "depenses_totales_eur": 51653269.0,
+ "recettes_totales_eur": 52431525.0,
+ "apport_personnel_total_eur": 37961159.0,
+ "dons_totaux_eur": 3188560.0,
+ "remboursement_etat_total_eur": 36231946.0,
+ "comptes_rejetes": 0,
+ "comptes_non_deposes": 0,
+ "comptes_hors_delai": 0,
+ "dispenses_de_depot": 0,
+ "decisions": {
+  "approuvé après réformation": {
+   "nombre": 9,
+   "libelle": "code source non documenté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "2012 : un dixième compte, rejeté par la CNCCFP le 19 décembre 2012 puis objet d'un recours, n'est pas publié dans ce document (décision du Conseil constitutionnel n° 2013-156 PDR du 4 juillet 2013 : rejet confirmé, aucun remboursement). Non chiffré ici.",
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

@@ -1,0 +1,56 @@
+{
+ "millesime": "Élection des représentants au Parlement européen du 25 mai 2014 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-election-des-representants-au-parlement-europeen-du-25-mai-2014 », fichier publication_europeennes_2014_20160106180034.csv",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "europeennes",
+ "annee": 2014,
+ "libelle": "Élection des représentants au Parlement européen du 25 mai 2014",
+ "nombre_candidats": 193,
+ "nombre_comptes_avec_depenses": 99,
+ "depenses_totales_eur": 25415813.0,
+ "recettes_totales_eur": 26184205.0,
+ "apport_personnel_total_eur": 23011527.0,
+ "dons_totaux_eur": 501031.0,
+ "remboursement_etat_total_eur": 22231824.0,
+ "comptes_rejetes": 5,
+ "comptes_non_deposes": 0,
+ "comptes_hors_delai": 0,
+ "dispenses_de_depot": 88,
+ "decisions": {
+  "A": {
+   "nombre": 31,
+   "libelle": "approuvé"
+  },
+  "AR": {
+   "nombre": 51,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 10,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "ARM *": {
+   "nombre": 8,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "DD": {
+   "nombre": 88,
+   "libelle": "dispense de dépôt"
+  },
+  "R": {
+   "nombre": 5,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

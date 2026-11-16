@@ -1,0 +1,500 @@
+{
+ "millesime": "Élections législatives des 12 et 19 juin 2022 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-legislatives-generales-des-12-et-19-juin-2022 », fichier publications-2022-lg.csv",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "legislatives",
+ "annee": 2022,
+ "libelle": "Élections législatives des 12 et 19 juin 2022",
+ "nombre_candidats": 6292,
+ "nombre_comptes_avec_depenses": 4432,
+ "depenses_totales_eur": 61568670.24,
+ "recettes_totales_eur": 65265096.33,
+ "apport_personnel_total_eur": 47734935.87,
+ "dons_totaux_eur": 10705274.01,
+ "remboursement_etat_total_eur": 41265003.45,
+ "comptes_rejetes": 192,
+ "comptes_non_deposes": 136,
+ "comptes_hors_delai": 100,
+ "dispenses_de_depot": 993,
+ "decisions": {
+  "(vide)": {
+   "nombre": 2,
+   "libelle": "code source non documenté"
+  },
+  "A": {
+   "nombre": 3389,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 136,
+   "libelle": "absence de dépôt"
+  },
+  "AM": {
+   "nombre": 4,
+   "libelle": "approuvé, remboursement minoré"
+  },
+  "AR": {
+   "nombre": 823,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 381,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "ARR": {
+   "nombre": 102,
+   "libelle": "approuvé après réformation (variante de code de la source)"
+  },
+  "ARRM": {
+   "nombre": 4,
+   "libelle": "approuvé après réformation (variante de code de la source), remboursement minoré"
+  },
+  "ARRR": {
+   "nombre": 87,
+   "libelle": "approuvé après réformation (variante de code de la source)"
+  },
+  "ARRRM": {
+   "nombre": 79,
+   "libelle": "approuvé après réformation (variante de code de la source), remboursement minoré"
+  },
+  "DD": {
+   "nombre": 993,
+   "libelle": "dispense de dépôt"
+  },
+  "HD": {
+   "nombre": 100,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 192,
+   "libelle": "rejeté"
+  }
+ },
+ "par_nuance": [
+  {
+   "nuance": "ENS",
+   "nombre_candidats": 485,
+   "depenses_totales_eur": 14652006.33,
+   "apport_personnel_total_eur": 11474348.25,
+   "dons_totaux_eur": 2596067.55,
+   "remboursement_etat_total_eur": 10235944.63,
+   "comptes_rejetes": 2
+  },
+  {
+   "nuance": "LR",
+   "nombre_candidats": 451,
+   "depenses_totales_eur": 11818943.88,
+   "apport_personnel_total_eur": 8371421.55,
+   "dons_totaux_eur": 2904751.41,
+   "remboursement_etat_total_eur": 7141757.61,
+   "comptes_rejetes": 8
+  },
+  {
+   "nuance": "RN",
+   "nombre_candidats": 565,
+   "depenses_totales_eur": 5800689.52,
+   "apport_personnel_total_eur": 5841918.75,
+   "dons_totaux_eur": 125188.05,
+   "remboursement_etat_total_eur": 5443689.66,
+   "comptes_rejetes": 13
+  },
+  {
+   "nuance": "FI",
+   "nombre_candidats": 284,
+   "depenses_totales_eur": 5470551.0,
+   "apport_personnel_total_eur": 4662133.0,
+   "dons_totaux_eur": 428524.0,
+   "remboursement_etat_total_eur": 4349831.0,
+   "comptes_rejetes": 4
+  },
+  {
+   "nuance": "ECO",
+   "nombre_candidats": 798,
+   "depenses_totales_eur": 2605141.93,
+   "apport_personnel_total_eur": 2326776.81,
+   "dons_totaux_eur": 170513.0,
+   "remboursement_etat_total_eur": 2089584.0,
+   "comptes_rejetes": 44
+  },
+  {
+   "nuance": "SOC",
+   "nombre_candidats": 72,
+   "depenses_totales_eur": 1852543.0,
+   "apport_personnel_total_eur": 1500753.0,
+   "dons_totaux_eur": 290011.0,
+   "remboursement_etat_total_eur": 1379274.0,
+   "comptes_rejetes": 1
+  },
+  {
+   "nuance": "DVG",
+   "nombre_candidats": 329,
+   "depenses_totales_eur": 2701006.0,
+   "apport_personnel_total_eur": 1811459.0,
+   "dons_totaux_eur": 750123.0,
+   "remboursement_etat_total_eur": 1291939.0,
+   "comptes_rejetes": 17
+  },
+  {
+   "nuance": "DVD",
+   "nombre_candidats": 257,
+   "depenses_totales_eur": 2497867.5,
+   "apport_personnel_total_eur": 1707224.07,
+   "dons_totaux_eur": 742568.94,
+   "remboursement_etat_total_eur": 1238385.45,
+   "comptes_rejetes": 31
+  },
+  {
+   "nuance": "REC",
+   "nombre_candidats": 506,
+   "depenses_totales_eur": 2666205.0,
+   "apport_personnel_total_eur": 1473040.0,
+   "dons_totaux_eur": 354325.0,
+   "remboursement_etat_total_eur": 1147956.0,
+   "comptes_rejetes": 19
+  },
+  {
+   "nuance": "NUPES",
+   "nombre_candidats": 54,
+   "depenses_totales_eur": 1318073.0,
+   "apport_personnel_total_eur": 1150703.0,
+   "dons_totaux_eur": 115717.0,
+   "remboursement_etat_total_eur": 1100988.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "ENSEMBLE",
+   "nombre_candidats": 50,
+   "depenses_totales_eur": 1522717.0,
+   "apport_personnel_total_eur": 1200039.0,
+   "dons_totaux_eur": 282653.0,
+   "remboursement_etat_total_eur": 1078070.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "COM",
+   "nombre_candidats": 57,
+   "depenses_totales_eur": 1356397.0,
+   "apport_personnel_total_eur": 1083292.0,
+   "dons_totaux_eur": 163972.0,
+   "remboursement_etat_total_eur": 1045606.0,
+   "comptes_rejetes": 3
+  },
+  {
+   "nuance": "DVC",
+   "nombre_candidats": 204,
+   "depenses_totales_eur": 1744673.72,
+   "apport_personnel_total_eur": 1307742.57,
+   "dons_totaux_eur": 511131.24,
+   "remboursement_etat_total_eur": 755969.76,
+   "comptes_rejetes": 9
+  },
+  {
+   "nuance": "REG",
+   "nombre_candidats": 213,
+   "depenses_totales_eur": 1123500.05,
+   "apport_personnel_total_eur": 731324.87,
+   "dons_totaux_eur": 278164.92,
+   "remboursement_etat_total_eur": 660975.34,
+   "comptes_rejetes": 5
+  },
+  {
+   "nuance": "UDI",
+   "nombre_candidats": 76,
+   "depenses_totales_eur": 1286427.0,
+   "apport_personnel_total_eur": 820870.0,
+   "dons_totaux_eur": 324157.0,
+   "remboursement_etat_total_eur": 658515.0,
+   "comptes_rejetes": 3
+  },
+  {
+   "nuance": "LREM",
+   "nombre_candidats": 17,
+   "depenses_totales_eur": 451952.0,
+   "apport_personnel_total_eur": 367298.0,
+   "dons_totaux_eur": 71380.0,
+   "remboursement_etat_total_eur": 326552.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "LFI",
+   "nombre_candidats": 19,
+   "depenses_totales_eur": 303736.0,
+   "apport_personnel_total_eur": 293202.0,
+   "dons_totaux_eur": 17698.0,
+   "remboursement_etat_total_eur": 246508.0,
+   "comptes_rejetes": 2
+  },
+  {
+   "nuance": "RDG",
+   "nombre_candidats": 80,
+   "depenses_totales_eur": 529496.0,
+   "apport_personnel_total_eur": 363838.0,
+   "dons_totaux_eur": 153289.0,
+   "remboursement_etat_total_eur": 216125.0,
+   "comptes_rejetes": 5
+  },
+  {
+   "nuance": "DIV",
+   "nombre_candidats": 449,
+   "depenses_totales_eur": 471329.12,
+   "apport_personnel_total_eur": 379351.0,
+   "dons_totaux_eur": 161148.92,
+   "remboursement_etat_total_eur": 158485.0,
+   "comptes_rejetes": 19
+  },
+  {
+   "nuance": "PS",
+   "nombre_candidats": 7,
+   "depenses_totales_eur": 156825.0,
+   "apport_personnel_total_eur": 142292.0,
+   "dons_totaux_eur": 25991.0,
+   "remboursement_etat_total_eur": 118087.0,
+   "comptes_rejetes": 1
+  },
+  {
+   "nuance": "NUP",
+   "nombre_candidats": 7,
+   "depenses_totales_eur": 141760.0,
+   "apport_personnel_total_eur": 119841.0,
+   "dons_totaux_eur": 10640.0,
+   "remboursement_etat_total_eur": 114968.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "RECONQUETE",
+   "nombre_candidats": 39,
+   "depenses_totales_eur": 219277.0,
+   "apport_personnel_total_eur": 118202.0,
+   "dons_totaux_eur": 28140.0,
+   "remboursement_etat_total_eur": 109323.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "PCF",
+   "nombre_candidats": 6,
+   "depenses_totales_eur": 140653.0,
+   "apport_personnel_total_eur": 125970.0,
+   "dons_totaux_eur": 59.0,
+   "remboursement_etat_total_eur": 81434.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "nupes",
+   "nombre_candidats": 3,
+   "depenses_totales_eur": 83162.0,
+   "apport_personnel_total_eur": 68564.0,
+   "dons_totaux_eur": 2286.0,
+   "remboursement_etat_total_eur": 63840.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "SE",
+   "nombre_candidats": 4,
+   "depenses_totales_eur": 171050.0,
+   "apport_personnel_total_eur": 68432.0,
+   "dons_totaux_eur": 107457.0,
+   "remboursement_etat_total_eur": 60418.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "MODEM",
+   "nombre_candidats": 3,
+   "depenses_totales_eur": 60888.0,
+   "apport_personnel_total_eur": 51970.0,
+   "dons_totaux_eur": 14750.0,
+   "remboursement_etat_total_eur": 39251.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "7",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 46488.0,
+   "apport_personnel_total_eur": 42600.0,
+   "dons_totaux_eur": 3525.0,
+   "remboursement_etat_total_eur": 34066.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "DLF",
+   "nombre_candidats": 29,
+   "depenses_totales_eur": 69824.0,
+   "apport_personnel_total_eur": 35142.0,
+   "dons_totaux_eur": 10590.0,
+   "remboursement_etat_total_eur": 32921.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "DXG",
+   "nombre_candidats": 667,
+   "depenses_totales_eur": 98589.0,
+   "apport_personnel_total_eur": 32406.0,
+   "dons_totaux_eur": 36487.0,
+   "remboursement_etat_total_eur": 18352.0,
+   "comptes_rejetes": 2
+  },
+  {
+   "nuance": "DSV",
+   "nombre_candidats": 384,
+   "depenses_totales_eur": 99324.19,
+   "apport_personnel_total_eur": 19871.0,
+   "dons_totaux_eur": 12088.98,
+   "remboursement_etat_total_eur": 12210.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "(non renseignée)",
+   "nombre_candidats": 22,
+   "depenses_totales_eur": 22301.0,
+   "apport_personnel_total_eur": 10800.0,
+   "dons_totaux_eur": 261.0,
+   "remboursement_etat_total_eur": 9668.0,
+   "comptes_rejetes": 1
+  },
+  {
+   "nuance": "fi",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 7275.0,
+   "apport_personnel_total_eur": 6000.0,
+   "dons_totaux_eur": 2200.0,
+   "remboursement_etat_total_eur": 4310.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "DXD",
+   "nombre_candidats": 27,
+   "depenses_totales_eur": 34874.0,
+   "apport_personnel_total_eur": 7559.0,
+   "dons_totaux_eur": 1720.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "lutte ouvriere",
+   "nombre_candidats": 28,
+   "depenses_totales_eur": 2052.0,
+   "apport_personnel_total_eur": 4.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Animaliste",
+   "nombre_candidats": 58,
+   "depenses_totales_eur": 3549.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Parti  ouvrier indépendant démocratique",
+   "nombre_candidats": 6,
+   "depenses_totales_eur": 2886.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 632.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "ECOLO/CENTRE",
+   "nombre_candidats": 9,
+   "depenses_totales_eur": 2873.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 1
+  },
+  {
+   "nuance": "PRG",
+   "nombre_candidats": 2,
+   "depenses_totales_eur": 6405.0,
+   "apport_personnel_total_eur": 5296.0,
+   "dons_totaux_eur": 1000.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 1
+  },
+  {
+   "nuance": "LO",
+   "nombre_candidats": 6,
+   "depenses_totales_eur": 744.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "POID",
+   "nombre_candidats": 7,
+   "depenses_totales_eur": 1736.0,
+   "apport_personnel_total_eur": 212.0,
+   "dons_totaux_eur": 464.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "RESISTONS",
+   "nombre_candidats": 4,
+   "depenses_totales_eur": 0.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 1
+  },
+  {
+   "nuance": "RPDC",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 22818.0,
+   "apport_personnel_total_eur": 13040.0,
+   "dons_totaux_eur": 5600.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "0",
+   "nombre_candidats": 2,
+   "depenses_totales_eur": 0.0,
+   "apport_personnel_total_eur": null,
+   "dons_totaux_eur": null,
+   "remboursement_etat_total_eur": null,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "LMR",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 0.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "RPS",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 0.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "animaliste",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 62.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  }
+ ],
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "Montants en francs CFP convertis en euros (1 000 F CFP = 8,38 €)."
+ ]
+}

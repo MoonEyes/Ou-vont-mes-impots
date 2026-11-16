@@ -1,0 +1,298 @@
+{
+ "millesime": "Élection des représentants au Parlement européen du 26 mai 2019 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-election-des-representants-au-parlement-europeen-du-26-mai-2019 », fichier publication-comptes-eg2019.xlsx",
+ "unite": "euros",
+ "scrutin": "europeennes",
+ "annee": 2019,
+ "champs": [
+  "candidat",
+  "nuance",
+  "circonscription",
+  "depenses_eur",
+  "recettes_eur",
+  "apport_personnel_eur",
+  "dons_eur",
+  "remboursement_eur",
+  "decision",
+  "reference"
+ ],
+ "candidats": [
+  {
+   "candidat": "ALEXANDRE Audric",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 6554.0,
+   "recettes_eur": 16546.0,
+   "apport_personnel_eur": 1901.0,
+   "dons_eur": 11645.0,
+   "remboursement_eur": 0.0,
+   "decision": "HD"
+  },
+  {
+   "candidat": "ARTHAUD Nathalie",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 303037.0,
+   "recettes_eur": 309078.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 67133.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "ASSELINEAU François",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 769207.0,
+   "recettes_eur": 769207.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "AUBRY Manon",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 5207618.0,
+   "recettes_eur": 5243493.0,
+   "apport_personnel_eur": 4261156.0,
+   "dons_eur": 625408.0,
+   "remboursement_eur": 4225281.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "AZERGUI Nagib",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "AD"
+  },
+  {
+   "candidat": "BARDELLA Jordan",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 3447383.0,
+   "recettes_eur": 3831622.0,
+   "apport_personnel_eur": 3758897.0,
+   "dons_eur": 3750.0,
+   "remboursement_eur": 3374658.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BELLAMY François-Xavier (*)",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 5361232.0,
+   "recettes_eur": 5361232.0,
+   "apport_personnel_eur": 3418530.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 3418530.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BIDOU Olivier",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "AD"
+  },
+  {
+   "candidat": "BOURG Dominique",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 19047.0,
+   "recettes_eur": 24928.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 7340.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BROSSAT Ian",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 1259788.0,
+   "recettes_eur": 1267002.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 11515.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "CAILLAUD Sophie",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "CAMUS Renaud",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 1901.0,
+   "recettes_eur": 2097.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 2097.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "CHALENÇON Christophe",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "CORBET Cathy",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "DE PREVOISIN Robert",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "DELFEL Thérèse",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "DIEUMEGARD Pierre",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "DUPONT-AIGNAN Nicolas (*)",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 3094253.0,
+   "recettes_eur": 3108626.0,
+   "apport_personnel_eur": 3020809.0,
+   "dons_eur": 15156.0,
+   "remboursement_eur": 3001436.0,
+   "decision": "ARM"
+  },
+  {
+   "candidat": "GERNIGON Yves",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "GLUCKSMANN Raphaël (*)",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 4714902.0,
+   "recettes_eur": 4734411.0,
+   "apport_personnel_eur": 4162683.0,
+   "dons_eur": 4690.0,
+   "remboursement_eur": 4138174.0,
+   "decision": "ARM"
+  },
+  {
+   "candidat": "HAMON Benoît",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 680808.0,
+   "recettes_eur": 682383.0,
+   "apport_personnel_eur": 622698.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 616123.0,
+   "decision": "ARM"
+  },
+  {
+   "candidat": "HELGEN Gilles",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "AD"
+  },
+  {
+   "candidat": "JADOT Yannick (*)",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 2756502.0,
+   "recettes_eur": 3324506.0,
+   "apport_personnel_eur": 3219992.0,
+   "dons_eur": 21310.0,
+   "remboursement_eur": 2651988.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "LAGARDE Jean-Christophe",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 1704358.0,
+   "recettes_eur": 1790590.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "LALANNE Francis",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "LOISEAU Nathalie (*)",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 6707045.0,
+   "recettes_eur": 6802807.0,
+   "apport_personnel_eur": 4646684.0,
+   "dons_eur": 59674.0,
+   "remboursement_eur": 4320000.0,
+   "decision": "ARM"
+  },
+  {
+   "candidat": "MARIE Florie",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "PERSON Christian Luc",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 9.0,
+   "recettes_eur": 100.0,
+   "apport_personnel_eur": 100.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "PHILIPPOT Florian",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "SANCHEZ Antonio",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "THOUY Hélène",
+   "circonscription": "Nationale (intérieur)",
+   "depenses_eur": 51532.0,
+   "recettes_eur": 52623.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "TOMASINI Nathalie",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "TRAORÉ Hadama",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "VAUCLIN Vincent",
+   "circonscription": "Nationale (intérieur)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  }
+ ],
+ "regle": "Exception limitée aux candidats, pour les comptes de campagne publiés par la CNCCFP ou au Journal officiel : nom, nuance, circonscription, montants, décision. Ni adresse, ni date de naissance, ni donateur, ni mandataire financier."
+}

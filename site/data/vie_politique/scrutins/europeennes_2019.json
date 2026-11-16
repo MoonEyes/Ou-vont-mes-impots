@@ -1,0 +1,60 @@
+{
+ "millesime": "Élection des représentants au Parlement européen du 26 mai 2019 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-election-des-representants-au-parlement-europeen-du-26-mai-2019 », fichier publication-comptes-eg2019.xlsx",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "europeennes",
+ "annee": 2019,
+ "libelle": "Élection des représentants au Parlement européen du 26 mai 2019",
+ "nombre_candidats": 34,
+ "nombre_comptes_avec_depenses": 17,
+ "depenses_totales_eur": 36085176.0,
+ "recettes_totales_eur": 37321251.0,
+ "apport_personnel_total_eur": 27113450.0,
+ "dons_totaux_eur": 829718.0,
+ "remboursement_etat_total_eur": 25746190.0,
+ "comptes_rejetes": 1,
+ "comptes_non_deposes": 3,
+ "comptes_hors_delai": 1,
+ "dispenses_de_depot": 13,
+ "decisions": {
+  "A": {
+   "nombre": 4,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 3,
+   "libelle": "absence de dépôt"
+  },
+  "AR": {
+   "nombre": 8,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 4,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "DD": {
+   "nombre": 13,
+   "libelle": "dispense de dépôt"
+  },
+  "HD": {
+   "nombre": 1,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 1,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

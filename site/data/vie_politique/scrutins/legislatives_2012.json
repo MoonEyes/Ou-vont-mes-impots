@@ -1,0 +1,73 @@
+{
+ "millesime": "Élections législatives des 10 et 17 juin 2012 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « tableau-general-des-elections-legislatives-des-10-et-17-juin-2012 », fichier publication-comptes-2012-20140109182525.csv",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "legislatives",
+ "annee": 2012,
+ "libelle": "Élections législatives des 10 et 17 juin 2012",
+ "nombre_candidats": 6603,
+ "nombre_comptes_avec_depenses": 3756,
+ "depenses_totales_eur": 77512708.76,
+ "recettes_totales_eur": 80084699.09,
+ "apport_personnel_total_eur": 56334266.79,
+ "dons_totaux_eur": 13712953.27,
+ "remboursement_etat_total_eur": 49136626.38,
+ "comptes_rejetes": 95,
+ "comptes_non_deposes": 109,
+ "comptes_hors_delai": 31,
+ "dispenses_de_depot": 0,
+ "decisions": {
+  "---": {
+   "nombre": 2221,
+   "libelle": "non renseigné dans la source"
+  },
+  "A": {
+   "nombre": 2052,
+   "libelle": "approuvé"
+  },
+  "A *": {
+   "nombre": 6,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 109,
+   "libelle": "absence de dépôt"
+  },
+  "AM": {
+   "nombre": 5,
+   "libelle": "approuvé, remboursement minoré"
+  },
+  "AR": {
+   "nombre": 2027,
+   "libelle": "approuvé après réformation"
+  },
+  "AR *": {
+   "nombre": 40,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 17,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "HD": {
+   "nombre": 31,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 95,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "Montants en francs CFP convertis en euros (1 000 F CFP = 8,38 €).",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

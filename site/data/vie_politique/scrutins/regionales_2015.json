@@ -1,0 +1,56 @@
+{
+ "millesime": "Élections régionales des 6 et 13 décembre 2015 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « elections-regionales-des-6-et-13-decembre-2015 », fichier publication_regionales_2015_20161024120639.csv",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "regionales",
+ "annee": 2015,
+ "libelle": "Élections régionales des 6 et 13 décembre 2015",
+ "nombre_candidats": 171,
+ "nombre_comptes_avec_depenses": 153,
+ "depenses_totales_eur": 45839570.0,
+ "recettes_totales_eur": 46699763.0,
+ "apport_personnel_total_eur": 33976378.0,
+ "dons_totaux_eur": 5500546.0,
+ "remboursement_etat_total_eur": 32526701.0,
+ "comptes_rejetes": 5,
+ "comptes_non_deposes": 2,
+ "comptes_hors_delai": 0,
+ "dispenses_de_depot": 13,
+ "decisions": {
+  "A": {
+   "nombre": 38,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 2,
+   "libelle": "absence de dépôt"
+  },
+  "AR": {
+   "nombre": 106,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 7,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "DD": {
+   "nombre": 13,
+   "libelle": "dispense de dépôt"
+  },
+  "R": {
+   "nombre": 5,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

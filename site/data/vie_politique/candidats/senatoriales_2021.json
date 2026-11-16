@@ -1,0 +1,114 @@
+{
+ "millesime": "Élections sénatoriales partielles du 26 septembre 2021 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « elections-senatoriales-des-27-septembre-2020-et-26-septembre-2021 », fichier sg21.xlsx",
+ "unite": "euros",
+ "scrutin": "senatoriales",
+ "annee": 2021,
+ "champs": [
+  "candidat",
+  "nuance",
+  "circonscription",
+  "depenses_eur",
+  "recettes_eur",
+  "apport_personnel_eur",
+  "dons_eur",
+  "remboursement_eur",
+  "decision",
+  "reference"
+ ],
+ "candidats": [
+  {
+   "candidat": "BANSARD Jean-Pierre",
+   "circonscription": "Français de l'étranger (Paris)",
+   "depenses_eur": 23343.0,
+   "recettes_eur": 29302.0,
+   "apport_personnel_eur": 29302.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 8355.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "CADIC Olivier",
+   "circonscription": "Français de l'étranger (Paris)",
+   "depenses_eur": 8619.0,
+   "recettes_eur": 9582.0,
+   "apport_personnel_eur": 5582.0,
+   "dons_eur": 4000.0,
+   "remboursement_eur": 4328.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "CAZEBONNE Samantha",
+   "circonscription": "Français de l'étranger (Paris)",
+   "depenses_eur": 16330.0,
+   "recettes_eur": 21035.0,
+   "apport_personnel_eur": 11952.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 4647.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "CHANTREL Yan",
+   "circonscription": "Français de l'étranger (Paris)",
+   "depenses_eur": 6145.0,
+   "recettes_eur": 6377.0,
+   "apport_personnel_eur": 5441.0,
+   "dons_eur": 500.0,
+   "remboursement_eur": 2108.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "DE SINZOGAN Jean-Damien",
+   "circonscription": "Français de l'étranger (Paris)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "FRASSA Christophe-André",
+   "circonscription": "Français de l'étranger (Paris)",
+   "depenses_eur": 7966.0,
+   "recettes_eur": 10086.0,
+   "apport_personnel_eur": 9700.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 7580.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "PALLEZ Laure",
+   "circonscription": "Français de l'étranger (Paris)",
+   "depenses_eur": 4449.0,
+   "recettes_eur": 4842.0,
+   "apport_personnel_eur": 3200.0,
+   "dons_eur": 1442.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "ROYAL SégolÃ¨ne",
+   "circonscription": "Français de l'étranger (Paris)",
+   "depenses_eur": 4899.0,
+   "recettes_eur": 4918.0,
+   "apport_personnel_eur": 4918.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "VOGEL Mélanie",
+   "circonscription": "Français de l'étranger (Paris)",
+   "depenses_eur": 10859.0,
+   "recettes_eur": 14807.0,
+   "apport_personnel_eur": 14807.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 10355.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "YOUSSEF Jérome",
+   "circonscription": "Français de l'étranger (Paris)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  }
+ ],
+ "regle": "Exception limitée aux candidats, pour les comptes de campagne publiés par la CNCCFP ou au Journal officiel : nom, nuance, circonscription, montants, décision. Ni adresse, ni date de naissance, ni donateur, ni mandataire financier."
+}

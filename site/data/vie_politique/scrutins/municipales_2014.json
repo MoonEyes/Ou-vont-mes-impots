@@ -1,0 +1,81 @@
+{
+ "millesime": "Élections municipales des 23 et 30 mars 2014 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-municipales-des-23-et-30-mars-2014 », fichier publication_municipales_2014_20160106175601.csv",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "municipales",
+ "annee": 2014,
+ "libelle": "Élections municipales des 23 et 30 mars 2014",
+ "nombre_candidats": 4794,
+ "nombre_comptes_avec_depenses": 4634,
+ "depenses_totales_eur": 100315765.47,
+ "recettes_totales_eur": 103608843.38,
+ "apport_personnel_total_eur": 71432977.69,
+ "dons_totaux_eur": 22031029.36,
+ "remboursement_etat_total_eur": 62888952.61,
+ "comptes_rejetes": 182,
+ "comptes_non_deposes": 73,
+ "comptes_hors_delai": 31,
+ "dispenses_de_depot": 46,
+ "decisions": {
+  "A": {
+   "nombre": 1964,
+   "libelle": "approuvé"
+  },
+  "A *": {
+   "nombre": 9,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 73,
+   "libelle": "absence de dépôt"
+  },
+  "AM": {
+   "nombre": 12,
+   "libelle": "approuvé, remboursement minoré"
+  },
+  "AR": {
+   "nombre": 2395,
+   "libelle": "approuvé après réformation"
+  },
+  "AR *": {
+   "nombre": 35,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 46,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "ARM *": {
+   "nombre": 1,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "DD": {
+   "nombre": 46,
+   "libelle": "dispense de dépôt"
+  },
+  "HD": {
+   "nombre": 31,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 180,
+   "libelle": "rejeté"
+  },
+  "R *": {
+   "nombre": 2,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "Montants en francs CFP convertis en euros (1 000 F CFP = 8,38 €).",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

@@ -1,0 +1,563 @@
+{
+ "millesime": "Élections législatives anticipées des 30 juin et 7 juillet 2024 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « elections-legislatives-generales-des-30-juin-et-7-juillet-2024 », fichier comptes-campagne-legislatives-2024.csv",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "legislatives",
+ "annee": 2024,
+ "libelle": "Élections législatives anticipées des 30 juin et 7 juillet 2024",
+ "nombre_candidats": 4010,
+ "nombre_comptes_avec_depenses": 2702,
+ "depenses_totales_eur": 29134613.77,
+ "recettes_totales_eur": 31814600.28,
+ "apport_personnel_total_eur": 24153615.62,
+ "dons_totaux_eur": 4292024.83,
+ "remboursement_etat_total_eur": 21236483.15,
+ "comptes_rejetes": 85,
+ "comptes_non_deposes": 57,
+ "comptes_hors_delai": 35,
+ "dispenses_de_depot": 813,
+ "decisions": {
+  "A": {
+   "nombre": 1836,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 57,
+   "libelle": "absence de dépôt"
+  },
+  "AM": {
+   "nombre": 9,
+   "libelle": "approuvé, remboursement minoré"
+  },
+  "AR": {
+   "nombre": 1020,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 120,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "ARR": {
+   "nombre": 18,
+   "libelle": "approuvé après réformation (variante de code de la source)"
+  },
+  "ARRR": {
+   "nombre": 12,
+   "libelle": "approuvé après réformation (variante de code de la source)"
+  },
+  "ARRRM": {
+   "nombre": 5,
+   "libelle": "approuvé après réformation (variante de code de la source), remboursement minoré"
+  },
+  "DD": {
+   "nombre": 813,
+   "libelle": "dispense de dépôt"
+  },
+  "HD": {
+   "nombre": 35,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 85,
+   "libelle": "rejeté"
+  }
+ },
+ "par_nuance": [
+  {
+   "nuance": "Union de la gauche",
+   "nombre_candidats": 457,
+   "depenses_totales_eur": 7890563.0,
+   "apport_personnel_total_eur": 7103092.0,
+   "dons_totaux_eur": 443267.0,
+   "remboursement_etat_total_eur": 6331416.0,
+   "comptes_rejetes": 4
+  },
+  {
+   "nuance": "Ensemble ! (Majorité présidentielle)",
+   "nombre_candidats": 422,
+   "depenses_totales_eur": 6347143.99,
+   "apport_personnel_total_eur": 4932231.92,
+   "dons_totaux_eur": 1408056.0,
+   "remboursement_etat_total_eur": 4219664.9,
+   "comptes_rejetes": 5
+  },
+  {
+   "nuance": "Rassemblement National",
+   "nombre_candidats": 476,
+   "depenses_totales_eur": 4244907.74,
+   "apport_personnel_total_eur": 4009265.16,
+   "dons_totaux_eur": 133539.35,
+   "remboursement_etat_total_eur": 3803613.53,
+   "comptes_rejetes": 3
+  },
+  {
+   "nuance": "Les Républicains",
+   "nombre_candidats": 299,
+   "depenses_totales_eur": 3002716.0,
+   "apport_personnel_total_eur": 2124511.0,
+   "dons_totaux_eur": 817359.0,
+   "remboursement_etat_total_eur": 1843085.0,
+   "comptes_rejetes": 4
+  },
+  {
+   "nuance": "Divers droite",
+   "nombre_candidats": 183,
+   "depenses_totales_eur": 1407107.08,
+   "apport_personnel_total_eur": 1067260.48,
+   "dons_totaux_eur": 484805.72,
+   "remboursement_etat_total_eur": 822920.92,
+   "comptes_rejetes": 5
+  },
+  {
+   "nuance": "Union de l'extrême droite",
+   "nombre_candidats": 56,
+   "depenses_totales_eur": 833492.0,
+   "apport_personnel_total_eur": 724045.0,
+   "dons_totaux_eur": 128825.0,
+   "remboursement_etat_total_eur": 656658.0,
+   "comptes_rejetes": 1
+  },
+  {
+   "nuance": "NFP",
+   "nombre_candidats": 47,
+   "depenses_totales_eur": 755352.0,
+   "apport_personnel_total_eur": 712230.0,
+   "dons_totaux_eur": 32532.0,
+   "remboursement_etat_total_eur": 621795.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Divers gauche",
+   "nombre_candidats": 136,
+   "depenses_totales_eur": 878043.0,
+   "apport_personnel_total_eur": 669218.0,
+   "dons_totaux_eur": 175426.0,
+   "remboursement_etat_total_eur": 532033.0,
+   "comptes_rejetes": 3
+  },
+  {
+   "nuance": "Divers centre",
+   "nombre_candidats": 144,
+   "depenses_totales_eur": 785876.01,
+   "apport_personnel_total_eur": 624595.77,
+   "dons_totaux_eur": 141355.4,
+   "remboursement_etat_total_eur": 524930.73,
+   "comptes_rejetes": 2
+  },
+  {
+   "nuance": "Parti socialiste",
+   "nombre_candidats": 20,
+   "depenses_totales_eur": 307596.0,
+   "apport_personnel_total_eur": 266757.0,
+   "dons_totaux_eur": 39953.0,
+   "remboursement_etat_total_eur": 226416.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Horizons",
+   "nombre_candidats": 16,
+   "depenses_totales_eur": 278474.0,
+   "apport_personnel_total_eur": 232855.0,
+   "dons_totaux_eur": 43620.0,
+   "remboursement_etat_total_eur": 218039.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Extrême droite",
+   "nombre_candidats": 44,
+   "depenses_totales_eur": 220083.0,
+   "apport_personnel_total_eur": 203346.0,
+   "dons_totaux_eur": 8500.0,
+   "remboursement_etat_total_eur": 193515.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Régionaliste",
+   "nombre_candidats": 132,
+   "depenses_totales_eur": 446718.38,
+   "apport_personnel_total_eur": 168555.54,
+   "dons_totaux_eur": 87773.46,
+   "remboursement_etat_total_eur": 146418.0,
+   "comptes_rejetes": 1
+  },
+  {
+   "nuance": "Union des Démocrates et Indépendants",
+   "nombre_candidats": 33,
+   "depenses_totales_eur": 174922.0,
+   "apport_personnel_total_eur": 147047.0,
+   "dons_totaux_eur": 14341.0,
+   "remboursement_etat_total_eur": 129598.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "RENAISSANCE",
+   "nombre_candidats": 10,
+   "depenses_totales_eur": 152232.0,
+   "apport_personnel_total_eur": 131021.0,
+   "dons_totaux_eur": 9250.0,
+   "remboursement_etat_total_eur": 122838.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "(non renseignée)",
+   "nombre_candidats": 18,
+   "depenses_totales_eur": 137965.0,
+   "apport_personnel_total_eur": 135467.0,
+   "dons_totaux_eur": 10520.0,
+   "remboursement_etat_total_eur": 118601.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Ensemble pour la république",
+   "nombre_candidats": 8,
+   "depenses_totales_eur": 107895.0,
+   "apport_personnel_total_eur": 104164.0,
+   "dons_totaux_eur": 10700.0,
+   "remboursement_etat_total_eur": 85912.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Ecologistes",
+   "nombre_candidats": 138,
+   "depenses_totales_eur": 151028.73,
+   "apport_personnel_total_eur": 124357.0,
+   "dons_totaux_eur": 8012.9,
+   "remboursement_etat_total_eur": 79795.0,
+   "comptes_rejetes": 2
+  },
+  {
+   "nuance": "NFP-LFI",
+   "nombre_candidats": 10,
+   "depenses_totales_eur": 95731.0,
+   "apport_personnel_total_eur": 85946.0,
+   "dons_totaux_eur": 3625.0,
+   "remboursement_etat_total_eur": 78492.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "La France insoumise",
+   "nombre_candidats": 8,
+   "depenses_totales_eur": 86777.0,
+   "apport_personnel_total_eur": 76773.0,
+   "dons_totaux_eur": 3502.0,
+   "remboursement_etat_total_eur": 73175.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "NOUVEAU FROND POPULAIRE",
+   "nombre_candidats": 4,
+   "depenses_totales_eur": 52995.0,
+   "apport_personnel_total_eur": 49607.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 45531.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Divers",
+   "nombre_candidats": 214,
+   "depenses_totales_eur": 125775.0,
+   "apport_personnel_total_eur": 107281.0,
+   "dons_totaux_eur": 73044.0,
+   "remboursement_etat_total_eur": 43807.0,
+   "comptes_rejetes": 5
+  },
+  {
+   "nuance": "Les Ecologistes",
+   "nombre_candidats": 3,
+   "depenses_totales_eur": 40794.0,
+   "apport_personnel_total_eur": 39684.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 37854.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Droite souverainiste",
+   "nombre_candidats": 113,
+   "depenses_totales_eur": 61925.0,
+   "apport_personnel_total_eur": 33550.0,
+   "dons_totaux_eur": 14385.0,
+   "remboursement_etat_total_eur": 32657.0,
+   "comptes_rejetes": 1
+  },
+  {
+   "nuance": "Libres",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 38055.0,
+   "apport_personnel_total_eur": 31500.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 31130.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "UXD",
+   "nombre_candidats": 2,
+   "depenses_totales_eur": 30791.0,
+   "apport_personnel_total_eur": 30791.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 30791.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "RN",
+   "nombre_candidats": 4,
+   "depenses_totales_eur": 29510.0,
+   "apport_personnel_total_eur": 28129.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 28129.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Ecologiste",
+   "nombre_candidats": 4,
+   "depenses_totales_eur": 34220.0,
+   "apport_personnel_total_eur": 27395.0,
+   "dons_totaux_eur": 2596.0,
+   "remboursement_etat_total_eur": 27237.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "droite",
+   "nombre_candidats": 2,
+   "depenses_totales_eur": 27719.84,
+   "apport_personnel_total_eur": 23678.75,
+   "dons_totaux_eur": 3514.0,
+   "remboursement_etat_total_eur": 20895.07,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "ENSEMBLE",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 24095.0,
+   "apport_personnel_total_eur": 20146.0,
+   "dons_totaux_eur": 2150.0,
+   "remboursement_etat_total_eur": 20141.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Choisir une nuance déjÃ  enregistrée...",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 21401.0,
+   "apport_personnel_total_eur": 19562.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 19124.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Parti communiste français",
+   "nombre_candidats": 2,
+   "depenses_totales_eur": 15879.0,
+   "apport_personnel_total_eur": 14853.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 14753.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Parti radical de gauche",
+   "nombre_candidats": 4,
+   "depenses_totales_eur": 21108.0,
+   "apport_personnel_total_eur": 17860.0,
+   "dons_totaux_eur": 3160.0,
+   "remboursement_etat_total_eur": 12240.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "LR",
+   "nombre_candidats": 2,
+   "depenses_totales_eur": 8261.0,
+   "apport_personnel_total_eur": 7172.0,
+   "dons_totaux_eur": 150.0,
+   "remboursement_etat_total_eur": 7172.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "uxd",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 11288.0,
+   "apport_personnel_total_eur": 6888.0,
+   "dons_totaux_eur": 4400.0,
+   "remboursement_etat_total_eur": 6888.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "RASSEMBLEMENT NATIONAL",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 7837.0,
+   "apport_personnel_total_eur": 6873.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 6873.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "A droi",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 6867.0,
+   "apport_personnel_total_eur": 7137.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 6867.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "ENS-REN",
+   "nombre_candidats": 2,
+   "depenses_totales_eur": 6962.0,
+   "apport_personnel_total_eur": 5146.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 5133.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "DVC",
+   "nombre_candidats": 2,
+   "depenses_totales_eur": 7958.0,
+   "apport_personnel_total_eur": 5000.0,
+   "dons_totaux_eur": 3400.0,
+   "remboursement_etat_total_eur": 4558.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Les Républicainnss",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 2571.0,
+   "apport_personnel_total_eur": 4000.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 2571.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Lutte ouvriere",
+   "nombre_candidats": 25,
+   "depenses_totales_eur": 5667.0,
+   "apport_personnel_total_eur": 1818.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 1818.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Rassemblement Nationalnt National",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 1133.0,
+   "apport_personnel_total_eur": 1010.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 1010.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Les Ecologistess",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 1386.0,
+   "apport_personnel_total_eur": 400.0,
+   "dons_totaux_eur": 880.0,
+   "remboursement_etat_total_eur": 242.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Extrême gauche",
+   "nombre_candidats": 624,
+   "depenses_totales_eur": 54175.0,
+   "apport_personnel_total_eur": 353.0,
+   "dons_totaux_eur": 13137.0,
+   "remboursement_etat_total_eur": 146.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Reconquête !",
+   "nombre_candidats": 312,
+   "depenses_totales_eur": 43920.0,
+   "apport_personnel_total_eur": 17165.0,
+   "dons_totaux_eur": 23231.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 48
+  },
+  {
+   "nuance": "Reconquête",
+   "nombre_candidats": 9,
+   "depenses_totales_eur": 1988.0,
+   "apport_personnel_total_eur": 375.0,
+   "dons_totaux_eur": 1630.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "EG",
+   "nombre_candidats": 3,
+   "depenses_totales_eur": 144.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "Extrême gauchee",
+   "nombre_candidats": 2,
+   "depenses_totales_eur": 163.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "LE MOUVEMENT POUR LES ANIMAUX",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 0.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "EQUINOXE",
+   "nombre_candidats": 4,
+   "depenses_totales_eur": 418.0,
+   "apport_personnel_total_eur": 4.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 1
+  },
+  {
+   "nuance": "Mouvement pour les animaux",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 0.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "DIVERS CENTRE",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": 2006.0,
+   "apport_personnel_total_eur": 0.0,
+   "dons_totaux_eur": 0.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "extrême gauche",
+   "nombre_candidats": 1,
+   "depenses_totales_eur": null,
+   "apport_personnel_total_eur": null,
+   "dons_totaux_eur": null,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  },
+  {
+   "nuance": "REG",
+   "nombre_candidats": 3,
+   "depenses_totales_eur": 142979.0,
+   "apport_personnel_total_eur": 3500.0,
+   "dons_totaux_eur": 141385.0,
+   "remboursement_etat_total_eur": 0.0,
+   "comptes_rejetes": 0
+  }
+ ],
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante."
+ ]
+}

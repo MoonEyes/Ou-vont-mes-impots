@@ -1,0 +1,143 @@
+{
+ "millesime": "Élection présidentielle de 2017 (comptes arrêtés par la CNCCFP)",
+ "source": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr : https://cnccfp.fr/wp-content/uploads/2022/04/De%CC%81cisions_pre%CC%81sidentielle_2017.pdf",
+ "unite": "euros",
+ "scrutin": "presidentielle",
+ "annee": 2017,
+ "champs": [
+  "candidat",
+  "nuance",
+  "circonscription",
+  "depenses_eur",
+  "recettes_eur",
+  "apport_personnel_eur",
+  "dons_eur",
+  "remboursement_eur",
+  "decision",
+  "reference"
+ ],
+ "candidats": [
+  {
+   "candidat": "Nicolas DUPONT-AIGNAN",
+   "circonscription": "France entière",
+   "depenses_eur": 1806590.0,
+   "recettes_eur": 1825164.0,
+   "apport_personnel_eur": 833097.0,
+   "dons_eur": 470371.0,
+   "remboursement_eur": 800423.0,
+   "decision": "approuvé après réformation",
+   "reference": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr, PDF presidentielle_2017_decisions.pdf, décision p. 2, article 2 p. 4"
+  },
+  {
+   "candidat": "Marine LE PEN",
+   "circonscription": "France entière",
+   "depenses_eur": 11542991.0,
+   "recettes_eur": 11664038.0,
+   "apport_personnel_eur": 10927209.0,
+   "dons_eur": 43435.0,
+   "remboursement_eur": 10691775.0,
+   "decision": "approuvé après réformation",
+   "reference": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr, PDF presidentielle_2017_decisions.pdf, décision p. 5, article 2 p. 8"
+  },
+  {
+   "candidat": "Emmanuel MACRON",
+   "circonscription": "France entière",
+   "depenses_eur": 16578781.0,
+   "recettes_eur": 16702371.0,
+   "apport_personnel_eur": 10782684.0,
+   "dons_eur": 1016758.0,
+   "remboursement_eur": 10640794.0,
+   "decision": "approuvé après réformation",
+   "reference": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr, PDF presidentielle_2017_decisions.pdf, décision p. 9, article 2 p. 11"
+  },
+  {
+   "candidat": "Benoît HAMON",
+   "circonscription": "France entière",
+   "depenses_eur": 15008634.0,
+   "recettes_eur": 15154538.0,
+   "apport_personnel_eur": 8094947.0,
+   "dons_eur": 160271.0,
+   "remboursement_eur": 7949043.0,
+   "decision": "approuvé après réformation",
+   "reference": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr, PDF presidentielle_2017_decisions.pdf, décision p. 12, article 2 p. 14"
+  },
+  {
+   "candidat": "Nathalie ARTHAUD",
+   "circonscription": "France entière",
+   "depenses_eur": 956121.0,
+   "recettes_eur": 959286.0,
+   "apport_personnel_eur": 860884.0,
+   "dons_eur": 52307.0,
+   "remboursement_eur": 800423.0,
+   "decision": "approuvé après réformation",
+   "reference": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr, PDF presidentielle_2017_decisions.pdf, décision p. 15, article 2 p. 16"
+  },
+  {
+   "candidat": "Philippe POUTOU",
+   "circonscription": "France entière",
+   "depenses_eur": 767723.0,
+   "recettes_eur": 769455.0,
+   "apport_personnel_eur": 768275.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 766543.0,
+   "decision": "approuvé après réformation",
+   "reference": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr, PDF presidentielle_2017_decisions.pdf, décision p. 17, article 2 p. 19"
+  },
+  {
+   "candidat": "Jacques CHEMINADE",
+   "circonscription": "France entière",
+   "depenses_eur": 406563.0,
+   "recettes_eur": 406737.0,
+   "apport_personnel_eur": 337780.0,
+   "dons_eur": 40897.0,
+   "remboursement_eur": 337606.0,
+   "decision": "approuvé après réformation",
+   "reference": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr, PDF presidentielle_2017_decisions.pdf, décision p. 20, article 2 p. 21"
+  },
+  {
+   "candidat": "Jean LASSALLE",
+   "circonscription": "France entière",
+   "depenses_eur": 241573.0,
+   "recettes_eur": 241879.0,
+   "apport_personnel_eur": 228965.0,
+   "dons_eur": 7310.0,
+   "remboursement_eur": 228659.0,
+   "decision": "approuvé après réformation",
+   "reference": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr, PDF presidentielle_2017_decisions.pdf, décision p. 22, article 2 p. 24"
+  },
+  {
+   "candidat": "Jean-Luc MÉLENCHON",
+   "circonscription": "France entière",
+   "depenses_eur": 10241760.0,
+   "recettes_eur": 10606340.0,
+   "apport_personnel_eur": 6395884.0,
+   "dons_eur": 2898199.0,
+   "remboursement_eur": 6031304.0,
+   "decision": "approuvé après réformation",
+   "reference": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr, PDF presidentielle_2017_decisions.pdf, décision p. 25, article 2 p. 28"
+  },
+  {
+   "candidat": "François ASSELINEAU",
+   "circonscription": "France entière",
+   "depenses_eur": 1237609.0,
+   "recettes_eur": 1272714.0,
+   "apport_personnel_eur": 790244.0,
+   "dons_eur": 4600.0,
+   "remboursement_eur": 755139.0,
+   "decision": "approuvé après réformation",
+   "reference": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr, PDF presidentielle_2017_decisions.pdf, décision p. 29, article 2 p. 31"
+  },
+  {
+   "candidat": "François FILLON",
+   "circonscription": "France entière",
+   "depenses_eur": 13794601.0,
+   "recettes_eur": 13794601.0,
+   "apport_personnel_eur": 2117625.0,
+   "dons_eur": 6600.0,
+   "remboursement_eur": 2067625.0,
+   "decision": "approuvé après réformation",
+   "reference": "JORF du 13 février 2018, textes 34 et suivants : publication des décisions de la CNCCFP du 21 décembre 2017 relatives aux comptes de campagne de l'élection présidentielle des 23 avril et 7 mai 2017 (NOR CCCJ1803328V), copie cnccfp.fr, PDF presidentielle_2017_decisions.pdf, décision p. 32, article 2 p. 34"
+  }
+ ],
+ "regle": "Exception limitée aux candidats, pour les comptes de campagne publiés par la CNCCFP ou au Journal officiel : nom, nuance, circonscription, montants, décision. Ni adresse, ni date de naissance, ni donateur, ni mandataire financier."
+}

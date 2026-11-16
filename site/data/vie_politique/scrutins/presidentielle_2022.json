@@ -1,0 +1,37 @@
+{
+ "millesime": "Élection présidentielle de 2022 (comptes arrêtés par la CNCCFP)",
+ "source": "JORF du 27 janvier 2023, textes 80 et suivants : décisions de la CNCCFP du 14 décembre 2022 relatives aux comptes de campagne de l'élection présidentielle des 10 et 24 avril 2022, copie cnccfp.fr : https://cnccfp.fr/wp-content/uploads/2023/02/cnccfp-decisions-presidentielle-2022.pdf",
+ "format_source": "PDF (Journal officiel), tableaux extraits par pdfplumber",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "presidentielle",
+ "annee": 2022,
+ "libelle": "Élection présidentielle de 2022",
+ "nombre_candidats": 12,
+ "nombre_comptes_avec_depenses": 12,
+ "depenses_totales_eur": 81068811.0,
+ "recettes_totales_eur": 82677744.0,
+ "apport_personnel_total_eur": 46636244.0,
+ "dons_totaux_eur": 7750573.0,
+ "remboursement_etat_total_eur": 42192172.0,
+ "comptes_rejetes": 0,
+ "comptes_non_deposes": 0,
+ "comptes_hors_delai": 0,
+ "dispenses_de_depot": 0,
+ "decisions": {
+  "approuvé après réformation": {
+   "nombre": 12,
+   "libelle": "code source non documenté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "2022 : une candidate a formé un recours devant le Conseil constitutionnel contre la décision de la CNCCFP du 14 décembre 2022 la concernant ; le montant retenu ici est celui de la décision de la CNCCFP (seule décision publiée séparément, d'après cnccfp.fr).",
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

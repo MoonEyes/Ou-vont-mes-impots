@@ -1,0 +1,65 @@
+{
+ "millesime": "Élections sénatoriales du 24 septembre 2017 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-senatoriales-du-24-septembre-2017 », fichier 20180920-senatoriales-2017.xlsx",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "senatoriales",
+ "annee": 2017,
+ "libelle": "Élections sénatoriales du 24 septembre 2017",
+ "nombre_candidats": 418,
+ "nombre_comptes_avec_depenses": 328,
+ "depenses_totales_eur": 3090294.12,
+ "recettes_totales_eur": 3304967.74,
+ "apport_personnel_total_eur": 2760587.19,
+ "dons_totaux_eur": 251165.85,
+ "remboursement_etat_total_eur": 2282480.09,
+ "comptes_rejetes": 16,
+ "comptes_non_deposes": 16,
+ "comptes_hors_delai": 12,
+ "dispenses_de_depot": 27,
+ "decisions": {
+  "A": {
+   "nombre": 209,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 16,
+   "libelle": "absence de dépôt"
+  },
+  "AM": {
+   "nombre": 1,
+   "libelle": "approuvé, remboursement minoré"
+  },
+  "AR": {
+   "nombre": 131,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 6,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "DD": {
+   "nombre": 27,
+   "libelle": "dispense de dépôt"
+  },
+  "HD": {
+   "nombre": 12,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 16,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "Montants en francs CFP convertis en euros (1 000 F CFP = 8,38 €).",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

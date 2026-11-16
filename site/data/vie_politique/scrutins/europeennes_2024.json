@@ -1,0 +1,60 @@
+{
+ "millesime": "Élection des représentants au Parlement européen du 9 juin 2024 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-election-des-representants-au-parlement-europeen-des-8-et-9-juin-2024 », fichier publication-tableau-eg-2024-pour-pubjo-titre-1-.xlsx",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "europeennes",
+ "annee": 2024,
+ "libelle": "Élection des représentants au Parlement européen du 9 juin 2024",
+ "nombre_candidats": 38,
+ "nombre_comptes_avec_depenses": 31,
+ "depenses_totales_eur": 38674496.0,
+ "recettes_totales_eur": 39495738.0,
+ "apport_personnel_total_eur": 29009427.0,
+ "dons_totaux_eur": 1220985.0,
+ "remboursement_etat_total_eur": 27733104.0,
+ "comptes_rejetes": 7,
+ "comptes_non_deposes": 2,
+ "comptes_hors_delai": 1,
+ "dispenses_de_depot": 0,
+ "decisions": {
+  "A": {
+   "nombre": 10,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 2,
+   "libelle": "absence de dépôt"
+  },
+  "AR": {
+   "nombre": 13,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 1,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "ARRRM": {
+   "nombre": 4,
+   "libelle": "approuvé après réformation (variante de code de la source), remboursement minoré"
+  },
+  "HD": {
+   "nombre": 1,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 7,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

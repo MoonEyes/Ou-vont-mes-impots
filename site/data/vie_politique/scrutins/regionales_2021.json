@@ -1,0 +1,72 @@
+{
+ "millesime": "Élections régionales et assemblées de Corse, Guyane, Martinique des 20 et 27 juin 2021 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-aux-elections-regionales-et-des-conseillers-aux-assemblees-d », fichier regionales-2021.xlsx",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "regionales",
+ "annee": 2021,
+ "libelle": "Élections régionales et assemblées de Corse, Guyane, Martinique des 20 et 27 juin 2021",
+ "nombre_candidats": 155,
+ "nombre_comptes_avec_depenses": 142,
+ "depenses_totales_eur": 48465666.0,
+ "recettes_totales_eur": 51178294.0,
+ "apport_personnel_total_eur": 43956328.0,
+ "dons_totaux_eur": 3562610.0,
+ "remboursement_etat_total_eur": 40960785.0,
+ "comptes_rejetes": 2,
+ "comptes_non_deposes": 8,
+ "comptes_hors_delai": 1,
+ "dispenses_de_depot": 4,
+ "decisions": {
+  "A": {
+   "nombre": 48,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 8,
+   "libelle": "absence de dépôt"
+  },
+  "AR": {
+   "nombre": 59,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 1,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "ARR": {
+   "nombre": 1,
+   "libelle": "approuvé après réformation (variante de code de la source)"
+  },
+  "ARRR": {
+   "nombre": 30,
+   "libelle": "approuvé après réformation (variante de code de la source)"
+  },
+  "ARRRM": {
+   "nombre": 1,
+   "libelle": "approuvé après réformation (variante de code de la source), remboursement minoré"
+  },
+  "DD": {
+   "nombre": 4,
+   "libelle": "dispense de dépôt"
+  },
+  "HD": {
+   "nombre": 1,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 2,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

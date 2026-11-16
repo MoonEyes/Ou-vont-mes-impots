@@ -1,0 +1,98 @@
+{
+ "millesime": "Élection des conseillers à l'Assemblée de Corse (décembre 2017) (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-election-des-conseillers-a-lassemblee-de-corse-generale », fichier publication-comptes-2017-20190312141136.csv",
+ "unite": "euros",
+ "scrutin": "territoriales_corse",
+ "annee": 2017,
+ "champs": [
+  "candidat",
+  "nuance",
+  "circonscription",
+  "depenses_eur",
+  "recettes_eur",
+  "apport_personnel_eur",
+  "dons_eur",
+  "remboursement_eur",
+  "decision",
+  "reference"
+ ],
+ "candidats": [
+  {
+   "candidat": "BACCARELLI Jean-François",
+   "circonscription": "Corse (Corse du Sud)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "BENEDETTI Paul-Félix",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 31966.0,
+   "recettes_eur": 31966.0,
+   "apport_personnel_eur": 20620.0,
+   "dons_eur": 2920.0,
+   "remboursement_eur": 20620.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "BOZZI Valérie",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 65211.0,
+   "recettes_eur": 65403.0,
+   "apport_personnel_eur": 53000.0,
+   "dons_eur": 10500.0,
+   "remboursement_eur": 52808.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "CASAMARTA Jacques",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 28678.0,
+   "recettes_eur": 33016.0,
+   "apport_personnel_eur": 32866.0,
+   "dons_eur": 150.0,
+   "remboursement_eur": 28528.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "GIACOMI Charles",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 17174.0,
+   "recettes_eur": 17174.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "MONDOLONI Jean-Martin",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 69651.0,
+   "recettes_eur": 69712.0,
+   "apport_personnel_eur": 69702.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 69567.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "ORSUCCI Jean-Charles (*)",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 69213.0,
+   "recettes_eur": 69236.0,
+   "apport_personnel_eur": 64008.0,
+   "dons_eur": 2000.0,
+   "remboursement_eur": 63985.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "SIMEONI Gilles",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 122861.0,
+   "recettes_eur": 122861.0,
+   "apport_personnel_eur": 63601.0,
+   "dons_eur": 57110.0,
+   "remboursement_eur": 63601.0,
+   "decision": "A"
+  }
+ ],
+ "regle": "Exception limitée aux candidats, pour les comptes de campagne publiés par la CNCCFP ou au Journal officiel : nom, nuance, circonscription, montants, décision. Ni adresse, ni date de naissance, ni donateur, ni mandataire financier."
+}

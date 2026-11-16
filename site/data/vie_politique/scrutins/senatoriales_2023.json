@@ -1,0 +1,69 @@
+{
+ "millesime": "Élections sénatoriales du 24 septembre 2023 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-senatoriales-generales-du-24-septembre-2023 », fichier sen-2023-maj.csv ; data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-senatoriales-generales-du-24-septembre-2023 », fichier sen-2023-prop.csv",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "senatoriales",
+ "annee": 2023,
+ "libelle": "Élections sénatoriales du 24 septembre 2023",
+ "nombre_candidats": 377,
+ "nombre_comptes_avec_depenses": 335,
+ "depenses_totales_eur": 3786376.32,
+ "recettes_totales_eur": 3995248.52,
+ "apport_personnel_total_eur": 3088854.27,
+ "dons_totaux_eur": 436359.97,
+ "remboursement_etat_total_eur": 2571267.37,
+ "comptes_rejetes": 6,
+ "comptes_non_deposes": 5,
+ "comptes_hors_delai": 7,
+ "dispenses_de_depot": 22,
+ "decisions": {
+  "A": {
+   "nombre": 225,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 5,
+   "libelle": "absence de dépôt"
+  },
+  "AM": {
+   "nombre": 1,
+   "libelle": "approuvé, remboursement minoré"
+  },
+  "AR": {
+   "nombre": 106,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 3,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "ARRR": {
+   "nombre": 2,
+   "libelle": "approuvé après réformation (variante de code de la source)"
+  },
+  "DD": {
+   "nombre": 22,
+   "libelle": "dispense de dépôt"
+  },
+  "HD": {
+   "nombre": 7,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 6,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "Montants en francs CFP convertis en euros (1 000 F CFP = 8,38 €).",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

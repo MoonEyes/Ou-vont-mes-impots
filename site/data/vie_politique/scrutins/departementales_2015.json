@@ -1,0 +1,68 @@
+{
+ "millesime": "Élections départementales des 22 et 29 mars 2015 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-departementales-des-22-et-29-mars-2015-1 », fichier publication_comptes_2015_20160606105326.csv",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "departementales",
+ "annee": 2015,
+ "libelle": "Élections départementales des 22 et 29 mars 2015",
+ "nombre_candidats": 9097,
+ "nombre_comptes_avec_depenses": 8737,
+ "depenses_totales_eur": 62500796.0,
+ "recettes_totales_eur": 64327098.0,
+ "apport_personnel_total_eur": 53926423.0,
+ "dons_totaux_eur": 6805400.0,
+ "remboursement_etat_total_eur": 49725481.0,
+ "comptes_rejetes": 136,
+ "comptes_non_deposes": 85,
+ "comptes_hors_delai": 82,
+ "dispenses_de_depot": 23,
+ "decisions": {
+  "A": {
+   "nombre": 4493,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 85,
+   "libelle": "absence de dépôt"
+  },
+  "AM": {
+   "nombre": 19,
+   "libelle": "approuvé, remboursement minoré"
+  },
+  "AR": {
+   "nombre": 4205,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 53,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "AT": {
+   "nombre": 1,
+   "libelle": "code source non documenté"
+  },
+  "DD": {
+   "nombre": 23,
+   "libelle": "dispense de dépôt"
+  },
+  "HD": {
+   "nombre": 82,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 136,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

@@ -1,0 +1,44 @@
+{
+ "millesime": "Élection des conseillers à l'Assemblée de Corse (décembre 2017) (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-election-des-conseillers-a-lassemblee-de-corse-generale », fichier publication-comptes-2017-20190312141136.csv",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "territoriales_corse",
+ "annee": 2017,
+ "libelle": "Élection des conseillers à l'Assemblée de Corse (décembre 2017)",
+ "nombre_candidats": 8,
+ "nombre_comptes_avec_depenses": 7,
+ "depenses_totales_eur": 404754.0,
+ "recettes_totales_eur": 409368.0,
+ "apport_personnel_total_eur": 303797.0,
+ "dons_totaux_eur": 72680.0,
+ "remboursement_etat_total_eur": 299109.0,
+ "comptes_rejetes": 0,
+ "comptes_non_deposes": 0,
+ "comptes_hors_delai": 0,
+ "dispenses_de_depot": 1,
+ "decisions": {
+  "A": {
+   "nombre": 2,
+   "libelle": "approuvé"
+  },
+  "AR": {
+   "nombre": 5,
+   "libelle": "approuvé après réformation"
+  },
+  "DD": {
+   "nombre": 1,
+   "libelle": "dispense de dépôt"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

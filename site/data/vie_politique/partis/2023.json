@@ -1,0 +1,274 @@
+{
+ "millesime": "Comptes des partis, exercice 2023",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-des-partis-et-groupements-politiques », fichier comptes-partis-exercice-2023.csv",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "exercice": 2023,
+ "definition": "Aide publique de l'État (1re fraction : résultats aux législatives ; 2de fraction : parlementaires rattachés), telle que portée dans les comptes déposés par chaque parti. Personnes morales.",
+ "nombre_partis_beneficiaires": 37,
+ "total_premiere_fraction_eur": 34094213.88,
+ "total_seconde_fraction_eur": 36233098.11,
+ "total_eur": 70327311.99,
+ "partis": [
+  {
+   "code_cnccfp": "1378",
+   "nom": "ENSEMBLE ! (MAJORITÉ PRÉSIDENTIELLE)",
+   "premiere_fraction_eur": 8826708.0,
+   "seconde_fraction_eur": 10690353.0,
+   "total_eur": 19517061.0
+  },
+  {
+   "code_cnccfp": "40",
+   "nom": "RASSEMBLEMENT NATIONAL",
+   "premiere_fraction_eur": 6801788.0,
+   "seconde_fraction_eur": 3340735.0,
+   "total_eur": 10142523.0
+  },
+  {
+   "code_cnccfp": "401",
+   "nom": "LES RÉPUBLICAINS",
+   "premiere_fraction_eur": 2300119.0,
+   "seconde_fraction_eur": 7460976.0,
+   "total_eur": 9761095.0
+  },
+  {
+   "code_cnccfp": "976",
+   "nom": "LA FRANCE INSOUMISE",
+   "premiere_fraction_eur": 5275406.67,
+   "seconde_fraction_eur": 2672588.32,
+   "total_eur": 7947994.99
+  },
+  {
+   "code_cnccfp": "76",
+   "nom": "PARTI SOCIALISTE",
+   "premiere_fraction_eur": 1371502.0,
+   "seconde_fraction_eur": 3155139.0,
+   "total_eur": 4526641.0
+  },
+  {
+   "code_cnccfp": "529",
+   "nom": "MOUVEMENT DÉMOCRATE",
+   "premiere_fraction_eur": 1772156.71,
+   "seconde_fraction_eur": 2149901.72,
+   "total_eur": 3922058.43
+  },
+  {
+   "code_cnccfp": "104",
+   "nom": "LES ÉCOLOGISTES - EUROPE ÉCOLOGIE LES VERTS",
+   "premiere_fraction_eur": 1750353.0,
+   "seconde_fraction_eur": 1262056.0,
+   "total_eur": 3012409.0
+  },
+  {
+   "code_cnccfp": "1391",
+   "nom": "UNION DES DÉMOCRATES EUROPÉENS, CENTRISTES ET INDÉPENDANTS",
+   "premiere_fraction_eur": 379726.51,
+   "seconde_fraction_eur": 1967321.95,
+   "total_eur": 2347048.46
+  },
+  {
+   "code_cnccfp": "60",
+   "nom": "PARTI COMMUNISTE FRANÇAIS",
+   "premiere_fraction_eur": 855890.42,
+   "seconde_fraction_eur": 1189812.03,
+   "total_eur": 2045702.45
+  },
+  {
+   "code_cnccfp": "1307",
+   "nom": "RECONQUÊTE !",
+   "premiere_fraction_eur": 1597326.72,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 1597326.72
+  },
+  {
+   "code_cnccfp": "380",
+   "nom": "RÉGIONS ET PEUPLES SOLIDAIRES",
+   "premiere_fraction_eur": 581015.59,
+   "seconde_fraction_eur": 445431.39,
+   "total_eur": 1026446.98
+  },
+  {
+   "code_cnccfp": "52",
+   "nom": "PARTI RADICAL DE GAUCHE",
+   "premiere_fraction_eur": 385263.63,
+   "seconde_fraction_eur": 408312.1,
+   "total_eur": 793575.73
+  },
+  {
+   "code_cnccfp": "594",
+   "nom": "ALLIANCE CENTRISTE",
+   "premiere_fraction_eur": 151366.75,
+   "seconde_fraction_eur": 593908.51,
+   "total_eur": 745275.26
+  },
+  {
+   "code_cnccfp": "918",
+   "nom": "PARTI ANIMALISTE",
+   "premiere_fraction_eur": 411318.35,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 411318.35
+  },
+  {
+   "code_cnccfp": "96",
+   "nom": "LUTTE OUVRIÈRE",
+   "premiere_fraction_eur": 370847.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 370847.0
+  },
+  {
+   "code_cnccfp": "1093",
+   "nom": "GAUCHE RÉPUBLICAINE ET SOCIALISTE",
+   "premiere_fraction_eur": 143458.66,
+   "seconde_fraction_eur": 222715.69,
+   "total_eur": 366174.35
+  },
+  {
+   "code_cnccfp": "182",
+   "nom": "LES ÉCOLOGISTES - MOUVEMENT ÉCOLOGISTE INDÉPENDANT",
+   "premiere_fraction_eur": 241788.85,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 241788.85
+  },
+  {
+   "code_cnccfp": "410",
+   "nom": "DEBOUT LA FRANCE",
+   "premiere_fraction_eur": 180187.88,
+   "seconde_fraction_eur": 37224.16,
+   "total_eur": 217412.04
+  },
+  {
+   "code_cnccfp": "455",
+   "nom": "ÉCOLOGIE AU CENTRE",
+   "premiere_fraction_eur": 199619.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 199619.0
+  },
+  {
+   "code_cnccfp": "1027",
+   "nom": "LES PATRIOTES",
+   "premiere_fraction_eur": 198612.32,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 198612.32
+  },
+  {
+   "code_cnccfp": "68",
+   "nom": "PARTI PROGRESSISTE DÉMOCRATIQUE GUADELOUPÉEN",
+   "premiere_fraction_eur": 12740.0,
+   "seconde_fraction_eur": 148477.0,
+   "total_eur": 161217.0
+  },
+  {
+   "code_cnccfp": "1129",
+   "nom": "PÉYI-A",
+   "premiere_fraction_eur": 21761.0,
+   "seconde_fraction_eur": 111358.0,
+   "total_eur": 133119.0
+  },
+  {
+   "code_cnccfp": "677",
+   "nom": "POUR LA RÉUNION",
+   "premiere_fraction_eur": 25041.13,
+   "seconde_fraction_eur": 74238.56,
+   "total_eur": 99279.69
+  },
+  {
+   "code_cnccfp": "911",
+   "nom": "TAPURA HUIRAATIRA",
+   "premiere_fraction_eur": 86747.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 86747.0
+  },
+  {
+   "code_cnccfp": "69",
+   "nom": "PARTI PROGRESSISTE MARTINIQUAIS",
+   "premiere_fraction_eur": 7213.85,
+   "seconde_fraction_eur": 74238.56,
+   "total_eur": 81452.41
+  },
+  {
+   "code_cnccfp": "979",
+   "nom": "RÉZISTAN'S ÉGALITÉ 974",
+   "premiere_fraction_eur": 0.0,
+   "seconde_fraction_eur": 74238.56,
+   "total_eur": 74238.56
+  },
+  {
+   "code_cnccfp": "1008",
+   "nom": "PROGRÈS 974",
+   "premiere_fraction_eur": 21293.03,
+   "seconde_fraction_eur": 37119.28,
+   "total_eur": 58412.31
+  },
+  {
+   "code_cnccfp": "186",
+   "nom": "LE RASSEMBLEMENT - LES RÉPUBLICAINS",
+   "premiere_fraction_eur": 57869.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 57869.0
+  },
+  {
+   "code_cnccfp": "1385",
+   "nom": "RÉUNION LIBRE",
+   "premiere_fraction_eur": 13969.47,
+   "seconde_fraction_eur": 37119.28,
+   "total_eur": 51088.75
+  },
+  {
+   "code_cnccfp": "1267",
+   "nom": "ENSEMBLE SUR NOS TERRITOIRES",
+   "premiere_fraction_eur": 0.0,
+   "seconde_fraction_eur": 42715.0,
+   "total_eur": 42715.0
+  },
+  {
+   "code_cnccfp": "347",
+   "nom": "PARTI DU MOUVEMENT POPULAIRE FRANCISCAIN",
+   "premiere_fraction_eur": 1902.0,
+   "seconde_fraction_eur": 37119.0,
+   "total_eur": 39021.0
+  },
+  {
+   "code_cnccfp": "1358",
+   "nom": "LE MOUVEMENT POUR LES ANIMAUX",
+   "premiere_fraction_eur": 26899.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 26899.0
+  },
+  {
+   "code_cnccfp": "121",
+   "nom": "AMUITAHIRA'A O TE NUNA'A MAOHI",
+   "premiere_fraction_eur": 13619.34,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 13619.34
+  },
+  {
+   "code_cnccfp": "1136",
+   "nom": "DECIDEMOS",
+   "premiere_fraction_eur": 5999.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 5999.0
+  },
+  {
+   "code_cnccfp": "442",
+   "nom": "BÂTIR LE PAYS MARTINIQUE",
+   "premiere_fraction_eur": 2877.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 2877.0
+  },
+  {
+   "code_cnccfp": "1332",
+   "nom": "MOUVEMENT DES CITOYENS FRANCAIS DE NOUVELLE CALEDONIE",
+   "premiere_fraction_eur": 1041.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 1041.0
+  },
+  {
+   "code_cnccfp": "65",
+   "nom": "PARTI COMMUNISTE RÉUNIONNAIS",
+   "premiere_fraction_eur": 787.0,
+   "seconde_fraction_eur": 0.0,
+   "total_eur": 787.0
+  }
+ ],
+ "avertissements": []
+}

@@ -1,0 +1,69 @@
+{
+ "millesime": "Élections législatives des 11 et 18 juin 2017 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-legislatives-des-11-et-18-juin-2017 », fichier publication_LG_2017_201806251622.xlsx",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "legislatives",
+ "annee": 2017,
+ "libelle": "Élections législatives des 11 et 18 juin 2017",
+ "nombre_candidats": 7879,
+ "nombre_comptes_avec_depenses": 4566,
+ "depenses_totales_eur": 73051998.14,
+ "recettes_totales_eur": 77295925.02,
+ "apport_personnel_total_eur": 53545713.08,
+ "dons_totaux_eur": 13402825.45,
+ "remboursement_etat_total_eur": 45590795.89,
+ "comptes_rejetes": 107,
+ "comptes_non_deposes": 185,
+ "comptes_hors_delai": 58,
+ "dispenses_de_depot": 2271,
+ "decisions": {
+  "(vide)": {
+   "nombre": 2,
+   "libelle": "code source non documenté"
+  },
+  "A": {
+   "nombre": 2613,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 185,
+   "libelle": "absence de dépôt"
+  },
+  "AM": {
+   "nombre": 2,
+   "libelle": "approuvé, remboursement minoré"
+  },
+  "AR": {
+   "nombre": 2606,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 35,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "DD": {
+   "nombre": 2271,
+   "libelle": "dispense de dépôt"
+  },
+  "HD": {
+   "nombre": 58,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 107,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "Montants en francs CFP convertis en euros (1 000 F CFP = 8,38 €).",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

@@ -1,0 +1,52 @@
+{
+ "millesime": "Élections territoriales de Saint-Martin et Saint-Barthélemy (mars 2022) (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-territoriales-de-saint-martin-et-saint-barthelemy-des-20-et- », fichier publications-2022-territoriales-v3.csv",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "territoriales_saint_martin_saint_barthelemy",
+ "annee": 2022,
+ "libelle": "Élections territoriales de Saint-Martin et Saint-Barthélemy (mars 2022)",
+ "nombre_candidats": 9,
+ "nombre_comptes_avec_depenses": 9,
+ "depenses_totales_eur": 97628.0,
+ "recettes_totales_eur": 105284.0,
+ "apport_personnel_total_eur": 39108.0,
+ "dons_totaux_eur": 64746.0,
+ "remboursement_etat_total_eur": 33573.0,
+ "comptes_rejetes": 3,
+ "comptes_non_deposes": 0,
+ "comptes_hors_delai": 0,
+ "dispenses_de_depot": 0,
+ "decisions": {
+  "A": {
+   "nombre": 2,
+   "libelle": "approuvé"
+  },
+  "AR": {
+   "nombre": 2,
+   "libelle": "approuvé après réformation"
+  },
+  "ARRR": {
+   "nombre": 1,
+   "libelle": "approuvé après réformation (variante de code de la source)"
+  },
+  "ARRRM": {
+   "nombre": 1,
+   "libelle": "approuvé après réformation (variante de code de la source), remboursement minoré"
+  },
+  "R": {
+   "nombre": 3,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

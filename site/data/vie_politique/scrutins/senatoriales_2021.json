@@ -1,0 +1,48 @@
+{
+ "millesime": "Élections sénatoriales partielles du 26 septembre 2021 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « elections-senatoriales-des-27-septembre-2020-et-26-septembre-2021 », fichier sg21.xlsx",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "senatoriales",
+ "annee": 2021,
+ "libelle": "Élections sénatoriales partielles du 26 septembre 2021",
+ "nombre_candidats": 10,
+ "nombre_comptes_avec_depenses": 8,
+ "depenses_totales_eur": 82610.0,
+ "recettes_totales_eur": 100949.0,
+ "apport_personnel_total_eur": 84902.0,
+ "dons_totaux_eur": 5942.0,
+ "remboursement_etat_total_eur": 37373.0,
+ "comptes_rejetes": 1,
+ "comptes_non_deposes": 0,
+ "comptes_hors_delai": 0,
+ "dispenses_de_depot": 2,
+ "decisions": {
+  "A": {
+   "nombre": 4,
+   "libelle": "approuvé"
+  },
+  "AR": {
+   "nombre": 3,
+   "libelle": "approuvé après réformation"
+  },
+  "DD": {
+   "nombre": 2,
+   "libelle": "dispense de dépôt"
+  },
+  "R": {
+   "nombre": 1,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}

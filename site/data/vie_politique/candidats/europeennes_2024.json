@@ -1,0 +1,391 @@
+{
+ "millesime": "Élection des représentants au Parlement européen du 9 juin 2024 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-election-des-representants-au-parlement-europeen-des-8-et-9-juin-2024 », fichier publication-tableau-eg-2024-pour-pubjo-titre-1-.xlsx",
+ "unite": "euros",
+ "scrutin": "europeennes",
+ "annee": 2024,
+ "champs": [
+  "candidat",
+  "nuance",
+  "circonscription",
+  "depenses_eur",
+  "recettes_eur",
+  "apport_personnel_eur",
+  "dons_eur",
+  "remboursement_eur",
+  "decision",
+  "reference"
+ ],
+ "candidats": [
+  {
+   "candidat": "ADOUE Camille",
+   "circonscription": "Nationale",
+   "depenses_eur": 100523.0,
+   "recettes_eur": 124919.0,
+   "apport_personnel_eur": 2326.0,
+   "dons_eur": 49585.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "ALEXANDRE Audric",
+   "circonscription": "Nationale",
+   "depenses_eur": 21818.0,
+   "recettes_eur": 36210.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "ARTHAUD Nathalie (*)",
+   "circonscription": "Nationale",
+   "depenses_eur": 230559.0,
+   "recettes_eur": 235502.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 78192.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "ASSELINEAU François",
+   "circonscription": "Nationale",
+   "depenses_eur": 391080.0,
+   "recettes_eur": 415565.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "AUBRY Manon (**)",
+   "circonscription": "Nationale",
+   "depenses_eur": 6204589.0,
+   "recettes_eur": 6304717.0,
+   "apport_personnel_eur": 4518026.0,
+   "dons_eur": 251742.0,
+   "remboursement_eur": 4250398.0,
+   "decision": "ARRRM"
+  },
+  {
+   "candidat": "AZERGUI Nagib",
+   "circonscription": "Nationale",
+   "depenses_eur": 3644.0,
+   "recettes_eur": 3644.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "BARDELLA Jordan",
+   "circonscription": "Nationale",
+   "depenses_eur": 4540291.0,
+   "recettes_eur": 4888768.0,
+   "apport_personnel_eur": 4255067.0,
+   "dons_eur": 308927.0,
+   "remboursement_eur": 3892890.0,
+   "decision": "ARRRM"
+  },
+  {
+   "candidat": "BELLAMY François-Xavier",
+   "circonscription": "Nationale",
+   "depenses_eur": 3555656.0,
+   "recettes_eur": 3555656.0,
+   "apport_personnel_eur": 2652783.0,
+   "remboursement_eur": 2652783.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BONNEAU Pierre",
+   "circonscription": "Nationale",
+   "depenses_eur": 7605.0,
+   "recettes_eur": 10461.0,
+   "apport_personnel_eur": 860.0,
+   "dons_eur": 6055.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "CHOLLEY Marine",
+   "circonscription": "Nationale",
+   "depenses_eur": 31472.0,
+   "recettes_eur": 90523.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "COSTE-MEUNIER Gaël",
+   "circonscription": "Nationale",
+   "depenses_eur": 184.0,
+   "recettes_eur": 220.0,
+   "apport_personnel_eur": 220.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "DEFFONTAINES Léon",
+   "circonscription": "Nationale",
+   "depenses_eur": 1252459.0,
+   "recettes_eur": 1252459.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 10670.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "DEHER-LESAINT Léopold-Edouard",
+   "circonscription": "Nationale",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "ELMAYAN Lorys",
+   "circonscription": "Nationale",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "FORTANE Jean-Marc",
+   "circonscription": "Nationale",
+   "depenses_eur": 452.0,
+   "recettes_eur": 452.0,
+   "apport_personnel_eur": 452.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "GLUCKSMANN Raphaël",
+   "circonscription": "Nationale",
+   "depenses_eur": 4807951.0,
+   "recettes_eur": 4810047.0,
+   "apport_personnel_eur": 4156578.0,
+   "dons_eur": 119337.0,
+   "remboursement_eur": 4144482.0,
+   "decision": "ARM"
+  },
+  {
+   "candidat": "GOVERNATORI Jean-Marc",
+   "circonscription": "Nationale",
+   "depenses_eur": 57651.0,
+   "recettes_eur": 57651.0,
+   "apport_personnel_eur": 43593.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "GRUDÉ Patrice",
+   "circonscription": "Nationale",
+   "depenses_eur": 3044.0,
+   "recettes_eur": 3705.0,
+   "apport_personnel_eur": 10.0,
+   "dons_eur": 3695.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "HAYER Valérie",
+   "circonscription": "Nationale",
+   "depenses_eur": 6317919.0,
+   "recettes_eur": 6456394.0,
+   "apport_personnel_eur": 4661895.0,
+   "dons_eur": 32430.0,
+   "remboursement_eur": 4390016.0,
+   "decision": "ARRRM"
+  },
+  {
+   "candidat": "HOAREAU Charles",
+   "circonscription": "Nationale",
+   "depenses_eur": 9900.0,
+   "recettes_eur": 9900.0,
+   "apport_personnel_eur": 7334.0,
+   "dons_eur": 2566.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "HUSSON Edouard",
+   "circonscription": "Nationale",
+   "depenses_eur": 1351.0,
+   "recettes_eur": 14135.0,
+   "apport_personnel_eur": 3746.0,
+   "dons_eur": 10389.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "LABIB Selma",
+   "circonscription": "Nationale",
+   "depenses_eur": 129044.0,
+   "recettes_eur": 130223.0,
+   "apport_personnel_eur": 6500.0,
+   "dons_eur": 8500.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "LACROIX Guillaume",
+   "circonscription": "Nationale",
+   "depenses_eur": 394230.0,
+   "recettes_eur": 394620.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "LALANNE Francis",
+   "circonscription": "Nationale",
+   "decision": "AD"
+  },
+  {
+   "candidat": "LARROUTUROU Pierre",
+   "circonscription": "Nationale",
+   "depenses_eur": 25392.0,
+   "recettes_eur": 44768.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 30662.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "LASSALLE Jean",
+   "circonscription": "Nationale",
+   "depenses_eur": 368805.0,
+   "recettes_eur": 368880.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 7000.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "MARÉCHAL Marion",
+   "circonscription": "Nationale",
+   "depenses_eur": 5207093.0,
+   "recettes_eur": 5212019.0,
+   "apport_personnel_eur": 4647991.0,
+   "dons_eur": 116155.0,
+   "remboursement_eur": 4384071.0,
+   "decision": "ARRRM"
+  },
+  {
+   "candidat": "PATAS D'ILLIERS Laure",
+   "circonscription": "Nationale",
+   "depenses_eur": 172557.0,
+   "recettes_eur": 172557.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 57578.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "PHILIPPOT Florian",
+   "circonscription": "Nationale",
+   "depenses_eur": 333638.0,
+   "recettes_eur": 333674.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 4600.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "PONGE Philippe",
+   "circonscription": "Nationale",
+   "decision": "AD"
+  },
+  {
+   "candidat": "RENARD-KUZMANOVIC Djordje",
+   "circonscription": "Nationale",
+   "depenses_eur": 16942.0,
+   "recettes_eur": 74563.0,
+   "apport_personnel_eur": 6806.0,
+   "dons_eur": 57344.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "SIMONIN Michel",
+   "circonscription": "Nationale",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "TERRIEN Olivier",
+   "circonscription": "Nationale",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "THOUY Hélène",
+   "circonscription": "Nationale",
+   "depenses_eur": 288483.0,
+   "recettes_eur": 288546.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 144.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "TOUSSAINT Marie",
+   "circonscription": "Nationale",
+   "depenses_eur": 4170402.0,
+   "recettes_eur": 4175198.0,
+   "apport_personnel_eur": 4023260.0,
+   "dons_eur": 61258.0,
+   "remboursement_eur": 4018464.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "TRAORE Hamada",
+   "circonscription": "Nationale",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "HD"
+  },
+  {
+   "candidat": "WERLHING Yann",
+   "circonscription": "Nationale",
+   "depenses_eur": 26136.0,
+   "recettes_eur": 26136.0,
+   "apport_personnel_eur": 21980.0,
+   "dons_eur": 4156.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "ZORN Caroline",
+   "circonscription": "Nationale",
+   "depenses_eur": 3626.0,
+   "recettes_eur": 3626.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  }
+ ],
+ "regle": "Exception limitée aux candidats, pour les comptes de campagne publiés par la CNCCFP ou au Journal officiel : nom, nuance, circonscription, montants, décision. Ni adresse, ni date de naissance, ni donateur, ni mandataire financier."
+}

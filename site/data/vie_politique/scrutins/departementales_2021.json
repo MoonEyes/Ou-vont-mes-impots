@@ -1,0 +1,84 @@
+{
+ "millesime": "Élections départementales des 20 et 27 juin 2021 (comptes arrêtés par la CNCCFP)",
+ "source": "data.gouv.fr, organisation CNCCFP, jeu « comptes-de-campagne-elections-aux-elections-departementales-des-20-et-27-juin-2021 », fichier departementale2021.xlsx",
+ "format_source": "CSV/XLSX CNCCFP (data.gouv.fr)",
+ "collecte_le": "2026-11-16",
+ "unite": "euros",
+ "scrutin": "departementales",
+ "annee": 2021,
+ "libelle": "Élections départementales des 20 et 27 juin 2021",
+ "nombre_candidats": 7892,
+ "nombre_comptes_avec_depenses": 7361,
+ "depenses_totales_eur": 50305917.0,
+ "recettes_totales_eur": 52873666.0,
+ "apport_personnel_total_eur": 45118924.0,
+ "dons_totaux_eur": 5126302.0,
+ "remboursement_etat_total_eur": 40754308.0,
+ "comptes_rejetes": 210,
+ "comptes_non_deposes": 210,
+ "comptes_hors_delai": 131,
+ "dispenses_de_depot": 23,
+ "decisions": {
+  "0": {
+   "nombre": 1,
+   "libelle": "code source non documenté"
+  },
+  "A": {
+   "nombre": 5508,
+   "libelle": "approuvé"
+  },
+  "AD": {
+   "nombre": 210,
+   "libelle": "absence de dépôt"
+  },
+  "AM": {
+   "nombre": 14,
+   "libelle": "approuvé, remboursement minoré"
+  },
+  "AR": {
+   "nombre": 1629,
+   "libelle": "approuvé après réformation"
+  },
+  "ARM": {
+   "nombre": 24,
+   "libelle": "approuvé après réformation, remboursement minoré"
+  },
+  "ARR": {
+   "nombre": 94,
+   "libelle": "approuvé après réformation (variante de code de la source)"
+  },
+  "ARRM": {
+   "nombre": 1,
+   "libelle": "approuvé après réformation (variante de code de la source), remboursement minoré"
+  },
+  "ARRR": {
+   "nombre": 45,
+   "libelle": "approuvé après réformation (variante de code de la source)"
+  },
+  "ARRRM": {
+   "nombre": 2,
+   "libelle": "approuvé après réformation (variante de code de la source), remboursement minoré"
+  },
+  "DD": {
+   "nombre": 23,
+   "libelle": "dispense de dépôt"
+  },
+  "HD": {
+   "nombre": 131,
+   "libelle": "dépôt hors délai"
+  },
+  "R": {
+   "nombre": 210,
+   "libelle": "rejeté"
+  }
+ },
+ "definitions": {
+  "depenses_totales_eur": "dépenses retenues par la CNCCFP",
+  "remboursement_etat_total_eur": "remboursement forfaitaire de l'État (RFE) arrêté par la CNCCFP",
+  "apport_personnel_total_eur": "apport personnel des candidats retenu par la CNCCFP"
+ },
+ "avertissements": [
+  "Montants arrêtés par scrutin ; le paiement par l'État intervient l'année du scrutin ou la suivante.",
+  "La source ne donne ni nuance ni parti pour ce scrutin."
+ ]
+}
