@@ -310,15 +310,53 @@ def decouvrir(client: Client, portails: dict, avec_datagouv: bool = True, pages_
     }
 
 
+SCHEMAS = {"scdl/deliberations": ("decisions", True), "scdl/subventions": ("beneficiaires", False),
+           "scdl/budget": ("collectivites", False)}
+
+
+def decouvrir_schemas(client: Client, hotes_ods: dict, journal=print) -> list[dict]:
+    """Jeux data.gouv.fr declarant un schema SCDL (deliberations, subventions, budgets) : tous retenus,
+    score releve a 6 (conformes a un format de donnees publiques locales)."""
+    sortie = []
+    for schema, (domaine, pp) in SCHEMAS.items():
+        n = 0
+        for d in pages_datagouv(client, {"schema": schema}):
+            j = jeu_datagouv(d, hotes_ods)
+            if not j:
+                continue
+            j["score"] = max(j["score"], 6.0)
+            j["etiquettes"] = sorted(set(j["etiquettes"]) | {f"schema:{schema}"})
+            j["domaine"] = domaine
+            if pp:
+                j["personnes_physiques"] = True
+                j["pp_motif"] = ["deliberations : noms d'elus et de personnes presumes"]
+            sortie.append(j)
+            n += 1
+        journal(f"datagouv   {n:>5} jeux au schema {schema}")
+    return sortie
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--sans-datagouv", action="store_true")
     ap.add_argument("--pages-mot-cle", type=int, default=3, help="pages de 100 resultats par mot-cle data.gouv.fr")
     ap.add_argument("--pause", type=float, default=0.3)
+    ap.add_argument("--schemas", action="store_true", help="ajouter les jeux data.gouv.fr aux schemas SCDL (fusion)")
     ap.add_argument("--portail", action="append", help="ne reparcourir que ce portail ODS (repetable), les autres sont repris")
     a = ap.parse_args(argv)
-    res = decouvrir(Client(pause=a.pause), charger_portails(), not a.sans_datagouv, a.pages_mot_cle,
-                    seulement=a.portail, precedent=lire_decouvertes())
+    if a.schemas:
+        res = lire_decouvertes()
+        portails = charger_portails()
+        hotes = {portails[p].split("//", 1)[1]: p for p in portails_ods_tous(portails) if p in portails}
+        par_id = {j["id"]: j for j in res["jeux"]}
+        for j in decouvrir_schemas(Client(pause=a.pause), hotes):
+            par_id[j["id"]] = j
+        res["jeux"] = sorted(par_id.values(), key=lambda j: (-j["score"], j["portail"], j["id"]))
+        res["nb_jeux"] = len(res["jeux"])
+        res["genere_le"] = maintenant()
+    else:
+        res = decouvrir(Client(pause=a.pause), charger_portails(), not a.sans_datagouv, a.pages_mot_cle,
+                        seulement=a.portail, precedent=lire_decouvertes())
     chemin = ecrire_decouvertes(res)
     sc = Counter(int(j["score"] >= 4) for j in res["jeux"])
     print(f"{res['nb_jeux']} jeux decouverts, {sc[1]} avec score >= 4, ecrit dans {chemin}")

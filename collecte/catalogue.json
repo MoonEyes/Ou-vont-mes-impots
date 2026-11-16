@@ -10,7 +10,10 @@
   "urssaf": "https://open.urssaf.fr",
   "esr": "https://data.enseignementsup-recherche.gouv.fr",
   "atih": "https://data-essentiel.atih.sante.fr",
-  "cdc": "https://opendata.caissedesdepots.fr"
+  "cdc": "https://opendata.caissedesdepots.fr",
+  "paysdelaloire": "https://data.paysdelaloire.fr",
+  "loireatlantique": "https://data.loire-atlantique.fr",
+  "nantesmetropole": "https://data.nantesmetropole.fr"
  },
  "sources": [
   {
@@ -1664,6 +1667,336 @@
    "titre": "Deficit et dette (notification PDE), 27 pays de l'UE + zones UE27 et euro (Eurostat, comparaison europeenne)",
    "licence": "Eurostat, reutilisation libre avec mention",
    "timeout_s": 2400
+  },
+  {
+   "id": "decisions_megalis_deliberations",
+   "domaine": "decisions",
+   "type": "datagouv",
+   "dataset": "60645c94e2bfd21cdc16c0be",
+   "toutes": true,
+   "titre": "Deliberations des organismes adherents de Megalis Bretagne (un fichier par an)",
+   "licence": "Licence Ouverte 2.0",
+   "personnes_physiques": true
+  },
+  {
+   "id": "collectivites_megalis_budgets",
+   "domaine": "collectivites",
+   "type": "datagouv",
+   "dataset": "60645b816cccca6dab67f532",
+   "toutes": true,
+   "titre": "Budgets des organismes adherents de Megalis Bretagne 2020-2026",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": true,
+   "timeout_s": 5400
+  },
+  {
+   "id": "collectivites_banatic_france",
+   "domaine": "collectivites",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://www.banatic.interieur.gouv.fr/consultation/api/export/pregenere/telecharger/France",
+   "titre": "BANATIC, export complet des groupements de collectivites (competences, perimetres, financement)",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "decisions_pdl_subventions",
+   "domaine": "beneficiaires",
+   "type": "ods_export",
+   "portail": "paysdelaloire",
+   "dataset": "subventions-de-la-region-des-pays-de-la-loire",
+   "titre": "Subventions de la Region Pays de la Loire",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "decisions_pdl_deliberations",
+   "domaine": "decisions",
+   "type": "ods_export",
+   "portail": "paysdelaloire",
+   "dataset": "234400034_001-001_rapports-deliberations-et-proces-verbaux-rpdl-2019",
+   "titre": "Rapports, deliberations et proces-verbaux de la Region Pays de la Loire",
+   "licence": "Licence Ouverte 2.0",
+   "personnes_physiques": true,
+   "format_export": "csv"
+  },
+  {
+   "id": "decisions_d44_deliberations",
+   "domaine": "decisions",
+   "type": "ods_export",
+   "portail": "loireatlantique",
+   "dataset": "224400028_rapports-deliberations-proces-verbaux-conseil-departemental",
+   "titre": "Rapports, deliberations et proces-verbaux du Conseil departemental de Loire-Atlantique",
+   "licence": "Licence Ouverte 2.0",
+   "personnes_physiques": true
+  },
+  {
+   "id": "beneficiaires_d44_subventions_associations",
+   "domaine": "beneficiaires",
+   "type": "ods_export",
+   "portail": "loireatlantique",
+   "dataset": "224400028_subventions-aux-associations-du-departement-de-loire-atlantique",
+   "titre": "Subventions aux associations du Departement de Loire-Atlantique",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "decisions_nantes_metropole_deliberations",
+   "domaine": "decisions",
+   "type": "ods_export",
+   "portail": "nantesmetropole",
+   "dataset": "244400404_deliberations-instances-metropole-nantes",
+   "titre": "Deliberations des instances de Nantes Metropole",
+   "licence": "Licence Ouverte 2.0",
+   "personnes_physiques": true
+  },
+  {
+   "id": "decisions_an_l17_scrutins",
+   "domaine": "decisions",
+   "type": "url",
+   "format": "zip",
+   "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip",
+   "titre": "Assemblee nationale, scrutins de la 17e legislature (votes nominatifs des deputes, role public)",
+   "licence": "Licence Ouverte 2.0",
+   "elus_nommes": true
+  },
+  {
+   "id": "decisions_an_l17_amendements",
+   "domaine": "decisions",
+   "type": "url",
+   "format": "zip",
+   "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip",
+   "titre": "Assemblee nationale, amendements de la 17e legislature",
+   "licence": "Licence Ouverte 2.0",
+   "elus_nommes": true,
+   "lourd": true,
+   "timeout_s": 3600
+  },
+  {
+   "id": "decisions_an_l17_dossiers",
+   "domaine": "decisions",
+   "type": "url",
+   "format": "zip",
+   "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip",
+   "titre": "Assemblee nationale, dossiers legislatifs de la 17e legislature",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "decisions_an_l17_deputes",
+   "domaine": "decisions",
+   "type": "url",
+   "format": "zip",
+   "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/deputes_actifs_mandats_actifs_organes/AMO10_deputes_actifs_mandats_actifs_organes.json.zip",
+   "titre": "Assemblee nationale, deputes, mandats et organes en cours",
+   "licence": "Licence Ouverte 2.0",
+   "elus_nommes": true
+  },
+  {
+   "id": "decisions_an_l16_scrutins",
+   "domaine": "decisions",
+   "type": "url",
+   "format": "zip",
+   "url": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/scrutins/Scrutins.json.zip",
+   "titre": "Assemblee nationale, scrutins de la 16e legislature",
+   "licence": "Licence Ouverte 2.0",
+   "elus_nommes": true
+  },
+  {
+   "id": "decisions_an_l16_amendements",
+   "domaine": "decisions",
+   "type": "url",
+   "format": "zip",
+   "url": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/amendements_div_legis/Amendements.json.zip",
+   "titre": "Assemblee nationale, amendements de la 16e legislature",
+   "licence": "Licence Ouverte 2.0",
+   "elus_nommes": true,
+   "lourd": true,
+   "timeout_s": 3600
+  },
+  {
+   "id": "decisions_an_l16_dossiers",
+   "domaine": "decisions",
+   "type": "url",
+   "format": "zip",
+   "url": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip",
+   "titre": "Assemblee nationale, dossiers legislatifs de la 16e legislature",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "decisions_senat_dosleg",
+   "domaine": "decisions",
+   "type": "url",
+   "format": "zip",
+   "url": "https://data.senat.fr/data/dosleg/dosleg.zip",
+   "titre": "Senat, base des dossiers legislatifs",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "decisions_senat_ameli",
+   "domaine": "decisions",
+   "type": "url",
+   "format": "zip",
+   "url": "https://data.senat.fr/data/ameli/ameli.zip",
+   "titre": "Senat, base des amendements (Ameli)",
+   "licence": "Licence Ouverte 2.0",
+   "elus_nommes": true,
+   "lourd": true,
+   "timeout_s": 3600
+  },
+  {
+   "id": "decisions_senat_senateurs",
+   "domaine": "decisions",
+   "type": "url",
+   "format": "csv",
+   "url": "https://data.senat.fr/data/senateurs/ODSEN_GENERAL.csv",
+   "titre": "Senat, liste generale des senateurs",
+   "licence": "Licence Ouverte 2.0",
+   "elus_nommes": true
+  },
+  {
+   "id": "decisions_jorf_increments",
+   "domaine": "decisions",
+   "type": "index_http",
+   "url": "https://echanges.dila.gouv.fr/OPENDATA/JORF/",
+   "motif": "^JORF_\\d{8}-\\d{6}\\.tar\\.gz$",
+   "titre": "Journal officiel (DILA), flux incrementaux depuis la derniere archive globale",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "decisions_jorf_global",
+   "domaine": "decisions",
+   "type": "index_http",
+   "url": "https://echanges.dila.gouv.fr/OPENDATA/JORF/",
+   "motif": "^Freemium_jorf_global_.*\\.tar\\.gz$",
+   "max_fichiers": 1,
+   "titre": "Journal officiel (DILA), archive globale (stock complet)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": true,
+   "timeout_s": 7000
+  },
+  {
+   "id": "decisions_ccomptes_rss",
+   "domaine": "decisions",
+   "type": "url",
+   "format": "xml",
+   "url": "https://www.ccomptes.fr/fr/rss/publications",
+   "titre": "Cour des comptes, flux RSS des publications",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "decisions_constit_global",
+   "domaine": "decisions",
+   "type": "index_http",
+   "url": "https://echanges.dila.gouv.fr/OPENDATA/CONSTIT/",
+   "motif": "^Freemium_constit_global_.*\\.tar\\.gz$",
+   "max_fichiers": 1,
+   "titre": "Decisions du Conseil constitutionnel (DILA CONSTIT), archive globale",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "decisions_jade_increments",
+   "domaine": "decisions",
+   "type": "index_http",
+   "url": "https://echanges.dila.gouv.fr/OPENDATA/JADE/",
+   "motif": "^JADE_\\d{8}-\\d{6}\\.tar\\.gz$",
+   "titre": "Jurisprudence administrative (DILA JADE), flux incrementaux recents",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "etat_ccomptes_mouvements_credits",
+   "domaine": "etat",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://www.ccomptes.fr/sites/default/files/EzPublish/2012-Mouvements-de-credits-CP.csv",
+     "nom": "2012-Mouvements-de-credits-CP.csv"
+    },
+    {
+     "url": "https://www.ccomptes.fr/sites/default/files/EzPublish/2013-Mouvements-de-credits-CP.csv",
+     "nom": "2013-Mouvements-de-credits-CP.csv"
+    },
+    {
+     "url": "https://www.ccomptes.fr/sites/default/files/EzPublish/2014-Mouvements-de-credits-CP.csv",
+     "nom": "2014-Mouvements-de-credits-CP.csv"
+    }
+   ],
+   "titre": "Cour des comptes, mouvements de credits de paiement 2012-2014 (2015-2020 : redirection vers une page web, non telechargeables)",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "beneficiaires_ted_attributions_fr_2024",
+   "domaine": "beneficiaires",
+   "type": "ted_recherche",
+   "requete": "organisation-country-buyer=FRA AND notice-type IN (can-standard can-social can-desg can-tran can-modif) AND publication-date>=20240101 AND publication-date<=20241231",
+   "champs": [
+    "publication-number",
+    "publication-date",
+    "notice-type",
+    "buyer-name",
+    "buyer-city",
+    "buyer-identifier",
+    "classification-cpv",
+    "contract-nature",
+    "notice-title",
+    "total-value",
+    "total-value-cur",
+    "winner-name",
+    "winner-identifier",
+    "winner-country",
+    "procedure-type"
+   ],
+   "titre": "Avis d'attribution de marches des acheteurs francais publies au JOUE (TED) en 2024",
+   "licence": "Union europeenne, reutilisation libre (decision 2011/833/UE)",
+   "timeout_s": 3000
+  },
+  {
+   "id": "beneficiaires_ted_attributions_fr_2025",
+   "domaine": "beneficiaires",
+   "type": "ted_recherche",
+   "requete": "organisation-country-buyer=FRA AND notice-type IN (can-standard can-social can-desg can-tran can-modif) AND publication-date>=20250101 AND publication-date<=20251231",
+   "champs": [
+    "publication-number",
+    "publication-date",
+    "notice-type",
+    "buyer-name",
+    "buyer-city",
+    "buyer-identifier",
+    "classification-cpv",
+    "contract-nature",
+    "notice-title",
+    "total-value",
+    "total-value-cur",
+    "winner-name",
+    "winner-identifier",
+    "winner-country",
+    "procedure-type"
+   ],
+   "titre": "Avis d'attribution de marches des acheteurs francais publies au JOUE (TED) en 2025",
+   "licence": "Union europeenne, reutilisation libre (decision 2011/833/UE)",
+   "timeout_s": 3000
+  },
+  {
+   "id": "beneficiaires_ted_attributions_fr_2026",
+   "domaine": "beneficiaires",
+   "type": "ted_recherche",
+   "requete": "organisation-country-buyer=FRA AND notice-type IN (can-standard can-social can-desg can-tran can-modif) AND publication-date>=20260101 AND publication-date<=20261231",
+   "champs": [
+    "publication-number",
+    "publication-date",
+    "notice-type",
+    "buyer-name",
+    "buyer-city",
+    "buyer-identifier",
+    "classification-cpv",
+    "contract-nature",
+    "notice-title",
+    "total-value",
+    "total-value-cur",
+    "winner-name",
+    "winner-identifier",
+    "winner-country",
+    "procedure-type"
+   ],
+   "titre": "Avis d'attribution de marches des acheteurs francais publies au JOUE (TED) en 2026",
+   "licence": "Union europeenne, reutilisation libre (decision 2011/833/UE)",
+   "timeout_s": 3000
   }
  ],
  "non_collectables": [
@@ -1710,6 +2043,22 @@
   {
    "source": "Exports ODS de plus de 300 Mo (balances comptables par annee, comptes des communes OFGL)",
    "motif": "transferts coupes ou trop lents via le reseau de collecte (environ 0,3 Mo/s) : a reprendre depuis une machine sans proxy"
+  },
+  {
+   "source": "BOAMP brut (DILA, echanges.dila.gouv.fr/OPENDATA/BOAMP)",
+   "motif": "un fichier XML par avis, des dizaines de milliers par mois : non pris en l'etat ; les marches attribues sont couverts par les DECP"
+  },
+  {
+   "source": "Cour des comptes, mouvements de credits 2015-2020",
+   "motif": "les URL CSV redirigent vers une page web (302)"
+  },
+  {
+   "source": "HATVP liste.csv (index des declarations)",
+   "motif": "index des declarations de patrimoine et d'interets des responsables publics : exclu par la regle sur le patrimoine"
+  },
+  {
+   "source": "Legifrance, budget.gouv.fr (performance-publique), data.ccomptes.fr",
+   "motif": "refusent les scripts ou inexistants : non insiste"
   }
  ]
 }

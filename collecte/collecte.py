@@ -265,6 +265,53 @@ def telecharger(client: Client, url: str, cible: Path, *, deadline: float | None
     return {"octets": n, "sha256": h.hexdigest(), "etag": etag, "last_modified": lm}
 
 
+def telecharger_ted(client: Client, src: dict, cible: Path, deadline=None, par_page: int = 250) -> dict:
+    """Recherche TED (API v3, sans cle, POST, pagination par jeton d'iteration) ecrite en NDJSON."""
+    cible.parent.mkdir(parents=True, exist_ok=True)
+    tmp = cible.with_name(cible.name + ".part")
+    h, n, lignes, jeton = hashlib.sha256(), 0, 0, None
+    with tmp.open("wb") as f:
+        while True:
+            if deadline and time.time() > deadline:
+                raise DelaiDepasse(f"budget de temps epuise ({lignes} avis recus)")
+            corps = {"query": src["requete"], "fields": src["champs"], "limit": par_page, "paginationMode": "ITERATION"}
+            if jeton:
+                corps["iterationNextToken"] = jeton
+            for essai in range(1, 7):
+                client._attendre_tour()
+                try:
+                    r = client.s.post("https://api.ted.europa.eu/v3/notices/search", json=corps, timeout=client.timeouts)
+                except (requests.ConnectionError, requests.Timeout):
+                    time.sleep(min(2 ** essai, 30))
+                    continue
+                if r.status_code in (401, 403):
+                    raise RuntimeError(f"acces refuse HTTP {r.status_code} (TED)")
+                if r.status_code == 429 or r.status_code >= 500:
+                    time.sleep(min(2 ** essai, 60))
+                    continue
+                if r.status_code >= 400:
+                    raise RuntimeError(f"HTTP {r.status_code} TED : {r.text[:200]}")
+                break
+            else:
+                raise RuntimeError("TED injoignable apres 6 tentatives")
+            d = r.json()
+            for avis in d.get("notices", []):
+                avis.pop("links", None)
+                b = (json.dumps(avis, ensure_ascii=False) + "\n").encode("utf-8")
+                f.write(b)
+                h.update(b)
+                n += len(b)
+                lignes += 1
+            jeton = d.get("iterationNextToken")
+            if not d.get("notices") or not jeton:
+                break
+    if n == 0:
+        tmp.unlink(missing_ok=True)
+        raise SansRessource("aucun avis TED pour cette requete")
+    tmp.replace(cible)
+    return {"octets": n, "sha256": h.hexdigest(), "lignes": lignes, "etag": None, "last_modified": None}
+
+
 def decrire_parquet(chemin: Path) -> dict:
     try:
         import pyarrow.parquet as pq
@@ -357,8 +404,9 @@ def plan_source(client: Client, src: dict, portails: dict, deadline=None, max_oc
                 raise RuntimeError("jeu sans enregistrements (pieces jointes seulement ?) : utiliser ods_pieces_jointes")
             params = {k: src[k] for k in ("where", "select") if src.get(k)}
             q = f"?{urlencode(params)}" if params else ""
+            fmt = src.get("format_export", "parquet")  # csv en repli quand l'export parquet est coupe en route
             return {"signature_source": sig,
-                    "fichiers": [{"url": f"{api}/exports/parquet{q}", "nom": f"{src['id']}.parquet", "signature": sig + q}]}
+                    "fichiers": [{"url": f"{api}/exports/{fmt}{q}", "nom": f"{src['id']}.{fmt}", "signature": sig + q}]}
         # Forme reelle ODS v2.1 : {"links": [...], "attachments": [{"href": URL, "metas": {"id", "title", "mimetype", "url"}}]}
         liste = client.json(f"{api}/attachments", deadline=deadline)
         fichiers = []
@@ -414,6 +462,19 @@ def plan_source(client: Client, src: dict, portails: dict, deadline=None, max_oc
                              "taille": r.get("filesize"),
                              "signature": f"{r.get('last_modified')}|{(r.get('checksum') or {}).get('value')}"})
         return {"fichiers": fichiers, "ignores": ignores}
+    if t == "index_http":
+        # repertoire de fichiers (index Apache) : fichiers dont le nom correspond au motif, les plus recents en dernier
+        fichiers = lister_index_http(client, src["url"], re.compile(src.get("motif", ".")), src.get("profondeur", 0), deadline)
+        fichiers = sorted(fichiers, key=lambda f: f[0])
+        if src.get("max_fichiers"):
+            fichiers = fichiers[-src["max_fichiers"]:]
+        if not fichiers:
+            raise SansRessource("aucun fichier correspondant dans le repertoire")
+        return {"fichiers": [{"url": u, "nom": f"{src['id']}/{nom_sur(nom, 120)}", "signature": f"{date}|{taille}", "taille": taille}
+                             for nom, u, date, taille in fichiers]}
+    if t == "ted_recherche":
+        return {"fichiers": [{"url": "https://api.ted.europa.eu/v3/notices/search", "nom": f"{src['id']}.ndjson",
+                              "signature": None, "ted": True}]}
     if t == "eurostat":
         params = urlencode(src.get("params", {}), doseq=True)
         return {"fichiers": [{"url": f"{portails['eurostat']}/{src['dataset']}?{params}", "nom": f"{src['id']}.json", "signature": None}]}
@@ -431,6 +492,30 @@ def dossier_source(src: dict) -> Path:
     return LAKE / src["domaine"]
 
 
+_LIGNE_INDEX = re.compile(r'<a href="([^"?/][^"]*)">[^<]*</a>\s+(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\s+([\d.]+[KMG]?|-)')
+
+
+def _octets_index(t: str) -> int | None:
+    if t == "-":
+        return None
+    mult = {"K": 1e3, "M": 1e6, "G": 1e9}.get(t[-1], 1)
+    return int(float(t.rstrip("KMG")) * mult)
+
+
+def lister_index_http(client: Client, url: str, motif: re.Pattern, profondeur: int = 0, deadline=None) -> list[tuple]:
+    """Lit un index de repertoire HTTP (format Apache) : [(nom, url, date, octets)]."""
+    url = url if url.endswith("/") else url + "/"
+    html = client.get(url, deadline=deadline).text
+    sortie = []
+    for nom, date, taille in _LIGNE_INDEX.findall(html):
+        if nom.endswith("/"):
+            if profondeur > 0:
+                sortie += lister_index_http(client, url + nom, motif, profondeur - 1, deadline)
+        elif motif.search(nom):
+            sortie.append((nom, url + nom, date, _octets_index(taille)))
+    return sortie
+
+
 def _fichier_reutilisable(ancien_f: dict | None, signature) -> bool:
     if not ancien_f or signature is None or ancien_f.get("signature") != signature:
         return False
@@ -446,6 +531,8 @@ def collecter(client: Client, src: dict, ancien: dict, portails: dict, *, timeou
               if src.get(k) is not None}
     entree["personnes_physiques"] = bool(src.get("personnes_physiques", False))
     entree["zone"] = "restreinte" if entree["personnes_physiques"] else "publique"
+    if src.get("elus_nommes"):
+        entree["elus_nommes"] = True  # elus nommes dans leur role public (votes, amendements) : zone publique, marque
     entree["collecte_le"] = maintenant()
     entree["fichiers"] = []
     anciens = {f["chemin"]: f for f in ancien.get("fichiers", [])} if not force else {}
@@ -463,6 +550,11 @@ def collecter(client: Client, src: dict, ancien: dict, portails: dict, *, timeou
             if _fichier_reutilisable(vieux, spec.get("signature")):
                 entree["fichiers"].append({**vieux, "change": False, "verifie_le": maintenant()})
                 inchanges += 1
+                continue
+            if spec.get("ted"):
+                res = telecharger_ted(client, src, cible, deadline)
+                entree["fichiers"].append({"url": spec["url"], "chemin": chemin, "requete": src["requete"], **res,
+                                           "change": (vieux or {}).get("sha256") != res["sha256"]})
                 continue
             try:
                 res = telecharger(client, spec["url"], cible, deadline=deadline,
@@ -525,7 +617,7 @@ def sources_depuis_decouvertes(decouvertes: list[dict], catalogue: list[dict], s
     deja = {(s.get("portail") or ("datagouv" if s["type"] == "datagouv" else None), s.get("dataset")) for s in catalogue}
     sorties = []
     for d in decouvertes:
-        if d.get("score", 0) < score_min or d.get("doublon_de") or EXCLUSIONS.search(d.get("titre") or ""):
+        if d.get("score", 0) < score_min or d.get("doublon_de") or exclu(d.get("titre")):
             continue
         if portails_inclus and d["portail"] not in portails_inclus:
             continue
@@ -549,8 +641,41 @@ def sources_depuis_decouvertes(decouvertes: list[dict], catalogue: list[dict], s
 
 # exclusions volontaires : aides PAC et registre parcellaire (publication legale limitee, donnees agricoles
 # nominatives), declarations de patrimoine des elus (HATVP, hors objet)
+# + jeux hors sujet ramenes par la decouverte (sante, transports, equipements, etat civil...)
 EXCLUSIONS = re.compile(r"registre parcellaire|\brpg\b|politique agricole commune|\bpac\b|ilots culturaux|"
-                        r"declarations? de (situation )?patrimoine", re.I)
+                        r"declarations? de (situation )?patrimoine|"
+                        r"vaccin|catalogue (de|des) formations?|\bgtfs\b|horaires|arr[eê]ts? de (bus|tram)|"
+                        r"stationnement|v[eé]los? en libre|qualit[eé] de l.air|pollens?|toilettes publiques|"
+                        r"d[eé]fibrillateur|wifi|pr[eé]noms|[eé]tat civil|bornes? de recharge|"
+                        r"r[eé]sultats? (des |d.)?[eé]lections?|candidatures?|bureaux de vote|"
+                        r"jurisprudence et d[eé]cisions d.opposition|m[eé]tadonn[eé]es des rapports", re.I)
+
+
+def exclu(titre: str | None) -> bool:
+    return bool(EXCLUSIONS.search(titre or ""))
+
+
+def purger_exclus() -> list[str]:
+    """Supprime de l'entrepot les sources decouvertes dont le titre tombe sous les exclusions."""
+    import shutil
+    retires = []
+    with _verrou(MANIFEST):
+        m = lire_manifeste()
+        for sid in list(m):
+            e = m[sid]
+            if e.get("origine") != "decouverte" or not exclu(e.get("titre")):
+                continue
+            for f in e.get("fichiers", []):
+                (ROOT / f["chemin"]).unlink(missing_ok=True)
+            d = dossier_source(e) / sid
+            if d.is_dir():
+                shutil.rmtree(d)
+            retires.append(sid)
+            del m[sid]
+        tmp = MANIFEST.with_name(MANIFEST.name + ".tmp")
+        tmp.write_text(json.dumps(m, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+        os.replace(tmp, MANIFEST)
+    return retires
 
 PORTAILS_FINANCIERS = {"economie", "ofgl", "urssaf", "cdc"}
 PRODUCTEURS_FINANCIERS = re.compile(r"dgfip|finances publiques|budget|\bdb\b|dgcl|ofgl|urssaf|cnccfp|hatvp|cour des comptes|"
@@ -620,12 +745,17 @@ def main(argv=None) -> int:
     ap.add_argument("--sauter-ok", action="store_true", help="ignorer les sources deja ok dans le manifeste (sans verifier l'amont)")
     ap.add_argument("--reserve-go", type=float, default=4, help="espace disque libre a preserver (Go) : en dessous, les sources sont sautees")
     ap.add_argument("--plafond-go", type=float, default=25, help="taille maximale de l'entrepot (Go, d'apres le manifeste)")
+    ap.add_argument("--purger-exclus", action="store_true", help="retirer de l'entrepot les decouvertes hors sujet (EXCLUSIONS)")
     ap.add_argument("--reclasser", action="store_true", help="aligner les domaines des sources decouvertes sur decouvertes.json")
     ap.add_argument("--max-mo", type=float, default=100, help="taille max par fichier data.gouv.fr sans --lourd (Mo)")
     a = ap.parse_args(argv)
 
     cat = charger_catalogue()
     portails = charger_portails(cat)
+    if a.purger_exclus:
+        r = purger_exclus()
+        print(f"{len(r)} sources hors sujet retirees de l'entrepot")
+        return 0
     if a.reclasser:
         print(f"{reclasser(lire_decouvertes()['jeux'])} sources decouvertes reclassees")
         return 0

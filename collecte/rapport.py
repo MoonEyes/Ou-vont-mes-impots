@@ -102,6 +102,12 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
         mo = sum(f["octets"] for f in fichiers_valides(e)) / 1e6
         L.append(f"- `{k}` ({e.get('domaine')}, {e.get('statut')}, {mo:,.1f} Mo) : {e.get('titre')}")
 
+    elus = sorted(k for k, e in manifeste.items() if e.get("elus_nommes"))
+    if elus:
+        L += ["", f"## Sources nommant des elus dans leur role public ({len(elus)})", "",
+              "Votes et amendements nominatifs des parlementaires : zone publique, mais marques `elus_nommes`.", "",
+              ", ".join(f"`{k}`" for k in elus)]
+
     ign = [(k, i) for k, e in manifeste.items() for i in e.get("ignores", []) if e.get("statut") != "ok" or True]
     lourdes = []
     if catalogue:
@@ -128,6 +134,17 @@ def generer(manifeste: dict, decouvertes: dict | None = None, catalogue: dict | 
                 L.append(f"- `{j['id']}` ({j.get('taille_estimee_mo') or 0:,.0f} Mo estimes, {st}) : {j['titre'][:100]}")
             if len(restants) > 25:
                 L.append(f"- ... et {len(restants) - 25} autres")
+
+    if decouvertes:
+        from collecte import exclu
+        ex = [j for j in decouvertes.get("jeux", []) if exclu(j.get("titre")) and j.get("score", 0) >= 2]
+        if ex:
+            L += ["", f"## Jeux decouverts exclus comme hors sujet ({len(ex)})", "",
+                  "Filtre par mots-cles (`EXCLUSIONS` dans collecte.py : PAC, patrimoine, vaccination, transports, "
+                  "etat civil, resultats electoraux...) et score minimal de pertinence.", ""]
+            L += [f"- `{j['id']}` : {j['titre'][:100]}" for j in ex[:60]]
+            if len(ex) > 60:
+                L.append(f"- ... et {len(ex) - 60} autres")
 
     if catalogue and catalogue.get("non_collectables"):
         L += ["", "## Sources identifiees mais non collectables automatiquement", ""]

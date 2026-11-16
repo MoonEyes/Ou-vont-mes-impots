@@ -178,7 +178,7 @@ def test_catalogue_reel_coherent():
     ids = [s["id"] for s in cat["sources"]]
     assert len(ids) == len(set(ids))
     for s in cat["sources"]:
-        assert s["type"] in {"ods_export", "ods_pieces_jointes", "datagouv", "datagouv_ressources", "eurostat", "url", "urls"}
+        assert s["type"] in {"ods_export", "ods_pieces_jointes", "datagouv", "datagouv_ressources", "eurostat", "url", "urls", "index_http", "ted_recherche"}
         if s["type"].startswith("ods"):
             assert s["portail"] in cat["portails"]
         assert "—" not in json.dumps(s, ensure_ascii=False)
@@ -257,3 +257,32 @@ def test_exclusions_pac_et_patrimoine():
            {"id": "b", "portail": "datagouv", "dataset": "b", "score": 9, "titre": "Declarations de patrimoine des elus"},
            {"id": "c", "portail": "datagouv", "dataset": "c", "score": 9, "titre": "Budget primitif 2020"}]
     assert [s["id"] for s in C.sources_depuis_decouvertes(dec, [], 1)] == ["c"]
+
+
+def test_index_http_apache():
+    html = b'''<pre><a href="?C=N;O=D">Name</a> <a href="/OPENDATA/">Parent Directory</a>
+<a href="Freemium_jorf_global_20261108-140000.tar.gz">Freemium_jorf_global_20261108-140000.tar.gz</a>  2026-11-08 13:48  1.6G
+<a href="JORF_20261109-212854.tar.gz">JORF_20261109-212854.tar.gz</a>   2026-11-09 21:33  3.7M
+<a href="JORF_20261110-002231.tar.gz">JORF_20261110-002231.tar.gz</a>   2026-11-10 00:22   89K
+<a href="notice.pdf">notice.pdf</a>   2018-12-12 10:00  120K'''
+    c = client({"https://d/JORF/": FauxResp(200, html)})
+    plan = C.plan_source(c, {"id": "j", "type": "index_http", "url": "https://d/JORF/", "motif": r"^JORF_.*tar\.gz$"}, {})
+    assert [f["url"] for f in plan["fichiers"]] == ["https://d/JORF/JORF_20261109-212854.tar.gz", "https://d/JORF/JORF_20261110-002231.tar.gz"]
+    assert plan["fichiers"][0]["taille"] == 3_700_000
+
+
+def test_ted_pagination_par_jeton(lac):
+    pages = [{"notices": [{"publication-number": "1-2026", "links": {}}], "iterationNextToken": "t1"},
+             {"notices": [{"publication-number": "2-2026"}], "iterationNextToken": None}]
+    corps = []
+
+    class S:
+        headers = {}
+
+        def post(self, url, json=None, timeout=None):
+            corps.append(json)
+            return FauxResp(200, b"", json_data=pages[len(corps) - 1])
+    c = C.Client(pause=0, session=S())
+    res = C.telecharger_ted(c, {"requete": "q", "champs": ["publication-number"]}, lac / "t.ndjson")
+    assert res["lignes"] == 2 and corps[1]["iterationNextToken"] == "t1"
+    assert "links" not in (lac / "t.ndjson").read_text()
