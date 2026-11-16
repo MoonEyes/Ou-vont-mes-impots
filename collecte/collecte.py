@@ -49,6 +49,9 @@ DATAGOUV_API = "https://www.data.gouv.fr/api/1"
 TIMEOUT_DEFAUT_S = 900          # budget par source (non lourde)
 TIMEOUT_LOURD_S = 3600          # budget par source lourde
 SEUIL_LOURD_OCTETS = 100 * 10**6
+# Mode flux (collecte/stockage.py, option --flux) : les fichiers partent dans le stockage objet et
+# sont effaces en local ; un fichier deja stocke compte alors comme present pour la reprise.
+STOCKE_A_DISTANCE = False
 FORMATS_IGNORES = {"html", "htm", "api", "url", "web page", "ogc:wms", "ogc:wfs", "esri rest", "php"}
 
 
@@ -209,7 +212,7 @@ def telecharger(client: Client, url: str, cible: Path, *, deadline: float | None
     meta_tmp = cible.with_name(cible.name + ".part.json")
     for tentative in range(1, essais_flux + 1):
         headers = {}
-        if ancien and cible.exists() and not tmp.exists():
+        if ancien and (cible.exists() or STOCKE_A_DISTANCE) and not tmp.exists():
             if ancien.get("etag"):
                 headers["If-None-Match"] = ancien["etag"]
             if ancien.get("last_modified"):
@@ -520,7 +523,9 @@ def _fichier_reutilisable(ancien_f: dict | None, signature) -> bool:
     if not ancien_f or signature is None or ancien_f.get("signature") != signature:
         return False
     p = ROOT / ancien_f["chemin"]
-    return p.exists() and p.stat().st_size == ancien_f.get("octets")
+    if p.exists() and p.stat().st_size == ancien_f.get("octets"):
+        return True
+    return STOCKE_A_DISTANCE and bool(ancien_f.get("stockage")) and not ancien_f.get("envoi_en_attente")
 
 
 def collecter(client: Client, src: dict, ancien: dict, portails: dict, *, timeout_s: float,
@@ -557,8 +562,9 @@ def collecter(client: Client, src: dict, ancien: dict, portails: dict, *, timeou
                                            "change": (vieux or {}).get("sha256") != res["sha256"]})
                 continue
             try:
+                present = cible.exists() or (STOCKE_A_DISTANCE and bool((vieux or {}).get("stockage")))
                 res = telecharger(client, spec["url"], cible, deadline=deadline,
-                                  ancien=vieux if vieux and cible.exists() else None, max_octets=max_octets)
+                                  ancien=vieux if vieux and present else None, max_octets=max_octets)
             except TropLourd as exc:
                 entree.setdefault("ignores", []).append({"url": spec["url"], "titre": spec["nom"], "motif": f"lourd ({exc})"})
                 continue
@@ -748,6 +754,8 @@ def main(argv=None) -> int:
     ap.add_argument("--purger-exclus", action="store_true", help="retirer de l'entrepot les decouvertes hors sujet (EXCLUSIONS)")
     ap.add_argument("--reclasser", action="store_true", help="aligner les domaines des sources decouvertes sur decouvertes.json")
     ap.add_argument("--max-mo", type=float, default=100, help="taille max par fichier data.gouv.fr sans --lourd (Mo)")
+    ap.add_argument("--flux", action="store_true",
+                    help="mode flux (collecte/stockage.py) : convertir, envoyer au stockage objet, verifier, effacer en local")
     a = ap.parse_args(argv)
 
     cat = charger_catalogue()
@@ -773,6 +781,18 @@ def main(argv=None) -> int:
              if (not a.ids or s["id"] in a.ids)
              and (not a.domaine or s["domaine"] == a.domaine)
              and (a.lourd or a.ids or not s.get("lourd"))]
+    flux = None
+    if a.flux:
+        global STOCKE_A_DISTANCE
+        import stockage  # collecte/ est dans sys.path (script) : branchement optionnel
+        try:
+            flux = stockage.Flux.depuis_env()
+        except stockage.ErreurConfig as exc:
+            print(f"CONFIGURATION : {exc}", file=sys.stderr)
+            return 78
+        STOCKE_A_DISTANCE = True
+        if stockage.restaurer_manifeste(flux):
+            print("manifeste recupere depuis le stockage objet", flush=True)
     manifeste = lire_manifeste()
     if a.sauter_traites:
         choix = [s for s in choix if s["id"] not in manifeste]
@@ -789,7 +809,7 @@ def main(argv=None) -> int:
     for s in choix:
         libre = shutil.disk_usage(LAKE if LAKE.exists() else ROOT).free
         volume = sum(f.get("octets", 0) for e in manifeste.values() for f in e.get("fichiers", []))
-        if volume > a.plafond_go * 1e9:
+        if volume > a.plafond_go * 1e9 and not flux:
             print(f"PLAFOND  {s['id']:<48} saute : entrepot {volume / 1e9:.1f} Go > plafond {a.plafond_go} Go", flush=True)
             erreurs += 1
             continue
@@ -801,7 +821,11 @@ def main(argv=None) -> int:
         max_octets = None if (a.lourd or s.get("lourd") is True and a.ids) else int(a.max_mo * 1e6)
         e = collecter(client, s, manifeste.get(s["id"], {}), portails, timeout_s=budget, force=a.force,
                       max_octets=max_octets)
+        if flux:
+            e = flux.apres_collecte(s["id"], e, manifeste.get(s["id"], {}))
         manifeste = maj_manifeste(s["id"], e)
+        if flux:
+            flux.peut_etre_sauver()
         if e["statut"] in ("ok", "partiel"):
             mo = sum(f.get("octets", 0) for f in e["fichiers"]) / 1e6
             lignes = sum(f.get("lignes", 0) or 0 for f in e["fichiers"])
@@ -811,6 +835,12 @@ def main(argv=None) -> int:
             erreurs += 1
             print(f"{e['statut'].upper():<8} {s['id']:<48} {e['erreur'][:140]}", flush=True)
     print(f"\n{len(choix) - erreurs}/{len(choix)} sources collectees, manifeste : {MANIFEST.relative_to(ROOT)}")
+    if flux:
+        flux.peut_etre_sauver(force=True)
+        print(f"stockage : {flux.envoyes} fichier(s) envoye(s), {flux.dedupliques} inchange(s), "
+              f"{flux.echecs} echec(s) d'envoi ; {flux.octets_avant / 1e6:.0f} Mo -> {flux.octets_apres / 1e6:.0f} Mo")
+        if flux.echecs:
+            return 2
     return 1 if choix and erreurs == len(choix) else 0
 
 

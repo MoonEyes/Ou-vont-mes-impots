@@ -1,0 +1,11 @@
+[Unit]
+Description=Ou vont mes impots : collecte chaque lundi a 3 h (heure de Paris)
+
+[Timer]
+OnCalendar=Mon *-*-* 03:00:00 Europe/Paris
+Persistent=true
+AccuracySec=1min
+Unit=ovmi-collecte.service
+
+[Install]
+WantedBy=timers.target

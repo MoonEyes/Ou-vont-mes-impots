@@ -1,0 +1,18 @@
+[Unit]
+Description=Ou vont mes impots : alerte apres un echec de la collecte
+
+[Service]
+Type=oneshot
+User=ovmi
+Group=ovmi
+EnvironmentFile=/etc/ovmi/stockage.env
+Environment=HOME=/var/lib/ovmi OVMI_RACINE=/var/lib/ovmi
+ExecStart=/var/lib/ovmi/venv/bin/python /var/lib/ovmi/ou-vont-mes-impots/deploy/alerte.py
+SyslogIdentifier=ovmi-alerte
+Nice=10
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/ovmi
+PrivateTmp=yes
+CapabilityBoundingSet=
