@@ -85,7 +85,8 @@
       "required": [
         "non_apparies_eur",
         "dont_personnes_physiques_eur",
-        "non_verifies_eur"
+        "non_verifies_eur",
+        "parlementaires_non_nommes_eur"
       ]
     },
     "part_agregee_pct": {
@@ -225,6 +226,31 @@
           }
         }
       }
+    },
+    "parlementaires_non_nommes": {
+      "type": "object",
+      "required": [
+        "nombre",
+        "total_eur",
+        "lignes",
+        "raison"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "nombre": {
+          "type": "integer"
+        },
+        "total_eur": {
+          "type": "number"
+        },
+        "lignes": {
+          "type": "integer"
+        },
+        "raison": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
     }
   },
   "required": [
@@ -238,6 +264,7 @@
     "nommes_eur",
     "agreges_eur",
     "part_agregee_pct",
-    "parlementaires"
+    "parlementaires",
+    "parlementaires_non_nommes"
   ]
 }

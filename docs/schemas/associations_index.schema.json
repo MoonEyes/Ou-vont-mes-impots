@@ -132,6 +132,9 @@
           "jeu_datagouv": {
             "type": "string",
             "pattern": "^[0-9a-f]{24}$"
+          },
+          "dont_denomination_nominative_eur": {
+            "type": "number"
           }
         }
       },

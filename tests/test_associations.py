@@ -235,8 +235,11 @@ def test_conservation_reserve():
         assert abs(d["nommes_eur"] + d["agreges_eur"] - d["total_eur"]) <= TOL
         a = d["agreges"]
         assert abs(a["non_apparies_eur"] + a["dont_personnes_physiques_eur"] + a["non_verifies_eur"]
-                   - d["agreges_eur"]) <= TOL
-        assert abs(sum(p["total_eur"] for p in d["parlementaires"]) - d["total_eur"]) <= TOL * len(d["parlementaires"])
+                   + a["parlementaires_non_nommes_eur"] - d["agreges_eur"]) <= TOL
+        nn = d["parlementaires_non_nommes"]
+        assert nn["total_eur"] == a["parlementaires_non_nommes_eur"] and nn["raison"]
+        assert abs(sum(p["total_eur"] for p in d["parlementaires"]) + nn["total_eur"] - d["total_eur"]) \
+            <= TOL * len(d["parlementaires"])
         for p in d["parlementaires"]:
             s = sum(b[5] for b in p["beneficiaires_nommes"]) + p["agreges"]["montant_eur"]
             assert abs(s - p["total_eur"]) <= TOL, p["parlementaire"]
@@ -315,3 +318,31 @@ def test_personne_physique_jamais_nommee():
     assert B.statut("222222222", None, ext)[0] != "pm"
     assert B.statut("333333333", None, ext)[0] == "pm"
     assert B.statut("NR CHORUS", None, ext)[0] == "ni"
+
+
+def test_aucun_candidat_national_nomme():
+    """Règle du projet : les candidats des scrutins nationaux ne sont nommés que dans vie_politique/candidats/
+    (même contrôle que tests/test_vie_politique.py, limité aux fichiers associations)."""
+    noms = A.candidats_nationaux()
+    if not noms:
+        pytest.skip("vie_politique/candidats absent")
+
+    def chaines(x):
+        if isinstance(x, dict):
+            for v in x.values():
+                yield from chaines(v)
+        elif isinstance(x, list):
+            for v in x:
+                yield from chaines(v)
+        elif isinstance(x, str):
+            yield x
+
+    fuites = [(f.name, s[:60]) for f in _fichiers() for s in chaines(_json(f)) if A.cite_candidat(s)]
+    assert not fuites, fuites[:10]
+
+
+def test_association_de_financement_de_campagne_jamais_nommee():
+    assert A.denomination_nominative("ASSOCIATION DE FINANCEMENT DE LA CAMPAGNE PRESIDENTIELLE DE X Y")
+    assert A.denomination_nominative("L'ASSOCIATION MANDATAIRE POUR LES COMPTES DE LA CAMPAGNE")
+    assert not A.denomination_nominative("SECOURS POPULAIRE FRANCAIS")
+    assert not A.denomination_nominative("COMMUNE DE TALANGE")

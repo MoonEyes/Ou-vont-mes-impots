@@ -179,6 +179,9 @@
                 "const": "nc"
               }
             ]
+          },
+          "dont_denomination_nominative_eur": {
+            "type": "number"
           }
         },
         "additionalProperties": false

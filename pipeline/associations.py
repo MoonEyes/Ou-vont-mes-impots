@@ -93,7 +93,9 @@ REGLE_PERSONNES = ("Seules les personnes morales sont nommées (catégorie jurid
                    "publiée.")
 REGLE_PARLEMENTAIRES = ("Les parlementaires sont nommés dans leur rôle public (attribution de la réserve parlementaire, "
                         "listes publiées par l'Assemblée nationale et le Sénat), comme les élus et candidats des comptes "
-                        "de campagne : nom, groupe, département, montants. Ni adresse ni autre donnée personnelle.")
+                        "de campagne : nom, groupe, département, montants. Ni adresse ni autre donnée personnelle. Un "
+                        "parlementaire par ailleurs candidat à un scrutin national n'est pas nommé ici "
+                        "(parlementaires_non_nommes) ; une association de financement de campagne non plus.")
 RECHERCHE_PUBLIQUE = {
     "date": "2026-11-17",
     "trouvailles": [
@@ -451,12 +453,54 @@ def texte_publiable(o, liste: set, longueur: int = 140) -> str | None:
     (numéro suivi d'un type de voie) ; sinon null."""
     import local
     o = propre(o)
-    if not o or ADRESSE_RE.search(o):
+    if not o or ADRESSE_RE.search(o) or cite_candidat(o):
         return None
     t = local.objet_publiable(o, liste, longueur=10 ** 6)
     if t is None:
         return None
     return t if len(t) <= longueur else t[:longueur - 1].rstrip() + "…"
+
+
+_CANDIDATS: set | None = None
+FINANCEMENT_ELECTORAL_RE = re.compile(r"\b(?:FINANCEMENT|MANDATAIRE|COMPTES?)\b.*\b(?:CAMPAGNE|ELECTORALE?S?|ELECTIONS?|"
+                                      r"PRESIDENTIELLES?|LEGISLATIVES?|MUNICIPALES?|CANDIDATE?S?)\b")
+
+
+def _cle_candidat(s) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", sans_accents(str(s)).lower()).strip()
+
+
+def candidats_nationaux() -> set:
+    """Noms des candidats aux scrutins nationaux (présidentielles, têtes de liste européennes) publiés dans
+    site/data/vie_politique/candidats/ : la règle du projet ne les nomme que là (tests/test_vie_politique.py)."""
+    global _CANDIDATS
+    if _CANDIDATS is None:
+        _CANDIDATS = set()
+        d = SITE / "vie_politique" / "candidats"
+        for f in sorted(d.glob("*.json")) if d.is_dir() else []:
+            if not f.name.startswith(("presidentielle_", "europeennes_")):
+                continue
+            for c in json.loads(f.read_text(encoding="utf-8"))["candidats"]:
+                for morceau in re.split(r"\bet\b", c["candidat"]):
+                    n = _cle_candidat(morceau)
+                    if len(n.split()) >= 2 and len(n) >= 8:
+                        _CANDIDATS.add(n)
+    return _CANDIDATS
+
+
+def cite_candidat(texte) -> bool:
+    """Vrai si le texte contient le nom d'un candidat national (suite de 2 à 5 mots)."""
+    noms = candidats_nationaux()
+    if not noms or not texte:
+        return False
+    t = _cle_candidat(texte).split()
+    return any(" ".join(t[i:i + n]) in noms for n in range(2, 6) for i in range(len(t) - n + 1))
+
+
+def denomination_nominative(nom) -> bool:
+    """Dénomination jamais publiée : association de financement ou mandataire d'une campagne électorale (elle porte
+    le nom du candidat), ou nom d'un candidat national."""
+    return bool(nom) and (bool(FINANCEMENT_ELECTORAL_RE.search(norm(nom))) or cite_candidat(nom))
 
 
 # --- 3. Série par association x programme x année ---------------------------------------------------------------------
@@ -466,12 +510,14 @@ def serie(js: dict, ext: dict) -> dict:
     """{programme: {libelle, assoc: {siren: {annee: montant}}, annees: {annee: compteurs}}} et totaux par année."""
     progs = defaultdict(lambda: {"libelle": None, "assoc": defaultdict(lambda: defaultdict(float)),
                                  "annees": defaultdict(lambda: {"total": 0.0, "lignes": 0, "nommes": 0.0,
-                                                                "pp": 0.0, "ni": 0.0, "nv": 0.0})})
+                                                                "pp": 0.0, "ni": 0.0, "nv": 0.0, "nom": 0.0})})
     noms_source = {}
     totaux = {}
+    nominatifs = {l["siren"] for j in js.values() for l in j["lignes"] if denomination_nominative(l["denomination"])}
+    nominatifs |= {s for s, e in ext.items() if e.get("nom") and denomination_nominative(e["nom"])}
     for a in sorted(js):
         j = js[a]
-        t = {"total": 0.0, "lignes": 0, "nommes": 0.0, "pp": 0.0, "ni": 0.0, "nv": 0.0, "assoc": set(),
+        t = {"total": 0.0, "lignes": 0, "nommes": 0.0, "pp": 0.0, "ni": 0.0, "nv": 0.0, "nom": 0.0, "assoc": set(),
              "sans_programme": 0.0}
         for l in j["lignes"]:
             p = l["programme"] or "sans_programme"
@@ -486,7 +532,10 @@ def serie(js: dict, ext: dict) -> dict:
             if p == "sans_programme":
                 t["sans_programme"] += l["montant"]
             st, cj = B.statut(l["siren"], l["cj"], ext)
-            if st == "pm":
+            if st == "pm" and l["siren"] in nominatifs:
+                c["nom"] += l["montant"]
+                t["nom"] += l["montant"]
+            elif st == "pm":
                 g["assoc"][l["siren"]][a] += l["montant"]
                 c["nommes"] += l["montant"]
                 t["nommes"] += l["montant"]
@@ -552,8 +601,9 @@ def produire_serie(js: dict, ext: dict, sortie: Path) -> dict:
             par_annee.append({"annee": a, "annee_credits": credits[a], "statut": "publie",
                               **({"facteur_correction": js[a]["correction"]["facteur"]} if "correction" in js[a] else {}),
                               "total_source_eur": B.eur(c["total"]), "nommes_eur": B.eur(c["nommes"]),
-                              "exclus_personnes_physiques_ou_non_identifies_eur": B.eur(c["pp"] + c["ni"]),
-                              "dont_personnes_physiques_eur": B.eur(c["pp"]), "non_verifies_eur": B.eur(c["nv"]),
+                              "exclus_personnes_physiques_ou_non_identifies_eur": B.eur(c["pp"] + c["ni"] + c["nom"]),
+                              "dont_personnes_physiques_eur": B.eur(c["pp"]),
+                              "dont_denomination_nominative_eur": B.eur(c["nom"]), "non_verifies_eur": B.eur(c["nv"]),
                               "lignes_source": c["lignes"]})
         entete = {
             "millesime": f"Jaunes associations PLF {annees[0]} à PLF {annees[-1]} (crédits versés de "
@@ -619,14 +669,17 @@ TYPES_RNF = {"FDD": "fonds de dotation", "FE": "fondation d'entreprise", "FRUP":
 
 def produire_rnf(rnf: list[dict], ext: dict, liste: set, sortie: Path) -> dict:
     import vie_politique as vp
-    lignes, filtres = [], 0
+    lignes, filtres, titres_retires = [], 0, 0
     for r in rnf:
         objet = texte_publiable(r.get("objet_social"), liste, longueur=400)
         if r.get("objet_social") and objet is None:
             filtres += 1
         siren = (r["siret"] or "")[:9]
         e = ext.get(siren) or {}
-        lignes.append([r["numero_rnf"], r.get("titre"), r.get("type_organisme"), objet,
+        titre = r.get("titre")
+        if denomination_nominative(titre):
+            titre, titres_retires = None, titres_retires + 1
+        lignes.append([r["numero_rnf"], titre, r.get("type_organisme"), objet,
                        (r.get("date_creation") or "")[:10] or None, r.get("domaine_interet_general"), r.get("etat"),
                        r.get("prefecture"), r["siret"], e.get("cj") if sirene.personne_morale(e.get("cj")) else None,
                        annees_liste(r.get("subventions_publiques")), annees_liste(r.get("appel_generosite_publique")),
@@ -648,7 +701,7 @@ def produire_rnf(rnf: list[dict], ext: dict, liste: set, sortie: Path) -> dict:
                      "remplacé par null ; il est coupé à 400 caractères."),
            "ordre": ORDRE_RNF, "nombre": len(lignes),
            "nombre_avec_subventions_publiques_declarees": len(avec),
-           "objets_retires_par_le_filtre": filtres,
+           "objets_retires_par_le_filtre": filtres, "titres_retires_candidat_national": titres_retires,
            "par_type": {t: sum(1 for l in lignes if l[2] == t) for t in sorted({l[2] for l in lignes if l[2]})},
            "lignes": lignes}
     ecrire(sortie / "fonds_fondations.json", obj)
@@ -912,7 +965,18 @@ def produire_reserve(res: dict, js: dict, ext: dict, liste: set, sortie: Path) -
         methodes = defaultdict(int)
         tot = {"total": 0.0, "nommes": 0.0, "non_apparies": 0.0, "pp": 0.0, "non_verifies": 0.0, "lignes": 0,
                "lignes_nommees": 0}
+        non_nommes = {"cles": set(), "total": 0.0, "lignes": 0}
         for l in ls:
+            if cite_candidat(l["parlementaire"]) or cite_candidat(l["nom_tri"]):
+                non_nommes["cles"].add(l["cle_parl"])
+                non_nommes["total"] += l["montant"]
+                non_nommes["lignes"] += 1
+                tot["total"] += l["montant"]
+                tot["lignes"] += 1
+                g = progs[l["programme"] or "inconnu"]
+                g["total"] += l["montant"]
+                g["lignes"] += 1
+                continue
             p = parls.setdefault(l["cle_parl"], {"parlementaire": l["parlementaire"], "nom_tri": l["nom_tri"],
                                                  "groupe": l["groupe"], "departement": l["departement_nom"],
                                                  "total": 0.0, "lignes": 0, "nommes": [],
@@ -934,7 +998,8 @@ def produire_reserve(res: dict, js: dict, ext: dict, liste: set, sortie: Path) -
                 siren, methode = ((e["siren"], "api_nom_departement") if e.get("siren") and cj_api[:1] in ("7", "8", "9")
                                   else (None, None))
             st, cj = B.statut(siren, None, ext) if siren else ("ni", None)
-            if st == "pm" and (ext.get(siren) or {}).get("trouve"):
+            if st == "pm" and (ext.get(siren) or {}).get("trouve") \
+                    and not denomination_nominative((ext.get(siren) or {}).get("nom")):
                 e = ext[siren]
                 p["nommes"].append([siren, e.get("nom") or None, cj, e.get("rna"), l["programme"],
                                     B.eur(l["montant"]), texte_publiable(l["descriptif"], liste), methode])
@@ -984,18 +1049,27 @@ def produire_reserve(res: dict, js: dict, ext: dict, liste: set, sortie: Path) -
                "agreges_eur": B.eur(agrege),
                "agreges": {"non_apparies_eur": B.eur(tot["non_apparies"]),
                            "dont_personnes_physiques_eur": B.eur(tot["pp"]),
-                           "non_verifies_eur": B.eur(tot["non_verifies"])},
+                           "non_verifies_eur": B.eur(tot["non_verifies"]),
+                           "parlementaires_non_nommes_eur": B.eur(non_nommes["total"])},
                "part_agregee_pct": round(agrege / tot["total"] * 100, 2) if tot["total"] else None,
                "appariements": dict(sorted(methodes.items())),
                "par_programme": [{"programme": None if k == "inconnu" else k, "total_eur": B.eur(v["total"]),
                                   "nommes_eur": B.eur(v["nommes"]), "lignes": v["lignes"]}
                                  for k, v in sorted(progs.items())],
+               "parlementaires_non_nommes": {
+                   "nombre": len(non_nommes["cles"]), "total_eur": B.eur(non_nommes["total"]),
+                   "lignes": non_nommes["lignes"],
+                   "raison": ("Parlementaires par ailleurs candidats à un scrutin national (présidentielle, tête de "
+                              "liste européenne) : la règle du site ne nomme ces candidats que dans les comptes de "
+                              "campagne (vie_politique/candidats/). Leurs attributions restent comptées dans les "
+                              "totaux et par programme, sans détail.")},
                "parlementaires": sortie_parls}
         nom = f"{ass}_{a}.json"
         ecrire(d / nom, obj)
         stats[nom] = {"assemblee": obj["assemblee"], "annee": a, "total_eur": obj["total_eur"],
                       "nommes_eur": obj["nommes_eur"], "agreges_eur": obj["agreges_eur"],
                       "part_agregee_pct": obj["part_agregee_pct"], "parlementaires": len(sortie_parls),
+                      "parlementaires_non_nommes": len(non_nommes["cles"]),
                       "fichier": f"associations/reserve/{nom}"}
     return stats
 
@@ -1036,8 +1110,9 @@ def produire(sortie: Path = SITE / "associations") -> dict:
                        **({"total_publie_par_la_source_eur": B.eur(js[a]["total_publie"])} if "total_publie" in js[a]
                           else {}),
                        "total_source_eur": B.eur(t["total"]), "nommes_eur": B.eur(t["nommes"]),
-                       "exclus_personnes_physiques_ou_non_identifies_eur": B.eur(t["pp"] + t["ni"]),
-                       "dont_personnes_physiques_eur": B.eur(t["pp"]), "non_verifies_eur": B.eur(t["nv"]),
+                       "exclus_personnes_physiques_ou_non_identifies_eur": B.eur(t["pp"] + t["ni"] + t["nom"]),
+                       "dont_personnes_physiques_eur": B.eur(t["pp"]),
+                       "dont_denomination_nominative_eur": B.eur(t["nom"]), "non_verifies_eur": B.eur(t["nv"]),
                        "sans_programme_eur": B.eur(t["sans_programme"]),
                        "associations_nommees": len(t["assoc"]), "lignes_source": t["lignes"],
                        "jeu_datagouv": DATAGOUV[a]})
