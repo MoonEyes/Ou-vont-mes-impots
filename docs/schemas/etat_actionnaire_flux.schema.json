@@ -1,0 +1,700 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/etat_actionnaire_flux.schema.json",
+  "title": "site/data/etat_actionnaire/flux.json : dividendes (lignes 2110, 2116, 2199), recettes, dépenses et solde du compte « Participations financières de l'État », par année, en prévision et en exécution",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "mesures": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "plf_eur",
+          "lfi_eur",
+          "lfi_plrg_eur",
+          "lfr_plrg_eur",
+          "prevision_revisee_eur",
+          "evaluation_eur",
+          "report_entrant_eur",
+          "credits_ouverts_eur",
+          "execution_eur",
+          "report_sortant_eur"
+        ]
+      },
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "dividendes": {
+      "type": "object",
+      "required": [
+        "definition",
+        "lignes",
+        "total",
+        "serie_longue"
+      ],
+      "properties": {
+        "lignes": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "libelle",
+              "par_annee"
+            ],
+            "properties": {
+              "code": {
+                "enum": [
+                  "2110",
+                  "2116",
+                  "2199"
+                ]
+              },
+              "libelle": {
+                "type": "string",
+                "minLength": 3
+              },
+              "par_annee": {
+                "type": "object",
+                "propertyNames": {
+                  "pattern": "^20[0-9]{2}$"
+                },
+                "additionalProperties": {
+                  "type": "object",
+                  "propertyNames": {
+                    "enum": [
+                      "plf_eur",
+                      "lfi_eur",
+                      "lfi_plrg_eur",
+                      "lfr_plrg_eur",
+                      "prevision_revisee_eur",
+                      "evaluation_eur",
+                      "report_entrant_eur",
+                      "credits_ouverts_eur",
+                      "execution_eur",
+                      "report_sortant_eur"
+                    ]
+                  },
+                  "additionalProperties": {
+                    "type": "number"
+                  },
+                  "minProperties": 1
+                },
+                "description": "année -> mesure -> montant en euros ; une mesure absente n'est pas publiée par les sources (jamais 0 par défaut)"
+              }
+            }
+          }
+        },
+        "total": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^20[0-9]{2}$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "propertyNames": {
+              "enum": [
+                "plf_eur",
+                "lfi_eur",
+                "lfi_plrg_eur",
+                "lfr_plrg_eur",
+                "prevision_revisee_eur",
+                "evaluation_eur",
+                "report_entrant_eur",
+                "credits_ouverts_eur",
+                "execution_eur",
+                "report_sortant_eur"
+              ]
+            },
+            "additionalProperties": {
+              "type": "number"
+            },
+            "minProperties": 1
+          },
+          "description": "année -> mesure -> montant en euros ; une mesure absente n'est pas publiée par les sources (jamais 0 par défaut)"
+        },
+        "serie_longue": {
+          "type": "object",
+          "required": [
+            "source",
+            "url",
+            "unite",
+            "perimetre",
+            "annees",
+            "numeraire_md",
+            "actions_md",
+            "total_md",
+            "statuts"
+          ],
+          "properties": {
+            "unite": {
+              "const": "milliards d'euros"
+            },
+            "annees": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 10
+            },
+            "numeraire_md": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "actions_md": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "total_md": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "compte": {
+      "type": "object",
+      "required": [
+        "nom",
+        "type",
+        "recettes",
+        "depenses",
+        "solde"
+      ],
+      "properties": {
+        "recettes": {
+          "type": "object",
+          "required": [
+            "lignes",
+            "total",
+            "hors_versement_budget_general",
+            "note",
+            "lignes_sans_montant"
+          ],
+          "properties": {
+            "lignes": {
+              "type": "array",
+              "minItems": 6,
+              "maxItems": 6,
+              "items": {
+                "type": "object",
+                "required": [
+                  "code",
+                  "libelle",
+                  "nature",
+                  "par_annee",
+                  "detail_execution"
+                ],
+                "properties": {
+                  "code": {
+                    "pattern": "^0[1-6]$"
+                  },
+                  "libelle": {
+                    "type": "string",
+                    "minLength": 3
+                  },
+                  "par_annee": {
+                    "type": "object",
+                    "propertyNames": {
+                      "pattern": "^20[0-9]{2}$"
+                    },
+                    "additionalProperties": {
+                      "type": "object",
+                      "propertyNames": {
+                        "enum": [
+                          "plf_eur",
+                          "lfi_eur",
+                          "lfi_plrg_eur",
+                          "lfr_plrg_eur",
+                          "prevision_revisee_eur",
+                          "evaluation_eur",
+                          "report_entrant_eur",
+                          "credits_ouverts_eur",
+                          "execution_eur",
+                          "report_sortant_eur"
+                        ]
+                      },
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "minProperties": 1
+                    },
+                    "description": "année -> mesure -> montant en euros ; une mesure absente n'est pas publiée par les sources (jamais 0 par défaut)"
+                  },
+                  "nature": {
+                    "enum": [
+                      "cession",
+                      "reversement_cession_indirecte",
+                      "reversement_capital",
+                      "remboursement_creance",
+                      "remboursement_autre_investissement",
+                      "versement_budget_general"
+                    ]
+                  },
+                  "detail_execution": {
+                    "type": "object",
+                    "propertyNames": {
+                      "pattern": "^20[0-9]{2}$"
+                    },
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "code",
+                          "libelle",
+                          "execution_eur"
+                        ],
+                        "properties": {
+                          "execution_eur": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "total": {
+              "type": "object",
+              "propertyNames": {
+                "pattern": "^20[0-9]{2}$"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "propertyNames": {
+                  "enum": [
+                    "plf_eur",
+                    "lfi_eur",
+                    "lfi_plrg_eur",
+                    "lfr_plrg_eur",
+                    "prevision_revisee_eur",
+                    "evaluation_eur",
+                    "report_entrant_eur",
+                    "credits_ouverts_eur",
+                    "execution_eur",
+                    "report_sortant_eur"
+                  ]
+                },
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "minProperties": 1
+              },
+              "description": "année -> mesure -> montant en euros ; une mesure absente n'est pas publiée par les sources (jamais 0 par défaut)"
+            },
+            "hors_versement_budget_general": {
+              "type": "object",
+              "propertyNames": {
+                "pattern": "^20[0-9]{2}$"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "propertyNames": {
+                  "enum": [
+                    "plf_eur",
+                    "lfi_eur",
+                    "lfi_plrg_eur",
+                    "lfr_plrg_eur",
+                    "prevision_revisee_eur",
+                    "evaluation_eur",
+                    "report_entrant_eur",
+                    "credits_ouverts_eur",
+                    "execution_eur",
+                    "report_sortant_eur"
+                  ]
+                },
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "minProperties": 1
+              },
+              "description": "année -> mesure -> montant en euros ; une mesure absente n'est pas publiée par les sources (jamais 0 par défaut)"
+            },
+            "lignes_sans_montant": {
+              "type": "array"
+            }
+          }
+        },
+        "depenses": {
+          "type": "object",
+          "required": [
+            "programmes",
+            "total",
+            "note",
+            "composition_2025_citee"
+          ],
+          "properties": {
+            "programmes": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "object",
+                "required": [
+                  "code",
+                  "libelle",
+                  "par_annee",
+                  "actions"
+                ],
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "731",
+                      "732"
+                    ]
+                  },
+                  "libelle": {
+                    "type": "string",
+                    "minLength": 3
+                  },
+                  "par_annee": {
+                    "type": "object",
+                    "propertyNames": {
+                      "pattern": "^20[0-9]{2}$"
+                    },
+                    "additionalProperties": {
+                      "type": "object",
+                      "propertyNames": {
+                        "enum": [
+                          "plf_eur",
+                          "lfi_eur",
+                          "lfi_plrg_eur",
+                          "lfr_plrg_eur",
+                          "prevision_revisee_eur",
+                          "evaluation_eur",
+                          "report_entrant_eur",
+                          "credits_ouverts_eur",
+                          "execution_eur",
+                          "report_sortant_eur"
+                        ]
+                      },
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "minProperties": 1
+                    },
+                    "description": "année -> mesure -> montant en euros ; une mesure absente n'est pas publiée par les sources (jamais 0 par défaut)"
+                  },
+                  "actions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "libelle",
+                        "par_annee"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "libelle": {
+                          "type": "string",
+                          "minLength": 3
+                        },
+                        "par_annee": {
+                          "type": "object",
+                          "propertyNames": {
+                            "pattern": "^20[0-9]{2}$"
+                          },
+                          "additionalProperties": {
+                            "type": "object",
+                            "propertyNames": {
+                              "enum": [
+                                "plf_eur",
+                                "lfi_eur",
+                                "lfi_plrg_eur",
+                                "lfr_plrg_eur",
+                                "prevision_revisee_eur",
+                                "evaluation_eur",
+                                "report_entrant_eur",
+                                "credits_ouverts_eur",
+                                "execution_eur",
+                                "report_sortant_eur"
+                              ]
+                            },
+                            "additionalProperties": {
+                              "type": "number"
+                            },
+                            "minProperties": 1
+                          },
+                          "description": "année -> mesure -> montant en euros ; une mesure absente n'est pas publiée par les sources (jamais 0 par défaut)"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "total": {
+              "type": "object",
+              "propertyNames": {
+                "pattern": "^20[0-9]{2}$"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "propertyNames": {
+                  "enum": [
+                    "plf_eur",
+                    "lfi_eur",
+                    "lfi_plrg_eur",
+                    "lfr_plrg_eur",
+                    "prevision_revisee_eur",
+                    "evaluation_eur",
+                    "report_entrant_eur",
+                    "credits_ouverts_eur",
+                    "execution_eur",
+                    "report_sortant_eur"
+                  ]
+                },
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "minProperties": 1
+              },
+              "description": "année -> mesure -> montant en euros ; une mesure absente n'est pas publiée par les sources (jamais 0 par défaut)"
+            },
+            "composition_2025_citee": {
+              "type": "object",
+              "required": [
+                "source",
+                "url",
+                "note",
+                "elements"
+              ],
+              "properties": {
+                "elements": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "libelle",
+                      "annee",
+                      "montant_eur",
+                      "citation",
+                      "page"
+                    ],
+                    "properties": {
+                      "montant_eur": {
+                        "type": "number"
+                      },
+                      "citation": {
+                        "type": "string",
+                        "minLength": 10
+                      },
+                      "page": {
+                        "type": "integer",
+                        "minimum": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "solde": {
+          "type": "object",
+          "required": [
+            "definition",
+            "par_annee"
+          ],
+          "properties": {
+            "par_annee": {
+              "type": "object",
+              "propertyNames": {
+                "pattern": "^20[0-9]{2}$"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "required": [
+                  "debut_eur",
+                  "recettes_eur",
+                  "depenses_eur",
+                  "fin_eur"
+                ],
+                "additionalProperties": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "budget_general_vers_compte": {
+      "type": "object",
+      "required": [
+        "note",
+        "programmes"
+      ],
+      "properties": {
+        "programmes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "libelle",
+              "par_annee"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "libelle": {
+                "type": "string",
+                "minLength": 3
+              },
+              "par_annee": {
+                "type": "object",
+                "propertyNames": {
+                  "pattern": "^20[0-9]{2}$"
+                },
+                "additionalProperties": {
+                  "type": "object",
+                  "propertyNames": {
+                    "enum": [
+                      "plf_eur",
+                      "lfi_eur",
+                      "lfi_plrg_eur",
+                      "lfr_plrg_eur",
+                      "prevision_revisee_eur",
+                      "evaluation_eur",
+                      "report_entrant_eur",
+                      "credits_ouverts_eur",
+                      "execution_eur",
+                      "report_sortant_eur"
+                    ]
+                  },
+                  "additionalProperties": {
+                    "type": "number"
+                  },
+                  "minProperties": 1
+                },
+                "description": "année -> mesure -> montant en euros ; une mesure absente n'est pas publiée par les sources (jamais 0 par défaut)"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ecarts_entre_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "objet",
+          "annee",
+          "valeurs",
+          "ecart_eur",
+          "lecture"
+        ],
+        "properties": {
+          "annee": {
+            "type": "integer"
+          },
+          "ecart_eur": {
+            "type": "number"
+          },
+          "valeurs": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "source",
+                "montant_eur"
+              ],
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "minLength": 5
+                },
+                "montant_eur": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "rapprochement_senat": {
+      "type": "object",
+      "required": [
+        "source",
+        "url",
+        "note",
+        "totaux"
+      ],
+      "properties": {
+        "totaux": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "objet",
+              "senat_millions_eur",
+              "autre_source_eur",
+              "page"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "collecte_le",
+    "mesures",
+    "dividendes",
+    "compte",
+    "budget_general_vers_compte",
+    "ecarts_entre_sources",
+    "rapprochement_senat"
+  ]
+}

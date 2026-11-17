@@ -3376,6 +3376,166 @@
    "licence": "ODbL 1.0",
    "producteur": "Region Centre-Val de Loire",
    "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "etat_actionnaire_plf25_recettes_bg",
+   "domaine": "etat_actionnaire",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "plf25-recettes-du-budget-general",
+   "format_export": "csv",
+   "titre": "PLF 2025, recettes du budget general : lignes 2110, 2116, 2199 (produits des participations de l'Etat) (lu par pipeline/etat_actionnaire.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/etat_actionnaire.py"
+  },
+  {
+   "id": "etat_actionnaire_plf24_recettes_bg",
+   "domaine": "etat_actionnaire",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "plf-2024-recettes-du-budget-general",
+   "format_export": "csv",
+   "titre": "PLF et LFI 2024, recettes du budget general : lignes 2110, 2116, 2199 (lu par pipeline/etat_actionnaire.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/etat_actionnaire.py"
+  },
+  {
+   "id": "etat_actionnaire_plf25_recettes_cas",
+   "domaine": "etat_actionnaire",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "plf25-recettes-des-cas-et-des-ccf",
+   "format_export": "csv",
+   "titre": "PLF 2025, recettes des comptes d'affectation speciale : compte Participations financieres de l'Etat (lu par pipeline/etat_actionnaire.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/etat_actionnaire.py"
+  },
+  {
+   "id": "etat_actionnaire_plf24_recettes_cas",
+   "domaine": "etat_actionnaire",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "plf-2024-recettes-des-cas-et-ccf",
+   "format_export": "csv",
+   "titre": "PLF et LFI 2024, recettes des comptes d'affectation speciale : compte Participations financieres de l'Etat (lu par pipeline/etat_actionnaire.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/etat_actionnaire.py"
+  },
+  {
+   "id": "etat_actionnaire_lfi23_recettes_cas",
+   "domaine": "etat_actionnaire",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "cas-ccf-recettes-lf-2023",
+   "format_export": "csv",
+   "titre": "PLF et LFI 2023, recettes des comptes d'affectation speciale : compte Participations financieres de l'Etat (lu par pipeline/etat_actionnaire.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/etat_actionnaire.py"
+  },
+  {
+   "id": "etat_actionnaire_plf25_depenses_destination",
+   "domaine": "etat_actionnaire",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "plf25-depenses-2025-selon-destination",
+   "format_export": "csv",
+   "where": "programme in (\"731\",\"732\",\"367\",\"369\")",
+   "titre": "PLF 2025, depenses selon destination : programmes 731 et 732 du compte, programmes 367 et 369 du budget general (lu par pipeline/etat_actionnaire.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/etat_actionnaire.py"
+  },
+  {
+   "id": "etat_actionnaire_plrg_annexes",
+   "domaine": "etat_actionnaire",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe1_etat_recettes_2023_csv",
+     "nom": "plrg_2023_recettes.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe1_etat_cp_2023_csv",
+     "nom": "plrg_2023_bg_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_cp_2023_csv",
+     "nom": "plrg_2023_cs_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_recouvt_2023_csv",
+     "nom": "plrg_2023_cs_recouvrements.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_comptable_2023_csv",
+     "nom": "plrg_2023_cs_comptable.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe1_etat_recettes_csv",
+     "nom": "plrg_2024_recettes.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe1_etat_cp_2024_csv",
+     "nom": "plrg_2024_bg_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_cp_2024_csv",
+     "nom": "plrg_2024_cs_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_recouvt_2024_csv",
+     "nom": "plrg_2024_cs_recouvrements.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_comptable_2024_csv",
+     "nom": "plrg_2024_cs_comptable.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe1_etat_recettes_2025csv",
+     "nom": "plrg_2025_recettes.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe1_etat_cp_2025csv",
+     "nom": "plrg_2025_bg_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_cp_2025csv",
+     "nom": "plrg_2025_cs_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_recouvt_2025csv",
+     "nom": "plrg_2025_cs_recouvrements.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_comptable_2025csv",
+     "nom": "plrg_2025_cs_comptable.csv"
+    }
+   ],
+   "titre": "PLRG 2023, 2024 et 2025, annexes CSV : recettes du budget general par ligne d'execution, depenses du budget general et des comptes speciaux, recouvrements et situation comptable des comptes speciaux (lu par pipeline/etat_actionnaire.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/etat_actionnaire.py"
+  },
+  {
+   "id": "etat_actionnaire_documents",
+   "domaine": "etat_actionnaire",
+   "type": "urls",
+   "elus_nommes": true,
+   "urls": [
+    {
+     "url": "https://www.insee.fr/fr/statistiques/fichier/8252208/tableaux_telechargement_2022.xlsx",
+     "nom": "insee_societes_controlees_2022.xlsx"
+    },
+    {
+     "url": "https://www.senat.fr/rap/l25-736-221/l25-736-2211.pdf",
+     "nom": "senat_l25-736-2211.pdf"
+    },
+    {
+     "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088068/file/PAP2026_CS_CAS_Participations_financieres_Etat_YC.pdf",
+     "nom": "pap2026_cas_pfe.pdf"
+    }
+   ],
+   "titre": "Etat actionnaire, documents : Insee, societes controlees majoritairement par l'Etat fin 2022 (xlsx) ; Senat, rapport n° 736 (2025-2026), tome II, annexe 21, compte Participations financieres de l'Etat (PDF) ; projet annuel de performances 2026 du compte, miroir Assemblee nationale (PDF) (lu par pipeline/etat_actionnaire.py)",
+   "licence": "Licence Ouverte 2.0 (Insee) ; documents parlementaires et budgetaires publics",
+   "module": "pipeline/etat_actionnaire.py"
   }
  ],
  "non_collectables": [
@@ -3438,6 +3598,10 @@
   {
    "source": "Legifrance, budget.gouv.fr (performance-publique), data.ccomptes.fr",
    "motif": "refusent les scripts ou inexistants : non insiste"
+  },
+  {
+   "source": "Agence des participations de l'Etat (site de l'agence : rapports d'activite, portefeuille)",
+   "motif": "refus d'acces HTTP 403 (constate le 17/11/2026), non contourne ; le compte, ses recettes et ses depenses sont lus dans les jeux budgetaires et les documents parlementaires (pipeline/etat_actionnaire.py)"
   }
  ]
 }

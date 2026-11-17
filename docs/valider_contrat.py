@@ -181,6 +181,11 @@ FICHIERS = [
     ("education_recherche_lycees.schema.json", "education_recherche/lycees/[0-9]*.json", "existant"),
     ("education_recherche_collectivites_esr.schema.json", "education_recherche/collectivites_esr.json", "existant"),
     ("education_recherche_etudiants.schema.json", "education_recherche/etudiants.json", "existant"),
+    # l'État actionnaire : dividendes, cessions, opérations en capital (pipeline/etat_actionnaire.py)
+    ("etat_actionnaire_index.schema.json", "etat_actionnaire/index.json", "existant"),
+    ("etat_actionnaire_flux.schema.json", "etat_actionnaire/flux.json", "existant"),
+    ("etat_actionnaire_entites.schema.json", "etat_actionnaire/entites.json", "existant"),
+    ("etat_actionnaire_societes_controlees.schema.json", "etat_actionnaire/societes_controlees.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
