@@ -1,0 +1,414 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/outremer_index.schema.json",
+  "title": "site/data/outremer/index.json : collectivités d'outre-mer couvertes, statut de publication de chaque bloc, parité du franc CFP, écarts entre sources, sources (pipeline/outremer.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "territoires": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "enum": [
+              "975",
+              "977",
+              "978",
+              "986",
+              "987",
+              "988"
+            ]
+          },
+          "nom": {
+            "type": "string"
+          },
+          "statut_juridique": {
+            "type": "string"
+          },
+          "monnaie": {
+            "enum": [
+              "EUR",
+              "XPF"
+            ]
+          },
+          "population": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "communes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "fichier": {
+            "type": "string",
+            "pattern": "^outremer/9[78][0-9]\\.json$"
+          },
+          "blocs": {
+            "type": "object",
+            "minProperties": 9,
+            "additionalProperties": {
+              "enum": [
+                "publié",
+                "non publié en données ouvertes"
+              ]
+            }
+          }
+        },
+        "required": [
+          "code",
+          "nom",
+          "statut_juridique",
+          "monnaie",
+          "population",
+          "communes",
+          "fichier",
+          "blocs"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "blocs": {
+      "type": "object",
+      "minProperties": 9,
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "statuts": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "publié",
+          "non publié en données ouvertes"
+        ]
+      },
+      "minProperties": 2,
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "parite_xpf": {
+      "type": "object",
+      "properties": {
+        "xpf_par_eur": {
+          "const": 119.33174
+        },
+        "devise_source": {
+          "const": "XPF"
+        },
+        "methode": {
+          "type": "string"
+        },
+        "territoires_en_francs_cfp": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "975",
+              "977",
+              "978",
+              "986",
+              "987",
+              "988"
+            ]
+          }
+        }
+      },
+      "required": [
+        "xpf_par_eur",
+        "devise_source",
+        "methode",
+        "territoires_en_francs_cfp"
+      ],
+      "additionalProperties": false
+    },
+    "fichiers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "lien_local": {
+      "type": "object",
+      "properties": {
+        "fichier": {
+          "const": "local/index.json"
+        },
+        "lecture": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "fichier",
+        "lecture"
+      ],
+      "additionalProperties": false
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "territoire": {
+            "enum": [
+              "975",
+              "977",
+              "978",
+              "986",
+              "987",
+              "988"
+            ]
+          },
+          "annee": {
+            "type": "string",
+            "pattern": "^(19|20)[0-9]{2}$"
+          },
+          "source": {
+            "type": "string"
+          },
+          "montant": {
+            "type": "integer"
+          },
+          "autre_source": {
+            "type": "string"
+          },
+          "autre_montant": {
+            "type": "integer"
+          },
+          "ecart": {
+            "type": "integer"
+          },
+          "ecart_pct": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "lecture_ecart": {
+            "type": "string",
+            "minLength": 20
+          }
+        },
+        "required": [
+          "territoire",
+          "annee",
+          "source",
+          "montant",
+          "autre_source",
+          "autre_montant",
+          "ecart",
+          "ecart_pct",
+          "lecture_ecart"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "credits_etat_plf2026": {
+      "type": "object",
+      "properties": {
+        "territoires_lus": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "975",
+              "977",
+              "978",
+              "986",
+              "987",
+              "988"
+            ]
+          }
+        },
+        "colonnes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 6,
+          "maxItems": 6
+        },
+        "controle": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "territoires_lus",
+        "colonnes",
+        "controle"
+      ],
+      "additionalProperties": false
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "sources": {
+      "type": "object",
+      "minProperties": 5,
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "titre": {
+            "type": "string"
+          },
+          "producteur": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "page": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "licence": {
+            "type": "string",
+            "minLength": 3
+          },
+          "verdict": {
+            "type": "string",
+            "pattern": "^(réutilisable tel quel|à adapter|inspiration seulement)"
+          },
+          "collecte_le": {
+            "type": "string"
+          },
+          "modifie_le": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "titre",
+          "producteur",
+          "url",
+          "page",
+          "licence",
+          "verdict",
+          "collecte_le"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "motif": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "motif"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "conclusion": {
+          "type": "string"
+        },
+        "trouvailles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "nom": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "licence": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "mise_a_jour": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "dernier_commit": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "verdict": {
+                "type": "string",
+                "minLength": 3
+              }
+            },
+            "required": [
+              "nom",
+              "url",
+              "licence",
+              "verdict"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "date",
+        "conclusion",
+        "trouvailles"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "collecte_le",
+    "territoires",
+    "blocs",
+    "statuts",
+    "parite_xpf",
+    "fichiers",
+    "lien_local",
+    "ecarts",
+    "credits_etat_plf2026",
+    "limites",
+    "sources",
+    "sources_inaccessibles",
+    "recherche_publique"
+  ],
+  "additionalProperties": false
+}

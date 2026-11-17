@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_satellites_eau.schema.json",
+  "title": "site/data/local_satellites/eau/<dep>.json : services d'eau et d'assainissement par collectivité organisatrice (pipeline/local_satellites.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "licence": {
+      "const": "Licence Ouverte 2.0"
+    },
+    "departement": {
+      "type": "object",
+      "required": [
+        "code",
+        "nom"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "nom": {
+          "type": "string"
+        }
+      }
+    },
+    "exercice": {
+      "const": 2024
+    },
+    "colonnes": {
+      "const": [
+        "competence",
+        "entite",
+        "mode_gestion",
+        "statut_operateur",
+        "missions",
+        "population_desservie",
+        "prix_m3_ttc",
+        "statut_saisie",
+        "communes_adherentes"
+      ]
+    },
+    "unite_prix": {
+      "type": "string"
+    },
+    "collectivites": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^([0-9]{9}|sispea[0-9]+)$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "nom",
+          "type",
+          "siren",
+          "comptes",
+          "services"
+        ],
+        "properties": {
+          "nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "type": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "siren": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9]{9}$"
+          },
+          "comptes": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "vue",
+              "fichier"
+            ],
+            "additionalProperties": false,
+            "description": "où lire le budget de l'organisme déjà publié (lien, aucun montant recopié) ; null = comptes non publiés",
+            "properties": {
+              "vue": {
+                "enum": [
+                  "local_budget_epci",
+                  "local_budget_region",
+                  "local_budget_commune",
+                  "local_satellites_syndicats"
+                ]
+              },
+              "fichier": {
+                "type": "string",
+                "pattern": "\\.json$"
+              }
+            }
+          },
+          "services": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^(AEP|AC|ANC)[0-9]+$"
+            }
+          }
+        }
+      }
+    },
+    "services": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^(AEP|AC|ANC)[0-9]+$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 9,
+        "maxItems": 9,
+        "prefixItems": [
+          {
+            "enum": [
+              "eau_potable",
+              "assainissement_collectif",
+              "assainissement_non_collectif"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "description": "null = prix non saisi, jamais 0 à la place d'une absence"
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        ]
+      }
+    },
+    "non_rattaches": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "communes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^([0-9]{2}|2[AB])[0-9]{3}$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "prefixItems": [
+            {
+              "type": "string"
+            },
+            {
+              "enum": [
+                "commune",
+                "epci",
+                "syndicat_via_commune",
+                "syndicat_via_epci"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "licence",
+    "departement",
+    "exercice",
+    "colonnes",
+    "collectivites",
+    "services",
+    "non_rattaches",
+    "communes"
+  ]
+}

@@ -1,0 +1,397 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/recouvrement_controle_fiscal.schema.json",
+ "title": "site/data/recouvrement/controle_fiscal.json : contrôle fiscal de la DGFiP, montants notifiés et encaissés",
+ "description": "Axe « recouvrement » (pipeline/recouvrement.py). Trois notions séparées : montant notifié, montant encaissé, estimation. Aucun total entre sphère fiscale et sphère sociale.",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "properties": {
+  "millesime": {
+   "type": "string"
+  },
+  "source": {
+   "type": "string"
+  },
+  "unite": {
+   "type": "string",
+   "minLength": 3
+  },
+  "avertissement": {
+   "type": "string",
+   "minLength": 20
+  },
+  "collecte_le": {
+   "type": "string",
+   "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+  },
+  "sphere": {
+   "const": "fiscale"
+  },
+  "producteur": {
+   "type": "string",
+   "minLength": 3
+  },
+  "perimetre": {
+   "type": "string",
+   "minLength": 20
+  },
+  "methode": {
+   "type": "string",
+   "minLength": 20
+  },
+  "sources_series": {
+   "type": "object",
+   "required": [
+    "annuaires",
+    "dpt_2026"
+   ],
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "libelle",
+     "annees",
+     "sources"
+    ]
+   }
+  },
+  "series": {
+   "type": "array",
+   "minItems": 40,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "id",
+     "serie",
+     "libelle",
+     "notion",
+     "unite",
+     "groupe",
+     "source",
+     "annees",
+     "valeurs"
+    ],
+    "properties": {
+     "id": {
+      "type": "string",
+      "pattern": "^(annuaire|dpt)_[a-z_]+$"
+     },
+     "serie": {
+      "type": "string"
+     },
+     "libelle": {
+      "type": "string",
+      "minLength": 10
+     },
+     "notion": {
+      "enum": [
+       "notifie",
+       "encaisse",
+       "activite"
+      ]
+     },
+     "unite": {
+      "enum": [
+       "M€",
+       "nombre"
+      ]
+     },
+     "groupe": {
+      "enum": [
+       "ensemble",
+       "sur_place",
+       "sur_pieces",
+       "encaissements"
+      ]
+     },
+     "source": {
+      "enum": [
+       "annuaires",
+       "dpt_2026"
+      ]
+     },
+     "annees": {
+      "type": "array",
+      "minItems": 9,
+      "items": {
+       "type": "integer",
+       "minimum": 1990,
+       "maximum": 2100
+      }
+     },
+     "valeurs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     }
+    }
+   }
+  },
+  "ruptures": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "object",
+    "required": [
+     "annee",
+     "source",
+     "tableau",
+     "texte"
+    ],
+    "properties": {
+     "annee": {
+      "type": "integer",
+      "minimum": 1990,
+      "maximum": 2100
+     },
+     "texte": {
+      "type": "string",
+      "minLength": 20
+     },
+     "citation": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "notes_sources": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "array",
+    "items": {
+     "type": "string"
+    }
+   }
+  },
+  "raccord_editions_2010": {
+   "type": "object",
+   "required": [
+    "definition",
+    "series"
+   ],
+   "properties": {
+    "series": {
+     "type": "array",
+     "minItems": 10,
+     "items": {
+      "type": "object",
+      "required": [
+       "serie",
+       "edition_2010",
+       "edition_2019",
+       "ecart"
+      ]
+     }
+    }
+   }
+  },
+  "ecarts_entre_sources": {
+   "type": "array",
+   "minItems": 4,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "serie",
+     "annee",
+     "source",
+     "valeur",
+     "autre_source",
+     "autre_valeur",
+     "ecart",
+     "unite"
+    ],
+    "properties": {
+     "serie": {
+      "type": "string"
+     },
+     "annee": {
+      "type": "integer",
+      "minimum": 1990,
+      "maximum": 2100
+     },
+     "source": {
+      "type": "string"
+     },
+     "valeur": {
+      "type": "number"
+     },
+     "autre_source": {
+      "type": "string"
+     },
+     "autre_valeur": {
+      "type": "number"
+     },
+     "ecart": {
+      "type": "number"
+     },
+     "unite": {
+      "type": "string"
+     },
+     "credits_non_rembourses_dpt": {
+      "type": "number"
+     }
+    }
+   }
+  },
+  "lecture_ecart": {
+   "type": "string",
+   "minLength": 20
+  },
+  "coherence": {
+   "type": "object",
+   "minProperties": 4
+  },
+  "taux_recouvrement": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "date",
+    "taux_net_pct",
+    "taux_brut_pct",
+    "source",
+    "page",
+    "perimetre",
+    "methode",
+    "citation"
+   ],
+   "properties": {
+    "date": {
+     "type": "string",
+     "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "taux_net_pct": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 100
+    },
+    "taux_brut_pct": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 100
+    },
+    "source": {
+     "type": "string"
+    },
+    "page": {
+     "type": "integer"
+    },
+    "perimetre": {
+     "type": "string",
+     "minLength": 20
+    },
+    "methode": {
+     "type": "string",
+     "minLength": 20
+    },
+    "citation": {
+     "type": "string",
+     "minLength": 20
+    }
+   }
+  },
+  "plaintes": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "definition",
+    "source",
+    "annees",
+    "unite",
+    "par_procede",
+    "par_secteur",
+    "total",
+    "notes_sources"
+   ],
+   "properties": {
+    "definition": {
+     "type": "string",
+     "minLength": 20
+    },
+    "source": {
+     "type": "string"
+    },
+    "annees": {
+     "type": "array",
+     "items": {
+      "type": "integer",
+      "minimum": 1990,
+      "maximum": 2100
+     }
+    },
+    "unite": {
+     "const": "nombre"
+    },
+    "par_procede": {
+     "type": "array",
+     "minItems": 3,
+     "items": {
+      "type": "object",
+      "required": [
+       "libelle",
+       "valeurs"
+      ]
+     }
+    },
+    "par_secteur": {
+     "type": "array",
+     "minItems": 5,
+     "items": {
+      "type": "object",
+      "required": [
+       "libelle",
+       "valeurs"
+      ]
+     }
+    },
+    "total": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "notes_sources": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ },
+ "required": [
+  "millesime",
+  "source",
+  "unite",
+  "avertissement",
+  "collecte_le",
+  "sphere",
+  "producteur",
+  "perimetre",
+  "methode",
+  "sources_series",
+  "series",
+  "ruptures",
+  "notes_sources",
+  "raccord_editions_2010",
+  "ecarts_entre_sources",
+  "lecture_ecart",
+  "coherence",
+  "taux_recouvrement",
+  "plaintes"
+ ],
+ "additionalProperties": false
+}

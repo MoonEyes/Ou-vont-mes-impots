@@ -1,0 +1,370 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_satellites_index.schema.json",
+  "title": "site/data/local_satellites/index.json : blocs par commune, totaux, flux croisés, sources (pipeline/local_satellites.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "total": {
+      "type": "object",
+      "required": [
+        "organismes",
+        "depenses_totales_hors_remb"
+      ],
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 8,
+        "maxItems": 8,
+        "items": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "properties": {
+    "licence": {
+      "type": "string",
+      "pattern": "ODbL"
+    },
+    "licences": {
+      "type": "object",
+      "required": [
+        "syndicats",
+        "ccas",
+        "eau",
+        "mobilite"
+      ],
+      "properties": {
+        "mobilite": {
+          "type": "object",
+          "required": [
+            "licence",
+            "licence_url",
+            "mention",
+            "partage_a_l_identique"
+          ],
+          "properties": {
+            "licence": {
+              "const": "ODbL 1.0"
+            }
+          }
+        }
+      }
+    },
+    "blocs": {
+      "const": [
+        "syndicats",
+        "organismes_departementaux",
+        "ccas",
+        "cias",
+        "aom",
+        "versement_mobilite",
+        "eau_potable",
+        "assainissement_collectif",
+        "assainissement_non_collectif"
+      ]
+    },
+    "format": {
+      "type": "string"
+    },
+    "fichiers": {
+      "type": "object",
+      "required": [
+        "syndicats",
+        "organismes_departementaux",
+        "ccas",
+        "cias",
+        "aom",
+        "versement_mobilite",
+        "eau_potable",
+        "assainissement_collectif",
+        "assainissement_non_collectif"
+      ],
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "annees": {
+      "const": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "departements": {
+      "type": "array",
+      "minItems": 96,
+      "items": {
+        "type": "string"
+      }
+    },
+    "competences": {
+      "type": "array",
+      "minItems": 100,
+      "items": {
+        "type": "string"
+      }
+    },
+    "natures": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "flux_croises": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "de",
+          "vers",
+          "nature",
+          "deja_publie",
+          "ici",
+          "regle"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "de": {
+            "type": "string"
+          },
+          "vers": {
+            "type": "string"
+          },
+          "nature": {
+            "type": "string"
+          },
+          "deja_publie": {
+            "type": "string"
+          },
+          "ici": {
+            "type": "string"
+          },
+          "regle": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "limites": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "couverture": {
+      "type": "object",
+      "required": [
+        "communes",
+        "par_bloc"
+      ],
+      "properties": {
+        "communes": {
+          "type": "integer"
+        },
+        "par_bloc": {
+          "type": "object",
+          "required": [
+            "syndicats",
+            "organismes_departementaux",
+            "ccas",
+            "cias",
+            "aom",
+            "versement_mobilite",
+            "eau_potable",
+            "assainissement_collectif",
+            "assainissement_non_collectif"
+          ],
+          "additionalProperties": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "totaux": {
+      "type": "object",
+      "required": [
+        "note",
+        "syndicats",
+        "ccas_cias"
+      ],
+      "properties": {
+        "note": {
+          "type": "string"
+        },
+        "syndicats": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/total"
+          }
+        },
+        "ccas_cias": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/total"
+          }
+        }
+      }
+    },
+    "reperes": {
+      "type": "object"
+    },
+    "ecarts": {
+      "type": "object",
+      "required": [
+        "versement_mobilite_urssaf_cerema"
+      ]
+    },
+    "non_nommes": {
+      "type": "object",
+      "required": [
+        "regle",
+        "par_bloc",
+        "operateurs_eau"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "titre",
+          "page",
+          "url",
+          "producteur",
+          "millesime",
+          "licence",
+          "verdict"
+        ]
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "constat",
+          "consequence"
+        ]
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "verdict",
+        "trouvailles"
+      ],
+      "properties": {
+        "trouvailles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "nom",
+              "url",
+              "classement",
+              "licence",
+              "dernier_commit"
+            ],
+            "properties": {
+              "classement": {
+                "enum": [
+                  "réutilisable tel quel",
+                  "à adapter",
+                  "inspiration seulement"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "communes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^([0-9]{2}|2[AB])[0-9]{3}$"
+      },
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 511
+      }
+    },
+    "hors_departement": {
+      "type": "object",
+      "required": [
+        "note",
+        "syndicats",
+        "ccas",
+        "eau"
+      ],
+      "properties": {
+        "note": {
+          "type": "string"
+        },
+        "syndicats": {
+          "type": "object"
+        },
+        "ccas": {
+          "type": "object"
+        },
+        "eau": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "licence",
+    "licences",
+    "blocs",
+    "format",
+    "fichiers",
+    "annees",
+    "departements",
+    "competences",
+    "definitions",
+    "flux_croises",
+    "limites",
+    "couverture",
+    "totaux",
+    "reperes",
+    "hors_departement",
+    "ecarts",
+    "non_nommes",
+    "sources",
+    "sources_inaccessibles",
+    "recherche_publique",
+    "communes"
+  ]
+}

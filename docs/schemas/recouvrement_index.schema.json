@@ -1,0 +1,537 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/recouvrement_index.schema.json",
+ "title": "site/data/recouvrement/index.json : notions, règles, vues par producteur, fichiers, sources, recherche publique",
+ "description": "Axe « recouvrement » (pipeline/recouvrement.py). Trois notions séparées : montant notifié, montant encaissé, estimation. Aucun total entre sphère fiscale et sphère sociale.",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "properties": {
+  "millesime": {
+   "type": "string"
+  },
+  "source": {
+   "type": "string"
+  },
+  "unite": {
+   "type": "string",
+   "minLength": 3
+  },
+  "avertissement": {
+   "type": "string",
+   "minLength": 20
+  },
+  "collecte_le": {
+   "type": "string",
+   "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+  },
+  "notions": {
+   "type": "object",
+   "required": [
+    "notifie",
+    "encaisse",
+    "estimation",
+    "restitution"
+   ],
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "libelle",
+     "definition"
+    ],
+    "properties": {
+     "definition": {
+      "type": "string",
+      "minLength": 20
+     }
+    }
+   }
+  },
+  "regles": {
+   "type": "array",
+   "minItems": 5,
+   "items": {
+    "type": "string",
+    "minLength": 20
+   }
+  },
+  "spheres": {
+   "type": "object",
+   "required": [
+    "fiscale",
+    "sociale"
+   ],
+   "additionalProperties": false,
+   "properties": {
+    "fiscale": {
+     "type": "string"
+    },
+    "sociale": {
+     "type": "string"
+    }
+   }
+  },
+  "vues": {
+   "type": "array",
+   "minItems": 3,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "id",
+     "sphere",
+     "titre",
+     "producteur",
+     "annee",
+     "notifie",
+     "encaisse",
+     "restitution",
+     "estimation"
+    ],
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "sphere": {
+      "enum": [
+       "fiscale",
+       "sociale"
+      ]
+     },
+     "titre": {
+      "type": "string"
+     },
+     "producteur": {
+      "type": "string"
+     },
+     "annee": {
+      "type": "integer",
+      "minimum": 1990,
+      "maximum": 2100
+     },
+     "notifie": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "libelle",
+        "unite",
+        "fichier"
+       ],
+       "properties": {
+        "libelle": {
+         "type": "string"
+        },
+        "valeur": {
+         "type": "number"
+        },
+        "valeur_basse": {
+         "type": "number"
+        },
+        "valeur_haute": {
+         "type": "number"
+        },
+        "unite": {
+         "enum": [
+          "M€",
+          "Md€",
+          "€"
+         ]
+        },
+        "precision": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "fichier": {
+         "type": "string",
+         "pattern": "^recouvrement/[a-z_]+\\.json$"
+        },
+        "serie": {
+         "type": "string"
+        },
+        "id": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "encaisse": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "libelle",
+        "unite",
+        "fichier"
+       ],
+       "properties": {
+        "libelle": {
+         "type": "string"
+        },
+        "valeur": {
+         "type": "number"
+        },
+        "valeur_basse": {
+         "type": "number"
+        },
+        "valeur_haute": {
+         "type": "number"
+        },
+        "unite": {
+         "enum": [
+          "M€",
+          "Md€",
+          "€"
+         ]
+        },
+        "precision": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "fichier": {
+         "type": "string",
+         "pattern": "^recouvrement/[a-z_]+\\.json$"
+        },
+        "serie": {
+         "type": "string"
+        },
+        "id": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "restitution": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "libelle",
+        "unite",
+        "fichier"
+       ],
+       "properties": {
+        "libelle": {
+         "type": "string"
+        },
+        "valeur": {
+         "type": "number"
+        },
+        "valeur_basse": {
+         "type": "number"
+        },
+        "valeur_haute": {
+         "type": "number"
+        },
+        "unite": {
+         "enum": [
+          "M€",
+          "Md€",
+          "€"
+         ]
+        },
+        "precision": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "fichier": {
+         "type": "string",
+         "pattern": "^recouvrement/[a-z_]+\\.json$"
+        },
+        "serie": {
+         "type": "string"
+        },
+        "id": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "estimation": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "libelle",
+        "unite",
+        "fichier"
+       ],
+       "properties": {
+        "libelle": {
+         "type": "string"
+        },
+        "valeur": {
+         "type": "number"
+        },
+        "valeur_basse": {
+         "type": "number"
+        },
+        "valeur_haute": {
+         "type": "number"
+        },
+        "unite": {
+         "enum": [
+          "M€",
+          "Md€",
+          "€"
+         ]
+        },
+        "precision": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "fichier": {
+         "type": "string",
+         "pattern": "^recouvrement/[a-z_]+\\.json$"
+        },
+        "serie": {
+         "type": "string"
+        },
+        "id": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "encaisse_note": {
+      "type": "string",
+      "minLength": 20
+     },
+     "restitution_note": {
+      "type": "string",
+      "minLength": 20
+     },
+     "estimation_note": {
+      "type": "string",
+      "minLength": 20
+     },
+     "estimations_partielles": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    },
+    "allOf": [
+     {
+      "if": {
+       "properties": {
+        "encaisse": {
+         "maxItems": 0
+        }
+       }
+      },
+      "then": {
+       "required": [
+        "encaisse_note"
+       ]
+      }
+     },
+     {
+      "if": {
+       "properties": {
+        "restitution": {
+         "maxItems": 0
+        }
+       }
+      },
+      "then": {
+       "required": [
+        "restitution_note"
+       ]
+      }
+     },
+     {
+      "if": {
+       "properties": {
+        "estimation": {
+         "maxItems": 0
+        }
+       }
+      },
+      "then": {
+       "required": [
+        "estimation_note"
+       ]
+      }
+     }
+    ]
+   }
+  },
+  "ordre": {
+   "type": "object",
+   "required": [
+    "regle",
+    "cles"
+   ],
+   "additionalProperties": false,
+   "properties": {
+    "regle": {
+     "type": "string",
+     "minLength": 10
+    },
+    "cles": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "fichiers": {
+   "type": "array",
+   "minItems": 5,
+   "items": {
+    "type": "object",
+    "required": [
+     "fichier",
+     "contenu",
+     "sphere",
+     "annees"
+    ]
+   }
+  },
+  "reperes": {
+   "type": "object",
+   "minProperties": 5
+  },
+  "sources": {
+   "type": "array",
+   "minItems": 10,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "id",
+     "titre",
+     "producteur",
+     "url",
+     "licence",
+     "document"
+    ],
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "titre": {
+      "type": "string"
+     },
+     "producteur": {
+      "type": "string"
+     },
+     "url": {
+      "type": "string",
+      "pattern": "^https://"
+     },
+     "licence": {
+      "type": "string"
+     },
+     "document": {
+      "type": "string",
+      "pattern": "^data/lake/recouvrement/"
+     }
+    }
+   }
+  },
+  "sources_inaccessibles": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "source",
+     "motif"
+    ]
+   }
+  },
+  "confidentialite": {
+   "type": "string",
+   "minLength": 20
+  },
+  "limites": {
+   "type": "array",
+   "minItems": 3,
+   "items": {
+    "type": "string",
+    "minLength": 20
+   }
+  },
+  "verification_documents": {
+   "type": "object",
+   "required": [
+    "citations",
+    "retrouvees",
+    "methode"
+   ]
+  },
+  "recherche_publique": {
+   "type": "object",
+   "required": [
+    "date",
+    "conclusion",
+    "trouvailles"
+   ],
+   "properties": {
+    "trouvailles": {
+     "type": "array",
+     "minItems": 3,
+     "items": {
+      "type": "object",
+      "required": [
+       "nom",
+       "url",
+       "verdict",
+       "licence",
+       "mise_a_jour"
+      ],
+      "properties": {
+       "verdict": {
+        "enum": [
+         "réutilisable tel quel",
+         "à adapter",
+         "inspiration seulement"
+        ]
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ "required": [
+  "millesime",
+  "source",
+  "unite",
+  "avertissement",
+  "collecte_le",
+  "notions",
+  "regles",
+  "spheres",
+  "vues",
+  "ordre",
+  "fichiers",
+  "reperes",
+  "sources",
+  "sources_inaccessibles",
+  "confidentialite",
+  "limites",
+  "verification_documents",
+  "recherche_publique"
+ ],
+ "additionalProperties": false
+}

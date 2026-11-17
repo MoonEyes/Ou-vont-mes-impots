@@ -1187,6 +1187,87 @@
    "hors_catalogue": [],
    "octets_sources": null,
    "note": "relevé à la main d'après les constantes de pipeline/controle.py (entrepôt purgé avant le relevé sous strace)"
+  },
+  "outremer": {
+   "sources": {
+    "outremer": [
+     "data/lake/outremer/outremer/ccomptes_financement_etat_outremer.zip",
+     "data/lake/outremer/outremer/dotations_collectivites.csv",
+     "data/lake/outremer/outremer/dotations_communes_975.csv",
+     "data/lake/outremer/outremer/dotations_communes_977.csv",
+     "data/lake/outremer/outremer/dotations_communes_978.csv",
+     "data/lake/outremer/outremer/dotations_communes_986.csv",
+     "data/lake/outremer/outremer/dotations_communes_987.csv",
+     "data/lake/outremer/outremer/dotations_communes_988.csv",
+     "data/lake/outremer/outremer/dotations_intercommunalites.csv",
+     "data/lake/outremer/outremer/dpt2026_outremer.pdf",
+     "data/lake/outremer/outremer/geo_975.json",
+     "data/lake/outremer/outremer/geo_977.json",
+     "data/lake/outremer/outremer/geo_978.json",
+     "data/lake/outremer/outremer/geo_986.json",
+     "data/lake/outremer/outremer/geo_987.json",
+     "data/lake/outremer/outremer/geo_988.json",
+     "data/lake/outremer/outremer/nc_budget.csv",
+     "data/lake/outremer/outremer/nc_budget.meta.json",
+     "data/lake/outremer/outremer/nc_epa.csv",
+     "data/lake/outremer/outremer/nc_epa.meta.json",
+     "data/lake/outremer/outremer/nc_epic.csv",
+     "data/lake/outremer/outremer/nc_epic.meta.json",
+     "data/lake/outremer/outremer/nc_impots.csv",
+     "data/lake/outremer/outremer/nc_impots.meta.json"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "relevé à la main d'après les constantes de pipeline/outremer.py (entrée « outremer » du catalogue)"
+  },
+  "local_satellites": {
+   "sources": {
+    "collectivites_banatic_france": [
+     "data/lake/collectivites/local_satellites/banatic_france.xlsx"
+    ],
+    "local_satellites_cerema_aom_2026": [
+     "data/lake/collectivites/local_satellites/aom_base_rt_2026.ods"
+    ],
+    "local_satellites_ofgl_ccas_cias": [
+     "data/lake/collectivites/local_satellites/ofgl_ccas_2018.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_ccas_2019.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_ccas_2020.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_ccas_2021.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_ccas_2022.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_ccas_2023.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_ccas_2024.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_ccas_2025.parquet"
+    ],
+    "local_satellites_ofgl_syndicats": [
+     "data/lake/collectivites/local_satellites/ofgl_syndicats_2018.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_syndicats_2019.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_syndicats_2020.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_syndicats_2021.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_syndicats_2022.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_syndicats_2023.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_syndicats_2024.parquet",
+     "data/lake/collectivites/local_satellites/ofgl_syndicats_2025.parquet"
+    ],
+    "local_satellites_sispea_2024": [
+     "data/lake/collectivites/local_satellites/sispea_2024_AC.7z",
+     "data/lake/collectivites/local_satellites/sispea_2024_AEP.7z",
+     "data/lake/collectivites/local_satellites/sispea_2024_ANC.7z"
+    ],
+    "local_satellites_urssaf_taux_vm": [
+     "data/lake/collectivites/local_satellites/urssaf_taux_vmrr.csv"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/collectivites/local_satellites/extraits/aom.json",
+    "data/lake/collectivites/local_satellites/extraits/banatic.json",
+    "data/lake/collectivites/local_satellites/extraits/categories_juridiques.json",
+    "data/lake/collectivites/local_satellites/extraits/sieges_ccas.json",
+    "data/lake/collectivites/local_satellites/extraits/sispea.json"
+   ],
+   "octets_sources": 128556092
   }
  },
  "urls": {
@@ -1430,6 +1511,12 @@
   "data/lake/collectivites/local_fiscalite_particuliers.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/fiscalite-locale-des-particuliers/exports/parquet",
   "data/lake/collectivites/local_intercos.parquet": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/ofgl-base-gfp-consolidee/exports/parquet",
   "data/lake/collectivites/local_regions.parquet": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/ofgl-base-regions-consolidee/exports/parquet",
+  "data/lake/collectivites/local_satellites/aom_base_rt_2026.ods": "https://static.data.gouv.fr/resources/liste-et-composition-des-autorites-organisatrices-de-la-mobilite-aom/20260716-092939/base-rt-2026.ods",
+  "data/lake/collectivites/local_satellites/banatic_france.xlsx": "https://www.banatic.interieur.gouv.fr/consultation/api/export/pregenere/telecharger/France",
+  "data/lake/collectivites/local_satellites/sispea_2024_AC.7z": "https://data.ofb.fr/catalogue/srv/api/records/5feec4e9-03a6-409a-a522-d51346d5f4c9/attachments/SISPEA_extraction_2024_AC.7z",
+  "data/lake/collectivites/local_satellites/sispea_2024_AEP.7z": "https://data.ofb.fr/catalogue/srv/api/records/7d6a3010-cf19-42c3-8a38-9823074185ce/attachments/SISPEA_extraction_2024_AEP.7z",
+  "data/lake/collectivites/local_satellites/sispea_2024_ANC.7z": "https://data.ofb.fr/catalogue/srv/api/records/96f91c3e-cc33-4f7a-a0fa-6620ff79d168/attachments/SISPEA_extraction_2024_ANC.7z",
+  "data/lake/collectivites/local_satellites/urssaf_taux_vmrr.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/table_taux_vmrr/exports/csv?delimiter=%3B",
   "data/lake/collectivites/ods_agglo_carene__214400301_subventions_liste.parquet": "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214400301_subventions_liste/exports/parquet",
   "data/lake/collectivites/ods_agglo_carene__214400525_subventions-liste.parquet": "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214400525_subventions-liste/exports/parquet",
   "data/lake/collectivites/ods_agglo_carene__214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre.parquet": "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre/exports/parquet",
@@ -1563,6 +1650,30 @@
   "data/lake/europe/esr__fr-esr-horizon-projects-entities.parquet": "https://data.enseignementsup-recherche.gouv.fr/api/explore/v2.1/catalog/datasets/fr-esr-horizon-projects-entities/exports/parquet",
   "data/lake/fiscalite/economie__impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/REI-2025-fichier-notice-trace.zip": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/attachments/rei_2025_fichier_notice_tracezip",
   "data/lake/fiscalite/economie__plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales/PLF2023_voies_et_moyens_t2_liste_des_depenses_fiscales.xlsx": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales/attachments/plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales_xlsx",
+  "data/lake/outremer/outremer/ccomptes_financement_etat_outremer.zip": "https://www.ccomptes.fr/system/files/2022-05/20220524-donnees-financement-Etat-outremer.zip",
+  "data/lake/outremer/outremer/dotations_collectivites.csv": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-departements/exports/csv?select=exercice%2Cpopulation%2Cmet_om%2Ccode_departement%2Cnom_departement%2Ccategorie%2Cunite%2Cvariable%2Cvaleur&where=code_departement+in+%28%27975%27%2C%27977%27%2C%27978%27%2C%27986%27%2C%27987%27%2C%27988%27%29&delimiter=%3B",
+  "data/lake/outremer/outremer/dotations_communes_975.csv": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27975%27&delimiter=%3B",
+  "data/lake/outremer/outremer/dotations_communes_977.csv": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27977%27&delimiter=%3B",
+  "data/lake/outremer/outremer/dotations_communes_978.csv": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27978%27&delimiter=%3B",
+  "data/lake/outremer/outremer/dotations_communes_986.csv": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27986%27&delimiter=%3B",
+  "data/lake/outremer/outremer/dotations_communes_987.csv": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27987%27&delimiter=%3B",
+  "data/lake/outremer/outremer/dotations_communes_988.csv": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27988%27&delimiter=%3B",
+  "data/lake/outremer/outremer/dotations_intercommunalites.csv": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-gfp/exports/csv?select=exercice%2Ccode_departement%2Csiren%2Cnom_epci%2Cnature_juridique%2Ccategorie%2Cunite%2Cvariable%2Cvaleur&where=code_departement+in+%28%27975%27%2C%27977%27%2C%27978%27%2C%27986%27%2C%27987%27%2C%27988%27%29&delimiter=%3B",
+  "data/lake/outremer/outremer/dpt2026_outremer.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1090079/file/4-DPT2026_OutreMer.pdf",
+  "data/lake/outremer/outremer/geo_975.json": "https://geo.api.gouv.fr/communes?codeDepartement=975&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+  "data/lake/outremer/outremer/geo_977.json": "https://geo.api.gouv.fr/communes?codeDepartement=977&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+  "data/lake/outremer/outremer/geo_978.json": "https://geo.api.gouv.fr/communes?codeDepartement=978&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+  "data/lake/outremer/outremer/geo_986.json": "https://geo.api.gouv.fr/communes?codeDepartement=986&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+  "data/lake/outremer/outremer/geo_987.json": "https://geo.api.gouv.fr/communes?codeDepartement=987&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+  "data/lake/outremer/outremer/geo_988.json": "https://geo.api.gouv.fr/communes?codeDepartement=988&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+  "data/lake/outremer/outremer/nc_budget.csv": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-de-la-nouvelle-caledonie-depuis-2012/exports/csv?delimiter=%3B",
+  "data/lake/outremer/outremer/nc_budget.meta.json": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-de-la-nouvelle-caledonie-depuis-2012",
+  "data/lake/outremer/outremer/nc_epa.csv": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-epa-depuis-2012/exports/csv?delimiter=%3B",
+  "data/lake/outremer/outremer/nc_epa.meta.json": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-epa-depuis-2012",
+  "data/lake/outremer/outremer/nc_epic.csv": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-epic-depuis-2012/exports/csv?delimiter=%3B",
+  "data/lake/outremer/outremer/nc_epic.meta.json": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-epic-depuis-2012",
+  "data/lake/outremer/outremer/nc_impots.csv": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/rendement-des-impots-depuis-2010/exports/csv?delimiter=%3B",
+  "data/lake/outremer/outremer/nc_impots.meta.json": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/rendement-des-impots-depuis-2010",
   "data/lake/secu/datagouv__depenses-et-recettes-de-lassurance-chomage/financement-de-l-assurance-chomage_47a22bbe.csv": "https://data.unedic.org/api/explore/v2.1/catalog/datasets/financement-de-l-assurance-chomage/exports/csv?use_labels=true",
   "data/lake/secu/datagouv__subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/DGS_subventions-associations_2025_fd970d88.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/20261110-101421/dgs-subventions-associations-2025.csv",
   "data/lake/secu/secu_protection_sociale.parquet": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/305_les-comptes-de-la-protection-sociale/exports/parquet"

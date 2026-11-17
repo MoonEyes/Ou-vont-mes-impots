@@ -1,0 +1,384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/justice_defense_budget_justice.schema.json",
+  "title": "site/data/justice_defense/budget_justice.json : budget de la justice par programme, frais de justice, aide juridictionnelle (Les chiffres clés de la Justice, édition 2026)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "credits_paiement": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "meur": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "annee",
+              "meur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2
+        },
+        "dont_personnel": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "meur": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "annee",
+              "meur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2
+        },
+        "autorisations_engagement": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "meur": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "annee",
+              "meur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2
+        },
+        "annee_programmes": {
+          "type": "integer"
+        },
+        "programmes": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "items": {
+            "type": "object",
+            "properties": {
+              "programme": {
+                "type": "string",
+                "pattern": "^[0-9]{3}$"
+              },
+              "libelle": {
+                "type": "string"
+              },
+              "cp_meur": {
+                "type": "number",
+                "minimum": 0
+              },
+              "part_pct": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              }
+            },
+            "required": [
+              "cp_meur",
+              "libelle",
+              "part_pct",
+              "programme"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "controle": {
+          "type": "object",
+          "properties": {
+            "somme_programmes_meur": {
+              "type": "number"
+            },
+            "credits_paiement_meur": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "credits_paiement_meur",
+            "somme_programmes_meur"
+          ],
+          "additionalProperties": false
+        },
+        "ordre": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "annee_programmes",
+        "autorisations_engagement",
+        "controle",
+        "credits_paiement",
+        "dont_personnel",
+        "ordre",
+        "programmes"
+      ],
+      "additionalProperties": false
+    },
+    "frais_de_justice": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "meur": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "annee",
+              "meur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2
+        },
+        "civile_et_commerciale": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "meur": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "annee",
+              "meur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2
+        },
+        "criminelle_correctionnelle_contraventionnelle": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "meur": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "annee",
+              "meur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2
+        }
+      },
+      "required": [
+        "civile_et_commerciale",
+        "criminelle_correctionnelle_contraventionnelle",
+        "total"
+      ],
+      "additionalProperties": false
+    },
+    "aide_juridictionnelle": {
+      "type": "object",
+      "properties": {
+        "depenses_effectives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "meur": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "annee",
+              "meur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2
+        },
+        "note": {
+          "type": "string"
+        },
+        "verse_aux_avocats": {
+          "type": "object",
+          "properties": {
+            "annee": {
+              "type": "integer"
+            },
+            "total_meur": {
+              "type": "number"
+            },
+            "dont_aj_garantie_meur": {
+              "type": "number"
+            },
+            "aide_juridictionnelle_meur": {
+              "type": "number"
+            },
+            "civil_meur": {
+              "type": "number"
+            },
+            "penal_meur": {
+              "type": "number"
+            },
+            "administratif_meur": {
+              "type": "number"
+            },
+            "aide_intervention_avocat_meur": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "administratif_meur",
+            "aide_intervention_avocat_meur",
+            "aide_juridictionnelle_meur",
+            "annee",
+            "civil_meur",
+            "dont_aj_garantie_meur",
+            "penal_meur",
+            "total_meur"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "depenses_effectives",
+        "note",
+        "verse_aux_avocats"
+      ],
+      "additionalProperties": false
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "montant": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "autre_source": {
+            "type": "string"
+          },
+          "autre_montant": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "ecart": {
+            "type": "number"
+          },
+          "lecture": {
+            "type": "string"
+          },
+          "disp": {
+            "type": "string"
+          },
+          "champ": {
+            "type": "string"
+          },
+          "objet": {
+            "type": "string"
+          },
+          "unite": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "annee": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "autre_montant",
+          "autre_source",
+          "ecart",
+          "montant",
+          "source"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "aide_juridictionnelle",
+    "avertissement",
+    "budget",
+    "date_sources",
+    "ecarts",
+    "frais_de_justice",
+    "millesime",
+    "source",
+    "unite"
+  ],
+  "additionalProperties": false
+}

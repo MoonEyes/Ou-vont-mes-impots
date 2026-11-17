@@ -24,6 +24,9 @@ const CORRESPONDANCE_LOCALE: Record<string, string> = {
   chomage: 'chomage',
   ceg_employeur: 'ceg',
   maladie_salarie: 'maladie',
+  // Profils étendus (moteur-etendu.ts) : CSG du forfait micro-social et versement libératoire de l'impôt.
+  csg_micro: 'csg_activite',
+  impot_revenu_versement_liberatoire: 'impot_revenu',
 }
 
 /** Remplace les destinataires par la ventilation sourcée de affectation.json, quand elle existe. */

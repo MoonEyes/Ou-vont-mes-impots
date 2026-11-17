@@ -71,9 +71,9 @@ export const EXCLUS_NON_PUBLICS = [
   { regle: 'contribution au dialogue social', libelle: 'Contribution au dialogue social (fonds paritaire)' },
 ]
 
-type Ligne = [id: string, libelle: string, regle: string, dest: IdDestinataire]
+export type Ligne = [id: string, libelle: string, regle: string, dest: IdDestinataire]
 
-const LIGNES_SALARIE: Ligne[] = [
+export const LIGNES_SALARIE: Ligne[] = [
   ['maladie_salarie', 'Assurance maladie', 'maladie . salarié', 'cnam'],
   ['vieillesse_plafonnee_salarie', 'Retraite de base (plafonnée)', 'vieillesse . plafonnée . salarié', 'cnav'],
   ['vieillesse_deplafonnee_salarie', 'Retraite de base (déplafonnée)', 'vieillesse . déplafonnée . salarié', 'cnav'],
@@ -83,7 +83,7 @@ const LIGNES_SALARIE: Ligne[] = [
   ['apec_salarie', 'Apec (cadres)', 'APEC . salarié', 'apec'],
 ]
 
-const LIGNES_EMPLOYEUR: Ligne[] = [
+export const LIGNES_EMPLOYEUR: Ligne[] = [
   ['maladie_employeur', 'Assurance maladie', 'maladie . employeur', 'cnam'],
   ['vieillesse_plafonnee_employeur', 'Retraite de base (plafonnée)', 'vieillesse . plafonnée . employeur', 'cnav'],
   ['vieillesse_deplafonnee_employeur', 'Retraite de base (déplafonnée)', 'vieillesse . déplafonnée . employeur', 'cnav'],
@@ -109,7 +109,7 @@ const SMIC_NET_MENSUEL_2025 = 1426.3
 const PASS_ANNUEL_2025 = 47100
 
 let moteur: Engine | null = null
-function obtenirMoteur(): Engine {
+export function obtenirMoteur(): Engine {
   if (!moteur) {
     const silencieux = { log() {}, warn() {}, error() {} }
     moteur = new Engine(rules as never, { logger: silencieux } as never)
@@ -117,16 +117,26 @@ function obtenirMoteur(): Engine {
   return moteur
 }
 
-const arrondi = (x: number) => Math.round(x * 100) / 100
-const f = (x: number): Fourchette => ({ bas: arrondi(x), central: arrondi(x), haut: arrondi(x) })
-function f3(a: number, b: number, c: number): Fourchette {
+export const arrondi = (x: number) => Math.round(x * 100) / 100
+export const f = (x: number): Fourchette => ({ bas: arrondi(x), central: arrondi(x), haut: arrondi(x) })
+export function f3(a: number, b: number, c: number): Fourchette {
   const v = [a, b, c].map((x) => arrondi(Math.max(0, x)))
   return { bas: Math.min(...v), central: v[1], haut: Math.max(...v) }
 }
 
-function situationSalarie(p: Personne, annee: number, h: Hypotheses, brut?: number): Record<string, string> {
+/** Variantes d'un salarié hors périmètre V1 (apprenti, Alsace-Moselle), utilisées par calculerProfil (moteur-etendu.ts). */
+export interface VarianteSalarie {
+  /** règles publicodes ajoutées à la situation (elles l'emportent sur les valeurs par défaut) */
+  situation?: Record<string, string>
+  /** date de simulation (par défaut le 1er juin de l'année de revenus) */
+  date?: string
+  /** recherche du brut par itérations à brut fixé, quand l'inversion de publicodes échoue (net égal au brut) */
+  inversionManuelle?: boolean
+}
+
+export function situationSalarie(p: Personne, annee: number, h: Hypotheses, brut?: number, variante?: VarianteSalarie): Record<string, string> {
   const s: Record<string, string> = {
-    date: `'01/06/${annee}'`,
+    date: variante?.date ?? `'01/06/${annee}'`,
     'salarié . contrat . statut cadre': p.cadre ? 'oui' : 'non',
     // Hors complémentaire santé et prévoyance d'entreprise (variables d'une entreprise à l'autre,
     // et absentes d'OpenFisca) : même convention que les cas types de référence.
@@ -155,7 +165,7 @@ function situationSalarie(p: Personne, annee: number, h: Hypotheses, brut?: numb
     s['salarié . cotisations . maladie . employeur . taux'] = brut <= 2.25 * smic ? '7%' : '13%'
     s['salarié . cotisations . allocations familiales . taux'] = brut <= 3.3 * smic ? '3.45%' : '5.25%'
   }
-  return s
+  return variante?.situation ? { ...s, ...variante.situation } : s
 }
 
 const quotite = (p: Personne) => (p.temps_travail && p.temps_travail.type === 'temps_partiel' ? p.temps_travail.quotite : 1)
@@ -174,12 +184,12 @@ export function reductionGenerale2025(brutAnnuel: number, q: number, h: Hypothes
   return Math.max(0, Math.round(C * brutAnnuel * 100) / 100)
 }
 
-function evaluer(e: Engine, regle: string): number {
+export function evaluer(e: Engine, regle: string): number {
   const n = e.evaluate({ valeur: regle, unité: '€/an' } as never) as { nodeValue: unknown }
   return typeof n.nodeValue === 'number' && Number.isFinite(n.nodeValue) ? n.nodeValue : 0
 }
 
-interface CalculSalarie {
+export interface CalculSalarie {
   brut: number
   netAnnuel: number
   imposable: number
@@ -191,9 +201,24 @@ interface CalculSalarie {
   employeur: { bas: Record<string, number>; central: Record<string, number>; haut: Record<string, number> }
 }
 
-function calculerSalarie(p: Personne, annee: number, sc: Scenarios): CalculSalarie {
+/** Brut annuel donnant le net saisi, par itérations à brut fixé (le net croît avec le brut, pente entre 0 et 1). */
+function brutParIterations(p: Personne, annee: number, h: Hypotheses, variante?: VarianteSalarie): number {
   const e = obtenirMoteur()
-  e.setSituation(situationSalarie(p, annee, sc.central) as never)
+  const cible = (p.salaire_net_avant_impot_mensuel ?? 0) * 12
+  let brut = cible
+  for (let i = 0; i < 80; i++) {
+    e.setSituation(situationSalarie(p, annee, h, brut, variante) as never)
+    const net = evaluer(e, 'salarié . rémunération . net . à payer avant impôt')
+    if (Math.abs(net - cible) < 0.005) break
+    brut += cible - net
+  }
+  return brut
+}
+
+export function calculerSalarie(p: Personne, annee: number, sc: Scenarios, variante?: VarianteSalarie): CalculSalarie {
+  const e = obtenirMoteur()
+  if (variante?.inversionManuelle) e.setSituation(situationSalarie(p, annee, sc.central, brutParIterations(p, annee, sc.central, variante), variante) as never)
+  else e.setSituation(situationSalarie(p, annee, sc.central, undefined, variante) as never)
   const brut = evaluer(e, 'salarié . contrat . salaire brut')
   const sal: Record<string, number> = {}
   for (const [id, , regle] of LIGNES_SALARIE) sal[id] = evaluer(e, 'salarié . cotisations . ' + regle)
@@ -212,12 +237,12 @@ function calculerSalarie(p: Personne, annee: number, sc: Scenarios): CalculSalar
     return r
   }
   // Côté employeur, on repart du brut obtenu (la réduction 2025 se calcule sur le brut).
-  e.setSituation(situationSalarie(p, annee, sc.central, brut) as never)
+  e.setSituation(situationSalarie(p, annee, sc.central, brut, variante) as never)
   const central = lireEmployeur()
   // Bornes : le brut ne dépend pas des hypothèses patronales, on le fixe (pas d'inversion).
-  e.setSituation(situationSalarie(p, annee, sc.bas, brut) as never)
+  e.setSituation(situationSalarie(p, annee, sc.bas, brut, variante) as never)
   const bas = lireEmployeur()
-  e.setSituation(situationSalarie(p, annee, sc.haut, brut) as never)
+  e.setSituation(situationSalarie(p, annee, sc.haut, brut, variante) as never)
   const haut = lireEmployeur()
   return {
     brut,
@@ -238,12 +263,28 @@ export function partsEnfants(enfants: { garde_alternee?: boolean }[]): number {
   return tri.reduce((s, enf, i) => s + (i < 2 ? 0.5 : 1) * (enf.garde_alternee ? 0.5 : 1), 0)
 }
 
-interface FoyerFiscal {
+export interface FoyerFiscal {
   couple: boolean
   parentIsole: boolean
   enfants: { garde_alternee?: boolean }[]
+  /** salaires imposables, un par personne (abattement de 10 % appliqué à chacun) */
   imposables: number[]
+  /** autres revenus nets imposables, abattements déjà déduits (pensions, bénéfices du régime micro) */
+  autresRevenusNets?: number
+  /**
+   * revenus nets soumis au versement libératoire : ils ne paient pas l'impôt au barème, mais comptent
+   * pour le taux appliqué aux autres revenus (taux effectif, CGI art. 151-0 et 197 C)
+   */
+  revenusTauxEffectif?: number
+  /**
+   * abattement en faveur des personnes de plus de 65 ans (CGI art. 157 bis), déjà multiplié par le nombre de
+   * personnes concernées : `plein` jusqu'au premier seuil de revenu net global, `reduit` jusqu'au second
+   */
+  abattementAge?: { plein: number; seuilPlein: number; reduit: number; seuilReduit: number }
 }
+
+/** Taux de la décote (CGI art. 197, I-4-a) : elle vaut le plafond moins 45,25 % de l'impôt brut. */
+const TAUX_DECOTE = 0.4525
 
 /** Impôt sur le revenu d'un foyer (barème de l'année de revenus, appliqué l'année suivante). */
 export function impotFoyer(ff: FoyerFiscal, anneeRevenus: number): number {
@@ -251,11 +292,13 @@ export function impotFoyer(ff: FoyerFiscal, anneeRevenus: number): number {
   const date = `'01/01/${anneeRevenus + 1}'`
   const base = { date, 'impôt . méthode de calcul': "'barème standard'" }
   // Abattement de 10 % appliqué à chaque salaire séparément (plancher et plafond individuels).
-  let abattu = 0
+  let abattu = ff.autresRevenusNets ?? 0
   for (const x of ff.imposables) {
     e.setSituation({ ...base, "impôt . foyer fiscal . revenu imposable . revenu d'activité": `${x} €/an` } as never)
     abattu += evaluer(e, "impôt . foyer fiscal . revenu imposable . revenu d'activité abattu")
   }
+  const age = ff.abattementAge
+  if (age && abattu > 0) abattu = Math.max(0, abattu - (abattu <= age.seuilPlein ? age.plein : abattu <= age.seuilReduit ? age.reduit : 0))
   const s: Record<string, string> = {
     ...base,
     'impôt . foyer fiscal . situation de famille': ff.couple ? "'couple'" : "'célibataire'",
@@ -269,11 +312,214 @@ export function impotFoyer(ff: FoyerFiscal, anneeRevenus: number): number {
     if (ff.enfants.every((x) => x.garde_alternee))
       s['impôt . foyer fiscal . nombre de parts . majoration personne seule avec enfant'] = '0.25 part'
   }
+  const liberatoire = ff.revenusTauxEffectif ?? 0
+  if (liberatoire > 0) {
+    // Taux effectif : impôt brut calculé sur le revenu total, réduit au prorata des revenus hors versement
+    // libératoire ; la décote s'applique ensuite au montant ainsi réduit (plafond lu dans modele-social).
+    const total = abattu + liberatoire
+    e.setSituation({ ...s, 'impôt . foyer fiscal . revenu imposable . autres revenus imposables': '0 €/an' } as never)
+    const plafondDecote = evaluer(e, 'impôt . foyer fiscal . impôt sur le revenu . décote')
+    e.setSituation({ ...s, 'impôt . foyer fiscal . revenu imposable . autres revenus imposables': `${total} €/an` } as never)
+    const brut = (evaluer(e, 'impôt . foyer fiscal . impôt sur le revenu . impôt brut') * abattu) / total
+    return Math.max(0, Math.round(brut - Math.max(0, plafondDecote - TAUX_DECOTE * brut)))
+  }
   e.setSituation(s as never)
   return Math.max(0, Math.round(evaluer(e, 'impôt . foyer fiscal . impôt sur le revenu')))
 }
 
 
+
+/** Lignes de prélèvement d'un salarié du privé (cotisations salariales, CSG, CRDS, part employeur) et alertes de saisie. */
+export function lignesSalarie(p: Personne, c: CalculSalarie, champ: string): { prelevements: Prelevement[]; avertissements: Avertissement[] } {
+  const role = p.role
+  const prelevements: Prelevement[] = []
+  const avertissements: Avertissement[] = []
+  const regle = (r: string) => 'salarié . cotisations . ' + r
+  for (const [id, libelle, r, dest] of LIGNES_SALARIE) {
+    const m = c.salarie[id]
+    if (m > 0.005)
+      prelevements.push({
+        id: `${id}_${role}`.replace(/_declarant1$/, ''),
+        libelle,
+        famille: 'cotisation_salariale',
+        personne: role,
+        assiette_annuelle_eur: arrondi(c.brut),
+        taux: null,
+        montant_annuel_eur: f(m),
+        destinataire: DESTINATAIRES[dest],
+        inclus_dans_total_paye: true,
+        regle: regle(r),
+      })
+  }
+  // Contrôle de complétude : ce que modele-social compte et qui n'est pas listé ci-dessus.
+  const listees = LIGNES_SALARIE.reduce((s, [id]) => s + c.salarie[id], 0) + c.csgDeductible + c.csgNonDeductible + c.crds
+  const reste = c.cotisationsSalarieTotal - listees
+  if (Math.abs(reste) > 1)
+    prelevements.push({
+      id: suffixe('autres_cotisations_salarie', role),
+      libelle: 'Autres cotisations salariales',
+      famille: 'cotisation_salariale',
+      personne: role,
+      montant_annuel_eur: f(Math.max(0, reste)),
+      destinataire: DESTINATAIRES.plusieurs,
+      inclus_dans_total_paye: true,
+      regle: 'salarié . cotisations . salarié',
+    })
+  const assietteCsg = c.csgDeductible / 0.068
+  prelevements.push(
+    {
+      id: suffixe('csg_deductible', role),
+      libelle: 'CSG déductible',
+      famille: 'csg_crds',
+      personne: role,
+      assiette_annuelle_eur: arrondi(assietteCsg),
+      taux: 0.068,
+      montant_annuel_eur: f(c.csgDeductible),
+      destinataire: DESTINATAIRES.plusieurs,
+      inclus_dans_total_paye: true,
+      regle: regle('CSG-CRDS . CSG . déductible'),
+    },
+    {
+      id: suffixe('csg_non_deductible', role),
+      libelle: 'CSG non déductible',
+      famille: 'csg_crds',
+      personne: role,
+      assiette_annuelle_eur: arrondi(assietteCsg),
+      taux: 0.024,
+      montant_annuel_eur: f(c.csgNonDeductible),
+      destinataire: DESTINATAIRES.plusieurs,
+      inclus_dans_total_paye: true,
+      regle: regle('CSG-CRDS . CSG'),
+    },
+    {
+      id: suffixe('crds', role),
+      libelle: 'CRDS (remboursement de la dette sociale)',
+      famille: 'csg_crds',
+      personne: role,
+      assiette_annuelle_eur: arrondi(assietteCsg),
+      taux: 0.005,
+      montant_annuel_eur: f(c.crds),
+      destinataire: DESTINATAIRES.cades,
+      inclus_dans_total_paye: true,
+      regle: regle('CSG-CRDS . CRDS'),
+    },
+  )
+  const E = c.employeur
+  for (const [id, libelle, r, dest] of LIGNES_EMPLOYEUR) {
+    const m = f3(E.bas[id], E.central[id], E.haut[id])
+    if (m.haut > 0.005)
+      prelevements.push({
+        id: suffixe(id, role),
+        libelle,
+        famille: 'cotisation_patronale',
+        personne: role,
+        assiette_annuelle_eur: arrondi(c.brut),
+        taux: null,
+        montant_annuel_eur: m,
+        destinataire: DESTINATAIRES[dest],
+        inclus_dans_total_paye: false,
+        regle: regle(r),
+        ...(m.bas !== m.haut ? { hypothese_fourchette: HYPOTHESE_FOURCHETTE_PATRONALE } : {}),
+      })
+  }
+  const red = f3(E.bas.reduction_generale, E.central.reduction_generale, E.haut.reduction_generale)
+  if (red.haut > 0.005)
+    prelevements.push({
+      id: suffixe('reduction_generale', role),
+      libelle: 'Réduction générale de cotisations patronales (à déduire)',
+      famille: 'cotisation_patronale',
+      personne: role,
+      montant_annuel_eur: red,
+      nature: 'reduction',
+      destinataire: DESTINATAIRES.plusieurs,
+      inclus_dans_total_paye: false,
+      regle: regle('exonérations . employeur'),
+      hypothese_fourchette: HYPOTHESE_FOURCHETTE_PATRONALE,
+    })
+  const net = p.salaire_net_avant_impot_mensuel ?? 0
+  const q = quotite(p)
+  if (net / q < SMIC_NET_MENSUEL_2025 * 0.98 || c.brut > 4 * PASS_ANNUEL_2025)
+    avertissements.push({
+      code: 'SAISIE_ATYPIQUE',
+      message:
+        net / q < SMIC_NET_MENSUEL_2025 * 0.98
+          ? "Ce salaire, ramené à un temps plein, est inférieur au SMIC net : vérifie la saisie. Le résultat reste affiché mais il est moins fiable."
+          : 'Au-delà de 4 plafonds de la Sécurité sociale, certaines règles (prévoyance, retraite supplémentaire) comptent davantage : résultat moins fiable.',
+        champ,
+      })
+  return { prelevements, avertissements }
+}
+
+/**
+ * Fin commune du calcul : taxe foncière saisie, alertes sur la commune et l'affectation, ventilation par
+ * destinataire et totaux. Sert à calculer (contrat 1.0) et à calculerProfil (profils étendus).
+ */
+export function assemblerResultat<E>(
+  profil: Pick<Profil, 'annee_revenus' | 'logement'>,
+  options: OptionsCalcul,
+  prelevements: Prelevement[],
+  avertissements: Avertissement[],
+  entree: E[],
+  brutTotal: number,
+) {
+  // Taxe foncière : uniquement le montant lu sur l'avis (sinon, seul le taux communal est montré).
+  const tf = profil.logement?.taxe_fonciere_annuelle_eur
+  if (profil.logement?.statut === 'proprietaire' && typeof tf === 'number' && tf > 0)
+    prelevements.push({
+      id: 'taxe_fonciere',
+      libelle: "Taxe foncière (montant de ton avis, TEOM comprise s'il y en a une)",
+      famille: 'impot_local',
+      personne: 'logement',
+      assiette_annuelle_eur: null,
+      taux: null,
+      montant_annuel_eur: f(tf),
+      destinataire: DESTINATAIRES.commune,
+      inclus_dans_total_paye: true,
+      regle: 'saisie : avis de taxe foncière',
+    })
+  if (options.commune === null)
+    avertissements.push({
+      code: 'COMMUNE_INCONNUE',
+      message: "Commune introuvable dans les taux 2025 : le calcul continue sans taxe foncière ni TEOM.",
+      champ: '/residence/commune_insee',
+    })
+  else if (options.commune && options.commune[2] === null)
+    avertissements.push({
+      code: 'TEOM_ABSENTE',
+      message: "Pas de TEOM dans ta commune : les déchets y sont financés par une redevance ou par le budget général.",
+    })
+  if (!options.affectation)
+    avertissements.push({
+      code: 'DONNEE_ABSENTE',
+      message: "La répartition de la CSG entre les branches de la Sécurité sociale n'est pas disponible : elle apparaît comme « plusieurs branches ».",
+      details: { fichier: 'prelevements/affectation.json' },
+    })
+
+  const ventilees = appliquerAffectation(prelevements, options.affectation)
+  prelevements.splice(0, prelevements.length, ...ventilees)
+  const paye = additionner(prelevements.filter((l) => l.inclus_dans_total_paye))
+  const patronal = additionner(prelevements.filter((l) => l.famille === 'cotisation_patronale'))
+  const resultat = {
+    statut: 'ok' as const,
+    version_contrat: '1.0' as const,
+    annee_legislation: profil.annee_revenus,
+    moteur: { nom: 'modele-social' as const, version: VERSION_MODELE_SOCIAL, publicodes: VERSION_PUBLICODES },
+    entree: { personnes: entree },
+    prelevements,
+    totaux: {
+      paye_par_le_foyer: paye,
+      patronal,
+      cout_total_employeur: {
+        bas: arrondi(brutTotal + patronal.bas),
+        central: arrondi(brutTotal + patronal.central),
+        haut: arrondi(brutTotal + patronal.haut),
+      },
+      par_destinataire: parDestinataire(prelevements, false),
+    },
+    avertissements,
+  }
+  return resultat
+}
 
 /** Calcule le résultat (contrat 3.3) pour un profil. Synchrone ; prévoir ~0,5 s la première fois. */
 export function calculer(profil: Profil, options: OptionsCalcul = {}): Resultat {
@@ -300,123 +546,12 @@ export function calculer(profil: Profil, options: OptionsCalcul = {}): Resultat 
   }
 
   for (const { p, c } of calculs) {
-    const role = p.role
     brutTotal += c.brut
-    imposables[role] = c.imposable
-    entree.push({ role, salaire_net_avant_impot_annuel: arrondi(c.netAnnuel), salaire_brut_annuel_estime: f(c.brut) })
-    const regle = (r: string) => 'salarié . cotisations . ' + r
-    for (const [id, libelle, r, dest] of LIGNES_SALARIE) {
-      const m = c.salarie[id]
-      if (m > 0.005)
-        prelevements.push({
-          id: `${id}_${role}`.replace(/_declarant1$/, ''),
-          libelle,
-          famille: 'cotisation_salariale',
-          personne: role,
-          assiette_annuelle_eur: arrondi(c.brut),
-          taux: null,
-          montant_annuel_eur: f(m),
-          destinataire: DESTINATAIRES[dest],
-          inclus_dans_total_paye: true,
-          regle: regle(r),
-        })
-    }
-    // Contrôle de complétude : ce que modele-social compte et qui n'est pas listé ci-dessus.
-    const listees = LIGNES_SALARIE.reduce((s, [id]) => s + c.salarie[id], 0) + c.csgDeductible + c.csgNonDeductible + c.crds
-    const reste = c.cotisationsSalarieTotal - listees
-    if (Math.abs(reste) > 1)
-      prelevements.push({
-        id: suffixe('autres_cotisations_salarie', role),
-        libelle: 'Autres cotisations salariales',
-        famille: 'cotisation_salariale',
-        personne: role,
-        montant_annuel_eur: f(Math.max(0, reste)),
-        destinataire: DESTINATAIRES.plusieurs,
-        inclus_dans_total_paye: true,
-        regle: 'salarié . cotisations . salarié',
-      })
-    const assietteCsg = c.csgDeductible / 0.068
-    prelevements.push(
-      {
-        id: suffixe('csg_deductible', role),
-        libelle: 'CSG déductible',
-        famille: 'csg_crds',
-        personne: role,
-        assiette_annuelle_eur: arrondi(assietteCsg),
-        taux: 0.068,
-        montant_annuel_eur: f(c.csgDeductible),
-        destinataire: DESTINATAIRES.plusieurs,
-        inclus_dans_total_paye: true,
-        regle: regle('CSG-CRDS . CSG . déductible'),
-      },
-      {
-        id: suffixe('csg_non_deductible', role),
-        libelle: 'CSG non déductible',
-        famille: 'csg_crds',
-        personne: role,
-        assiette_annuelle_eur: arrondi(assietteCsg),
-        taux: 0.024,
-        montant_annuel_eur: f(c.csgNonDeductible),
-        destinataire: DESTINATAIRES.plusieurs,
-        inclus_dans_total_paye: true,
-        regle: regle('CSG-CRDS . CSG'),
-      },
-      {
-        id: suffixe('crds', role),
-        libelle: 'CRDS (remboursement de la dette sociale)',
-        famille: 'csg_crds',
-        personne: role,
-        assiette_annuelle_eur: arrondi(assietteCsg),
-        taux: 0.005,
-        montant_annuel_eur: f(c.crds),
-        destinataire: DESTINATAIRES.cades,
-        inclus_dans_total_paye: true,
-        regle: regle('CSG-CRDS . CRDS'),
-      },
-    )
-    const E = c.employeur
-    for (const [id, libelle, r, dest] of LIGNES_EMPLOYEUR) {
-      const m = f3(E.bas[id], E.central[id], E.haut[id])
-      if (m.haut > 0.005)
-        prelevements.push({
-          id: suffixe(id, role),
-          libelle,
-          famille: 'cotisation_patronale',
-          personne: role,
-          assiette_annuelle_eur: arrondi(c.brut),
-          taux: null,
-          montant_annuel_eur: m,
-          destinataire: DESTINATAIRES[dest],
-          inclus_dans_total_paye: false,
-          regle: regle(r),
-          ...(m.bas !== m.haut ? { hypothese_fourchette: HYPOTHESE_FOURCHETTE_PATRONALE } : {}),
-        })
-    }
-    const red = f3(E.bas.reduction_generale, E.central.reduction_generale, E.haut.reduction_generale)
-    if (red.haut > 0.005)
-      prelevements.push({
-        id: suffixe('reduction_generale', role),
-        libelle: 'Réduction générale de cotisations patronales (à déduire)',
-        famille: 'cotisation_patronale',
-        personne: role,
-        montant_annuel_eur: red,
-        nature: 'reduction',
-        destinataire: DESTINATAIRES.plusieurs,
-        inclus_dans_total_paye: false,
-        regle: regle('exonérations . employeur'),
-        hypothese_fourchette: HYPOTHESE_FOURCHETTE_PATRONALE,
-      })
-    const net = p.salaire_net_avant_impot_mensuel ?? 0
-    const q = quotite(p)
-    if (net / q < SMIC_NET_MENSUEL_2025 * 0.98 || c.brut > 4 * PASS_ANNUEL_2025)
-      avertissements.push({
-        code: 'SAISIE_ATYPIQUE',
-        message:
-          net / q < SMIC_NET_MENSUEL_2025 * 0.98
-            ? "Ce salaire, ramené à un temps plein, est inférieur au SMIC net : vérifie la saisie. Le résultat reste affiché mais il est moins fiable."
-            : 'Au-delà de 4 plafonds de la Sécurité sociale, certaines règles (prévoyance, retraite supplémentaire) comptent davantage : résultat moins fiable.',
-        champ: `/personnes/${profil.personnes.indexOf(p)}/salaire_net_avant_impot_mensuel`,
-      })
+    imposables[p.role] = c.imposable
+    entree.push({ role: p.role, salaire_net_avant_impot_annuel: arrondi(c.netAnnuel), salaire_brut_annuel_estime: f(c.brut) })
+    const l = lignesSalarie(p, c, `/personnes/${profil.personnes.indexOf(p)}/salaire_net_avant_impot_mensuel`)
+    prelevements.push(...l.prelevements)
+    avertissements.push(...l.avertissements)
   }
 
   // Impôt sur le revenu : un foyer, sauf union libre (deux foyers, enfants rattachés au déclarant 1).
@@ -456,66 +591,10 @@ export function calculer(profil: Profil, options: OptionsCalcul = {}): Resultat 
         "Sans autres revenus, frais réels ni réductions ou crédits d'impôt (dons, emploi à domicile, garde d'enfants) : non pris en compte.",
     })
 
-  // Taxe foncière : uniquement le montant lu sur l'avis (sinon, seul le taux communal est montré).
-  const tf = profil.logement?.taxe_fonciere_annuelle_eur
-  if (profil.logement?.statut === 'proprietaire' && typeof tf === 'number' && tf > 0)
-    prelevements.push({
-      id: 'taxe_fonciere',
-      libelle: "Taxe foncière (montant de ton avis, TEOM comprise s'il y en a une)",
-      famille: 'impot_local',
-      personne: 'logement',
-      assiette_annuelle_eur: null,
-      taux: null,
-      montant_annuel_eur: f(tf),
-      destinataire: DESTINATAIRES.commune,
-      inclus_dans_total_paye: true,
-      regle: 'saisie : avis de taxe foncière',
-    })
-  if (options.commune === null)
-    avertissements.push({
-      code: 'COMMUNE_INCONNUE',
-      message: "Commune introuvable dans les taux 2025 : le calcul continue sans taxe foncière ni TEOM.",
-      champ: '/residence/commune_insee',
-    })
-  else if (options.commune && options.commune[2] === null)
-    avertissements.push({
-      code: 'TEOM_ABSENTE',
-      message: "Pas de TEOM dans ta commune : les déchets y sont financés par une redevance ou par le budget général.",
-    })
-  if (!options.affectation)
-    avertissements.push({
-      code: 'DONNEE_ABSENTE',
-      message: "La répartition de la CSG entre les branches de la Sécurité sociale n'est pas disponible : elle apparaît comme « plusieurs branches ».",
-      details: { fichier: 'prelevements/affectation.json' },
-    })
-
-  const ventilees = appliquerAffectation(prelevements, options.affectation)
-  prelevements.splice(0, prelevements.length, ...ventilees)
-  const paye = additionner(prelevements.filter((l) => l.inclus_dans_total_paye))
-  const patronal = additionner(prelevements.filter((l) => l.famille === 'cotisation_patronale'))
-  const resultat: ResultatOk = {
-    statut: 'ok',
-    version_contrat: '1.0',
-    annee_legislation: annee,
-    moteur: { nom: 'modele-social', version: VERSION_MODELE_SOCIAL, publicodes: VERSION_PUBLICODES },
-    entree: { personnes: entree },
-    prelevements,
-    totaux: {
-      paye_par_le_foyer: paye,
-      patronal,
-      cout_total_employeur: {
-        bas: arrondi(brutTotal + patronal.bas),
-        central: arrondi(brutTotal + patronal.central),
-        haut: arrondi(brutTotal + patronal.haut),
-      },
-      par_destinataire: parDestinataire(prelevements, false),
-    },
-    avertissements,
-  }
-  return resultat
+  return assemblerResultat(profil, options, prelevements, avertissements, entree, brutTotal)
 }
 
-function suffixe(id: string, role: string) {
+export function suffixe(id: string, role: string) {
   return role === 'declarant1' ? id : `${id}_${role}`
 }
 

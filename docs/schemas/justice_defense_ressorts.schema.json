@@ -1,0 +1,414 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/justice_defense_ressorts.schema.json",
+  "title": "site/data/justice_defense/ressorts.json : juridictions (type, nom, commune d'implantation) et juridiction compétente par commune ; colonnes reprises seulement si cohérentes à la source ; aucune adresse",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "coherence_source": {
+      "type": "object",
+      "properties": {
+        "methode": {
+          "type": "string"
+        },
+        "colonnes": {
+          "type": "object",
+          "properties": {
+            "tribunal_judiciaire": {
+              "type": "object",
+              "properties": {
+                "communes_meme_departement": {
+                  "type": "integer"
+                },
+                "communes_autre_departement": {
+                  "type": "integer"
+                },
+                "siege_non_retrouve": {
+                  "type": "integer"
+                },
+                "part_autre_departement_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "exemples": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "commune_insee": {
+                        "type": "string"
+                      },
+                      "juridiction_indiquee": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "commune_insee",
+                      "juridiction_indiquee"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0
+                }
+              },
+              "required": [
+                "communes_autre_departement",
+                "communes_meme_departement",
+                "exemples",
+                "part_autre_departement_pct",
+                "siege_non_retrouve"
+              ],
+              "additionalProperties": false
+            },
+            "tribunal_proximite": {
+              "type": "object",
+              "properties": {
+                "communes_meme_departement": {
+                  "type": "integer"
+                },
+                "communes_autre_departement": {
+                  "type": "integer"
+                },
+                "siege_non_retrouve": {
+                  "type": "integer"
+                },
+                "part_autre_departement_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "exemples": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "commune_insee": {
+                        "type": "string"
+                      },
+                      "juridiction_indiquee": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "commune_insee",
+                      "juridiction_indiquee"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0
+                }
+              },
+              "required": [
+                "communes_autre_departement",
+                "communes_meme_departement",
+                "exemples",
+                "part_autre_departement_pct",
+                "siege_non_retrouve"
+              ],
+              "additionalProperties": false
+            },
+            "conseil_prudhommes": {
+              "type": "object",
+              "properties": {
+                "communes_meme_departement": {
+                  "type": "integer"
+                },
+                "communes_autre_departement": {
+                  "type": "integer"
+                },
+                "siege_non_retrouve": {
+                  "type": "integer"
+                },
+                "part_autre_departement_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "exemples": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "commune_insee": {
+                        "type": "string"
+                      },
+                      "juridiction_indiquee": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "commune_insee",
+                      "juridiction_indiquee"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0
+                }
+              },
+              "required": [
+                "communes_autre_departement",
+                "communes_meme_departement",
+                "exemples",
+                "part_autre_departement_pct",
+                "siege_non_retrouve"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "conseil_prudhommes",
+            "tribunal_judiciaire",
+            "tribunal_proximite"
+          ],
+          "additionalProperties": false
+        },
+        "colonnes_non_reprises": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "cour_appel",
+              "tribunal_judiciaire"
+            ]
+          },
+          "minItems": 0
+        },
+        "constat": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "colonnes",
+        "colonnes_non_reprises",
+        "constat",
+        "methode"
+      ],
+      "additionalProperties": false
+    },
+    "cours_appel": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[0-9]+$": {
+          "type": "string",
+          "minLength": 5
+        }
+      },
+      "additionalProperties": false
+    },
+    "tribunaux_judiciaires": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[0-9]+$": {
+          "type": "string",
+          "minLength": 5
+        }
+      },
+      "additionalProperties": false
+    },
+    "tribunaux_proximite": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[0-9]+$": {
+          "type": "string",
+          "minLength": 5
+        }
+      },
+      "additionalProperties": false
+    },
+    "conseils_prudhommes": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[0-9]+$": {
+          "type": "string",
+          "minLength": 5
+        }
+      },
+      "additionalProperties": false
+    },
+    "colonnes": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 5,
+      "items": {
+        "enum": [
+          "insee",
+          "cour_appel",
+          "tribunal_judiciaire",
+          "tribunal_proximite",
+          "conseil_prudhommes"
+        ]
+      }
+    },
+    "communes": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 5,
+        "prefixItems": [
+          {
+            "type": "string",
+            "pattern": "^[0-9AB]{5}$"
+          }
+        ],
+        "items": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "minItems": 30000
+    },
+    "juridictions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "pattern": "^[A-Z]{2,6}$"
+          },
+          "numero": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "nom": {
+            "type": "string",
+            "minLength": 5
+          },
+          "commune_insee": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9AB]{5}$"
+          },
+          "departement": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "commune_insee",
+          "departement",
+          "nom",
+          "numero",
+          "type"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1000
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "nombre": {
+            "type": "integer"
+          },
+          "exemple": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "exemple",
+          "nombre",
+          "type"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 5
+    },
+    "par_departement": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "integer"
+        }
+      }
+    },
+    "ordre": {
+      "type": "string"
+    },
+    "controles": {
+      "type": "object",
+      "properties": {
+        "communes": {
+          "type": "integer"
+        },
+        "juridictions": {
+          "type": "integer"
+        },
+        "communes_sans_tribunal_de_proximite": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "communes",
+        "communes_sans_tribunal_de_proximite",
+        "juridictions"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "avertissement",
+    "coherence_source",
+    "colonnes",
+    "communes",
+    "conseils_prudhommes",
+    "controles",
+    "date_sources",
+    "juridictions",
+    "millesime",
+    "ordre",
+    "par_departement",
+    "source",
+    "tribunaux_proximite",
+    "types",
+    "unite"
+  ],
+  "additionalProperties": false
+}

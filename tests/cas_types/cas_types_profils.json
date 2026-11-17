@@ -1,0 +1,2583 @@
+{
+ "_lisez_moi": "Cas types des profils ajoutes au calcul personnel (fonctionnaires, contractuels de droit public, retraites, micro-entrepreneurs, foyers mixtes, Alsace-Moselle, apprentis, temps partiel, SMIC), revenus 2025. 'profil' suit le type ProfilEtendu de web/src/calcul/README.md. 'reference' est rempli UNIQUEMENT par generer_reference_profils.py, a partir de l'API publique OpenFisca et de l'API publique mon-entreprise (Urssaf) ; null = pas encore genere. Montants annuels en euros, positifs = montant preleve.",
+ "version_contrat": "1.0",
+ "annee_revenus": 2025,
+ "tolerance_relative": 0.01,
+ "reference": {
+  "statut": "ok",
+  "date": "2026-11-17T20:22:34+00:00",
+  "openfisca": {
+   "source": "https://api.fr.openfisca.org/latest/calculate",
+   "country_package_version": "175.0.45",
+   "iterations_inversion_net_brut": 4,
+   "ecart_max_net_mensuel_eur": 0.0008,
+   "hypotheses": "effectif 50, pas de versement mobilite, taux AT-MP par defaut ; salaires constants sur 12 mois"
+  },
+  "mon_entreprise": {
+   "source": "https://mon-entreprise.urssaf.fr/api/v1/evaluate",
+   "note": "meme base de regles que le site (modele-social) : verifie l'integration, pas la regle"
+  },
+  "corrections": [
+   {
+    "profil": "alsace_moselle",
+    "texte": "taux du regime local ramene de 1,5 % (OpenFisca) a 1,3 % (droit en vigueur depuis le 01/04/2022)",
+    "ecart_de_taux": 0.002
+   }
+  ],
+  "unites": "euros par an, 2025 ; montants positifs = preleves"
+ },
+ "cas": [
+  {
+   "id": "F01",
+   "groupe": "fonctionnaire",
+   "libelle": "Fonctionnaire de l'Etat, categorie C, celibataire",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "fonctionnaire",
+      "versant": "etat",
+      "traitement_indiciaire_brut_mensuel": 1850,
+      "primes_mensuelles": 250
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 25200.0,
+      "salaire_net_avant_impot": 20184.18,
+      "salaire_imposable": 20902.19,
+      "cotisations_salariales": 2614.2,
+      "csg_deductible": 1683.61,
+      "csg_non_deductible": 594.22,
+      "csg": 2277.83,
+      "crds": 123.8,
+      "cotisations_patronales_avant_reduction": 21317.64,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 21317.64,
+      "traitement_indiciaire_brut": 22200.0,
+      "primes": 3000.0,
+      "detail": {
+       "pension_salarie": 2464.2,
+       "rafp_salarie": 150.0,
+       "pension_employeur": 17378.16,
+       "rafp_employeur": 150.0,
+       "ati_atiacl": 71.04,
+       "mmid_employeur": 2153.4,
+       "famille": 1165.44,
+       "fnal": 111.0,
+       "contribution_solidarite_autonomie": 66.6
+      }
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 255.0,
+     "revenu_net_imposable": 18812.19,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "F02",
+   "groupe": "fonctionnaire",
+   "libelle": "Fonctionnaire de l'Etat, enseignant, celibataire",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "fonctionnaire",
+      "versant": "etat",
+      "traitement_indiciaire_brut_mensuel": 2900,
+      "primes_mensuelles": 300
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 38400.0,
+      "salaire_net_avant_impot": 30697.58,
+      "salaire_imposable": 31791.7,
+      "cotisations_salariales": 4042.8,
+      "csg_deductible": 2565.5,
+      "csg_non_deductible": 905.47,
+      "csg": 3470.98,
+      "crds": 188.64,
+      "cotisations_patronales_avant_reduction": 33361.8,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 33361.8,
+      "traitement_indiciaire_brut": 34800.0,
+      "primes": 3600.0,
+      "detail": {
+       "pension_salarie": 3862.8,
+       "rafp_salarie": 180.0,
+       "pension_employeur": 27241.44,
+       "rafp_employeur": 180.0,
+       "ati_atiacl": 111.36,
+       "mmid_employeur": 3375.6,
+       "famille": 1827.0,
+       "fnal": 174.0,
+       "contribution_solidarite_autonomie": 104.4
+      }
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 1821.0,
+     "revenu_net_imposable": 28612.7,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "F03",
+   "groupe": "fonctionnaire",
+   "libelle": "Fonctionnaire territorial, celibataire",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "fonctionnaire",
+      "versant": "territoriale",
+      "traitement_indiciaire_brut_mensuel": 2200,
+      "primes_mensuelles": 450
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 31800.0,
+      "salaire_net_avant_impot": 25574.99,
+      "salaire_imposable": 26481.05,
+      "cotisations_salariales": 3194.4,
+      "csg_deductible": 2124.55,
+      "csg_non_deductible": 749.84,
+      "csg": 2874.4,
+      "crds": 156.22,
+      "cotisations_patronales_avant_reduction": 13722.72,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 13722.72,
+      "traitement_indiciaire_brut": 26400.0,
+      "primes": 5400.0,
+      "detail": {
+       "pension_salarie": 2930.4,
+       "rafp_salarie": 264.0,
+       "pension_employeur": 9147.6,
+       "rafp_employeur": 264.0,
+       "ati_atiacl": 105.6,
+       "mmid_employeur": 2344.32,
+       "famille": 1386.0,
+       "fnal": 132.0,
+       "contribution_solidarite_autonomie": 79.2
+      }
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 1058.0,
+     "revenu_net_imposable": 23833.05,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "F04",
+   "groupe": "fonctionnaire",
+   "libelle": "Fonctionnaire hospitalier, primes au-dela de 20 % du traitement",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "fonctionnaire",
+      "versant": "hospitaliere",
+      "traitement_indiciaire_brut_mensuel": 2400,
+      "primes_mensuelles": 700
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 37200.0,
+      "salaire_net_avant_impot": 30169.95,
+      "salaire_imposable": 31229.87,
+      "cotisations_salariales": 3484.8,
+      "csg_deductible": 2485.33,
+      "csg_non_deductible": 877.18,
+      "csg": 3362.51,
+      "crds": 182.75,
+      "cotisations_patronales_avant_reduction": 15200.64,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 15200.64,
+      "traitement_indiciaire_brut": 28800.0,
+      "primes": 8400.0,
+      "detail": {
+       "pension_salarie": 3196.8,
+       "rafp_salarie": 288.0,
+       "pension_employeur": 9979.2,
+       "rafp_employeur": 288.0,
+       "ati_atiacl": 115.2,
+       "fonds_emploi_hospitalier": 230.4,
+       "mmid_employeur": 2557.44,
+       "famille": 1512.0,
+       "fnal": 144.0,
+       "contribution_solidarite_autonomie": 86.4
+      }
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 1741.0,
+     "revenu_net_imposable": 28106.87,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "F05",
+   "groupe": "fonctionnaire",
+   "libelle": "Fonctionnaire de l'Etat, categorie A+, primes elevees",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "fonctionnaire",
+      "versant": "etat",
+      "traitement_indiciaire_brut_mensuel": 4800,
+      "primes_mensuelles": 2400
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 86400.0,
+      "salaire_net_avant_impot": 71196.26,
+      "salaire_imposable": 73658.02,
+      "cotisations_salariales": 6969.6,
+      "csg_deductible": 5772.38,
+      "csg_non_deductible": 2037.31,
+      "csg": 7809.7,
+      "crds": 424.44,
+      "cotisations_patronales_avant_reduction": 55497.6,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 55497.6,
+      "traitement_indiciaire_brut": 57600.0,
+      "primes": 28800.0,
+      "detail": {
+       "pension_salarie": 6393.6,
+       "rafp_salarie": 576.0,
+       "pension_employeur": 45089.28,
+       "rafp_employeur": 576.0,
+       "ati_atiacl": 184.32,
+       "mmid_employeur": 5587.2,
+       "famille": 3024.0,
+       "fnal": 288.0,
+       "contribution_solidarite_autonomie": 172.8
+      }
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 12992.0,
+     "revenu_net_imposable": 66292.02,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "P01",
+   "groupe": "contractuel_public",
+   "libelle": "Contractuel de droit public, 1 650 EUR net",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "contractuel_public",
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 1650
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 24636.08,
+      "salaire_net_avant_impot": 19800.0,
+      "salaire_imposable": 20501.94,
+      "cotisations_salariales": 2488.2,
+      "csg_deductible": 1645.93,
+      "csg_non_deductible": 580.92,
+      "csg": 2226.85,
+      "crds": 121.02,
+      "cotisations_patronales_avant_reduction": 8582.28,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 8582.28,
+      "detail": {
+       "ircantec_salarie": 689.76,
+       "ircantec_employeur": 1034.76,
+       "mmid_employeur": 3202.68,
+       "famille": 1293.36,
+       "fnal": 123.24,
+       "contribution_solidarite_autonomie": 73.92,
+       "vieillesse_plafonnee_salarie": 1699.92,
+       "vieillesse_deplafonnee_salarie": 98.52,
+       "vieillesse_plafonnee_employeur": 2106.36,
+       "vieillesse_deplafonnee_employeur": 497.64
+      }
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 198.0,
+     "revenu_net_imposable": 18451.94,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "P02",
+   "groupe": "contractuel_public",
+   "libelle": "Contractuel de droit public, 2 400 EUR net",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "contractuel_public",
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 2400
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 35834.3,
+      "salaire_net_avant_impot": 28800.01,
+      "salaire_imposable": 29821.01,
+      "cotisations_salariales": 3619.2,
+      "csg_deductible": 2394.09,
+      "csg_non_deductible": 844.97,
+      "csg": 3239.06,
+      "crds": 176.04,
+      "cotisations_patronales_avant_reduction": 12483.14,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 12483.14,
+      "detail": {
+       "ircantec_salarie": 1003.32,
+       "ircantec_employeur": 1505.04,
+       "mmid_employeur": 4658.4,
+       "famille": 1881.24,
+       "fnal": 179.16,
+       "contribution_solidarite_autonomie": 107.52,
+       "vieillesse_plafonnee_salarie": 2472.6,
+       "vieillesse_deplafonnee_salarie": 143.28,
+       "vieillesse_plafonnee_employeur": 3063.84,
+       "vieillesse_deplafonnee_employeur": 723.84
+      }
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 1538.0,
+     "revenu_net_imposable": 26839.01,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "P03",
+   "groupe": "contractuel_public",
+   "libelle": "Contractuel de droit public au-dela du plafond (tranche B Ircantec), 4 600 EUR net",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "contractuel_public",
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 4600
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 67959.82,
+      "salaire_net_avant_impot": 55200.0,
+      "salaire_imposable": 57136.34,
+      "cotisations_salariales": 6283.08,
+      "csg_deductible": 4540.39,
+      "csg_non_deductible": 1602.49,
+      "csg": 6142.89,
+      "crds": 333.85,
+      "cotisations_patronales_avant_reduction": 23632.31,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 23632.31,
+      "detail": {
+       "ircantec_salarie": 2779.38,
+       "ircantec_employeur": 4617.97,
+       "mmid_employeur": 8834.76,
+       "famille": 3567.84,
+       "fnal": 339.84,
+       "contribution_solidarite_autonomie": 203.88,
+       "vieillesse_plafonnee_salarie": 3231.9,
+       "vieillesse_deplafonnee_salarie": 271.8,
+       "vieillesse_plafonnee_employeur": 4004.7,
+       "vieillesse_deplafonnee_employeur": 1372.8
+      }
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 8531.0,
+     "revenu_net_imposable": 51422.34,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "R01",
+   "groupe": "retraite",
+   "libelle": "Retraite exonere de CSG",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1955,
+      "statut_activite": "retraite",
+      "pension_saisie": "brute",
+      "pension_base_mensuelle": 800,
+      "pension_complementaire_mensuelle": 250,
+      "csg_pension": {
+       "revenu_fiscal_reference": 10500,
+       "parts": 1
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "retraite_brute": 12600.0,
+      "csg_deductible": 0.0,
+      "csg_non_deductible": 0.0,
+      "csg": 0.0,
+      "crds": 0.0,
+      "casa": 0.0,
+      "retraite_nette": 12600.0,
+      "retraite_imposable": 12600.0
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 8545.0,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "R02",
+   "groupe": "retraite",
+   "libelle": "Retraite au taux reduit de CSG (3,8 %)",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1955,
+      "statut_activite": "retraite",
+      "pension_saisie": "brute",
+      "pension_base_mensuelle": 950,
+      "pension_complementaire_mensuelle": 400,
+      "csg_pension": {
+       "revenu_fiscal_reference": 15500,
+       "parts": 1
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "retraite_brute": 16200.0,
+      "csg_deductible": 615.6,
+      "csg_non_deductible": 0.0,
+      "csg": 615.6,
+      "crds": 81.0,
+      "casa": 0.0,
+      "retraite_nette": 15503.4,
+      "retraite_imposable": 15584.4
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 11231.4,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "R03",
+   "groupe": "retraite",
+   "libelle": "Retraite au taux median de CSG (6,6 %)",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1955,
+      "statut_activite": "retraite",
+      "pension_saisie": "brute",
+      "pension_base_mensuelle": 1300,
+      "pension_complementaire_mensuelle": 600,
+      "csg_pension": {
+       "revenu_fiscal_reference": 21000,
+       "parts": 1
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "retraite_brute": 22800.0,
+      "csg_deductible": 957.6,
+      "csg_non_deductible": 547.2,
+      "csg": 1504.8,
+      "crds": 114.0,
+      "casa": 68.4,
+      "retraite_nette": 21112.8,
+      "retraite_imposable": 21842.4
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 168.0,
+     "revenu_net_imposable": 18260.4,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "R04",
+   "groupe": "retraite",
+   "libelle": "Retraite au taux normal de CSG (8,3 %)",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1955,
+      "statut_activite": "retraite",
+      "pension_saisie": "brute",
+      "pension_base_mensuelle": 1900,
+      "pension_complementaire_mensuelle": 1300,
+      "csg_pension": {
+       "revenu_fiscal_reference": 36000,
+       "parts": 1
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "retraite_brute": 38400.0,
+      "csg_deductible": 2265.6,
+      "csg_non_deductible": 921.6,
+      "csg": 3187.2,
+      "crds": 192.0,
+      "casa": 115.2,
+      "retraite_nette": 34905.6,
+      "retraite_imposable": 36134.4
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 2860.0,
+     "revenu_net_imposable": 32521.4,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "R05",
+   "groupe": "retraite",
+   "libelle": "Couple de retraites, deux parts, taux median",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "couple_marie_pacse",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "proprietaire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1955,
+      "statut_activite": "retraite",
+      "pension_saisie": "brute",
+      "pension_base_mensuelle": 1500,
+      "pension_complementaire_mensuelle": 700,
+      "csg_pension": {
+       "revenu_fiscal_reference": 38000,
+       "parts": 2
+      }
+     },
+     {
+      "role": "declarant2",
+      "annee_naissance": 1955,
+      "statut_activite": "retraite",
+      "pension_saisie": "brute",
+      "pension_base_mensuelle": 1000,
+      "pension_complementaire_mensuelle": 300,
+      "csg_pension": {
+       "revenu_fiscal_reference": 38000,
+       "parts": 2
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "retraite_brute": 26400.0,
+      "csg_deductible": 1108.8,
+      "csg_non_deductible": 633.6,
+      "csg": 1742.4,
+      "crds": 132.0,
+      "casa": 79.2,
+      "retraite_nette": 24446.4,
+      "retraite_imposable": 25291.2
+     },
+     "declarant2": {
+      "retraite_brute": 15600.0,
+      "csg_deductible": 655.2,
+      "csg_non_deductible": 374.4,
+      "csg": 1029.6,
+      "crds": 78.0,
+      "casa": 46.8,
+      "retraite_nette": 14445.6,
+      "retraite_imposable": 14944.8
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 596.0,
+     "revenu_net_imposable": 36213.0,
+     "nombre_de_parts": 2.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "M01",
+   "groupe": "micro",
+   "libelle": "Micro-entrepreneur, vente de marchandises, sans versement liberatoire",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "independant",
+      "independant": {
+       "regime": "micro",
+       "activite": "vente",
+       "artisan": false,
+       "chiffre_affaires_annuel": 48000,
+       "versement_liberatoire": false
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {},
+    "mon_entreprise": {
+     "declarant1": {
+      "cotisations_et_contributions": 5964.0,
+      "cotisations": 5904.0,
+      "formation_professionnelle": 48.0,
+      "taxe_chambre_consulaire": 12.0,
+      "maladie_maternite": 525.46,
+      "invalidite_deces": 183.02,
+      "retraite_base": 2467.87,
+      "retraite_complementaire": 974.16,
+      "csg_crds": 1753.49
+     }
+    },
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 13920.0,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "M02",
+   "groupe": "micro",
+   "libelle": "Micro-entrepreneur, prestations de service commerciales (BIC), sans versement liberatoire",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "independant",
+      "independant": {
+       "regime": "micro",
+       "activite": "service_bic",
+       "artisan": false,
+       "chiffre_affaires_annuel": 36000,
+       "versement_liberatoire": false
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {},
+    "mon_entreprise": {
+     "declarant1": {
+      "cotisations_et_contributions": 7680.0,
+      "cotisations": 7632.0,
+      "formation_professionnelle": 36.0,
+      "taxe_chambre_consulaire": 12.0,
+      "maladie_maternite": 679.25,
+      "invalidite_deces": 236.59,
+      "retraite_base": 3190.18,
+      "retraite_complementaire": 1259.28,
+      "csg_crds": 2266.7
+     }
+    },
+    "foyer": {
+     "impot_revenu": 126.0,
+     "revenu_net_imposable": 18000.0,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "M03",
+   "groupe": "micro",
+   "libelle": "Micro-entrepreneur, profession liberale (BNC, regime general), sans versement liberatoire",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "independant",
+      "independant": {
+       "regime": "micro",
+       "activite": "service_bnc",
+       "artisan": false,
+       "chiffre_affaires_annuel": 36000,
+       "versement_liberatoire": false
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {},
+    "mon_entreprise": {
+     "declarant1": {
+      "cotisations_et_contributions": 8928.0,
+      "cotisations": 8856.0,
+      "formation_professionnelle": 72.0,
+      "taxe_chambre_consulaire": 0.0,
+      "maladie_maternite": 301.1,
+      "invalidite_deces": 309.96,
+      "retraite_base": 4215.46,
+      "retraite_complementaire": 1151.28,
+      "csg_crds": 2878.2
+     }
+    },
+    "foyer": {
+     "impot_revenu": 1046.0,
+     "revenu_net_imposable": 23760.0,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "M04",
+   "groupe": "micro",
+   "libelle": "Micro-entrepreneur, profession liberale (BNC), avec versement liberatoire",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "independant",
+      "independant": {
+       "regime": "micro",
+       "activite": "service_bnc",
+       "artisan": false,
+       "chiffre_affaires_annuel": 36000,
+       "versement_liberatoire": true
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {},
+    "mon_entreprise": {
+     "declarant1": {
+      "cotisations_et_contributions": 8928.0,
+      "cotisations": 8856.0,
+      "formation_professionnelle": 72.0,
+      "taxe_chambre_consulaire": 0.0,
+      "maladie_maternite": 301.1,
+      "invalidite_deces": 309.96,
+      "retraite_base": 4215.46,
+      "retraite_complementaire": 1151.28,
+      "csg_crds": 2878.2,
+      "versement_liberatoire": 792.0
+     }
+    },
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 0.0,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 792.0
+    }
+   }
+  },
+  {
+   "id": "M05",
+   "groupe": "micro",
+   "libelle": "Micro-entrepreneur, vente, avec versement liberatoire",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "independant",
+      "independant": {
+       "regime": "micro",
+       "activite": "vente",
+       "artisan": false,
+       "chiffre_affaires_annuel": 60000,
+       "versement_liberatoire": true
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {},
+    "mon_entreprise": {
+     "declarant1": {
+      "cotisations_et_contributions": 7452.0,
+      "cotisations": 7380.0,
+      "formation_professionnelle": 60.0,
+      "taxe_chambre_consulaire": 12.0,
+      "maladie_maternite": 656.82,
+      "invalidite_deces": 228.78,
+      "retraite_base": 3084.84,
+      "retraite_complementaire": 1217.7,
+      "csg_crds": 2191.86,
+      "versement_liberatoire": 600.0
+     }
+    },
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 0.0,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 600.0
+    }
+   }
+  },
+  {
+   "id": "M06",
+   "groupe": "micro",
+   "libelle": "Micro-entrepreneur artisan, prestations de service, avec versement liberatoire",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "independant",
+      "independant": {
+       "regime": "micro",
+       "activite": "service_bic",
+       "artisan": true,
+       "chiffre_affaires_annuel": 30000,
+       "versement_liberatoire": true
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {},
+    "mon_entreprise": {
+     "declarant1": {
+      "cotisations_et_contributions": 6594.0,
+      "cotisations": 6360.0,
+      "formation_professionnelle": 90.0,
+      "taxe_chambre_consulaire": 144.0,
+      "maladie_maternite": 566.04,
+      "invalidite_deces": 197.16,
+      "retraite_base": 2658.48,
+      "retraite_complementaire": 1049.4,
+      "csg_crds": 1888.92,
+      "versement_liberatoire": 510.0
+     }
+    },
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 0.0,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 510.0
+    }
+   }
+  },
+  {
+   "id": "X01",
+   "groupe": "foyer",
+   "libelle": "Couple marie : fonctionnaire de l'Etat et salarie du prive, deux enfants",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "couple_marie_pacse",
+     "enfants": [
+      {
+       "annee_naissance": 2014
+      },
+      {
+       "annee_naissance": 2017
+      }
+     ]
+    },
+    "logement": {
+     "statut": "proprietaire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "fonctionnaire",
+      "versant": "etat",
+      "traitement_indiciaire_brut_mensuel": 2600,
+      "primes_mensuelles": 400
+     },
+     {
+      "role": "declarant2",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 2100
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 36000.0,
+      "salaire_net_avant_impot": 28865.91,
+      "salaire_imposable": 29891.64,
+      "cotisations_salariales": 3703.2,
+      "csg_deductible": 2405.16,
+      "csg_non_deductible": 848.88,
+      "csg": 3254.04,
+      "crds": 176.85,
+      "cotisations_patronales_avant_reduction": 29989.2,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 29989.2,
+      "traitement_indiciaire_brut": 31200.0,
+      "primes": 4800.0,
+      "detail": {
+       "pension_salarie": 3463.2,
+       "rafp_salarie": 240.0,
+       "pension_employeur": 24423.36,
+       "rafp_employeur": 240.0,
+       "ati_atiacl": 99.84,
+       "mmid_employeur": 3026.4,
+       "famille": 1638.0,
+       "fnal": 156.0,
+       "contribution_solidarite_autonomie": 93.6
+      }
+     },
+     "declarant2": {
+      "salaire_brut": 31834.37,
+      "salaire_net_avant_impot": 25200.0,
+      "salaire_imposable": 26107.04,
+      "cotisations_salariales": 3600.48,
+      "csg_deductible": 2126.85,
+      "csg_non_deductible": 750.65,
+      "csg": 2877.5,
+      "crds": 156.39,
+      "cotisations_patronales_avant_reduction": 11107.78,
+      "reduction_generale": 1486.67,
+      "cotisations_patronales": 9621.12
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 1009.0,
+     "revenu_net_imposable": 50398.68,
+     "nombre_de_parts": 3.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "X02",
+   "groupe": "foyer",
+   "libelle": "Couple marie : retraite et salarie du prive",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "couple_marie_pacse",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1955,
+      "statut_activite": "retraite",
+      "pension_saisie": "brute",
+      "pension_base_mensuelle": 1700,
+      "pension_complementaire_mensuelle": 800,
+      "csg_pension": {
+       "revenu_fiscal_reference": 40000,
+       "parts": 2
+      }
+     },
+     {
+      "role": "declarant2",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 2300
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "retraite_brute": 30000.0,
+      "csg_deductible": 1770.0,
+      "csg_non_deductible": 720.0,
+      "csg": 2490.0,
+      "crds": 150.0,
+      "casa": 90.0,
+      "retraite_nette": 27270.0,
+      "retraite_imposable": 28230.0
+     },
+     "declarant2": {
+      "salaire_brut": 34866.15,
+      "salaire_net_avant_impot": 27600.0,
+      "salaire_imposable": 28593.42,
+      "cotisations_salariales": 3943.32,
+      "csg_deductible": 2329.4,
+      "csg_non_deductible": 822.14,
+      "csg": 3151.55,
+      "crds": 171.28,
+      "cotisations_patronales_avant_reduction": 12165.68,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 12165.68
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 2982.0,
+     "revenu_net_imposable": 51141.42,
+     "nombre_de_parts": 2.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "X03",
+   "groupe": "foyer",
+   "libelle": "Couple marie : micro-entrepreneur BNC avec versement liberatoire et salarie, un enfant",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "couple_marie_pacse",
+     "enfants": [
+      {
+       "annee_naissance": 2017
+      }
+     ]
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "independant",
+      "independant": {
+       "regime": "micro",
+       "activite": "service_bnc",
+       "artisan": false,
+       "chiffre_affaires_annuel": 36000,
+       "versement_liberatoire": true
+      }
+     },
+     {
+      "role": "declarant2",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 2000
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {
+     "declarant2": {
+      "salaire_brut": 30318.55,
+      "salaire_net_avant_impot": 24000.0,
+      "salaire_imposable": 24863.85,
+      "cotisations_salariales": 3429.12,
+      "csg_deductible": 2025.59,
+      "csg_non_deductible": 714.91,
+      "csg": 2740.5,
+      "crds": 148.94,
+      "cotisations_patronales_avant_reduction": 10578.77,
+      "reduction_generale": 2304.21,
+      "cotisations_patronales": 8274.56
+     }
+    },
+    "mon_entreprise": {
+     "declarant1": {
+      "cotisations_et_contributions": 8928.0,
+      "cotisations": 8856.0,
+      "formation_professionnelle": 72.0,
+      "taxe_chambre_consulaire": 0.0,
+      "maladie_maternite": 301.1,
+      "invalidite_deces": 309.96,
+      "retraite_base": 4215.46,
+      "retraite_complementaire": 1151.28,
+      "csg_crds": 2878.2,
+      "versement_liberatoire": 792.0
+     }
+    },
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 22377.85,
+     "nombre_de_parts": 2.5,
+     "versement_liberatoire": 792.0
+    }
+   }
+  },
+  {
+   "id": "X04",
+   "groupe": "foyer",
+   "libelle": "Parent isole, fonctionnaire territorial, un enfant",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "parent_isole",
+     "enfants": [
+      {
+       "annee_naissance": 2014
+      }
+     ]
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "fonctionnaire",
+      "versant": "territoriale",
+      "traitement_indiciaire_brut_mensuel": 2300,
+      "primes_mensuelles": 350
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 31800.0,
+      "salaire_net_avant_impot": 25495.79,
+      "salaire_imposable": 26401.85,
+      "cotisations_salariales": 3273.6,
+      "csg_deductible": 2124.55,
+      "csg_non_deductible": 749.84,
+      "csg": 2874.4,
+      "crds": 156.22,
+      "cotisations_patronales_avant_reduction": 14280.48,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 14280.48,
+      "traitement_indiciaire_brut": 27600.0,
+      "primes": 4200.0,
+      "detail": {
+       "pension_salarie": 3063.6,
+       "rafp_salarie": 210.0,
+       "pension_employeur": 9563.4,
+       "rafp_employeur": 210.0,
+       "ati_atiacl": 110.4,
+       "mmid_employeur": 2450.88,
+       "famille": 1449.0,
+       "fnal": 138.0,
+       "contribution_solidarite_autonomie": 82.8
+      }
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 23761.85,
+     "nombre_de_parts": 2.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "X05",
+   "groupe": "foyer",
+   "libelle": "Parent isole, micro-entrepreneur en vente sans versement liberatoire, deux enfants",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "parent_isole",
+     "enfants": [
+      {
+       "annee_naissance": 2014
+      },
+      {
+       "annee_naissance": 2017
+      }
+     ]
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "independant",
+      "independant": {
+       "regime": "micro",
+       "activite": "vente",
+       "artisan": false,
+       "chiffre_affaires_annuel": 70000,
+       "versement_liberatoire": false
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {},
+    "mon_entreprise": {
+     "declarant1": {
+      "cotisations_et_contributions": 8698.0,
+      "cotisations": 8616.0,
+      "formation_professionnelle": 70.0,
+      "taxe_chambre_consulaire": 12.0,
+      "maladie_maternite": 766.82,
+      "invalidite_deces": 267.1,
+      "retraite_base": 3601.49,
+      "retraite_complementaire": 1421.64,
+      "csg_crds": 2558.95
+     }
+    },
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 20300.0,
+     "nombre_de_parts": 2.5,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "X06",
+   "groupe": "foyer",
+   "libelle": "Couple marie : contractuel de droit public et micro-entrepreneur de service sans versement liberatoire",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "couple_marie_pacse",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "contractuel_public",
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 2200
+     },
+     {
+      "role": "declarant2",
+      "annee_naissance": 1985,
+      "statut_activite": "independant",
+      "independant": {
+       "regime": "micro",
+       "activite": "service_bic",
+       "artisan": false,
+       "chiffre_affaires_annuel": 28000,
+       "versement_liberatoire": false
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 32848.29,
+      "salaire_net_avant_impot": 26400.0,
+      "salaire_imposable": 27335.93,
+      "cotisations_salariales": 3317.76,
+      "csg_deductible": 2194.6,
+      "csg_non_deductible": 774.56,
+      "csg": 2969.16,
+      "crds": 161.37,
+      "cotisations_patronales_avant_reduction": 11443.0,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 11443.0,
+      "detail": {
+       "ircantec_salarie": 919.8,
+       "ircantec_employeur": 1379.64,
+       "mmid_employeur": 4270.32,
+       "famille": 1724.52,
+       "fnal": 164.28,
+       "contribution_solidarite_autonomie": 98.52,
+       "vieillesse_plafonnee_salarie": 2266.56,
+       "vieillesse_deplafonnee_salarie": 131.4,
+       "vieillesse_plafonnee_employeur": 2808.48,
+       "vieillesse_deplafonnee_employeur": 663.48
+      }
+     }
+    },
+    "mon_entreprise": {
+     "declarant2": {
+      "cotisations_et_contributions": 5980.0,
+      "cotisations": 5940.0,
+      "formation_professionnelle": 28.0,
+      "taxe_chambre_consulaire": 12.0,
+      "maladie_maternite": 528.66,
+      "invalidite_deces": 184.14,
+      "retraite_base": 2482.92,
+      "retraite_complementaire": 980.1,
+      "csg_crds": 1764.18
+     }
+    },
+    "foyer": {
+     "impot_revenu": 978.0,
+     "revenu_net_imposable": 38601.93,
+     "nombre_de_parts": 2.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "A01",
+   "groupe": "alsace_moselle",
+   "libelle": "Alsace-Moselle, salarie proche du SMIC",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": true,
+     "commune_insee": "67482"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 1500
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 23118.63,
+      "salaire_net_avant_impot": 17999.99,
+      "salaire_imposable": 18658.7,
+      "cotisations_salariales": 2915.36,
+      "csg_deductible": 1544.56,
+      "csg_non_deductible": 545.14,
+      "csg": 2089.7,
+      "crds": 113.57,
+      "cotisations_patronales_avant_reduction": 8011.12,
+      "reduction_generale": 6185.0,
+      "cotisations_patronales": 1826.12,
+      "correction_taux_alsace_moselle": 46.24,
+      "cotisation_regime_local": 300.54
+     }
+    },
+    "mon_entreprise": {
+     "declarant1": {
+      "salaire_brut": 23118.49,
+      "csg": 2089.68,
+      "csg_deductible": 1544.55,
+      "crds": 113.57,
+      "cotisations_salariales": 2915.24,
+      "csg_non_deductible": 545.13
+     }
+    },
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 16792.7,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "A02",
+   "groupe": "alsace_moselle",
+   "libelle": "Alsace-Moselle, salarie non cadre",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": true,
+     "commune_insee": "67482"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 2200
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 33907.13,
+      "salaire_net_avant_impot": 26400.0,
+      "salaire_imposable": 27366.09,
+      "cotisations_salariales": 4275.71,
+      "csg_deductible": 2265.33,
+      "csg_non_deductible": 799.53,
+      "csg": 3064.86,
+      "crds": 166.57,
+      "cotisations_patronales_avant_reduction": 11749.83,
+      "reduction_generale": 369.59,
+      "cotisations_patronales": 11380.24,
+      "correction_taux_alsace_moselle": 67.81,
+      "cotisation_regime_local": 440.79
+     }
+    },
+    "mon_entreprise": {
+     "declarant1": {
+      "salaire_brut": 33907.12,
+      "csg": 3064.86,
+      "csg_deductible": 2265.33,
+      "crds": 166.57,
+      "cotisations_salariales": 4275.69,
+      "csg_non_deductible": 799.53
+     }
+    },
+    "foyer": {
+     "impot_revenu": 1185.0,
+     "revenu_net_imposable": 24629.09,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "A03",
+   "groupe": "alsace_moselle",
+   "libelle": "Alsace-Moselle, cadre",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": true,
+     "commune_insee": "67482"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": true,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 3800
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 58511.76,
+      "salaire_net_avant_impot": 45600.0,
+      "salaire_imposable": 47267.14,
+      "cotisations_salariales": 7335.45,
+      "csg_deductible": 3909.17,
+      "csg_non_deductible": 1379.71,
+      "csg": 5288.88,
+      "crds": 287.44,
+      "cotisations_patronales_avant_reduction": 24690.34,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 24690.34,
+      "correction_taux_alsace_moselle": 117.02,
+      "cotisation_regime_local": 760.65
+     }
+    },
+    "mon_entreprise": {
+     "declarant1": {
+      "salaire_brut": 58515.63,
+      "csg": 5289.23,
+      "csg_deductible": 3909.43,
+      "crds": 287.46,
+      "cotisations_salariales": 7338.94,
+      "csg_non_deductible": 1379.8
+     }
+    },
+    "foyer": {
+     "impot_revenu": 5866.0,
+     "revenu_net_imposable": 42540.14,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "E01",
+   "groupe": "apprenti",
+   "libelle": "Apprenti, contrat conclu avant le 1er mars 2025, sous 79 % du SMIC",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 2005,
+      "statut_activite": "apprenti",
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 1100,
+      "apprentissage": {
+       "contrat_avant_mars_2025": true
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca",
+     "mon-entreprise"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 13200.0,
+      "salaire_net_avant_impot": 13200.0,
+      "salaire_imposable": 0.0,
+      "cotisations_salariales": 0.0,
+      "csg_deductible": 0.0,
+      "csg_non_deductible": 0.0,
+      "csg": 0.0,
+      "crds": 0.0,
+      "cotisations_patronales_avant_reduction": 4843.48,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 4843.48
+     }
+    },
+    "mon_entreprise": {
+     "declarant1": {
+      "salaire_brut": 13200.0,
+      "csg": 0.0,
+      "csg_deductible": 0.0,
+      "crds": 0.0,
+      "cotisations_salariales": 0.0,
+      "csg_non_deductible": 0.0
+     }
+    },
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 0.0,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "E02",
+   "groupe": "apprenti",
+   "libelle": "Apprenti, contrat conclu depuis le 1er mars 2025",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 2005,
+      "statut_activite": "apprenti",
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 1000,
+      "apprentissage": {
+       "contrat_avant_mars_2025": false
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "mon-entreprise"
+    ],
+    "personnes": {},
+    "mon_entreprise": {
+     "declarant1": {
+      "salaire_brut": 12313.05,
+      "csg": 135.79,
+      "csg_deductible": 100.37,
+      "crds": 7.38,
+      "cotisations_salariales": 169.9,
+      "csg_non_deductible": 35.42
+     }
+    },
+    "foyer": {
+     "impot_revenu": null,
+     "revenu_net_imposable": null,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "E03",
+   "groupe": "apprenti",
+   "libelle": "Apprenti de 26 ans ou plus, contrat conclu avant le 1er mars 2025, au-dessus de 79 % du SMIC",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1998,
+      "statut_activite": "apprenti",
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 1650,
+      "apprentissage": {
+       "contrat_avant_mars_2025": true
+      }
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "mon-entreprise"
+    ],
+    "personnes": {},
+    "mon_entreprise": {
+     "declarant1": {
+      "salaire_brut": 20146.72,
+      "csg": 0.0,
+      "csg_deductible": 0.0,
+      "crds": 0.0,
+      "cotisations_salariales": 346.73,
+      "csg_non_deductible": 0.0
+     }
+    },
+    "foyer": {
+     "impot_revenu": null,
+     "revenu_net_imposable": null,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "T01",
+   "groupe": "temps_partiel",
+   "libelle": "Temps partiel a 80 %, non cadre",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_partiel",
+       "quotite": 0.8
+      },
+      "salaire_net_avant_impot_mensuel": 1500
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 22738.92,
+      "salaire_net_avant_impot": 18000.0,
+      "salaire_imposable": 18647.89,
+      "cotisations_salariales": 2571.84,
+      "csg_deductible": 1519.19,
+      "csg_non_deductible": 536.18,
+      "csg": 2055.37,
+      "crds": 111.7,
+      "cotisations_patronales_avant_reduction": 7934.09,
+      "reduction_generale": 2661.21,
+      "cotisations_patronales": 5272.88
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 16782.89,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "T02",
+   "groupe": "temps_partiel",
+   "libelle": "Temps partiel a 50 %, non cadre",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_partiel",
+       "quotite": 0.5
+      },
+      "salaire_net_avant_impot_mensuel": 900
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 13643.32,
+      "salaire_net_avant_impot": 10800.0,
+      "salaire_imposable": 11188.73,
+      "cotisations_salariales": 1543.08,
+      "csg_deductible": 911.51,
+      "csg_non_deductible": 321.71,
+      "csg": 1233.22,
+      "crds": 67.02,
+      "cotisations_patronales_avant_reduction": 4760.48,
+      "reduction_generale": 1968.73,
+      "cotisations_patronales": 2791.75
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 10069.73,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "T03",
+   "groupe": "temps_partiel",
+   "libelle": "Temps partiel a 60 %, cadre",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": true,
+      "temps_travail": {
+       "type": "temps_partiel",
+       "quotite": 0.6
+      },
+      "salaire_net_avant_impot_mensuel": 2300
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 34837.04,
+      "salaire_net_avant_impot": 27599.99,
+      "salaire_imposable": 28592.59,
+      "cotisations_salariales": 3916.98,
+      "csg_deductible": 2327.47,
+      "csg_non_deductible": 821.46,
+      "csg": 3148.92,
+      "crds": 171.14,
+      "cotisations_patronales_avant_reduction": 14787.46,
+      "reduction_generale": 0.0,
+      "cotisations_patronales": 14787.46
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 1361.0,
+     "revenu_net_imposable": 25733.59,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "S01",
+   "groupe": "smic",
+   "libelle": "SMIC a temps plein (reduction generale maximale)",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 1426
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 21617.04,
+      "salaire_net_avant_impot": 17112.0,
+      "salaire_imposable": 17727.92,
+      "cotisations_salariales": 2444.88,
+      "csg_deductible": 1444.24,
+      "csg_non_deductible": 509.73,
+      "csg": 1953.97,
+      "crds": 106.19,
+      "cotisations_patronales_avant_reduction": 7542.76,
+      "reduction_generale": 6989.51,
+      "cotisations_patronales": 553.25
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 15954.92,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "S02",
+   "groupe": "smic",
+   "libelle": "1,2 SMIC (reduction generale partielle)",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_plein"
+      },
+      "salaire_net_avant_impot_mensuel": 1710
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 25922.3,
+      "salaire_net_avant_impot": 20520.0,
+      "salaire_imposable": 21258.6,
+      "cotisations_salariales": 2931.84,
+      "csg_deductible": 1731.87,
+      "csg_non_deductible": 611.25,
+      "csg": 2343.12,
+      "crds": 127.34,
+      "cotisations_patronales_avant_reduction": 9045.1,
+      "reduction_generale": 4673.79,
+      "cotisations_patronales": 4371.31
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 307.0,
+     "revenu_net_imposable": 19132.59,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
+   "id": "S03",
+   "groupe": "smic",
+   "libelle": "SMIC a mi-temps",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_partiel",
+       "quotite": 0.5
+      },
+      "salaire_net_avant_impot_mensuel": 713
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 10808.52,
+      "salaire_net_avant_impot": 8556.0,
+      "salaire_imposable": 8863.96,
+      "cotisations_salariales": 1222.44,
+      "csg_deductible": 722.12,
+      "csg_non_deductible": 254.87,
+      "csg": 976.98,
+      "crds": 53.1,
+      "cotisations_patronales_avant_reduction": 3771.08,
+      "reduction_generale": 3494.76,
+      "cotisations_patronales": 276.32
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 7977.96,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  }
+ ]
+}

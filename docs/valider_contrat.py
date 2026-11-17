@@ -209,6 +209,16 @@ FICHIERS = [
     ("fonction_publique_cabinets.schema.json", "fonction_publique/cabinets.json", "existant"),
     ("fonction_publique_conseils.schema.json", "fonction_publique/conseils.json", "existant"),
     ("fonction_publique_indemnites_elus.schema.json", "fonction_publique/indemnites_elus.json", "existant"),
+    # collectivités d'outre-mer 975, 977, 978, 986, 987, 988 (pipeline/outremer.py)
+    ("outremer_index.schema.json", "outremer/index.json", "existant"),
+    ("outremer_territoire.schema.json", "outremer/9[78][0-9].json", "existant"),
+    ("outremer_budget_nc.schema.json", "outremer/988_budget.json", "existant"),
+    # satellites locaux : syndicats, CCAS-CIAS, AOM et versement mobilité, eau (pipeline/local_satellites.py)
+    ("local_satellites_index.schema.json", "local_satellites/index.json", "existant"),
+    ("local_satellites_syndicats.schema.json", "local_satellites/syndicats/*.json", "existant"),
+    ("local_satellites_ccas.schema.json", "local_satellites/ccas/*.json", "existant"),
+    ("local_satellites_mobilite.schema.json", "local_satellites/mobilite/*.json", "existant"),
+    ("local_satellites_eau.schema.json", "local_satellites/eau/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

@@ -1,0 +1,864 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/outremer_territoire.schema.json",
+  "title": "site/data/outremer/<code>.json : une collectivité d'outre-mer (975, 977, 978, 986, 987, 988) : communes, dotations, crédits de l'État, statut de chaque bloc (pipeline/outremer.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "non_publie": {
+      "type": "object",
+      "properties": {
+        "statut": {
+          "const": "non publié en données ouvertes"
+        },
+        "motif": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "required": [
+        "statut",
+        "motif"
+      ],
+      "additionalProperties": false,
+      "description": "Bloc absent des sources ouvertes : statut et motif, jamais vide ni estimé."
+    },
+    "bloc_statut": {
+      "type": "object",
+      "properties": {
+        "statut": {
+          "enum": [
+            "publié",
+            "non publié en données ouvertes"
+          ]
+        },
+        "motif": {
+          "type": "string",
+          "minLength": 10
+        },
+        "source": {
+          "type": "string"
+        },
+        "fichier": {
+          "type": "string",
+          "pattern": "^outremer/.+\\.json$"
+        },
+        "annees": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(19|20)[0-9]{2}$"
+          }
+        },
+        "communes": {
+          "type": "integer"
+        },
+        "intercommunalites": {
+          "type": "integer"
+        },
+        "pages_pdf": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "devise_source": {
+          "const": "XPF"
+        }
+      },
+      "required": [
+        "statut"
+      ],
+      "additionalProperties": false,
+      "if": {
+        "properties": {
+          "statut": {
+            "const": "non publié en données ouvertes"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "motif"
+        ]
+      },
+      "else": {
+        "required": [
+          "source"
+        ]
+      }
+    },
+    "eur_par_annee": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^(19|20)[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "minProperties": 1,
+        "propertyNames": {
+          "pattern": "^[a-z_]+$"
+        },
+        "additionalProperties": {
+          "type": "integer"
+        }
+      }
+    },
+    "ligne_dpt": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "integer"
+      }
+    }
+  },
+  "properties": {
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "territoire": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "enum": [
+            "975",
+            "977",
+            "978",
+            "986",
+            "987",
+            "988"
+          ]
+        },
+        "nom": {
+          "type": "string"
+        },
+        "statut_juridique": {
+          "type": "string"
+        },
+        "monnaie": {
+          "enum": [
+            "EUR",
+            "XPF"
+          ]
+        },
+        "population": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "communes": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "code",
+        "nom",
+        "statut_juridique",
+        "monnaie",
+        "population",
+        "communes"
+      ],
+      "additionalProperties": false
+    },
+    "blocs": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/bloc_statut"
+      },
+      "required": [
+        "geo",
+        "dotations_communes",
+        "dotations_intercommunalites",
+        "dotations_collectivite",
+        "credits_etat_2018_2020",
+        "credits_etat_plf2026",
+        "budget_collectivite",
+        "budget_communes",
+        "impots_territoriaux"
+      ]
+    },
+    "communes": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^9[78][0-9]{3}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string",
+            "minLength": 1
+          },
+          "population": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "siren": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "null : non publié par l'API pour ces territoires"
+          },
+          "epci": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "territoire": {
+            "enum": [
+              "975",
+              "977",
+              "978",
+              "986",
+              "987",
+              "988"
+            ]
+          }
+        },
+        "required": [
+          "nom",
+          "population",
+          "siren",
+          "epci",
+          "territoire"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "note_communes": {
+      "type": "string"
+    },
+    "dotations_communes": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "statut": {
+              "const": "publié"
+            },
+            "unite": {
+              "const": "euros"
+            },
+            "annees": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^(19|20)[0-9]{2}$"
+              },
+              "minItems": 1
+            },
+            "cles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "note": {
+              "type": "string"
+            },
+            "communes": {
+              "type": "object",
+              "minProperties": 1,
+              "propertyNames": {
+                "pattern": "^9[78][0-9]{3}$"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "nom": {
+                    "type": "string"
+                  },
+                  "eur": {
+                    "$ref": "#/$defs/eur_par_annee"
+                  }
+                },
+                "required": [
+                  "nom",
+                  "eur"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "recettes_reelles_fonctionnement_n_moins_2": {
+              "type": "object",
+              "properties": {
+                "definition": {
+                  "type": "string",
+                  "minLength": 20
+                },
+                "unite": {
+                  "const": "euros"
+                },
+                "communes": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string",
+                      "pattern": "^(19|20)[0-9]{2}$"
+                    },
+                    "additionalProperties": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "definition",
+                "unite",
+                "communes"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "statut",
+            "unite",
+            "annees",
+            "cles",
+            "note",
+            "communes",
+            "recettes_reelles_fonctionnement_n_moins_2"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/non_publie"
+        }
+      ]
+    },
+    "dotations_intercommunalites": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "statut": {
+              "const": "publié"
+            },
+            "unite": {
+              "const": "euros"
+            },
+            "annees": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^(19|20)[0-9]{2}$"
+              },
+              "minItems": 1
+            },
+            "cles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "note": {
+              "type": "string"
+            },
+            "epci": {
+              "type": "object",
+              "minProperties": 1,
+              "propertyNames": {
+                "pattern": "^[0-9]{9}$"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "nom": {
+                    "type": "string"
+                  },
+                  "eur": {
+                    "$ref": "#/$defs/eur_par_annee"
+                  }
+                },
+                "required": [
+                  "nom",
+                  "eur"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "statut",
+            "unite",
+            "annees",
+            "cles",
+            "note",
+            "epci"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/non_publie"
+        }
+      ]
+    },
+    "dotations_collectivite": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "statut": {
+              "const": "publié"
+            },
+            "unite": {
+              "const": "euros"
+            },
+            "annees": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^(19|20)[0-9]{2}$"
+              },
+              "minItems": 1
+            },
+            "cles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "nom": {
+              "type": "string"
+            },
+            "eur": {
+              "$ref": "#/$defs/eur_par_annee"
+            },
+            "population_dgf": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "pattern": "^(19|20)[0-9]{2}$"
+              },
+              "additionalProperties": {
+                "type": "integer"
+              }
+            },
+            "recettes_reelles_fonctionnement_n_moins_2": {
+              "type": "object",
+              "properties": {
+                "definition": {
+                  "type": "string",
+                  "minLength": 20
+                },
+                "unite": {
+                  "const": "euros"
+                },
+                "eur": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string",
+                    "pattern": "^(19|20)[0-9]{2}$"
+                  },
+                  "additionalProperties": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "required": [
+                "definition",
+                "unite",
+                "eur"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "statut",
+            "unite",
+            "annees",
+            "cles",
+            "nom",
+            "eur",
+            "population_dgf",
+            "recettes_reelles_fonctionnement_n_moins_2"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/non_publie"
+        }
+      ]
+    },
+    "credits_etat": {
+      "type": "object",
+      "properties": {
+        "cour_des_comptes_2018_2020": {
+          "type": "object",
+          "properties": {
+            "statut": {
+              "const": "publié"
+            },
+            "unite": {
+              "const": "euros"
+            },
+            "licence": {
+              "type": "string",
+              "pattern": "ODbL"
+            },
+            "definitions": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "annees": {
+              "type": "object",
+              "propertyNames": {
+                "enum": [
+                  "2018",
+                  "2019",
+                  "2020"
+                ]
+              },
+              "minProperties": 3,
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "lfi_ae_eur": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "lfi_cp_eur": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "execution_ae_eur": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "execution_cp_eur": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "lfi_ae_eur",
+                  "lfi_cp_eur",
+                  "execution_ae_eur",
+                  "execution_cp_eur"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "population_2018": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "population_moins_60_ans_2018": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "cp_executes_par_habitant_eur": {
+              "type": "object",
+              "propertyNames": {
+                "enum": [
+                  "2018",
+                  "2019",
+                  "2020"
+                ]
+              },
+              "additionalProperties": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "cp_executes_par_habitant_moins_60_ans_eur": {
+              "type": "object",
+              "propertyNames": {
+                "enum": [
+                  "2018",
+                  "2019",
+                  "2020"
+                ]
+              },
+              "additionalProperties": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "required": [
+            "statut",
+            "unite",
+            "licence",
+            "definitions",
+            "annees",
+            "population_2018",
+            "cp_executes_par_habitant_eur"
+          ],
+          "additionalProperties": false
+        },
+        "dpt_plf2026": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "statut": {
+                  "const": "publié"
+                },
+                "unite": {
+                  "const": "euros"
+                },
+                "colonnes": {
+                  "const": [
+                    "execution_2024_ae",
+                    "execution_2024_cp",
+                    "lfi_2025_ae",
+                    "lfi_2025_cp",
+                    "plf_2026_ae",
+                    "plf_2026_cp"
+                  ]
+                },
+                "pages_pdf": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "definitions": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "controle": {
+                  "type": "string"
+                },
+                "total_general": {
+                  "$ref": "#/$defs/ligne_dpt"
+                },
+                "missions": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "mission": {
+                        "type": "string",
+                        "minLength": 2
+                      },
+                      "valeurs": {
+                        "$ref": "#/$defs/ligne_dpt"
+                      },
+                      "programmes": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "code": {
+                              "type": "string",
+                              "pattern": "^[0-9]{3,4}$"
+                            },
+                            "libelle": {
+                              "type": "string",
+                              "minLength": 2
+                            },
+                            "valeurs": {
+                              "$ref": "#/$defs/ligne_dpt"
+                            }
+                          },
+                          "required": [
+                            "code",
+                            "libelle",
+                            "valeurs"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "mission",
+                      "valeurs",
+                      "programmes"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "statut",
+                "unite",
+                "colonnes",
+                "pages_pdf",
+                "definitions",
+                "controle",
+                "total_general",
+                "missions"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "$ref": "#/$defs/non_publie"
+            }
+          ]
+        }
+      },
+      "required": [
+        "cour_des_comptes_2018_2020",
+        "dpt_plf2026"
+      ],
+      "additionalProperties": false
+    },
+    "budget_collectivite": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "statut": {
+              "const": "publié"
+            },
+            "fichier": {
+              "const": "outremer/988_budget.json"
+            },
+            "devise_source": {
+              "const": "XPF"
+            },
+            "parite": {
+              "type": "object",
+              "properties": {
+                "xpf_par_eur": {
+                  "const": 119.33174
+                }
+              },
+              "required": [
+                "xpf_par_eur"
+              ],
+              "additionalProperties": false
+            },
+            "exercice": {
+              "$ref": "commun.schema.json#/$defs/annee_entier"
+            },
+            "colonnes": {
+              "const": [
+                "budget_total_xpf",
+                "realise_xpf",
+                "budget_total_eur",
+                "realise_eur"
+              ]
+            },
+            "budgets": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "note": {
+              "type": "string"
+            },
+            "hors_ordre_et_reports": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "propertyNames": {
+                  "enum": [
+                    "D",
+                    "R"
+                  ]
+                },
+                "additionalProperties": {
+                  "type": "object",
+                  "propertyNames": {
+                    "enum": [
+                      "Fonctionnement",
+                      "Investissement"
+                    ]
+                  },
+                  "additionalProperties": {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "budget_total_xpf, realise_xpf, budget_total_eur, realise_eur"
+                  }
+                }
+              }
+            }
+          },
+          "required": [
+            "statut",
+            "fichier",
+            "devise_source",
+            "parite",
+            "exercice",
+            "colonnes",
+            "budgets",
+            "note",
+            "hors_ordre_et_reports"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/non_publie"
+        }
+      ]
+    },
+    "budget_communes": {
+      "$ref": "#/$defs/non_publie"
+    },
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "sources",
+    "territoire",
+    "blocs",
+    "communes",
+    "note_communes",
+    "dotations_communes",
+    "dotations_intercommunalites",
+    "dotations_collectivite",
+    "credits_etat",
+    "budget_collectivite",
+    "budget_communes"
+  ],
+  "additionalProperties": false
+}

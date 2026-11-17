@@ -3696,7 +3696,118 @@
    "titre": "FIPHFP, masses attribuees par conventions aux employeurs publics par region",
    "licence": "Licence Ouverte 2.0",
    "module": "pipeline/formation.py"
-  }
+  },
+  {
+   "id": "outremer",
+   "domaine": "outremer",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://geo.api.gouv.fr/communes?codeDepartement=975&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+     "nom": "geo_975.json"
+    },
+    {
+     "url": "https://geo.api.gouv.fr/communes?codeDepartement=977&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+     "nom": "geo_977.json"
+    },
+    {
+     "url": "https://geo.api.gouv.fr/communes?codeDepartement=978&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+     "nom": "geo_978.json"
+    },
+    {
+     "url": "https://geo.api.gouv.fr/communes?codeDepartement=986&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+     "nom": "geo_986.json"
+    },
+    {
+     "url": "https://geo.api.gouv.fr/communes?codeDepartement=987&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+     "nom": "geo_987.json"
+    },
+    {
+     "url": "https://geo.api.gouv.fr/communes?codeDepartement=988&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion",
+     "nom": "geo_988.json"
+    },
+    {
+     "url": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27975%27&delimiter=%3B",
+     "nom": "dotations_communes_975.csv"
+    },
+    {
+     "url": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27977%27&delimiter=%3B",
+     "nom": "dotations_communes_977.csv"
+    },
+    {
+     "url": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27978%27&delimiter=%3B",
+     "nom": "dotations_communes_978.csv"
+    },
+    {
+     "url": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27986%27&delimiter=%3B",
+     "nom": "dotations_communes_986.csv"
+    },
+    {
+     "url": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27987%27&delimiter=%3B",
+     "nom": "dotations_communes_987.csv"
+    },
+    {
+     "url": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-communes/exports/csv?where=code_departement%3D%27988%27&delimiter=%3B",
+     "nom": "dotations_communes_988.csv"
+    },
+    {
+     "url": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-departements/exports/csv?select=exercice%2Cpopulation%2Cmet_om%2Ccode_departement%2Cnom_departement%2Ccategorie%2Cunite%2Cvariable%2Cvaleur&where=code_departement+in+%28%27975%27%2C%27977%27%2C%27978%27%2C%27986%27%2C%27987%27%2C%27988%27%29&delimiter=%3B",
+     "nom": "dotations_collectivites.csv"
+    },
+    {
+     "url": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-gfp/exports/csv?select=exercice%2Ccode_departement%2Csiren%2Cnom_epci%2Cnature_juridique%2Ccategorie%2Cunite%2Cvariable%2Cvaleur&where=code_departement+in+%28%27975%27%2C%27977%27%2C%27978%27%2C%27986%27%2C%27987%27%2C%27988%27%29&delimiter=%3B",
+     "nom": "dotations_intercommunalites.csv"
+    },
+    {
+     "url": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-de-la-nouvelle-caledonie-depuis-2012/exports/csv?delimiter=%3B",
+     "nom": "nc_budget.csv"
+    },
+    {
+     "url": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-de-la-nouvelle-caledonie-depuis-2012",
+     "nom": "nc_budget.meta.json"
+    },
+    {
+     "url": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-epa-depuis-2012/exports/csv?delimiter=%3B",
+     "nom": "nc_epa.csv"
+    },
+    {
+     "url": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-epa-depuis-2012",
+     "nom": "nc_epa.meta.json"
+    },
+    {
+     "url": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-epic-depuis-2012/exports/csv?delimiter=%3B",
+     "nom": "nc_epic.csv"
+    },
+    {
+     "url": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-epic-depuis-2012",
+     "nom": "nc_epic.meta.json"
+    },
+    {
+     "url": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/rendement-des-impots-depuis-2010/exports/csv?delimiter=%3B",
+     "nom": "nc_impots.csv"
+    },
+    {
+     "url": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/rendement-des-impots-depuis-2010",
+     "nom": "nc_impots.meta.json"
+    },
+    {
+     "url": "https://www.ccomptes.fr/system/files/2022-05/20220524-donnees-financement-Etat-outremer.zip",
+     "nom": "ccomptes_financement_etat_outremer.zip"
+    },
+    {
+     "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1090079/file/4-DPT2026_OutreMer.pdf",
+     "nom": "dpt2026_outremer.pdf"
+    }
+   ],
+   "titre": "Collectivités d'outre-mer (975, 977, 978, 986, 987, 988) : communes (geo.api.gouv.fr), dotations de l'État (OFGL, DGCL), budget de la Nouvelle-Calédonie, de ses établissements publics et rendement des impôts (data.gouv.nc, DBAF, en francs CFP), financement de l'État outre-mer 2018-2020 (Cour des comptes), document de politique transversale Outre-mer du PLF 2026 (lu par pipeline/outremer.py)",
+   "licence": "Licence Ouverte 2.0 (geo.api.gouv.fr, OFGL, data.gouv.nc) ; ODbL 1.0 (Cour des comptes) ; document budgétaire public (annexe au PLF 2026)",
+   "module": "pipeline/outremer.py"
+  },
+  {"id": "local_satellites_ofgl_syndicats", "domaine": "collectivites", "type": "ods_export", "portail": "ofgl", "dataset": "ofgl-base-syndicats", "titre": "OFGL, comptes des syndicats 2018-2025 (collecte par exercice et agregats retenus : pipeline/local_satellites.py collecter, data/lake/collectivites/local_satellites/)", "licence": "Licence Ouverte 2.0", "lourd": true, "module": "pipeline/local_satellites.py"},
+  {"id": "local_satellites_ofgl_ccas_cias", "domaine": "collectivites", "type": "ods_export", "portail": "ofgl", "dataset": "ofgl-base-ccas-cias", "titre": "OFGL, comptes des CCAS-CIAS 2018-2025 (collecte par exercice et agregats retenus : pipeline/local_satellites.py collecter)", "licence": "Licence Ouverte 2.0", "lourd": true, "module": "pipeline/local_satellites.py"},
+  {"id": "local_satellites_cerema_aom_2026", "domaine": "collectivites", "type": "url", "format": "ods", "url": "https://static.data.gouv.fr/resources/liste-et-composition-des-autorites-organisatrices-de-la-mobilite-aom/20260716-092939/base-rt-2026.ods", "titre": "Cerema, liste et composition des autorites organisatrices de la mobilite au 1er janvier 2026 (colonne de courriel jamais lue)", "licence": "ODbL 1.0 (mention de la source et partage a l'identique : declares dans site/data/local_satellites/mobilite/ et index.json)", "module": "pipeline/local_satellites.py"},
+  {"id": "local_satellites_urssaf_taux_vm", "domaine": "collectivites", "type": "ods_export", "portail": "urssaf", "dataset": "table_taux_vmrr", "titre": "Urssaf, taux de versement mobilite, additionnel, regional et rural par commune et periode", "licence": "ODbL 1.0 (mention de la source et partage a l'identique : declares dans site/data/local_satellites/mobilite/ et index.json)", "module": "pipeline/local_satellites.py"},
+  {"id": "local_satellites_sispea_2024", "domaine": "collectivites", "type": "urls", "urls": [{"url": "https://data.ofb.fr/catalogue/srv/api/records/7d6a3010-cf19-42c3-8a38-9823074185ce/attachments/SISPEA_extraction_2024_AEP.7z", "nom": "sispea_2024_AEP.7z"}, {"url": "https://data.ofb.fr/catalogue/srv/api/records/5feec4e9-03a6-409a-a522-d51346d5f4c9/attachments/SISPEA_extraction_2024_AC.7z", "nom": "sispea_2024_AC.7z"}, {"url": "https://data.ofb.fr/catalogue/srv/api/records/96f91c3e-cc33-4f7a-a0fa-6620ff79d168/attachments/SISPEA_extraction_2024_ANC.7z", "nom": "sispea_2024_ANC.7z"}], "titre": "OFB, SISPEA, prix et performance des services d'eau potable, d'assainissement collectif et non collectif, exercice 2024 (courriels et nom de l'operateur jamais lus)", "licence": "Licence Ouverte 2.0", "module": "pipeline/local_satellites.py"}
  ],
  "non_collectables": [
   {

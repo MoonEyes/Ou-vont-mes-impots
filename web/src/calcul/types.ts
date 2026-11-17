@@ -170,3 +170,116 @@ export interface ResultatErreur {
 }
 
 export type Resultat = ResultatOk | ResultatErreur
+
+// ---------------------------------------------------------------------------------------------------------------
+// Profils étendus (calculerProfil, moteur-etendu.ts). Sur-ensemble du contrat 1.0 : tous les champs ajoutés sont
+// optionnels, un profil du contrat 1.0 reste valide. Détail des champs par profil : calcul/README.md.
+// ---------------------------------------------------------------------------------------------------------------
+
+export type Versant = 'etat' | 'territoriale' | 'hospitaliere'
+export type ActiviteMicro = 'vente' | 'service_bic' | 'service_bnc'
+export type TauxCsgRetraite = 'exonere' | 'reduit' | 'median' | 'normal'
+
+export interface Independant {
+  /** micro : micro-entrepreneur (vérifié) ; reel : artisan, commerçant ou profession libérale au réel (non vérifié, désactivé par défaut) */
+  regime: 'micro' | 'reel'
+  /** micro : vente de marchandises, prestation de service commerciale ou artisanale (BIC), prestation libérale (BNC, régime général) */
+  activite?: ActiviteMicro
+  /** micro : activité artisanale (contribution à la formation et taxe de chambre de métiers différentes) */
+  artisan?: boolean
+  /** micro : chiffre d'affaires encaissé sur l'année, hors taxes */
+  chiffre_affaires_annuel?: number
+  /** micro : option pour le versement libératoire de l'impôt sur le revenu */
+  versement_liberatoire?: boolean
+  /** reel : nature de l'activité */
+  categorie?: 'artisan' | 'commercant' | 'liberale'
+  /** reel : résultat fiscal annuel (revenu professionnel) */
+  revenu_professionnel_annuel?: number
+}
+
+export interface PersonneEtendue extends Personne {
+  // Fonctionnaire titulaire
+  versant?: Versant
+  /** traitement indiciaire brut mensuel (avec NBI) ; s'il manque, il est retrouvé à partir du net saisi */
+  traitement_indiciaire_brut_mensuel?: number
+  /** total mensuel brut des primes et indemnités (résidence, supplément familial, indemnités) ; 0 s'il n'y en a pas */
+  primes_mensuelles?: number
+  // Retraité
+  /** pensions de base (régime général, fonction publique, etc.) et complémentaires (Agirc-Arrco, Ircantec), par mois */
+  pension_base_mensuelle?: number
+  pension_complementaire_mensuelle?: number
+  /** nature des montants de pension saisis (défaut : nette avant impôt) */
+  pension_saisie?: 'nette_avant_impot' | 'brute'
+  /** taux de CSG lu sur le relevé de pension, ou revenu fiscal de référence de l'avant-dernière année et nombre de parts */
+  csg_pension?: { taux: TauxCsgRetraite } | { revenu_fiscal_reference: number; parts: number }
+  // Indépendant
+  independant?: Independant
+  // Apprenti
+  apprentissage?: { contrat_avant_mars_2025: boolean }
+}
+
+export interface ProfilEtendu extends Omit<Profil, 'personnes'> {
+  personnes: PersonneEtendue[]
+}
+
+export type ProfilCalcule =
+  | 'salarie_prive'
+  | 'fonctionnaire'
+  | 'contractuel_public'
+  | 'retraite'
+  | 'micro_entrepreneur'
+  | 'independant_reel'
+  | 'apprenti'
+  | 'sans_activite'
+
+export interface EntreePersonneEtendue {
+  role: 'declarant1' | 'declarant2'
+  profil: ProfilCalcule
+  /** revenu net avant impôt de l'année (salaire, pension ; chiffre d'affaires moins cotisations pour un indépendant) */
+  salaire_net_avant_impot_annuel: number
+  /** revenu brut de l'année (salaire brut, traitement et primes, pension brute, chiffre d'affaires) */
+  salaire_brut_annuel_estime: Fourchette
+  /** revenu retenu pour l'impôt avant abattement (salaire ou pension imposable, chiffre d'affaires du régime micro) */
+  revenu_imposable_annuel: number
+  /** précisions propres au profil (traitement, primes, taux de CSG appliqué, pensions brutes) */
+  detail?: Record<string, number | string>
+}
+
+export interface AffectationManquante {
+  /** identifiant de la ligne de prélèvement sans entrée dans prelevements/affectation.json */
+  id: string
+  libelle: string
+  /** identifiant proposé pour l'entrée à créer dans affectation.json (aucune répartition n'est supposée) */
+  cle_proposee: string
+}
+
+export interface VerificationProfil {
+  profil: ProfilCalcule | 'alsace_moselle' | 'foyer'
+  statut: 'verifie' | 'non verifie'
+  /** source de la vérification et tolérance (détail dans web/ECARTS.md) */
+  reference: string
+}
+
+export interface ResultatOkEtendu extends Omit<ResultatOk, 'entree'> {
+  entree: { personnes: EntreePersonneEtendue[] }
+  /** millésime des barèmes appliqués (une seule année gérée) */
+  millesime: { annee_revenus: number; baremes: string }
+  verifications: VerificationProfil[]
+  /** lignes sans affectation publiée : destinataire « non publié », jamais de répartition supposée */
+  affectations_manquantes: AffectationManquante[]
+}
+
+export type MotifHorsPerimetre =
+  | MotifHorsV1
+  | 'annee_non_couverte'
+  | 'independant_reel_non_verifie'
+  | 'retraite_alsace_moselle'
+  | 'independant_alsace_moselle_non_verifie'
+
+export interface ResultatErreurEtendu {
+  statut: 'erreur'
+  version_contrat: '1.0'
+  erreur: Omit<ResultatErreur['erreur'], 'motif'> & { motif?: MotifHorsPerimetre }
+}
+
+export type ResultatEtendu = ResultatOkEtendu | ResultatErreurEtendu

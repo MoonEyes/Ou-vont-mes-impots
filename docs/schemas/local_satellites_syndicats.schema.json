@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_satellites_syndicats.schema.json",
+  "title": "site/data/local_satellites/syndicats/<dep>.json : syndicats concernant chaque commune (pipeline/local_satellites.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "syndicat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nom",
+        "nature",
+        "categorie",
+        "competences",
+        "population",
+        "comptes",
+        "serie",
+        "eur_hab",
+        "eur_hab_exercice"
+      ],
+      "properties": {
+        "nom": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "null si la catégorie juridique SIRENE n'est pas celle d'une personne morale"
+        },
+        "nature": {
+          "enum": [
+            "SIVU",
+            "SIVOM",
+            "SMF",
+            "SMO",
+            "PETR",
+            "POLEM",
+            null
+          ]
+        },
+        "categorie": {
+          "enum": [
+            "syndicat",
+            "petr",
+            "pole_metropolitain",
+            "mdph"
+          ]
+        },
+        "competences": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "description": "indices dans index.json `competences` ; null si absent de BANATIC"
+        },
+        "a_la_carte": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "population": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "membres": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "departement": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "perimetre": {
+          "enum": [
+            "banatic",
+            null
+          ]
+        },
+        "comptes": {
+          "type": "boolean"
+        },
+        "budgets": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "serie": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "required": [
+                "depenses_totales_hors_remb",
+                "depenses_fonctionnement",
+                "depenses_investissement_hors_remb",
+                "subventions_participations_recues",
+                "ventes_biens_services",
+                "impots_taxes",
+                "versement_mobilite",
+                "teom"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "depenses_totales_hors_remb": {
+                  "type": "array",
+                  "minItems": 8,
+                  "maxItems": 8,
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "description": "euros par exercice, aligné sur `annees` ; null = non publié par l'OFGL cet exercice, jamais 0"
+                },
+                "depenses_fonctionnement": {
+                  "type": "array",
+                  "minItems": 8,
+                  "maxItems": 8,
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "description": "euros par exercice, aligné sur `annees` ; null = non publié par l'OFGL cet exercice, jamais 0"
+                },
+                "depenses_investissement_hors_remb": {
+                  "type": "array",
+                  "minItems": 8,
+                  "maxItems": 8,
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "description": "euros par exercice, aligné sur `annees` ; null = non publié par l'OFGL cet exercice, jamais 0"
+                },
+                "subventions_participations_recues": {
+                  "type": "array",
+                  "minItems": 8,
+                  "maxItems": 8,
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "description": "euros par exercice, aligné sur `annees` ; null = non publié par l'OFGL cet exercice, jamais 0"
+                },
+                "ventes_biens_services": {
+                  "type": "array",
+                  "minItems": 8,
+                  "maxItems": 8,
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "description": "euros par exercice, aligné sur `annees` ; null = non publié par l'OFGL cet exercice, jamais 0"
+                },
+                "impots_taxes": {
+                  "type": "array",
+                  "minItems": 8,
+                  "maxItems": 8,
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "description": "euros par exercice, aligné sur `annees` ; null = non publié par l'OFGL cet exercice, jamais 0"
+                },
+                "versement_mobilite": {
+                  "type": "array",
+                  "minItems": 8,
+                  "maxItems": 8,
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "description": "euros par exercice, aligné sur `annees` ; null = non publié par l'OFGL cet exercice, jamais 0"
+                },
+                "teom": {
+                  "type": "array",
+                  "minItems": 8,
+                  "maxItems": 8,
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "description": "euros par exercice, aligné sur `annees` ; null = non publié par l'OFGL cet exercice, jamais 0"
+                }
+              }
+            }
+          ]
+        },
+        "eur_hab": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "eur_hab_exercice": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 2024,
+          "maximum": 2025
+        }
+      }
+    }
+  },
+  "properties": {
+    "licence": {
+      "const": "Licence Ouverte 2.0"
+    },
+    "departement": {
+      "type": "object",
+      "required": [
+        "code",
+        "nom"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "nom": {
+          "type": "string"
+        }
+      }
+    },
+    "annees": {
+      "const": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "colonnes": {
+      "const": [
+        "depenses_totales_hors_remb",
+        "depenses_fonctionnement",
+        "depenses_investissement_hors_remb",
+        "subventions_participations_recues",
+        "ventes_biens_services",
+        "impots_taxes",
+        "versement_mobilite",
+        "teom"
+      ]
+    },
+    "unite": {
+      "const": "euros"
+    },
+    "competences": {
+      "type": "string"
+    },
+    "syndicats": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[0-9]{9}$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/syndicat"
+      }
+    },
+    "organismes_departementaux": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9]{9}$"
+      },
+      "description": "organismes concernant toutes les communes du département (MDPH)"
+    },
+    "non_rattaches": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "prefixItems": [
+          {
+            "type": "string",
+            "pattern": "^[0-9]{9}$"
+          },
+          {
+            "enum": [
+              "absent_de_banatic",
+              "membres_hors_communes"
+            ]
+          }
+        ]
+      }
+    },
+    "communes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^([0-9]{2}|2[AB])[0-9]{3}$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "prefixItems": [
+            {
+              "type": "string",
+              "pattern": "^[0-9]{9}$"
+            },
+            {
+              "enum": [
+                "commune",
+                "epci",
+                "syndicat"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "licence",
+    "departement",
+    "annees",
+    "colonnes",
+    "syndicats",
+    "organismes_departementaux",
+    "non_rattaches",
+    "communes"
+  ]
+}

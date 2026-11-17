@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/justice_defense_index.schema.json",
+  "title": "site/data/justice_defense/index.json : fichiers, repères, sources, sources inaccessibles, limites, recherche publique",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "fichiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fichier": {
+            "type": "string",
+            "pattern": "^justice_defense/[a-z_]+\\.json$"
+          },
+          "contenu": {
+            "type": "string"
+          },
+          "octets": {
+            "type": "integer",
+            "maximum": 5000000
+          }
+        },
+        "required": [
+          "contenu",
+          "fichier",
+          "octets"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 4
+    },
+    "reperes": {
+      "type": "object",
+      "properties": {
+        "prisons": {
+          "type": "object",
+          "required": [
+            "date",
+            "capacite_operationnelle",
+            "detenus",
+            "densite_pct",
+            "statut_montant"
+          ]
+        },
+        "budget_justice": {
+          "type": "object",
+          "required": [
+            "annee",
+            "credits_paiement_meur"
+          ]
+        },
+        "ressorts": {
+          "type": "object"
+        },
+        "armement": {
+          "type": "object",
+          "required": [
+            "annee",
+            "prises_de_commandes_meur",
+            "livraisons_meur"
+          ]
+        }
+      },
+      "required": [
+        "armement",
+        "budget_justice",
+        "prisons",
+        "ressorts"
+      ],
+      "additionalProperties": false
+    },
+    "effectifs_defense": {
+      "type": "object",
+      "properties": {
+        "statut": {
+          "const": "donnee_absente_a_la_source"
+        },
+        "constat_le": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "constat": {
+          "type": "string",
+          "minLength": 40
+        },
+        "fichier_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fichier_octets": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "fichier_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "a_relire": {
+          "type": "boolean"
+        },
+        "voir_aussi": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "a_relire",
+        "constat",
+        "constat_le",
+        "fichier_octets",
+        "fichier_sha256",
+        "fichier_url",
+        "statut",
+        "voir_aussi"
+      ],
+      "additionalProperties": false
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 40
+      },
+      "minItems": 3
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "id_catalogue": {
+            "type": "string",
+            "pattern": "^justice_defense_"
+          },
+          "titre": {
+            "type": "string"
+          },
+          "page": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "collecte_le": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fichiers_collectes": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "statut": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "collecte_le",
+          "fichiers_collectes",
+          "id",
+          "id_catalogue",
+          "licence",
+          "page",
+          "statut",
+          "titre"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 6
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "motif": {
+            "type": "string",
+            "minLength": 20
+          }
+        },
+        "required": [
+          "motif",
+          "source"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "recherche_publique": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "conclusion": {
+          "type": "string",
+          "minLength": 40
+        },
+        "trouvailles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "nom": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "verdict": {
+                "enum": [
+                  "réutilisable tel quel",
+                  "à adapter",
+                  "inspiration seulement"
+                ]
+              },
+              "licence": {
+                "type": "string"
+              },
+              "mise_a_jour": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "licence",
+              "mise_a_jour",
+              "nom",
+              "url",
+              "verdict"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 5
+        }
+      },
+      "required": [
+        "conclusion",
+        "date",
+        "trouvailles"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "avertissement",
+    "date_sources",
+    "effectifs_defense",
+    "fichiers",
+    "limites",
+    "millesime",
+    "recherche_publique",
+    "reperes",
+    "source",
+    "sources",
+    "sources_inaccessibles",
+    "unite"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,529 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/recouvrement_controle_urssaf.schema.json",
+ "title": "site/data/recouvrement/controle_urssaf.json : contrôles des Urssaf, redressements et restitutions, travail dissimulé",
+ "description": "Axe « recouvrement » (pipeline/recouvrement.py). Trois notions séparées : montant notifié, montant encaissé, estimation. Aucun total entre sphère fiscale et sphère sociale.",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "properties": {
+  "millesime": {
+   "type": "string"
+  },
+  "source": {
+   "type": "string"
+  },
+  "unite": {
+   "type": "string",
+   "minLength": 3
+  },
+  "avertissement": {
+   "type": "string",
+   "minLength": 20
+  },
+  "collecte_le": {
+   "type": "string",
+   "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+  },
+  "sphere": {
+   "const": "sociale"
+  },
+  "producteur": {
+   "type": "string",
+   "minLength": 3
+  },
+  "perimetre": {
+   "type": "string",
+   "minLength": 20
+  },
+  "methode": {
+   "type": "string",
+   "minLength": 20
+  },
+  "annees": {
+   "type": "array",
+   "minItems": 5,
+   "items": {
+    "type": "integer",
+    "minimum": 1990,
+    "maximum": 2100
+   }
+  },
+  "controle": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "source",
+    "definition",
+    "types",
+    "total",
+    "identite_regularisations"
+   ],
+   "properties": {
+    "source": {
+     "type": "string"
+    },
+    "definition": {
+     "type": "string",
+     "minLength": 20
+    },
+    "types": {
+     "type": "array",
+     "minItems": 3,
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "type_action",
+       "nombre_actions",
+       "nombre_regularisations",
+       "redressements_eur",
+       "restitutions_eur",
+       "regularisations_eur"
+      ],
+      "properties": {
+       "type_action": {
+        "type": "string"
+       },
+       "nombre_actions": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       },
+       "nombre_regularisations": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       },
+       "redressements_eur": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       },
+       "restitutions_eur": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       },
+       "regularisations_eur": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       }
+      }
+     }
+    },
+    "total": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "nombre_actions",
+      "nombre_regularisations",
+      "redressements_eur",
+      "restitutions_eur",
+      "regularisations_eur",
+      "part_restitutions_pct"
+     ],
+     "properties": {
+      "nombre_actions": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "nombre_regularisations": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "redressements_eur": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "restitutions_eur": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "regularisations_eur": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "part_restitutions_pct": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      }
+     }
+    },
+    "identite_regularisations": {
+     "type": "object",
+     "required": [
+      "definition",
+      "ecart_max_eur"
+     ]
+    }
+   }
+  },
+  "travail_dissimule": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "source",
+    "definition",
+    "types",
+    "total"
+   ],
+   "properties": {
+    "source": {
+     "type": "string"
+    },
+    "definition": {
+     "type": "string",
+     "minLength": 20
+    },
+    "types": {
+     "type": "array",
+     "minItems": 3,
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "type_action",
+       "libelle",
+       "nombre_actions",
+       "nombre_redressements",
+       "redressements_eur"
+      ],
+      "properties": {
+       "type_action": {
+        "type": "string"
+       },
+       "libelle": {
+        "type": "string"
+       },
+       "nombre_actions": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       },
+       "nombre_redressements": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       },
+       "redressements_eur": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       }
+      }
+     }
+    },
+    "total": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "nombre_actions",
+      "nombre_redressements",
+      "redressements_eur"
+     ],
+     "properties": {
+      "nombre_actions": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "nombre_redressements": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "redressements_eur": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      }
+     }
+    }
+   }
+  },
+  "regle": {
+   "type": "string",
+   "minLength": 20
+  },
+  "definitions": {
+   "type": "array",
+   "minItems": 3,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "terme",
+     "citation",
+     "source"
+    ],
+    "properties": {
+     "terme": {
+      "type": "string"
+     },
+     "citation": {
+      "type": "string",
+      "minLength": 20
+     },
+     "source": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "organismes": {
+   "type": "array",
+   "minItems": 20,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "organisme",
+     "nom_tri",
+     "region",
+     "code_region",
+     "controle",
+     "travail_dissimule"
+    ],
+    "properties": {
+     "organisme": {
+      "type": "string",
+      "pattern": "^(Urssaf|CGSS|CSS) "
+     },
+     "nom_tri": {
+      "type": "string"
+     },
+     "region": {
+      "type": "string"
+     },
+     "code_region": {
+      "type": "string"
+     },
+     "controle": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+       "nombre_actions",
+       "redressements_eur",
+       "restitutions_eur",
+       "regularisations_eur"
+      ],
+      "properties": {
+       "nombre_actions": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       },
+       "redressements_eur": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       },
+       "restitutions_eur": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       },
+       "regularisations_eur": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       }
+      }
+     },
+     "travail_dissimule": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+       "nombre_actions",
+       "redressements_eur"
+      ],
+      "properties": {
+       "nombre_actions": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       },
+       "redressements_eur": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "ordre": {
+   "type": "object",
+   "required": [
+    "regle",
+    "cles"
+   ],
+   "additionalProperties": false,
+   "properties": {
+    "regle": {
+     "type": "string",
+     "minLength": 10
+    },
+    "cles": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ },
+ "required": [
+  "millesime",
+  "source",
+  "unite",
+  "avertissement",
+  "collecte_le",
+  "sphere",
+  "producteur",
+  "perimetre",
+  "methode",
+  "annees",
+  "controle",
+  "travail_dissimule",
+  "regle",
+  "definitions",
+  "organismes",
+  "ordre"
+ ],
+ "additionalProperties": false
+}

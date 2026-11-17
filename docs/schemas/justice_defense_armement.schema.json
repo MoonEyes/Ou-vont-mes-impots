@@ -1,0 +1,961 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/justice_defense_armement.schema.json",
+  "title": "site/data/justice_defense/armement.json : prises de commandes, livraisons et licences d'exportation d'armement par pays, licences par catégorie (Rapport au Parlement 2025, annexes 5, 6, 8 et 9)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "notes": {
+      "type": "object",
+      "properties": {
+        "tiret": {
+          "type": "string"
+        },
+        "zero": {
+          "type": "string"
+        },
+        "hors_region": {
+          "type": "string"
+        },
+        "categorie": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "categorie",
+        "hors_region",
+        "tiret",
+        "zero"
+      ],
+      "additionalProperties": false
+    },
+    "ordre": {
+      "type": "string"
+    },
+    "prises_de_commandes": {
+      "type": "object",
+      "properties": {
+        "annexe": {
+          "type": "integer"
+        },
+        "unite": {
+          "type": "string"
+        },
+        "annees": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "items": {
+            "type": "integer"
+          }
+        },
+        "pages_pdf": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 1
+        },
+        "pays": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pays": {
+                "type": "string",
+                "minLength": 3
+              },
+              "region": {
+                "type": "string",
+                "minLength": 4
+              },
+              "valeurs": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "minItems": 10
+              },
+              "total": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "required": [
+              "pays",
+              "region",
+              "total",
+              "valeurs"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 100
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string"
+              },
+              "pays": {
+                "type": "integer"
+              },
+              "valeurs": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "minItems": 10
+              },
+              "total": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "required": [
+              "pays",
+              "region",
+              "total",
+              "valeurs"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 10
+        },
+        "hors_region": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pays": {
+                "type": "string"
+              },
+              "region": {
+                "type": "null"
+              },
+              "valeurs": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "minItems": 10
+              },
+              "total": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "required": [
+              "pays",
+              "region",
+              "total",
+              "valeurs"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "total_general": {
+          "type": "object",
+          "properties": {
+            "valeurs": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "minItems": 10
+            },
+            "total": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "required": [
+            "total",
+            "valeurs"
+          ],
+          "additionalProperties": false
+        },
+        "controles": {
+          "type": "object",
+          "properties": {
+            "lignes_pays": {
+              "type": "integer"
+            },
+            "regions_plus_hors_region_egal_total_general": {
+              "const": true
+            },
+            "pays_dont_le_total_differe_de_la_somme": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 0
+            },
+            "ecarts_regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "string"
+                  },
+                  "montant": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "autre_source": {
+                    "type": "string"
+                  },
+                  "autre_montant": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart": {
+                    "type": "number"
+                  },
+                  "lecture": {
+                    "type": "string"
+                  },
+                  "disp": {
+                    "type": "string"
+                  },
+                  "champ": {
+                    "type": "string"
+                  },
+                  "objet": {
+                    "type": "string"
+                  },
+                  "unite": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string"
+                  },
+                  "annee": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "autre_montant",
+                  "autre_source",
+                  "ecart",
+                  "montant",
+                  "source"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "ecarts_regions",
+            "lignes_pays",
+            "pays_dont_le_total_differe_de_la_somme",
+            "regions_plus_hors_region_egal_total_general"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "annees",
+        "annexe",
+        "controles",
+        "hors_region",
+        "pages_pdf",
+        "pays",
+        "regions",
+        "total_general",
+        "unite"
+      ],
+      "additionalProperties": false
+    },
+    "livraisons": {
+      "type": "object",
+      "properties": {
+        "annexe": {
+          "type": "integer"
+        },
+        "unite": {
+          "type": "string"
+        },
+        "annees": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "items": {
+            "type": "integer"
+          }
+        },
+        "pages_pdf": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 1
+        },
+        "pays": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pays": {
+                "type": "string",
+                "minLength": 3
+              },
+              "region": {
+                "type": "string",
+                "minLength": 4
+              },
+              "valeurs": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "minItems": 10
+              },
+              "total": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "required": [
+              "pays",
+              "region",
+              "total",
+              "valeurs"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 100
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string"
+              },
+              "pays": {
+                "type": "integer"
+              },
+              "valeurs": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "minItems": 10
+              },
+              "total": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "required": [
+              "pays",
+              "region",
+              "total",
+              "valeurs"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 10
+        },
+        "hors_region": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pays": {
+                "type": "string"
+              },
+              "region": {
+                "type": "null"
+              },
+              "valeurs": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "minItems": 10
+              },
+              "total": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "required": [
+              "pays",
+              "region",
+              "total",
+              "valeurs"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "total_general": {
+          "type": "object",
+          "properties": {
+            "valeurs": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "minItems": 10
+            },
+            "total": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "required": [
+            "total",
+            "valeurs"
+          ],
+          "additionalProperties": false
+        },
+        "controles": {
+          "type": "object",
+          "properties": {
+            "lignes_pays": {
+              "type": "integer"
+            },
+            "regions_plus_hors_region_egal_total_general": {
+              "const": true
+            },
+            "pays_dont_le_total_differe_de_la_somme": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 0
+            },
+            "ecarts_regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "string"
+                  },
+                  "montant": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "autre_source": {
+                    "type": "string"
+                  },
+                  "autre_montant": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart": {
+                    "type": "number"
+                  },
+                  "lecture": {
+                    "type": "string"
+                  },
+                  "disp": {
+                    "type": "string"
+                  },
+                  "champ": {
+                    "type": "string"
+                  },
+                  "objet": {
+                    "type": "string"
+                  },
+                  "unite": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string"
+                  },
+                  "annee": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "autre_montant",
+                  "autre_source",
+                  "ecart",
+                  "montant",
+                  "source"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "ecarts_regions",
+            "lignes_pays",
+            "pays_dont_le_total_differe_de_la_somme",
+            "regions_plus_hors_region_egal_total_general"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "annees",
+        "annexe",
+        "controles",
+        "hors_region",
+        "pages_pdf",
+        "pays",
+        "regions",
+        "total_general",
+        "unite"
+      ],
+      "additionalProperties": false
+    },
+    "licences": {
+      "type": "object",
+      "properties": {
+        "annexe": {
+          "type": "integer"
+        },
+        "unite": {
+          "type": "string"
+        },
+        "annees": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "items": {
+            "type": "integer"
+          }
+        },
+        "pages_pdf": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 1
+        },
+        "pays": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pays": {
+                "type": "string",
+                "minLength": 3
+              },
+              "region": {
+                "type": "string",
+                "minLength": 4
+              },
+              "valeurs": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "minItems": 10
+              },
+              "total": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "required": [
+              "pays",
+              "region",
+              "total",
+              "valeurs"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 100
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string"
+              },
+              "pays": {
+                "type": "integer"
+              },
+              "valeurs": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "minItems": 10
+              },
+              "total": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "required": [
+              "pays",
+              "region",
+              "total",
+              "valeurs"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 10
+        },
+        "hors_region": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pays": {
+                "type": "string"
+              },
+              "region": {
+                "type": "null"
+              },
+              "valeurs": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "minItems": 10
+              },
+              "total": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "required": [
+              "pays",
+              "region",
+              "total",
+              "valeurs"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "total_general": {
+          "type": "object",
+          "properties": {
+            "valeurs": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "minItems": 10
+            },
+            "total": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "required": [
+            "total",
+            "valeurs"
+          ],
+          "additionalProperties": false
+        },
+        "controles": {
+          "type": "object",
+          "properties": {
+            "lignes_pays": {
+              "type": "integer"
+            },
+            "regions_plus_hors_region_egal_total_general": {
+              "const": true
+            },
+            "pays_dont_le_total_differe_de_la_somme": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 0
+            },
+            "ecarts_regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "string"
+                  },
+                  "montant": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "autre_source": {
+                    "type": "string"
+                  },
+                  "autre_montant": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart": {
+                    "type": "number"
+                  },
+                  "lecture": {
+                    "type": "string"
+                  },
+                  "disp": {
+                    "type": "string"
+                  },
+                  "champ": {
+                    "type": "string"
+                  },
+                  "objet": {
+                    "type": "string"
+                  },
+                  "unite": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string"
+                  },
+                  "annee": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "autre_montant",
+                  "autre_source",
+                  "ecart",
+                  "montant",
+                  "source"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "ecarts_regions",
+            "lignes_pays",
+            "pays_dont_le_total_differe_de_la_somme",
+            "regions_plus_hors_region_egal_total_general"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "annees",
+        "annexe",
+        "controles",
+        "hors_region",
+        "pages_pdf",
+        "pays",
+        "regions",
+        "total_general",
+        "unite"
+      ],
+      "additionalProperties": false
+    },
+    "licences_par_categorie": {
+      "type": "object",
+      "properties": {
+        "annexe": {
+          "type": "integer"
+        },
+        "annee": {
+          "type": "integer"
+        },
+        "page_pdf": {
+          "type": "integer"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "categorie": {
+                "type": "string",
+                "pattern": "^(ML[0-9]{1,2}|AMA[1-4])$"
+              },
+              "licences": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "montant_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "categorie",
+              "licences",
+              "montant_eur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 22
+        },
+        "total": {
+          "type": "object",
+          "properties": {
+            "licences": {
+              "type": "integer"
+            },
+            "montant_eur": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "licences",
+            "montant_eur"
+          ],
+          "additionalProperties": false
+        },
+        "controle": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "annee",
+        "annexe",
+        "categories",
+        "controle",
+        "page_pdf",
+        "total"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "avertissement",
+    "date_sources",
+    "licences",
+    "licences_par_categorie",
+    "livraisons",
+    "millesime",
+    "notes",
+    "ordre",
+    "prises_de_commandes",
+    "source",
+    "unite"
+  ],
+  "additionalProperties": false
+}

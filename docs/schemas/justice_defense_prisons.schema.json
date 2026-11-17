@@ -1,0 +1,652 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/justice_defense_prisons.schema.json",
+  "title": "site/data/justice_defense/prisons.json : capacité, personnes détenues et densité par établissement ou quartier (agrégats, aucun individu), série nationale mensuelle, montant calculé par le site",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "date_reference": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-01$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "definitions": {
+      "type": "object",
+      "properties": {
+        "capacite_operationnelle": {
+          "type": "string"
+        },
+        "detenus": {
+          "type": "string"
+        },
+        "quartier": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "capacite_operationnelle",
+        "detenus",
+        "quartier"
+      ],
+      "additionalProperties": false
+    },
+    "ordre": {
+      "type": "object",
+      "properties": {
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "regle": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cles",
+        "regle"
+      ],
+      "additionalProperties": false
+    },
+    "national": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-01$"
+        },
+        "capacite_norme": {
+          "type": "integer"
+        },
+        "capacite_operationnelle": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "detenus": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "densite_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "capacite_norme",
+        "capacite_operationnelle",
+        "date",
+        "densite_pct",
+        "detenus"
+      ],
+      "additionalProperties": false
+    },
+    "etablissements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "etablissement": {
+            "type": "string",
+            "minLength": 2
+          },
+          "quartier": {
+            "type": "string"
+          },
+          "disp": {
+            "type": "string",
+            "pattern": "^Direction"
+          },
+          "capacite_norme": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "capacite_operationnelle": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "detenus": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "densite_pct": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "historique_1er_janvier": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-01-01$"
+                },
+                "capacite_operationnelle": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "detenus": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "densite_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "capacite_operationnelle",
+                "date",
+                "densite_pct",
+                "detenus"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0
+          },
+          "montant_calcule_eur": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "capacite_norme",
+          "capacite_operationnelle",
+          "densite_pct",
+          "detenus",
+          "disp",
+          "etablissement",
+          "historique_1er_janvier",
+          "montant_calcule_eur",
+          "quartier"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 100
+    },
+    "controles": {
+      "type": "object",
+      "properties": {
+        "lignes": {
+          "type": "integer"
+        },
+        "somme_detenus_lignes": {
+          "type": "integer"
+        },
+        "detenus_total_national": {
+          "type": "integer"
+        },
+        "ecarts_totaux_directions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string"
+              },
+              "montant": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "autre_source": {
+                "type": "string"
+              },
+              "autre_montant": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "ecart": {
+                "type": "number"
+              },
+              "lecture": {
+                "type": "string"
+              },
+              "disp": {
+                "type": "string"
+              },
+              "champ": {
+                "type": "string"
+              },
+              "objet": {
+                "type": "string"
+              },
+              "unite": {
+                "type": "string"
+              },
+              "region": {
+                "type": "string"
+              },
+              "annee": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "autre_montant",
+              "autre_source",
+              "ecart",
+              "montant",
+              "source"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "somme_montants_calcules_eur": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "detenus_total_national",
+        "ecarts_totaux_directions",
+        "lignes",
+        "somme_detenus_lignes",
+        "somme_montants_calcules_eur"
+      ],
+      "additionalProperties": false
+    },
+    "montant_calcule": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "statut": {
+              "const": "calculé"
+            },
+            "annee": {
+              "type": "integer"
+            },
+            "producteur": {
+              "type": "string"
+            },
+            "depense_programme_107_eur": {
+              "type": "number",
+              "minimum": 1
+            },
+            "source_depense": {
+              "type": "string",
+              "pattern": "realisations/107.json"
+            },
+            "mois_utilises": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}-01$"
+              },
+              "minItems": 6
+            },
+            "mois_absents": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}-01$"
+              },
+              "minItems": 0
+            },
+            "detenus_moyens": {
+              "type": "number"
+            },
+            "jours": {
+              "enum": [
+                365,
+                366
+              ]
+            },
+            "journees_estimees": {
+              "type": "integer"
+            },
+            "montant_par_journee_eur": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "formule": {
+              "type": "string",
+              "minLength": 80
+            },
+            "perimetre": {
+              "type": "string"
+            },
+            "methode": {
+              "type": "string"
+            },
+            "indicateur_publie": {
+              "type": "null"
+            },
+            "limites": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 40
+              },
+              "minItems": 3
+            }
+          },
+          "required": [
+            "annee",
+            "depense_programme_107_eur",
+            "detenus_moyens",
+            "formule",
+            "indicateur_publie",
+            "journees_estimees",
+            "jours",
+            "limites",
+            "methode",
+            "mois_absents",
+            "mois_utilises",
+            "montant_par_journee_eur",
+            "perimetre",
+            "producteur",
+            "source_depense",
+            "statut"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "serie_nationale": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-01$"
+          },
+          "capacite_norme": {
+            "type": "integer"
+          },
+          "capacite_operationnelle": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "detenus": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "densite_pct": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "metropole": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "capacite_norme": {
+                    "type": "integer"
+                  },
+                  "capacite_operationnelle": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "detenus": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "densite_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "capacite_norme",
+                  "capacite_operationnelle",
+                  "densite_pct",
+                  "detenus"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "outre_mer": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "capacite_norme": {
+                    "type": "integer"
+                  },
+                  "capacite_operationnelle": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "detenus": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "densite_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "capacite_norme",
+                  "capacite_operationnelle",
+                  "densite_pct",
+                  "detenus"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "capacite_norme",
+          "capacite_operationnelle",
+          "date",
+          "densite_pct",
+          "detenus",
+          "metropole",
+          "outre_mer"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 50
+    },
+    "couverture": {
+      "type": "object",
+      "properties": {
+        "classeurs_lus": {
+          "type": "integer"
+        },
+        "premiere_date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-01$"
+        },
+        "derniere_date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-01$"
+        },
+        "dates_par_etablissement": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-01$"
+          },
+          "minItems": 1
+        },
+        "mois_absents": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-01$"
+          },
+          "minItems": 0
+        },
+        "doublons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}-01$"
+              },
+              "fichier_retenu": {
+                "type": "string"
+              },
+              "fichier_ecarte": {
+                "type": "string"
+              },
+              "identiques": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "date",
+              "fichier_ecarte",
+              "fichier_retenu",
+              "identiques"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "illisibles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "fichier": {
+                "type": "string"
+              },
+              "motif": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "fichier",
+              "motif"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "fichiers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}-01$"
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^https://"
+              }
+            },
+            "required": [
+              "date",
+              "url"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "classeurs_lus",
+        "dates_par_etablissement",
+        "derniere_date",
+        "doublons",
+        "fichiers",
+        "illisibles",
+        "mois_absents",
+        "premiere_date"
+      ],
+      "additionalProperties": false
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 40
+      },
+      "minItems": 2
+    }
+  },
+  "required": [
+    "avertissement",
+    "controles",
+    "couverture",
+    "date_reference",
+    "date_sources",
+    "definitions",
+    "etablissements",
+    "limites",
+    "millesime",
+    "montant_calcule",
+    "national",
+    "ordre",
+    "serie_nationale",
+    "source",
+    "unite"
+  ],
+  "additionalProperties": false
+}
