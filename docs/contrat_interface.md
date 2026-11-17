@@ -84,6 +84,7 @@ Vérification : `python docs/valider_contrat.py` (installe `jsonschema` si absen
 | `prestations/index.json` | `prestations_index.schema.json` | prestations versées aux ménages : financeur et liens vers les arbres, totaux par source, écarts entre sources, couverture départementale, sources, recherche préalable | € | 2019 à 2025 (CNAF, Unédic), 2020 à 2024 (DREES) | `prestations.py` | existant |
 | `prestations/nationales.json` | `prestations_nationales.schema.json` | par prestation et par année : montant (chaque source), bénéficiaires, montant moyen, pensions par régime | €, foyers | idem | `prestations.py` | existant |
 | `prestations/departements/<annee>.json` | `prestations_departement.schema.json` | par département : foyers, montant annuel, montant moyen (CAF) ; allocataires de l'Aspa (DREES) ; financeur du RSA | foyers, € | 2019 à 2025 | `prestations.py` | existant |
+| `territoires/index.json`, `territoires/<dep>.json` | `territoires_index.schema.json`, `territoires_departement.schema.json` | projets DETR/DSIL/DPV/DSID par bénéficiaire, inventaire SRU par commune, aide sociale départementale (DREES) par poste, écarts entre sources | €, € par habitant, % | projets 2018-2025, SRU 2023-2026, aide sociale 1999-2024 | `territoires.py` | existant |
 | `subventions/index.json`, `subventions/attribuants/<source>.json`, `subventions/annees.json`, `subventions/departements.json`, `subventions/beneficiaires.json`, `subventions/programmes.json` | `subventions_*.schema.json` | subventions au format des données essentielles des conventions (ADEME, Fonds vert, agence de l'eau Artois-Picardie, Culture, politique de la ville, FIR ARS Pays de la Loire, presse) : par source, année, département, programme LOLF ; bénéficiaires nommés (personnes morales), part agrégée | € | 2016 à 2026 selon la source | `subventions.py` | existant |
 | `ue/contribution.json` | `ue_contribution.schema.json` | PSR-UE et son usage : rubriques et pôles du CFP 2021-2027, NextGenerationEU, engagements FTS 2024 par programme | Md€ | Exécution 2024 (PSR) ; CFP 2021-2027 | `ue.py` | existant |
 | `ue/retours.json` | `ue_retours.schema.json` | dépenses de l'UE en France par année et rubrique, solde net (comptable, opérationnel) | Md€ | 2021 à 2025 | `ue.py` | existant |
@@ -631,6 +632,27 @@ data/lake/secu/ (CNAF dep_tr_nat, s_ben_nat, s_ben_dep ; DREES comptes de la pro
 | départements | `colonnes` = `foyers_decembre`, `montant_annuel_eur`, `montant_moyen_eur` ; `financeur_rsa` = `departement`, `etat` (RSA recentralisé : 973 et 976 depuis 2019, 974 depuis 2020, 93 et 66 depuis 2022, 09 depuis décembre 2022) ou `departement_puis_etat` ; `hors_departements` : codes CNAF 978, 99, XX |
 
 Règles propres : une valeur masquée ou absente à la source reste telle quelle (chaîne de la source ou null), jamais 0 ; une année incomplète à la source (Mayotte, décembre 2020 à 2024) a un montant annuel null. Non couverts par département : ARE, pensions, indemnités journalières (`couverture_departementale.non_couvert`, `sources_inaccessibles`).
+
+### 2.25 Territoires : `territoires/` (pipeline/territoires.py)
+
+Complète « Près de chez moi » (2.15) par département : chaque projet financé par les dotations de soutien à l'investissement local (DETR, DSIL, DPV, DSID, programme 119, exercices 2018 à 2025), l'inventaire SRU par commune (éditions 2023 à 2026) et l'aide sociale départementale de la DREES (1999 à 2024). Commandes : `python pipeline/territoires.py collecter` (réseau, par `collecte/collecte.py` ; sources déclarées dans `collecte/catalogue.json`), `python pipeline/territoires.py produire [--sortie DOSSIER]` (sans réseau ; lit `site/data/local/` en lecture seule). Tests : `pytest tests/test_territoires.py`.
+
+```
+data/lake/collectivites/ (DGCL projets 2018-2025 ; inventaire SRU ; DREES 376 séries longues, APA et PCH)
+data/lake/secu/drees__619_indicateurs-financiers.parquet (ISD)      site/data/local/ (geo, population OFGL, dotations)
+     └─> pipeline/territoires.py ─> site/data/territoires/index.json, <dep>.json (un par département de local/geo, < 5 Mo)
+```
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `territoires/index.json` | `territoires_index` | couverture par source, totaux (projets par exercice et dispositif ; totaux estimés de la DREES), écarts nationaux, contrôle croisé avec `local/dotations/communes`, postes et mesures, méthode, limites, sources (verdict, licence, date de collecte), sources inaccessibles, recherche préalable |
+| `territoires/<dep>.json` | `territoires_departement` | `investissement_etat` (bénéficiaires, projets `[exercice, dispositif, intitule, cout_ht_eur, subvention_eur, taux]`, totaux, `par_commune`, non nommés agrégés, anomalies publiées), `sru` (par commune et édition), `aide_sociale` (par collectivité : postes brut/net en euros et euros par habitant, ISD, APA à domicile, PCH), `ecarts`, `liens` vers `local/` |
+
+Jointure : communes par code INSEE (mêmes clés que `local/geo/<dep>.json`), intercommunalités et autres bénéficiaires par SIREN, départements par le code de `local/geo`. `par_commune.<insee>` donne les bénéficiaires qui concernent la commune (elle-même, son EPCI) et le fichier où les lire. Alsace et Corse : la collectivité unique (`6AE`, `20R`) figure dans les fichiers des deux départements avec son `perimetre`, à ne pas additionner ; Rhône : `69` (territoire), `69D`, `69M`.
+
+DETR/DSIL/DPV/DSID par projet (annoncés en 2.15) : la source est le jeu DGCL déclaré dans `collecte/catalogue.json` ; `local/dotations/communes` garde les 15 projets les plus élevés par commune et par exercice, la liste complète est ici et ses totaux sont comparés à ceux de `local/` (`controle_local`).
+
+Règles propres : une valeur absente ou masquée à la source (vide, « ND », « NR », « NA », « Pas d'inventaire », « >25% ») reste null, la marque est gardée (`marque_source`, `taux_sru_texte`, `lls_texte`), jamais 0 ; un 0 publié reste 0 (allocation du RSA recentralisé) ; « - € » dans la colonne du prélèvement SRU (format comptable) vaut 0 € et la chaîne publiée est gardée dans `prelevement_texte`. Bénéficiaire nommé seulement s'il est une commune ou une intercommunalité du COG, un département, une collectivité d'un type public publié par la DGCL ou une personne morale SIRENE (catégorie 2xxx à 9xxx) ; le reste est agrégé sans nom ni intitulé (`exclus_personnes_physiques_ou_non_identifies`) ; intitulé null s'il peut contenir un nom de personne (règle de `local.py`). Deux sources ne sont jamais additionnées : `ecarts[]` publie `source`/`montant` contre `autre_source`/`autre_montant`, `ecart`, `ecart_pct`, `lecture` (euros par habitant calculés contre ISD ; APA à domicile brute contre dépenses couvertes ; somme des collectivités contre total estimé de la DREES). Ordre écrit dans `ordre`. Dates par `pipeline/reproductible.py`.
 
 ### 2.26 Subventions par convention : `subventions/` (pipeline/subventions.py)
 

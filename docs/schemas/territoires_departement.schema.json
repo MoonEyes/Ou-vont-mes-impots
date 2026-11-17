@@ -1,0 +1,740 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/territoires_departement.schema.json",
+ "title": "site/data/territoires/<dep>.json : projets DETR/DSIL/DPV/DSID, inventaire SRU, aide sociale départementale d'un département (pipeline/territoires.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "unite",
+  "date_sources",
+  "departement",
+  "liens",
+  "ecarts"
+ ],
+ "$defs": {
+  "ecart": {
+   "type": "object",
+   "required": [
+    "source",
+    "montant",
+    "autre_source",
+    "autre_montant",
+    "ecart",
+    "lecture"
+   ],
+   "properties": {
+    "source": {
+     "type": "string"
+    },
+    "autre_source": {
+     "type": "string"
+    },
+    "montant": {
+     "type": "number"
+    },
+    "autre_montant": {
+     "type": "number"
+    },
+    "ecart": {
+     "type": "number"
+    },
+    "ecart_pct": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "lecture": {
+     "type": "string",
+     "minLength": 10
+    },
+    "annee": {
+     "type": "integer"
+    },
+    "grandeur": {
+     "enum": [
+      "eur",
+      "eur_par_habitant"
+     ]
+    },
+    "collectivite": {
+     "type": "string"
+    },
+    "departement": {
+     "type": "string"
+    },
+    "poste": {
+     "type": "string"
+    },
+    "mesure": {
+     "type": "string"
+    }
+   },
+   "additionalProperties": false
+  },
+  "projet": {
+   "type": "array",
+   "prefixItems": [
+    {
+     "type": "integer",
+     "minimum": 2000
+    },
+    {
+     "type": "string"
+    },
+    {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    {
+     "type": [
+      "number",
+      "null"
+     ]
+    }
+   ],
+   "minItems": 6,
+   "maxItems": 6,
+   "description": "[exercice, dispositif, intitulé (null si un nom de personne est possible), coût HT, subvention, taux publié]"
+  },
+  "beneficiaire": {
+   "type": "object",
+   "required": [
+    "id",
+    "siren",
+    "insee",
+    "type",
+    "nom",
+    "projets",
+    "totaux",
+    "subvention_totale_eur"
+   ],
+   "properties": {
+    "id": {
+     "type": "string"
+    },
+    "siren": {
+     "oneOf": [
+      {
+       "$ref": "commun.schema.json#/$defs/siren"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "insee": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "pattern": "^[0-9][0-9AB][0-9]{3}$"
+    },
+    "type": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "nom": {
+     "type": "string",
+     "minLength": 1
+    },
+    "projets": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/projet"
+     },
+     "minItems": 1
+    },
+    "totaux": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^[0-9]{4}$"
+     },
+     "additionalProperties": {
+      "type": "object",
+      "required": [
+       "projets",
+       "subvention_eur",
+       "cout_ht_eur"
+      ],
+      "properties": {
+       "projets": {
+        "type": "integer"
+       },
+       "subvention_eur": {
+        "type": "integer"
+       },
+       "cout_ht_eur": {
+        "type": "integer"
+       }
+      }
+     }
+    },
+    "subvention_totale_eur": {
+     "type": "integer"
+    },
+    "lien": {
+     "type": "object",
+     "required": [
+      "fichier",
+      "cle"
+     ],
+     "properties": {
+      "fichier": {
+       "type": "string",
+       "pattern": "^local/geo/"
+      },
+      "cle": {
+       "type": "string"
+      }
+     }
+    }
+   },
+   "additionalProperties": false,
+   "not": {
+    "anyOf": [
+     {
+      "required": [
+       "prenom"
+      ]
+     },
+     {
+      "required": [
+       "adresse"
+      ]
+     }
+    ]
+   }
+  },
+  "edition_sru": {
+   "type": "object",
+   "required": [
+    "population",
+    "lls",
+    "taux_sru",
+    "deficitaire",
+    "carencee",
+    "exemptee"
+   ],
+   "properties": {
+    "population": {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    "epci": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "lls": {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    "lls_texte": {
+     "type": "string"
+    },
+    "taux_sru": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "taux_sru_texte": {
+     "type": "string"
+    },
+    "taux_cible": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "deficitaire": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "carencee": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "exemptee": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "prelevement_net_eur": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "prelevement_texte": {
+     "type": "string"
+    }
+   },
+   "additionalProperties": false
+  },
+  "poste": {
+   "type": "object",
+   "propertyNames": {
+    "enum": [
+     "brute",
+     "nette",
+     "apres_recuperations"
+    ]
+   },
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "eur",
+     "eur_hab"
+    ],
+    "properties": {
+     "eur": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^[0-9]{4}$"
+      },
+      "additionalProperties": {
+       "type": [
+        "integer",
+        "null"
+       ]
+      }
+     },
+     "eur_hab": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^[0-9]{4}$"
+      },
+      "additionalProperties": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     }
+    },
+    "additionalProperties": false
+   }
+  },
+  "collectivite": {
+   "type": "object",
+   "required": [
+    "code",
+    "nom",
+    "postes",
+    "population_ofgl",
+    "isd",
+    "apa_domicile",
+    "pch"
+   ],
+   "properties": {
+    "code": {
+     "type": "string"
+    },
+    "nom": {
+     "type": "string"
+    },
+    "perimetre": {
+     "type": "string"
+    },
+    "note": {
+     "type": "string"
+    },
+    "postes": {
+     "type": "object",
+     "additionalProperties": {
+      "$ref": "#/$defs/poste"
+     }
+    },
+    "population_ofgl": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^[0-9]{4}$"
+     },
+     "additionalProperties": {
+      "type": "integer"
+     }
+    },
+    "isd": {
+     "type": "object",
+     "additionalProperties": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^[0-9]{4}$"
+      },
+      "additionalProperties": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     }
+    },
+    "apa_domicile": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^[0-9]{4}$"
+     },
+     "additionalProperties": {
+      "type": "object",
+      "required": [
+       "beneficiaires_decembre",
+       "depenses_couvertes_eur",
+       "eur_par_beneficiaire"
+      ],
+      "properties": {
+       "beneficiaires_decembre": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "depenses_couvertes_eur": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "eur_par_beneficiaire": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "marque_source": {
+        "type": "string"
+       }
+      },
+      "additionalProperties": false
+     }
+    },
+    "pch": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^[0-9]{4}$"
+     },
+     "additionalProperties": {
+      "type": "object",
+      "required": [
+       "personnes_payees_decembre",
+       "montant_decembre_eur",
+       "eur_par_personne_decembre"
+      ],
+      "properties": {
+       "personnes_payees_decembre": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "montant_decembre_eur": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "eur_par_personne_decembre": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "marque_source": {
+        "type": "string"
+       }
+      },
+      "additionalProperties": false
+     }
+    }
+   },
+   "additionalProperties": false
+  }
+ },
+ "properties": {
+  "unite": {
+   "type": "string"
+  },
+  "date_sources": {
+   "type": "string",
+   "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+  },
+  "departement": {
+   "type": "object",
+   "required": [
+    "code",
+    "nom"
+   ],
+   "properties": {
+    "code": {
+     "type": "string",
+     "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+    },
+    "nom": {
+     "type": "string"
+    }
+   }
+  },
+  "liens": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "string",
+    "pattern": "^local/.+\\.json$"
+   }
+  },
+  "investissement_etat": {
+   "type": "object",
+   "required": [
+    "annees",
+    "format_projet",
+    "ordre",
+    "beneficiaires",
+    "par_commune",
+    "totaux",
+    "exclus_personnes_physiques_ou_non_identifies",
+    "anomalies"
+   ],
+   "properties": {
+    "annees": {
+     "type": "array",
+     "items": {
+      "type": "integer"
+     }
+    },
+    "format_projet": {
+     "const": [
+      "exercice",
+      "dispositif",
+      "intitule",
+      "cout_ht_eur",
+      "subvention_eur",
+      "taux"
+     ]
+    },
+    "ordre": {
+     "type": "string"
+    },
+    "format_par_commune": {
+     "type": "string"
+    },
+    "beneficiaires": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/beneficiaire"
+     }
+    },
+    "par_commune": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^[0-9][0-9AB][0-9]{3}$"
+     },
+     "additionalProperties": {
+      "type": "array",
+      "items": {
+       "type": "array",
+       "prefixItems": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "string",
+         "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+        }
+       ],
+       "minItems": 2,
+       "maxItems": 2
+      }
+     }
+    },
+    "totaux": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^[0-9]{4}$"
+     },
+     "additionalProperties": {
+      "type": "object",
+      "additionalProperties": {
+       "type": "object",
+       "required": [
+        "projets",
+        "subvention_eur"
+       ],
+       "properties": {
+        "projets": {
+         "type": "integer"
+        },
+        "subvention_eur": {
+         "type": [
+          "integer",
+          "null"
+         ]
+        }
+       }
+      }
+     }
+    },
+    "exclus_personnes_physiques_ou_non_identifies": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^[0-9]{4}$"
+     },
+     "additionalProperties": {
+      "type": "object",
+      "required": [
+       "projets",
+       "subvention_eur"
+      ],
+      "properties": {
+       "projets": {
+        "type": "integer"
+       },
+       "subvention_eur": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "cout_ht_eur": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       }
+      },
+      "additionalProperties": false
+     }
+    },
+    "anomalies": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "beneficiaire",
+       "exercice",
+       "constat"
+      ]
+     }
+    }
+   },
+   "additionalProperties": false
+  },
+  "sru": {
+   "type": "object",
+   "required": [
+    "editions",
+    "communes"
+   ],
+   "properties": {
+    "editions": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "edition",
+       "inventaire_au"
+      ],
+      "properties": {
+       "edition": {
+        "type": "integer"
+       },
+       "inventaire_au": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "prelevement_annee": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       }
+      }
+     }
+    },
+    "communes": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^[0-9][0-9AB][0-9]{3}$"
+     },
+     "additionalProperties": {
+      "type": "object",
+      "required": [
+       "nom",
+       "editions"
+      ],
+      "properties": {
+       "nom": {
+        "type": "string"
+       },
+       "editions": {
+        "type": "object",
+        "propertyNames": {
+         "pattern": "^[0-9]{4}$"
+        },
+        "additionalProperties": {
+         "$ref": "#/$defs/edition_sru"
+        }
+       }
+      },
+      "additionalProperties": false
+     }
+    }
+   },
+   "additionalProperties": false
+  },
+  "aide_sociale": {
+   "type": "object",
+   "required": [
+    "collectivites"
+   ],
+   "properties": {
+    "collectivites": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/collectivite"
+     }
+    }
+   },
+   "additionalProperties": false
+  },
+  "ecarts": {
+   "type": "array",
+   "items": {
+    "$ref": "#/$defs/ecart"
+   }
+  }
+ }
+}

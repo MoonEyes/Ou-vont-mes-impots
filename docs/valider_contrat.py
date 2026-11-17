@@ -146,6 +146,8 @@ FICHIERS = [
     ("local_decisions_collectivite.schema.json", "local/decisions/*/index.json", "existant"),
     ("local_decisions_annee.schema.json", "local/decisions/*/[0-9]*.json", "existant"),
     ("local_decisions_annee.schema.json", "local/decisions/*/inconnue*.json", "existant"),
+    ("territoires_index.schema.json", "territoires/index.json", "existant"),   # territoires.py (contrat 2.25)
+    ("territoires_departement.schema.json", "territoires/[0-9]*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

@@ -1,0 +1,153 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/territoires_index.schema.json",
+ "title": "site/data/territoires/index.json : couverture, totaux, écarts entre sources, sources et recherche préalable (pipeline/territoires.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "date_sources",
+  "departements",
+  "couverture",
+  "postes",
+  "mesures",
+  "totaux",
+  "ecarts",
+  "controle_local",
+  "methode",
+  "limites",
+  "regle",
+  "sources",
+  "sources_inaccessibles",
+  "recherche_publique"
+ ],
+ "properties": {
+  "departements": {
+   "type": "array",
+   "minItems": 96,
+   "items": {
+    "type": "object",
+    "required": [
+     "code",
+     "nom",
+     "fichier"
+    ],
+    "properties": {
+     "code": {
+      "type": "string",
+      "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+     },
+     "fichier": {
+      "type": "string",
+      "pattern": "^territoires/.+\\.json$"
+     }
+    }
+   }
+  },
+  "couverture": {
+   "type": "object",
+   "required": [
+    "investissement_etat",
+    "sru",
+    "aide_sociale"
+   ]
+  },
+  "postes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "nom",
+     "mesures"
+    ]
+   }
+  },
+  "mesures": {
+   "type": "object"
+  },
+  "totaux": {
+   "type": "object",
+   "required": [
+    "investissement_etat",
+    "aide_sociale_drees"
+   ]
+  },
+  "ecarts": {
+   "type": "array",
+   "items": {
+    "$ref": "territoires_departement.schema.json#/$defs/ecart"
+   }
+  },
+  "controle_local": {
+   "type": "object",
+   "required": [
+    "communes_comparees",
+    "egales",
+    "differences",
+    "lecture"
+   ]
+  },
+  "methode": {
+   "type": "object"
+  },
+  "limites": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "regle": {
+   "type": "string"
+  },
+  "sources": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "titre",
+     "licence",
+     "verdict"
+    ]
+   }
+  },
+  "sources_inaccessibles": {
+   "type": "array"
+  },
+  "recherche_publique": {
+   "type": "object",
+   "required": [
+    "date",
+    "trouvailles"
+   ],
+   "properties": {
+    "trouvailles": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "nom",
+       "verdict",
+       "licence",
+       "derniere_modification"
+      ],
+      "properties": {
+       "verdict": {
+        "enum": [
+         "réutilisable tel quel",
+         "à adapter",
+         "inspiration seulement"
+        ]
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}
