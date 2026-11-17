@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/marches_departements.schema.json",
+  "title": "site/data/marches/departements.json : marchés retenus par département de l'acheteur et par année, liens vers les fichiers par département (pipeline/marches.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "type": "string",
+      "pattern": "^euros HT"
+    },
+    "collecte_le": {
+      "type": "string",
+      "format": "date"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 2019,
+        "maximum": 2100
+      },
+      "minItems": 1
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 1
+    },
+    "departements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "departement": {
+            "type": "string",
+            "pattern": "^([0-9]{2}|2[AB]|9[78][0-9])$"
+          },
+          "nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "marches": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "acheteurs": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total_eur": {
+            "type": "number"
+          },
+          "montants_eur": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "minItems": 1
+          },
+          "fichiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^marches/[a-z0-9_/AB]+\\.json$"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "departement",
+          "nom",
+          "marches",
+          "acheteurs",
+          "total_eur",
+          "montants_eur",
+          "fichiers"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "non_localise": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "marches": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "acheteurs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "total_eur": {
+              "type": "number"
+            },
+            "montants_eur": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "minItems": 1
+            },
+            "par_categorie": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "categorie": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "marches": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "montant_eur": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "categorie",
+                  "marches",
+                  "montant_eur"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "marches",
+            "acheteurs",
+            "total_eur",
+            "montants_eur",
+            "par_categorie",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "collecte_le",
+    "annees",
+    "note",
+    "ordre",
+    "departements",
+    "non_localise"
+  ],
+  "additionalProperties": false
+}

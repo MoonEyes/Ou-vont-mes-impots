@@ -161,6 +161,12 @@ FICHIERS = [
     ("numerique_etat_ditp_itn7_dep.schema.json", "numerique_etat/fonds/ditp_itn7/*.json", "existant"),
     ("numerique_etat_ftap.schema.json", "numerique_etat/fonds/ftap.json", "existant"),
     ("numerique_etat_fast.schema.json", "numerique_etat/fonds/fast.json", "existant"),
+    # marchés publics de tous les acheteurs, DECP consolidées 2019-2025 (pipeline/marches.py)
+    ("marches_index.schema.json", "marches/index.json", "existant"),
+    ("marches_annees.schema.json", "marches/annees.json", "existant"),
+    ("marches_categories.schema.json", "marches/categories.json", "existant"),
+    ("marches_departements.schema.json", "marches/departements.json", "existant"),
+    ("marches_departement.schema.json", "marches/departements/*.json", "existant"),
     # aide au développement : APD déclarée, AFD, OCDE, Expertise France, Proparco (pipeline/aide_developpement.py)
     ("aide_developpement_index.schema.json", "aide_developpement/index.json", "existant"),
     ("aide_developpement_apd_declaree.schema.json", "aide_developpement/apd_declaree.json", "existant"),

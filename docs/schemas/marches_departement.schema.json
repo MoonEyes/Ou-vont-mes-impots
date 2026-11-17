@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/marches_departement.schema.json",
+  "title": "site/data/marches/departements/<code>.json : acheteurs (SIREN) d'un département, montants par année et premiers titulaires nommés (personnes morales seulement) (pipeline/marches.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "type": "string",
+      "pattern": "^euros HT"
+    },
+    "collecte_le": {
+      "type": "string",
+      "format": "date"
+    },
+    "departement": {
+      "type": "string",
+      "pattern": "^([0-9]{2}|2[AB]|9[78][0-9])$"
+    },
+    "nom": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 2019,
+        "maximum": 2100
+      },
+      "minItems": 1
+    },
+    "marches": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "acheteurs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "siren": {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          "denomination": {
+            "type": "string",
+            "minLength": 1
+          },
+          "categorie_juridique": {
+            "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+          },
+          "categorie": {
+            "type": "string",
+            "minLength": 1
+          },
+          "marches": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total_eur": {
+            "type": "number"
+          },
+          "montants_eur": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "minItems": 1
+          },
+          "titulaires": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "siren": {
+                  "$ref": "commun.schema.json#/$defs/siren"
+                },
+                "denomination": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "categorie_juridique": {
+                  "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+                },
+                "marches": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "montant_eur": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "siren",
+                "denomination",
+                "categorie_juridique",
+                "marches",
+                "montant_eur"
+              ],
+              "additionalProperties": false,
+              "propertyNames": {
+                "not": {
+                  "pattern": "(?i)pr[eé]nom|adresse|courriel|telephone|dirigeant"
+                }
+              }
+            },
+            "maxItems": 10
+          },
+          "autres_titulaires": {
+            "type": "object",
+            "properties": {
+              "nombre": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "montant_eur": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "nombre",
+              "montant_eur"
+            ],
+            "additionalProperties": false
+          },
+          "agrege_confidentialite": {
+            "type": "object",
+            "properties": {
+              "montant_eur": {
+                "type": "number"
+              },
+              "lignes": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "montant_eur",
+              "lignes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "siren",
+          "denomination",
+          "categorie_juridique",
+          "categorie",
+          "marches",
+          "total_eur",
+          "montants_eur",
+          "titulaires",
+          "autres_titulaires",
+          "agrege_confidentialite"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|adresse|courriel|telephone|dirigeant"
+          }
+        }
+      }
+    },
+    "total_eur": {
+      "type": "number"
+    },
+    "montants_eur": {
+      "type": "array",
+      "items": {
+        "type": [
+          "number",
+          "null"
+        ]
+      },
+      "minItems": 1
+    },
+    "par_categorie": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "categorie": {
+            "type": "string",
+            "minLength": 1
+          },
+          "marches": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "montant_eur": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "categorie",
+          "marches",
+          "montant_eur"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "acheteurs_non_nommes": {
+      "type": "object",
+      "properties": {
+        "nombre": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "marches": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "montant_eur": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "nombre",
+        "marches",
+        "montant_eur"
+      ],
+      "additionalProperties": false
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 1
+    },
+    "acheteurs_total": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "partie": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "parties": {
+      "type": "integer",
+      "minimum": 2
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "collecte_le",
+    "departement",
+    "nom",
+    "annees",
+    "marches",
+    "acheteurs",
+    "total_eur",
+    "montants_eur",
+    "par_categorie",
+    "acheteurs_non_nommes",
+    "ordre",
+    "acheteurs_total"
+  ],
+  "additionalProperties": false
+}

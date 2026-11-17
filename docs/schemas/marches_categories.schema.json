@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/marches_categories.schema.json",
+  "title": "site/data/marches/categories.json : marchés retenus par catégorie d'acheteur et par année (pipeline/marches.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "type": "string",
+      "pattern": "^euros HT"
+    },
+    "collecte_le": {
+      "type": "string",
+      "format": "date"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 2019,
+        "maximum": 2100
+      },
+      "minItems": 1
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 1
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "categorie": {
+            "type": "string",
+            "minLength": 1
+          },
+          "origine": {
+            "enum": [
+              "decp",
+              "sirene"
+            ]
+          },
+          "definition": {
+            "type": "string",
+            "minLength": 1
+          },
+          "acheteurs": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "marches": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total_eur": {
+            "type": "number"
+          },
+          "par_annee": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "annee": {
+                  "type": "integer",
+                  "minimum": 2019,
+                  "maximum": 2100
+                },
+                "marches": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "montant_eur": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annee",
+                "marches",
+                "montant_eur"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "categorie",
+          "origine",
+          "definition",
+          "acheteurs",
+          "marches",
+          "total_eur",
+          "par_annee"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "collecte_le",
+    "annees",
+    "note",
+    "ordre",
+    "categories"
+  ],
+  "additionalProperties": false
+}

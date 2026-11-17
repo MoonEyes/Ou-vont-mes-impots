@@ -3122,6 +3122,17 @@
    "producteur": "Direction interministerielle de la transformation publique"
   },
   {
+   "id": "marches_decp_doublons_sources",
+   "domaine": "marches",
+   "type": "datagouv",
+   "dataset": "608c055b35eb4e6ee20eb325",
+   "format": "parquet",
+   "titre_contient": "statistiques-doublons-sources",
+   "titre": "DECP consolidees, statistiques des doublons entre sources (pipeline/marches.py ; le fichier principal est l'entree benef_decp)",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Colmo (decp-processing)"
+  },
+  {
    "id": "apd_afd_iati",
    "domaine": "aide_developpement",
    "type": "datagouv",
