@@ -174,6 +174,11 @@ FICHIERS = [
     ("aide_developpement_ocde.schema.json", "aide_developpement/ocde.json", "existant"),
     ("aide_developpement_expertise_france.schema.json", "aide_developpement/expertise_france.json", "existant"),
     ("aide_developpement_proparco.schema.json", "aide_developpement/proparco.json", "existant"),
+    # l'État actionnaire : dividendes, cessions, opérations en capital (pipeline/etat_actionnaire.py)
+    ("etat_actionnaire_index.schema.json", "etat_actionnaire/index.json", "existant"),
+    ("etat_actionnaire_flux.schema.json", "etat_actionnaire/flux.json", "existant"),
+    ("etat_actionnaire_entites.schema.json", "etat_actionnaire/entites.json", "existant"),
+    ("etat_actionnaire_societes_controlees.schema.json", "etat_actionnaire/societes_controlees.json", "existant"),
     # éducation et recherche : ANR, lycées, collectivités, étudiants (pipeline/education_recherche.py)
     ("education_recherche_index.schema.json", "education_recherche/index.json", "existant"),
     ("education_recherche_anr_etablissements.schema.json", "education_recherche/anr_etablissements.json", "existant"),
@@ -181,11 +186,6 @@ FICHIERS = [
     ("education_recherche_lycees.schema.json", "education_recherche/lycees/[0-9]*.json", "existant"),
     ("education_recherche_collectivites_esr.schema.json", "education_recherche/collectivites_esr.json", "existant"),
     ("education_recherche_etudiants.schema.json", "education_recherche/etudiants.json", "existant"),
-    # l'État actionnaire : dividendes, cessions, opérations en capital (pipeline/etat_actionnaire.py)
-    ("etat_actionnaire_index.schema.json", "etat_actionnaire/index.json", "existant"),
-    ("etat_actionnaire_flux.schema.json", "etat_actionnaire/flux.json", "existant"),
-    ("etat_actionnaire_entites.schema.json", "etat_actionnaire/entites.json", "existant"),
-    ("etat_actionnaire_societes_controlees.schema.json", "etat_actionnaire/societes_controlees.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
