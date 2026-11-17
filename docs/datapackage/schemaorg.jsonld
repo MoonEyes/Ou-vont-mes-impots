@@ -1,0 +1,830 @@
+{
+ "@context": "https://schema.org",
+ "@type": "Dataset",
+ "@id": "https://github.com/MoonEyes/Ou-vont-mes-impots#jeu",
+ "name": "Où vont mes impôts : données publiques retraitées sur les dépenses et recettes publiques",
+ "description": "Budget de l'État, Sécurité sociale, collectivités, prélèvements, dette, bénéficiaires nommés (personnes morales), décisions et contrôle, retraités à partir de jeux publics ouverts (data.economie.gouv.fr, data.gouv.fr, Eurostat, Insee, DGFiP, OFGL, Assemblée nationale, Sénat, DILA, CNCCFP, HATVP, Cour des comptes). Site citoyen, non officiel. Chaque fichier JSON porte son millésime et sa source ; un montant écarté est publié avec sa raison. Précautions de lecture et exemples : docs/REUTILISER.md.",
+ "url": "https://mooneyes.github.io/Ou-vont-mes-impots/",
+ "sameAs": "https://github.com/MoonEyes/Ou-vont-mes-impots",
+ "identifier": "https://github.com/MoonEyes/Ou-vont-mes-impots",
+ "keywords": [
+  "budget de l'État",
+  "finances publiques",
+  "impôts",
+  "dépense publique",
+  "Sécurité sociale",
+  "collectivités territoriales",
+  "prélèvements obligatoires",
+  "dette publique",
+  "subventions",
+  "marchés publics",
+  "COFOG",
+  "LOLF"
+ ],
+ "inLanguage": "fr",
+ "isAccessibleForFree": true,
+ "license": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+ "creator": {
+  "@type": "Organization",
+  "name": "Projet citoyen Où vont mes impôts",
+  "url": "https://github.com/MoonEyes/Ou-vont-mes-impots"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "name": "Projet citoyen Où vont mes impôts",
+  "url": "https://github.com/MoonEyes/Ou-vont-mes-impots"
+ },
+ "version": "1.6.0",
+ "dateModified": "2026-11-17T19:02:10Z",
+ "temporalCoverage": "1991/2027",
+ "spatialCoverage": {
+  "@type": "Place",
+  "name": "France"
+ },
+ "isBasedOn": [
+  "https://api.insee.fr/melodi/file/DD_CNA_APU/DD_CNA_APU_CSV_FR",
+  "https://api.insee.fr/melodi/file/DS_ERFS_NON_RETROPOLE/DS_ERFS_NON_RETROPOLE_CSV_FR",
+  "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214400301_subventions_liste/exports/parquet",
+  "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214400525_subventions-liste/exports/parquet",
+  "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre/exports/parquet",
+  "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401515_subventions_liste/exports/parquet",
+  "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401689_subventions_liste/exports/parquet",
+  "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401762_subventions-liste/exports/parquet",
+  "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401846_subventions_numeraire_liste/exports/parquet",
+  "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame-subventions-2024/exports/parquet",
+  "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subvention_2020/exports/parquet",
+  "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subvention_2021/exports/parquet",
+  "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subvention_2022/exports/parquet",
+  "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subvention_depuis_2017/exports/parquet",
+  "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subventions_2017/exports/parquet",
+  "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subventions_2018/exports/parquet",
+  "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subventions_2019/exports/parquet",
+  "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subventions_2023/exports/parquet",
+  "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/fr-subventions-2019/exports/parquet",
+  "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/fr-subventions-attribuees-en-2020-par-la-metropole/exports/parquet",
+  "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/subventions-attribuees-depuis-2022/exports/parquet",
+  "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/subventions-attribuees-en-2021-par-la-metropole/exports/parquet",
+  "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/subventions-attribuees-en-2022-par-la-metropole/exports/parquet",
+  "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/subventions-attribuees/exports/parquet",
+  "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/deputes_actifs_mandats_actifs_organes/AMO10_deputes_actifs_mandats_actifs_organes.json.zip",
+  "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip",
+  "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip",
+  "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip",
+  "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/subventions_attribuees_scdl0/exports/parquet",
+  "https://data.cannes.fr/api/explore/v2.1/catalog/datasets/subventions-aux-associations/exports/parquet",
+  "https://data.capatlantique.fr/api/explore/v2.1/catalog/datasets/214400558_subventions-liste/exports/parquet",
+  "https://data.capatlantique.fr/api/explore/v2.1/catalog/datasets/214400699-subventions-liste/exports/parquet",
+  "https://data.capatlantique.fr/api/explore/v2.1/catalog/datasets/215600586_subventions_liste/exports/parquet",
+  "https://data.capatlantique.fr/api/explore/v2.1/catalog/datasets/244400610_subventions_liste/exports/parquet",
+  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2018/exports/parquet",
+  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2019/exports/parquet",
+  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2020/exports/parquet",
+  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2021/exports/parquet",
+  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2022/exports/parquet",
+  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2023/exports/parquet",
+  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2024/exports/parquet",
+  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2025/exports/parquet",
+  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2026/exports/parquet",
+  "https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/",
+  "https://data.economie.gouv.fr/explore/dataset/budgetvert_plf2024_opendata_vf/",
+  "https://data.economie.gouv.fr/explore/dataset/etpt-par-ministere-mission-programme-pour-le-bg-et-les-ba-lfi-2023/",
+  "https://data.economie.gouv.fr/explore/dataset/execution-2010-du-budget-general-en-cp/",
+  "https://data.economie.gouv.fr/explore/dataset/execution-2011-du-budget-general-en-cp/",
+  "https://data.economie.gouv.fr/explore/dataset/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm/",
+  "https://data.economie.gouv.fr/explore/dataset/execution-2013-du-budget-de-letat-en-cp-et-ae-/",
+  "https://data.economie.gouv.fr/explore/dataset/fiscalite-locale-des-particuliers/",
+  "https://data.economie.gouv.fr/explore/dataset/impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/",
+  "https://data.economie.gouv.fr/explore/dataset/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre/",
+  "https://data.economie.gouv.fr/explore/dataset/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie/",
+  "https://data.economie.gouv.fr/explore/dataset/lfi-2014-dotation-bg-en-ae-cp-par-action-titre/",
+  "https://data.economie.gouv.fr/explore/dataset/pap-2023-objectifs-et-indicateurs-de-performance/",
+  "https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/",
+  "https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense/",
+  "https://data.economie.gouv.fr/explore/dataset/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/",
+  "https://data.economie.gouv.fr/explore/dataset/plf-2015-donnees-du-volet-performance/",
+  "https://data.economie.gouv.fr/explore/dataset/plf-2016-donnees-du-volet-performance/",
+  "https://data.economie.gouv.fr/explore/dataset/plf-2025-performance/",
+  "https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+  "https://data.economie.gouv.fr/explore/dataset/plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales/",
+  "https://data.economie.gouv.fr/explore/dataset/plf25-budget-vert-justification-des-credits-budgetaires-et-des-taxes-affectees/",
+  "https://data.economie.gouv.fr/explore/dataset/plf25-budget-vert/",
+  "https://data.economie.gouv.fr/explore/dataset/plf25-depenses-2025-du-bg-et-des-ba-selon-nomenclatures-destination-et-nature/",
+  "https://data.economie.gouv.fr/explore/dataset/plf25-donnees-de-l-annexe-jaune-effort-financier-de-l-etat-en-faveur-des-associations/",
+  "https://data.economie.gouv.fr/explore/dataset/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l/",
+  "https://data.economie.gouv.fr/explore/dataset/plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese/",
+  "https://data.economie.gouv.fr/explore/dataset/plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese/",
+  "https://data.economie.gouv.fr/explore/dataset/plrg-2024/",
+  "https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2017-plf-2017-donnees-du-volet-performance/",
+  "https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des/",
+  "https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance/",
+  "https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/",
+  "https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/",
+  "https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2019-plr-20190/",
+  "https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2019-plr-20192/",
+  "https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2020-plr-2020/",
+  "https://data.economie.gouv.fr/explore/dataset/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/",
+  "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+  "https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-horizon-projects-entities/",
+  "https://data.eurelien.fr/api/explore/v2.1/catalog/datasets/datasubventions2024/exports/parquet",
+  "https://data.eurelien.fr/api/explore/v2.1/catalog/datasets/datasubventions2025/exports/parquet",
+  "https://data.grandparissud.fr/api/explore/v2.1/catalog/datasets/subventions-gps-2020/exports/parquet",
+  "https://data.grandparissud.fr/api/explore/v2.1/catalog/datasets/subventions-gps-2021/exports/parquet",
+  "https://data.haute-garonne.fr/api/explore/v2.1/catalog/datasets/subventions-accordees-par-la-dtip-du-departement-de-la-haute-garonne/exports/parquet",
+  "https://data.haute-garonne.fr/api/explore/v2.1/catalog/datasets/subventions-direction-prevention-lutte-contre-precarites-departement-haute-garonne/exports/parquet",
+  "https://data.haute-garonne.fr/api/explore/v2.1/catalog/datasets/subventions-education-departement-haute-garonne/exports/parquet",
+  "https://data.iledefrance-mobilites.fr/api/explore/v2.1/catalog/datasets/subventions-2017/exports/parquet",
+  "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/subventions-ile-de-france-mobilites/exports/parquet",
+  "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/subventions-versees-par-la-region-ile-de-france-aux-associations/exports/parquet",
+  "https://data.issy.com/api/explore/v2.1/catalog/datasets/subventions-asso/exports/parquet",
+  "https://data.lamayenne.fr/api/explore/v2.1/catalog/datasets/225300011_cd53_scdl_subventions/exports/parquet",
+  "https://data.laregion.fr/api/explore/v2.1/catalog/datasets/subventions-du-conseil-regional/exports/parquet",
+  "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/224400028_subventions-aux-associations-du-departement-de-loire-atlantique/exports/parquet",
+  "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/244400552_subvention-compa-2018/exports/parquet",
+  "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/244400552_subvention-compa-2019/exports/parquet",
+  "https://data.loire-atlantique.fr/explore/dataset/224400028_rapports-deliberations-proces-verbaux-conseil-departemental/",
+  "https://data.loire-atlantique.fr/explore/dataset/224400028_subventions-aux-associations-du-departement-de-loire-atlantique/",
+  "https://data.maine-et-loire.fr/api/explore/v2.1/catalog/datasets/224900019_conventions-de-subventions-du-departement-de-maine-et-loire/exports/parquet",
+  "https://data.meudon.fr/api/explore/v2.1/catalog/datasets/bp-2026-subventions-aux-associations/exports/parquet",
+  "https://data.nantesmetropole.fr/explore/dataset/214401143_subventions-orvault/",
+  "https://data.nantesmetropole.fr/explore/dataset/214401507_subventions_attribuees_sagl/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2010-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2010-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2011-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2011-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2012-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2012-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2013-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2013-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2014-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2014-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2015-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2015-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2016-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2016-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2017-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2017-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2018-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2018-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2019-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2019-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2020-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2020-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2021-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2021-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2022-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2022-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2023-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2023-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2024-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2024-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2025-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2025-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2026-ccas-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_budget-primitif-bp-2026-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_deliberations-instances-metropole-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2017-nantes-metropole/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2017-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2018-nantes-metropole/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2018-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2019-nantes-metropole/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2019-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2020-nantes-metropole/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2020-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2021-nantes-metropole/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2021-nantes/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2023-nantes-metropole/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2024-nantes-metropole/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2025-nantes-metropole/",
+  "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-versees-aux-associations-2022-nantes-metropole/",
+  "https://data.ofgl.fr/explore/dataset/dotations-departements/",
+  "https://data.ofgl.fr/explore/dataset/ofgl-base-departements-consolidee/",
+  "https://data.ofgl.fr/explore/dataset/ofgl-base-departements-fonctionnelle/",
+  "https://data.ofgl.fr/explore/dataset/ofgl-base-ei/",
+  "https://data.ofgl.fr/explore/dataset/ofgl-base-gfp-consolidee/",
+  "https://data.ofgl.fr/explore/dataset/ofgl-base-regions-consolidee/",
+  "https://data.orleans-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-aux-associations-par-la-ville-de-fleury-les-aubrais-en-2019/exports/parquet",
+  "https://data.paysdelaloire.fr/explore/dataset/234400034_001-001_rapports-deliberations-et-proces-verbaux-rpdl-2019/",
+  "https://data.paysdelaloire.fr/explore/dataset/subventions-de-la-region-des-pays-de-la-loire/",
+  "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214400301_subventions_liste/exports/parquet",
+  "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214400525_subventions-liste/exports/parquet",
+  "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre/exports/parquet",
+  "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214401515_subventions_liste/exports/parquet",
+  "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214401689_subventions_liste/exports/parquet",
+  "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214401762_subventions-liste/exports/parquet",
+  "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214401846_subventions_numeraire_liste/exports/parquet",
+  "https://data.sarthe.fr/api/explore/v2.1/catalog/datasets/227200029_subv-votees_opendata/exports/parquet",
+  "https://data.seineouest.fr/api/explore/v2.1/catalog/datasets/subventions-aux-associations/exports/parquet",
+  "https://data.seinesaintdenis.fr/api/explore/v2.1/catalog/datasets/subventions-versees-associations-seine-saint-denis/exports/parquet",
+  "https://data.senat.fr/data/ameli/ameli.zip",
+  "https://data.sicoval.fr/api/explore/v2.1/catalog/datasets/subventions-versees-aux-associations/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/open-data-subv-versees-a-des-organismes-tm-2023/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/open-data-subv-versees-a-des-organismes-tm/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/open-data-subv-versees-a-des-organismes-vt-2024/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subv-versees-a-des-organismes-2022-tm/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2012-toulouse-metropole/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2013-toulouse-metropole/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2014-toulouse-metropole/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2015-toulouse-metropole/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2015-toulouse-metropole1/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2016-toulouse-metropole/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2017-toulouse-metropole/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2017-ville-de-toulouse/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2018-toulouse-metropole/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2018-ville-de-toulouse/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2019-toulouse-metropole/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2019-ville-de-toulouse/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2020-toulouse-metropole/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2020-ville-de-toulouse/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2021-toulouse-metropole/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2021-ville-de-toulouse/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2022-ville-de-toulouse/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-ville-de-toulouse-2023/exports/parquet",
+  "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_exp/default/table",
+  "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_main/default/table",
+  "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_taxag/default/table"
+ ],
+ "distribution": [
+  {
+   "@type": "DataDownload",
+   "name": "provenance, millesimes et totaux de controle",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/meta.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "flux Etat > grand poste > mission > programme",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sankey_etat.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "budget de l'Etat par titre et categorie LOLF",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/nature_etat.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "arbres du budget de l'Etat (execution 2024, LFI 2025, nature PLF 2025)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre/Culture-et-medias_Avances-l-audiovisuel-public_841.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "arbres du budget de l'Etat (execution 2024, LFI 2025, nature PLF 2025)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_lfi2025/Culture-et-medias_Avances-l-audiovisuel-public_841.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "arbres du budget de l'Etat (execution 2024, LFI 2025, nature PLF 2025)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_plf2025_nature/Culture-et-medias_AQ_372.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "actions, sous-actions et nature d'un programme (PLF 2025)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/programmes/101.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "administration > fonction COFOG > sous-fonction",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_administrations/racine.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "note de consolidation",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_administrations/methode.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "recettes, depenses, solde par administration",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/administrations.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "chaque impot par administration beneficiaire",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recettes.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "depenses publiques consolidees par fonction",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/cofog.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "solde et part empruntee (Etat budgetaire, APU Eurostat)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deficit.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "taux TFB et TEOM par commune",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/communes/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "nature reelle de la depense (PLRG 2024)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/nature/101.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "ETPT et cout moyen par ETPT",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/effectifs/105.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "associations subventionnees et operateurs d'un programme",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/programme_101.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "France 2030 par operateur et beneficiaire",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/france2030.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "marches publics des services de l'Etat",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/marches_etat.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "index et totaux de controle",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "bloc « Ce qui a ete fait »",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/realisations/101.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "couverture et controles",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/realisations/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "argent public et vie politique par annee",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/annees.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "aide publique par parti",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/partis/2008.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "agregats d'un scrutin",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/scrutins/departementales_2015.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "comptes de campagne par candidat (exception personnes physiques)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/candidats/departementales_2015.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "qui recoit chaque prelevement (parts sourcees)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/affectation.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "taxes sur les produits par decile de niveau de vie",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/tva_conso.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "methode et agregats de l'estimation de taxe fonciere",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/taxe_fonciere.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "taxe fonciere et TEOM estimees par commune",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/taxe_fonciere/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "prelevement sur recettes au profit de l'UE et usage du budget de l'UE",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/contribution.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "depenses de l'UE en France et solde net de la France",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/retours.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "beneficiaires des fonds europeens en France, couverture et totaux",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/beneficiaires/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "beneficiaires nommes des fonds europeens dans un departement",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/beneficiaires/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "arbres Securite sociale et protection sociale (pipeline/secu.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/arbre/racine.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "arbres Securite sociale et protection sociale (pipeline/secu.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/arbre_2025/racine.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "arbres Securite sociale et protection sociale (pipeline/secu.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/cps/S11_S12A_Autres-r-gimes-priv-s.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "vues, totaux, tracabilite, sources et recherche prealable (pipeline/secu.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "prestations aux ménages, financeurs, totaux par source, écarts, sources (pipeline/prestations.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prestations/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "montant, bénéficiaires et montant moyen par prestation et par année (pipeline/prestations.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prestations/nationales.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "prestations par département, une année (pipeline/prestations.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prestations/departements/2019.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "synthèse, dette sociale, vérifications, recherche publique",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "encours de la dette de Maastricht par sous-secteur",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/encours.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "charge d'intérêts (budgétaire et nationale), part de 100 € d'impôt",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/interets.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "qui détient la dette publique",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/detenteurs.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "émissions, amortissements, durée de vie, OAT indexées",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/financement.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "chaque dépense fiscale, coût 2019 à 2026, bénéficiaires, programme (pipeline/niches.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/mesures.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "dépense budgétaire + dépense fiscale par programme, mission, grand poste (pipeline/niches.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/programmes.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "niches sociales, PLFSS 2026 annexe 4 et série Urssaf (pipeline/niches.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/sociales.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "totaux par année, top, couverture, sources, recherche préalable (pipeline/niches.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "Index du bloc contrôle, influence, aides aux entreprises",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "Publications de la Cour des comptes reliées aux programmes LOLF",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/publications/programmes.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "Publications des chambres régionales des comptes par département",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/publications/collectivites/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "Publications non rattachées",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/publications/autres.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "organisations (HATVP)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/lobbying/organisations.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "actions par cible et par domaine",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/lobbying/ministeres.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "estimations publiées",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/aides_entreprises.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "opérateurs de l'État et catégories d'opérateurs, financement et ressources par année (pipeline/operateurs.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/operateurs/operateurs.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "totaux par année, couverture, sources, recherche préalable et limites (pipeline/operateurs.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/operateurs/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "pays, unités, fichiers, avertissements de comparabilité Eurostat, recherche publique",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "une division COFOG et ses groupes, UE27, zone euro et 27 pays",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/depenses/GF01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "impôts et cotisations sociales obligatoires par grande catégorie, UE27, zone euro et 27 pays",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/prelevements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "« La France et ses voisins », un grand poste par fiche",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/fiches.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "traçabilité d'un noeud (exécution 2024)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/tracabilite/programme_101.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "traçabilité d'un noeud (exécution 2024)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/tracabilite/noeud_psr_collectivites.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "taux de traçabilité global, par grand poste, par mission et par programme",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/tracabilite/resume.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "décisions et chronologie des crédits d'un programme",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/programme_101.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "amendements de crédits par programme et par année",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/amendements_resume.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "scrutins publics de l'Assemblée sur les lois de finances",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/scrutins.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "décrets et arrêtés de mouvements de crédits publiés au JO",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/mouvements_2021.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "mouvements publiés au JO comparés aux colonnes du PLRG",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/coherence_plrg.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "programmes, fichiers, comptes, contrôle PLRG, limites",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "blocs disponibles par commune (masque de bits)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "commune > EPCI > departement > region",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/geo/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "grands agregats OFGL",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/communes/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "grands agregats OFGL",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/departements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "grands agregats OFGL",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/regions.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "EPCI et bloc communal consolide (OFGL ensembles intercommunaux)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/epci/01,69.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "depenses des departements par fonction",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/fonctions/departements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "detail par fonction (pilote 44 et Bretagne)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/fonctions/200042174.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "depenses par fonction des communes (toutes, avec statut) et des EPCI du departement",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/fonctions/01,69.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "depenses par fonction des regions et collectivites territoriales uniques",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/fonctions/regions.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "nomenclatures, themes, couverture, masque par commune",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/fonctions/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "DGF et dotations d'investissement par commune",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/communes/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "dotations de l'Etat (epci)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/epci.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "dotations de l'Etat (departements)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/departements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "dotations de l'Etat (regions)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/regions.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "taux d'impots locaux votes (REI)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/taux/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "couverture des decisions locales",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "totaux, exclus agreges, deliberations",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/200011062/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "subventions votees, personnes morales seulement",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/200036473/2023.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "subventions votees, personnes morales seulement",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/200053726/inconnue.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
+   "encodingFormat": "text/csv",
+   "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/beneficiaires/beneficiaires_publies.csv"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "ETPT LFI 2023 par programme, titre 2 execution 2024 et cout moyen par ETPT (millesimes differents)",
+   "encodingFormat": "text/csv",
+   "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/effectifs/effectifs.csv"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "Execution 2024 par programme et categorie LOLF (PLRG 2024, annexe 1, depenses constatees)",
+   "encodingFormat": "text/csv",
+   "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/nature/nature_2024.csv"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "Inventaire des fichiers de site/data",
+   "encodingFormat": "text/csv",
+   "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/datapackage/fichiers.csv"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "Lignée : jeux d'origine par étape du pipeline",
+   "encodingFormat": "text/csv",
+   "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/datapackage/sources.csv"
+  }
+ ]
+}

@@ -1,0 +1,1974 @@
+{
+ "@context": {
+  "dcat": "http://www.w3.org/ns/dcat#",
+  "dct": "http://purl.org/dc/terms/",
+  "foaf": "http://xmlns.com/foaf/0.1/",
+  "vcard": "http://www.w3.org/2006/vcard/ns#",
+  "xsd": "http://www.w3.org/2001/XMLSchema#"
+ },
+ "@id": "https://github.com/MoonEyes/Ou-vont-mes-impots#jeu",
+ "@type": "dcat:Dataset",
+ "dct:identifier": "https://github.com/MoonEyes/Ou-vont-mes-impots",
+ "dct:title": "Où vont mes impôts : données publiques retraitées sur les dépenses et recettes publiques",
+ "dct:description": "Budget de l'État, Sécurité sociale, collectivités, prélèvements, dette, bénéficiaires nommés (personnes morales), décisions et contrôle, retraités à partir de jeux publics ouverts (data.economie.gouv.fr, data.gouv.fr, Eurostat, Insee, DGFiP, OFGL, Assemblée nationale, Sénat, DILA, CNCCFP, HATVP, Cour des comptes). Site citoyen, non officiel. Chaque fichier JSON porte son millésime et sa source ; un montant écarté est publié avec sa raison. Précautions de lecture et exemples : docs/REUTILISER.md.",
+ "dcat:keyword": [
+  "budget de l'État",
+  "finances publiques",
+  "impôts",
+  "dépense publique",
+  "Sécurité sociale",
+  "collectivités territoriales",
+  "prélèvements obligatoires",
+  "dette publique",
+  "subventions",
+  "marchés publics",
+  "COFOG",
+  "LOLF"
+ ],
+ "dct:language": {
+  "@id": "http://publications.europa.eu/resource/authority/language/FRA"
+ },
+ "dct:spatial": {
+  "@id": "http://publications.europa.eu/resource/authority/country/FRA"
+ },
+ "dct:accrualPeriodicity": {
+  "@id": "http://publications.europa.eu/resource/authority/frequency/WEEKLY"
+ },
+ "dct:modified": {
+  "@value": "2026-11-17T19:02:10Z",
+  "@type": "xsd:dateTime"
+ },
+ "dct:temporal": {
+  "@type": "dct:PeriodOfTime",
+  "dcat:startDate": {
+   "@value": "1991",
+   "@type": "xsd:gYear"
+  },
+  "dcat:endDate": {
+   "@value": "2027",
+   "@type": "xsd:gYear"
+  }
+ },
+ "dcat:landingPage": {
+  "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/"
+ },
+ "dct:publisher": {
+  "@type": "foaf:Agent",
+  "foaf:name": "Projet citoyen Où vont mes impôts",
+  "foaf:homepage": {
+   "@id": "https://github.com/MoonEyes/Ou-vont-mes-impots"
+  }
+ },
+ "dcat:contactPoint": {
+  "@type": "vcard:Kind",
+  "vcard:fn": "Projet citoyen Où vont mes impôts",
+  "vcard:hasURL": {
+   "@id": "https://github.com/MoonEyes/Ou-vont-mes-impots/issues"
+  }
+ },
+ "dct:license": {
+  "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+ },
+ "dct:rights": "Licence Ouverte 2.0, sauf ressources dont une source est sous ODbL (licence ODbL indiquée dans la ressource). Mention de chaque source d'origine requise (champ sources).",
+ "dct:conformsTo": {
+  "@id": "https://datapackage.org/standard/data-package/"
+ },
+ "dct:source": [
+  {
+   "@id": "https://api.insee.fr/melodi/file/DD_CNA_APU/DD_CNA_APU_CSV_FR"
+  },
+  {
+   "@id": "https://api.insee.fr/melodi/file/DS_ERFS_NON_RETROPOLE/DS_ERFS_NON_RETROPOLE_CSV_FR"
+  },
+  {
+   "@id": "https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/"
+  },
+  {
+   "@id": "https://data.economie.gouv.fr/explore/dataset/impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/"
+  },
+  {
+   "@id": "https://data.economie.gouv.fr/explore/dataset/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/"
+  },
+  {
+   "@id": "https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-horizon-projects-entities/"
+  },
+  {
+   "@id": "https://data.senat.fr/data/ameli/ameli.zip"
+  },
+  {
+   "@id": "https://geobretagne.fr/geonetwork/srv/api/records/f09eb03a-b447-4281-bc58-402c953b0014/attachments/france2030_projets.csv"
+  },
+  {
+   "@id": "https://github.com/MoonEyes/Ou-vont-mes-impots"
+  },
+  {
+   "@id": "https://open.urssaf.fr/explore/dataset/exos-champ-large-par-grandes-categories/"
+  },
+  {
+   "@id": "https://open.urssaf.fr/explore/dataset/exos-secteur-prive-france-entiere-par-mesures/"
+  },
+  {
+   "@id": "https://static.data.gouv.fr/resources/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire/20261117-051110/decp.parquet"
+  },
+  {
+   "@id": "https://static.data.gouv.fr/resources/publications-de-la-cour-des-comptes-par-type-et-date-de-publication-2011-2016/20180507-120722/Publications_CDC_type_date__ISBN_v_04mai16.csv"
+  },
+  {
+   "@id": "https://static.data.gouv.fr/resources/rapports-dobservations-definitives-des-chambres-regionales-des-comptes-crc-et-reponses-associees-1/20200122-192454/meta-rod-datasession.xlsx"
+  },
+  {
+   "@id": "https://www.data.gouv.fr/fr/datasets/63a4384a1b57813fbca80dc8/"
+  },
+  {
+   "@id": "https://www.data.gouv.fr/fr/datasets/67a095a09fa4b7ef99af5df6/"
+  },
+  {
+   "@id": "https://www.strategie-plan.gouv.fr/files/files/Publications/2026/2026-07-16%20-%20Rapport%20Aides%20aux%20entreprises/HCSP-2026-RAPPORT-AIDES-ENTREPRISES.pdf"
+  }
+ ],
+ "dcat:distribution": [
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "Descripteur Frictionless Data Package v2",
+   "dcat:accessURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/datapackage/datapackage.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/datapackage/datapackage.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "provenance, millesimes et totaux de controle",
+   "dct:description": "site/data/meta.json : provenance, millesimes et totaux de controle. Fichier site/data/meta.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/meta.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/meta.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/meta.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "flux Etat > grand poste > mission > programme",
+   "dct:description": "site/data/sankey_etat*.json : flux Etat > grand poste > mission > programme. Famille de 2 fichiers (motif site/data/sankey_etat*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sankey_etat.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sankey_etat.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/sankey_etat.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "budget de l'Etat par titre et categorie LOLF",
+   "dct:description": "site/data/nature_etat.json : budget de l'Etat par titre et categorie LOLF. Fichier site/data/nature_etat.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/nature_etat.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/nature_etat.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/nature_etat.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "arbres du budget de l'Etat (execution 2024, LFI 2025, nature PLF 2025)",
+   "dct:description": "site/data/arbre*/*.json : arbres du budget de l'Etat (execution 2024, LFI 2025, nature PLF 2025). Famille de 131 fichiers (motif site/data/arbre/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre/Culture-et-medias_Avances-l-audiovisuel-public_841.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre/Culture-et-medias_Avances-l-audiovisuel-public_841.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/arbre_etat.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "arbres du budget de l'Etat (execution 2024, LFI 2025, nature PLF 2025)",
+   "dct:description": "site/data/arbre*/*.json : arbres du budget de l'Etat (execution 2024, LFI 2025, nature PLF 2025). Famille de 128 fichiers (motif site/data/arbre_lfi2025/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_lfi2025/Culture-et-medias_Avances-l-audiovisuel-public_841.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_lfi2025/Culture-et-medias_Avances-l-audiovisuel-public_841.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/arbre_etat.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "arbres du budget de l'Etat (execution 2024, LFI 2025, nature PLF 2025)",
+   "dct:description": "site/data/arbre*/*.json : arbres du budget de l'Etat (execution 2024, LFI 2025, nature PLF 2025). Famille de 134 fichiers (motif site/data/arbre_plf2025_nature/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_plf2025_nature/Culture-et-medias_AQ_372.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_plf2025_nature/Culture-et-medias_AQ_372.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/arbre_etat.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "actions, sous-actions et nature d'un programme (PLF 2025)",
+   "dct:description": "site/data/programmes/<n>.json : actions, sous-actions et nature d'un programme (PLF 2025). Famille de 133 fichiers (motif site/data/programmes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/programmes/101.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/programmes/101.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/programme.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "administration > fonction COFOG > sous-fonction",
+   "dct:description": "site/data/arbre_administrations/racine.json : administration > fonction COFOG > sous-fonction. Fichier site/data/arbre_administrations/racine.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_administrations/racine.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_administrations/racine.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/arbre_administrations.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "note de consolidation",
+   "dct:description": "site/data/arbre_administrations/methode.json : note de consolidation. Fichier site/data/arbre_administrations/methode.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_administrations/methode.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/arbre_administrations/methode.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/arbre_administrations_methode.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "recettes, depenses, solde par administration",
+   "dct:description": "site/data/administrations.json : recettes, depenses, solde par administration. Fichier site/data/administrations.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/administrations.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/administrations.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/administrations.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "chaque impot par administration beneficiaire",
+   "dct:description": "site/data/recettes.json : chaque impot par administration beneficiaire. Fichier site/data/recettes.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recettes.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recettes.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recettes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "depenses publiques consolidees par fonction",
+   "dct:description": "site/data/cofog.json : depenses publiques consolidees par fonction. Fichier site/data/cofog.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/cofog.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/cofog.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/cofog.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "solde et part empruntee (Etat budgetaire, APU Eurostat)",
+   "dct:description": "site/data/deficit.json : solde et part empruntee (Etat budgetaire, APU Eurostat). Fichier site/data/deficit.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deficit.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deficit.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/deficit.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "taux TFB et TEOM par commune",
+   "dct:description": "site/data/communes/<dep>.json : taux TFB et TEOM par commune. Famille de 101 fichiers (motif site/data/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/communes/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/communes/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/communes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "nature reelle de la depense (PLRG 2024)",
+   "dct:description": "site/data/nature/<programme>.json : nature reelle de la depense (PLRG 2024). Famille de 126 fichiers (motif site/data/nature/[0-9]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/nature/101.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/nature/101.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/nature_programme.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "ETPT et cout moyen par ETPT",
+   "dct:description": "site/data/effectifs/<programme>.json : ETPT et cout moyen par ETPT. Famille de 55 fichiers (motif site/data/effectifs/[0-9]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/effectifs/105.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/effectifs/105.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/effectifs.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "associations subventionnees et operateurs d'un programme",
+   "dct:description": "site/data/beneficiaires/programme_<n>.json : associations subventionnees et operateurs d'un programme. Famille de 110 fichiers (motif site/data/beneficiaires/programme_*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/programme_101.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/programme_101.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/beneficiaires_programme.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "France 2030 par operateur et beneficiaire",
+   "dct:description": "site/data/beneficiaires/france2030.json : France 2030 par operateur et beneficiaire. Fichier site/data/beneficiaires/france2030.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/france2030.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/france2030.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/france2030.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "marches publics des services de l'Etat",
+   "dct:description": "site/data/beneficiaires/marches_etat.json : marches publics des services de l'Etat. Fichier site/data/beneficiaires/marches_etat.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/marches_etat.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/marches_etat.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/marches_etat.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "index et totaux de controle",
+   "dct:description": "site/data/beneficiaires/index.json : index et totaux de controle. Fichier site/data/beneficiaires/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/beneficiaires/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/beneficiaires_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "bloc « Ce qui a ete fait »",
+   "dct:description": "site/data/realisations/<programme>.json : bloc « Ce qui a ete fait ». Famille de 135 fichiers (motif site/data/realisations/[0-9]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/realisations/101.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/realisations/101.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/realisations.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "couverture et controles",
+   "dct:description": "site/data/realisations/index.json : couverture et controles. Fichier site/data/realisations/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/realisations/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/realisations/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/realisations_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "argent public et vie politique par annee",
+   "dct:description": "site/data/vie_politique/annees.json : argent public et vie politique par annee. Fichier site/data/vie_politique/annees.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/annees.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/annees.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/vie_politique_annees.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "aide publique par parti",
+   "dct:description": "site/data/vie_politique/partis/<annee>.json : aide publique par parti. Famille de 17 fichiers (motif site/data/vie_politique/partis/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/partis/2008.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/partis/2008.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/vie_politique_partis.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "agregats d'un scrutin",
+   "dct:description": "site/data/vie_politique/scrutins/<scrutin>_<annee>.json : agregats d'un scrutin. Famille de 25 fichiers (motif site/data/vie_politique/scrutins/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/scrutins/departementales_2015.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/scrutins/departementales_2015.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/vie_politique_scrutin.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "comptes de campagne par candidat (exception personnes physiques)",
+   "dct:description": "site/data/vie_politique/candidats/<scrutin>_<annee>.json : comptes de campagne par candidat (exception personnes physiques). Famille de 25 fichiers (motif site/data/vie_politique/candidats/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/candidats/departementales_2015.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/candidats/departementales_2015.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/vie_politique_candidats.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "qui recoit chaque prelevement (parts sourcees)",
+   "dct:description": "site/data/prelevements/affectation.json : qui recoit chaque prelevement (parts sourcees). Fichier site/data/prelevements/affectation.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/affectation.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/affectation.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/prelevements_affectation.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "taxes sur les produits par decile de niveau de vie",
+   "dct:description": "site/data/prelevements/tva_conso.json : taxes sur les produits par decile de niveau de vie. Fichier site/data/prelevements/tva_conso.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/tva_conso.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/tva_conso.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/prelevements_tva_conso.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "methode et agregats de l'estimation de taxe fonciere",
+   "dct:description": "site/data/prelevements/taxe_fonciere.json : methode et agregats de l'estimation de taxe fonciere. Fichier site/data/prelevements/taxe_fonciere.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/taxe_fonciere.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/taxe_fonciere.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/prelevements_taxe_fonciere.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "taxe fonciere et TEOM estimees par commune",
+   "dct:description": "site/data/prelevements/taxe_fonciere/<dep>.json : taxe fonciere et TEOM estimees par commune. Famille de 101 fichiers (motif site/data/prelevements/taxe_fonciere/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/taxe_fonciere/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prelevements/taxe_fonciere/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/prelevements_taxe_fonciere_dep.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "prelevement sur recettes au profit de l'UE et usage du budget de l'UE",
+   "dct:description": "site/data/ue/contribution.json : prelevement sur recettes au profit de l'UE et usage du budget de l'UE. Fichier site/data/ue/contribution.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/contribution.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/contribution.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ue_contribution.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "depenses de l'UE en France et solde net de la France",
+   "dct:description": "site/data/ue/retours.json : depenses de l'UE en France et solde net de la France. Fichier site/data/ue/retours.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/retours.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/retours.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ue_retours.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "beneficiaires des fonds europeens en France, couverture et totaux",
+   "dct:description": "site/data/ue/beneficiaires/index.json : beneficiaires des fonds europeens en France, couverture et totaux. Fichier site/data/ue/beneficiaires/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/beneficiaires/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/beneficiaires/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ue_beneficiaires_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "beneficiaires nommes des fonds europeens dans un departement",
+   "dct:description": "site/data/ue/beneficiaires/<dep>.json : beneficiaires nommes des fonds europeens dans un departement. Famille de 102 fichiers (motif site/data/ue/beneficiaires/[0-9n]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/beneficiaires/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/beneficiaires/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ue_beneficiaires_dep.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "arbres Securite sociale et protection sociale (pipeline/secu.py)",
+   "dct:description": "site/data/secu/{arbre,arbre_2025,cps}/*.json : arbres Securite sociale et protection sociale (pipeline/secu.py). Fichier site/data/secu/arbre/racine.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/arbre/racine.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/arbre/racine.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/secu_arbre.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "arbres Securite sociale et protection sociale (pipeline/secu.py)",
+   "dct:description": "site/data/secu/{arbre,arbre_2025,cps}/*.json : arbres Securite sociale et protection sociale (pipeline/secu.py). Fichier site/data/secu/arbre_2025/racine.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/arbre_2025/racine.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/arbre_2025/racine.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/secu_arbre.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "arbres Securite sociale et protection sociale (pipeline/secu.py)",
+   "dct:description": "site/data/secu/{arbre,arbre_2025,cps}/*.json : arbres Securite sociale et protection sociale (pipeline/secu.py). Famille de 35 fichiers (motif site/data/secu/cps/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/cps/S11_S12A_Autres-r-gimes-priv-s.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/cps/S11_S12A_Autres-r-gimes-priv-s.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/secu_arbre.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "vues, totaux, tracabilite, sources et recherche prealable (pipeline/secu.py)",
+   "dct:description": "site/data/secu/index.json : vues, totaux, tracabilite, sources et recherche prealable (pipeline/secu.py). Fichier site/data/secu/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/secu/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/secu_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "prestations aux ménages, financeurs, totaux par source, écarts, sources (pipeline/prestations.py)",
+   "dct:description": "site/data/prestations/index.json : prestations aux ménages, financeurs, totaux par source, écarts, sources (pipeline/prestations.py). Fichier site/data/prestations/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prestations/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prestations/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/prestations_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "montant, bénéficiaires et montant moyen par prestation et par année (pipeline/prestations.py)",
+   "dct:description": "site/data/prestations/nationales.json : montant, bénéficiaires et montant moyen par prestation et par année (pipeline/prestations.py). Fichier site/data/prestations/nationales.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prestations/nationales.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prestations/nationales.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/prestations_nationales.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "prestations par département, une année (pipeline/prestations.py)",
+   "dct:description": "site/data/prestations/departements/<annee>.json : prestations par département, une année (pipeline/prestations.py). Famille de 7 fichiers (motif site/data/prestations/departements/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prestations/departements/2019.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/prestations/departements/2019.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/prestations_departement.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "synthèse, dette sociale, vérifications, recherche publique",
+   "dct:description": "site/data/dette/index.json : synthèse, dette sociale, vérifications, recherche publique. Fichier site/data/dette/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/dette_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "encours de la dette de Maastricht par sous-secteur",
+   "dct:description": "site/data/dette/encours.json : encours de la dette de Maastricht par sous-secteur. Fichier site/data/dette/encours.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/encours.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/encours.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/dette_encours.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "charge d'intérêts (budgétaire et nationale), part de 100 € d'impôt",
+   "dct:description": "site/data/dette/interets.json : charge d'intérêts (budgétaire et nationale), part de 100 € d'impôt. Fichier site/data/dette/interets.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/interets.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/interets.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/dette_interets.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "qui détient la dette publique",
+   "dct:description": "site/data/dette/detenteurs.json : qui détient la dette publique. Fichier site/data/dette/detenteurs.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/detenteurs.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/detenteurs.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/dette_detenteurs.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "émissions, amortissements, durée de vie, OAT indexées",
+   "dct:description": "site/data/dette/financement.json : émissions, amortissements, durée de vie, OAT indexées. Fichier site/data/dette/financement.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/financement.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/financement.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/dette_financement.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "chaque dépense fiscale, coût 2019 à 2026, bénéficiaires, programme (pipeline/niches.py)",
+   "dct:description": "site/data/niches/mesures.json : chaque dépense fiscale, coût 2019 à 2026, bénéficiaires, programme (pipeline/niches.py). Fichier site/data/niches/mesures.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/mesures.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/mesures.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/niches_mesures.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "dépense budgétaire + dépense fiscale par programme, mission, grand poste (pipeline/niches.py)",
+   "dct:description": "site/data/niches/programmes.json : dépense budgétaire + dépense fiscale par programme, mission, grand poste (pipeline/niches.py). Fichier site/data/niches/programmes.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/programmes.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/programmes.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/niches_programmes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "niches sociales, PLFSS 2026 annexe 4 et série Urssaf (pipeline/niches.py)",
+   "dct:description": "site/data/niches/sociales.json : niches sociales, PLFSS 2026 annexe 4 et série Urssaf (pipeline/niches.py). Fichier site/data/niches/sociales.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/sociales.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/sociales.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/niches_sociales.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "totaux par année, top, couverture, sources, recherche préalable (pipeline/niches.py)",
+   "dct:description": "site/data/niches/index.json : totaux par année, top, couverture, sources, recherche préalable (pipeline/niches.py). Fichier site/data/niches/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/niches/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/niches_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "Index du bloc contrôle, influence, aides aux entreprises",
+   "dct:description": "Index du bloc contrôle, influence, aides aux entreprises. Fichier site/data/controle/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/controle_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "Publications de la Cour des comptes reliées aux programmes LOLF",
+   "dct:description": "Publications de la Cour des comptes reliées aux programmes LOLF. Fichier site/data/controle/publications/programmes.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/publications/programmes.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/publications/programmes.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/controle_programmes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "Publications des chambres régionales des comptes par département",
+   "dct:description": "Publications des chambres régionales des comptes par département. Famille de 105 fichiers (motif site/data/controle/publications/collectivites/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/publications/collectivites/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/publications/collectivites/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/controle_collectivites.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "Publications non rattachées",
+   "dct:description": "Publications non rattachées. Fichier site/data/controle/publications/autres.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/publications/autres.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/publications/autres.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/controle_autres.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "organisations (HATVP)",
+   "dct:description": "Représentants d'intérêts : organisations (HATVP). Fichier site/data/controle/lobbying/organisations.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/lobbying/organisations.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/lobbying/organisations.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/controle_lobbying_organisations.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "actions par cible et par domaine",
+   "dct:description": "Représentants d'intérêts : actions par cible et par domaine. Fichier site/data/controle/lobbying/ministeres.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/lobbying/ministeres.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/lobbying/ministeres.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/controle_lobbying_ministeres.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "estimations publiées",
+   "dct:description": "Aides publiques aux entreprises : estimations publiées. Fichier site/data/controle/aides_entreprises.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/aides_entreprises.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/controle/aides_entreprises.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/controle_aides_entreprises.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "opérateurs de l'État et catégories d'opérateurs, financement et ressources par année (pipeline/operateurs.py)",
+   "dct:description": "site/data/operateurs/operateurs.json : opérateurs de l'État et catégories d'opérateurs, financement et ressources par année (pipeline/operateurs.py). Fichier site/data/operateurs/operateurs.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/operateurs/operateurs.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/operateurs/operateurs.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/operateurs.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "totaux par année, couverture, sources, recherche préalable et limites (pipeline/operateurs.py)",
+   "dct:description": "site/data/operateurs/index.json : totaux par année, couverture, sources, recherche préalable et limites (pipeline/operateurs.py). Fichier site/data/operateurs/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/operateurs/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/operateurs/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/operateurs_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "pays, unités, fichiers, avertissements de comparabilité Eurostat, recherche publique",
+   "dct:description": "site/data/comparaison/index.json : pays, unités, fichiers, avertissements de comparabilité Eurostat, recherche publique. Fichier site/data/comparaison/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/comparaison_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "une division COFOG et ses groupes, UE27, zone euro et 27 pays",
+   "dct:description": "site/data/comparaison/depenses/<TOTAL|GFxx>.json : une division COFOG et ses groupes, UE27, zone euro et 27 pays. Famille de 11 fichiers (motif site/data/comparaison/depenses/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/depenses/GF01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/depenses/GF01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/comparaison_depenses.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "impôts et cotisations sociales obligatoires par grande catégorie, UE27, zone euro et 27 pays",
+   "dct:description": "site/data/comparaison/prelevements.json : impôts et cotisations sociales obligatoires par grande catégorie, UE27, zone euro et 27 pays. Fichier site/data/comparaison/prelevements.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/prelevements.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/prelevements.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/comparaison_prelevements.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "« La France et ses voisins », un grand poste par fiche",
+   "dct:description": "site/data/comparaison/fiches.json : « La France et ses voisins », un grand poste par fiche. Fichier site/data/comparaison/fiches.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/fiches.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/comparaison/fiches.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/comparaison_fiches.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "traçabilité d'un noeud (exécution 2024)",
+   "dct:description": "site/data/tracabilite/programme_<n>.json et noeud_psr_<x>.json : traçabilité d'un noeud (exécution 2024). Famille de 133 fichiers (motif site/data/tracabilite/programme_*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/tracabilite/programme_101.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/tracabilite/programme_101.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/tracabilite_noeud.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "traçabilité d'un noeud (exécution 2024)",
+   "dct:description": "site/data/tracabilite/programme_<n>.json et noeud_psr_<x>.json : traçabilité d'un noeud (exécution 2024). Famille de 2 fichiers (motif site/data/tracabilite/noeud_*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/tracabilite/noeud_psr_collectivites.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/tracabilite/noeud_psr_collectivites.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/tracabilite_noeud.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "taux de traçabilité global, par grand poste, par mission et par programme",
+   "dct:description": "site/data/tracabilite/resume.json : taux de traçabilité global, par grand poste, par mission et par programme. Fichier site/data/tracabilite/resume.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/tracabilite/resume.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/tracabilite/resume.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/tracabilite_resume.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "décisions et chronologie des crédits d'un programme",
+   "dct:description": "site/data/decisions/programme_<n>.json : décisions et chronologie des crédits d'un programme. Famille de 187 fichiers (motif site/data/decisions/programme_*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/programme_101.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/programme_101.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/decisions_programme.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "amendements de crédits par programme et par année",
+   "dct:description": "site/data/decisions/amendements_resume.json : amendements de crédits par programme et par année. Fichier site/data/decisions/amendements_resume.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/amendements_resume.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/amendements_resume.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/decisions_amendements_resume.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "scrutins publics de l'Assemblée sur les lois de finances",
+   "dct:description": "site/data/decisions/scrutins.json : scrutins publics de l'Assemblée sur les lois de finances. Fichier site/data/decisions/scrutins.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/scrutins.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/scrutins.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/decisions_scrutins.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "décrets et arrêtés de mouvements de crédits publiés au JO",
+   "dct:description": "site/data/decisions/mouvements_<AAAA>.json : décrets et arrêtés de mouvements de crédits publiés au JO. Famille de 6 fichiers (motif site/data/decisions/mouvements_*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/mouvements_2021.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/mouvements_2021.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/decisions_mouvements.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "mouvements publiés au JO comparés aux colonnes du PLRG",
+   "dct:description": "site/data/decisions/coherence_plrg.json : mouvements publiés au JO comparés aux colonnes du PLRG. Fichier site/data/decisions/coherence_plrg.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/coherence_plrg.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/coherence_plrg.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/decisions_coherence_plrg.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "programmes, fichiers, comptes, contrôle PLRG, limites",
+   "dct:description": "site/data/decisions/index.json : programmes, fichiers, comptes, contrôle PLRG, limites. Fichier site/data/decisions/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/decisions/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/decisions_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "blocs disponibles par commune (masque de bits)",
+   "dct:description": "site/data/local/index.json : blocs disponibles par commune (masque de bits). Fichier site/data/local/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "commune > EPCI > departement > region",
+   "dct:description": "site/data/local/geo/<dep>.json : commune > EPCI > departement > region. Famille de 101 fichiers (motif site/data/local/geo/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/geo/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/geo/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_geo.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "grands agregats OFGL",
+   "dct:description": "site/data/local/budgets/communes/<dep>.json, departements.json, regions.json : grands agregats OFGL. Famille de 101 fichiers (motif site/data/local/budgets/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/communes/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/communes/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_budget.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "grands agregats OFGL",
+   "dct:description": "site/data/local/budgets/communes/<dep>.json, departements.json, regions.json : grands agregats OFGL. Fichier site/data/local/budgets/departements.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/departements.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/departements.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_budget.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "grands agregats OFGL",
+   "dct:description": "site/data/local/budgets/communes/<dep>.json, departements.json, regions.json : grands agregats OFGL. Fichier site/data/local/budgets/regions.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/regions.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/regions.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_budget.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "EPCI et bloc communal consolide (OFGL ensembles intercommunaux)",
+   "dct:description": "site/data/local/budgets/epci/<dep>.json : EPCI et bloc communal consolide (OFGL ensembles intercommunaux). Famille de 173 fichiers (motif site/data/local/budgets/epci/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/epci/01,69.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/epci/01,69.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_budget_epci.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "depenses des departements par fonction",
+   "dct:description": "site/data/local/budgets/fonctions/departements.json : depenses des departements par fonction. Fichier site/data/local/budgets/fonctions/departements.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/fonctions/departements.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/fonctions/departements.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_fonctions_departements.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "detail par fonction (pilote 44 et Bretagne)",
+   "dct:description": "site/data/local/budgets/fonctions/<siren>.json : detail par fonction (pilote 44 et Bretagne). Famille de 74 fichiers (motif site/data/local/budgets/fonctions/[0-9]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/fonctions/200042174.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/budgets/fonctions/200042174.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_fonctions.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "depenses par fonction des communes (toutes, avec statut) et des EPCI du departement",
+   "dct:description": "site/data/local/fonctions/<dep>.json : depenses par fonction des communes (toutes, avec statut) et des EPCI du departement. Famille de 171 fichiers (motif site/data/local/fonctions/[0-9]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/fonctions/01,69.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/fonctions/01,69.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_fonctions_communes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "depenses par fonction des regions et collectivites territoriales uniques",
+   "dct:description": "site/data/local/fonctions/regions.json : depenses par fonction des regions et collectivites territoriales uniques. Fichier site/data/local/fonctions/regions.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/fonctions/regions.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/fonctions/regions.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_fonctions_regions.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "nomenclatures, themes, couverture, masque par commune",
+   "dct:description": "site/data/local/fonctions/index.json : nomenclatures, themes, couverture, masque par commune. Fichier site/data/local/fonctions/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/fonctions/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/fonctions/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_fonctions_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "DGF et dotations d'investissement par commune",
+   "dct:description": "site/data/local/dotations/communes/<dep>.json : DGF et dotations d'investissement par commune. Famille de 101 fichiers (motif site/data/local/dotations/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/communes/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/communes/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_dotations_communes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "dotations de l'Etat (epci)",
+   "dct:description": "site/data/local/dotations/epci.json : dotations de l'Etat (epci). Fichier site/data/local/dotations/epci.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/epci.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/epci.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_dotations_epci.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "dotations de l'Etat (departements)",
+   "dct:description": "site/data/local/dotations/departements.json : dotations de l'Etat (departements). Fichier site/data/local/dotations/departements.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/departements.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/departements.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_dotations_departements.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "dotations de l'Etat (regions)",
+   "dct:description": "site/data/local/dotations/regions.json : dotations de l'Etat (regions). Fichier site/data/local/dotations/regions.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/regions.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/dotations/regions.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_dotations_regions.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "taux d'impots locaux votes (REI)",
+   "dct:description": "site/data/local/taux/<dep>.json : taux d'impots locaux votes (REI). Famille de 101 fichiers (motif site/data/local/taux/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/taux/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/taux/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_taux.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "couverture des decisions locales",
+   "dct:description": "site/data/local/decisions/index.json : couverture des decisions locales. Fichier site/data/local/decisions/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_decisions_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "totaux, exclus agreges, deliberations",
+   "dct:description": "site/data/local/decisions/<siren>/index.json : totaux, exclus agreges, deliberations. Famille de 1263 fichiers (motif site/data/local/decisions/*/index.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/200011062/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/200011062/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_decisions_collectivite.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "subventions votees, personnes morales seulement",
+   "dct:description": "site/data/local/decisions/<siren>/<annee>.json : subventions votees, personnes morales seulement. Famille de 388 fichiers (motif site/data/local/decisions/*/[0-9]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/200036473/2023.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/200036473/2023.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_decisions_annee.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "subventions votees, personnes morales seulement",
+   "dct:description": "site/data/local/decisions/<siren>/<annee>.json : subventions votees, personnes morales seulement. Famille de 10 fichiers (motif site/data/local/decisions/*/inconnue*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/200053726/inconnue.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/200053726/inconnue.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_decisions_annee.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
+   "dct:description": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique. Table CSV (non publiée sur le site, lue dans le dépôt).",
+   "dcat:accessURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/beneficiaires/beneficiaires_publies.csv"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/beneficiaires/beneficiaires_publies.csv"
+   },
+   "dct:format": "CSV",
+   "dcat:mediaType": "text/csv",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "ETPT LFI 2023 par programme, titre 2 execution 2024 et cout moyen par ETPT (millesimes differents)",
+   "dct:description": "ETPT LFI 2023 par programme, titre 2 execution 2024 et cout moyen par ETPT (millesimes differents) Table CSV (non publiée sur le site, lue dans le dépôt).",
+   "dcat:accessURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/effectifs/effectifs.csv"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/effectifs/effectifs.csv"
+   },
+   "dct:format": "CSV",
+   "dcat:mediaType": "text/csv",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "Execution 2024 par programme et categorie LOLF (PLRG 2024, annexe 1, depenses constatees)",
+   "dct:description": "Execution 2024 par programme et categorie LOLF (PLRG 2024, annexe 1, depenses constatees) Table CSV (non publiée sur le site, lue dans le dépôt).",
+   "dcat:accessURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/nature/nature_2024.csv"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/nature/nature_2024.csv"
+   },
+   "dct:format": "CSV",
+   "dcat:mediaType": "text/csv",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "Inventaire des fichiers de site/data",
+   "dct:description": "Chaque fichier versionné de site/data : ressource (famille), schéma du contrat, URL de téléchargement (site pour les JSON, dépôt pour les CSV).",
+   "dcat:accessURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/datapackage/fichiers.csv"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/datapackage/fichiers.csv"
+   },
+   "dct:format": "CSV",
+   "dcat:mediaType": "text/csv",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "Lignée : jeux d'origine par étape du pipeline",
+   "dct:description": "Jeux publics lus par chaque étape (pipeline/entrees_lac.json et pipeline/sources.json), avec l'éditeur, l'URL, la licence telle que publiée et sa forme normalisée.",
+   "dcat:accessURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/datapackage/sources.csv"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/datapackage/sources.csv"
+   },
+   "dct:format": "CSV",
+   "dcat:mediaType": "text/csv",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   }
+  }
+ ]
+}
