@@ -29,9 +29,17 @@ def siren_valide(s) -> bool:
     return bool(s) and bool(SIREN_RE.match(str(s)))
 
 
+# Groupements sans personnalite morale composes de personnes physiques (nomenclature Insee) :
+# indivision (2110), societe creee de fait (2210), societe en participation (2310, 2385).
+# Leur denomination est souvent le nom des personnes : jamais publiee (audit C1).
+CJ_PERSONNES_PHYSIQUES = {"2110", "2210", "2310", "2385"}
+
+
 def personne_morale(cj) -> bool:
-    """Categories juridiques 2xxx a 9xxx (1000 = entrepreneur individuel, 0/vide = inconnu)."""
-    return bool(cj) and bool(CJ_RE.match(str(cj))) and str(cj)[0] in "23456789"
+    """Categories juridiques 2xxx a 9xxx (1000 = entrepreneur individuel, 0/vide = inconnu),
+    hors groupements de personnes physiques (CJ_PERSONNES_PHYSIQUES)."""
+    s = str(cj) if cj else ""
+    return bool(CJ_RE.match(s)) and s[0] in "23456789" and s not in CJ_PERSONNES_PHYSIQUES
 
 
 def charger_cache() -> dict:
