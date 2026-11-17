@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/associations_reserve.schema.json",
+  "title": "site/data/associations/reserve/<an|senat>_<annee>.json : réserve parlementaire, bénéficiaires personnes morales nommés, le reste agrégé",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "assemblee": {
+      "enum": [
+        "Assemblée nationale",
+        "Sénat"
+      ]
+    },
+    "annee": {
+      "type": "integer",
+      "minimum": 2000,
+      "maximum": 2100
+    },
+    "unite": {
+      "type": "string"
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 20
+    },
+    "regle_parlementaires": {
+      "type": "string",
+      "minLength": 20
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "regle",
+        "cles"
+      ],
+      "properties": {
+        "regle": {
+          "type": "string",
+          "minLength": 20
+        },
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "methode": {
+      "type": "string"
+    },
+    "colonnes_beneficiaires": {
+      "const": [
+        "siren",
+        "denomination",
+        "categorie_juridique",
+        "rna",
+        "programme",
+        "montant_eur",
+        "descriptif",
+        "methode_appariement"
+      ]
+    },
+    "total_eur": {
+      "type": "number"
+    },
+    "lignes": {
+      "type": "integer"
+    },
+    "nommes_eur": {
+      "type": "number"
+    },
+    "lignes_nommees": {
+      "type": "integer"
+    },
+    "agreges_eur": {
+      "type": "number"
+    },
+    "agreges": {
+      "type": "object",
+      "required": [
+        "non_apparies_eur",
+        "dont_personnes_physiques_eur",
+        "non_verifies_eur"
+      ]
+    },
+    "part_agregee_pct": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "appariements": {
+      "type": "object"
+    },
+    "par_programme": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "total_eur",
+          "nommes_eur",
+          "lignes"
+        ]
+      }
+    },
+    "parlementaires": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "parlementaire",
+          "nom_tri",
+          "groupe",
+          "departement",
+          "total_eur",
+          "lignes",
+          "beneficiaires_nommes",
+          "agreges"
+        ],
+        "properties": {
+          "parlementaire": {
+            "type": "string",
+            "minLength": 2
+          },
+          "nom_tri": {
+            "type": "string"
+          },
+          "groupe": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "departement": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "total_eur": {
+            "type": "number"
+          },
+          "lignes": {
+            "type": "integer"
+          },
+          "beneficiaires_nommes": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "minItems": 8,
+              "maxItems": 8,
+              "prefixItems": [
+                {
+                  "$ref": "commun.schema.json#/$defs/siren"
+                },
+                {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                {
+                  "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+                },
+                {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^W[0-9A-Z]{9}$"
+                },
+                {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^[0-9]{3}$"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 140
+                },
+                {
+                  "enum": [
+                    "commune_banatic",
+                    "jaune_meme_montant_programme",
+                    "api_nom_departement"
+                  ]
+                }
+              ]
+            }
+          },
+          "agreges": {
+            "type": "object",
+            "required": [
+              "lignes",
+              "montant_eur",
+              "dont_personnes_physiques_eur"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "lignes": {
+                "type": "integer"
+              },
+              "montant_eur": {
+                "type": "number"
+              },
+              "dont_personnes_physiques_eur": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "assemblee",
+    "annee",
+    "regle",
+    "regle_parlementaires",
+    "ordre",
+    "colonnes_beneficiaires",
+    "total_eur",
+    "nommes_eur",
+    "agreges_eur",
+    "part_agregee_pct",
+    "parlementaires"
+  ]
+}

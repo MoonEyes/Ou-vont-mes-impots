@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/associations_fonds_fondations.schema.json",
+  "title": "site/data/associations/fonds_fondations.json : Registre national des fonds et fondations (sans adresse ni dirigeant)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "colonnes": {
+      "const": [
+        "numero_rnf",
+        "titre",
+        "type",
+        "objet_social",
+        "date_creation",
+        "domaine_interet_general",
+        "etat",
+        "prefecture",
+        "siret",
+        "categorie_juridique",
+        "annees_subventions_publiques",
+        "annees_appel_generosite_publique",
+        "etat_transmission_comptes"
+      ]
+    },
+    "types": {
+      "type": "object"
+    },
+    "lecture": {
+      "type": "string"
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 20
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "regle",
+        "cles"
+      ],
+      "properties": {
+        "regle": {
+          "type": "string",
+          "minLength": 20
+        },
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "nombre": {
+      "type": "integer"
+    },
+    "nombre_avec_subventions_publiques_declarees": {
+      "type": "integer"
+    },
+    "objets_retires_par_le_filtre": {
+      "type": "integer"
+    },
+    "par_type": {
+      "type": "object"
+    },
+    "lignes": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "minItems": 13,
+        "maxItems": 13,
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "enum": [
+              "FDD",
+              "FE",
+              "FRUP",
+              null
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 400
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9]{14}$"
+          },
+          {
+            "oneOf": [
+              {
+                "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "integer",
+              "minimum": 2000,
+              "maximum": 2100
+            }
+          },
+          {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "integer",
+              "minimum": 2000,
+              "maximum": 2100
+            }
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "colonnes",
+    "regle",
+    "ordre",
+    "nombre",
+    "lignes"
+  ],
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "adresse"
+        ]
+      },
+      {
+        "required": [
+          "code_postal"
+        ]
+      },
+      {
+        "required": [
+          "ville"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/associations_programme.schema.json",
+  "title": "site/data/associations/programmes/<p>[_<k>].json : crédits de l'État par association (personnes morales) et par année, un programme",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "programme": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{3}$"
+    },
+    "libelle": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 2000,
+        "maximum": 2100
+      },
+      "minItems": 2
+    },
+    "annees_credits": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 2000,
+        "maximum": 2100
+      }
+    },
+    "colonnes": {
+      "const": [
+        "siren",
+        "denomination",
+        "categorie_juridique",
+        "total_eur",
+        "montants_eur"
+      ]
+    },
+    "lecture": {
+      "type": "string"
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 20
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "regle",
+        "cles"
+      ],
+      "properties": {
+        "regle": {
+          "type": "string",
+          "minLength": 20
+        },
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "note": {
+      "type": "string"
+    },
+    "par_annee": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "annee_credits",
+          "statut",
+          "total_source_eur",
+          "nommes_eur",
+          "exclus_personnes_physiques_ou_non_identifies_eur",
+          "non_verifies_eur",
+          "lignes_source"
+        ],
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "annee_credits": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "statut": {
+            "enum": [
+              "publie",
+              "absent_de_la_source",
+              "nc"
+            ]
+          },
+          "facteur_correction": {
+            "type": "number"
+          },
+          "total_source_eur": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "const": "nc"
+              }
+            ]
+          },
+          "nommes_eur": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "const": "nc"
+              }
+            ]
+          },
+          "exclus_personnes_physiques_ou_non_identifies_eur": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "const": "nc"
+              }
+            ]
+          },
+          "dont_personnes_physiques_eur": {
+            "type": "number"
+          },
+          "non_verifies_eur": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "const": "nc"
+              }
+            ]
+          },
+          "lignes_source": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "const": "nc"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "associations_nommees": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "partie": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "parties": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "lignes": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "const": "nc"
+                }
+              ]
+            }
+          }
+        ],
+        "minItems": 5,
+        "maxItems": 5
+      }
+    }
+  },
+  "required": [
+    "programme",
+    "annees",
+    "annees_credits",
+    "colonnes",
+    "regle",
+    "ordre",
+    "par_annee",
+    "lignes",
+    "partie",
+    "parties"
+  ]
+}

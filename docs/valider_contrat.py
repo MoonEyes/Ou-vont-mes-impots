@@ -88,6 +88,11 @@ FICHIERS = [
     ("subventions_departements.schema.json", "subventions/departements.json", "existant"),
     ("subventions_beneficiaires.schema.json", "subventions/beneficiaires.json", "existant"),
     ("subventions_programmes.schema.json", "subventions/programmes.json", "existant"),
+    # associations : jaunes PLF 2012-2025, fonds et fondations, reserve parlementaire (pipeline/associations.py)
+    ("associations_index.schema.json", "associations/index.json", "existant"),
+    ("associations_programme.schema.json", "associations/programmes/*.json", "existant"),
+    ("associations_fonds_fondations.schema.json", "associations/fonds_fondations.json", "existant"),
+    ("associations_reserve.schema.json", "associations/reserve/*.json", "existant"),
     # dette publique : encours, intérêts, détenteurs, financement (pipeline/dette.py)
     ("dette_index.schema.json", "dette/index.json", "existant"),
     ("dette_encours.schema.json", "dette/encours.json", "existant"),

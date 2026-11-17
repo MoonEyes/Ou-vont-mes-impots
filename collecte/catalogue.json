@@ -2804,10 +2804,9 @@
  {
   "id": "assoc_jaune_plf2019",
   "domaine": "associations",
-  "type": "ods_export",
+  "type": "ods_pieces_jointes",
   "portail": "economie",
   "dataset": "projet-de-loi-de-finances-pour-2019-plf-2019-donnees-de-lannexe-jaune-effort-fin",
-  "format_export": "csv",
   "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2019 (lu par pipeline/associations.py)",
   "licence": "Licence Ouverte 2.0",
   "module": "pipeline/associations.py"
@@ -2826,10 +2825,9 @@
  {
   "id": "assoc_jaune_plf2021",
   "domaine": "associations",
-  "type": "ods_export",
+  "type": "ods_pieces_jointes",
   "portail": "economie",
   "dataset": "projet-de-loi-de-finances-pour-2021-plf-2021-donnees-de-lannexe-jaune-effort-fin",
-  "format_export": "csv",
   "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2021 (lu par pipeline/associations.py)",
   "licence": "Licence Ouverte 2.0",
   "module": "pipeline/associations.py"
@@ -2837,10 +2835,9 @@
  {
   "id": "assoc_jaune_plf2022",
   "domaine": "associations",
-  "type": "ods_export",
+  "type": "ods_pieces_jointes",
   "portail": "economie",
   "dataset": "projet-de-loi-de-finances-pour-2022-plf-2022-donnees-de-lannexe-jaune-effort-fin",
-  "format_export": "csv",
   "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2022 (lu par pipeline/associations.py)",
   "licence": "Licence Ouverte 2.0",
   "module": "pipeline/associations.py"
@@ -2848,10 +2845,9 @@
  {
   "id": "assoc_jaune_plf2023",
   "domaine": "associations",
-  "type": "ods_export",
+  "type": "ods_pieces_jointes",
   "portail": "economie",
   "dataset": "plf-2023-effort-financier-de-l-etat-en-faveur-des-associations-liste-des-credits",
-  "format_export": "csv",
   "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2023 (lu par pipeline/associations.py)",
   "licence": "Licence Ouverte 2.0",
   "module": "pipeline/associations.py"
@@ -3626,7 +3622,28 @@
    "titre": "DGCL, bareme des indemnites de fonction brutes mensuelles des elus locaux (plafonds legaux par fonction et strate de population, valeur du point au 1er janvier 2024), aucun elu nomme",
    "licence": "document administratif public",
    "module": "pipeline/fonction_publique.py"
-  }
+  },
+ {
+  "id": "assoc_banatic_siren_insee",
+  "domaine": "associations",
+  "type": "datagouv_ressources",
+  "ressources": [
+   "1e3493b3-7fc0-4005-8aa7-240bdf17e617"
+  ],
+  "titre": "DGCL (Banatic), table de correspondance SIREN / code Insee des communes (appariement des beneficiaires de la reserve parlementaire)",
+  "licence": "non precisee sur data.gouv.fr (donnee publique DGCL)",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_departements",
+  "domaine": "associations",
+  "type": "url",
+  "format": "json",
+  "url": "https://geo.api.gouv.fr/departements?fields=nom,code",
+  "titre": "API Decoupage administratif (geo.api.gouv.fr), liste des departements (nom -> code)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ }
  ],
  "non_collectables": [
   {

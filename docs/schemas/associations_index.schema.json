@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/associations_index.schema.json",
+  "title": "site/data/associations/index.json : années, totaux, fichiers, règles et sources inaccessibles (pipeline/associations.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "collecte_le": {
+      "type": "string"
+    },
+    "unite": {
+      "const": "euros"
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 20
+    },
+    "regle_parlementaires": {
+      "type": "string",
+      "minLength": 20
+    },
+    "note": {
+      "type": "string"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "annee_credits",
+          "statut",
+          "total_source_eur",
+          "nommes_eur",
+          "associations_nommees",
+          "jeu_datagouv"
+        ],
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "annee_credits": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "statut": {
+            "enum": [
+              "publie",
+              "nc"
+            ]
+          },
+          "correction": {
+            "type": "object",
+            "required": [
+              "facteur",
+              "raison"
+            ]
+          },
+          "total_source_eur": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "const": "nc"
+              }
+            ]
+          },
+          "nommes_eur": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "const": "nc"
+              }
+            ]
+          },
+          "exclus_personnes_physiques_ou_non_identifies_eur": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "const": "nc"
+              }
+            ]
+          },
+          "non_verifies_eur": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "const": "nc"
+              }
+            ]
+          },
+          "associations_nommees": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "const": "nc"
+              }
+            ]
+          },
+          "lignes_source": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "const": "nc"
+              }
+            ]
+          },
+          "raison": {
+            "type": "string"
+          },
+          "total_publie_par_la_source_eur": {
+            "type": "number"
+          },
+          "jeu_datagouv": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{24}$"
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "associations_nommees": {
+      "type": "integer"
+    },
+    "programmes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "fichiers",
+          "totaux_eur"
+        ],
+        "properties": {
+          "fichiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^associations/programmes/.+\\.json$"
+            }
+          },
+          "totaux_eur": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "const": "nc"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "fonds_fondations": {
+      "type": "object",
+      "required": [
+        "fichier"
+      ]
+    },
+    "reserve": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "assemblee",
+          "annee",
+          "total_eur",
+          "nommes_eur",
+          "agreges_eur",
+          "fichier"
+        ]
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "constat"
+        ]
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "trouvailles"
+      ]
+    }
+  },
+  "required": [
+    "annees",
+    "programmes",
+    "fonds_fondations",
+    "reserve",
+    "sources_inaccessibles",
+    "regle",
+    "recherche_publique"
+  ]
+}
