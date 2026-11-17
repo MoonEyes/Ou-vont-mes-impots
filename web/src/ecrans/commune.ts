@@ -2,6 +2,7 @@
 // dotations de l'État, taux votés, subventions publiées. Chaque niveau à part : on n'additionne jamais.
 import { fragmentCommune, fragmentDepartement } from '../chemins'
 import { partPersonnelle } from '../composants/hub'
+import { ouCest } from '../composants/trame'
 import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { lien, type Rendu } from '../routeur'
@@ -110,9 +111,15 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
   // Rendu progressif (recette perf, docs/RECETTE.md) : le titre et les liens s'affichent dès la géographie
   // chargée (environ 100 Ko) ; les budgets puis les dotations, taux et subventions arrivent ensuite.
   cible.innerHTML = `
-<h1>${h(g.nom)}</h1>
-<p class="chapeau">${h(new Intl.NumberFormat('fr-FR').format(g.population))} habitants · ${epci ? `${h(epci.nom)} · ` : ''}${h(geo.departement.nom)} · ${h(geo.region.nom)}</p>
-<p class="aide">Chaque collectivité a son propre budget : ne pas additionner commune, intercommunalité, département et région (une partie de l’argent passe de l’une à l’autre).</p>
+<div class="entete-local">
+  <div>
+    <h1>${h(g.nom)}</h1>
+    <p class="chapeau">${h(new Intl.NumberFormat('fr-FR').format(g.population))} habitants${epci ? `, ${h(epci.nom)}` : ''}, ${h(geo.departement.nom)} (${h(dep)}), région ${h(geo.region.nom)}. Ce que la commune dépense, ce qu’elle prélève et ce que l’État lui verse.</p>
+    <p class="aide">Chaque collectivité a son propre budget : ne pas additionner commune, intercommunalité, département et région (une partie de l’argent passe de l’une à l’autre).</p>
+    <p class="actions"><a class="bouton" href="#/local">Chercher une autre commune</a></p>
+  </div>
+  ${ouCest(dep, geo.departement.nom)}
+</div>
 ${attente('sec-budgets', ' section-attente')}
 <h2>Ce que l’État verse à la commune</h2>
 ${attente('sec-dotations')}
@@ -154,9 +161,9 @@ ${partPersonnelle()}`
     remplir(
       'sec-budgets',
       `${commune && bc ? clesBudget(bc, commune) : ''}${commune && bc ? blocBudget(bc, commune, `Le budget ${deCommune(commune.nom)}`, true) : absent('Budget de la commune non disponible.')}
-${bloc && be ? blocBudget(be, bloc, `Le bloc communal (communes et intercommunalité, sans double compte)`, false) : ep && be ? blocBudget(be, ep, `L’intercommunalité : ${ep.nom}`, false) : ''}
-${dpt && bd ? blocBudget(bd, dpt, `Le département : ${dpt.nom}`, false) : ''}
-${reg && br ? blocBudget(br, reg, `La région : ${reg.nom}`, false) : ''}`,
+${bloc && be ? blocBudget(be, bloc, `Le bloc communal (communes et intercommunalité, sans double compte)`, false) : ep && be ? blocBudget(be, ep, `L’intercommunalité : ${ep.nom}`, false) : ''}
+${dpt && bd ? blocBudget(bd, dpt, `Le département : ${dpt.nom}`, false) : ''}
+${reg && br ? blocBudget(br, reg, `La région : ${reg.nom}`, false) : ''}`,
     )
   })()
 

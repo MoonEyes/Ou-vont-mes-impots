@@ -64,7 +64,7 @@ export async function rendre(cible: HTMLElement) {
   <dd>Réponse dans un délai d’un mois. Tu peux aussi adresser une réclamation à la Commission nationale de l’informatique et des libertés (CNIL) : <a href="https://www.cnil.fr/fr/plaintes" rel="noopener noreferrer">cnil.fr/fr/plaintes</a>.</dd>
 </dl>
 <h2>Propriété intellectuelle</h2>
-<p>Code sous licence MIT. Données publiques sous Licence Ouverte 2.0 (Etalab) et conditions de réutilisation d’Eurostat. Polices Fraunces, Atkinson Hyperlegible Next et Recursive sous SIL Open Font License 1.1.</p>
+<p>Code sous licence MIT. Données publiques sous Licence Ouverte 2.0 (Etalab) et conditions de réutilisation d’Eurostat. Polices Bricolage Grotesque et Figtree sous SIL Open Font License 1.1.</p>
 <h2>Responsabilité</h2>
 <p>Les chiffres sont des estimations construites à partir de données publiques, avec leurs limites (voir <a href="#/methode">méthode</a>). Ils ne remplacent ni ta fiche de paie, ni ton avis d’impôt.</p>`
 }

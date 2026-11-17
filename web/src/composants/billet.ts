@@ -176,7 +176,7 @@ export function listeParts(parts: Part[], etiquette: string): string {
   return `<ul class="parts" aria-label="${h(etiquette)}">${parts
     .filter((p) => p.valeur > 0)
     .map((p) => {
-      const corps = `<span class="pastille ${p.famille === 'nonpub' ? 'motif-nonpub' : `fond-${p.famille}`}" aria-hidden="true"></span><span class="p-nom"><strong>${h(p.nom)}</strong>${p.detail ? `<small>${h(p.detail)}</small>` : ''}</span><span class="p-montant">${h(p.texte)}</span>`
+      const corps = `<span class="pastille ${p.famille === 'nonpub' ? 'motif-nonpub' : `fond-${p.famille}`}" aria-hidden="true"></span><span class="p-nom"><strong>${h(p.nom)}</strong>${p.detail ? `<small>${h(p.detail)}</small>` : ''}</span><span class="barre p-barre" aria-hidden="true"><span class="barre-remplissage ${p.famille === 'nonpub' ? 'statut-nonpub' : `fond-${p.famille}`}" data-l="${Math.min(100, Math.max(0, p.valeur)).toFixed(1)}"></span></span><span class="p-montant">${h(p.texte)}</span>`
       return `<li>${p.lien ? `<a href="${h(p.lien)}">${corps}</a>` : `<span class="part-ligne">${corps}</span>`}</li>`
     })
     .join('')}</ul>`

@@ -3,6 +3,7 @@
 // par la page commune générique.
 import { fragmentCommune, fragmentDepartement, SEUIL_PAGE_COMMUNE } from '../chemins'
 import { partPersonnelle } from '../composants/hub'
+import { ouCest } from '../composants/trame'
 import { chargerSiPresent } from '../donnees'
 import type { Rendu } from '../routeur'
 import { absent, appliquerLargeurs, entier, h, source } from '../util'
@@ -25,9 +26,15 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
     `<li><a href="${fragmentCommune(insee, c.nom, c.population)}">${h(c.nom)}</a>${avecPopulation ? ` <span class="aide">${h(entier(c.population))} habitants</span>` : ''}</li>`
   const nom = geo.departement.nom
   cible.innerHTML = `
-<h1>${h(nom)} (${h(dep)}) : le budget des communes</h1>
-<p class="chapeau">${h(entier(communes.length))} commune${communes.length > 1 ? 's' : ''} · ${h(entier(population))} habitants · ${h(geo.region.nom)}</p>
-<p class="aide">Pour chaque commune : ses dépenses, ce que l’État lui verse, les taux d’impôts locaux votés. Chaque collectivité a son propre budget : ne pas additionner commune, intercommunalité, département et région.</p>
+<div class="entete-local">
+  <div>
+    <h1>${h(nom)} (${h(dep)}) : le budget des communes</h1>
+    <p class="chapeau">${h(entier(communes.length))} commune${communes.length > 1 ? 's' : ''}, ${h(entier(population))} habitants, région ${h(geo.region.nom)}.</p>
+    <p class="aide">Pour chaque commune : ses dépenses, ce que l’État lui verse, les taux d’impôts locaux votés. Chaque collectivité a son propre budget : ne pas additionner commune, intercommunalité, département et région.</p>
+    <p class="actions"><a class="bouton" href="#/local">Chercher une autre commune</a></p>
+  </div>
+  ${ouCest(dep, nom)}
+</div>
 <div id="sec-budget-dep" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>
 ${
   grandes.length
@@ -56,7 +63,7 @@ ${partPersonnelle()}`
     const z = cible.querySelector<HTMLElement>('#sec-budget-dep')!
     const bd = await chargerSiPresent<Budgets>('local/budgets/departements.json')
     const dpt = bd?.collectivites[dep]
-    z.innerHTML = bd && dpt ? clesBudget(bd, dpt) + blocBudget(bd, dpt, `Le budget du département : ${dpt.nom}`, true) : `<h2>Le budget du département</h2>${absent('Budget du département non disponible.')}`
+    z.innerHTML = bd && dpt ? clesBudget(bd, dpt) + blocBudget(bd, dpt, `Le budget du département : ${dpt.nom}`, true) : `<h2>Le budget du département</h2>${absent('Budget du département non disponible.')}`
     z.removeAttribute('aria-busy')
     appliquerLargeurs(z)
   })()

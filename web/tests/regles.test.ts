@@ -117,6 +117,10 @@ describe('navigation et métadonnées', () => {
     const png = readFileSync(join(RACINE, 'public', 'og.png'))
     expect(png.readUInt32BE(16)).toBe(1200)
     expect(png.readUInt32BE(20)).toBe(630)
+    // Le billet de l'image de partage reprend les parts de l'exemple calculé (src/exemple-lyon.json), sans chiffre inventé.
+    const og = readFileSync(join(RACINE, 'scripts', 'og.html'), 'utf8')
+    const ex = JSON.parse(readFileSync(join(RACINE, 'src', 'exemple-lyon.json'), 'utf8'))
+    expect([...og.matchAll(/data-part="(\d+)"/g)].map((m) => Number(m[1]))).toEqual(Object.values(ex.sur100))
   })
 })
 

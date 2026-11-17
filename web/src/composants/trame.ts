@@ -23,3 +23,13 @@ export function trame(ici?: string): string {
     .join('')
   return `<div class="trame"><svg viewBox="0 0 539 644" role="group" aria-label="Carte de France en trame : un carré par département${ici ? `. Le département ${h(ici)} est mis en avant` : ''}" focusable="false">${cases}</svg></div>`
 }
+
+/** Encadré « Où c'est » : la trame avec le département mis en avant et sa légende (pages département et commune). */
+export function ouCest(code: string, nom: string): string {
+  return `<section class="carte carte-contour ou-cest seulement-large" aria-labelledby="titre-ou-cest">
+  <h2 id="titre-ou-cest">Où c’est</h2>
+  ${trame(code)}
+  <p class="legende-trame"><span class="t-pastille" aria-hidden="true"></span>Ton département : ${h(nom)} (${h(code)})</p>
+  <p class="aide">Un carré par département, placé à peu près où il se trouve. Chaque carré ouvre sa fiche.</p>
+</section>`
+}
