@@ -2051,6 +2051,35 @@
    "licence": "Licence Ouverte 2.0 (annexe) ; documents parlementaires, réutilisation avec mention"
   },
   {
+   "id": "niches_vm",
+   "domaine": "fiscalite",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/705208/file/Evaluation%20des%20voies%20et%20moyens%20-%20Tome%20II.pdf",
+     "nom": "vm2_plf2024.pdf"
+    },
+    {
+     "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2025/Voies_et_moyens_Tome_2_2025.pdf",
+     "nom": "vm2_plf2025.pdf"
+    },
+    {
+     "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1087933/file/Voies_et_moyens_Tome_2_2026.pdf",
+     "nom": "vm2_plf2026.pdf"
+    },
+    {
+     "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088679/file/PLFSS2026-Annexe4-20251014-183718-59-11_avec%20couverture-2.pdf",
+     "nom": "plfss2026_annexe4.pdf"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/michalkolb01/tax-expenditures-france-thesis/bea78166fe5064cefa3ca37b24fd4574af19c0ee/data/intermediate/guillaume_all.csv",
+     "nom": "igf2011_scores.csv"
+    }
+   ],
+   "titre": "Dépenses fiscales : Évaluation des voies et moyens tome II, PLF 2024 à 2026 (miroirs Assemblée nationale, budget.gouv.fr refusant les scripts), PLFSS 2026 annexe 4 (niches sociales), notes du comité d'évaluation 2011 (pipeline/niches.py)",
+   "licence": "documents administratifs publics, réutilisation libre avec mention ; relevé des notes 2011 sous licence MIT"
+  },
+  {
    "id": "secu_placss2024_texte",
    "domaine": "secu",
    "type": "url",

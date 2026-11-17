@@ -85,6 +85,10 @@ Vérification : `python docs/valider_contrat.py` (installe `jsonschema` si absen
 | `ue/retours.json` | `ue_retours.schema.json` | dépenses de l'UE en France par année et rubrique, solde net (comptable, opérationnel) | Md€ | 2021 à 2025 | `ue.py` | existant |
 | `ue/beneficiaires/index.json` | `ue_beneficiaires_index.schema.json` | bénéficiaires des fonds européens : couverture, totaux par source, année, région, département | € | Kohesio 2014-2027, FTS 2023-2025, Horizon Europe 2021-2026 | `ue.py` | existant |
 | `ue/beneficiaires/<dep>.json` | `ue_beneficiaires_dep.schema.json` | bénéficiaires nommés d'un département (personnes morales) | € | idem | `ue.py` | existant |
+| `niches/mesures.json` | `niches_mesures.schema.json` | chaque dépense fiscale : impôt, programme LOLF, coût par année, bénéficiaires, méthode, dates, note 2011 | M€ | PLF 2021 à 2026 (coûts 2019 à 2026) | `niches.py` | existant |
+| `niches/programmes.json` | `niches_programmes.schema.json` | dépense budgétaire + dépense fiscale par programme, mission, grand poste | M€ | fiscal 2024 constaté, 2025-2026 estimés ; budget exécution 2024 | `niches.py` | existant |
+| `niches/sociales.json` | `niches_sociales.schema.json` | niches sociales : exonérations, allègements, exemptions d'assiette ; série Urssaf par mesure | M€, Md€ | PLFSS 2026 (2023 à 2026) ; Urssaf 2019-2025 | `niches.py` | existant |
+| `niches/index.json` | `niches_index.schema.json` | totaux par année, top, couverture du rattachement, sources, recherche préalable | divers | | `niches.py` | existant |
 | `affectation_prelevements.json` | `affectation_prelevements.schema.json` | ancien format prévu, remplacé à terme par `prelevements/affectation.json` | parts (0 à 1) | | | **prévu** |
 
 Le millésime réel est toujours lu dans le fichier (`millesime`, `annee`, `annees`, clés d'année) ou dans `meta.json` (`millesime.etat_defaut`, `controle.exercice`, `controle.annee_cofog`, `controle.administrations_derniere_annee`, `controle.recettes_annees`, `controle.arbre_administrations.annee`) : le site ne code aucune année en dur.
@@ -464,6 +468,36 @@ Lecture : `eur_sur_100` = « sur 100 € versés par la France au budget de l'UE
 Années : Kohesio = année de début de l'opération, montant = budget UE programmé de l'opération ; FTS = année d'engagement, montant contracté ; Horizon = année de l'appel, subvention signée.
 
 **Personnes physiques (bloquant).** Seules les personnes morales (catégorie `2xxx` à `9xxx`, vérifiée via l'API) sont nommées, sous leur dénomination SIRENE (jamais le nom brut de la source). Les noms Kohesio sont rapprochés d'un SIREN par l'API (même département, mots du nom identiques ou quasi identiques, résultat ambigu rejeté) ; un nom non rapproché, un entrepreneur individuel (`1000`) ou une ligne FTS « Private Persons » est agrégé (`exclus_*`). Les bénéficiaires de la PAC (FEAGA, FEADER, programmes FTS `3.1.x`) ne sont pas collectés. Les listes brutes restent dans `data/lake/_restreint/`.
+
+### 2.18 Dépenses fiscales et niches sociales : `niches/` (pipeline/niches.py)
+
+Producteur : `pipeline/niches.py`. Chaque fichier porte `millesime` et `source`. Commandes : `python pipeline/niches.py collecter` (réseau ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/niches.py produire` (sans réseau ; `pdftotext` de poppler-utils requis). Tests : `pytest tests/test_niches.py`.
+
+```
+data/lake/etat/ et data/lake/fiscalite/ (classeurs DGFiP Voies et moyens tome II, PLF 2021, 2022, 2023, data.economie)
+data/lake/fiscalite/niches_vm/ (tomes II PLF 2024, 2025, 2026 en PDF, miroirs Assemblée nationale ; PLFSS 2026 annexe 4 ;
+                                notes du comité d'évaluation 2011)
+data/lake/aides_entreprises/ (Urssaf, exonérations par mesure)  + site/data/arbre/racine.json (exécution 2024)
+     └─> pipeline/niches.py ─> site/data/niches/mesures.json, programmes.json, sociales.json, index.json
+```
+
+Une année est lue dans l'édition la plus récente qui la chiffre : PLF N+2 (réalisation, `statut` « constaté ») jusqu'en 2024, PLF 2026 pour 2025 et 2026 (« estimé »). Les montants restent en millions d'euros comme à la source. Contrôle bloquant : pour 2022, 2023 et 2024, la somme des fiches retrouve le total publié par la DGFiP à 1 M€ près (85 616, 82 923, 89 406 M€) ; pour 2025 et 2026 l'écart est publié (`ecart_meur`) : le total officiel impute une prévision aux mesures dont la fiche porte « nc ».
+
+**`niches/mesures.json`** : `mesures[]` de `{id (6 chiffres), libelle, impot, sous_categorie, editions[], finalite, norme, reference, methode, fiabilite, programme, programmes_subsidiaires?, beneficiaires, dates, couts, evaluation_2011?}`.
+
+| Champ | Type | Sens |
+|---|---|---|
+| `couts.<année>` | `{brut, meur, statut, plf, hors_reference?}` | `brut` tel que publié ; `meur` en M€, **null** pour « nc » (non chiffré), « ε » (moins de 0,5 M€), « - » (aucun effet budgétaire), jamais 0 ; `plf` = édition lue ; `hors_reference` : mesure absente de l'édition de référence de l'année (supprimée, renumérotée), dernière prévision gardée, hors totaux |
+| `programme` | `{code, libelle, plf, noeud_arbre}` ou null | programme de rattachement principal (tome II) ; `noeud_arbre` = `id` du nœud de `arbre/racine.json` (null si absent de l'arbre) |
+| `beneficiaires` | `{nombre, nature, brut?, plf}` | nombre publié (ménages, entreprises, locaux...) ; `brut` si non chiffré (« Non déterminé ») |
+| `dates` | `{creation, modification, fin_fait_generateur, fin_incidence, suppression?, plf}` | années ou « non borné » |
+| `evaluation_2011` | `{note, brut, cout_2011}` | note 0 à 3 du comité d'évaluation des dépenses fiscales et des niches sociales (IGF, 2011) ; `note` null si non évaluée |
+
+**`niches/programmes.json`** : `programmes[]` (`programme`, `noeud`, `nom`, `mission`, `grand_poste`, `mesures[]`, `fiscal_meur.<2024|2025|2026>`, `non_chiffrees.<année>`, `budget_meur` = exécution 2024 de l'arbre, `total_2024_meur`, `part_fiscale_2024`), `missions[]` et `grands_postes[]` (mêmes sommes), `hors_arbre[]` (programme absent de l'arbre), `couverture` (part du coût 2024 rattachée à un programme de l'arbre). Dépense fiscale (perte de recettes estimée) et dépense budgétaire (décaissement) s'additionnent pour lire l'effort par politique, sans se confondre.
+
+**`niches/sociales.json`** : synthèse ROBSS (annexe 4, tableau 6, Md€), `allegements_et_exonerations_compensees` (tableau 13) et `exonerations_non_compensees` (tableau 14) : `lignes[]` de `{libelle, niveau (groupe, mesure, dont), mission (crédits qui compensent), meur.<2024|2025|2026>, brut?, statut}` ; `exemptions_assiette` (tableau 9 : assiette exemptée, cotisations équivalentes brutes et nettes, 2023-2026, Md€) ; `urssaf` (série 2019-2025 par mesure, secteur privé). Les exonérations compensées par crédits budgétaires figurent déjà dans la dépense de l'État : elles ne s'ajoutent pas aux dépenses fiscales.
+
+**`niches/index.json`** : `totaux.<année>` (`plf_reference`, `statut`, `chiffre_meur`, `mesures`, `chiffrees`, `nc`, `epsilon`, `sans_effet`, `hors_reference`, `total_publie_meur`, `ecart_meur`), `top_2025[]`, `par_impot_2025[]`, `couverture_programmes`, `niches_sociales`, `beneficiaires_nommes` (aucun : secret professionnel en matière fiscale, crédit d'impôt recherche compris ; agrégats seulement), `verification_documents`, `sources`, `sources_inaccessibles[]` (budget.gouv.fr : 403, non contourné), `recherche_publique[]` (verdict, licence, date).
 
 ## 3. Module de calcul personnel
 

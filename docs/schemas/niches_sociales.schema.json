@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/niches_sociales.schema.json",
+  "title": "site/data/niches/sociales.json : niches sociales, PLFSS 2026 annexe 4 et série Urssaf (pipeline/niches.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "$defs": {
+    "ligne_exo": {"type": "object", "properties": {
+      "libelle": {"type": "string"}, "niveau": {"enum": ["groupe", "mesure", "dont"]}, "mission": {"type": ["string", "null"]},
+      "meur": {"type": "object", "additionalProperties": {"type": ["number", "null"]}, "required": ["2024", "2025", "2026"]},
+      "brut": {"type": "object", "additionalProperties": {"enum": ["-"]}},
+      "statut": {"type": "object"}}, "required": ["libelle", "niveau", "meur", "statut"]},
+    "tableau": {"type": "object", "properties": {"ref": {"type": "string"}, "lignes": {"type": "array", "minItems": 3, "items": {"$ref": "#/$defs/ligne_exo"}}},
+                "required": ["ref", "lignes"]}
+  },
+  "properties": {
+    "url": {"type": "string"}, "unite": {"type": "string"}, "avertissement": {"type": "string"},
+    "synthese_exonerations_md": {"type": "object", "required": ["annees", "statut", "ref"]},
+    "allegements_et_exonerations_compensees": {"$ref": "#/$defs/tableau"},
+    "exonerations_non_compensees": {"$ref": "#/$defs/tableau"},
+    "exemptions_assiette": {"type": "object", "properties": {"lignes": {"type": "array", "minItems": 5, "items": {"type": "object",
+      "properties": {"libelle": {"type": "string"}, "niveau": {"enum": ["groupe", "mesure", "total"]},
+                     "annees": {"type": "object", "additionalProperties": {"type": "object", "required": ["assiette_md", "brutes_md", "nettes_md"]}}},
+      "required": ["libelle", "niveau", "annees"]}}}, "required": ["ref", "note", "lignes"]},
+    "urssaf": {"type": ["object", "null"], "properties": {"totaux_meur": {"type": "object"}, "mesures": {"type": "array", "items": {"type": "object",
+      "required": ["code", "libelle", "meur"]}}}, "required": ["source", "champ", "totaux_meur", "mesures"]}
+  },
+  "required": ["unite", "synthese_exonerations_md", "allegements_et_exonerations_compensees", "exonerations_non_compensees",
+               "exemptions_assiette", "urssaf"]
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/niches_programmes.schema.json",
+  "title": "site/data/niches/programmes.json : dépense budgétaire + dépense fiscale par programme, mission, grand poste (pipeline/niches.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "$defs": {
+    "annees_meur": {"type": "object", "properties": {"2024": {"type": "number"}, "2025": {"type": "number"}, "2026": {"type": "number"}},
+                    "required": ["2024", "2025", "2026"]},
+    "agregat": {"type": "object", "properties": {
+      "nom": {"type": "string"}, "budget_meur": {"type": "number"}, "fiscal_2024_meur": {"type": "number"},
+      "fiscal_2025_meur": {"type": "number"}, "fiscal_2026_meur": {"type": "number"}, "mesures": {"type": "integer"},
+      "programmes": {"type": "integer"}, "part_fiscale_2024": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+      "grand_poste": {"type": "string"}},
+      "required": ["nom", "budget_meur", "fiscal_2024_meur", "fiscal_2025_meur", "fiscal_2026_meur", "mesures", "part_fiscale_2024"]}
+  },
+  "properties": {
+    "unite": {"type": "string", "pattern": "^millions d'euros"},
+    "avertissement": {"type": "string"},
+    "programmes": {"type": "array", "minItems": 20, "items": {"type": "object", "properties": {
+      "programme": {"type": "string", "pattern": "^[0-9]{1,3}$"}, "noeud": {"type": "string"}, "nom": {"type": "string"},
+      "mission": {"type": "string"}, "grand_poste": {"type": "string"},
+      "mesures": {"type": "array", "items": {"type": "string", "pattern": "^[0-9]{6}$"}},
+      "fiscal_meur": {"$ref": "#/$defs/annees_meur"}, "non_chiffrees": {"$ref": "#/$defs/annees_meur"},
+      "budget_meur": {"type": "number"}, "total_2024_meur": {"type": "number"},
+      "part_fiscale_2024": {"type": ["number", "null"]}},
+      "required": ["programme", "noeud", "nom", "mission", "grand_poste", "mesures", "fiscal_meur", "non_chiffrees",
+                   "budget_meur", "total_2024_meur"]}},
+    "missions": {"type": "array", "items": {"$ref": "#/$defs/agregat"}},
+    "grands_postes": {"type": "array", "items": {"$ref": "#/$defs/agregat"}},
+    "hors_arbre": {"type": "array", "items": {"type": "object", "properties": {"programme": {"type": ["string", "null"]},
+      "mesures": {"type": "array"}, "fiscal_meur": {"$ref": "#/$defs/annees_meur"}}, "required": ["programme", "mesures", "fiscal_meur"]}},
+    "arbre": {"type": "object", "required": ["millesime", "total_md"]},
+    "couverture": {"type": "object", "properties": {"part_rattachee": {"type": ["number", "null"], "minimum": 0, "maximum": 1}},
+                   "required": ["annee", "chiffre_meur", "rattache_arbre_meur", "part_rattachee", "mesures"]}
+  },
+  "required": ["unite", "programmes", "missions", "grands_postes", "hors_arbre", "arbre", "couverture"]
+}

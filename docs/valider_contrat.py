@@ -77,6 +77,11 @@ FICHIERS = [
     ("secu_arbre.schema.json", "secu/arbre_2025/*.json", "existant"),
     ("secu_arbre.schema.json", "secu/cps/*.json", "existant"),
     ("secu_index.schema.json", "secu/index.json", "existant"),
+    # depenses fiscales et niches sociales (pipeline/niches.py)
+    ("niches_mesures.schema.json", "niches/mesures.json", "existant"),
+    ("niches_programmes.schema.json", "niches/programmes.json", "existant"),
+    ("niches_sociales.schema.json", "niches/sociales.json", "existant"),
+    ("niches_index.schema.json", "niches/index.json", "existant"),
     # traçabilité et décisions (pipeline/tracabilite.py, pipeline/decisions.py)
     ("tracabilite_noeud.schema.json", "tracabilite/programme_*.json", "existant"),
     ("tracabilite_noeud.schema.json", "tracabilite/noeud_*.json", "existant"),

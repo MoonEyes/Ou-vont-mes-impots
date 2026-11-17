@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/niches_index.schema.json",
+  "title": "site/data/niches/index.json : totaux par année, top, couverture, sources, recherche préalable (pipeline/niches.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "properties": {
+    "unite": {"type": "string"},
+    "vue": {"type": "object", "properties": {"mesures": {"const": "niches/mesures.json"}, "programmes": {"const": "niches/programmes.json"},
+            "sociales": {"const": "niches/sociales.json"}}, "required": ["mesures", "programmes", "sociales"]},
+    "mesures": {"type": "integer", "minimum": 400},
+    "mesures_par_edition": {"type": "object"},
+    "totaux": {"type": "object", "propertyNames": {"pattern": "^20(19|2[0-6])$"}, "additionalProperties": {"type": "object",
+      "properties": {"plf_reference": {"type": "integer"}, "statut": {"enum": ["constaté", "estimé"]}, "chiffre_meur": {"type": "number"},
+                     "mesures": {"type": "integer"}, "chiffrees": {"type": "integer"}, "nc": {"type": "integer"},
+                     "epsilon": {"type": "integer"}, "sans_effet": {"type": "integer"},
+                     "hors_reference": {"type": "object", "required": ["mesures", "chiffre_meur"]},
+                     "total_publie_meur": {"type": ["number", "null"]}, "ecart_meur": {"type": "number"},
+                     "ecart_explication": {"type": "string"}},
+      "required": ["plf_reference", "statut", "chiffre_meur", "mesures", "chiffrees", "nc", "epsilon", "sans_effet",
+                   "hors_reference", "total_publie_meur"]}},
+    "top_2025": {"type": "array", "items": {"type": "object", "required": ["id", "libelle", "meur", "statut"]}},
+    "par_impot_2025": {"type": "array"},
+    "couverture_programmes": {"type": "object", "required": ["part_rattachee"]},
+    "niches_sociales": {"type": "object"},
+    "beneficiaires_nommes": {"type": "object", "properties": {"nommes": {"const": 0}}, "required": ["nommes", "constat"]},
+    "verification_documents": {"type": "object", "additionalProperties": {"type": "object", "properties": {"verdict": {"const": "vérifié"}}, "required": ["verdict"]}},
+    "sources": {"type": "object", "additionalProperties": {"type": "object", "required": ["titre", "url", "licence"]}},
+    "sources_inaccessibles": {"type": "array", "items": {"type": "object", "required": ["source", "url", "constat", "effet"]}},
+    "recherche_publique": {"type": "array", "minItems": 1, "items": {"type": "object", "properties": {
+      "verdict": {"enum": ["réutilisable tel quel", "à adapter", "inspiration seulement"]}},
+      "required": ["nom", "url", "verdict", "licence", "date"]}},
+    "genere_le": {"type": "string"}
+  },
+  "required": ["unite", "vue", "mesures", "totaux", "top_2025", "couverture_programmes", "beneficiaires_nommes",
+               "verification_documents", "sources", "sources_inaccessibles", "recherche_publique"]
+}
