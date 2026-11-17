@@ -120,9 +120,6 @@
    "@id": "https://open.urssaf.fr/explore/dataset/table_taux_vmrr/"
   },
   {
-   "@id": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
-  },
-  {
    "@id": "https://static.data.gouv.fr/resources/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire/20261117-051110/decp.parquet"
   },
   {
@@ -142,12 +139,6 @@
   },
   {
    "@id": "https://static.data.gouv.fr/resources/rapports-dobservations-definitives-des-chambres-regionales-des-comptes-crc-et-reponses-associees-1/20200122-192454/meta-rod-datasession.xlsx"
-  },
-  {
-   "@id": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
-  },
-  {
-   "@id": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
   },
   {
    "@id": "https://www.banatic.interieur.gouv.fr/consultation/api/export/pregenere/telecharger/France"
@@ -3353,116 +3344,59 @@
   },
   {
    "@type": "dcat:Distribution",
-   "dct:title": "notions, règles, vues par producteur, fichiers, sources, recherche publique",
-   "dct:description": "site/data/recouvrement/index.json : notions, règles, vues par producteur, fichiers, sources, recherche publique. Fichier site/data/recouvrement/index.json.",
+   "dct:title": "régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py)",
+   "dct:description": "site/data/retraites/index.json : régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py). Fichier site/data/retraites/index.json.",
    "dcat:accessURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/index.json"
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/index.json"
    },
    "dcat:downloadURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/index.json"
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/index.json"
    },
    "dct:format": "JSON",
    "dcat:mediaType": "application/json",
    "dct:license": {
-    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
    },
    "dct:conformsTo": {
-    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_index.schema.json"
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_index.schema.json"
    }
   },
   {
    "@type": "dcat:Distribution",
-   "dct:title": "contrôle fiscal de la DGFiP, montants notifiés et encaissés",
-   "dct:description": "site/data/recouvrement/controle_fiscal.json : contrôle fiscal de la DGFiP, montants notifiés et encaissés. Fichier site/data/recouvrement/controle_fiscal.json.",
+   "dct:title": "retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py)",
+   "dct:description": "site/data/retraites/regimes.json : retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py). Fichier site/data/retraites/regimes.json.",
    "dcat:accessURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_fiscal.json"
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/regimes.json"
    },
    "dcat:downloadURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_fiscal.json"
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/regimes.json"
    },
    "dct:format": "JSON",
    "dcat:mediaType": "application/json",
    "dct:license": {
-    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
    },
    "dct:conformsTo": {
-    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_controle_fiscal.schema.json"
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_regimes.schema.json"
    }
   },
   {
    "@type": "dcat:Distribution",
-   "dct:title": "contrôles des Urssaf, redressements et restitutions, travail dissimulé",
-   "dct:description": "site/data/recouvrement/controle_urssaf.json : contrôles des Urssaf, redressements et restitutions, travail dissimulé. Fichier site/data/recouvrement/controle_urssaf.json.",
+   "dct:title": "compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py)",
+   "dct:description": "site/data/retraites/etat.json : compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py). Fichier site/data/retraites/etat.json.",
    "dcat:accessURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_urssaf.json"
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/etat.json"
    },
    "dcat:downloadURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_urssaf.json"
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/etat.json"
    },
    "dct:format": "JSON",
    "dcat:mediaType": "application/json",
    "dct:license": {
-    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
    },
    "dct:conformsTo": {
-    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_controle_urssaf.schema.json"
-   }
-  },
-  {
-   "@type": "dcat:Distribution",
-   "dct:title": "taux d'impayés mensuels des cotisations (Urssaf), métropole et régions",
-   "dct:description": "site/data/recouvrement/impayes.json : taux d'impayés mensuels des cotisations (Urssaf), métropole et régions. Fichier site/data/recouvrement/impayes.json.",
-   "dcat:accessURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/impayes.json"
-   },
-   "dcat:downloadURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/impayes.json"
-   },
-   "dct:format": "JSON",
-   "dcat:mediaType": "application/json",
-   "dct:license": {
-    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
-   },
-   "dct:conformsTo": {
-    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_impayes.schema.json"
-   }
-  },
-  {
-   "@type": "dcat:Distribution",
-   "dct:title": "admissions en non-valeur et décisions gracieuses dans les comptes de l'État",
-   "dct:description": "site/data/recouvrement/apurements_etat.json : admissions en non-valeur et décisions gracieuses dans les comptes de l'État. Fichier site/data/recouvrement/apurements_etat.json.",
-   "dcat:accessURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/apurements_etat.json"
-   },
-   "dcat:downloadURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/apurements_etat.json"
-   },
-   "dct:format": "JSON",
-   "dcat:mediaType": "application/json",
-   "dct:license": {
-    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
-   },
-   "dct:conformsTo": {
-    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_apurements_etat.schema.json"
-   }
-  },
-  {
-   "@type": "dcat:Distribution",
-   "dct:title": "estimations publiées, constats sur l'absence d'estimation, montants détectés et recouvrés par la sécurité sociale",
-   "dct:description": "site/data/recouvrement/estimations.json : estimations publiées, constats sur l'absence d'estimation, montants détectés et recouvrés par la sécurité sociale. Fichier site/data/recouvrement/estimations.json.",
-   "dcat:accessURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/estimations.json"
-   },
-   "dcat:downloadURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/estimations.json"
-   },
-   "dct:format": "JSON",
-   "dcat:mediaType": "application/json",
-   "dct:license": {
-    "@id": "https://opendatacommons.org/licenses/odbl/1-0/"
-   },
-   "dct:conformsTo": {
-    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_estimations.schema.json"
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_etat.schema.json"
    }
   },
   {
@@ -3558,63 +3492,6 @@
    },
    "dct:conformsTo": {
     "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/justice_defense_armement.schema.json"
-   }
-  },
-  {
-   "@type": "dcat:Distribution",
-   "dct:title": "régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py)",
-   "dct:description": "site/data/retraites/index.json : régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py). Fichier site/data/retraites/index.json.",
-   "dcat:accessURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/index.json"
-   },
-   "dcat:downloadURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/index.json"
-   },
-   "dct:format": "JSON",
-   "dcat:mediaType": "application/json",
-   "dct:license": {
-    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
-   },
-   "dct:conformsTo": {
-    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_index.schema.json"
-   }
-  },
-  {
-   "@type": "dcat:Distribution",
-   "dct:title": "retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py)",
-   "dct:description": "site/data/retraites/regimes.json : retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py). Fichier site/data/retraites/regimes.json.",
-   "dcat:accessURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/regimes.json"
-   },
-   "dcat:downloadURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/regimes.json"
-   },
-   "dct:format": "JSON",
-   "dcat:mediaType": "application/json",
-   "dct:license": {
-    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
-   },
-   "dct:conformsTo": {
-    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_regimes.schema.json"
-   }
-  },
-  {
-   "@type": "dcat:Distribution",
-   "dct:title": "compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py)",
-   "dct:description": "site/data/retraites/etat.json : compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py). Fichier site/data/retraites/etat.json.",
-   "dcat:accessURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/etat.json"
-   },
-   "dcat:downloadURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/etat.json"
-   },
-   "dct:format": "JSON",
-   "dcat:mediaType": "application/json",
-   "dct:license": {
-    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
-   },
-   "dct:conformsTo": {
-    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_etat.schema.json"
    }
   },
   {

@@ -34,7 +34,7 @@
   "name": "Projet citoyen Où vont mes impôts",
   "url": "https://github.com/MoonEyes/Ou-vont-mes-impots"
  },
- "version": "1.6.0",
+ "version": "1.5.0",
  "dateModified": "2026-11-17T20:44:01Z",
  "temporalCoverage": "1991/2027",
  "spatialCoverage": {
@@ -88,8 +88,6 @@
   "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2025/",
   "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2026/",
   "https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/",
-  "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/balances_des_comptes_etat/attachments/plan_comptable_de_letatxlsx",
-  "https://data.economie.gouv.fr/explore/dataset/balances_des_comptes_etat/",
   "https://data.economie.gouv.fr/explore/dataset/budgetvert_plf2024_opendata_vf/",
   "https://data.economie.gouv.fr/explore/dataset/etpt-par-ministere-mission-programme-pour-le-bg-et-les-ba-lfi-2023/",
   "https://data.economie.gouv.fr/explore/dataset/execution-2010-du-budget-general-en-cp/",
@@ -241,7 +239,9 @@
   "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2019-ville-de-toulouse/exports/parquet",
   "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2020-toulouse-metropole/exports/parquet",
   "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2020-ville-de-toulouse/exports/parquet",
-  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2021-toulouse-metropole/exports/parquet"
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2021-toulouse-metropole/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2021-ville-de-toulouse/exports/parquet",
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2022-ville-de-toulouse/exports/parquet"
  ],
  "distribution": [
   {
@@ -1248,39 +1248,21 @@
   },
   {
    "@type": "DataDownload",
-   "name": "notions, règles, vues par producteur, fichiers, sources, recherche publique",
+   "name": "régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py)",
    "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/index.json"
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/index.json"
   },
   {
    "@type": "DataDownload",
-   "name": "contrôle fiscal de la DGFiP, montants notifiés et encaissés",
+   "name": "retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py)",
    "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_fiscal.json"
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/regimes.json"
   },
   {
    "@type": "DataDownload",
-   "name": "contrôles des Urssaf, redressements et restitutions, travail dissimulé",
+   "name": "compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py)",
    "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_urssaf.json"
-  },
-  {
-   "@type": "DataDownload",
-   "name": "taux d'impayés mensuels des cotisations (Urssaf), métropole et régions",
-   "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/impayes.json"
-  },
-  {
-   "@type": "DataDownload",
-   "name": "admissions en non-valeur et décisions gracieuses dans les comptes de l'État",
-   "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/apurements_etat.json"
-  },
-  {
-   "@type": "DataDownload",
-   "name": "estimations publiées, constats sur l'absence d'estimation, montants détectés et recouvrés par la sécurité sociale",
-   "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/estimations.json"
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/etat.json"
   },
   {
    "@type": "DataDownload",
@@ -1311,24 +1293,6 @@
    "name": "prises de commandes, livraisons et licences d'exportation d'armement par pays, licences par catégorie (Rapport au Parlement 2025, annexes 5, 6, 8 et 9)",
    "encodingFormat": "application/json",
    "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/justice_defense/armement.json"
-  },
-  {
-   "@type": "DataDownload",
-   "name": "régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py)",
-   "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/index.json"
-  },
-  {
-   "@type": "DataDownload",
-   "name": "retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py)",
-   "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/regimes.json"
-  },
-  {
-   "@type": "DataDownload",
-   "name": "compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py)",
-   "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/etat.json"
   },
   {
    "@type": "DataDownload",

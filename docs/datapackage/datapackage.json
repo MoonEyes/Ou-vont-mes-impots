@@ -5,7 +5,7 @@
  "title": "Où vont mes impôts : données publiques retraitées sur les dépenses et recettes publiques",
  "description": "Budget de l'État, Sécurité sociale, collectivités, prélèvements, dette, bénéficiaires nommés (personnes morales), décisions et contrôle, retraités à partir de jeux publics ouverts (data.economie.gouv.fr, data.gouv.fr, Eurostat, Insee, DGFiP, OFGL, Assemblée nationale, Sénat, DILA, CNCCFP, HATVP, Cour des comptes). Site citoyen, non officiel. Chaque fichier JSON porte son millésime et sa source ; un montant écarté est publié avec sa raison. Précautions de lecture et exemples : docs/REUTILISER.md.",
  "homepage": "https://mooneyes.github.io/Ou-vont-mes-impots/",
- "version": "1.6.0",
+ "version": "1.5.0",
  "created": "2026-11-17T20:44:01Z",
  "keywords": [
   "budget de l'État",
@@ -601,20 +601,12 @@
    "licence": "ODbL 1.0 (partage à l'identique) ; Licence Ouverte 2.0 ; licence non précisée par l'éditeur"
   },
   {
-   "title": "taxation-customs.ec.europa.eu",
-   "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)"
-  },
-  {
    "title": "toulouse_metropole",
    "licence": "Licence Ouverte 2.0"
   },
   {
    "title": "urssaf",
    "licence": "ODbL 1.0 (partage à l'identique)"
-  },
-  {
-   "title": "www.assemblee-nationale.fr",
-   "licence": "licence non précisée par l'éditeur"
   },
   {
    "title": "www.banatic.interieur.gouv.fr",
@@ -7670,345 +7662,105 @@
    ]
   },
   {
-   "name": "recouvrement-index",
-   "title": "notions, règles, vues par producteur, fichiers, sources, recherche publique",
-   "description": "site/data/recouvrement/index.json : notions, règles, vues par producteur, fichiers, sources, recherche publique. Fichier site/data/recouvrement/index.json.",
-   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/index.json",
+   "name": "retraites-index",
+   "title": "régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py)",
+   "description": "site/data/retraites/index.json : régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py). Fichier site/data/retraites/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/index.json",
    "format": "json",
    "mediatype": "application/json",
    "encoding": "utf-8",
-   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_index.schema.json",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_index.schema.json",
    "licenses": [
     {
-     "name": "ODbL-1.0",
-     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
-     "title": "Open Database License 1.0"
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
     }
    ],
-   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
    "sources": [
     {
-     "title": "data.economie.gouv.fr (2 jeux)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0"
-    },
-    {
-     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0",
-     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
-    },
-    {
-     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
-     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
-     "licence_normalisee": "ue-2011-833",
-     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
-    },
-    {
-     "title": "urssaf (5 jeux)",
-     "licence": "ODbL 1.0 (partage à l'identique)",
-     "licence_normalisee": "ODbL-1.0"
-    },
-    {
-     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
-     "licence": "licence non précisée par l'éditeur",
-     "licence_normalisee": "non-precisee",
-     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
+     "title": "DREES (enquête annuelle auprès des caisses de retraite) ; Service des retraites de l'État ; direction du budget (PLF 2025) ; Caisse des dépôts (CNRACL, Ircantec) ; MSA ; liens vers les prestations, la Sécurité sociale et le budget de l'État déjà publiés",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
     }
    ],
-   "motif": "site/data/recouvrement/index.json",
+   "motif": "site/data/retraites/index.json",
    "nombre_fichiers": 1,
-   "etape_pipeline": "recouvrement",
+   "etape_pipeline": "retraites",
    "millesimes": [
-    "Contrôle fiscal 1996 à 2024 ; contrôles des Urssaf 2018 à 2024 ; taux d'impayés 2004-01 à 2026-08 ; comptes de l'État 2016 à 2025 ; estimations publiées en 2024 et 2025"
+    "2004 à 2024 (DREES, EACR) ; PLF 2025 et exécution 2024 (État)"
    ],
    "sources_declarees": [
-    "DGFiP (annuaires statistiques, document de politique transversale du PLF 2026, comptabilité générale de l'État) ; Urssaf (open.urssaf.fr) ; HCFiPS ; Cour des comptes ; Commission européenne"
+    "DREES (enquête annuelle auprès des caisses de retraite) ; Service des retraites de l'État ; direction du budget (PLF 2025) ; Caisse des dépôts (CNRACL, Ircantec) ; MSA ; liens vers les prestations, la Sécurité sociale et le budget de l'État déjà publiés"
    ]
   },
   {
-   "name": "recouvrement-controle-fiscal",
-   "title": "contrôle fiscal de la DGFiP, montants notifiés et encaissés",
-   "description": "site/data/recouvrement/controle_fiscal.json : contrôle fiscal de la DGFiP, montants notifiés et encaissés. Fichier site/data/recouvrement/controle_fiscal.json.",
-   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_fiscal.json",
+   "name": "retraites-regimes",
+   "title": "retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py)",
+   "description": "site/data/retraites/regimes.json : retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py). Fichier site/data/retraites/regimes.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/regimes.json",
    "format": "json",
    "mediatype": "application/json",
    "encoding": "utf-8",
-   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_controle_fiscal.schema.json",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_regimes.schema.json",
    "licenses": [
     {
-     "name": "ODbL-1.0",
-     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
-     "title": "Open Database License 1.0"
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
     }
    ],
-   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
    "sources": [
     {
-     "title": "data.economie.gouv.fr (2 jeux)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0"
-    },
-    {
-     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0",
-     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
-    },
-    {
-     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
-     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
-     "licence_normalisee": "ue-2011-833",
-     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
-    },
-    {
-     "title": "urssaf (5 jeux)",
-     "licence": "ODbL 1.0 (partage à l'identique)",
-     "licence_normalisee": "ODbL-1.0"
-    },
-    {
-     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
-     "licence": "licence non précisée par l'éditeur",
-     "licence_normalisee": "non-precisee",
-     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
+     "title": "DREES, « Données de l'enquête annuelle auprès des caisses de retraite » (EACR), classeur partie 1 (version du 26 mai 2026), table A-Cadrage : effectifs de retraités au 31 décembre et pensions moyennes de décembre, par caisse ; lignes « tous régimes » estimées par la DREES (modèle Ancêtre, échantillon interrégimes de retraités) ; cotisants : Caisse des dépôts (CNRACL, Ircantec) et DREES (emploi intérieur)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
     }
    ],
-   "motif": "site/data/recouvrement/controle_fiscal.json",
+   "motif": "site/data/retraites/regimes.json",
    "nombre_fichiers": 1,
-   "etape_pipeline": "recouvrement",
+   "etape_pipeline": "retraites",
    "millesimes": [
-    "Contrôle fiscal 1996 à 2019 (annuaires statistiques de la DGFiP) et 2016 à 2024 (document de politique transversale annexé au PLF 2026)"
+    "2004 à 2024"
    ],
    "sources_declarees": [
-    "DGFiP, annuaire statistique 2010 (tableau 601) et 2019 (tableaux CFC_001 à CFC_004), data.gouv.fr ; document de politique transversale « Lutte contre l'évasion et la fraude fiscale », PLF 2026, pages 63, 73, 74 et 84"
+    "DREES, « Données de l'enquête annuelle auprès des caisses de retraite » (EACR), classeur partie 1 (version du 26 mai 2026), table A-Cadrage : effectifs de retraités au 31 décembre et pensions moyennes de décembre, par caisse ; lignes « tous régimes » estimées par la DREES (modèle Ancêtre, échantillon interrégimes de retraités) ; cotisants : Caisse des dépôts (CNRACL, Ircantec) et DREES (emploi intérieur)"
    ]
   },
   {
-   "name": "recouvrement-controle-urssaf",
-   "title": "contrôles des Urssaf, redressements et restitutions, travail dissimulé",
-   "description": "site/data/recouvrement/controle_urssaf.json : contrôles des Urssaf, redressements et restitutions, travail dissimulé. Fichier site/data/recouvrement/controle_urssaf.json.",
-   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_urssaf.json",
+   "name": "retraites-etat",
+   "title": "compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py)",
+   "description": "site/data/retraites/etat.json : compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py). Fichier site/data/retraites/etat.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/etat.json",
    "format": "json",
    "mediatype": "application/json",
    "encoding": "utf-8",
-   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_controle_urssaf.schema.json",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_etat.schema.json",
    "licenses": [
     {
-     "name": "ODbL-1.0",
-     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
-     "title": "Open Database License 1.0"
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
     }
    ],
-   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
    "sources": [
     {
-     "title": "data.economie.gouv.fr (2 jeux)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0"
-    },
-    {
-     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0",
-     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
-    },
-    {
-     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
-     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
-     "licence_normalisee": "ue-2011-833",
-     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
-    },
-    {
-     "title": "urssaf (5 jeux)",
-     "licence": "ODbL 1.0 (partage à l'identique)",
-     "licence_normalisee": "ODbL-1.0"
-    },
-    {
-     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
-     "licence": "licence non précisée par l'éditeur",
-     "licence_normalisee": "non-precisee",
-     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
+     "title": "Direction du budget (PLF 2025 : recettes des CAS et des CCF, dépenses selon destination) ; Service des retraites de l'État (DGFiP), cubes de pensions en paiement ; budget de l'État, exécution 2024 (site/data/arbre)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
     }
    ],
-   "motif": "site/data/recouvrement/controle_urssaf.json",
+   "motif": "site/data/retraites/etat.json",
    "nombre_fichiers": 1,
-   "etape_pipeline": "recouvrement",
+   "etape_pipeline": "retraites",
    "millesimes": [
-    "Contrôles des Urssaf 2018 à 2024"
+    "PLF 2025 (compte d'affectation spéciale Pensions, crédits aux régimes spéciaux) ; exécution 2024 (crédits aux régimes spéciaux) ; 2015 à 2025 (retraités de l'État)"
    ],
    "sources_declarees": [
-    "Urssaf, open.urssaf.fr : « Résultats de l'activité du contrôle et de prévention par les Urssaf » et « Résultats de la lutte contre le travail dissimulé par les Urssaf » (ODbL)"
-   ]
-  },
-  {
-   "name": "recouvrement-impayes",
-   "title": "taux d'impayés mensuels des cotisations (Urssaf), métropole et régions",
-   "description": "site/data/recouvrement/impayes.json : taux d'impayés mensuels des cotisations (Urssaf), métropole et régions. Fichier site/data/recouvrement/impayes.json.",
-   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/impayes.json",
-   "format": "json",
-   "mediatype": "application/json",
-   "encoding": "utf-8",
-   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_impayes.schema.json",
-   "licenses": [
-    {
-     "name": "ODbL-1.0",
-     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
-     "title": "Open Database License 1.0"
-    }
-   ],
-   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
-   "sources": [
-    {
-     "title": "data.economie.gouv.fr (2 jeux)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0"
-    },
-    {
-     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0",
-     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
-    },
-    {
-     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
-     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
-     "licence_normalisee": "ue-2011-833",
-     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
-    },
-    {
-     "title": "urssaf (5 jeux)",
-     "licence": "ODbL 1.0 (partage à l'identique)",
-     "licence_normalisee": "ODbL-1.0"
-    },
-    {
-     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
-     "licence": "licence non précisée par l'éditeur",
-     "licence_normalisee": "non-precisee",
-     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
-    }
-   ],
-   "motif": "site/data/recouvrement/impayes.json",
-   "nombre_fichiers": 1,
-   "etape_pipeline": "recouvrement",
-   "millesimes": [
-    "Taux d'impayés mensuels, 2004-01 à 2026-08"
-   ],
-   "sources_declarees": [
-    "Urssaf, open.urssaf.fr : « Taux d'impayés mensuels, entreprises de 10 salariés ou plus », métropole et par région (ODbL)"
-   ]
-  },
-  {
-   "name": "recouvrement-apurements-etat",
-   "title": "admissions en non-valeur et décisions gracieuses dans les comptes de l'État",
-   "description": "site/data/recouvrement/apurements_etat.json : admissions en non-valeur et décisions gracieuses dans les comptes de l'État. Fichier site/data/recouvrement/apurements_etat.json.",
-   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/apurements_etat.json",
-   "format": "json",
-   "mediatype": "application/json",
-   "encoding": "utf-8",
-   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_apurements_etat.schema.json",
-   "licenses": [
-    {
-     "name": "ODbL-1.0",
-     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
-     "title": "Open Database License 1.0"
-    }
-   ],
-   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
-   "sources": [
-    {
-     "title": "data.economie.gouv.fr (2 jeux)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0"
-    },
-    {
-     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0",
-     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
-    },
-    {
-     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
-     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
-     "licence_normalisee": "ue-2011-833",
-     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
-    },
-    {
-     "title": "urssaf (5 jeux)",
-     "licence": "ODbL 1.0 (partage à l'identique)",
-     "licence_normalisee": "ODbL-1.0"
-    },
-    {
-     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
-     "licence": "licence non précisée par l'éditeur",
-     "licence_normalisee": "non-precisee",
-     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
-    }
-   ],
-   "motif": "site/data/recouvrement/apurements_etat.json",
-   "nombre_fichiers": 1,
-   "etape_pipeline": "recouvrement",
-   "millesimes": [
-    "Comptes de l'État 2016 à 2025"
-   ],
-   "sources_declarees": [
-    "DGFiP, « Données de comptabilité générale de l'État sur dix ans » (balances des comptes ayant servi au Compte général de l'État), data.economie.gouv.fr, comptes 62514, 62518, 62524, 62528 et 65371 ; libellés du plan comptable de l'État"
-   ]
-  },
-  {
-   "name": "recouvrement-estimations",
-   "title": "estimations publiées, constats sur l'absence d'estimation, montants détectés et recouvrés par la sécurité sociale",
-   "description": "site/data/recouvrement/estimations.json : estimations publiées, constats sur l'absence d'estimation, montants détectés et recouvrés par la sécurité sociale. Fichier site/data/recouvrement/estimations.json.",
-   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/estimations.json",
-   "format": "json",
-   "mediatype": "application/json",
-   "encoding": "utf-8",
-   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_estimations.schema.json",
-   "licenses": [
-    {
-     "name": "ODbL-1.0",
-     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
-     "title": "Open Database License 1.0"
-    }
-   ],
-   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
-   "sources": [
-    {
-     "title": "data.economie.gouv.fr (2 jeux)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0"
-    },
-    {
-     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0",
-     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
-    },
-    {
-     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
-     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
-     "licence_normalisee": "ue-2011-833",
-     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
-    },
-    {
-     "title": "urssaf (5 jeux)",
-     "licence": "ODbL 1.0 (partage à l'identique)",
-     "licence_normalisee": "ODbL-1.0"
-    },
-    {
-     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
-     "licence": "licence non précisée par l'éditeur",
-     "licence_normalisee": "non-precisee",
-     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
-    }
-   ],
-   "motif": "site/data/recouvrement/estimations.json",
-   "nombre_fichiers": 1,
-   "etape_pipeline": "recouvrement",
-   "millesimes": [
-    "Estimations publiées de 2024 à 2025 (données 2023 et 2024 quand l'année est donnée)"
-   ],
-   "sources_declarees": [
-    "Document de politique transversale « Lutte contre l'évasion et la fraude fiscale » (PLF 2026) ; HCFiPS, synthèse de la note annuelle sur les fraudes sociales (décembre 2025) ; Cour des comptes, « La lutte contre la fraude fiscale » (16 décembre 2025) ; Commission européenne, « VAT gap in Europe, report 2025 »"
+    "Direction du budget (PLF 2025 : recettes des CAS et des CCF, dépenses selon destination) ; Service des retraites de l'État (DGFiP), cubes de pensions en paiement ; budget de l'État, exécution 2024 (site/data/arbre)"
    ]
   },
   {
@@ -8179,108 +7931,6 @@
    ],
    "sources_declarees": [
     "Rapport au Parlement 2025 sur les exportations d'armement de la France (ministère des Armées), https://www.vie-publique.fr/files/rapport/pdf/300296.pdf, annexes 5, 6, 8 et 9"
-   ]
-  },
-  {
-   "name": "retraites-index",
-   "title": "régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py)",
-   "description": "site/data/retraites/index.json : régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py). Fichier site/data/retraites/index.json.",
-   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/index.json",
-   "format": "json",
-   "mediatype": "application/json",
-   "encoding": "utf-8",
-   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_index.schema.json",
-   "licenses": [
-    {
-     "name": "etalab-2.0",
-     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
-     "title": "Licence Ouverte 2.0 (Etalab)"
-    }
-   ],
-   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
-   "sources": [
-    {
-     "title": "DREES (enquête annuelle auprès des caisses de retraite) ; Service des retraites de l'État ; direction du budget (PLF 2025) ; Caisse des dépôts (CNRACL, Ircantec) ; MSA ; liens vers les prestations, la Sécurité sociale et le budget de l'État déjà publiés",
-     "licence": "voir la source citée",
-     "licence_normalisee": "non-precisee"
-    }
-   ],
-   "motif": "site/data/retraites/index.json",
-   "nombre_fichiers": 1,
-   "etape_pipeline": "retraites",
-   "millesimes": [
-    "2004 à 2024 (DREES, EACR) ; PLF 2025 et exécution 2024 (État)"
-   ],
-   "sources_declarees": [
-    "DREES (enquête annuelle auprès des caisses de retraite) ; Service des retraites de l'État ; direction du budget (PLF 2025) ; Caisse des dépôts (CNRACL, Ircantec) ; MSA ; liens vers les prestations, la Sécurité sociale et le budget de l'État déjà publiés"
-   ]
-  },
-  {
-   "name": "retraites-regimes",
-   "title": "retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py)",
-   "description": "site/data/retraites/regimes.json : retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py). Fichier site/data/retraites/regimes.json.",
-   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/regimes.json",
-   "format": "json",
-   "mediatype": "application/json",
-   "encoding": "utf-8",
-   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_regimes.schema.json",
-   "licenses": [
-    {
-     "name": "etalab-2.0",
-     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
-     "title": "Licence Ouverte 2.0 (Etalab)"
-    }
-   ],
-   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
-   "sources": [
-    {
-     "title": "DREES, « Données de l'enquête annuelle auprès des caisses de retraite » (EACR), classeur partie 1 (version du 26 mai 2026), table A-Cadrage : effectifs de retraités au 31 décembre et pensions moyennes de décembre, par caisse ; lignes « tous régimes » estimées par la DREES (modèle Ancêtre, échantillon interrégimes de retraités) ; cotisants : Caisse des dépôts (CNRACL, Ircantec) et DREES (emploi intérieur)",
-     "licence": "voir la source citée",
-     "licence_normalisee": "non-precisee"
-    }
-   ],
-   "motif": "site/data/retraites/regimes.json",
-   "nombre_fichiers": 1,
-   "etape_pipeline": "retraites",
-   "millesimes": [
-    "2004 à 2024"
-   ],
-   "sources_declarees": [
-    "DREES, « Données de l'enquête annuelle auprès des caisses de retraite » (EACR), classeur partie 1 (version du 26 mai 2026), table A-Cadrage : effectifs de retraités au 31 décembre et pensions moyennes de décembre, par caisse ; lignes « tous régimes » estimées par la DREES (modèle Ancêtre, échantillon interrégimes de retraités) ; cotisants : Caisse des dépôts (CNRACL, Ircantec) et DREES (emploi intérieur)"
-   ]
-  },
-  {
-   "name": "retraites-etat",
-   "title": "compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py)",
-   "description": "site/data/retraites/etat.json : compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py). Fichier site/data/retraites/etat.json.",
-   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/etat.json",
-   "format": "json",
-   "mediatype": "application/json",
-   "encoding": "utf-8",
-   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_etat.schema.json",
-   "licenses": [
-    {
-     "name": "etalab-2.0",
-     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
-     "title": "Licence Ouverte 2.0 (Etalab)"
-    }
-   ],
-   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
-   "sources": [
-    {
-     "title": "Direction du budget (PLF 2025 : recettes des CAS et des CCF, dépenses selon destination) ; Service des retraites de l'État (DGFiP), cubes de pensions en paiement ; budget de l'État, exécution 2024 (site/data/arbre)",
-     "licence": "voir la source citée",
-     "licence_normalisee": "non-precisee"
-    }
-   ],
-   "motif": "site/data/retraites/etat.json",
-   "nombre_fichiers": 1,
-   "etape_pipeline": "retraites",
-   "millesimes": [
-    "PLF 2025 (compte d'affectation spéciale Pensions, crédits aux régimes spéciaux) ; exécution 2024 (crédits aux régimes spéciaux) ; 2015 à 2025 (retraités de l'État)"
-   ],
-   "sources_declarees": [
-    "Direction du budget (PLF 2025 : recettes des CAS et des CCF, dépenses selon destination) ; Service des retraites de l'État (DGFiP), cubes de pensions en paiement ; budget de l'État, exécution 2024 (site/data/arbre)"
    ]
   },
   {
