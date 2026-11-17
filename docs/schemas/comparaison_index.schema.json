@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/comparaison_index.schema.json",
+  "title": "site/data/comparaison/index.json : pays, unités, fichiers, avertissements de comparabilité Eurostat, recherche publique",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "pattern": "Eurostat"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "sources": {
+      "type": "object"
+    },
+    "agregats": {
+      "type": "array",
+      "minItems": 2
+    },
+    "pays": {
+      "type": "array",
+      "minItems": 27,
+      "maxItems": 27,
+      "items": {
+        "type": "object",
+        "required": [
+          "geo",
+          "nom",
+          "nom_tri"
+        ]
+      }
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "regle",
+        "cles"
+      ]
+    },
+    "unites": {
+      "type": "object",
+      "required": [
+        "pct_pib",
+        "part_total",
+        "eur_hab"
+      ]
+    },
+    "depenses": {
+      "type": "object",
+      "required": [
+        "annees",
+        "fichiers"
+      ]
+    },
+    "prelevements": {
+      "type": "object",
+      "required": [
+        "fichier"
+      ]
+    },
+    "fiches": {
+      "type": "object",
+      "required": [
+        "fichier",
+        "ids"
+      ]
+    },
+    "avertissements": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "theme",
+          "texte",
+          "citation",
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "type": "object",
+            "required": [
+              "url",
+              "document"
+            ]
+          }
+        }
+      }
+    },
+    "verification_documents": {
+      "type": "object",
+      "required": [
+        "citations",
+        "retrouvees"
+      ]
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "trouvailles"
+      ],
+      "properties": {
+        "trouvailles": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "nom",
+              "url",
+              "verdict",
+              "licence",
+              "mise_a_jour"
+            ],
+            "properties": {
+              "verdict": {
+                "enum": [
+                  "réutilisable tel quel",
+                  "à adapter",
+                  "inspiration seulement"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "collecte_le",
+    "sources",
+    "agregats",
+    "pays",
+    "ordre",
+    "unites",
+    "depenses",
+    "prelevements",
+    "fiches",
+    "avertissements",
+    "verification_documents",
+    "recherche_publique"
+  ]
+}

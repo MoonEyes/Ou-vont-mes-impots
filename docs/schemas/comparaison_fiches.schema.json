@@ -1,0 +1,371 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/comparaison_fiches.schema.json",
+  "title": "site/data/comparaison/fiches.json : « La France et ses voisins », un grand poste par fiche",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "pattern": "Eurostat"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "regle",
+        "cles"
+      ]
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "fiches": {
+      "type": "array",
+      "minItems": 9,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "titre",
+          "type",
+          "codes",
+          "mode",
+          "fichier",
+          "annee",
+          "france",
+          "ue27",
+          "zone_euro",
+          "mediane_ue_pct_pib",
+          "ecart_mediane_points_pib",
+          "rang",
+          "rang_sur",
+          "evolution_10_ans",
+          "pays_par_valeur",
+          "voir_aussi",
+          "avertissements"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z_]+$"
+          },
+          "type": {
+            "enum": [
+              "depense",
+              "contexte"
+            ]
+          },
+          "fichier": {
+            "type": "string",
+            "pattern": "^comparaison/"
+          },
+          "annee": {
+            "type": "integer"
+          },
+          "pays_publies": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 27
+          },
+          "france": {
+            "type": "object",
+            "required": [
+              "pct_pib",
+              "eur_hab",
+              "part_total"
+            ],
+            "properties": {
+              "pct_pib": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "eur_hab": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "part_total": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "ue27": {
+            "type": "object",
+            "required": [
+              "pct_pib",
+              "eur_hab",
+              "part_total"
+            ],
+            "properties": {
+              "pct_pib": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "eur_hab": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "part_total": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "zone_euro": {
+            "type": "object",
+            "required": [
+              "pct_pib",
+              "eur_hab",
+              "part_total"
+            ],
+            "properties": {
+              "pct_pib": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "eur_hab": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "part_total": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "mediane_ue_pct_pib": {
+            "type": "number"
+          },
+          "ecart_mediane_points_pib": {
+            "type": "number"
+          },
+          "rang": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 27
+          },
+          "rang_sur": {
+            "type": "integer",
+            "maximum": 27
+          },
+          "evolution_10_ans": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "annee_depart",
+              "annee_arrivee",
+              "france_points_pib",
+              "mediane_ue_points_pib",
+              "ue27_points_pib",
+              "pays_compares"
+            ]
+          },
+          "pays_par_valeur": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "geo",
+                "nom",
+                "pct_pib"
+              ],
+              "properties": {
+                "geo": {
+                  "type": "string",
+                  "pattern": "^([A-Z]{2}|EU27_2020|EA20)$"
+                }
+              }
+            }
+          },
+          "voir_aussi": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "nom",
+                "annee",
+                "france",
+                "mediane_ue_pct_pib",
+                "rang"
+              ],
+              "properties": {
+                "annee": {
+                  "type": "integer"
+                },
+                "pays_publies": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 27
+                },
+                "france": {
+                  "type": "object",
+                  "required": [
+                    "pct_pib",
+                    "eur_hab",
+                    "part_total"
+                  ],
+                  "properties": {
+                    "pct_pib": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "eur_hab": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "part_total": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "ue27": {
+                  "type": "object",
+                  "required": [
+                    "pct_pib",
+                    "eur_hab",
+                    "part_total"
+                  ],
+                  "properties": {
+                    "pct_pib": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "eur_hab": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "part_total": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "zone_euro": {
+                  "type": "object",
+                  "required": [
+                    "pct_pib",
+                    "eur_hab",
+                    "part_total"
+                  ],
+                  "properties": {
+                    "pct_pib": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "eur_hab": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "part_total": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "mediane_ue_pct_pib": {
+                  "type": "number"
+                },
+                "ecart_mediane_points_pib": {
+                  "type": "number"
+                },
+                "rang": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 27
+                },
+                "rang_sur": {
+                  "type": "integer",
+                  "maximum": 27
+                },
+                "evolution_10_ans": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "required": [
+                    "annee_depart",
+                    "annee_arrivee",
+                    "france_points_pib",
+                    "mediane_ue_points_pib",
+                    "ue27_points_pib",
+                    "pays_compares"
+                  ]
+                }
+              }
+            }
+          },
+          "avertissements": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "ordre",
+    "definitions",
+    "fiches"
+  ]
+}

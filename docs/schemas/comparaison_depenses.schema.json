@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/comparaison_depenses.schema.json",
+  "title": "site/data/comparaison/depenses/<TOTAL|GFxx>.json : une division COFOG et ses groupes, UE27, zone euro et 27 pays",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "pattern": "Eurostat"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "fonction": {
+      "type": "object",
+      "required": [
+        "code",
+        "nom",
+        "niveau"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^(TOTAL|GF[0-9]{2})$"
+        },
+        "nom": {
+          "type": "string"
+        },
+        "niveau": {
+          "enum": [
+            0,
+            1
+          ]
+        }
+      }
+    },
+    "sous_fonctions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "nom",
+          "niveau"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^GF[0-9]{4}$"
+          },
+          "niveau": {
+            "const": 2
+          }
+        }
+      }
+    },
+    "annees": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      }
+    },
+    "geos": {
+      "type": "array",
+      "minItems": 29,
+      "items": {
+        "type": "string",
+        "pattern": "^([A-Z]{2}|EU27_2020|EA20)$"
+      }
+    },
+    "series": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^([A-Z]{2}|EU27_2020|EA20)$"
+      },
+      "minProperties": 29,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "required": [
+            "pct_pib",
+            "part_total",
+            "eur_hab"
+          ],
+          "properties": {
+            "pct_pib": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "part_total": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "eur_hab": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "statuts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "p",
+              "b"
+            ]
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "fonction",
+    "sous_fonctions",
+    "annees",
+    "geos",
+    "series",
+    "statuts"
+  ]
+}

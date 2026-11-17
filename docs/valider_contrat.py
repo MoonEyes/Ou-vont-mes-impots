@@ -99,6 +99,11 @@ FICHIERS = [
     # opérateurs de l'État et agences (pipeline/operateurs.py)
     ("operateurs.schema.json", "operateurs/operateurs.json", "existant"),
     ("operateurs_index.schema.json", "operateurs/index.json", "existant"),
+    # la France et ses voisins : COFOG et prélèvements dans l'UE (pipeline/europe_comparaison.py)
+    ("comparaison_index.schema.json", "comparaison/index.json", "existant"),
+    ("comparaison_depenses.schema.json", "comparaison/depenses/*.json", "existant"),
+    ("comparaison_prelevements.schema.json", "comparaison/prelevements.json", "existant"),
+    ("comparaison_fiches.schema.json", "comparaison/fiches.json", "existant"),
     # traçabilité et décisions (pipeline/tracabilite.py, pipeline/decisions.py)
     ("tracabilite_noeud.schema.json", "tracabilite/programme_*.json", "existant"),
     ("tracabilite_noeud.schema.json", "tracabilite/noeud_*.json", "existant"),

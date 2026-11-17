@@ -98,6 +98,7 @@ Vérification : `python docs/valider_contrat.py` (installe `jsonschema` si absen
 | `controle/aides_entreprises.json` | `controle_aides_entreprises.schema.json` | estimations publiées des aides aux entreprises (périmètre, année), exonérations Urssaf | Md€, € | estimations 2010-2026 (données 2019-2023) | `controle.py` | existant |
 | `operateurs/operateurs.json` | `operateurs.schema.json` | opérateurs de l'État et catégories d'opérateurs : SCSP et autres financements de l'État, taxes affectées, ressources propres, masse salariale, ETPT, plafond d'emplois, budget initial, somme des dix plus hautes rémunérations, SIREN, programme chef de file | €, ETPT | exécution 2020 à 2024, LFI 2023 à 2025 | `operateurs.py` | existant |
 | `operateurs/index.json` | `operateurs_index.schema.json` | totaux par année, couverture, sources, recherche préalable, limites | divers | | `operateurs.py` | existant |
+| `comparaison/index.json`, `comparaison/depenses/*.json`, `comparaison/prelevements.json`, `comparaison/fiches.json` | `comparaison_*.schema.json` | la France et ses voisins : dépenses COFOG et prélèvements obligatoires, UE27, zone euro, 27 pays ; fiches par grand poste ; avertissements de comparabilité Eurostat | % du PIB, € par habitant, % du total | Eurostat 2000-2024 (dépenses), 2000-2025 (prélèvements) | `europe_comparaison.py` | existant |
 | `affectation_prelevements.json` | `affectation_prelevements.schema.json` | ancien format prévu, remplacé à terme par `prelevements/affectation.json` | parts (0 à 1) | | | **prévu** |
 
 Le millésime réel est toujours lu dans le fichier (`millesime`, `annee`, `annees`, clés d'année) ou dans `meta.json` (`millesime.etat_defaut`, `controle.exercice`, `controle.annee_cofog`, `controle.administrations_derniere_annee`, `controle.recettes_annees`, `controle.arbre_administrations.annee`) : le site ne code aucune année en dur.
@@ -579,6 +580,27 @@ data/lake/etat/an__jaune_operateurs_plf<2024|2025|2026>/ (PDF) + listes data.gou
 | `sources` | jaune d'où vient chaque champ (`jaune PLF AAAA`) |
 
 `remunerations_non_rattachees[]` : entités de la table des rémunérations dont la dénomination ne correspond à aucune ligne (publiées telles quelles, sans rapprochement approximatif). `index.json` : `totaux.<AAAA>` (sommes des lignes), `couverture` (lignes, catégories, opérateurs de la liste 2026, SIREN résolus, années), `sources`, `recherche_prealable[]` (verdict, licence, date), `limites[]`, `unites_source`. Contrôle de lecture : chaque tableau du jaune doté d'une ligne « Total » est retrouvé à 5 k€ ou 0 ETPT près. 2019 : non couvert (jaunes PLF 2021 à 2023 absents des miroirs officiels).
+
+### 2.23 La France et ses voisins : `comparaison/` (pipeline/europe_comparaison.py)
+
+Producteur : `pipeline/europe_comparaison.py`. Sources déclarées dans `collecte/catalogue.json` (`eu_comparaison_*`, domaine `europe`) et collectées par `python collecte/collecte.py eu_comparaison_cofog_pib eu_comparaison_cofog_part eu_comparaison_cofog_meur eu_comparaison_taxag eu_comparaison_population eu_comparaison_pib eu_comparaison_documents` (réseau ; un refus 401/403 n'est jamais contourné) ; `python pipeline/europe_comparaison.py produire [--sortie DOSSIER]` (sans réseau ; échoue si une citation Eurostat n'est plus dans le document collecté). Tests : `pytest tests/test_europe_comparaison.py`. Fichiers compacts, avec `millesime`, `source`, `unite`, `avertissement`.
+
+```
+Eurostat gov_10a_exp (S13, TE ; PC_GDP, PC_TOT, MIO_EUR) ─┐
+Eurostat gov_10a_taxag (S13_S212), nama_10_pe, nama_10_gdp ─┼─> pipeline/europe_comparaison.py ─> site/data/comparaison/*.json
+métadonnées et articles Eurostat (citations vérifiées) ─────┘
+```
+
+Couverture : France, UE à 27 (`EU27_2020`), zone euro (`EA20`) et les 27 pays ; dépenses 2000 à la dernière année publiée par au moins 25 pays (COFOG niveaux 1 et 2), prélèvements 2000 à la dernière année. Trois unités par série, alignées sur `annees` : `pct_pib` (publié), `part_total` (publié pour les dépenses, calculé pour les prélèvements), `eur_hab` (calculé : millions d'euros / population nama_10_pe, euros courants sans correction des prix). `null` = valeur non publiée. `statuts.<geo>.<code>` : années « p » (provisoire) et « b » (rupture de série) publiées par Eurostat.
+
+| Fichier | Contenu |
+|---|---|
+| `comparaison/index.json` | `pays[]` (`geo`, `nom`, `nom_tri`, ordre alphabétique affiché dans `ordre`), `agregats[]`, `unites`, `depenses.fichiers[]` (lien `fichier`), `controle_somme_divisions`, `prelevements`, `fiches`, `avertissements[]` (`id`, `theme` : périmètres, prestations fiscalisées, systèmes de retraite, révisions ; `texte` en français, `citation` exacte en anglais, `source.url`, `source.document`), `verification_documents`, `sources` (mise à jour Eurostat de chaque jeu), `collecte_le`, `recherche_publique.trouvailles[]` (verdict, licence, date) |
+| `comparaison/depenses/<code>.json` | `code` = `TOTAL` ou une division `GF01` à `GF10` : une division COFOG et ses groupes : `fonction`, `sous_fonctions[]`, `annees`, `geos`, `series.<geo>.<code>.<unité>[]`, `statuts` |
+| `comparaison/prelevements.json` | impôts et cotisations sociales obligatoires (secteur S13_S212, y compris impôts versés aux institutions de l'UE) : `categories[]` (`code`, `nom`, `signe` dans l'identité, `parent` pour un « dont »), `identite` (total = D2 + D5 + D91 + D611C + D613C − D995, écart maximal relevé), `series`, `statuts`, `note` (différence avec le taux de l'Insee) |
+| `comparaison/fiches.json` | une fiche par grand poste (santé GF07, retraites GF1002 avec survivants GF1003 en `voir_aussi`, éducation GF09, défense GF02, ordre public GF03, transports GF0405, logement GF0601 + GF1006, environnement GF05, intérêts de la dette GF0107) et deux repères (`depenses_totales`, `prelevements_obligatoires`) : `annee`, `france`, `ue27`, `zone_euro`, `mediane_ue_pct_pib` (médiane non pondérée des pays publiés), `ecart_mediane_points_pib`, `rang`/`rang_sur`, `evolution_10_ans`, `pays_par_valeur[]`, `mode` (publié ou calculé), `avertissements[]` (identifiants de `index.json`) |
+
+**Neutralité.** Aucun qualificatif de niveau (« trop », « pas assez », couleurs de classement) : un rang, une médiane, un écart en points, une évolution. Ordre des pays : alphabétique (`index.json`) ou par valeur décroissante puis nom (`fiches.json`), règle écrite dans `ordre.regle`. Rang 1 = valeur la plus haute ; valeurs égales, même rang.
 
 ## 3. Module de calcul personnel
 
