@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonction_publique_effectifs_series.schema.json",
+  "title": "site/data/fonction_publique/effectifs_series.json : effectifs par versant, type d'employeur, ministère et statut, une valeur par série annuelle (Insee, Siasp)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "unite",
+    "statuts",
+    "valeurs_absentes",
+    "lecture",
+    "series",
+    "lignes",
+    "notes_source"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "unite": {
+      "const": "milliers de personnes"
+    },
+    "statuts": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "enum": [
+              "fonctionnaires_militaires",
+              "contractuels",
+              "contrats_aides",
+              "autres",
+              "ensemble"
+            ]
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "valeurs_absentes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lecture": {
+      "type": "string",
+      "minLength": 1
+    },
+    "series": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "cle",
+          "annee",
+          "revisee"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "cle": {
+            "type": "string",
+            "pattern": "^20[0-9]{2}r?$"
+          },
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "revisee": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "lignes": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "niveau",
+          "parent",
+          "valeurs",
+          "non_disponible"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "niveau": {
+            "enum": [
+              "versant",
+              "type_employeur",
+              "ministere",
+              "detail_ministere",
+              "ensemble"
+            ]
+          },
+          "parent": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "valeurs": {
+            "type": "object",
+            "required": [
+              "fonctionnaires_militaires",
+              "contractuels",
+              "contrats_aides",
+              "autres",
+              "ensemble"
+            ],
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            }
+          },
+          "non_disponible": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^20[0-9]{2}r?$"
+            }
+          }
+        }
+      }
+    },
+    "notes_source": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

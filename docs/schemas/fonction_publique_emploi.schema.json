@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonction_publique_emploi.schema.json",
+  "title": "site/data/fonction_publique/emploi.json : tableaux de l'Insee Première sur l'emploi dans la fonction publique (effectifs, équivalents temps plein, caractéristiques, entrées et sorties)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "annee",
+    "publication",
+    "valeurs_absentes",
+    "tableaux"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "annee": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+    },
+    "publication": {
+      "type": "string",
+      "minLength": 1
+    },
+    "valeurs_absentes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tableaux": {
+      "type": "object",
+      "minProperties": 5,
+      "propertyNames": {
+        "pattern": "^[a-z0-9_]+$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "titre",
+          "unite",
+          "colonnes",
+          "lignes",
+          "notes_source"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "titre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "unite": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "colonnes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "lignes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "rubrique",
+                "libelle",
+                "valeurs"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "rubrique": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "libelle": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "valeurs": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "absences": {
+                  "type": "object",
+                  "propertyNames": {
+                    "pattern": "^[0-9]+$"
+                  },
+                  "additionalProperties": {
+                    "enum": [
+                      "nd",
+                      "///",
+                      "/",
+                      "nc",
+                      "s"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "notes_source": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

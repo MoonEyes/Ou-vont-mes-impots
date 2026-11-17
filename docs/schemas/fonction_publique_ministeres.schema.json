@@ -1,0 +1,374 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonction_publique_ministeres.schema.json",
+  "title": "site/data/fonction_publique/ministeres.json : ministères du budget de l'État, leurs programmes (ETPT, titre 2, conseils) et les repères Insee et cabinets, sans double compte",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "unite",
+    "valeurs_absentes",
+    "regles",
+    "methode",
+    "limites",
+    "totaux",
+    "ministeres",
+    "programmes_sans_ministere",
+    "groupes_insee",
+    "conseils_hors_nomenclature"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "valeurs_absentes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "regles": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "totaux": {
+      "type": "object",
+      "required": [
+        "etpt",
+        "titre2_eur",
+        "nb_programmes",
+        "titre2_programmes_sans_ministere_eur"
+      ],
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "ministeres": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "ministere",
+          "programmes",
+          "nb_programmes",
+          "etpt",
+          "titre2_eur",
+          "programmes_sans_titre2",
+          "conseils_ae_eur",
+          "poles_cabinets",
+          "groupe_insee"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "ministere": {
+            "type": "string",
+            "minLength": 1
+          },
+          "programmes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "programme",
+                "libelle",
+                "etpt",
+                "titre2_eur",
+                "fichier_effectifs",
+                "fichier_arbre",
+                "noeud_arbre"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "programme": {
+                  "type": "string",
+                  "pattern": "^[0-9]{3}$"
+                },
+                "libelle": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "etpt": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "titre2_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "fichier_effectifs": {
+                  "type": "string",
+                  "pattern": "^effectifs/[0-9]{3}\\.json$"
+                },
+                "fichier_arbre": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^arbre/"
+                },
+                "noeud_arbre": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "conseils_ae_consommees_eur": {
+                  "type": "object",
+                  "propertyNames": {
+                    "pattern": "^20[0-9]{2}$"
+                  },
+                  "additionalProperties": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "nb_programmes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "etpt": {
+            "type": "number",
+            "minimum": 0
+          },
+          "titre2_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "programmes_sans_titre2": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9]{3}$"
+            }
+          },
+          "conseils_ae_eur": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "propertyNames": {
+              "pattern": "^20[0-9]{2}$"
+            },
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "poles_cabinets": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^20[0-9]{2}$"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "groupe_insee": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "programmes_sans_ministere": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "libelle",
+          "etpt",
+          "titre2_eur",
+          "fichier_effectifs",
+          "fichier_arbre",
+          "noeud_arbre"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "etpt": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "titre2_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "fichier_effectifs": {
+            "type": "string",
+            "pattern": "^effectifs/[0-9]{3}\\.json$"
+          },
+          "fichier_arbre": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^arbre/"
+          },
+          "noeud_arbre": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "conseils_ae_consommees_eur": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^20[0-9]{2}$"
+            },
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "groupes_insee": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "groupe_insee",
+          "lignes_insee",
+          "ministeres_budget",
+          "effectif_milliers",
+          "etpt_ministeres_budget",
+          "titre2_ministeres_budget_eur"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "groupe_insee": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lignes_insee": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "ministeres_budget": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]+$"
+            }
+          },
+          "effectif_milliers": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "propertyNames": {
+              "pattern": "^20[0-9]{2}$"
+            },
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "etpt_ministeres_budget": {
+            "type": "number",
+            "minimum": 0
+          },
+          "titre2_ministeres_budget_eur": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "conseils_hors_nomenclature": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^20[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "ministere",
+            "ae_eur"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "ministere": {
+              "type": "string",
+              "minLength": 1
+            },
+            "ae_eur": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  }
+}

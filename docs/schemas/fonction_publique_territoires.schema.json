@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonction_publique_territoires.schema.json",
+  "title": "site/data/fonction_publique/territoires.json : effectifs de la fonction publique par versant, par région et département (Insee, TCRD 052)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "annee",
+    "colonnes",
+    "champ",
+    "departements",
+    "regions",
+    "ensembles",
+    "notes_source"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "annee": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+    },
+    "colonnes": {
+      "const": [
+        "ensemble_hors_militaires_milliers",
+        "part_femmes_pct",
+        "fpe_hors_militaires_milliers",
+        "fpt_milliers",
+        "fph_milliers",
+        "pour_100_habitants",
+        "pour_100_emplois_salaries"
+      ]
+    },
+    "champ": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "departements": {
+      "type": "object",
+      "minProperties": 90,
+      "propertyNames": {
+        "pattern": "^(0[1-9]|[1-9][0-9]|2[AB]|97[1-6])$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "libelle",
+          "valeurs"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valeurs": {
+            "type": "array",
+            "minItems": 7,
+            "maxItems": 7,
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "regions": {
+      "type": "object",
+      "minProperties": 13,
+      "propertyNames": {
+        "pattern": "^[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "libelle",
+          "valeurs"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valeurs": {
+            "type": "array",
+            "minItems": 7,
+            "maxItems": 7,
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "ensembles": {
+      "type": "object",
+      "required": [
+        "france_hors_mayotte"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "libelle",
+          "valeurs"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valeurs": {
+            "type": "array",
+            "minItems": 7,
+            "maxItems": 7,
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "notes_source": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

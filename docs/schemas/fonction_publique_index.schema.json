@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonction_publique_index.schema.json",
+  "title": "site/data/fonction_publique/index.json : repères, fichiers, règles sans double compte, écarts entre sources, recherche préalable (pipeline/fonction_publique.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "fichiers",
+    "reperes",
+    "regles",
+    "ecarts_entre_sources",
+    "regle_personnes",
+    "recherche_prealable",
+    "limites"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "fichiers": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "required": [
+          "fichier",
+          "contenu"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "fichier": {
+            "type": "string",
+            "pattern": "^fonction_publique/[a-z_]+\\.json$"
+          },
+          "contenu": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "reperes": {
+      "type": "object",
+      "required": [
+        "effectifs",
+        "budget_etat",
+        "cabinets",
+        "conseils",
+        "indemnites_elus"
+      ],
+      "properties": {
+        "effectifs": {
+          "type": "object",
+          "required": [
+            "annee",
+            "unite",
+            "ensemble",
+            "versants"
+          ],
+          "properties": {
+            "annee": {
+              "$ref": "commun.schema.json#/$defs/annee_entier"
+            },
+            "unite": {
+              "type": "string",
+              "minLength": 1
+            },
+            "ensemble": {
+              "type": "number",
+              "minimum": 0
+            },
+            "versants": {
+              "type": "object",
+              "minProperties": 3,
+              "maxProperties": 3,
+              "additionalProperties": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "budget_etat": {
+          "type": "object",
+          "required": [
+            "etpt",
+            "millesime_etpt",
+            "titre2_eur",
+            "millesime_titre2",
+            "nb_ministeres",
+            "nb_programmes"
+          ],
+          "properties": {
+            "etpt": {
+              "type": "number",
+              "minimum": 0
+            },
+            "titre2_eur": {
+              "type": "number",
+              "minimum": 0
+            },
+            "nb_ministeres": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "nb_programmes": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "cabinets": {
+          "type": "object",
+          "required": [
+            "annee",
+            "effectif_total",
+            "membres_cabinet",
+            "fonctions_support",
+            "dotation_isp_eur",
+            "nb_poles"
+          ],
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "conseils": {
+          "type": "object",
+          "required": [
+            "exercice",
+            "ae_eur",
+            "cp_eur",
+            "edition"
+          ],
+          "properties": {
+            "exercice": {
+              "$ref": "commun.schema.json#/$defs/annee_entier"
+            },
+            "ae_eur": {
+              "type": "number"
+            },
+            "cp_eur": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "edition": {
+              "type": "string",
+              "pattern": "^PLF 20[0-9]{2}$"
+            }
+          }
+        },
+        "indemnites_elus": {
+          "type": "object",
+          "required": [
+            "indice_brut_1027_mensuel_eur",
+            "nb_rangees"
+          ],
+          "properties": {
+            "indice_brut_1027_mensuel_eur": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "nb_rangees": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "regles": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "ecarts_entre_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "grandeur",
+          "valeurs",
+          "note"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "grandeur": {
+            "type": "string",
+            "minLength": 1
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valeurs": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "source",
+                "valeur"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "valeur": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "regle_personnes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recherche_prealable": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "trouvaille",
+          "verdict",
+          "licence",
+          "mise_a_jour",
+          "usage"
+        ],
+        "properties": {
+          "verdict": {
+            "enum": [
+              "réutilisable tel quel",
+              "à adapter",
+              "inspiration seulement"
+            ]
+          }
+        }
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}
