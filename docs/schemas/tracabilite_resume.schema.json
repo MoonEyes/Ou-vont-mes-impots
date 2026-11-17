@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/tracabilite_resume.schema.json",
+  "title": "site/data/tracabilite/resume.json : taux de traçabilité global, par grand poste, par mission et par programme",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "annee": {
+      "$ref": "commun.schema.json#/$defs/annee"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "parts": {
+      "type": "object"
+    },
+    "methode": {
+      "type": "string"
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "global": {
+      "$ref": "#/$defs/bloc"
+    },
+    "grands_postes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/bloc"
+      }
+    },
+    "missions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/bloc"
+      }
+    },
+    "programmes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/ligne"
+      }
+    }
+  },
+  "required": ["annee", "global", "grands_postes", "missions", "programmes"],
+  "$defs": {
+    "bloc": {
+      "type": "object",
+      "required": ["id", "nom", "niveau", "total_eur", "parts", "maillons", "taux_tracabilite_pct"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "nom": {
+          "type": "string"
+        },
+        "niveau": {
+          "enum": ["racine", "grand_poste", "mission"]
+        },
+        "grand_poste": {
+          "type": "string"
+        },
+        "total_eur": {
+          "type": "number"
+        },
+        "parts": {
+          "$ref": "tracabilite_noeud.schema.json#/$defs/parts"
+        },
+        "maillons": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "$ref": "tracabilite_noeud.schema.json#/$defs/maillon"
+          }
+        },
+        "taux_tracabilite_pct": {
+          "type": "number",
+          "minimum": -0.001,
+          "maximum": 100.001
+        },
+        "ecrete_eur": {
+          "type": "number"
+        }
+      }
+    },
+    "ligne": {
+      "type": "object",
+      "required": ["id", "fichier", "total_eur", "taux_tracabilite_pct"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "libelle": {
+          "type": "string"
+        },
+        "fichier": {
+          "type": "string",
+          "pattern": "^tracabilite/.+\\.json$"
+        },
+        "total_eur": {
+          "type": "number"
+        },
+        "taux_tracabilite_pct": {
+          "type": "number"
+        },
+        "approche": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

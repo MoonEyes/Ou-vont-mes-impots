@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/tracabilite_noeud.schema.json",
+  "title": "site/data/tracabilite/programme_<n>.json et noeud_psr_<x>.json : traçabilité d'un noeud (exécution 2024)",
+  "description": "Partition du noeud en quatre parts (somme des pct = 100) ; maillons = couvertures indépendantes (programme, nature, destinataire, bénéficiaire nommé).",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "annee": {
+      "$ref": "commun.schema.json#/$defs/annee"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "niveau": {
+      "enum": ["programme", "mission"]
+    },
+    "programme": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]{3}$"
+    },
+    "id_arbre": {
+      "type": "string"
+    },
+    "libelle": {
+      "type": "string"
+    },
+    "mission": {
+      "type": "string"
+    },
+    "grand_poste": {
+      "type": "string"
+    },
+    "total_eur": {
+      "type": "number"
+    },
+    "parts": {
+      "$ref": "#/$defs/parts"
+    },
+    "maillons": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/maillon"
+      }
+    },
+    "taux_tracabilite_pct": {
+      "type": "number",
+      "minimum": -0.001,
+      "maximum": 100.001
+    },
+    "composantes": {
+      "type": "object",
+      "required": ["beneficiaire_identifie", "nominatif_par_choix", "anonyme_par_nature", "non_publie"],
+      "additionalProperties": false,
+      "properties": {
+        "beneficiaire_identifie": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/composante"
+          }
+        },
+        "nominatif_par_choix": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/composante"
+          }
+        },
+        "anonyme_par_nature": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/composante"
+          }
+        },
+        "non_publie": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/composante"
+          }
+        }
+      }
+    },
+    "ecrete_eur": {
+      "type": "number"
+    },
+    "note_ecrete": {
+      "type": ["string", "null"]
+    }
+  },
+  "required": ["annee", "niveau", "id_arbre", "libelle", "total_eur", "parts", "maillons", "taux_tracabilite_pct", "composantes"],
+  "$defs": {
+    "part": {
+      "type": "object",
+      "required": ["libelle", "eur", "pct", "statut", "ecart_millesime_ans", "sources"],
+      "properties": {
+        "libelle": {
+          "type": "string"
+        },
+        "eur": {
+          "type": "number"
+        },
+        "pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100.001
+        },
+        "statut": {
+          "enum": ["exact", "approche"]
+        },
+        "ecart_millesime_ans": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 3
+          }
+        }
+      }
+    },
+    "parts": {
+      "type": "object",
+      "required": ["beneficiaire_identifie", "nominatif_par_choix", "anonyme_par_nature", "non_publie"],
+      "additionalProperties": false,
+      "properties": {
+        "beneficiaire_identifie": {
+          "$ref": "#/$defs/part"
+        },
+        "nominatif_par_choix": {
+          "$ref": "#/$defs/part"
+        },
+        "anonyme_par_nature": {
+          "$ref": "#/$defs/part"
+        },
+        "non_publie": {
+          "$ref": "#/$defs/part"
+        }
+      }
+    },
+    "maillon": {
+      "type": "object",
+      "required": ["maillon", "pct", "statut", "sources"],
+      "properties": {
+        "maillon": {
+          "enum": ["programme", "nature", "destinataire", "beneficiaire_nomme"]
+        },
+        "libelle": {
+          "type": "string"
+        },
+        "pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100.001
+        },
+        "statut": {
+          "enum": ["exact", "approche"]
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 3
+          }
+        }
+      }
+    },
+    "composante": {
+      "type": "object",
+      "required": ["eur", "sources", "millesime", "statut", "ecart_millesime_ans", "raison_approche", "detail", "niveau_identification"],
+      "properties": {
+        "eur": {
+          "type": "number"
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 3
+          }
+        },
+        "millesime": {
+          "type": "string"
+        },
+        "statut": {
+          "enum": ["exact", "approche"]
+        },
+        "ecart_millesime_ans": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "raison_approche": {
+          "type": ["string", "null"]
+        },
+        "detail": {
+          "type": "string"
+        },
+        "niveau_identification": {
+          "enum": ["entite", "categorie", "aucun"]
+        }
+      }
+    }
+  }
+}

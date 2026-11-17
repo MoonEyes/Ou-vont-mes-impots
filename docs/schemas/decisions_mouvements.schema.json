@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/decisions_mouvements.schema.json",
+  "title": "site/data/decisions/mouvements_<AAAA>.json : décrets et arrêtés de mouvements de crédits publiés au JO",
+  "description": "Montants signés : ouverture > 0, annulation < 0.",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "genere_le": {
+      "type": "string"
+    },
+    "annee": {
+      "$ref": "commun.schema.json#/$defs/annee"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "textes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "titre", "type", "date", "annee_gestion", "url", "lignes", "total_cp"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^JORFTEXT[0-9]{12}$"
+          },
+          "type": {
+            "enum": ["decret_avance", "report", "report_fonds_de_concours", "fonds_de_concours", "ouverture_annulation", "annulation", "virement", "transfert", "repartition", "ouverture"]
+          },
+          "annee_gestion": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "rectificatif": {
+            "type": "boolean"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://www\\.legifrance\\.gouv\\.fr/"
+          },
+          "lignes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["programme", "ae", "cp"],
+              "properties": {
+                "programme": {
+                  "type": "string",
+                  "pattern": "^[0-9]{3}$"
+                },
+                "ae": {
+                  "type": "number"
+                },
+                "cp": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "total_cp": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  },
+  "required": ["annee", "textes"]
+}

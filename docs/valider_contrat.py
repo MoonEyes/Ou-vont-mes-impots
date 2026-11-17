@@ -67,6 +67,16 @@ FICHIERS = [
     ("prelevements_taxe_fonciere.schema.json", "prelevements/taxe_fonciere.json", "existant"),
     ("prelevements_taxe_fonciere_dep.schema.json", "prelevements/taxe_fonciere/*.json", "existant"),
     ("affectation_prelevements.schema.json", "affectation_prelevements.json", "prevu"),
+    # traçabilité et décisions (pipeline/tracabilite.py, pipeline/decisions.py)
+    ("tracabilite_noeud.schema.json", "tracabilite/programme_*.json", "existant"),
+    ("tracabilite_noeud.schema.json", "tracabilite/noeud_*.json", "existant"),
+    ("tracabilite_resume.schema.json", "tracabilite/resume.json", "existant"),
+    ("decisions_programme.schema.json", "decisions/programme_*.json", "existant"),
+    ("decisions_amendements_resume.schema.json", "decisions/amendements_resume.json", "existant"),
+    ("decisions_scrutins.schema.json", "decisions/scrutins.json", "existant"),
+    ("decisions_mouvements.schema.json", "decisions/mouvements_*.json", "existant"),
+    ("decisions_coherence_plrg.schema.json", "decisions/coherence_plrg.json", "existant"),
+    ("decisions_index.schema.json", "decisions/index.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/decisions_scrutins.schema.json",
+  "title": "site/data/decisions/scrutins.json : scrutins publics de l'Assemblée sur les lois de finances",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "genere_le": {
+      "type": "string"
+    },
+    "types": {
+      "type": "array"
+    },
+    "note": {
+      "type": "string"
+    },
+    "scrutins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "numero", "date", "texte", "annee", "type", "objet", "resultat", "pour", "contre", "url"],
+        "properties": {
+          "numero": {
+            "type": "integer"
+          },
+          "texte": {
+            "type": "string",
+            "pattern": "^PLF[GR]? [0-9]{4}$"
+          },
+          "type": {
+            "enum": ["ensemble", "premiere_partie", "seconde_partie", "credits_mission", "article_equilibre", "article", "motion", "amendement", "autre"]
+          },
+          "pour": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "contre": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "abstentions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "amendement": {
+            "type": ["string", "null"]
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://www\\.assemblee-nationale\\.fr/"
+          }
+        }
+      }
+    }
+  },
+  "required": ["scrutins"]
+}

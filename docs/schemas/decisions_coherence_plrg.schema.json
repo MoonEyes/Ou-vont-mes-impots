@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/decisions_coherence_plrg.schema.json",
+  "title": "site/data/decisions/coherence_plrg.json : mouvements publiés au JO comparés aux colonnes du PLRG",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "genere_le": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "tolerance": {
+      "type": "object",
+      "required": ["pct_par_annee", "eur_par_programme"],
+      "properties": {
+        "pct_par_annee": {
+          "type": "number",
+          "minimum": 0
+        },
+        "eur_par_programme": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "composition": {
+      "type": "object"
+    },
+    "hors_comparaison": {
+      "type": "string"
+    },
+    "annees": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^20[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/$defs/colonne"
+        }
+      }
+    }
+  },
+  "required": ["tolerance", "annees"],
+  "$defs": {
+    "colonne": {
+      "type": "object",
+      "required": ["total_jo_cp", "total_plrg_cp", "ecart_absolu_cp", "ecart_pct", "conforme", "programmes_conformes", "programmes", "ecarts"],
+      "properties": {
+        "total_jo_cp": {
+          "type": "number"
+        },
+        "total_plrg_cp": {
+          "type": "number"
+        },
+        "ecart_absolu_cp": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ecart_pct": {
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "conforme": {
+          "type": "boolean"
+        },
+        "programmes_conformes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "programmes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ecarts": {
+          "type": "array"
+        }
+      }
+    }
+  }
+}

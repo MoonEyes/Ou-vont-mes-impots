@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/decisions_amendements_resume.schema.json",
+  "title": "site/data/decisions/amendements_resume.json : amendements de crédits par programme et par année",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "genere_le": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "methode": {
+      "type": "string"
+    },
+    "amendements_credits": {
+      "type": "object"
+    },
+    "lignes_non_rattachees": {
+      "type": "object"
+    },
+    "par_programme": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[0-9]{3}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "propertyNames": {
+          "pattern": "^20[0-9]{2}$"
+        },
+        "additionalProperties": {
+          "$ref": "#/$defs/compte"
+        }
+      }
+    }
+  },
+  "required": ["par_programme"],
+  "$defs": {
+    "compte": {
+      "type": "object",
+      "required": ["deposes_an", "deposes_senat", "adoptes_seance_an", "adoptes_seance_senat", "adoptes_commission_an", "net_ae_adopte_seance", "net_cp_adopte_seance"],
+      "properties": {
+        "deposes_an": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "deposes_senat": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "adoptes_seance_an": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "adoptes_seance_senat": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "adoptes_commission_an": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "net_ae_adopte_seance": {
+          "type": "number"
+        },
+        "net_cp_adopte_seance": {
+          "type": "number"
+        },
+        "net_cp_adopte_commission_an": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
