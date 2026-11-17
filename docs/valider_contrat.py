@@ -96,6 +96,9 @@ FICHIERS = [
     ("controle_lobbying_organisations.schema.json", "controle/lobbying/organisations.json", "existant"),
     ("controle_lobbying_ministeres.schema.json", "controle/lobbying/ministeres.json", "existant"),
     ("controle_aides_entreprises.schema.json", "controle/aides_entreprises.json", "existant"),
+    # opérateurs de l'État et agences (pipeline/operateurs.py)
+    ("operateurs.schema.json", "operateurs/operateurs.json", "existant"),
+    ("operateurs_index.schema.json", "operateurs/index.json", "existant"),
     # traçabilité et décisions (pipeline/tracabilite.py, pipeline/decisions.py)
     ("tracabilite_noeud.schema.json", "tracabilite/programme_*.json", "existant"),
     ("tracabilite_noeud.schema.json", "tracabilite/noeud_*.json", "existant"),

@@ -96,6 +96,8 @@ Vérification : `python docs/valider_contrat.py` (installe `jsonschema` si absen
 | `controle/lobbying/organisations.json` | `controle_lobbying_organisations.schema.json` | représentants d'intérêts (organisations), dépenses déclarées par tranche, domaines, cibles | € (bornes) | exercices 2019 à 2026 | `controle.py` | existant |
 | `controle/lobbying/ministeres.json` | `controle_lobbying_ministeres.schema.json` | actions déclarées par fonction et ministère visés, domaines, missions LOLF | actions | idem | `controle.py` | existant |
 | `controle/aides_entreprises.json` | `controle_aides_entreprises.schema.json` | estimations publiées des aides aux entreprises (périmètre, année), exonérations Urssaf | Md€, € | estimations 2010-2026 (données 2019-2023) | `controle.py` | existant |
+| `operateurs/operateurs.json` | `operateurs.schema.json` | opérateurs de l'État et catégories d'opérateurs : SCSP et autres financements de l'État, taxes affectées, ressources propres, masse salariale, ETPT, plafond d'emplois, budget initial, somme des dix plus hautes rémunérations, SIREN, programme chef de file | €, ETPT | exécution 2020 à 2024, LFI 2023 à 2025 | `operateurs.py` | existant |
+| `operateurs/index.json` | `operateurs_index.schema.json` | totaux par année, couverture, sources, recherche préalable, limites | divers | | `operateurs.py` | existant |
 | `affectation_prelevements.json` | `affectation_prelevements.schema.json` | ancien format prévu, remplacé à terme par `prelevements/affectation.json` | parts (0 à 1) | | | **prévu** |
 
 Le millésime réel est toujours lu dans le fichier (`millesime`, `annee`, `annees`, clés d'année) ou dans `meta.json` (`millesime.etat_defaut`, `controle.exercice`, `controle.annee_cofog`, `controle.administrations_derniere_annee`, `controle.recettes_annees`, `controle.arbre_administrations.annee`) : le site ne code aucune année en dur.
@@ -369,13 +371,13 @@ Si l'utilisateur saisit son avis (`logement.taxe_fonciere_annuelle_eur`), ce mon
 
 ### 2.14 Traçabilité et décisions : `tracabilite/` et `decisions/`
 
-Producteurs : `pipeline/tracabilite.py` (sans réseau, lit `arbre/`, `nature/`, `beneficiaires/`, `vie_politique/` et le PLRG 2023) et `pipeline/decisions.py` (`jorf` : archive JORF de la DILA lue en flux, cache `data/lake/_cache/decisions_jorf/` ; `produire` : sans réseau). Montants en euros. Schémas : `tracabilite_noeud`, `tracabilite_resume`, `decisions_programme`, `decisions_amendements_resume`, `decisions_scrutins`, `decisions_mouvements`, `decisions_coherence_plrg`, `decisions_index`.
+Producteurs : `pipeline/tracabilite.py` (sans réseau, lit `arbre/`, `nature/`, `beneficiaires/`, `vie_politique/`, `operateurs/` et le PLRG 2023) et `pipeline/decisions.py` (`jorf` : archive JORF de la DILA lue en flux, cache `data/lake/_cache/decisions_jorf/` ; `produire` : sans réseau). Montants en euros. Schémas : `tracabilite_noeud`, `tracabilite_resume`, `decisions_programme`, `decisions_amendements_resume`, `decisions_scrutins`, `decisions_mouvements`, `decisions_coherence_plrg`, `decisions_index`.
 
 **Traçabilité (exécution 2024).** `tracabilite/programme_<n>.json` (un par programme de l'arbre) et `tracabilite/noeud_psr_<x>.json` (prélèvements sur recettes) ; `tracabilite/resume.json` : `global`, `grands_postes[]`, `missions[]`, `programmes[]`. Chaque nœud est partagé en quatre `parts` dont les `pct` somment à 100 :
 
 | Part | Sens |
 |---|---|
-| `beneficiaire_identifie` | bénéficiaire nommé par une source publique (associations, marchés de l'État, France 2030, partis et remboursements de campagne, bénéficiaire unique désigné par le programme, Union européenne) ou catégorie fixée par la loi (collectivités : prélèvements, dotations 119 et 122) ; `niveau_identification` = `entite` ou `categorie` |
+| `beneficiaire_identifie` | bénéficiaire nommé par une source publique (associations, marchés de l'État, France 2030, partis et remboursements de campagne, bénéficiaire unique désigné par le programme, Union européenne, subventions pour charges de service public 2024 aux opérateurs d'après le jaune « Opérateurs de l'État », réparties entre programmes financeurs par ajustement proportionnel sur leur catégorie 32, voir 2.21) ou catégorie fixée par la loi (collectivités : prélèvements, dotations 119 et 122) ; `niveau_identification` = `entite` ou `categorie` |
 | `nominatif_par_choix` | titre 2 : la catégorie d'agents est publiée, pas les noms |
 | `anonyme_par_nature` | charge et amortissement de la dette (catégories 41 à 43, programme 369) |
 | `non_publie` | le reste ; un programme net négatif y est rangé en entier |
@@ -548,6 +550,33 @@ data/lake/aides_entreprises/ (exonérations Urssaf)  + site/data/realisations, b
 **Aides aux entreprises.** `aides_entreprises.json` : `estimations[]` (`{id, auteur, annee_publication, annee_donnees, publication, md, md_haut?, perimetre, inclut, exclut, composantes_md?, source}`), `types` (subventions, dépenses fiscales classées et déclassées, exonérations de cotisations, prêts et garanties, collectivités, Europe), `fourchette` (plus basse et plus haute estimation, avec la raison de l'écart), `exonerations_cotisations_urssaf.annees[]` (secteur privé, par grande catégorie, 2004 à 2025), `donnees_du_site[]` (liens vers `beneficiaires/`, `niches/`, `ue/`, sans copie), `verification_documents` (chaque montant est retrouvé dans le rapport du HCSP à chaque production, sinon la production échoue). Les estimations ne sont ni additionnées ni départagées.
 
 **Personnes (bloquant).** Aucune personne physique : ni dirigeants, collaborateurs, clients ou affiliations du répertoire HATVP (vues jamais lues), ni responsables publics (fonction et ministère ou institution seulement ; texte libre contenant un nom remplacé par « texte libre non publié »), ni auteurs des réponses aux rapports. Organisation HATVP nommée seulement si sa catégorie juridique est `2xxx` à `9xxx` (`sirene.personne_morale`), si elle est inscrite au RNA, ou, à identifiant HATVP, hors catégories « indépendant ». Déclarations de patrimoine et d'intérêts de la HATVP : exclues. Légifrance : non utilisé.
+
+### 2.21 Opérateurs de l'État et agences : `operateurs/` (pipeline/operateurs.py)
+
+Producteur : `pipeline/operateurs.py`. Source : annexe « Opérateurs de l'État » (jaune) aux PLF 2024, 2025 et 2026, en PDF, lue sur le miroir officiel de l'Assemblée nationale (budget.gouv.fr refuse les scripts, 403, non contourné) ; liste data.gouv.fr des opérateurs et catégories (PLF 2024 à 2026) pour le statut, les membres et le programme chef de file ; SIREN par dénomination identique (API Recherche d'entreprises, personnes morales de droit public ou EPIC seulement). Commandes : `python pipeline/operateurs.py collecter` (réseau), `python pipeline/operateurs.py siren` (réseau, ≤ 4 appels/s, cache `data/lake/_cache/operateurs_siren.json`), `python pipeline/operateurs.py produire` (sans réseau, cache d'analyse `data/lake/_cache/operateurs/`). Tests : `pytest tests/test_operateurs.py`.
+
+```
+data/lake/etat/an__jaune_operateurs_plf<2024|2025|2026>/ (PDF) + listes data.gouv.fr
+     └─> pipeline/operateurs.py (pdfplumber) ─> site/data/operateurs/operateurs.json, index.json
+                                                     └─> pipeline/tracabilite.py (SCSP 2024, catégorie 32)
+```
+
+`operateurs.json` : `operateurs[]`, une entrée par ligne du jaune (`niveau` = `operateur` ou `categorie` ; une catégorie liste ses `membres[]` `{nom, statut, siren, categorie_juridique, dix_plus_hautes_remunerations_eur}`) avec `id` (sigle ou nom normalisé, stable d'un jaune à l'autre), `nom`, `sigle`, `statut`, `programme_chef_de_file`, `siren`, `categorie_juridique`, `siren_methode`, et `annees.<AAAA>` :
+
+| Champ | Sens |
+|---|---|
+| `nature` | `execution` (RAP, repris par le jaune N+2 ; le plus récent fait foi) ou `lfi` (crédits votés seulement : 2025) |
+| `financement_etat` | exécution par catégorie : `scsp` (titre 3, cat. 32), `sci` (titre 5, cat. 53), `dfp` (titre 7, cat. 72), `transferts` (titre 6), chacune `{ae_eur, cp_eur}` ; `financement_etat_total_cp_eur` |
+| `credits_votes_lfi` | même découpage, LFI de l'année (2023 à 2025) ; `credits_votes_lfi_total_cp_eur` |
+| `programmes_financeurs` | programmes cités par le jaune pour l'opérateur (toutes catégories ; la SCSP n'est pas ventilée par programme) |
+| `taxes_affectees_eur`, `taxes_affectees_prevision_eur` | exécution (source en M€) ; prévision 2025 (source en €) |
+| `ressources_propres_eur`, `masse_salariale_eur` | exécution, comptabilité générale |
+| `etpt_sous_plafond`, `etpt_hors_plafond`, `plafond_emplois_lfi` | ETPT exécutés ; plafond voté (sous plafond, LFI) |
+| `budget_initial` | `{charges_eur, produits_eur}` du compte de résultat prévisionnel (budget initial de l'année) |
+| `dix_plus_hautes_remunerations_eur` | somme des dix plus hautes rémunérations brutes (article 179 de la loi de finances pour 2020) ; jamais de montant individuel ni les commentaires de la source |
+| `sources` | jaune d'où vient chaque champ (`jaune PLF AAAA`) |
+
+`remunerations_non_rattachees[]` : entités de la table des rémunérations dont la dénomination ne correspond à aucune ligne (publiées telles quelles, sans rapprochement approximatif). `index.json` : `totaux.<AAAA>` (sommes des lignes), `couverture` (lignes, catégories, opérateurs de la liste 2026, SIREN résolus, années), `sources`, `recherche_prealable[]` (verdict, licence, date), `limites[]`, `unites_source`. Contrôle de lecture : chaque tableau du jaune doté d'une ligne « Total » est retrouvé à 5 k€ ou 0 ETPT près. 2019 : non couvert (jaunes PLF 2021 à 2023 absents des miroirs officiels).
 
 ## 3. Module de calcul personnel
 

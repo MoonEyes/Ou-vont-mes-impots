@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/operateurs.schema.json",
+  "title": "site/data/operateurs/operateurs.json : opérateurs de l'État et catégories d'opérateurs, financement et ressources par année (pipeline/operateurs.py)",
+  "description": "Une entrée par ligne du jaune « Opérateurs de l'État » (opérateur ou catégorie). Montants en euros, emplois en ETPT. Exécution 2020 à 2024, crédits votés 2023 à 2025. Aucune personne physique : rémunérations seulement en agrégat (somme des dix plus hautes).",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "required": ["millesime", "source", "unite", "annees", "operateurs", "remunerations_non_rattachees"],
+  "properties": {
+    "unite": {"type": "string"},
+    "annees": {"type": "array", "items": {"type": "integer", "minimum": 2000}},
+    "operateurs": {"type": "array", "minItems": 100, "items": {"$ref": "#/$defs/operateur"}},
+    "remunerations_non_rattachees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["entite", "dix_plus_hautes_remunerations_eur"],
+        "additionalProperties": false,
+        "properties": {
+          "entite": {"type": "string", "minLength": 3},
+          "dix_plus_hautes_remunerations_eur": {"$ref": "#/$defs/par_annee"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "eur": {"type": ["number", "null"]},
+    "par_annee": {"type": "object", "propertyNames": {"pattern": "^20[0-9]{2}$"}, "additionalProperties": {"type": ["number", "null"]}},
+    "financement": {
+      "type": "object",
+      "propertyNames": {"enum": ["scsp", "sci", "dfp", "transferts"]},
+      "additionalProperties": {
+        "type": "object",
+        "required": ["ae_eur", "cp_eur"],
+        "additionalProperties": false,
+        "properties": {"ae_eur": {"$ref": "#/$defs/eur"}, "cp_eur": {"$ref": "#/$defs/eur"}}
+      }
+    },
+    "annee": {
+      "type": "object",
+      "required": ["sources"],
+      "additionalProperties": false,
+      "properties": {
+        "nature": {"enum": ["execution", "lfi"]},
+        "financement_etat": {"$ref": "#/$defs/financement"},
+        "financement_etat_total_cp_eur": {"$ref": "#/$defs/eur"},
+        "credits_votes_lfi": {"$ref": "#/$defs/financement"},
+        "credits_votes_lfi_total_cp_eur": {"$ref": "#/$defs/eur"},
+        "programmes_financeurs": {"type": "array", "items": {"type": "string", "pattern": "^[0-9]{3}$"}},
+        "taxes_affectees_eur": {"$ref": "#/$defs/eur"},
+        "taxes_affectees_prevision_eur": {"$ref": "#/$defs/eur"},
+        "ressources_propres_eur": {"$ref": "#/$defs/eur"},
+        "masse_salariale_eur": {"$ref": "#/$defs/eur"},
+        "etpt_sous_plafond": {"type": ["number", "null"]},
+        "etpt_hors_plafond": {"type": ["number", "null"]},
+        "plafond_emplois_lfi": {"type": ["number", "null"]},
+        "budget_initial": {
+          "type": "object",
+          "required": ["charges_eur"],
+          "additionalProperties": false,
+          "properties": {"charges_eur": {"$ref": "#/$defs/eur"}, "produits_eur": {"$ref": "#/$defs/eur"}}
+        },
+        "dix_plus_hautes_remunerations_eur": {"$ref": "#/$defs/eur"},
+        "sources": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^jaune PLF 20[0-9]{2}$"}}
+      }
+    },
+    "membre": {
+      "type": "object",
+      "required": ["nom", "statut", "siren", "categorie_juridique"],
+      "additionalProperties": false,
+      "properties": {
+        "nom": {"type": "string", "minLength": 2},
+        "statut": {"type": ["string", "null"]},
+        "siren": {"oneOf": [{"$ref": "commun.schema.json#/$defs/siren"}, {"type": "null"}]},
+        "categorie_juridique": {"oneOf": [{"$ref": "commun.schema.json#/$defs/categorie_personne_morale"}, {"type": "null"}]},
+        "dix_plus_hautes_remunerations_eur": {"$ref": "#/$defs/par_annee"}
+      }
+    },
+    "operateur": {
+      "type": "object",
+      "required": ["id", "nom", "niveau", "statut", "sigle", "siren", "categorie_juridique", "siren_methode", "annees", "noms_sources"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9]+$"},
+        "nom": {"type": "string", "minLength": 2},
+        "sigle": {"type": ["string", "null"]},
+        "niveau": {"enum": ["operateur", "categorie"]},
+        "statut": {"type": ["string", "null"]},
+        "noms_sources": {"type": "array", "items": {"type": "string"}},
+        "programme_chef_de_file": {"type": ["string", "null"], "pattern": "^[0-9]{3}$"},
+        "programme_chef_de_file_libelle": {"type": ["string", "null"]},
+        "mission_chef_de_file": {"type": ["string", "null"]},
+        "source_referentiel": {"type": "string"},
+        "siren": {"oneOf": [{"$ref": "commun.schema.json#/$defs/siren"}, {"type": "null"}]},
+        "categorie_juridique": {"oneOf": [{"$ref": "commun.schema.json#/$defs/categorie_personne_morale"}, {"type": "null"}]},
+        "siren_methode": {"type": ["string", "null"]},
+        "membres": {"type": "array", "items": {"$ref": "#/$defs/membre"}},
+        "annees": {"type": "object", "propertyNames": {"pattern": "^20[0-9]{2}$"}, "additionalProperties": {"$ref": "#/$defs/annee"}}
+      }
+    }
+  }
+}

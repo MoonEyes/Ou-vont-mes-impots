@@ -17,6 +17,33 @@
  },
  "sources": [
   {
+   "id": "etat_jaune_operateurs_plf2024",
+   "domaine": "etat",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www2.assemblee-nationale.fr/static/16/pdf/Annexes_PLF/Op%C3%A9rateurs_%C3%89tat.pdf",
+   "titre": "Annexe au PLF 2024, Operateurs de l'Etat (jaune), miroir Assemblee nationale ; collecte par pipeline/operateurs.py collecter (data/lake/etat/an__jaune_operateurs_plf2024/)",
+   "licence": "document administratif public"
+  },
+  {
+   "id": "etat_jaune_operateurs_plf2025",
+   "domaine": "etat",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Jaunes/22-Jaune_operateurs.pdf",
+   "titre": "Annexe au PLF 2025, Operateurs de l'Etat (jaune), miroir Assemblee nationale ; collecte par pipeline/operateurs.py collecter (data/lake/etat/an__jaune_operateurs_plf2025/)",
+   "licence": "document administratif public"
+  },
+  {
+   "id": "etat_jaune_operateurs_plf2026",
+   "domaine": "etat",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2026/22-Jaune2026_Operateurs.pdf",
+   "titre": "Annexe au PLF 2026, Operateurs de l'Etat (jaune), miroir Assemblee nationale ; collecte par pipeline/operateurs.py collecter (data/lake/etat/an__jaune_operateurs_plf2026/)",
+   "licence": "document administratif public"
+  },
+  {
    "id": "etat_plf25_destination_nature",
    "domaine": "etat",
    "type": "ods_export",

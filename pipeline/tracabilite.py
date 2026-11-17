@@ -1,7 +1,8 @@
 """Taux de traçabilité de chaque euro du budget de l'État (exécution 2024), du programme jusqu'au bénéficiaire.
 
 Entrées (sans réseau) : site/data/arbre/racine.json (exécution 2024), site/data/nature/, site/data/beneficiaires/,
-site/data/vie_politique/annees.json (produits par les autres modules), annexes 1 « état CP » des PLRG 2023 et 2024
+site/data/vie_politique/annees.json, site/data/operateurs/operateurs.json (produits par les autres modules), annexes
+1 « état CP » des PLRG 2023 et 2024
 (data/lake/etat/realisations/, lues par realisations.execution_plrg).
 
 Sorties :
@@ -55,6 +56,8 @@ SRC_F2030 = "data.gouv.fr, projets France 2030 décidés 2021-2025 (site/data/be
 SRC_VP = "CNCCFP (aide publique aux partis 2024, remboursements de campagne 2024) (site/data/vie_politique/annees.json)"
 SRC_NOMENCLATURE = "nomenclature budgétaire LOLF : l'intitulé du programme désigne son unique bénéficiaire (PLF, PAP)"
 SRC_PSR = "LFI et PLRG 2024 : prélèvements sur recettes de l'État (destinataire fixé par la loi de finances)"
+SRC_OPERATEURS = ("jaune « Opérateurs de l'État » PLF 2026, financement 2022/2024 par le budget de l'État, "
+                  "exécution 2024 (site/data/operateurs/operateurs.json)")
 
 # Programmes dont l'intitulé désigne l'unique bénéficiaire (hors dépenses de personnel).
 BENEFICIAIRE_NOMENCLATURE = {
@@ -159,7 +162,8 @@ def charger_sources() -> dict:
     f2030 = lire("beneficiaires/france2030.json")
     vp = lire("vie_politique/annees.json")
     _, par_annee = realisations.execution_plrg()
-    s = {"marches": marches, "f2030": f2030, "plrg": par_annee, "vp": None}
+    s = {"marches": marches, "f2030": f2030, "plrg": par_annee, "vp": None,
+         "operateurs": lire("operateurs/operateurs.json")}
     if vp:
         s["vp"] = next((a for a in vp["annees"] if a["annee"] == ANNEE), None)
     return s
@@ -180,6 +184,84 @@ def achats_par_ministere(feuilles: list[dict]) -> dict:
     return base
 
 
+def scsp_par_programme(feuilles: list[dict], operateurs: dict | None) -> dict[str, list[dict]]:
+    """SCSP exécutée en 2024 (catégorie 32) par opérateur nommé, répartie entre ses programmes financeurs.
+
+    Le jaune donne, par opérateur, la SCSP 2024 et la liste de ses programmes financeurs (toutes natures), pas la
+    répartition. Ajustement proportionnel itératif (RAS) : la somme par opérateur tend vers sa SCSP (jaune), la somme par
+    programme ne dépasse jamais sa catégorie 32 (PLRG). Un opérateur à un seul programme porteur de catégorie 32,
+    retrouvé en entier, est exact ; une répartition entre plusieurs programmes est approchée.
+    """
+    if not operateurs:
+        return {}
+    cat32 = {}
+    for f in feuilles:
+        nat = lire(f"nature/{f['code']}.json") if f["type"] == "programme" else None
+        if nat and nat["total_eur"] > 0:
+            part = sum(p["eur"] for p in nat["postes"] if p["id"] == "subventions_operateurs") / nat["total_eur"]
+            if part > 0:
+                cat32[f["code"]] = part * f["eur"]
+    lignes = []
+    for o in operateurs["operateurs"]:
+        d = o["annees"].get(str(ANNEE)) or {}
+        scsp = ((d.get("financement_etat") or {}).get("scsp") or {}).get("cp_eur") or 0
+        progs = [p for p in d.get("programmes_financeurs", []) if p in cat32]
+        if d.get("nature") == "execution" and scsp > 0 and progs:
+            lignes.append((o, scsp, progs))
+    # 1) opérateurs à un seul programme possible : rattachés en entier (plafond : la catégorie 32 du programme)
+    mono = defaultdict(float)
+    for _, sc, ps in lignes:
+        if len(ps) == 1:
+            mono[ps[0]] += sc
+    x, cap = {}, dict(cat32)
+    for i, (_, sc, ps) in enumerate(lignes):
+        if len(ps) == 1:
+            p = ps[0]
+            x[(i, p)] = sc * min(1.0, cat32[p] / mono[p])
+    for p, v in mono.items():
+        cap[p] = max(cat32[p] - v, 0.0)
+    # 2) opérateurs à plusieurs programmes : ajustement proportionnel itératif sur la place restante
+    multi = [i for i, (_, _, ps) in enumerate(lignes) if len(ps) > 1]
+    y = {}
+    for i in multi:
+        _, sc, ps = lignes[i]
+        poids = sum(cap[q] for q in ps)
+        for p in ps:
+            y[(i, p)] = sc * cap[p] / poids if poids else 0.0
+    for _ in range(500):
+        col = defaultdict(float)
+        for (i, p), v in y.items():
+            col[p] += v
+        for k in y:  # programme : jamais plus que sa catégorie 32 restante
+            if col[k[1]] > cap[k[1]]:
+                y[k] *= cap[k[1]] / col[k[1]]
+        lig = defaultdict(float)
+        for (i, p), v in y.items():
+            lig[i] += v
+        if all(abs(lig[i] - lignes[i][1]) < 1 for i in multi if lig[i] > 0):
+            break
+        for k in y:  # opérateur : vers sa SCSP
+            if lig[k[0]] > 0:
+                y[k] *= lignes[k[0]][1] / lig[k[0]]
+    col = defaultdict(float)
+    for (i, p), v in y.items():
+        col[p] += v
+    for k in y:  # plafond final
+        if col[k[1]] > cap[k[1]]:
+            y[k] *= cap[k[1]] / col[k[1]]
+    x.update(y)
+    res = defaultdict(list)
+    for (i, p), v in x.items():
+        o, s, ps = lignes[i]
+        if v > 0.5:
+            res[p].append({"operateur": o["nom"], "niveau": "entite" if o["niveau"] == "operateur" else "categorie",
+                           "eur": v, "exact": len(ps) == 1 and abs(v - s) < 1, "nb_programmes": len(ps),
+                           "scsp_eur": s})
+    for p in res:  # exacts d'abord, puis les plus gros montants
+        res[p].sort(key=lambda r: (not r["exact"], -r["eur"]))
+    return res
+
+
 # --- Calcul pour une feuille -----------------------------------------------------------------------------------------
 
 
@@ -190,7 +272,7 @@ def composante(montant: float, source: list[str], millesime: str, ecart: int, ra
             "niveau_identification": niveau}
 
 
-def calculer_feuille(f: dict, src: dict, achats_min: dict) -> dict:
+def calculer_feuille(f: dict, src: dict, achats_min: dict, scsp: dict | None = None) -> dict:
     A = f["eur"]
     code = f["code"]
     comp = {k: [] for k in PARTS}
@@ -281,6 +363,22 @@ def calculer_feuille(f: dict, src: dict, achats_min: dict) -> dict:
                 "Dotations aux collectivités (catégorie 63) : catégorie de bénéficiaire connue, répartition par "
                 "collectivité non disponible dans l'entrepôt pour 2024", "categorie"))
             reste_autres -= m
+        # Opérateurs de l'État : SCSP 2024 (catégorie 32) par opérateur nommé ou catégorie d'opérateurs (jaune).
+        if scsp and code in scsp and shares:
+            reste32 = min(A * shares.get("subventions_operateurs", 0.0), reste_autres)
+            for x in scsp[code]:
+                raison = None if x["exact"] else (
+                    f"SCSP 2024 de l'opérateur ({round(x['scsp_eur'] / 1e6, 1)} M€) répartie entre ses "
+                    f"{x['nb_programmes']} programmes financeurs par ajustement proportionnel sur la catégorie 32 de "
+                    f"chaque programme (le jaune ne ventile pas la SCSP par programme)" if x["nb_programmes"] > 1 else
+                    "SCSP 2024 de l'opérateur supérieure à la catégorie 32 restante du programme : plafonnée")
+                m = ajouter(x["eur"], reste32, composante(
+                    x["eur"], [SRC_OPERATEURS, SRC_NATURE, SRC_ARBRE], "Exécution 2024", 0, raison,
+                    f"Subvention pour charges de service public 2024 : {x['operateur']}"
+                    + (" (catégorie d'opérateurs, montant non publié par établissement)"
+                       if x["niveau"] == "categorie" else ""), x["niveau"]))
+                reste32 -= m
+                reste_autres -= m
         # France 2030 : part des aides décidées allant à des personnes morales nommées.
         f2 = src["f2030"]
         if f2 and code in f2.get("par_programme", {}):
@@ -393,13 +491,14 @@ def main() -> None:
     racine, feuilles = noeuds_arbre()
     src = charger_sources()
     achats_min = achats_par_ministere(feuilles)
+    scsp = scsp_par_programme(feuilles, src["operateurs"])
     SORTIE.mkdir(parents=True, exist_ok=True)
     for f in SORTIE.glob("*.json"):
         f.unlink()
     agg = defaultdict(lambda: {"A": 0.0, "nat": 0.0, "comp": {k: [] for k in PARTS}, "ecrete": 0.0})
     lignes = []
     for f in feuilles:
-        r = calculer_feuille(f, src, achats_min)
+        r = calculer_feuille(f, src, achats_min, scsp)
         syn = synthese(r["A"], r["comp"], r["nature_connue"])
         nom_fichier = (f"programme_{f['code']}.json" if f["type"] == "programme" else f"noeud_{f['code']}.json")
         dump(SORTIE / nom_fichier, {
@@ -440,7 +539,7 @@ def main() -> None:
         "methode": ("Chaque euro d'un noeud est rangé dans une seule part (somme = 100 %). Ordre d'attribution : "
                     "titre 2 (nominatif par choix), dette (anonyme), puis bénéficiaires identifiés par source dans la "
                     "place restante (achats pour les marchés, autres dépenses pour associations, France 2030, partis, "
-                    "dotations), le reste est non publié. Un taux est « exact » quand numérateur et dénominateur sont "
+                    "dotations, subventions pour charges de service public aux opérateurs), le reste est non publié. Un taux est « exact » quand numérateur et dénominateur sont "
                     "de la même année et de même nature, sinon « approché » avec l'écart de millésime et la raison."),
         "limites": [
             "Associations : crédits 2023 (dernier jaune publié), taux 2023 appliqué à 2024.",
@@ -448,8 +547,10 @@ def main() -> None:
             "France 2030 : engagements cumulés 2021-2025, part nommée appliquée aux paiements 2024.",
             "Collectivités (prélèvements sur recettes, dotations 119 et 122) : catégorie de bénéficiaire ; "
             "répartition 2024 par collectivité absente de l'entrepôt.",
-            "Subventions aux opérateurs (catégorie 32) : opérateurs connus par programme mais sans montant publié "
-            "par opérateur ; comptées non publiées.",
+            "Subventions aux opérateurs (catégorie 32) : SCSP 2024 par opérateur (jaune « Opérateurs de l'État » "
+            "PLF 2026) ; un opérateur financé par plusieurs programmes est réparti par ajustement proportionnel sur la "
+            "catégorie 32 des programmes (approché) ; une catégorie d'opérateurs (universités, ARS...) est un "
+            "bénéficiaire de niveau catégorie.",
         ],
         "global": glob, "grands_postes": gps, "missions": missions, "programmes": lignes})
     print(f"traçabilité globale {glob['taux_tracabilite_pct']} % ; fichiers {len(feuilles) + 1}", file=sys.stderr)
