@@ -410,3 +410,11 @@ def test_env_exemple_sans_valeur_secrete():
         cle, valeur = ligne.split("=", 1)
         if any(m in cle for m in ("SECRET", "ACCESS_KEY", "TOKEN", "PASSWORD")):
             assert valeur.strip().strip('"') == "", f"{cle} doit rester vide dans env.exemple"
+
+
+def test_session_duckdb_remote_local_sans_identifiants():
+    """Un remote rclone de type local (test sur un poste) ne demande aucun identifiant S3."""
+    pytest.importorskip("duckdb")
+    import stockage
+    con = stockage.session_duckdb({"OVMI_REMOTE": "local", "RCLONE_CONFIG_LOCAL_TYPE": "local"})
+    assert con.execute("select 42").fetchone()[0] == 42

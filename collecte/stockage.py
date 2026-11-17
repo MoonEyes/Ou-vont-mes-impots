@@ -461,7 +461,12 @@ def session_duckdb(env=None, memoire: str | None = None, threads: int | None = N
     """Session DuckDB qui lit directement les Parquet du stockage objet :
         con = session_duckdb()
         con.sql("SELECT count(*) FROM read_parquet('s3://mon-bucket/etat/*/*/*.parquet')")
-    Necessite l'extension httpfs (installee par deploy/installer_vps.sh)."""
+    Necessite l'extension httpfs (installee par deploy/installer_vps.sh).
+    Remote rclone de type "local" (test sur un poste, sans S3) : simple session sur les fichiers locaux."""
+    e = os.environ if env is None else env
+    remote = (e.get("OVMI_REMOTE") or "ovh").upper()
+    if (e.get(f"RCLONE_CONFIG_{remote}_TYPE") or "").lower() == "local":
+        return conversion.connexion(memoire, threads)
     s = identifiants_s3(env)
     con = conversion.connexion(memoire, threads)
     con.execute("LOAD httpfs") if _extension_installee(con, "httpfs") else con.execute("INSTALL httpfs; LOAD httpfs")
