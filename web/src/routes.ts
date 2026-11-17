@@ -29,6 +29,7 @@ export const ROUTES: Route[] = [
   { chemin: '/decisions/controle', titre: 'Contrôle, influence et aides aux entreprises', court: 'Contrôle', parent: '/decisions', voisins: ['/decisions/realisations', '/decisions/vie-politique'], resume: 'Rapports des juridictions financières, représentants d’intérêts, aides aux entreprises.', charger: () => import('./ecrans/controle') },
   { chemin: '/decisions/vie-politique', titre: 'Vie politique', court: 'Vie politique', parent: '/decisions', voisins: ['/decisions/votes', '/decisions/controle'], resume: 'Élections, aide publique aux partis, comptes de campagne.', charger: () => import('./ecrans/viepolitique') },
 
+  { chemin: '/demarche', titre: 'La démarche', court: 'La démarche', charger: () => import('./ecrans/demarche') },
   { chemin: '/methode', titre: 'Méthode et sources', court: 'Méthode', charger: () => import('./ecrans/methode') },
   { chemin: '/methode/tracabilite', titre: 'Traçabilité : d’où vient chaque montant', court: 'Traçabilité', parent: '/methode', voisins: ['/methode/limites', '/mentions'], resume: 'Part de l’argent dont le destinataire est publié, bloc par bloc.', charger: () => import('./ecrans/tracabilite') },
   { chemin: '/methode/limites', titre: 'Limites connues', court: 'Limites', parent: '/methode', voisins: ['/methode/tracabilite', '/mentions'], resume: 'Ce que les données ne permettent pas de dire.', charger: () => import('./ecrans/limites') },

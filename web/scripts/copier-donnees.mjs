@@ -48,6 +48,30 @@ const manifeste = {
   },
 }
 writeFileSync(join(cible, '_manifeste.json'), JSON.stringify(manifeste))
+
+// Nombre de sources publiques collectées (collecte/catalogue.json, hors sources non collectables),
+// pour les pages Accueil et Démarche : jamais codé en dur dans le site.
+const catalogue = join(ici, '..', '..', 'collecte', 'catalogue.json')
+if (existsSync(catalogue)) {
+  try {
+    const c = JSON.parse(readFileSync(catalogue, 'utf8'))
+    const sources = Array.isArray(c.sources) ? c.sources : []
+    const domaines = {}
+    for (const x of sources) domaines[x.domaine ?? 'autre'] = (domaines[x.domaine ?? 'autre'] ?? 0) + 1
+    writeFileSync(
+      join(cible, '_sources.json'),
+      JSON.stringify({
+        source: 'collecte/catalogue.json',
+        genere_le: manifeste.genere_le,
+        sources_collectees: sources.length,
+        non_collectables: Array.isArray(c.non_collectables) ? c.non_collectables.length : 0,
+        domaines,
+      }),
+    )
+  } catch {
+    /* catalogue illisible : le site affiche le texte sans nombre */
+  }
+}
 let n = 0
 const compter = (x) => readdirSync(x).forEach((f) => (statSync(join(x, f)).isDirectory() ? compter(join(x, f)) : n++))
 compter(cible)

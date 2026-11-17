@@ -982,3 +982,11 @@ th.nombre {
   border-radius: var(--rayon);
   padding: 1rem;
 }
+.encadre {
+  background: var(--surface);
+  border: 0;
+}
+.encadre h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}

@@ -80,7 +80,7 @@ describe('navigation et métadonnées', () => {
     expect(entrees).toEqual(['/', '/calcul', '/explorer', '/local', '/plus'])
     expect(nav).not.toMatch(/>\s*\d+\.\s/)
     const feuille = /<div id="feuille-plus"[\s\S]*?<\/div>/.exec(nav)![0]
-    expect([...feuille.matchAll(/href="([^"]+)"/g)].map((m) => m[1])).toEqual(['#/beneficiaires', '#/decisions', '#/methode', '#/mentions'])
+    expect([...feuille.matchAll(/href="([^"]+)"/g)].map((m) => m[1])).toEqual(['#/demarche', '#/beneficiaires', '#/decisions', '#/methode', '#/mentions'])
   })
   it('cibles de la barre >= 48 px', () => {
     const bloc = /\.navigation > ul a,\n\.navigation > ul button \{([\s\S]*?)\}/.exec(css)![1]
@@ -102,11 +102,13 @@ describe('navigation et métadonnées', () => {
 
 describe('aucun taux codé en dur', () => {
   it('accueil et méthode lisent leurs pourcentages et parts dans les données', () => {
-    for (const f of ['accueil.ts', 'methode.ts', 'tracabilite.ts']) {
+    for (const f of ['accueil.ts', 'methode.ts', 'tracabilite.ts', 'demarche.ts']) {
       const c = readFileSync(join(RACINE, 'src', 'ecrans', f), 'utf8')
       // Taux de traçabilité publiés par le pipeline (actuels et passés) : jamais recopiés dans le code.
       expect(c, f).not.toMatch(/(62|69|78|95)[,.]\d+\s*%/)
       if (f === 'accueil.ts') expect(c, f).not.toMatch(/\d\s*%/)
+      // Nombre de sources et euros sans destinataire : lus dans _sources.json et tracabilite/resume.json.
+      if (f === 'accueil.ts' || f === 'demarche.ts') expect(c, f).not.toMatch(/(Plus de|plus de) \d|\d+ € n’ont pas/)
       expect(c, f).not.toMatch(/\?\?\s*\d+\.\d+/)
     }
   })

@@ -128,7 +128,7 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = l
   const racine = '/' + (route.chemin.split('/')[1] ?? '')
   document.querySelectorAll('.navigation [data-rubrique]').forEach((a) => {
     const r = a.getAttribute('data-rubrique')
-    if (r === racine || (r === '/plus' && ['/beneficiaires', '/decisions', '/methode', '/mentions'].includes(racine))) a.setAttribute('aria-current', 'page')
+    if (r === racine || (r === '/plus' && ['/demarche', '/beneficiaires', '/decisions', '/methode', '/mentions'].includes(racine))) a.setAttribute('aria-current', 'page')
     else a.removeAttribute('aria-current')
   })
   if (focus) {

@@ -369,6 +369,21 @@ describe('écrans', () => {
     expect(main.querySelector('a[href="#/explorer/operateurs"]')).not.toBeNull()
   })
 
+  it('la démarche : textes, nombre de sources et part non publiée lus dans les données', async () => {
+    await ecran('#/demarche')
+    expect(main.querySelector('h1')?.textContent).toBe('Pourquoi ce site, et comment il est fait')
+    expect(main.querySelector('.surligne')?.textContent).toBe('où va ton argent ?')
+    expect(main.querySelectorAll('.etapes li')).toHaveLength(4)
+    expect(texte()).toContain('Plus de 120 sources publiques ouvertes')
+    expect(texte()).toContain('Et sur 100 € dépensés par l’État, 31 € n’ont pas de destinataire publié.')
+    expect(main.querySelector('a[href$="/issues"]')?.textContent).toBe('Signale-la sur GitHub')
+    expect(main.querySelector('a[href="#/methode"]')?.textContent).toBe('Méthode détaillée')
+    expect(document.querySelector('#bouton-plus')?.getAttribute('aria-current')).toBe('page')
+    await ecran('#/')
+    expect(texte()).toContain('Plus de 120 sources publiques, vérifiées et reliées entre elles.')
+    expect(main.querySelector('a[href="#/demarche"]')?.textContent).toBe('La démarche')
+  })
+
   it('toutes les lectures de données sont relatives au site', () => {
     expect(requetes.length).toBeGreaterThan(10)
     for (const u of requetes) expect(u).toMatch(/^data\//)
