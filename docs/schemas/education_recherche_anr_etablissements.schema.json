@@ -1,0 +1,719 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/education_recherche_anr_etablissements.schema.json",
+  "title": "site/data/education_recherche/anr_etablissements.json : projets de l'ANR par établissement (SIREN), organismes non appariés agrégés par catégorie (pipeline/education_recherche.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "licence": {
+      "enum": [
+        "ODbL 1.0",
+        "Licence Ouverte 2.0"
+      ]
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "regle_personnes": {
+      "type": "string"
+    },
+    "methodes_appariement": {
+      "type": "object",
+      "properties": {
+        "denomination_identique": {
+          "type": "string"
+        },
+        "regle_organisme_national": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "denomination_identique",
+        "regle_organisme_national"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    },
+    "pia_france2030": {
+      "type": "object",
+      "properties": {
+        "millesime": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "lecture": {
+          "type": "string"
+        },
+        "colonnes": {
+          "const": [
+            "siren",
+            "denomination",
+            "categorie_juridique",
+            "methode_appariement",
+            "categories_source",
+            "participations",
+            "projets_coordonnes",
+            "aide_projets_coordonnes_eur",
+            "lignes_sans_montant",
+            "premiere_edition",
+            "derniere_edition",
+            "lien_france2030"
+          ]
+        },
+        "etablissements": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "$ref": "commun.schema.json#/$defs/siren"
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+              },
+              {
+                "enum": [
+                  "denomination_identique",
+                  "regle_organisme_national"
+                ]
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "minItems": 12,
+            "maxItems": 12
+          }
+        },
+        "ordre": {
+          "type": "object",
+          "properties": {
+            "cles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "regle": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "cles",
+            "regle"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        },
+        "nommes": {
+          "type": "object",
+          "properties": {
+            "nombre": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "participations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "projets_coordonnes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "aide_projets_coordonnes_eur": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "nombre",
+            "participations",
+            "projets_coordonnes",
+            "aide_projets_coordonnes_eur"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        },
+        "non_nommes": {
+          "type": "object",
+          "properties": {
+            "organismes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "participations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "projets_coordonnes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "aide_projets_coordonnes_eur": {
+              "type": "number"
+            },
+            "motifs": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "par_categorie": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "categorie": {
+                    "type": "string"
+                  },
+                  "organismes": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "participations": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "projets_coordonnes": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "aide_projets_coordonnes_eur": {
+                    "type": "number"
+                  },
+                  "lignes_sans_montant": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "categorie",
+                  "organismes",
+                  "participations",
+                  "projets_coordonnes",
+                  "aide_projets_coordonnes_eur",
+                  "lignes_sans_montant"
+                ],
+                "additionalProperties": false,
+                "propertyNames": {
+                  "not": {
+                    "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+                  }
+                }
+              }
+            }
+          },
+          "required": [
+            "organismes",
+            "participations",
+            "projets_coordonnes",
+            "aide_projets_coordonnes_eur",
+            "motifs",
+            "par_categorie"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        },
+        "total": {
+          "type": "object",
+          "properties": {
+            "participations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "projets_coordonnes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "aide_projets_coordonnes_eur": {
+              "type": "number"
+            },
+            "lignes_sans_montant": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "participations",
+            "projets_coordonnes",
+            "aide_projets_coordonnes_eur",
+            "lignes_sans_montant"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        },
+        "lien_france2030": {
+          "type": "object",
+          "properties": {
+            "fichier": {
+              "const": "beneficiaires/france2030.json"
+            },
+            "id": {
+              "const": "par_operateur.ANR"
+            },
+            "lecture": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "fichier",
+            "id",
+            "lecture"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        },
+        "total_projets": {
+          "type": "object",
+          "properties": {
+            "projets": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "aide_eur": {
+              "type": "number"
+            },
+            "projets_sans_coordinateur": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "aide_projets_sans_coordinateur_eur": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "projets",
+            "aide_eur",
+            "projets_sans_coordinateur",
+            "aide_projets_sans_coordinateur_eur"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        }
+      },
+      "required": [
+        "millesime",
+        "source",
+        "lecture",
+        "colonnes",
+        "etablissements",
+        "ordre",
+        "nommes",
+        "non_nommes",
+        "total",
+        "lien_france2030",
+        "total_projets"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    },
+    "anr_2005_2009": {
+      "type": "object",
+      "properties": {
+        "millesime": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "lecture": {
+          "type": "string"
+        },
+        "colonnes": {
+          "const": [
+            "siren",
+            "denomination",
+            "categorie_juridique",
+            "methode_appariement",
+            "categories_source",
+            "participations",
+            "projets_coordonnes",
+            "aide_allouee_eur",
+            "lignes_sans_montant",
+            "premiere_edition",
+            "derniere_edition",
+            "lien_france2030"
+          ]
+        },
+        "etablissements": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "$ref": "commun.schema.json#/$defs/siren"
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+              },
+              {
+                "enum": [
+                  "denomination_identique",
+                  "regle_organisme_national"
+                ]
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "minItems": 12,
+            "maxItems": 12
+          }
+        },
+        "ordre": {
+          "type": "object",
+          "properties": {
+            "cles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "regle": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "cles",
+            "regle"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        },
+        "nommes": {
+          "type": "object",
+          "properties": {
+            "nombre": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "participations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "projets_coordonnes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "aide_allouee_eur": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "nombre",
+            "participations",
+            "projets_coordonnes",
+            "aide_allouee_eur"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        },
+        "non_nommes": {
+          "type": "object",
+          "properties": {
+            "organismes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "participations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "projets_coordonnes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "aide_allouee_eur": {
+              "type": "number"
+            },
+            "motifs": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "par_categorie": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "categorie": {
+                    "type": "string"
+                  },
+                  "organismes": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "participations": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "projets_coordonnes": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "aide_allouee_eur": {
+                    "type": "number"
+                  },
+                  "lignes_sans_montant": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "categorie",
+                  "organismes",
+                  "participations",
+                  "projets_coordonnes",
+                  "aide_allouee_eur",
+                  "lignes_sans_montant"
+                ],
+                "additionalProperties": false,
+                "propertyNames": {
+                  "not": {
+                    "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+                  }
+                }
+              }
+            }
+          },
+          "required": [
+            "organismes",
+            "participations",
+            "projets_coordonnes",
+            "aide_allouee_eur",
+            "motifs",
+            "par_categorie"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        },
+        "total": {
+          "type": "object",
+          "properties": {
+            "participations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "projets_coordonnes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "aide_allouee_eur": {
+              "type": "number"
+            },
+            "lignes_sans_montant": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "participations",
+            "projets_coordonnes",
+            "aide_allouee_eur",
+            "lignes_sans_montant"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        },
+        "total_projets": {
+          "type": "object",
+          "properties": {
+            "projets": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "aide_eur": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "projets",
+            "aide_eur"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        }
+      },
+      "required": [
+        "millesime",
+        "source",
+        "lecture",
+        "colonnes",
+        "etablissements",
+        "ordre",
+        "nommes",
+        "non_nommes",
+        "total",
+        "total_projets"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "licence",
+    "date_sources",
+    "regle_personnes",
+    "methodes_appariement",
+    "pia_france2030",
+    "anr_2005_2009"
+  ],
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+    }
+  }
+}

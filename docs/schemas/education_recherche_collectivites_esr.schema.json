@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/education_recherche_collectivites_esr.schema.json",
+  "title": "site/data/education_recherche/collectivites_esr.json : budgets des collectivités pour la recherche et l'enseignement supérieur, par année, région, type de collectivité et nature (pipeline/education_recherche.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "licence": {
+      "enum": [
+        "ODbL 1.0",
+        "Licence Ouverte 2.0"
+      ]
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "qualite": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      },
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "categories": {
+      "type": "object",
+      "properties": {
+        "rt": {
+          "type": "string"
+        },
+        "esve": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "rt",
+        "esve"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    },
+    "types_collectivite": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "natures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "categorie": {
+            "enum": [
+              "rt",
+              "esve"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "libelle",
+          "categorie"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+          }
+        }
+      }
+    },
+    "national": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "qualite": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "total_eur": {
+            "type": "number"
+          },
+          "rt_eur": {
+            "type": "number"
+          },
+          "esve_eur": {
+            "type": "number"
+          },
+          "par_type": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "par_nature": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "annee",
+          "qualite",
+          "total_eur",
+          "rt_eur",
+          "esve_eur",
+          "par_type",
+          "par_nature"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+          }
+        }
+      }
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "groupe": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rt_eur": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "esve_eur": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "par_type": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "code",
+          "nom",
+          "groupe",
+          "rt_eur",
+          "esve_eur",
+          "par_type"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+          }
+        }
+      }
+    },
+    "ordre": {
+      "type": "object",
+      "properties": {
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "regle": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cles",
+        "regle"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    },
+    "lignes_sans_montant": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "licence",
+    "date_sources",
+    "annees",
+    "qualite",
+    "categories",
+    "types_collectivite",
+    "natures",
+    "national",
+    "regions",
+    "ordre",
+    "lignes_sans_montant",
+    "note"
+  ],
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+    }
+  }
+}

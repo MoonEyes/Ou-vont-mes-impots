@@ -13,7 +13,10 @@
   "cdc": "https://opendata.caissedesdepots.fr",
   "paysdelaloire": "https://data.paysdelaloire.fr",
   "loireatlantique": "https://data.loire-atlantique.fr",
-  "nantesmetropole": "https://data.nantesmetropole.fr"
+  "nantesmetropole": "https://data.nantesmetropole.fr",
+  "education": "https://data.education.gouv.fr",
+  "iledefrance": "https://data.iledefrance.fr",
+  "centrevaldeloire": "https://data.centrevaldeloire.fr"
  },
  "sources": [
   {
@@ -3188,6 +3191,191 @@
    "licence": "non precisee par le producteur (data.gouv.fr : notspecified ; portail AFD : vide) ; informations publiques reutilisables (CRPA, art. L. 321-1), mention de la source",
    "producteur": "Proparco (groupe AFD)",
    "module": "pipeline/aide_developpement.py"
+  },
+  {
+   "id": "edrech_anr_pia",
+   "domaine": "education_recherche",
+   "type": "datagouv_ressources",
+   "personnes_physiques": true,
+   "ressources": [
+    "51cba202-da27-4f95-9337-0ff5aae7e6ae",
+    "aca6972b-577c-496a-aa26-009f81256dcb"
+   ],
+   "titre": "ANR, projets des programmes d'investissements d'avenir et de France 2030 (DGPIE) : partenaires et projets (les colonnes nom et prenom du responsable scientifique ne sont jamais lues : zone restreinte)",
+   "licence": "ODbL 1.0",
+   "producteur": "Agence nationale de la recherche",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_anr_2005_2009",
+   "domaine": "education_recherche",
+   "type": "datagouv_ressources",
+   "personnes_physiques": true,
+   "ressources": [
+    "74a59cc0-ef79-458a-83e0-f181f9da459f",
+    "0d691519-9a6c-4d66-a2e0-b9a8b3938968"
+   ],
+   "titre": "ANR, projets finances 2005-2009 (DOS et DGDS) : projets et partenaires (les colonnes nom, prenom et ORCID du responsable scientifique ne sont jamais lues : zone restreinte)",
+   "licence": "ODbL 1.0",
+   "producteur": "Agence nationale de la recherche",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_annuaire_education",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "education",
+   "dataset": "fr-en-annuaire-education",
+   "select": "identifiant_de_l_etablissement,nom_etablissement,type_etablissement,statut_public_prive,code_commune,nom_commune,code_departement,libelle_departement,code_academie,libelle_academie,code_region,libelle_region,siren_siret,etat,libelle_nature,ministere_tutelle",
+   "titre": "Annuaire de l'education : UAI, SIRET, commune, departement, academie (export sans adresse, telephone, courriel ni site web)",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Ministere de l'Education nationale",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_budget_collectivites_esr",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "esr",
+   "dataset": "fr-esr-budget-collectivites-recherche-technologie-enseignement-superieur",
+   "titre": "Budgets des collectivites territoriales pour la recherche et le transfert de technologie, l'enseignement superieur et la vie etudiante (SIES), 2006-2025",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Ministere charge de l'enseignement superieur et de la recherche (SIES)",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_effectifs_etudiants",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "esr",
+   "dataset": "fr-esr-statistiques-sur-les-effectifs-d-etudiants-inscrits-par-etablissement",
+   "select": "annee_universitaire,annee,rentree,attention,etablissement_type,etablissement_typologie,etablissement_id_paysage,etablissement_lib,etablissement_id_uai,effectif,effectif_sans_cpge,etablissement_id_paysage_actuel,etablissement_actuel_lib,etablissement_id_region,etablissement_region,etablissement_id_academie,etablissement_academie,etablissement_id_departement,etablissement_departement,etablissement_code_commune,etablissement_commune",
+   "titre": "Effectifs d'etudiants inscrits par etablissement public sous tutelle du ministere charge de l'enseignement superieur, 2006-07 a 2024-25",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Ministere charge de l'enseignement superieur et de la recherche",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_lycees_idf",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "iledefrance",
+   "dataset": "subventions-votees-pour-les-lycees",
+   "titre": "Region Ile-de-France, donnees budgetaires des lycees : subventions votees 2021-2023",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Region Ile-de-France",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_lycees_pdl",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "paysdelaloire",
+   "dataset": "234400034_012-001_actions-educatives-lycees-publics-et-prives-rpdl",
+   "select": "dmdc_campagne_nom,uai,ref_action,eta_departement,eta_type_d_etablissement,eta_secteur,appellation_officielle,mtaide,annee,code_commune,libelle_commune",
+   "titre": "Region des Pays de la Loire, actions educatives conduites dans les lycees publics et prives (export sans adresse ni geolocalisation)",
+   "licence": "ODbL 1.0",
+   "producteur": "Region des Pays de la Loire",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_lycees_cvl_2017",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "centrevaldeloire",
+   "dataset": "dotations-de-fonctionnement-versees-aux-lycees-de-la-region-centre-val-de-loire-",
+   "titre": "Region Centre-Val de Loire, dotations de fonctionnement versees aux lycees en 2017",
+   "licence": "ODbL 1.0",
+   "producteur": "Region Centre-Val de Loire",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_lycees_cvl_2018",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "centrevaldeloire",
+   "dataset": "dotations-de-fonctionnement-aux-lycees-de-la-region-centre-val-de-loire-2018",
+   "titre": "Region Centre-Val de Loire, dotations de fonctionnement versees aux lycees en 2018",
+   "licence": "ODbL 1.0",
+   "producteur": "Region Centre-Val de Loire",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_lycees_cvl_2019",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "centrevaldeloire",
+   "dataset": "dotations-de-fonctionnement-aux-lycees-de-la-region-centre-val-de-loire-2019",
+   "titre": "Region Centre-Val de Loire, dotations de fonctionnement versees aux lycees en 2019",
+   "licence": "ODbL 1.0",
+   "producteur": "Region Centre-Val de Loire",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_lycees_cvl_2020",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "centrevaldeloire",
+   "dataset": "dotations-de-fonctionnement-aux-lycees-region-centre-val-de-loire-2020",
+   "titre": "Region Centre-Val de Loire, dotations de fonctionnement versees aux lycees en 2020",
+   "licence": "ODbL 1.0",
+   "producteur": "Region Centre-Val de Loire",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_lycees_cvl_2021",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "centrevaldeloire",
+   "dataset": "dotations-de-fonctionnement-aux-lycees-de-la-region-centre-val-de-loire-2021",
+   "titre": "Region Centre-Val de Loire, dotations de fonctionnement versees aux lycees en 2021",
+   "licence": "ODbL 1.0",
+   "producteur": "Region Centre-Val de Loire",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_lycees_cvl_2022",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "centrevaldeloire",
+   "dataset": "dotations-de-fonctionnement-aux-lycees-de-la-region-centre-val-de-loire-2022",
+   "titre": "Region Centre-Val de Loire, dotations de fonctionnement versees aux lycees en 2022",
+   "licence": "ODbL 1.0",
+   "producteur": "Region Centre-Val de Loire",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_lycees_cvl_2023",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "centrevaldeloire",
+   "dataset": "dotations-de-fonctionnement-aux-lycees-de-la-region-centre-val-de-loire-2023",
+   "titre": "Region Centre-Val de Loire, dotations de fonctionnement versees aux lycees en 2023",
+   "licence": "ODbL 1.0",
+   "producteur": "Region Centre-Val de Loire",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_lycees_cvl_2024",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "centrevaldeloire",
+   "dataset": "dotations-de-fonctionnement-versees-aux-lycees-de-la-region-centre-val-de-loire-en-2024",
+   "titre": "Region Centre-Val de Loire, dotations de fonctionnement versees aux lycees en 2024",
+   "licence": "ODbL 1.0",
+   "producteur": "Region Centre-Val de Loire",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
+   "id": "edrech_lycees_cvl_2025",
+   "domaine": "education_recherche",
+   "type": "ods_export",
+   "portail": "centrevaldeloire",
+   "dataset": "dotations-de-fonctionnement-versees-aux-lycees-de-la-region-centre-val-de-loire-en-2025",
+   "titre": "Region Centre-Val de Loire, dotations de fonctionnement versees aux lycees en 2025",
+   "licence": "ODbL 1.0",
+   "producteur": "Region Centre-Val de Loire",
+   "module": "pipeline/education_recherche.py"
   }
  ],
  "non_collectables": [

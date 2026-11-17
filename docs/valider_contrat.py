@@ -174,6 +174,13 @@ FICHIERS = [
     ("aide_developpement_ocde.schema.json", "aide_developpement/ocde.json", "existant"),
     ("aide_developpement_expertise_france.schema.json", "aide_developpement/expertise_france.json", "existant"),
     ("aide_developpement_proparco.schema.json", "aide_developpement/proparco.json", "existant"),
+    # éducation et recherche : ANR, lycées, collectivités, étudiants (pipeline/education_recherche.py)
+    ("education_recherche_index.schema.json", "education_recherche/index.json", "existant"),
+    ("education_recherche_anr_etablissements.schema.json", "education_recherche/anr_etablissements.json", "existant"),
+    ("education_recherche_anr_projets.schema.json", "education_recherche/anr_projets.json", "existant"),
+    ("education_recherche_lycees.schema.json", "education_recherche/lycees/[0-9]*.json", "existant"),
+    ("education_recherche_collectivites_esr.schema.json", "education_recherche/collectivites_esr.json", "existant"),
+    ("education_recherche_etudiants.schema.json", "education_recherche/etudiants.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

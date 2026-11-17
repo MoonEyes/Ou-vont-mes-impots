@@ -1,0 +1,614 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/education_recherche_etudiants.schema.json",
+  "title": "site/data/education_recherche/etudiants.json : effectifs étudiants par établissement, commune, département et région ; coût par étudiant calculé, avec sa formule (pipeline/education_recherche.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "licence": {
+      "enum": [
+        "ODbL 1.0",
+        "Licence Ouverte 2.0"
+      ]
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "annees_universitaires": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "colonnes": {
+      "const": [
+        "id_paysage",
+        "uai",
+        "siren",
+        "categorie_juridique",
+        "nom",
+        "type",
+        "typologie",
+        "code_commune",
+        "commune",
+        "departement",
+        "academie",
+        "region",
+        "double_compte",
+        "etudiants",
+        "etudiants_hors_cpge"
+      ]
+    },
+    "etablissements": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9]{7}[A-Z]$"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "$ref": "commun.schema.json#/$defs/siren"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        ],
+        "minItems": 15,
+        "maxItems": 15
+      }
+    },
+    "ordre": {
+      "type": "object",
+      "properties": {
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "regle": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cles",
+        "regle"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    },
+    "par_commune": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code_commune": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "etablissements": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "etudiants": {
+            "type": "array",
+            "items": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          },
+          "departement": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "code_commune",
+          "nom",
+          "etablissements",
+          "etudiants",
+          "departement"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+          }
+        }
+      }
+    },
+    "par_departement": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "departement": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "etablissements": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "etudiants": {
+            "type": "array",
+            "items": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        },
+        "required": [
+          "departement",
+          "nom",
+          "etablissements",
+          "etudiants"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+          }
+        }
+      }
+    },
+    "par_region": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "etablissements": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "etudiants": {
+            "type": "array",
+            "items": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        },
+        "required": [
+          "region",
+          "nom",
+          "etablissements",
+          "etudiants"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+          }
+        }
+      }
+    },
+    "regle_personnes": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "cout_par_etudiant": {
+      "type": "object",
+      "properties": {
+        "statut": {
+          "const": "calculé"
+        },
+        "formule": {
+          "type": "string",
+          "minLength": 40
+        },
+        "producteur": {
+          "type": "string"
+        },
+        "perimetre": {
+          "type": "string"
+        },
+        "limites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "fichier": {
+          "const": "education_recherche/collectivites_esr.json"
+        },
+        "correspondance_regions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "national": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              "qualite_budget": {
+                "type": "string"
+              },
+              "budget_esve_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "etudiants": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "cout_par_etudiant_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "statut": {
+                "enum": [
+                  "calculé",
+                  null
+                ]
+              }
+            },
+            "required": [
+              "annee",
+              "qualite_budget",
+              "budget_esve_eur",
+              "etudiants",
+              "cout_par_etudiant_eur",
+              "statut"
+            ],
+            "additionalProperties": false,
+            "propertyNames": {
+              "not": {
+                "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+              }
+            },
+            "if": {
+              "properties": {
+                "cout_par_etudiant_eur": {
+                  "type": "number"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "statut": {
+                  "const": "calculé"
+                }
+              }
+            }
+          }
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "nom": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "valeurs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "annee": {
+                      "$ref": "commun.schema.json#/$defs/annee_entier"
+                    },
+                    "qualite_budget": {
+                      "type": "string"
+                    },
+                    "budget_esve_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "etudiants": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "cout_par_etudiant_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "statut": {
+                      "enum": [
+                        "calculé",
+                        null
+                      ]
+                    }
+                  },
+                  "required": [
+                    "annee",
+                    "qualite_budget",
+                    "budget_esve_eur",
+                    "etudiants",
+                    "cout_par_etudiant_eur",
+                    "statut"
+                  ],
+                  "additionalProperties": false,
+                  "propertyNames": {
+                    "not": {
+                      "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+                    }
+                  },
+                  "if": {
+                    "properties": {
+                      "cout_par_etudiant_eur": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "statut": {
+                        "const": "calculé"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "code",
+              "nom",
+              "valeurs"
+            ],
+            "additionalProperties": false,
+            "propertyNames": {
+              "not": {
+                "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+              }
+            }
+          }
+        },
+        "ordre": {
+          "type": "object",
+          "properties": {
+            "cles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "regle": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "cles",
+            "regle"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        }
+      },
+      "required": [
+        "statut",
+        "formule",
+        "producteur",
+        "perimetre",
+        "limites",
+        "fichier",
+        "correspondance_regions",
+        "national",
+        "regions",
+        "ordre"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "licence",
+    "date_sources",
+    "annees",
+    "annees_universitaires",
+    "colonnes",
+    "etablissements",
+    "ordre",
+    "par_commune",
+    "par_departement",
+    "par_region",
+    "regle_personnes",
+    "note",
+    "cout_par_etudiant"
+  ],
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+    }
+  }
+}

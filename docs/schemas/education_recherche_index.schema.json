@@ -1,0 +1,715 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/education_recherche_index.schema.json",
+  "title": "site/data/education_recherche/index.json : sources, licences, totaux par source, écarts, liens, limites et recherche préalable de l'axe éducation et recherche (pipeline/education_recherche.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "fichiers": {
+      "type": "object",
+      "properties": {
+        "anr_etablissements": {
+          "const": "education_recherche/anr_etablissements.json"
+        },
+        "anr_projets": {
+          "const": "education_recherche/anr_projets.json"
+        },
+        "lycees": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[0-9]{2}$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^education_recherche/lycees/[0-9]{2}\\.json$"
+          }
+        },
+        "collectivites_esr": {
+          "const": "education_recherche/collectivites_esr.json"
+        },
+        "etudiants": {
+          "const": "education_recherche/etudiants.json"
+        }
+      },
+      "required": [
+        "anr_etablissements",
+        "anr_projets",
+        "lycees",
+        "collectivites_esr",
+        "etudiants"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    },
+    "sorties": {
+      "type": "object",
+      "properties": {
+        "par_etablissement": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "par_commune_et_departement": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "par_annee": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "par_etablissement",
+        "par_commune_et_departement",
+        "par_annee"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "titre": {
+            "type": "string"
+          },
+          "producteur": {
+            "type": "string"
+          },
+          "page": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "licence": {
+            "enum": [
+              "ODbL 1.0",
+              "Licence Ouverte 2.0"
+            ]
+          },
+          "millesime": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string"
+          },
+          "catalogue": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "id",
+          "titre",
+          "producteur",
+          "page",
+          "licence",
+          "millesime",
+          "verdict",
+          "catalogue"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+          }
+        }
+      },
+      "minItems": 8
+    },
+    "licences": {
+      "type": "object",
+      "properties": {
+        "odbl": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string"
+              },
+              "producteur": {
+                "type": "string"
+              },
+              "page": {
+                "type": "string"
+              },
+              "licence": {
+                "const": "ODbL 1.0"
+              },
+              "url_licence": {
+                "const": "https://opendatacommons.org/licenses/odbl/1-0/"
+              }
+            },
+            "required": [
+              "source",
+              "producteur",
+              "page",
+              "licence",
+              "url_licence"
+            ],
+            "additionalProperties": false,
+            "propertyNames": {
+              "not": {
+                "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+              }
+            }
+          },
+          "minItems": 1
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "odbl",
+        "note"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    },
+    "totaux": {
+      "type": "object",
+      "properties": {
+        "note": {
+          "type": "string"
+        },
+        "anr_pia_france2030": {
+          "type": "object"
+        },
+        "anr_2005_2009": {
+          "type": "object"
+        },
+        "lycees": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string"
+              },
+              "annees": {
+                "type": "array",
+                "items": {
+                  "$ref": "commun.schema.json#/$defs/annee_entier"
+                }
+              },
+              "total_eur": {
+                "type": "number"
+              },
+              "nommes": {
+                "type": "object",
+                "properties": {
+                  "nombre": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "montant_eur": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "nombre",
+                  "montant_eur"
+                ],
+                "additionalProperties": false,
+                "propertyNames": {
+                  "not": {
+                    "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+                  }
+                }
+              },
+              "non_nommes": {
+                "type": "object",
+                "properties": {
+                  "nombre": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "montant_eur": {
+                    "type": "number"
+                  },
+                  "part_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "nombre",
+                  "montant_eur",
+                  "part_pct"
+                ],
+                "additionalProperties": false,
+                "propertyNames": {
+                  "not": {
+                    "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+                  }
+                }
+              },
+              "nature_des_montants": {
+                "type": "string"
+              },
+              "fichier": {
+                "type": "string",
+                "pattern": "^education_recherche/lycees/[0-9]{2}\\.json$"
+              }
+            },
+            "required": [
+              "region",
+              "annees",
+              "total_eur",
+              "nommes",
+              "non_nommes",
+              "nature_des_montants",
+              "fichier"
+            ],
+            "additionalProperties": false,
+            "propertyNames": {
+              "not": {
+                "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+              }
+            }
+          }
+        },
+        "collectivites_esr": {
+          "type": "object",
+          "properties": {
+            "annee": {
+              "$ref": "commun.schema.json#/$defs/annee_entier"
+            },
+            "qualite": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "total_eur": {
+              "type": "number"
+            },
+            "rt_eur": {
+              "type": "number"
+            },
+            "esve_eur": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "annee",
+            "qualite",
+            "total_eur",
+            "rt_eur",
+            "esve_eur"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        },
+        "etudiants": {
+          "type": "object",
+          "properties": {
+            "annee": {
+              "$ref": "commun.schema.json#/$defs/annee_entier"
+            },
+            "annee_universitaire": {
+              "type": "string"
+            },
+            "etudiants_hors_cpge": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "annee",
+            "annee_universitaire",
+            "etudiants_hors_cpge"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        }
+      },
+      "required": [
+        "note",
+        "anr_pia_france2030",
+        "anr_2005_2009",
+        "lycees",
+        "collectivites_esr",
+        "etudiants"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    },
+    "cout_par_etudiant": {
+      "type": "object",
+      "properties": {
+        "statut": {
+          "const": "calculé"
+        },
+        "formule": {
+          "type": "string",
+          "minLength": 40
+        },
+        "fichier": {
+          "const": "education_recherche/etudiants.json"
+        },
+        "national": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              "qualite_budget": {
+                "type": "string"
+              },
+              "budget_esve_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "etudiants": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "cout_par_etudiant_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "statut": {
+                "enum": [
+                  "calculé",
+                  null
+                ]
+              }
+            },
+            "required": [
+              "annee",
+              "qualite_budget",
+              "budget_esve_eur",
+              "etudiants",
+              "cout_par_etudiant_eur",
+              "statut"
+            ],
+            "additionalProperties": false,
+            "propertyNames": {
+              "not": {
+                "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+              }
+            },
+            "if": {
+              "properties": {
+                "cout_par_etudiant_eur": {
+                  "type": "number"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "statut": {
+                  "const": "calculé"
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "statut",
+        "formule",
+        "fichier",
+        "national"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "objet": {
+            "type": "string"
+          },
+          "annee": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "montant": {
+            "type": "number"
+          },
+          "autre_source": {
+            "type": "string"
+          },
+          "autre_montant": {
+            "type": "number"
+          },
+          "ecart": {
+            "type": "number"
+          },
+          "ecart_pct": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "lecture": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "objet",
+          "annee",
+          "source",
+          "montant",
+          "autre_source",
+          "autre_montant",
+          "ecart",
+          "ecart_pct",
+          "lecture"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+          }
+        }
+      }
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fichier": {
+            "const": "beneficiaires/france2030.json"
+          },
+          "id": {
+            "type": "string"
+          },
+          "total_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "projets": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "vue": {
+            "const": "beneficiaires_france2030"
+          },
+          "lecture": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fichier",
+          "id",
+          "total_eur",
+          "projets",
+          "vue",
+          "lecture"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+          }
+        }
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "motif": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "motif"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+          }
+        }
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "conclusion": {
+          "type": "string"
+        },
+        "trouvailles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "nom": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "licence": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "verdict": {
+                "type": "string"
+              },
+              "mise_a_jour": {
+                "type": "string"
+              },
+              "dernier_commit": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "nom",
+              "url",
+              "licence",
+              "verdict"
+            ],
+            "additionalProperties": false,
+            "propertyNames": {
+              "not": {
+                "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+              }
+            }
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "date",
+        "conclusion",
+        "trouvailles"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "fichiers",
+    "sorties",
+    "sources",
+    "licences",
+    "totaux",
+    "cout_par_etudiant",
+    "ecarts",
+    "liens",
+    "limites",
+    "sources_inaccessibles",
+    "recherche_publique"
+  ],
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+    }
+  }
+}
