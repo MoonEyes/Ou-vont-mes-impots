@@ -3,9 +3,12 @@
 #   curl -fsSLO https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/deploy/installer_vps.sh
 #   sudo bash installer_vps.sh
 # Fait : utilisateur systeme « ovmi » sans shell ni sudo, depot public clone dans /var/lib/ovmi,
-# venv Python (requirements + duckdb + xlrd), rclone officiel (somme SHA256 verifiee), extension
-# DuckDB httpfs, /etc/ovmi/stockage.env (modele vide, 640 root:ovmi), unites systemd + minuterie.
-# Ne fait pas : saisir des cles (a mettre dans /etc/ovmi/stockage.env), lancer une collecte.
+# venv Python (requirements.lock a empreintes verifiees quand la plateforme le permet, sinon requirements.txt ;
+# plus duckdb + xlrd), outils PDF/OCR de l'orchestrateur pipeline/tout.py, rclone officiel (somme SHA256
+# verifiee), extension DuckDB httpfs, /etc/ovmi/stockage.env (modele vide, 640 root:ovmi), /etc/ovmi/alerte.env
+# (600 root:root), unites systemd + minuterie (verifiees par systemd-analyze).
+# Ne fait pas : saisir ou deplacer des cles (signale seulement un jeton d'alerte reste dans stockage.env, constat I5),
+# lancer une collecte.
 set -euo pipefail
 
 UTILISATEUR=${OVMI_UTILISATEUR:-ovmi}
@@ -26,7 +29,9 @@ etape "paquets systeme"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
 apt-get install -y -qq --no-install-recommends python3 python3-venv python3-pip git curl unzip \
-    ca-certificates util-linux coreutils >/dev/null
+    ca-certificates util-linux coreutils findutils gzip >/dev/null
+# outils systeme des etapes PDF et OCR de pipeline/tout.py (memes paquets que .github/workflows/data.yml)
+apt-get install -y -qq --no-install-recommends poppler-utils tesseract-ocr tesseract-ocr-fra >/dev/null
 
 etape "utilisateur dedie $UTILISATEUR (sans shell, sans sudo)"
 if ! id -u "$UTILISATEUR" >/dev/null 2>&1; then
@@ -67,7 +72,18 @@ chmod 750 "$DEPOT"
 etape "environnement Python"
 [[ -x "$RACINE/venv/bin/python" ]] || en_ovmi python3 -m venv "$RACINE/venv"
 en_ovmi "$RACINE/venv/bin/pip" install -q --upgrade pip
-en_ovmi "$RACINE/venv/bin/pip" install -q -r "$DEPOT/requirements.txt" -r "$DEPOT/deploy/requirements-vps.txt"
+# requirements.lock est compile pour CPython 3.13 x86_64 (comme data.yml) : versions et empreintes identiques
+# a la production de site/data. Ailleurs (autre Python, arm64), repli sur requirements.txt, signale.
+if [[ -f "$DEPOT/requirements.lock" && "$(uname -m)" == x86_64 ]] \
+    && "$RACINE/venv/bin/python" -c 'import sys; sys.exit(sys.version_info[:2] != (3, 13))' \
+    && en_ovmi "$RACINE/venv/bin/pip" install -q --require-hashes --no-deps -r "$DEPOT/requirements.lock"; then
+    echo "dependances figees installees (requirements.lock, empreintes verifiees)"
+else
+    echo "AVERTISSEMENT : requirements.lock inutilisable ici ($(uname -m), $("$RACINE/venv/bin/python" -V 2>&1)) :" \
+        "repli sur requirements.txt (versions non figees)"
+    en_ovmi "$RACINE/venv/bin/pip" install -q -r "$DEPOT/requirements.txt"
+fi
+en_ovmi "$RACINE/venv/bin/pip" install -q -r "$DEPOT/deploy/requirements-vps.txt"
 en_ovmi "$RACINE/venv/bin/python" -c "import duckdb; duckdb.sql('INSTALL httpfs'); print('duckdb', duckdb.__version__)"
 
 etape "configuration $CONF/stockage.env"
@@ -78,6 +94,12 @@ if [[ ! -f "$CONF/stockage.env" ]]; then
 else
     chown root:"$UTILISATEUR" "$CONF/stockage.env"; chmod 640 "$CONF/stockage.env"
     echo "deja present, conserve"
+fi
+# Constat I5 : la valeur n'est ni lue ni affichee, seule sa presence est signalee.
+if grep -Eq '^[[:space:]]*OVMI_ALERTE_GITHUB_JETON=[^[:space:]#]' "$CONF/stockage.env"; then
+    echo "AVERTISSEMENT (I5) : un jeton d'alerte est encore dans $CONF/stockage.env (lisible par le groupe $UTILISATEUR)."
+    echo "  Le deplacer a la main vers $CONF/alerte.env (600 root:root), puis vider la ligne dans stockage.env."
+    echo "  En attendant, ovmi-collecte.service le retire de son environnement (UnsetEnvironment=)."
 fi
 
 if [[ ! -f "$CONF/alerte.env" ]]; then
@@ -92,6 +114,8 @@ etape "unites systemd"
 install -m 644 "$DEPOT"/deploy/systemd/ovmi-collecte.service "$DEPOT"/deploy/systemd/ovmi-collecte.timer \
     "$DEPOT"/deploy/systemd/ovmi-collecte-alerte.service /etc/systemd/system/
 chmod 755 "$DEPOT/deploy/collecte-hebdo.sh"
+systemd-analyze verify /etc/systemd/system/ovmi-collecte.service /etc/systemd/system/ovmi-collecte.timer \
+    /etc/systemd/system/ovmi-collecte-alerte.service || die "unites systemd invalides (voir ci-dessus)"
 systemctl daemon-reload
 systemctl enable --now ovmi-collecte.timer
 systemctl list-timers ovmi-collecte.timer --no-pager | head -3
@@ -103,5 +127,7 @@ Installation terminee. Etapes suivantes :
      facultatif : sudo nano $CONF/alerte.env (jeton GitHub de l'alerte, OVMI_ALERTE_GITHUB=1)
   2. sudo -u $UTILISATEUR bash -c 'set -a; . $CONF/stockage.env; cd $DEPOT && $RACINE/venv/bin/python collecte/stockage.py config'
   3. premier passage a la main (sinon lundi 3 h) : sudo systemctl start ovmi-collecte.service
-     suivi : journalctl -u ovmi-collecte -f
+     suivi : journalctl -u ovmi-collecte -f ; journaux du script : $RACINE/journaux (12 gardes, compresses)
+     confinement : systemd-analyze security ovmi-collecte.service
+  4. facultatif : OVMI_PIPELINE=1 dans stockage.env pour lancer aussi pipeline/tout.py apres la collecte
 FIN

@@ -1,0 +1,12 @@
+{
+  "name": "ou-vont-mes-impots-cloudflare",
+  "private": true,
+  "description": "Outil de publication sur Cloudflare (Workers Static Assets) : wrangler figé par package-lock.json",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "4.164.0"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}

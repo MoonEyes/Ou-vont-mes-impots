@@ -9,6 +9,8 @@ EnvironmentFile=/etc/ovmi/stockage.env
 # jeton GitHub de l'alerte : fichier separe (600 root:root), lu par ce seul service, jamais par la collecte
 EnvironmentFile=-/etc/ovmi/alerte.env
 Environment=HOME=/var/lib/ovmi OVMI_RACINE=/var/lib/ovmi
+# l'alerte n'a pas besoin des cles S3 de stockage.env (lu pour la compatibilite des anciens reglages)
+UnsetEnvironment=RCLONE_CONFIG_OVH_ACCESS_KEY_ID RCLONE_CONFIG_OVH_SECRET_ACCESS_KEY RCLONE_CONFIG
 ExecStart=/var/lib/ovmi/venv/bin/python /var/lib/ovmi/ou-vont-mes-impots/deploy/alerte.py
 SyslogIdentifier=ovmi-alerte
 Nice=10
@@ -33,3 +35,8 @@ RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
 CapabilityBoundingSet=
 UMask=0077
 TimeoutStartSec=5min
+ProtectProc=invisible
+RemoveIPC=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM

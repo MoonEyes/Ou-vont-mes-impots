@@ -1,0 +1,23 @@
+# Variante à activer seulement si web/dist dépasse les limites (docs/DEPLOIEMENT.md, « Plan R2 ») :
+# data/local/ (aujourd'hui 2 320 fichiers, 166 Mo) est lu dans un bucket R2 par un petit Worker, sur la même
+# origine que le reste du site : la CSP (connect-src 'self') ne change pas. Le reste reste en fichiers statiques.
+# Prérequis : bucket R2 créé, data/local envoyé par envoyer-r2.sh, puis publier.sh --r2.
+
+name = "ou-vont-mes-impots"
+compatibility_date = "2026-11-01"
+main = "r2-local.js"
+workers_dev = true
+preview_urls = false
+
+[assets]
+directory = "../../web/dist"
+binding = "ASSETS"
+not_found_handling = "none"
+html_handling = "auto-trailing-slash"
+# le Worker ne s'exécute que pour data/local ; tout le reste est servi directement (gratuit, sans quota Worker)
+run_worker_first = ["/data/local/*"]
+
+[[r2_buckets]]
+binding = "LOCAL"
+# nom du bucket, pas un secret ; à aligner sur OVMI_R2_BUCKET d'envoyer-r2.sh
+bucket_name = "ovmi-donnees-local"

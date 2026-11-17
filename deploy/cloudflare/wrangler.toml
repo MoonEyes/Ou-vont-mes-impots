@@ -1,0 +1,23 @@
+# Publication du site sur Cloudflare Workers Static Assets (aucun code serveur : fichiers statiques seulement).
+# Aucun identifiant ici : wrangler lit CLOUDFLARE_ACCOUNT_ID et CLOUDFLARE_API_TOKEN dans l'environnement
+# (voir docs/DEPLOIEMENT.md). Publier avec deploy/cloudflare/publier.sh, qui contrôle les limites avant l'envoi.
+#
+# Pourquoi Workers et pas Pages : mêmes limites (20 000 fichiers en offre gratuite, 25 Mio par fichier),
+# _headers et _redirects pris en charge, et un Worker peut plus tard servir data/local/ depuis R2 sur la même
+# origine (CSP inchangée), voir wrangler.r2.toml. Cloudflare réserve désormais les nouveautés à Workers.
+
+name = "ou-vont-mes-impots"
+compatibility_date = "2026-11-01"
+
+# adresse <name>.<sous-domaine>.workers.dev ; le domaine personnalisé s'ajoute dans le tableau de bord
+# (Workers > ou-vont-mes-impots > Settings > Domains & Routes), ce qui évite des droits de zone au jeton.
+workers_dev = true
+# pas d'URL de prévisualisation par version : une seule adresse publique
+preview_urls = false
+
+[assets]
+# chemin relatif à ce fichier : sortie de « npm run build » (web/), données comprises
+directory = "../../web/dist"
+# routage par fragment (#/…) : une adresse inconnue est une vraie 404, pas index.html
+not_found_handling = "none"
+html_handling = "auto-trailing-slash"

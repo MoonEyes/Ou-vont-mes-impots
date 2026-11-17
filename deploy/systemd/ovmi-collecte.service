@@ -11,10 +11,13 @@ User=ovmi
 Group=ovmi
 EnvironmentFile=/etc/ovmi/stockage.env
 Environment=HOME=/var/lib/ovmi PYTHONUNBUFFERED=1 OVMI_RACINE=/var/lib/ovmi
+# Constat I5 (docs/AUDIT_SECURITE.md) : meme laisse dans stockage.env, le jeton de l'alerte n'atteint jamais
+# la collecte, qui traite des fichiers telecharges (applique apres EnvironmentFile=).
+UnsetEnvironment=OVMI_ALERTE_GITHUB_JETON
 WorkingDirectory=/var/lib/ovmi/ou-vont-mes-impots
 ExecStart=/var/lib/ovmi/ou-vont-mes-impots/deploy/collecte-hebdo.sh
 SyslogIdentifier=ovmi-collecte
-# un passage complet (124 Go a collecter la premiere fois) peut durer longtemps : 3 jours au plus
+# un passage complet (124 Go a collecter la premiere fois, plus l'orchestrateur si OVMI_PIPELINE=1) : 3 jours au plus
 TimeoutStartSec=3d
 
 # Priorite basse : ne pas gener les autres services du VPS
@@ -49,3 +52,12 @@ LockPersonality=yes
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
 CapabilityBoundingSet=
 UMask=0027
+ProtectProc=invisible
+RemoveIPC=yes
+SystemCallArchitectures=native
+# appels systeme d'un service ordinaire ; un appel hors liste echoue (EPERM) au lieu de tuer le processus
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+# journal : la sortie va aussi dans journald ; pas de rafale qui noie le journal du VPS partage
+LogRateLimitIntervalSec=30s
+LogRateLimitBurst=5000
