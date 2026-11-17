@@ -51,10 +51,6 @@ def test_deux_nombres_cas_documentes():
     assert vp._deux_nombres(["12", "345", "6", "789"]) == (12345.0, 6789.0)
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "BUG vie_politique._deux_nombres : quand les deux colonnes fusionnées « déclaré | retenu » diffèrent et que "
-    "le second montant commence par un groupe de 3 chiffres, le découpage glouton avale tout dans le premier : "
-    "['470','371','470','372'] donne (470371470, 372) au lieu de (470371, 470372)."))
 def test_deux_nombres_montants_differents_de_meme_longueur():
     assert vp._deux_nombres(["470", "371", "470", "372"]) == (470371.0, 470372.0)
 

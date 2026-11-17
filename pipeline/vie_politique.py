@@ -551,11 +551,20 @@ def _deux_nombres(jetons: list[str]) -> tuple[float, float] | None:
     if len(jetons) % 2 == 0 and jetons[:len(jetons) // 2] == jetons[len(jetons) // 2:]:
         v = _n("".join(jetons[:len(jetons) // 2]))
         return v, v
-    i = 1
-    while i < len(jetons) - 1 and len(jetons[i]) == 3:
-        i += 1
-    if 0 < i < len(jetons) and all(len(t) == 3 for t in jetons[i + 1:]):
-        return _n("".join(jetons[:i])), _n("".join(jetons[i:]))
+    # Toutes les coupures compatibles avec un groupement par milliers (premier groupe libre, puis 3 chiffres),
+    # puis la plus equilibree : les deux colonnes « declare | retenu » sont du meme ordre de grandeur.
+    def _groupes_ok(g: list[str]) -> bool:
+        return bool(g) and len(g[0]) >= 1 and all(len(t) == 3 for t in g[1:])
+    candidats = []
+    for k in range(1, len(jetons)):
+        a, b = jetons[:k], jetons[k:]
+        if _groupes_ok(a) and _groupes_ok(b):
+            va, vb = _n("".join(a)), _n("".join(b))
+            if va and vb:
+                candidats.append((abs(len("".join(a)) - len("".join(b))), k, va, vb))
+    if candidats:
+        _, _, va, vb = min(candidats)
+        return va, vb
     return None
 
 

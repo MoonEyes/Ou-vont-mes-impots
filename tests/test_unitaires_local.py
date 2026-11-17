@@ -63,10 +63,6 @@ def test_ne_contient_pas_de_nom_de_personne(texte):
     assert not local.contient_nom_de_personne(texte, PRENOMS)
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "BUG local.contient_nom_de_personne : un prénom suivi d'une particule (« de », « du », « des ») n'est pas "
-    "reconnu, car la particule fait partie de MOTS_OUTILS : « Aide à Marie de Kergariou » serait publié avec le nom "
-    "de la personne physique."))
 def test_nom_a_particule_reconnu():
     assert local.contient_nom_de_personne("Aide à Marie de Kergariou", PRENOMS)
 
