@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; manifest-src 'self'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content="Site citoyen gratuit : à partir de ton salaire net, vois ce que tu paies, à qui, et où va l'argent public. Calcul fait sur ton appareil, données publiques ouvertes." />
+    <meta name="theme-color" content="#F7F6F2" />
+    <title>Où vont mes impôts</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <a class="evitement" href="#contenu">Aller au contenu</a>
+    <header class="entete">
+      <div class="entete-ligne">
+        <a class="marque" href="#/">Où vont mes impôts</a>
+        <button class="menu-bouton" type="button" aria-expanded="false" aria-controls="navigation">Menu</button>
+      </div>
+      <nav id="navigation" class="navigation" aria-label="Rubriques">
+        <ul>
+          <li><a href="#/">1. Ton salaire</a></li>
+          <li><a href="#/paie">2. Ce que tu paies</a></li>
+          <li><a href="#/etat">3. Sur 100 € de l'État</a></li>
+          <li><a href="#/detail">4. Le détail</a></li>
+          <li><a href="#/concret">5. Concrètement</a></li>
+          <li><a href="#/beneficiaires">6. Qui reçoit l'argent</a></li>
+          <li><a href="#/realisations">7. Ce qui a été fait</a></li>
+          <li><a href="#/vie-politique">8. Vie politique</a></li>
+          <li><a href="#/recettes">9. Les recettes</a></li>
+          <li><a href="#/methode">10. Méthode et sources</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main id="contenu" tabindex="-1">
+      <noscript><p>Ce site a besoin de JavaScript pour faire le calcul sur ton appareil, sans rien envoyer.</p></noscript>
+    </main>
+    <div id="annonce" class="visuellement-cache" aria-live="polite"></div>
+    <footer class="pied">
+      <p>Données publiques ouvertes (Licence Ouverte 2.0, Eurostat). Code sous licence MIT.</p>
+      <p><a href="#/methode">Méthode et sources</a> · <a href="#/mentions">Mentions légales et confidentialité</a></p>
+      <p>Aucun cookie, aucune mesure d'audience, aucune donnée saisie envoyée.</p>
+    </footer>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
