@@ -64,20 +64,48 @@
           },
           "total_eur": {
             "type": "number"
+          },
+          "nom_tri": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Forme normalisée pour le tri (capitales sans accents, article initial retiré) ; `nom` reste la dénomination publiée."
           }
         },
         "required": [
           "nom",
-          "total_eur"
+          "total_eur",
+          "nom_tri"
         ]
       },
       "minItems": 1
+    },
+    "ordre": {
+      "type": "object",
+      "description": "Règle d'ordre neutre de la liste, affichée par le site (charte docs/NEUTRALITE.md, règle 6).",
+      "properties": {
+        "regle": {
+          "type": "string",
+          "minLength": 20
+        },
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "regle",
+        "cles"
+      ]
     }
   },
   "required": [
     "unite",
     "exercice",
     "total_eur",
-    "partis"
+    "partis",
+    "ordre"
   ]
 }

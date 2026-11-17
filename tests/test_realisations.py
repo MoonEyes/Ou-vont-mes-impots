@@ -14,7 +14,7 @@ import realisations as R  # noqa: E402
 
 DOSSIER = ROOT / "site" / "data" / "realisations"
 FICHIERS = sorted(DOSSIER.glob("[0-9]*.json"))
-TENDANCES = {"en progrès", "en recul", "stable", "sens inconnu"}
+TENDANCES = {R.SENS_PUBLIE, R.SENS_INVERSE, "stable", "sens inconnu"}
 
 
 def _json(p: Path):
@@ -96,7 +96,7 @@ def test_aucun_sens_sans_justification_de_source(tous):
         for i in d["resultats_mesures"]["indicateurs"]:
             t, s = i["tendance"], i["sens_souhaite"]
             assert t["valeur"] in TENDANCES, (f, i["id"])
-            if t["valeur"] not in ("en progrès", "en recul"):
+            if t["valeur"] not in (R.SENS_PUBLIE, R.SENS_INVERSE):
                 continue
             vus += 1
             assert s["valeur"] in ("hausse", "baisse"), (f, i["id"])
@@ -107,7 +107,7 @@ def test_aucun_sens_sans_justification_de_source(tous):
             if s["methode"] == "position des cibles":
                 assert s["comparaisons"] and {c["sens"] for c in s["comparaisons"]} == {s["valeur"]}, (f, i["id"])
             hausse = t["variation"] > 0
-            assert (t["valeur"] == "en progrès") == (hausse == (s["valeur"] == "hausse")), (f, i["id"])
+            assert (t["valeur"] == R.SENS_PUBLIE) == (hausse == (s["valeur"] == "hausse")), (f, i["id"])
     assert vus > 100
 
 
@@ -154,7 +154,7 @@ def test_sens_par_colonne_evolution_et_stabilite():
     s = _serie({2023: 10.0, 2024: 8.0}, evolution="Baisse")
     sens = R.sens_souhaite(s)
     assert sens["valeur"] == "baisse" and sens["methode"] == "colonne evolution"
-    assert R.tendance(s, sens)["valeur"] == "en progrès"
+    assert R.tendance(s, sens)["valeur"] == R.SENS_PUBLIE
     s = _serie({2023: 10.0, 2024: 12.0}, evolution="Stabilité")
     assert R.tendance(s, R.sens_souhaite(s))["valeur"] == "sens inconnu"
     s = _serie({2023: 100.0, 2024: 100.5}, evolution="Hausse")

@@ -9,10 +9,18 @@
  "total_premiere_fraction_eur": 33477467.0,
  "total_seconde_fraction_eur": 36591928.0,
  "total_eur": 70069395.0,
+ "ordre": {
+  "regle": "aide publique totale, de la plus élevée à la plus faible (montant fixé par la loi d'après les résultats aux élections législatives et le nombre de parlementaires rattachés) ; à égalité, ordre alphabétique de nom_tri",
+  "cles": [
+   "-total_eur",
+   "nom_tri"
+  ]
+ },
  "partis": [
   {
    "code_cnccfp": "76",
    "nom": "PARTI SOCIALISTE",
+   "nom_tri": "PARTI SOCIALISTE",
    "premiere_fraction_eur": 11121431.0,
    "seconde_fraction_eur": 17359311.0,
    "total_eur": 28480742.0
@@ -20,6 +28,7 @@
   {
    "code_cnccfp": "401",
    "nom": "UNION POUR UN MOUVEMENT POPULAIRE",
+   "nom_tri": "UNION POUR UN MOUVEMENT POPULAIRE",
    "premiere_fraction_eur": 6757161.0,
    "seconde_fraction_eur": 13113149.0,
    "total_eur": 19870310.0
@@ -27,6 +36,7 @@
   {
    "code_cnccfp": "40",
    "nom": "FRONT NATIONAL",
+   "nom_tri": "FRONT NATIONAL",
    "premiere_fraction_eur": 5460388.0,
    "seconde_fraction_eur": 83258.0,
    "total_eur": 5543646.0
@@ -34,6 +44,7 @@
   {
    "code_cnccfp": "104",
    "nom": "EUROPE ÉCOLOGIE LES VERTS",
+   "nom_tri": "EUROPE ECOLOGIE LES VERTS",
    "premiere_fraction_eur": 2314551.0,
    "seconde_fraction_eur": 1207242.0,
    "total_eur": 3521793.0
@@ -41,6 +52,7 @@
   {
    "code_cnccfp": "60",
    "nom": "PARTI COMMUNISTE FRANCAIS",
+   "nom_tri": "PARTI COMMUNISTE FRANCAIS",
    "premiere_fraction_eur": 2139966.0,
    "seconde_fraction_eur": 1082355.0,
    "total_eur": 3222321.0
@@ -48,6 +60,7 @@
   {
    "code_cnccfp": "736",
    "nom": "UNION DES RADICAUX, CENTRISTES, INDÉPENDANTS ET DÉMOCRATES",
+   "nom_tri": "UNION DES RADICAUX  CENTRISTES  INDEPENDANTS ET DEMOCRATES",
    "premiere_fraction_eur": 2544037.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 2544037.0
@@ -55,6 +68,7 @@
   {
    "code_cnccfp": "52",
    "nom": "PARTI RADICAL DE GAUCHE",
+   "nom_tri": "PARTI RADICAL DE GAUCHE",
    "premiere_fraction_eur": 558107.0,
    "seconde_fraction_eur": 1123984.0,
    "total_eur": 1682091.0
@@ -62,6 +76,7 @@
   {
    "code_cnccfp": "531",
    "nom": "ASSOCIATION PSLE - NOUVEAU CENTRE",
+   "nom_tri": "ASSOCIATION PSLE   NOUVEAU CENTRE",
    "premiere_fraction_eur": 576763.0,
    "seconde_fraction_eur": 582807.0,
    "total_eur": 1159570.0
@@ -69,6 +84,7 @@
   {
    "code_cnccfp": "688",
    "nom": "LE CENTRE POUR LA FRANCE",
+   "nom_tri": "CENTRE POUR LA FRANCE",
    "premiere_fraction_eur": 557088.0,
    "seconde_fraction_eur": 374661.0,
    "total_eur": 931749.0
@@ -76,6 +92,7 @@
   {
    "code_cnccfp": "725",
    "nom": "FORCES DE GAUCHE",
+   "nom_tri": "FORCES DE GAUCHE",
    "premiere_fraction_eur": 574502.0,
    "seconde_fraction_eur": 124887.0,
    "total_eur": 699389.0
@@ -83,6 +100,7 @@
   {
    "code_cnccfp": "410",
    "nom": "DEBOUT LA RÉPUBLIQUE",
+   "nom_tri": "DEBOUT LA REPUBLIQUE",
    "premiere_fraction_eur": 228937.0,
    "seconde_fraction_eur": 83258.0,
    "total_eur": 312195.0
@@ -90,6 +108,7 @@
   {
    "code_cnccfp": "1",
    "nom": "DÉMOCRATIE ET RÉPUBLIQUE",
+   "nom_tri": "DEMOCRATIE ET REPUBLIQUE",
    "premiere_fraction_eur": 21806.0,
    "seconde_fraction_eur": 249774.0,
    "total_eur": 271580.0
@@ -97,6 +116,7 @@
   {
    "code_cnccfp": "686",
    "nom": "INDÉPENDANTS DE LA FRANCE DE MÉTROPOLE ET D'OUTRE-MER",
+   "nom_tri": "INDEPENDANTS DE LA FRANCE DE METROPOLE ET D'OUTRE MER",
    "premiere_fraction_eur": 787.0,
    "seconde_fraction_eur": 208145.0,
    "total_eur": 208932.0
@@ -104,6 +124,7 @@
   {
    "code_cnccfp": "121",
    "nom": "TAHOERAA HUIRAATIRA",
+   "nom_tri": "TAHOERAA HUIRAATIRA",
    "premiere_fraction_eur": 9946.0,
    "seconde_fraction_eur": 166516.0,
    "total_eur": 176462.0
@@ -111,6 +132,7 @@
   {
    "code_cnccfp": "455",
    "nom": "L'ALLIANCE ÉCOLOGISTE INDÉPENDANTE",
+   "nom_tri": "ALLIANCE ECOLOGISTE INDEPENDANTE",
    "premiere_fraction_eur": 157511.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 157511.0
@@ -118,6 +140,7 @@
   {
    "code_cnccfp": "69",
    "nom": "PARTI PROGRESSISTE MARTINIQUAIS",
+   "nom_tri": "PARTI PROGRESSISTE MARTINIQUAIS",
    "premiere_fraction_eur": 19221.0,
    "seconde_fraction_eur": 124887.0,
    "total_eur": 144108.0
@@ -125,6 +148,7 @@
   {
    "code_cnccfp": "49",
    "nom": "LE TRÈFLE-LES NOUVEAUX ÉCOLOGISTES-HOMME NATURE ANIMAUX",
+   "nom_tri": "TREFLE LES NOUVEAUX ECOLOGISTES HOMME NATURE ANIMAUX",
    "premiere_fraction_eur": 102134.0,
    "seconde_fraction_eur": 41629.0,
    "total_eur": 143763.0
@@ -132,6 +156,7 @@
   {
    "code_cnccfp": "186",
    "nom": "RASSEMBLEMENT UMP (RASSEMBLEMENT POUR LA CALÉDONIE DANS LA RÉPUBLIQUE)",
+   "nom_tri": "RASSEMBLEMENT UMP  RASSEMBLEMENT POUR LA CALEDONIE DANS LA REPUBLIQUE",
    "premiere_fraction_eur": 7750.0,
    "seconde_fraction_eur": 124887.0,
    "total_eur": 132637.0
@@ -139,6 +164,7 @@
   {
    "code_cnccfp": "724",
    "nom": "CALÉDONIE ENSEMBLE",
+   "nom_tri": "CALEDONIE ENSEMBLE",
    "premiere_fraction_eur": 37580.0,
    "seconde_fraction_eur": 83258.0,
    "total_eur": 120838.0
@@ -146,6 +172,7 @@
   {
    "code_cnccfp": "233",
    "nom": "GUADELOUPE UNIE SOCIALISME ET RÉALITÉS",
+   "nom_tri": "GUADELOUPE UNIE SOCIALISME ET REALITES",
    "premiere_fraction_eur": 26161.0,
    "seconde_fraction_eur": 83258.0,
    "total_eur": 109419.0
@@ -153,6 +180,7 @@
   {
    "code_cnccfp": "133",
    "nom": "MOUVEMENT INDÉPENDANTISTE MARTINIQUAIS",
+   "nom_tri": "MOUVEMENT INDEPENDANTISTE MARTINIQUAIS",
    "premiere_fraction_eur": 6642.0,
    "seconde_fraction_eur": 83259.0,
    "total_eur": 89901.0
@@ -160,6 +188,7 @@
   {
    "code_cnccfp": "677",
    "nom": "POUR LA RÉUNION, DE TOUTES NOS FORCES",
+   "nom_tri": "POUR LA REUNION  DE TOUTES NOS FORCES",
    "premiere_fraction_eur": 45684.0,
    "seconde_fraction_eur": 41629.0,
    "total_eur": 87313.0
@@ -167,6 +196,7 @@
   {
    "code_cnccfp": "658",
    "nom": "LA POLITIQUE AUTREMENT",
+   "nom_tri": "POLITIQUE AUTREMENT",
    "premiere_fraction_eur": 25537.0,
    "seconde_fraction_eur": 41629.0,
    "total_eur": 67166.0
@@ -174,6 +204,7 @@
   {
    "code_cnccfp": "63",
    "nom": "PARTI COMMUNISTE GUADELOUPÉEN",
+   "nom_tri": "PARTI COMMUNISTE GUADELOUPEEN",
    "premiere_fraction_eur": 17859.0,
    "seconde_fraction_eur": 41629.0,
    "total_eur": 59488.0
@@ -181,6 +212,7 @@
   {
    "code_cnccfp": "65",
    "nom": "PARTI COMMUNISTE RÉUNIONNAIS",
+   "nom_tri": "PARTI COMMUNISTE REUNIONNAIS",
    "premiere_fraction_eur": 51941.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 51941.0
@@ -188,6 +220,7 @@
   {
    "code_cnccfp": "730",
    "nom": "MOUVEMENT INITIATIVE POPULAIRE",
+   "nom_tri": "MOUVEMENT INITIATIVE POPULAIRE",
    "premiere_fraction_eur": 9038.0,
    "seconde_fraction_eur": 41629.0,
    "total_eur": 50667.0
@@ -195,6 +228,7 @@
   {
    "code_cnccfp": "119",
    "nom": "TAVINI HUIRAATIRA NO TE AO MA'OHI (FRONT DE LIBÉRATION DE POLYNÉSIE)",
+   "nom_tri": "TAVINI HUIRAATIRA NO TE AO MA'OHI  FRONT DE LIBERATION DE POLYNESIE",
    "premiere_fraction_eur": 8008.0,
    "seconde_fraction_eur": 41629.0,
    "total_eur": 49637.0
@@ -202,6 +236,7 @@
   {
    "code_cnccfp": "79",
    "nom": "PARTI SOCIALISTE GUYANAIS",
+   "nom_tri": "PARTI SOCIALISTE GUYANAIS",
    "premiere_fraction_eur": 7050.0,
    "seconde_fraction_eur": 41629.0,
    "total_eur": 48679.0
@@ -209,6 +244,7 @@
   {
    "code_cnccfp": "544",
    "nom": "CAP SUR L'AVENIR",
+   "nom_tri": "CAP SUR L'AVENIR",
    "premiere_fraction_eur": 2635.0,
    "seconde_fraction_eur": 41629.0,
    "total_eur": 44264.0
@@ -216,6 +252,7 @@
   {
    "code_cnccfp": "46",
    "nom": "GROUPEMENT FRANCE-RÉUNION",
+   "nom_tri": "GROUPEMENT FRANCE REUNION",
    "premiere_fraction_eur": 21294.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 21294.0
@@ -223,6 +260,7 @@
   {
    "code_cnccfp": "408",
    "nom": "RÉUNION AVENIR UNE AMBITION POUR LA RÉUNION DANS LA FRANCE",
+   "nom_tri": "REUNION AVENIR UNE AMBITION POUR LA REUNION DANS LA FRANCE",
    "premiere_fraction_eur": 12806.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 12806.0
@@ -230,6 +268,7 @@
   {
    "code_cnccfp": "442",
    "nom": "BÂTIR LE PAYS MARTINIQUE",
+   "nom_tri": "BATIR LE PAYS MARTINIQUE",
    "premiere_fraction_eur": 11293.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 11293.0
@@ -237,6 +276,7 @@
   {
    "code_cnccfp": "549",
    "nom": "RASSEMBLEMENT POUR LA CALÉDONIE",
+   "nom_tri": "RASSEMBLEMENT POUR LA CALEDONIE",
    "premiere_fraction_eur": 9271.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 9271.0
@@ -244,6 +284,7 @@
   {
    "code_cnccfp": "346",
    "nom": "VIVRE À SCHOELCHER",
+   "nom_tri": "VIVRE A SCHOELCHER",
    "premiere_fraction_eur": 8749.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 8749.0
@@ -251,6 +292,7 @@
   {
    "code_cnccfp": "370",
    "nom": "PARTI POUR LA LIBÉRATION DE LA MARTINIQUE",
+   "nom_tri": "PARTI POUR LA LIBERATION DE LA MARTINIQUE",
    "premiere_fraction_eur": 5635.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 5635.0
@@ -258,6 +300,7 @@
   {
    "code_cnccfp": "737",
    "nom": "UNION POUR LA DÉMOCRATIE",
+   "nom_tri": "UNION POUR LA DEMOCRATIE",
    "premiere_fraction_eur": 4157.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 4157.0
@@ -265,6 +308,7 @@
   {
    "code_cnccfp": "481",
    "nom": "NO OE E TE NUNA'A",
+   "nom_tri": "NO OE E TE NUNA'A",
    "premiere_fraction_eur": 4011.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 4011.0
@@ -272,6 +316,7 @@
   {
    "code_cnccfp": "674",
    "nom": "IA HAU NOA",
+   "nom_tri": "IA HAU NOA",
    "premiere_fraction_eur": 3793.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 3793.0
@@ -279,6 +324,7 @@
   {
    "code_cnccfp": "488",
    "nom": "RAUTAHI - RASSEMBLEMENT POUR LA POLYNÉSIE FRANÇAISE",
+   "nom_tri": "RAUTAHI   RASSEMBLEMENT POUR LA POLYNESIE FRANCAISE",
    "premiere_fraction_eur": 2774.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 2774.0
@@ -286,6 +332,7 @@
   {
    "code_cnccfp": "691",
    "nom": "FORCES MARTINIQUAISES DE PROGRÈS",
+   "nom_tri": "FORCES MARTINIQUAISES DE PROGRES",
    "premiere_fraction_eur": 1752.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 1752.0
@@ -293,6 +340,7 @@
   {
    "code_cnccfp": "516",
    "nom": "RASSEMBLEMENT DÉMOCRATIQUE POUR LA MARTINIQUE",
+   "nom_tri": "RASSEMBLEMENT DEMOCRATIQUE POUR LA MARTINIQUE",
    "premiere_fraction_eur": 984.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 984.0
@@ -300,6 +348,7 @@
   {
    "code_cnccfp": "283",
    "nom": "MOUVEMENT LIBÉRAL POPULAIRE",
+   "nom_tri": "MOUVEMENT LIBERAL POPULAIRE",
    "premiere_fraction_eur": 727.0,
    "seconde_fraction_eur": 0.0,
    "total_eur": 727.0

@@ -260,6 +260,38 @@ def _cle(s) -> str:
     return re.sub(r"[^a-z0-9]+", " ", _sans_accents(str(s)).lower()).strip()
 
 
+# Ordre d'affichage neutre et explicite (charte docs/NEUTRALITE.md, règle 6), écrit dans chaque fichier (`ordre`).
+ORDRE_PARTIS = {"regle": "aide publique totale, de la plus élevée à la plus faible (montant fixé par la loi d'après les "
+                         "résultats aux élections législatives et le nombre de parlementaires rattachés) ; à égalité, "
+                         "ordre alphabétique de nom_tri",
+                "cles": ["-total_eur", "nom_tri"]}
+ORDRE_CANDIDATS = {"regle": "circonscription, puis nom du candidat, par ordre alphabétique (sans tenir compte des "
+                            "accents ni de la casse, nombres comparés comme des nombres)",
+                   "cles": ["circonscription", "candidat"]}
+
+
+def cle_alpha(s) -> tuple:
+    """Clé de tri alphabétique : sans accents ni casse, suites de chiffres comparées comme des nombres."""
+    t = re.sub(r"\s+", " ", _sans_accents(str(s or ""))).strip().casefold()
+    return tuple((0, int(x), "") if x.isdigit() else (1, 0, x) for x in re.findall(r"\d+|\D+", t))
+
+
+def nom_tri(nom: str) -> str:
+    """Forme normalisée d'un nom de parti pour le tri, sans toucher à la dénomination publiée (`nom`) :
+    capitales sans accents, apostrophes et espaces unifiés, article initial (le, la, les, l') retiré."""
+    t = _sans_accents(nom).upper().replace("’", "'")
+    t = re.sub(r"^(L'|LE |LA |LES )\s*", "", re.sub(r"\s+", " ", t).strip())
+    return re.sub(r"[^A-Z0-9' ]+", " ", t).strip()
+
+
+def trier_partis(partis: list[dict]) -> list[dict]:
+    return sorted(partis, key=lambda p: (-p["total_eur"], cle_alpha(p["nom_tri"])))
+
+
+def trier_candidats(candidats: list[dict]) -> list[dict]:
+    return sorted(candidats, key=lambda c: (cle_alpha(c.get("circonscription")), cle_alpha(c.get("candidat"))))
+
+
 def nombre(v) -> float | None:
     """'1 234,56', '1234.56', 1234, '' -> float ou None."""
     if v is None:
@@ -703,11 +735,11 @@ def aide_partis(annee: int) -> dict | None:
             ecarts += 1
         if f1 == 0 and f2 == 0:
             continue
-        partis.append({"code_cnccfp": r[i_code].strip().split(".")[0], "nom": re.sub(r"\s+", " ", r[i_nom]).strip(),
+        nom = re.sub(r"\s+", " ", r[i_nom]).strip()
+        partis.append({"code_cnccfp": r[i_code].strip().split(".")[0], "nom": nom, "nom_tri": nom_tri(nom),
                        "premiere_fraction_eur": round(f1 * conv, 2), "seconde_fraction_eur": round(f2 * conv, 2),
                        "total_eur": round((f1 + f2) * conv, 2)})
-    partis.sort(key=lambda p: -p["total_eur"])
-    return {"fichier": f.name, "partis": partis, "non_ventiles": ecarts}
+    return {"fichier": f.name, "partis": trier_partis(partis), "non_ventiles": ecarts}
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -872,8 +904,20 @@ def _par_nuance(lignes: list[dict]) -> list[dict] | None:
     return res
 
 
+def date_collecte() -> str:
+    """Date de la dernière collecte réelle (manifestes de l'entrepôt), pas la date du passage du pipeline : une
+    reproduction sans téléchargement ne doit pas changer `collecte_le`."""
+    dates = []
+    for m in [*LAKE_P.rglob("_manifeste.json"), *LAKE_R.rglob("_manifeste.json")]:
+        try:
+            dates += [e["collecte_le"] for e in json.loads(m.read_text(encoding="utf-8")) if e.get("collecte_le")]
+        except (ValueError, TypeError, AttributeError):
+            continue
+    return max(dates) if dates else date.today().isoformat()
+
+
 def produire() -> None:
-    aujourd_hui = date.today().isoformat()
+    aujourd_hui = date_collecte()
     SORTIE.mkdir(parents=True, exist_ok=True)
     for sous in ("scrutins", "partis", "candidats"):
         for f in (SORTIE / sous).glob("*.json"):
@@ -903,8 +947,8 @@ def produire() -> None:
             obj["avertissements"].append("La source ne donne ni nuance ni parti pour ce scrutin.")
         ecrire(SORTIE / "scrutins" / f"{cle_f}.json", obj)
         detail = {"millesime": obj["millesime"], "source": obj["source"], "unite": "euros", "scrutin": s["cle"],
-                  "annee": s["annee"], "champs": list(CHAMPS_PUBLIES),
-                  "candidats": [_ligne_publiee(x) for x in s["lignes"]]}
+                  "annee": s["annee"], "champs": list(CHAMPS_PUBLIES), "ordre": ORDRE_CANDIDATS,
+                  "candidats": trier_candidats([_ligne_publiee(x) for x in s["lignes"]])}
         RESTREINT.mkdir(parents=True, exist_ok=True)
         (RESTREINT / f"{cle_f}.json").write_text(json.dumps(detail, ensure_ascii=False), encoding="utf-8")
         if AFFICHER_CANDIDATS:
@@ -933,7 +977,8 @@ def produire() -> None:
                              "Personnes morales.",
                "nombre_partis_beneficiaires": len(r["partis"]),
                "total_premiere_fraction_eur": tot1, "total_seconde_fraction_eur": tot2,
-               "total_eur": round(tot1 + tot2, 2), "partis": r["partis"], "avertissements": []}
+               "total_eur": round(tot1 + tot2, 2), "ordre": ORDRE_PARTIS, "partis": r["partis"],
+               "avertissements": []}
         if r["non_ventiles"]:
             obj["avertissements"].append(f"{r['non_ventiles']} parti(s) sans ventilation par fraction dans la source : "
                                          "total porté en 1re fraction.")

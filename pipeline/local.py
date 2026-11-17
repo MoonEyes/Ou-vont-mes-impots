@@ -1091,9 +1091,22 @@ def decisions(con, sirens_coll: dict, g: dict) -> dict:
                                                    "EPCI, ni departement, ni region (GIP, ecoles, syndicats...)"},
         "regle": "Beneficiaires nommes : personnes morales seulement (SIRENE). Personnes physiques, entrepreneurs "
                  "individuels et lignes sans SIREN de personne morale : montants agreges, jamais nommes.",
-        "limites": "La publication des subventions (SCDL) n'est obligatoire qu'au-dessus de 23 000 euros et reste "
-                   "tres partielle : une collectivite absente n'a pas forcement verse moins."})
+        "limites": limites_decisions(couv)})
     return {"attribuants": len(par_att), **{t: couv[t]["couvertes_subventions"] for t in couv}}
+
+
+def _milliers(n: int) -> str:
+    return f"{n:,}".replace(",", "\u00a0")
+
+
+def limites_decisions(couv: dict) -> str:
+    """Limite de couverture écrite avec les chiffres, sans appréciation (charte docs/NEUTRALITE.md, règle 2)."""
+    noms = {"commune": "communes", "epci": "intercommunalités", "departement": "départements", "region": "régions"}
+    parts = [f"{_milliers(couv[t]['couvertes_subventions'])} {noms[t]} sur {_milliers(couv[t]['total'])}"
+             for t in noms if t in couv]
+    return ("La publication des subventions au format SCDL n'est obligatoire qu'au-dessus de 23 000 euros par "
+            "bénéficiaire. Listes publiées et collectées : " + ", ".join(parts) + ". Une collectivité absente de "
+            "ces listes n'a pas forcément versé moins.")
 
 
 def vider_arbre(d: Path) -> None:

@@ -909,11 +909,18 @@ TYPES_AIDE = {
     "collectivites": "aides des collectivités territoriales",
     "europe": "aides de l'Union européenne",
 }
+# Titres réels des publications (`publication`) ; la variante de périmètre retenue est dans `variante`.
+T_SENAT = ("Rapport sur l'utilisation des aides publiques aux grandes entreprises et à leurs sous-traitants "
+           "(n° 808, 2024-2025)")
+T_HCSP_2026 = "Les aides aux entreprises : définition, périmètres, cadre de suivi et d'évaluation"
+T_HCSP_2025 = "Les aides aux entreprises en France : de quoi parle-t-on ?"
+T_IGF = "Revue de dépenses : les aides aux entreprises (n° 2023-M-105-03)"
+T_IRES = "Un capitalisme sous perfusion"
+T_FS = "Les politiques industrielles en France : évolutions et comparaisons internationales"
 # Chaque estimation : `preuve` = passages qui doivent figurer dans le rapport du HCSP (vérifié à chaque production).
 ESTIMATIONS = [
     {"id": "senat_2025_large", "auteur": "Sénat, commission d'enquête", "annee_publication": 2025, "annee_donnees": 2023,
-     "publication": "Rapport sur l'utilisation des aides publiques aux grandes entreprises et à leurs sous-traitants "
-                    "(n° 808, 2024-2025)", "md": 211,
+     "publication": T_SENAT, "variante": "estimation large", "md": 211,
      "perimetre": "subventions de l'État hors compensations de service public, interventions de Bpifrance, dépenses "
                   "fiscales y compris TVA et déclassées, allègements de cotisations sociales",
      "inclut": ["subventions", "prets_garanties", "depenses_fiscales", "depenses_fiscales_declassees",
@@ -924,48 +931,48 @@ ESTIMATIONS = [
                          "des interventions de Bpifrance (prêts, garanties), pas un équivalent-subvention",
      "preuve": ["La première, à 211 milliards", "par Bpifrance (41 milliards)", "sociales (75 milliards)"]},
     {"id": "senat_2025_strict", "auteur": "Sénat, commission d'enquête", "annee_publication": 2025,
-     "annee_donnees": 2023, "publication": "idem, estimation restreinte", "md": 108,
+     "annee_donnees": 2023, "publication": T_SENAT, "variante": "estimation restreinte", "md": 108,
      "perimetre": "estimation large moins les interventions de Bpifrance et 62 Md€ de dépenses fiscales déclassées "
                   "et liées à la TVA", "inclut": ["subventions", "depenses_fiscales", "exonerations_cotisations"],
      "exclut": ["prets_garanties", "depenses_fiscales_declassees", "collectivites", "europe"],
      "preuve": ["La seconde estimation, à 108 milliards"]},
     {"id": "hcsp_2026_p1", "auteur": "HCSP", "annee_publication": 2026, "annee_donnees": 2023,
-     "publication": "Les aides aux entreprises : définition, périmètres, cadre de suivi et d'évaluation, périmètre 1",
+     "publication": T_HCSP_2026, "variante": "périmètre 1",
      "md": 82, "perimetre": "aides directes et ciblées : dépenses budgétaires ciblées, dépenses fiscales classées, "
                             "exonérations ciblées de cotisations, prêts, garanties et participations en "
                             "équivalent-subvention, aides directes des collectivités",
      "inclut": ["subventions", "depenses_fiscales", "exonerations_cotisations", "prets_garanties", "collectivites"],
      "exclut": ["depenses_fiscales_declassees", "europe"], "preuve": ["estimé à 82 milliards"]},
     {"id": "hcsp_2026_p2", "auteur": "HCSP", "annee_publication": 2026, "annee_donnees": 2023,
-     "publication": "idem, périmètre 2", "md": 187,
+     "publication": T_HCSP_2026, "variante": "périmètre 2", "md": 187,
      "perimetre": "périmètre 1 + exonérations générales de cotisations, taux réduits de TVA à finalité sectorielle, "
                   "interventions indirectes des collectivités",
      "inclut": ["subventions", "depenses_fiscales", "exonerations_cotisations", "prets_garanties", "collectivites"],
      "exclut": ["depenses_fiscales_declassees", "europe"], "preuve": ["Chiffré à 187 milliards"]},
     {"id": "hcsp_2026_agregat_large", "auteur": "HCSP", "annee_publication": 2026, "annee_donnees": 2023,
-     "publication": "idem, agrégat macroéconomique complémentaire", "md": 259,
+     "publication": T_HCSP_2026, "variante": "agrégat macroéconomique complémentaire", "md": 259,
      "perimetre": "mesure globale des soutiens publics en faveur des activités économiques",
      "inclut": None, "exclut": None, "preuve": ["est évalué à 259 milliards"]},
     {"id": "hcsp_2025_aides_etat", "auteur": "HCSP (note d'analyse n° 157)", "annee_publication": 2025,
-     "annee_donnees": 2023, "publication": "Les aides aux entreprises en France : de quoi parle-t-on ?", "md": 45,
+     "annee_donnees": 2023, "publication": T_HCSP_2025, "variante": "aides d'État au sens européen", "md": 45,
      "perimetre": "aides d'État au sens du droit européen", "inclut": None, "exclut": None,
      "preuve": ["soit environ 45 milliards d’euros en France en 2023"]},
     {"id": "hcsp_2025", "auteur": "HCSP (note d'analyse n° 157)", "annee_publication": 2025, "annee_donnees": 2023,
-     "publication": "idem, second périmètre", "md": 112,
+     "publication": T_HCSP_2025, "variante": "second périmètre", "md": 112,
      "perimetre": "aides budgétaires, fiscales classées, financières en équivalent-subvention, exonérations ciblées ; "
                   "hors exonérations générales, dépenses fiscales déclassées, collectivités et Europe",
      "inclut": ["subventions", "depenses_fiscales", "prets_garanties", "exonerations_cotisations"],
      "exclut": ["depenses_fiscales_declassees", "collectivites", "europe"],
      "preuve": ["exonérations de cotisations ciblées (112 milliards)"]},
     {"id": "igf_2024", "auteur": "Inspection générale des finances", "annee_publication": 2024, "annee_donnees": 2022,
-     "publication": "Revue de dépenses : les aides aux entreprises (n° 2023-M-105-03)", "md": 88,
+     "publication": T_IGF, "variante": "périmètre de la revue", "md": 88,
      "perimetre": "aides budgétaires et fiscales ciblées de l'État et de la sécurité sociale, hors allègements "
                   "généraux de cotisations et dépenses fiscales déclassées",
      "inclut": ["subventions", "depenses_fiscales", "exonerations_cotisations"],
      "exclut": ["depenses_fiscales_declassees", "collectivites", "europe"],
      "preuve": ["s’élèvent à 88 milliards d’euros"]},
     {"id": "igf_2024_elargi", "auteur": "Inspection générale des finances", "annee_publication": 2024,
-     "annee_donnees": 2022, "publication": "idem, élargi", "md": 105,
+     "annee_donnees": 2022, "publication": T_IGF, "variante": "périmètre élargi", "md": 105,
      "perimetre": "88 Md€ + aides budgétaires des collectivités (7 Md€, 2021) + une partie des aides européennes "
                   "(10 Md€)", "inclut": ["subventions", "depenses_fiscales", "exonerations_cotisations",
                                          "collectivites", "europe"], "exclut": ["depenses_fiscales_declassees"],
@@ -975,35 +982,37 @@ ESTIMATIONS = [
      "perimetre": "aides d'État au sens du droit européen (25 Md€ hors mesures Covid et Ukraine)", "inclut": None,
      "exclut": ["exonerations_cotisations"], "preuve": ["(45 milliards d’euros en 2022, 25 milliards"]},
     {"id": "ires_clerse_2022", "auteur": "Ires, équipe du Clersé (université de Lille)", "annee_publication": 2022,
-     "annee_donnees": 2019, "publication": "Un capitalisme sous perfusion", "md": 157,
+     "annee_donnees": 2019, "publication": T_IRES, "variante": "périmètre principal", "md": 157,
      "perimetre": "aides budgétaires (comptabilité nationale), dépenses fiscales, exonérations de cotisations ; hors "
                   "prêts, garanties, participations et dépenses fiscales déclassées",
      "inclut": ["subventions", "depenses_fiscales", "exonerations_cotisations"],
      "exclut": ["prets_garanties", "depenses_fiscales_declassees"],
      "preuve": ["estime à 157 milliards d’euros le montant global des aides\npubliques aux entreprises en 2019"]},
     {"id": "ires_clerse_2022_large", "auteur": "Ires, équipe du Clersé (université de Lille)",
-     "annee_publication": 2022, "annee_donnees": 2019, "publication": "idem, périmètre large", "md": 205,
+     "annee_publication": 2022, "annee_donnees": 2019, "publication": T_IRES, "variante": "périmètre large", "md": 205,
      "perimetre": "157 Md€ + dépenses fiscales déclassées",
      "inclut": ["subventions", "depenses_fiscales", "depenses_fiscales_declassees", "exonerations_cotisations"],
      "exclut": ["prets_garanties"], "preuve": ["le plus large, soit 205 milliards d’euros d’aides aux entreprises"]},
     {"id": "france_strategie_2020_restreint", "auteur": "France Stratégie", "annee_publication": 2020,
-     "annee_donnees": 2019, "publication": "Les politiques industrielles en France : évolutions et comparaisons "
-                                           "internationales, périmètre le plus restreint", "md": 139,
+     "annee_donnees": 2019, "publication": T_FS, "variante": "périmètre le plus restreint", "md": 139,
      "perimetre": "hors dépenses fiscales déclassées, interventions financières, infrastructures de transport, aides "
                   "directes à certaines entreprises ou services publics",
      "inclut": ["subventions", "depenses_fiscales", "exonerations_cotisations", "collectivites", "europe"],
      "exclut": ["depenses_fiscales_declassees", "prets_garanties"],
      "preuve": ["139 milliards d’euros selon le périmètre le plus restreint"]},
     {"id": "france_strategie_2020_large", "auteur": "France Stratégie", "annee_publication": 2020,
-     "annee_donnees": 2019, "publication": "idem, périmètre le plus large", "md": 223,
+     "annee_donnees": 2019, "publication": T_FS, "variante": "périmètre le plus large", "md": 223,
      "perimetre": "dépenses budgétaires, fiscales y compris déclassées et taxes affectées, exonérations de "
                   "cotisations, aides financières, aides régionales, aides européennes à la R & D",
      "inclut": ["subventions", "depenses_fiscales", "depenses_fiscales_declassees", "exonerations_cotisations",
                 "prets_garanties", "collectivites", "europe"], "exclut": [],
      "preuve": ["s’élève à 223 milliards selon le périmètre le plus large"]},
     {"id": "cpo_2010", "auteur": "Conseil des prélèvements obligatoires (rattaché à la Cour des comptes)",
-     "annee_publication": 2010, "annee_donnees": None, "publication": "Entreprises et niches fiscales et sociales",
-     "md": 170, "md_haut": 200, "perimetre": "dépenses fiscales y compris TVA, TIPP et déclassées, niches sociales ; "
+     "annee_publication": 2010, "annee_donnees": None,
+     "annee_donnees_note": "année des données non précisée dans la synthèse du rapport (publié en 2010)",
+     "publication": "Entreprises et « niches » fiscales et sociales", "md": 170, "md_haut": 200,
+     "perimetre": "dépenses fiscales y compris TVA, TIPP et déclassées, exonérations de cotisations (souvent appelées "
+                  "niches sociales) ; "
                                              "hors interventions financières, agriculture, Europe",
      "inclut": ["depenses_fiscales", "depenses_fiscales_declassees", "exonerations_cotisations"],
      "exclut": ["prets_garanties", "europe"], "preuve": ["170-200"]},

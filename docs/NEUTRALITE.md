@@ -25,19 +25,22 @@ Le site ne soutient aucun parti, aucun candidat ni aucune position sur le niveau
 | 9 | La part « non publiée » est décrite comme un état de la publication, jamais comme un soupçon sur l'usage de l'argent. La représentation d'intérêts est nommée avec le terme de la HATVP, sans « influence » ni « visés ». | `ecrans.test.ts`, « la démarche » et « lexique neutre » |
 | 10 | Aucun code visuel institutionnel (Marianne, bleu et rouge de l'État, DSFR) ; mention « Site citoyen, non officiel » dans l'en-tête. | `regles.test.ts`, « aucun code visuel institutionnel » |
 
-Exceptions admises par le test du lexique (libellés repris tels quels de documents officiels, listés dans `EXCEPTIONS_DONNEES`) : titres de publications entre guillemets (« Un capitalisme sous perfusion », « Entreprises et niches fiscales et sociales »), intitulé du programme 185 « Diplomatie culturelle et d'influence », et les deux libellés de données listés plus bas, en attendant leur correction dans le pipeline.
+Le lexique (termes interdits, raisons, exceptions, définition admise de « niche ») est dans `docs/lexique_neutre.json`, partagé par le test du site (`web/tests/ecrans.test.ts`) et le test des données (`tests/test_neutralite.py`, sur les textes rédigés par le pipeline : avertissements, limites, lectures, définitions, règles, méthodes, périmètres, notes, tendances, règles d'ordre).
 
-## Libellés à corriger côté pipeline (site/data non modifié)
+Exceptions admises (libellés officiels repris tels quels) : titres de publications (« Un capitalisme sous perfusion », « Entreprises et « niches » fiscales et sociales ») et intitulé du programme 185 « Diplomatie culturelle et d'influence ».
 
-| Fichier | Libellé actuel | Correction proposée | Raison |
-|---------|----------------|---------------------|--------|
-| `realisations/*.json`, `tendance.valeur` | « en progrès », « en recul » | « dans le sens souhaité publié », « à l'inverse du sens souhaité publié » | Le site ne juge pas : la tendance se lit par rapport au sens publié par l'administration. Le web traduit déjà ces valeurs (`LIBELLE_TENDANCE`). |
-| `controle/aides_entreprises.json`, estimation CPO, `perimetre` | « …, niches sociales ; … » | « …, exonérations de cotisations (souvent appelées niches sociales) ; … » | Règle 4. |
-| `controle/aides_entreprises.json`, `publication` | titres et renvois « idem, … » mélangés | séparer `titre_publication` et `variante_perimetre` | Le web met les titres entre guillemets et devine les « idem ». |
-| `controle/aides_entreprises.json`, estimation CPO | `annee_donnees: null` | renseigner l'année ou un champ `annee_donnees_note` | Le web affichait « (données null) » ; il masque désormais la mention. |
-| `prelevements/tva_conso.json`, `methode` | « variante Insee où ces taxes pèsent sur les revenus » | « variante Insee où ces taxes sont imputées aux revenus » | Règle 2 (image du poids). Même correction faite dans `web/src/calcul/hors-bulletin.ts`. |
-| `vie_politique/partis/*.json`, `vie_politique/candidats/*.json` | ordre brut du fichier source, noms de partis de casse et de forme variables (« UMP », « l'UNION POUR UN MOUVEMENT POPULAIRE ») | publier un champ `ordre` (règle écrite) et normaliser les noms (forme officielle, casse unique) | Règle 6 : le web trie déjà, mais le départage alphabétique dépend de la forme du nom. |
-| `local/decisions/index.json`, `limites` | « reste tres partielle » | « couvre N collectivités sur M » (et accents) | Remplacer une appréciation par un chiffre. |
+## Libellés corrigés côté pipeline (17/11/2026)
+
+| Fichier | Avant | Après | Module |
+|---------|-------|-------|--------|
+| `realisations/*.json`, `tendance.valeur` ; `realisations/index.json`, `tendances` | « en progrès », « en recul » | « dans le sens souhaité publié », « à l’inverse du sens souhaité publié » (schéma et contrat mis à jour ; la traduction côté site est retirée) | `realisations.py` |
+| `controle/aides_entreprises.json`, `publication` | renvois « idem, … » et périmètres collés au titre | titre réel dans `publication`, périmètre retenu dans le nouveau champ `variante` (le schéma refuse « idem ») | `controle.py` |
+| `controle/aides_entreprises.json`, estimation CPO | `annee_donnees: null` sans explication ; périmètre « …, niches sociales » | nouveau champ `annee_donnees_note` (obligatoire si l'année manque) ; « exonérations de cotisations (souvent appelées niches sociales) » | `controle.py` |
+| `prelevements/tva_conso.json`, `methode` | « ces taxes pèsent sur les revenus » | « ces taxes sont imputées aux revenus » | `prelevements.py` |
+| `vie_politique/partis/*.json` | ordre implicite, départage dépendant de la forme du nom | champ `ordre` (aide totale décroissante, puis `nom_tri`) ; nouveau champ `nom_tri` (capitales sans accents, article initial retiré) ; `nom` reste la dénomination publiée | `vie_politique.py` |
+| `vie_politique/candidats/*.json` | ordre du fichier source | champ `ordre` (circonscription puis nom, alphabétique) et liste triée ; `collecte_le` lu dans les manifestes de collecte (une reproduction sans téléchargement ne change plus la date) | `vie_politique.py` |
+| `local/decisions/index.json`, `limites` | « reste tres partielle » | « Listes publiées et collectées : 32 communes sur 34 969, 14 intercommunalités sur 1 255, 15 départements sur 101, 8 régions sur 18 » (calculé à chaque production) | `local.py` |
+| `niches/sociales.json`, `avertissement` | « Les niches sociales sont l'équivalent… » | « Les exonérations de cotisations (souvent appelées niches sociales) sont l'équivalent… » | `niches.py` |
 
 ## Journal des corrections (17/11/2026)
 

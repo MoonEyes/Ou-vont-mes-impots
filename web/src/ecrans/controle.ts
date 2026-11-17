@@ -15,7 +15,7 @@ interface Index {
 interface Aides {
   source: string
   avertissement: string
-  estimations: { id: string; auteur: string; annee_donnees: number | null; publication: string; md: number; md_haut?: number; perimetre: string }[]
+  estimations: { id: string; auteur: string; annee_donnees: number | null; annee_donnees_note?: string; publication: string; variante?: string; md: number; md_haut?: number; perimetre: string }[]
   fourchette: { basse_md: number; haute_md: number; note: string }
 }
 interface Pub {
@@ -73,7 +73,7 @@ ${
     ? `<h2>Les aides aux entreprises</h2>
 <p>Selon le périmètre retenu, les estimations publiées vont de ${h(md(aides.fourchette.basse_md))} à ${h(md(aides.fourchette.haute_md))} par an. ${h(aides.fourchette.note)}</p>
 <div class="tableau-defile"><table><caption>Estimations publiées (elles ne s’additionnent pas)</caption><thead><tr><th scope="col">Auteur et publication</th><th scope="col">Périmètre</th><th scope="col" class="nombre">Montant</th></tr></thead><tbody>${aides.estimations
-        .map((e) => `<tr><td>${h(e.auteur)} : ${/^idem\b/i.test(e.publication) ? h(e.publication) : `« ${h(e.publication)} »`}${typeof e.annee_donnees === 'number' ? ` (données ${e.annee_donnees})` : ''}</td><td>${h(e.perimetre)}</td><td class="nombre">${h(md(e.md))}${e.md_haut ? ` à ${h(md(e.md_haut))}` : ''}</td></tr>`)
+        .map((e) => `<tr><td>${h(e.auteur)} : « ${h(e.publication)} »${e.variante ? `, ${h(e.variante)}` : ''} (${typeof e.annee_donnees === 'number' ? `données ${e.annee_donnees}` : h(e.annee_donnees_note ?? 'année des données non publiée')})</td><td>${h(e.perimetre)}</td><td class="nombre">${h(md(e.md))}${e.md_haut ? ` à ${h(md(e.md_haut))}` : ''}</td></tr>`)
         .join('')}</tbody></table></div>
 <p class="avertissement">${h(aides.avertissement)}</p>${source(aides.source)}
 <p class="aide">Les intitulés entre guillemets sont les titres des publications citées. Les sommes versées aux ménages (retraites, santé, famille, chômage) sont présentées avec le même format dans <a href="#/explorer/secu">Sécurité sociale et protection sociale</a>.</p>`

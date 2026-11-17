@@ -41,7 +41,11 @@
             ]
           },
           "publication": {
-            "type": "string"
+            "type": "string",
+            "not": {
+              "pattern": "^idem\\b"
+            },
+            "description": "Titre réel de la publication citée."
           },
           "md": {
             "type": "number",
@@ -77,6 +81,16 @@
           },
           "source": {
             "type": "string"
+          },
+          "variante": {
+            "type": "string",
+            "minLength": 3,
+            "description": "Variante de périmètre retenue dans la publication (jamais « idem »)."
+          },
+          "annee_donnees_note": {
+            "type": "string",
+            "minLength": 10,
+            "description": "Obligatoire quand annee_donnees est null : pourquoi l'année manque."
           }
         },
         "required": [
@@ -88,6 +102,22 @@
           "md",
           "perimetre",
           "source"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "annee_donnees": {
+                  "type": "null"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "annee_donnees_note"
+              ]
+            }
+          }
         ]
       }
     },

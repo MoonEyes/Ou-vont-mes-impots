@@ -16,6 +16,13 @@
   "decision",
   "reference"
  ],
+ "ordre": {
+  "regle": "circonscription, puis nom du candidat, par ordre alphabétique (sans tenir compte des accents ni de la casse, nombres comparés comme des nombres)",
+  "cles": [
+   "circonscription",
+   "candidat"
+  ]
+ },
  "candidats": [
   {
    "candidat": "BONNELL Bruno",
@@ -105,6 +112,108 @@
    "apport_personnel_eur": 1399754.0,
    "dons_eur": 0.0,
    "remboursement_eur": 1247192.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "ARTHAUD Nathalie",
+   "circonscription": "ÃŽle-de-France (Paris)",
+   "depenses_eur": 26950.0,
+   "recettes_eur": 26950.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 607.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "AUTAIN Clémentine",
+   "circonscription": "ÃŽle-de-France (Paris)",
+   "depenses_eur": 639987.0,
+   "recettes_eur": 640276.0,
+   "apport_personnel_eur": 623404.0,
+   "dons_eur": 1500.0,
+   "remboursement_eur": 623115.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BARDELLA Jordan",
+   "circonscription": "ÃŽle-de-France (Paris)",
+   "depenses_eur": 656249.0,
+   "recettes_eur": 656304.0,
+   "apport_personnel_eur": 647917.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 647862.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BAYOU Julien (*)",
+   "circonscription": "ÃŽle-de-France (Paris)",
+   "depenses_eur": 1897478.0,
+   "recettes_eur": 2050295.0,
+   "apport_personnel_eur": 2048924.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1896107.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BERLINGEN Eric",
+   "circonscription": "ÃŽle-de-France (Paris)",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "BROT Lionel",
+   "circonscription": "ÃŽle-de-France (Paris)",
+   "depenses_eur": 1805.0,
+   "recettes_eur": 1805.0,
+   "apport_personnel_eur": 132.0,
+   "dons_eur": 930.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "CONTI Fabiola",
+   "circonscription": "ÃŽle-de-France (Paris)",
+   "depenses_eur": 650.0,
+   "recettes_eur": 7307.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 7307.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "PAILHAC Victor",
+   "circonscription": "ÃŽle-de-France (Paris)",
+   "remboursement_eur": 0.0,
+   "decision": "AD"
+  },
+  {
+   "candidat": "PÉCRESSE Valérie",
+   "circonscription": "ÃŽle-de-France (Paris)",
+   "depenses_eur": 2731234.0,
+   "recettes_eur": 2743231.0,
+   "apport_personnel_eur": 2081313.0,
+   "dons_eur": 19700.0,
+   "remboursement_eur": 1995655.0,
+   "decision": "ARRRM"
+  },
+  {
+   "candidat": "PULVAR Audrey",
+   "circonscription": "ÃŽle-de-France (Paris)",
+   "depenses_eur": 1420010.0,
+   "recettes_eur": 1438825.0,
+   "apport_personnel_eur": 1416576.0,
+   "dons_eur": 1535.0,
+   "remboursement_eur": 1397761.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "SAINT-MARTIN Laurent",
+   "circonscription": "ÃŽle-de-France (Paris)",
+   "depenses_eur": 1756765.0,
+   "recettes_eur": 1849266.0,
+   "apport_personnel_eur": 1745922.0,
+   "dons_eur": 50440.0,
+   "remboursement_eur": 1653421.0,
    "decision": "AR"
   },
   {
@@ -370,6 +479,102 @@
    "decision": "ARRR"
   },
   {
+   "candidat": "ANGELINI Jean-Christophe",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 68894.0,
+   "recettes_eur": 69970.0,
+   "apport_personnel_eur": 65050.0,
+   "dons_eur": 3700.0,
+   "remboursement_eur": 63974.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "BENEDETTI Paul-Félix",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 35581.0,
+   "recettes_eur": 35581.0,
+   "apport_personnel_eur": 28648.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 28648.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "FILONI François",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 11728.0,
+   "recettes_eur": 11765.0,
+   "apport_personnel_eur": 1500.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "GIACOMI Jean-Antoine",
+   "circonscription": "Corse (Corse du Sud)",
+   "remboursement_eur": 0.0,
+   "decision": "AD"
+  },
+  {
+   "candidat": "MARCANGELI Laurent",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 74323.0,
+   "recettes_eur": 78650.0,
+   "apport_personnel_eur": 58850.0,
+   "dons_eur": 19100.0,
+   "remboursement_eur": 54523.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "ORSUCCI Jean-Charles",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 55080.0,
+   "recettes_eur": 55504.0,
+   "apport_personnel_eur": 51900.0,
+   "dons_eur": 1000.0,
+   "remboursement_eur": 51476.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "SIMEONI Gilles",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 103415.0,
+   "recettes_eur": 108717.0,
+   "apport_personnel_eur": 92600.0,
+   "dons_eur": 14180.0,
+   "remboursement_eur": 85793.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "SIMONPIETRI Agnès",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 5584.0,
+   "recettes_eur": 5632.0,
+   "apport_personnel_eur": 3662.0,
+   "dons_eur": 1070.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "STEFANI Michel",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 31937.0,
+   "recettes_eur": 31937.0,
+   "apport_personnel_eur": 31937.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "TALAMONI Jean-Guy",
+   "circonscription": "Corse (Corse du Sud)",
+   "depenses_eur": 101756.0,
+   "recettes_eur": 101756.0,
+   "apport_personnel_eur": 79907.0,
+   "dons_eur": 18850.0,
+   "remboursement_eur": 79907.0,
+   "decision": "ARR"
+  },
+  {
    "candidat": "FÈVE Louise",
    "circonscription": "Grand Est (Bas-Rhin)",
    "depenses_eur": 8916.0,
@@ -568,6 +773,46 @@
    "decision": "A"
   },
   {
+   "candidat": "ALEXANDRE Rodolphe",
+   "circonscription": "Guyane",
+   "depenses_eur": 142274.0,
+   "recettes_eur": 259201.0,
+   "apport_personnel_eur": 3326.0,
+   "dons_eur": 248200.0,
+   "remboursement_eur": 0.0,
+   "decision": "ARRR"
+  },
+  {
+   "candidat": "AMERICAIN Jessi",
+   "circonscription": "Guyane",
+   "depenses_eur": 3641.0,
+   "recettes_eur": 3641.0,
+   "apport_personnel_eur": 1941.0,
+   "dons_eur": 1700.0,
+   "remboursement_eur": 1941.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "FEREIRA Jean-Paul",
+   "circonscription": "Guyane",
+   "depenses_eur": 66140.0,
+   "recettes_eur": 66140.0,
+   "apport_personnel_eur": 36580.0,
+   "dons_eur": 19560.0,
+   "remboursement_eur": 36580.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "SERVILLE Gabriel",
+   "circonscription": "Guyane",
+   "depenses_eur": 71434.0,
+   "recettes_eur": 72977.0,
+   "apport_personnel_eur": 42330.0,
+   "dons_eur": 16920.0,
+   "remboursement_eur": 40787.0,
+   "decision": "ARRR"
+  },
+  {
    "candidat": "ALEXANDRE Audric",
    "circonscription": "Hauts-de-France (Nord)",
    "depenses_eur": 17882.0,
@@ -635,108 +880,6 @@
    "apport_personnel_eur": 685057.0,
    "dons_eur": 4600.0,
    "remboursement_eur": 549654.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "ARTHAUD Nathalie",
-   "circonscription": "ÃŽle-de-France (Paris)",
-   "depenses_eur": 26950.0,
-   "recettes_eur": 26950.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 607.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "AUTAIN Clémentine",
-   "circonscription": "ÃŽle-de-France (Paris)",
-   "depenses_eur": 639987.0,
-   "recettes_eur": 640276.0,
-   "apport_personnel_eur": 623404.0,
-   "dons_eur": 1500.0,
-   "remboursement_eur": 623115.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "BARDELLA Jordan",
-   "circonscription": "ÃŽle-de-France (Paris)",
-   "depenses_eur": 656249.0,
-   "recettes_eur": 656304.0,
-   "apport_personnel_eur": 647917.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 647862.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "BAYOU Julien (*)",
-   "circonscription": "ÃŽle-de-France (Paris)",
-   "depenses_eur": 1897478.0,
-   "recettes_eur": 2050295.0,
-   "apport_personnel_eur": 2048924.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1896107.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "BERLINGEN Eric",
-   "circonscription": "ÃŽle-de-France (Paris)",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "BROT Lionel",
-   "circonscription": "ÃŽle-de-France (Paris)",
-   "depenses_eur": 1805.0,
-   "recettes_eur": 1805.0,
-   "apport_personnel_eur": 132.0,
-   "dons_eur": 930.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "CONTI Fabiola",
-   "circonscription": "ÃŽle-de-France (Paris)",
-   "depenses_eur": 650.0,
-   "recettes_eur": 7307.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 7307.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "PAILHAC Victor",
-   "circonscription": "ÃŽle-de-France (Paris)",
-   "remboursement_eur": 0.0,
-   "decision": "AD"
-  },
-  {
-   "candidat": "PÉCRESSE Valérie",
-   "circonscription": "ÃŽle-de-France (Paris)",
-   "depenses_eur": 2731234.0,
-   "recettes_eur": 2743231.0,
-   "apport_personnel_eur": 2081313.0,
-   "dons_eur": 19700.0,
-   "remboursement_eur": 1995655.0,
-   "decision": "ARRRM"
-  },
-  {
-   "candidat": "PULVAR Audrey",
-   "circonscription": "ÃŽle-de-France (Paris)",
-   "depenses_eur": 1420010.0,
-   "recettes_eur": 1438825.0,
-   "apport_personnel_eur": 1416576.0,
-   "dons_eur": 1535.0,
-   "remboursement_eur": 1397761.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "SAINT-MARTIN Laurent",
-   "circonscription": "ÃŽle-de-France (Paris)",
-   "depenses_eur": 1756765.0,
-   "recettes_eur": 1849266.0,
-   "apport_personnel_eur": 1745922.0,
-   "dons_eur": 50440.0,
-   "remboursement_eur": 1653421.0,
    "decision": "AR"
   },
   {
@@ -844,6 +987,134 @@
    "dons_eur": 67950.0,
    "remboursement_eur": 107837.0,
    "decision": "ARRR"
+  },
+  {
+   "candidat": "BELLAY Béatrice",
+   "circonscription": "Martinique",
+   "depenses_eur": 22324.0,
+   "recettes_eur": 34900.0,
+   "apport_personnel_eur": 20075.0,
+   "dons_eur": 14825.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "BÉRISSON Olivier",
+   "circonscription": "Martinique",
+   "depenses_eur": 1424.0,
+   "recettes_eur": 3302.0,
+   "apport_personnel_eur": 1419.0,
+   "dons_eur": 1883.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "CONCONNE Catherine",
+   "circonscription": "Martinique",
+   "depenses_eur": 80002.0,
+   "recettes_eur": 85990.0,
+   "apport_personnel_eur": 39350.0,
+   "dons_eur": 46640.0,
+   "remboursement_eur": 33362.0,
+   "decision": "ARRR"
+  },
+  {
+   "candidat": "FERDINAND Guy",
+   "circonscription": "Martinique",
+   "remboursement_eur": 0.0,
+   "decision": "AD"
+  },
+  {
+   "candidat": "JEAN-MARIE Gabriel",
+   "circonscription": "Martinique",
+   "remboursement_eur": 0.0,
+   "decision": "AD"
+  },
+  {
+   "candidat": "JOCK Philippe",
+   "circonscription": "Martinique",
+   "depenses_eur": 94608.0,
+   "recettes_eur": 96880.0,
+   "apport_personnel_eur": 25260.0,
+   "dons_eur": 70620.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "LETCHIMY Serge",
+   "circonscription": "Martinique",
+   "depenses_eur": 144502.0,
+   "recettes_eur": 196778.0,
+   "apport_personnel_eur": 156280.0,
+   "dons_eur": 39810.0,
+   "remboursement_eur": 90667.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "MARIE-JEANNE Alfred",
+   "circonscription": "Martinique",
+   "depenses_eur": 129433.0,
+   "recettes_eur": 129701.0,
+   "apport_personnel_eur": 102409.0,
+   "dons_eur": 19714.0,
+   "remboursement_eur": 90667.0,
+   "decision": "ARRR"
+  },
+  {
+   "candidat": "MONPLAISIR Ralph",
+   "circonscription": "Martinique",
+   "remboursement_eur": 0.0,
+   "decision": "AD"
+  },
+  {
+   "candidat": "MONPLAISIR Yan",
+   "circonscription": "Martinique",
+   "depenses_eur": 129201.0,
+   "recettes_eur": 129492.0,
+   "apport_personnel_eur": 114292.0,
+   "dons_eur": 15200.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "NILOR Jean-Philippe",
+   "circonscription": "Martinique",
+   "depenses_eur": 104115.0,
+   "recettes_eur": 104588.0,
+   "apport_personnel_eur": 43228.0,
+   "dons_eur": 23423.0,
+   "remboursement_eur": 42755.0,
+   "decision": "ARRR"
+  },
+  {
+   "candidat": "ORVILLE Max",
+   "circonscription": "Martinique",
+   "depenses_eur": 109000.0,
+   "recettes_eur": 110902.0,
+   "apport_personnel_eur": 93700.0,
+   "dons_eur": 17200.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "PETIT Philippe",
+   "circonscription": "Martinique",
+   "depenses_eur": 24938.0,
+   "recettes_eur": 25005.0,
+   "apport_personnel_eur": 80.0,
+   "dons_eur": 1625.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "SELLAYE Marcel",
+   "circonscription": "Martinique",
+   "depenses_eur": 5803.0,
+   "recettes_eur": 18819.0,
+   "apport_personnel_eur": 3763.0,
+   "dons_eur": 15055.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
   },
   {
    "candidat": "BAY Nicolas",
@@ -1254,270 +1525,6 @@
    "dons_eur": 0.0,
    "remboursement_eur": 0.0,
    "decision": "R"
-  },
-  {
-   "candidat": "ALEXANDRE Rodolphe",
-   "circonscription": "Guyane",
-   "depenses_eur": 142274.0,
-   "recettes_eur": 259201.0,
-   "apport_personnel_eur": 3326.0,
-   "dons_eur": 248200.0,
-   "remboursement_eur": 0.0,
-   "decision": "ARRR"
-  },
-  {
-   "candidat": "AMERICAIN Jessi",
-   "circonscription": "Guyane",
-   "depenses_eur": 3641.0,
-   "recettes_eur": 3641.0,
-   "apport_personnel_eur": 1941.0,
-   "dons_eur": 1700.0,
-   "remboursement_eur": 1941.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "FEREIRA Jean-Paul",
-   "circonscription": "Guyane",
-   "depenses_eur": 66140.0,
-   "recettes_eur": 66140.0,
-   "apport_personnel_eur": 36580.0,
-   "dons_eur": 19560.0,
-   "remboursement_eur": 36580.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "SERVILLE Gabriel",
-   "circonscription": "Guyane",
-   "depenses_eur": 71434.0,
-   "recettes_eur": 72977.0,
-   "apport_personnel_eur": 42330.0,
-   "dons_eur": 16920.0,
-   "remboursement_eur": 40787.0,
-   "decision": "ARRR"
-  },
-  {
-   "candidat": "BELLAY Béatrice",
-   "circonscription": "Martinique",
-   "depenses_eur": 22324.0,
-   "recettes_eur": 34900.0,
-   "apport_personnel_eur": 20075.0,
-   "dons_eur": 14825.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BÉRISSON Olivier",
-   "circonscription": "Martinique",
-   "depenses_eur": 1424.0,
-   "recettes_eur": 3302.0,
-   "apport_personnel_eur": 1419.0,
-   "dons_eur": 1883.0,
-   "remboursement_eur": 0.0,
-   "decision": "R"
-  },
-  {
-   "candidat": "CONCONNE Catherine",
-   "circonscription": "Martinique",
-   "depenses_eur": 80002.0,
-   "recettes_eur": 85990.0,
-   "apport_personnel_eur": 39350.0,
-   "dons_eur": 46640.0,
-   "remboursement_eur": 33362.0,
-   "decision": "ARRR"
-  },
-  {
-   "candidat": "FERDINAND Guy",
-   "circonscription": "Martinique",
-   "remboursement_eur": 0.0,
-   "decision": "AD"
-  },
-  {
-   "candidat": "JEAN-MARIE Gabriel",
-   "circonscription": "Martinique",
-   "remboursement_eur": 0.0,
-   "decision": "AD"
-  },
-  {
-   "candidat": "JOCK Philippe",
-   "circonscription": "Martinique",
-   "depenses_eur": 94608.0,
-   "recettes_eur": 96880.0,
-   "apport_personnel_eur": 25260.0,
-   "dons_eur": 70620.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "LETCHIMY Serge",
-   "circonscription": "Martinique",
-   "depenses_eur": 144502.0,
-   "recettes_eur": 196778.0,
-   "apport_personnel_eur": 156280.0,
-   "dons_eur": 39810.0,
-   "remboursement_eur": 90667.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "MARIE-JEANNE Alfred",
-   "circonscription": "Martinique",
-   "depenses_eur": 129433.0,
-   "recettes_eur": 129701.0,
-   "apport_personnel_eur": 102409.0,
-   "dons_eur": 19714.0,
-   "remboursement_eur": 90667.0,
-   "decision": "ARRR"
-  },
-  {
-   "candidat": "MONPLAISIR Yan",
-   "circonscription": "Martinique",
-   "depenses_eur": 129201.0,
-   "recettes_eur": 129492.0,
-   "apport_personnel_eur": 114292.0,
-   "dons_eur": 15200.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "MONPLAISIR Ralph",
-   "circonscription": "Martinique",
-   "remboursement_eur": 0.0,
-   "decision": "AD"
-  },
-  {
-   "candidat": "NILOR Jean-Philippe",
-   "circonscription": "Martinique",
-   "depenses_eur": 104115.0,
-   "recettes_eur": 104588.0,
-   "apport_personnel_eur": 43228.0,
-   "dons_eur": 23423.0,
-   "remboursement_eur": 42755.0,
-   "decision": "ARRR"
-  },
-  {
-   "candidat": "ORVILLE Max",
-   "circonscription": "Martinique",
-   "depenses_eur": 109000.0,
-   "recettes_eur": 110902.0,
-   "apport_personnel_eur": 93700.0,
-   "dons_eur": 17200.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PETIT Philippe",
-   "circonscription": "Martinique",
-   "depenses_eur": 24938.0,
-   "recettes_eur": 25005.0,
-   "apport_personnel_eur": 80.0,
-   "dons_eur": 1625.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "SELLAYE Marcel",
-   "circonscription": "Martinique",
-   "depenses_eur": 5803.0,
-   "recettes_eur": 18819.0,
-   "apport_personnel_eur": 3763.0,
-   "dons_eur": 15055.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "ANGELINI Jean-Christophe",
-   "circonscription": "Corse (Corse du Sud)",
-   "depenses_eur": 68894.0,
-   "recettes_eur": 69970.0,
-   "apport_personnel_eur": 65050.0,
-   "dons_eur": 3700.0,
-   "remboursement_eur": 63974.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BENEDETTI Paul-Félix",
-   "circonscription": "Corse (Corse du Sud)",
-   "depenses_eur": 35581.0,
-   "recettes_eur": 35581.0,
-   "apport_personnel_eur": 28648.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 28648.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "FILONI François",
-   "circonscription": "Corse (Corse du Sud)",
-   "depenses_eur": 11728.0,
-   "recettes_eur": 11765.0,
-   "apport_personnel_eur": 1500.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "GIACOMI Jean-Antoine",
-   "circonscription": "Corse (Corse du Sud)",
-   "remboursement_eur": 0.0,
-   "decision": "AD"
-  },
-  {
-   "candidat": "MARCANGELI Laurent",
-   "circonscription": "Corse (Corse du Sud)",
-   "depenses_eur": 74323.0,
-   "recettes_eur": 78650.0,
-   "apport_personnel_eur": 58850.0,
-   "dons_eur": 19100.0,
-   "remboursement_eur": 54523.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "ORSUCCI Jean-Charles",
-   "circonscription": "Corse (Corse du Sud)",
-   "depenses_eur": 55080.0,
-   "recettes_eur": 55504.0,
-   "apport_personnel_eur": 51900.0,
-   "dons_eur": 1000.0,
-   "remboursement_eur": 51476.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "SIMEONI Gilles",
-   "circonscription": "Corse (Corse du Sud)",
-   "depenses_eur": 103415.0,
-   "recettes_eur": 108717.0,
-   "apport_personnel_eur": 92600.0,
-   "dons_eur": 14180.0,
-   "remboursement_eur": 85793.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "SIMONPIETRI Agnès",
-   "circonscription": "Corse (Corse du Sud)",
-   "depenses_eur": 5584.0,
-   "recettes_eur": 5632.0,
-   "apport_personnel_eur": 3662.0,
-   "dons_eur": 1070.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "STEFANI Michel",
-   "circonscription": "Corse (Corse du Sud)",
-   "depenses_eur": 31937.0,
-   "recettes_eur": 31937.0,
-   "apport_personnel_eur": 31937.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "TALAMONI Jean-Guy",
-   "circonscription": "Corse (Corse du Sud)",
-   "depenses_eur": 101756.0,
-   "recettes_eur": 101756.0,
-   "apport_personnel_eur": 79907.0,
-   "dons_eur": 18850.0,
-   "remboursement_eur": 79907.0,
-   "decision": "ARR"
   }
  ],
  "regle": "Exception limitée aux candidats, pour les comptes de campagne publiés par la CNCCFP ou au Journal officiel : nom, nuance, circonscription, montants, décision. Ni adresse, ni date de naissance, ni donateur, ni mandataire financier."

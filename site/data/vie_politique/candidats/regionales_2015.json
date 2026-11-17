@@ -16,6 +16,13 @@
   "decision",
   "reference"
  ],
+ "ordre": {
+  "regle": "circonscription, puis nom du candidat, par ordre alphabétique (sans tenir compte des accents ni de la casse, nombres comparés comme des nombres)",
+  "cles": [
+   "circonscription",
+   "candidat"
+  ]
+ },
  "candidats": [
   {
    "candidat": "BÉLIER Sandrine",
@@ -1086,6 +1093,114 @@
    "decision": "AR"
   },
   {
+   "candidat": "APPADOO David",
+   "circonscription": "La Réunion",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "BELLO Huguette",
+   "circonscription": "La Réunion",
+   "depenses_eur": 217570.0,
+   "recettes_eur": 217846.0,
+   "apport_personnel_eur": 137934.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 137658.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BOYER Aniel",
+   "circonscription": "La Réunion",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "GRONDIN Joseph",
+   "circonscription": "La Réunion",
+   "depenses_eur": 44848.0,
+   "recettes_eur": 44848.0,
+   "apport_personnel_eur": 38588.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "LEBRETON Patrick",
+   "circonscription": "La Réunion",
+   "depenses_eur": 150614.0,
+   "recettes_eur": 150614.0,
+   "apport_personnel_eur": 95339.0,
+   "dons_eur": 54675.0,
+   "remboursement_eur": 95339.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "MOREL Jean-Jack",
+   "circonscription": "La Réunion",
+   "depenses_eur": 5897.0,
+   "recettes_eur": 6148.0,
+   "apport_personnel_eur": 520.0,
+   "dons_eur": 580.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "PAYET Jean Yves",
+   "circonscription": "La Réunion",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "PAYET Mathias",
+   "circonscription": "La Réunion",
+   "depenses_eur": 742.0,
+   "recettes_eur": 34992.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 34992.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "RATENON Jean-Hugues",
+   "circonscription": "La Réunion",
+   "depenses_eur": 15880.0,
+   "recettes_eur": 18476.0,
+   "apport_personnel_eur": 7261.0,
+   "dons_eur": 3565.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "ROBERT Didier (*)",
+   "circonscription": "La Réunion",
+   "depenses_eur": 251450.0,
+   "recettes_eur": 251894.0,
+   "apport_personnel_eur": 109007.0,
+   "dons_eur": 14900.0,
+   "remboursement_eur": 108563.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "ROBERT Thierry",
+   "circonscription": "La Réunion",
+   "depenses_eur": 266103.0,
+   "recettes_eur": 266165.0,
+   "apport_personnel_eur": 51511.0,
+   "dons_eur": 95220.0,
+   "remboursement_eur": 51449.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "VICTORIA René-Paul",
+   "circonscription": "La Réunion",
+   "depenses_eur": 91260.0,
+   "recettes_eur": 91699.0,
+   "apport_personnel_eur": 12370.0,
+   "dons_eur": 61775.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
    "candidat": "ALIOT Louis",
    "circonscription": "Languedoc-Roussillon et Midi-Pyrénées (Haute-Garonne)",
    "depenses_eur": 849117.0,
@@ -1558,114 +1673,6 @@
    "circonscription": "Provence-Alpes-Côte d'Azur (Bouches-du-Rhône)",
    "remboursement_eur": 0.0,
    "decision": "AD"
-  },
-  {
-   "candidat": "APPADOO David",
-   "circonscription": "La Réunion",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "BELLO Huguette",
-   "circonscription": "La Réunion",
-   "depenses_eur": 217570.0,
-   "recettes_eur": 217846.0,
-   "apport_personnel_eur": 137934.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 137658.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "BOYER Aniel",
-   "circonscription": "La Réunion",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "GRONDIN Joseph",
-   "circonscription": "La Réunion",
-   "depenses_eur": 44848.0,
-   "recettes_eur": 44848.0,
-   "apport_personnel_eur": 38588.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "LEBRETON Patrick",
-   "circonscription": "La Réunion",
-   "depenses_eur": 150614.0,
-   "recettes_eur": 150614.0,
-   "apport_personnel_eur": 95339.0,
-   "dons_eur": 54675.0,
-   "remboursement_eur": 95339.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "MOREL Jean-Jack",
-   "circonscription": "La Réunion",
-   "depenses_eur": 5897.0,
-   "recettes_eur": 6148.0,
-   "apport_personnel_eur": 520.0,
-   "dons_eur": 580.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PAYET Mathias",
-   "circonscription": "La Réunion",
-   "depenses_eur": 742.0,
-   "recettes_eur": 34992.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 34992.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "PAYET Jean Yves",
-   "circonscription": "La Réunion",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "RATENON Jean-Hugues",
-   "circonscription": "La Réunion",
-   "depenses_eur": 15880.0,
-   "recettes_eur": 18476.0,
-   "apport_personnel_eur": 7261.0,
-   "dons_eur": 3565.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "ROBERT Thierry",
-   "circonscription": "La Réunion",
-   "depenses_eur": 266103.0,
-   "recettes_eur": 266165.0,
-   "apport_personnel_eur": 51511.0,
-   "dons_eur": 95220.0,
-   "remboursement_eur": 51449.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "ROBERT Didier (*)",
-   "circonscription": "La Réunion",
-   "depenses_eur": 251450.0,
-   "recettes_eur": 251894.0,
-   "apport_personnel_eur": 109007.0,
-   "dons_eur": 14900.0,
-   "remboursement_eur": 108563.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "VICTORIA René-Paul",
-   "circonscription": "La Réunion",
-   "depenses_eur": 91260.0,
-   "recettes_eur": 91699.0,
-   "apport_personnel_eur": 12370.0,
-   "dons_eur": 61775.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
   }
  ],
  "regle": "Exception limitée aux candidats, pour les comptes de campagne publiés par la CNCCFP ou au Journal officiel : nom, nuance, circonscription, montants, décision. Ni adresse, ni date de naissance, ni donateur, ni mandataire financier."

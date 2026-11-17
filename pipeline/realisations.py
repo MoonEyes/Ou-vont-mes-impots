@@ -752,6 +752,10 @@ def sens_souhaite(s: dict) -> dict:
                               "Ni sens d'évolution publié, ni cible comparable au réalisé") + " : sens inconnu."}
 
 
+SENS_PUBLIE = "dans le sens souhaité publié"
+SENS_INVERSE = "à l’inverse du sens souhaité publié"
+
+
 def tendance(s: dict, sens: dict) -> dict:
     reals = sorted((a, r["valeur"]) for a, r in s["realises"].items() if r["valeur"] is not None)
     if len(reals) < 2:
@@ -765,7 +769,8 @@ def tendance(s: dict, sens: dict) -> dict:
         return {"valeur": "stable", **base, "raison": f"variation inférieure ou égale à {SEUIL_STABLE_PCT} %"}
     if sens["valeur"] in ("hausse", "baisse"):
         bon = (delta > 0) == (sens["valeur"] == "hausse")
-        return {"valeur": "en progrès" if bon else "en recul", **base,
+        # Libellé factuel relatif au sens publié par l'administration (charte docs/NEUTRALITE.md) : le site ne juge pas.
+        return {"valeur": SENS_PUBLIE if bon else SENS_INVERSE, **base,
                 "justification": {"sens_souhaite": sens["valeur"], "methode": sens["methode"],
                                   "source": sens["source"]}}
     return {"valeur": "sens inconnu", **base, "raison": sens["justification"]}
@@ -1013,7 +1018,7 @@ def produire() -> dict:
             sens_stats[i["tendance"]["valeur"]] += 1
             annees_perf |= {v["annee"] for v in i["valeurs"] if v["valeur"] is not None}
             t = i["tendance"]
-            if (t["valeur"] == "en recul" and i["sens_souhaite"]["methode"] == "colonne evolution"
+            if (t["valeur"] == SENS_INVERSE and i["sens_souhaite"]["methode"] == "colonne evolution"
                     and propre(i["unite"]) == "%" and not i["indicateur_de_contexte"] and t["a_annee"] >= 2024
                     and 0 <= t["de"] <= 100 and 0 <= t["a"] <= 100):
                 reculs.append({"programme": p, "indicateur": i["indicateur"], "sous_indicateur": i["sous_indicateur"],

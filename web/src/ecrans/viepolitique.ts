@@ -49,8 +49,8 @@ const alpha = (a: string, b: string) => a.localeCompare(b, 'fr', { sensitivity: 
 export const REGLE_PARTIS =
   'Ordre du tableau : aide publique totale, de la plus élevée à la plus faible (montant fixé par la loi d’après les résultats aux élections législatives et le nombre de parlementaires rattachés) ; à égalité, ordre alphabétique.'
 export const REGLE_CANDIDATS = 'Ordre du tableau : circonscription, puis nom du candidat, par ordre alphabétique.'
-export function trierPartis<T extends { nom: string; total_eur: number }>(l: T[]): T[] {
-  return [...l].sort((a, b) => b.total_eur - a.total_eur || alpha(a.nom, b.nom))
+export function trierPartis<T extends { nom: string; nom_tri?: string; total_eur: number }>(l: T[]): T[] {
+  return [...l].sort((a, b) => b.total_eur - a.total_eur || alpha(a.nom_tri ?? a.nom, b.nom_tri ?? b.nom))
 }
 export function trierCandidats<T extends { candidat: string; circonscription?: string }>(l: T[]): T[] {
   return [...l].sort((a, b) => alpha(a.circonscription ?? '', b.circonscription ?? '') || alpha(a.candidat, b.candidat))
@@ -110,7 +110,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const choisie = Number(params.get('a')) || annees.find((a) => vp.annees.find((x) => x.annee === a)?.programme_232) || annees[0]
   const a = vp.annees.find((x) => x.annee === choisie) ?? vp.annees[0]
   const p = a.programme_232
-  const partis = a.aide_publique_partis ? await chargerSiPresent<{ millesime: string; source: string; definition: string; partis: { nom: string; premiere_fraction_eur: number; seconde_fraction_eur: number; total_eur: number }[] }>(`vie_politique/${a.aide_publique_partis.fichier}`) : null
+  const partis = a.aide_publique_partis ? await chargerSiPresent<{ millesime: string; source: string; definition: string; partis: { nom: string; nom_tri?: string; premiere_fraction_eur: number; seconde_fraction_eur: number; total_eur: number }[] }>(`vie_politique/${a.aide_publique_partis.fichier}`) : null
 
   cible.innerHTML = `
 <h1>Vie politique en ${a.annee}</h1>

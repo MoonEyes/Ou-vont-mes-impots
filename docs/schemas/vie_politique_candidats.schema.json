@@ -118,6 +118,27 @@
         ],
         "additionalProperties": false
       }
+    },
+    "ordre": {
+      "type": "object",
+      "description": "Règle d'ordre neutre de la liste, affichée par le site (charte docs/NEUTRALITE.md, règle 6).",
+      "properties": {
+        "regle": {
+          "type": "string",
+          "minLength": 20
+        },
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "regle",
+        "cles"
+      ]
     }
   },
   "required": [
@@ -126,7 +147,8 @@
     "annee",
     "regle",
     "champs",
-    "candidats"
+    "candidats",
+    "ordre"
   ],
   "description": "Liste blanche de champs (pipeline/vie_politique.py CHAMPS_CANDIDAT) : ni adresse, ni date de naissance, ni donateur, ni mandataire."
 }

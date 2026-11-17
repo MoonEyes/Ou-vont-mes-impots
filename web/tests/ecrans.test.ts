@@ -388,33 +388,27 @@ describe('écrans', () => {
   })
 
   // Lexique neutre (charte docs/NEUTRALITE.md, règle 2) étendu à TOUT le texte affiché, pas seulement aux titres.
-  // Fondements : effet de cadrage (Tversky et Kahneman, 1981) ; réactance (Brehm, 1966) : un texte qui pousse à
-  // conclure provoque le rejet ; effet de média hostile (Vallone, Ross et Lepper, 1985) : chaque camp lit un biais
-  // contre lui dans un texte qui choisit ses mots ; pratiques des Décodeurs, de Full Fact et de The Markup : le chiffre,
-  // sa base et sa source, sans adjectif. Chaque entrée dit pourquoi le terme est exclu.
-  const LEXIQUE_INTERDIT: [RegExp, string][] = [
-    [/\b(seulement|à peine|tout juste|pas moins de|pas plus de|rien que)\s+(\d|un |une )|\d[\d\s,]*\s?(%|€|M€|Md€|k€)?\s+seulement\b/i, 'minimise ou grossit un montant : le chiffre et sa base suffisent'],
-    [/\b(énorme|colossa\w*|astronomique\w*|faramineu\w*|exorbitant\w*|dérisoire\w*|vertigineu\w*)\b/i, 'adjectif d’intensité'],
-    [/\b(gaspill\w*|gabegie|scandal\w*|opaque\w*|fardeau\w*|matraqu\w*|ponction\w*|racket\w*|assistanat|profiteur\w*|dérap\w*)\b/i, 'jugement négatif'],
-    [/\b(cadeaux?|généreu\w*|bienfait\w*)\b/i, 'jugement positif ou ironique'],
-    [/\b(englout\w*|siphonn\w*|plomb(e|ent|er)|explos(e|ent|er|ion))\b/i, 'verbe imagé de perte ou de hausse'],
-    [/\bcoût(e|ent|eux|euse|euses)\b/i, 'cadrage en perte : dire « montant » ou « dépense »'],
-    [/\b(pèse|pèsent|peser)\b/i, 'image du poids'],
-    [/\btrop\b/i, 'jugement de niveau'],
-    [/\b(que tu paies|ce que tu finances|ce que je finance)\b/i, 'cadrage incohérent : le site dit partout « ce que tu verses »'],
-    [/\b(influenc\w*|lobby\w*|les plus visés)\b/i, 'insinuation : dire « représentation d’intérêts », terme de la HATVP'],
-  ]
-  // Libellés venus des données ou titres officiels, reproduits tels quels et listés dans docs/NEUTRALITE.md.
-  const EXCEPTIONS_DONNEES = ['« Entreprises et niches fiscales et sociales »', '« Un capitalisme sous perfusion »', 'déclassées, niches sociales ;', 'ces taxes pèsent sur les revenus', 'Diplomatie culturelle et d’influence', "Diplomatie culturelle et d'influence"]
+  // Liste partagée avec le test des données (tests/test_neutralite.py) : docs/lexique_neutre.json, où chaque règle dit
+  // pourquoi le terme est exclu (effet de cadrage, réactance, effet de média hostile ; pratiques des Décodeurs, de
+  // Full Fact et de The Markup). Bornes de mot Unicode : \b de JavaScript ignore les lettres accentuées.
+  const LEXIQUE = JSON.parse(readFileSync(join(process.cwd(), '..', 'docs', 'lexique_neutre.json'), 'utf8')) as {
+    regles: { termes: string[]; raison: string }[]
+    niche_definie: string
+    exceptions: string[]
+  }
+  const borne = (corps: string) => new RegExp(`(?<![\\p{L}\\p{N}_])(?:${corps})(?![\\p{L}\\p{N}_])`, 'iu')
+  const LEXIQUE_INTERDIT: [RegExp, string][] = LEXIQUE.regles.map((r) => [borne(r.termes.join('|')), r.raison])
+  // Libellés officiels reproduits tels quels (titres de publications, intitulé de programme), listés dans docs/NEUTRALITE.md.
+  const EXCEPTIONS_DONNEES = LEXIQUE.exceptions
   // « Niche » n'est admis qu'avec sa définition : « dépense fiscale (souvent appelée niche fiscale) ».
-  const NICHE_DEFINIE = /souvent appelées? niches? (fiscales?|sociales?)/gi
+  const NICHE_DEFINIE = new RegExp(LEXIQUE.niche_definie, 'giu')
 
   function verifierLexique(t: string, ou: string) {
     // Les chemins de fichiers et adresses (site/data/niches/index.json...) ne sont pas de la rédaction.
     let x = t.replace(/\s+/g, ' ').replace(/[\w./:-]*\/[\w./-]+/g, ' ')
     for (const e of EXCEPTIONS_DONNEES) x = x.split(e).join(' ')
     for (const [re, raison] of LEXIQUE_INTERDIT) expect(x, `${ou} : ${raison} (${re})`).not.toMatch(re)
-    expect(x.replace(NICHE_DEFINIE, ' '), `${ou} : « niche » sans définition`).not.toMatch(/\bniches?\b/i)
+    expect(x.replace(NICHE_DEFINIE, ' '), `${ou} : « niche » sans définition`).not.toMatch(borne('niches?'))
   }
 
   it('lexique neutre : aucun terme évaluatif dans tout le texte affiché, pages, en-tête, pied, métadonnées, image de partage', async () => {

@@ -6,7 +6,7 @@
  "methode": [
   "Total des taxes sur les produits par décile : Insee, comptes nationaux distribués 2019 (tableau complémentaire 2 : « taxes sur les produits et sur la production » moins « taxes sur la production »), vingtièmes regroupés en déciles et pondérés par leur nombre d'UC.",
   "Recalage 2025 : × 1.1559 = taxes sur les produits Eurostat (D2 - D29) 2025 / 2019 (337.59 / 292.05 Md€).",
-  "Central = hypothèse Insee de référence (taxes réparties comme la consommation, prix de marché). Bas et haut = encadrement par la variante Insee où ces taxes pèsent sur les revenus (encadré de l'IA 88).",
+  "Central = hypothèse Insee de référence (taxes réparties comme la consommation, prix de marché). Bas et haut = encadrement par la variante Insee où ces taxes sont imputées aux revenus (encadré de l'IA 88).",
   "Détail par taxe dans chaque décile : montant national 2025 de la taxe × clé du décile (dépense Budget de famille 2017 du poste concerné, rapportée à la moyenne des déciles), normalisé pour que la somme des taxes égale le total du décile. Clés : TVA = TVA théorique (dépenses × taux légaux 2025 par poste COICOP) ; ex-TICPE = carburants (0722) et combustibles liquides (0453) ; tabac = 022 ; alcool = 021 ; autres = consommation totale.",
   "Pour placer un utilisateur : niveau de vie = revenu disponible du ménage / nombre d'UC, comparé aux bornes de déciles ERFS ; le site peut aussi appliquer le taux d'effort au revenu disponible."
  ],

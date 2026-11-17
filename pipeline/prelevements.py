@@ -806,7 +806,7 @@ def tva_conso() -> dict:
             f"Recalage 2025 : × {round(facteur, 4)} = taxes sur les produits Eurostat (D2 - D29) 2025 / 2019 "
             f"({round(d21[ANNEE], 2)} / {round(d21['2019'], 2)} Md€).",
             "Central = hypothèse Insee de référence (taxes réparties comme la consommation, prix de marché). Bas et "
-            "haut = encadrement par la variante Insee où ces taxes pèsent sur les revenus (encadré de l'IA 88).",
+            "haut = encadrement par la variante Insee où ces taxes sont imputées aux revenus (encadré de l'IA 88).",
             "Détail par taxe dans chaque décile : montant national 2025 de la taxe × clé du décile (dépense Budget "
             "de famille 2017 du poste concerné, rapportée à la moyenne des déciles), normalisé pour que la somme des "
             "taxes égale le total du décile. Clés : TVA = TVA théorique (dépenses × taux légaux 2025 par poste "

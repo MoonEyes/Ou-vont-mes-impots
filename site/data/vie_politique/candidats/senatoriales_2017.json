@@ -16,6 +16,13 @@
   "decision",
   "reference"
  ],
+ "ordre": {
+  "regle": "circonscription, puis nom du candidat, par ordre alphabétique (sans tenir compte des accents ni de la casse, nombres comparés comme des nombres)",
+  "cles": [
+   "circonscription",
+   "candidat"
+  ]
+ },
  "candidats": [
   {
    "candidat": "CHOURFI Fadila",
@@ -1036,6 +1043,86 @@
    "decision": "AR"
   },
   {
+   "candidat": "CHASSIER Michel",
+   "circonscription": "Loir-et-Cher",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "DE RUL Marylène",
+   "circonscription": "Loir-et-Cher",
+   "depenses_eur": 2398.0,
+   "recettes_eur": 2398.0,
+   "apport_personnel_eur": 2218.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1968.0,
+   "decision": "AM"
+  },
+  {
+   "candidat": "DELAPORTE Jean-Benoit",
+   "circonscription": "Loir-et-Cher",
+   "depenses_eur": 1363.0,
+   "recettes_eur": 1363.0,
+   "apport_personnel_eur": 1363.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1363.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "GOUBERT DE CAUVILLE Pascal",
+   "circonscription": "Loir-et-Cher",
+   "depenses_eur": 6788.0,
+   "recettes_eur": 6788.0,
+   "apport_personnel_eur": 3269.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 3269.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "GOURAULT Jacqueline",
+   "circonscription": "Loir-et-Cher",
+   "depenses_eur": 10125.0,
+   "recettes_eur": 10200.0,
+   "apport_personnel_eur": 10200.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 10125.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "JANSSENS Jean-Marie",
+   "circonscription": "Loir-et-Cher",
+   "depenses_eur": 10403.0,
+   "recettes_eur": 10403.0,
+   "apport_personnel_eur": 10303.0,
+   "dons_eur": 100.0,
+   "remboursement_eur": 10303.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "LORGEOUX Jeanny (*)",
+   "circonscription": "Loir-et-Cher",
+   "depenses_eur": 2219.0,
+   "recettes_eur": 4000.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 4000.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "VIEIRA Gildas",
+   "circonscription": "Loir-et-Cher",
+   "depenses_eur": 6876.0,
+   "recettes_eur": 6886.0,
+   "apport_personnel_eur": 6229.0,
+   "dons_eur": 604.0,
+   "remboursement_eur": 5619.0,
+   "decision": "ARM"
+  },
+  {
    "candidat": "BARNIER Jean-François",
    "circonscription": "Loire",
    "depenses_eur": 10013.0,
@@ -1266,86 +1353,6 @@
    "dons_eur": 0.0,
    "remboursement_eur": 0.0,
    "decision": "HD"
-  },
-  {
-   "candidat": "CHASSIER Michel",
-   "circonscription": "Loir-et-Cher",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "DE RUL Marylène",
-   "circonscription": "Loir-et-Cher",
-   "depenses_eur": 2398.0,
-   "recettes_eur": 2398.0,
-   "apport_personnel_eur": 2218.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1968.0,
-   "decision": "AM"
-  },
-  {
-   "candidat": "DELAPORTE Jean-Benoit",
-   "circonscription": "Loir-et-Cher",
-   "depenses_eur": 1363.0,
-   "recettes_eur": 1363.0,
-   "apport_personnel_eur": 1363.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1363.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "GOUBERT DE CAUVILLE Pascal",
-   "circonscription": "Loir-et-Cher",
-   "depenses_eur": 6788.0,
-   "recettes_eur": 6788.0,
-   "apport_personnel_eur": 3269.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 3269.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "GOURAULT Jacqueline",
-   "circonscription": "Loir-et-Cher",
-   "depenses_eur": 10125.0,
-   "recettes_eur": 10200.0,
-   "apport_personnel_eur": 10200.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 10125.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "JANSSENS Jean-Marie",
-   "circonscription": "Loir-et-Cher",
-   "depenses_eur": 10403.0,
-   "recettes_eur": 10403.0,
-   "apport_personnel_eur": 10303.0,
-   "dons_eur": 100.0,
-   "remboursement_eur": 10303.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "LORGEOUX Jeanny (*)",
-   "circonscription": "Loir-et-Cher",
-   "depenses_eur": 2219.0,
-   "recettes_eur": 4000.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 4000.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "VIEIRA Gildas",
-   "circonscription": "Loir-et-Cher",
-   "depenses_eur": 6876.0,
-   "recettes_eur": 6886.0,
-   "apport_personnel_eur": 6229.0,
-   "dons_eur": 604.0,
-   "remboursement_eur": 5619.0,
-   "decision": "ARM"
   },
   {
    "candidat": "BLADINIERES Serge",

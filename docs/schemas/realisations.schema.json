@@ -323,8 +323,8 @@
                 "properties": {
                   "valeur": {
                     "enum": [
-                      "en progrès",
-                      "en recul",
+                      "dans le sens souhaité publié",
+                      "à l’inverse du sens souhaité publié",
                       "stable",
                       "sens inconnu"
                     ]

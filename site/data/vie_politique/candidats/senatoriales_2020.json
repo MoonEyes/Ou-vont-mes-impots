@@ -16,7 +16,120 @@
   "decision",
   "reference"
  ],
+ "ordre": {
+  "regle": "circonscription, puis nom du candidat, par ordre alphabétique (sans tenir compte des accents ni de la casse, nombres comparés comme des nombres)",
+  "cles": [
+   "circonscription",
+   "candidat"
+  ]
+ },
  "candidats": [
+  {
+   "candidat": "BENMEDJAHED Ali",
+   "circonscription": "Ain",
+   "depenses_eur": 11456.0,
+   "recettes_eur": 11456.0,
+   "apport_personnel_eur": 6345.0,
+   "dons_eur": 1820.0,
+   "remboursement_eur": 6345.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BLATRIX CONTAT Florence",
+   "circonscription": "Ain",
+   "depenses_eur": 9452.0,
+   "recettes_eur": 9839.0,
+   "apport_personnel_eur": 8500.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 8113.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "BUISSON Jérôme",
+   "circonscription": "Ain",
+   "depenses_eur": 0.0,
+   "recettes_eur": 10.0,
+   "apport_personnel_eur": 10.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "CHAIZE Patrick",
+   "circonscription": "Ain",
+   "depenses_eur": 21226.0,
+   "recettes_eur": 21284.0,
+   "apport_personnel_eur": 8500.0,
+   "dons_eur": 9000.0,
+   "remboursement_eur": 8442.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "GOY-CHAVENT Sylvie",
+   "circonscription": "Ain",
+   "depenses_eur": 7288.0,
+   "recettes_eur": 8436.0,
+   "apport_personnel_eur": 4940.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 3792.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "PAPET Daniel",
+   "circonscription": "Ain",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "BERTIN Nicolas",
+   "circonscription": "Aisne",
+   "depenses_eur": 8060.0,
+   "recettes_eur": 8060.0,
+   "apport_personnel_eur": 8060.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 6560.0,
+   "decision": "ARM"
+  },
+  {
+   "candidat": "COUPAIN Etienne",
+   "circonscription": "Aisne",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "HD"
+  },
+  {
+   "candidat": "LEFÈVRE Antoine",
+   "circonscription": "Aisne",
+   "depenses_eur": 23491.0,
+   "recettes_eur": 23580.0,
+   "apport_personnel_eur": 14700.0,
+   "dons_eur": 8880.0,
+   "remboursement_eur": 12089.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "THOMAS Jean-Jacques",
+   "circonscription": "Aisne",
+   "depenses_eur": 9281.0,
+   "recettes_eur": 9897.0,
+   "apport_personnel_eur": 249.0,
+   "dons_eur": 848.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "VERZELEN Pierre-Jean",
+   "circonscription": "Aisne",
+   "depenses_eur": 15465.0,
+   "recettes_eur": 16387.0,
+   "apport_personnel_eur": 12000.0,
+   "dons_eur": 3400.0,
+   "remboursement_eur": 11078.0,
+   "decision": "A"
+  },
   {
    "candidat": "GUERRE Jean-Michel",
    "circonscription": "Allier",
@@ -96,6 +209,66 @@
    "dons_eur": 0.0,
    "remboursement_eur": 45.0,
    "decision": "AR"
+  },
+  {
+   "candidat": "CHERIF Imen",
+   "circonscription": "Alpes-Maritimes",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "ESTROSI-SASSONE Dominique",
+   "circonscription": "Alpes-Maritimes",
+   "depenses_eur": 20832.0,
+   "recettes_eur": 40989.0,
+   "apport_personnel_eur": 16913.0,
+   "dons_eur": 21065.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "MICHELIS Alain",
+   "circonscription": "Alpes-Maritimes",
+   "depenses_eur": 2879.0,
+   "recettes_eur": 2879.0,
+   "apport_personnel_eur": 2782.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 2782.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "SATTONNET Anne",
+   "circonscription": "Alpes-Maritimes",
+   "depenses_eur": 5159.0,
+   "recettes_eur": 5164.0,
+   "apport_personnel_eur": 5110.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 5105.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "TROMPIER Henri",
+   "circonscription": "Alpes-Maritimes",
+   "depenses_eur": 468.0,
+   "recettes_eur": 1000.0,
+   "apport_personnel_eur": 1000.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "VARDON Philippe",
+   "circonscription": "Alpes-Maritimes",
+   "depenses_eur": 20222.0,
+   "recettes_eur": 20458.0,
+   "apport_personnel_eur": 6977.0,
+   "dons_eur": 13236.0,
+   "remboursement_eur": 6741.0,
+   "decision": "A"
   },
   {
    "candidat": "CAUQUIL Alexandra",
@@ -589,6 +762,226 @@
    "decision": "AR"
   },
   {
+   "candidat": "BADER Jean-Claude",
+   "circonscription": "Bas-Rhin",
+   "depenses_eur": 1948.0,
+   "recettes_eur": 2300.0,
+   "apport_personnel_eur": 2300.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "BOUQUET Gerard",
+   "circonscription": "Bas-Rhin",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "BUCHMANN Andrée",
+   "circonscription": "Bas-Rhin",
+   "depenses_eur": 5304.0,
+   "recettes_eur": 6505.0,
+   "apport_personnel_eur": 1000.0,
+   "dons_eur": 5505.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "FERNIQUE Jacques",
+   "circonscription": "Bas-Rhin",
+   "depenses_eur": 17092.0,
+   "recettes_eur": 18000.0,
+   "apport_personnel_eur": 18000.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 17092.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "HERTH Antoine",
+   "circonscription": "Bas-Rhin",
+   "depenses_eur": 17841.0,
+   "recettes_eur": 18000.0,
+   "apport_personnel_eur": 18000.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 17841.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "KERN Claude",
+   "circonscription": "Bas-Rhin",
+   "depenses_eur": 21230.0,
+   "recettes_eur": 21500.0,
+   "apport_personnel_eur": 20000.0,
+   "dons_eur": 1500.0,
+   "remboursement_eur": 18995.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "LEONHARDT Jean-Paul",
+   "circonscription": "Bas-Rhin",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "LEOPOLD Michel",
+   "circonscription": "Bas-Rhin",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "LUDWIG Pascale",
+   "circonscription": "Bas-Rhin",
+   "depenses_eur": 5541.0,
+   "recettes_eur": 5550.0,
+   "apport_personnel_eur": 5550.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "REICHARDT André",
+   "circonscription": "Bas-Rhin",
+   "depenses_eur": 25559.0,
+   "recettes_eur": 25559.0,
+   "apport_personnel_eur": 17109.0,
+   "dons_eur": 8000.0,
+   "remboursement_eur": 17109.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "ZITVOGEL Thiébault-Valéry",
+   "circonscription": "Bas-Rhin",
+   "depenses_eur": 4688.0,
+   "recettes_eur": 4688.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "BACCHI Jérémy",
+   "circonscription": "Bouches-du-Rhône",
+   "depenses_eur": 3258.0,
+   "recettes_eur": 3258.0,
+   "apport_personnel_eur": 3258.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 3258.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "BORÉ Patrick",
+   "circonscription": "Bouches-du-Rhône",
+   "depenses_eur": 16522.0,
+   "recettes_eur": 16522.0,
+   "apport_personnel_eur": 3719.0,
+   "dons_eur": 12803.0,
+   "remboursement_eur": 3719.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "DUPOUX Ludovic",
+   "circonscription": "Bouches-du-Rhône",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "GUÉRINI Jean-Noël",
+   "circonscription": "Bouches-du-Rhône",
+   "depenses_eur": 25450.0,
+   "recettes_eur": 44858.0,
+   "apport_personnel_eur": 38713.0,
+   "dons_eur": 2000.0,
+   "remboursement_eur": 19305.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "RAVIER Stéphane",
+   "circonscription": "Bouches-du-Rhône",
+   "depenses_eur": 23133.0,
+   "recettes_eur": 29000.0,
+   "apport_personnel_eur": 29000.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 23133.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "SERRUS Jean-Pierre",
+   "circonscription": "Bouches-du-Rhône",
+   "depenses_eur": 9603.0,
+   "recettes_eur": 9695.0,
+   "apport_personnel_eur": 9695.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 9603.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "DE LA PROVÔTÉ Sonia",
+   "circonscription": "Calvados",
+   "depenses_eur": 21261.0,
+   "recettes_eur": 21261.0,
+   "apport_personnel_eur": 20261.0,
+   "dons_eur": 1000.0,
+   "remboursement_eur": 13953.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "FÉRET Corinne",
+   "circonscription": "Calvados",
+   "depenses_eur": 11897.0,
+   "recettes_eur": 12313.0,
+   "apport_personnel_eur": 10803.0,
+   "dons_eur": 160.0,
+   "remboursement_eur": 10387.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "GUÉGUÉNIAT Franck",
+   "circonscription": "Calvados",
+   "depenses_eur": 6251.0,
+   "recettes_eur": 6261.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "HIROUT Bruno",
+   "circonscription": "Calvados",
+   "remboursement_eur": 0.0,
+   "decision": "AD"
+  },
+  {
+   "candidat": "LE COUTOUR Xavier",
+   "circonscription": "Calvados",
+   "depenses_eur": 4984.0,
+   "recettes_eur": 7184.0,
+   "apport_personnel_eur": 4424.0,
+   "dons_eur": 2760.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "NORBERT-COUADE Emmanuel",
+   "circonscription": "Calvados",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "SÉRARD Pascal",
+   "circonscription": "Calvados",
+   "depenses_eur": 10657.0,
+   "recettes_eur": 13000.0,
+   "apport_personnel_eur": 13000.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 10657.0,
+   "decision": "A"
+  },
+  {
    "candidat": "DELCROS Bernard",
    "circonscription": "Cantal",
    "depenses_eur": 9773.0,
@@ -709,6 +1102,46 @@
    "dons_eur": 0.0,
    "remboursement_eur": 2993.0,
    "decision": "AR"
+  },
+  {
+   "candidat": "LALANDE Bernard",
+   "circonscription": "Charente-Maritime",
+   "depenses_eur": 11408.0,
+   "recettes_eur": 11408.0,
+   "apport_personnel_eur": 5179.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 5179.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "LAURENT Daniel",
+   "circonscription": "Charente-Maritime",
+   "depenses_eur": 9177.0,
+   "recettes_eur": 11029.0,
+   "apport_personnel_eur": 8000.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 6148.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "VALLET Mickaël",
+   "circonscription": "Charente-Maritime",
+   "depenses_eur": 11696.0,
+   "recettes_eur": 11696.0,
+   "apport_personnel_eur": 10239.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 10239.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "WERBROUCK Séverine",
+   "circonscription": "Charente-Maritime",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
   },
   {
    "candidat": "COUEILLE Jean-René",
@@ -865,6 +1298,126 @@
    "dons_eur": 0.0,
    "remboursement_eur": 5564.0,
    "decision": "A"
+  },
+  {
+   "candidat": "GAILLARD Franck",
+   "circonscription": "Côte-d'Or",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "HERVIEU Catherine",
+   "circonscription": "Côte-d'Or",
+   "depenses_eur": 2286.0,
+   "recettes_eur": 2286.0,
+   "apport_personnel_eur": 2286.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 2286.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "HOUPERT Alain",
+   "circonscription": "Côte-d'Or",
+   "depenses_eur": 15267.0,
+   "recettes_eur": 15693.0,
+   "apport_personnel_eur": 12288.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 11862.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "PATRIAT François",
+   "circonscription": "Côte-d'Or",
+   "depenses_eur": 8076.0,
+   "recettes_eur": 9590.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 9200.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "POPARD Colette",
+   "circonscription": "Côte-d'Or",
+   "depenses_eur": 12690.0,
+   "recettes_eur": 14860.0,
+   "apport_personnel_eur": 9042.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 6872.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "ROMMEL Jean-Paul",
+   "circonscription": "Côte-d'Or",
+   "depenses_eur": 641.0,
+   "recettes_eur": 641.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "CADEC Alain",
+   "circonscription": "Côtes-d'Armor",
+   "depenses_eur": 10180.0,
+   "recettes_eur": 10180.0,
+   "apport_personnel_eur": 10080.0,
+   "dons_eur": 100.0,
+   "remboursement_eur": 10080.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "DE MELLON Gérard",
+   "circonscription": "Côtes-d'Armor",
+   "depenses_eur": 918.0,
+   "recettes_eur": 1100.0,
+   "apport_personnel_eur": 500.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "FORGET Michel",
+   "circonscription": "Côtes-d'Armor",
+   "depenses_eur": 1777.0,
+   "recettes_eur": 1777.0,
+   "apport_personnel_eur": 1777.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1777.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "GUIGNARD Thibaut",
+   "circonscription": "Côtes-d'Armor",
+   "depenses_eur": 16150.0,
+   "recettes_eur": 16150.0,
+   "apport_personnel_eur": 16150.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 12840.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "JOBIC Cyril",
+   "circonscription": "Côtes-d'Armor",
+   "depenses_eur": 4737.0,
+   "recettes_eur": 4789.0,
+   "apport_personnel_eur": 4789.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 4737.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "LE HOUEROU Annie",
+   "circonscription": "Côtes-d'Armor",
+   "depenses_eur": 12313.0,
+   "recettes_eur": 15490.0,
+   "apport_personnel_eur": 14963.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 11786.0,
+   "decision": "AR"
   },
   {
    "candidat": "BRIAUL Stéphane",
@@ -1126,1838 +1679,6 @@
    "apport_personnel_eur": 13922.0,
    "dons_eur": 0.0,
    "remboursement_eur": 13848.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "BARON Philippe",
-   "circonscription": "Gers",
-   "depenses_eur": 5426.0,
-   "recettes_eur": 5473.0,
-   "apport_personnel_eur": 5473.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 5426.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "DUFFOURG Alain",
-   "circonscription": "Gers",
-   "depenses_eur": 3782.0,
-   "recettes_eur": 9637.0,
-   "apport_personnel_eur": 9637.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 3482.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "DULONG Pierre",
-   "circonscription": "Gers",
-   "depenses_eur": 720.0,
-   "recettes_eur": 1305.0,
-   "apport_personnel_eur": 1266.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "DUPORT Romain",
-   "circonscription": "Gers",
-   "depenses_eur": 2582.0,
-   "recettes_eur": 2582.0,
-   "apport_personnel_eur": 2582.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 2582.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "MONTAUGE Franck",
-   "circonscription": "Gers",
-   "depenses_eur": 11846.0,
-   "recettes_eur": 11846.0,
-   "apport_personnel_eur": 3641.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 3641.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "SKOWRONEK Annabelle",
-   "circonscription": "Gers",
-   "depenses_eur": 822.0,
-   "recettes_eur": 1000.0,
-   "apport_personnel_eur": 1000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 822.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "VALL Raymond",
-   "circonscription": "Gers",
-   "depenses_eur": 5885.0,
-   "recettes_eur": 5885.0,
-   "apport_personnel_eur": 3885.0,
-   "dons_eur": 2000.0,
-   "remboursement_eur": 3885.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "YELMA Jean-Luc",
-   "circonscription": "Gers",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BELLONY Rollin",
-   "circonscription": "Guyane",
-   "depenses_eur": 3563.0,
-   "recettes_eur": 3563.0,
-   "apport_personnel_eur": 3563.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "R"
-  },
-  {
-   "candidat": "BLACODON Stève",
-   "circonscription": "Guyane",
-   "depenses_eur": 3376.0,
-   "recettes_eur": 5300.0,
-   "apport_personnel_eur": 3800.0,
-   "dons_eur": 1500.0,
-   "remboursement_eur": 1876.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "MARIE-ANGÉLIQUE Samuel",
-   "circonscription": "Guyane",
-   "depenses_eur": 1192.0,
-   "recettes_eur": 4850.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 4000.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "PATIENT Georges",
-   "circonscription": "Guyane",
-   "depenses_eur": 20243.0,
-   "recettes_eur": 21410.0,
-   "apport_personnel_eur": 1210.0,
-   "dons_eur": 17200.0,
-   "remboursement_eur": 43.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PHINÉRA-HORTH Marie-Laure",
-   "circonscription": "Guyane",
-   "depenses_eur": 5521.0,
-   "recettes_eur": 6042.0,
-   "apport_personnel_eur": 6000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 5479.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "RÉZAIRE Eugénie",
-   "circonscription": "Guyane",
-   "depenses_eur": 1194.0,
-   "recettes_eur": 1264.0,
-   "apport_personnel_eur": 600.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 530.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PARIGI Paul Toussaint",
-   "circonscription": "Haute-Corse",
-   "depenses_eur": 660.0,
-   "recettes_eur": 660.0,
-   "apport_personnel_eur": 660.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 660.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PERETTI Philippe",
-   "circonscription": "Haute-Corse",
-   "depenses_eur": 250.0,
-   "recettes_eur": 500.0,
-   "apport_personnel_eur": 500.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "SAVELLI Jean-Simon",
-   "circonscription": "Haute-Corse",
-   "depenses_eur": 1590.0,
-   "recettes_eur": 1800.0,
-   "apport_personnel_eur": 500.0,
-   "dons_eur": 1300.0,
-   "remboursement_eur": 0.0,
-   "decision": "HD"
-  },
-  {
-   "candidat": "SEITE Jean-Marie",
-   "circonscription": "Haute-Corse",
-   "depenses_eur": 7131.0,
-   "recettes_eur": 7660.0,
-   "apport_personnel_eur": 7500.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 6971.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "VENTURINI Simon Jean",
-   "circonscription": "Haute-Corse",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "ARNAUD Jean Michel",
-   "circonscription": "Hautes-Alpes",
-   "depenses_eur": 6102.0,
-   "recettes_eur": 6161.0,
-   "apport_personnel_eur": 6161.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "R"
-  },
-  {
-   "candidat": "DAVID Isabelle",
-   "circonscription": "Hautes-Alpes",
-   "depenses_eur": 1252.0,
-   "recettes_eur": 1273.0,
-   "apport_personnel_eur": 1238.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1217.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "LEGUEM Laurence",
-   "circonscription": "Hautes-Alpes",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "MORHET-RICHAUD Patricia",
-   "circonscription": "Hautes-Alpes",
-   "depenses_eur": 8134.0,
-   "recettes_eur": 12403.0,
-   "apport_personnel_eur": 12130.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 7861.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "GALDIN Gaëlle",
-   "circonscription": "Haute-Saône",
-   "depenses_eur": 13342.0,
-   "recettes_eur": 13426.0,
-   "apport_personnel_eur": 13320.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 12757.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "GERMAIN Benoît",
-   "circonscription": "Haute-Saône",
-   "depenses_eur": 120.0,
-   "recettes_eur": 120.0,
-   "apport_personnel_eur": 120.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "JOYANDET Alain",
-   "circonscription": "Haute-Saône",
-   "depenses_eur": 8684.0,
-   "recettes_eur": 8684.0,
-   "apport_personnel_eur": 8684.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 8684.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "KORNMANN André",
-   "circonscription": "Haute-Saône",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "LOMBARD Patrice",
-   "circonscription": "Haute-Saône",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "MANCASSOLA Sébastien",
-   "circonscription": "Haute-Saône",
-   "depenses_eur": 2837.0,
-   "recettes_eur": 2924.0,
-   "apport_personnel_eur": 2924.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 2837.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PETIGNY Maxime",
-   "circonscription": "Haute-Saône",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PORTAZ Maryse",
-   "circonscription": "Haute-Saône",
-   "depenses_eur": 120.0,
-   "recettes_eur": 120.0,
-   "apport_personnel_eur": 120.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "RIETMANN Olivier",
-   "circonscription": "Haute-Saône",
-   "depenses_eur": 17307.0,
-   "recettes_eur": 17320.0,
-   "apport_personnel_eur": 17320.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 8114.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "TISSERAND Franck",
-   "circonscription": "Haute-Saône",
-   "depenses_eur": 5233.0,
-   "recettes_eur": 5600.0,
-   "apport_personnel_eur": 5600.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 5233.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BOST Jean-Marie",
-   "circonscription": "Haute-Vienne",
-   "depenses_eur": 9714.0,
-   "recettes_eur": 10000.0,
-   "apport_personnel_eur": 10000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "R"
-  },
-  {
-   "candidat": "BRIQUET Isabelle",
-   "circonscription": "Haute-Vienne",
-   "depenses_eur": 6495.0,
-   "recettes_eur": 6495.0,
-   "apport_personnel_eur": 4553.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 4553.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "DARGENTOLLE Georges",
-   "circonscription": "Haute-Vienne",
-   "depenses_eur": 1136.0,
-   "recettes_eur": 1500.0,
-   "apport_personnel_eur": 1500.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1136.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "FREYCHET Albin",
-   "circonscription": "Haute-Vienne",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "GABOUTY Jean-Marc",
-   "circonscription": "Haute-Vienne",
-   "depenses_eur": 11934.0,
-   "recettes_eur": 12518.0,
-   "apport_personnel_eur": 12482.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 11898.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "JARRY Laurent",
-   "circonscription": "Haute-Vienne",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "LOMBERTIE Emile Roger",
-   "circonscription": "Haute-Vienne",
-   "depenses_eur": 9516.0,
-   "recettes_eur": 9516.0,
-   "apport_personnel_eur": 6799.0,
-   "dons_eur": 2500.0,
-   "remboursement_eur": 6799.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "REDON-SARRAZY Christian",
-   "circonscription": "Haute-Vienne",
-   "depenses_eur": 5907.0,
-   "recettes_eur": 5907.0,
-   "apport_personnel_eur": 3727.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 3727.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "ROCHET Delphine",
-   "circonscription": "Haute-Vienne",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "TUYERAS Sylvie",
-   "circonscription": "Haute-Vienne",
-   "depenses_eur": 1333.0,
-   "recettes_eur": 2000.0,
-   "apport_personnel_eur": 2000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1333.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "AVISSEAU François",
-   "circonscription": "Indre",
-   "depenses_eur": 2106.0,
-   "recettes_eur": 2350.0,
-   "apport_personnel_eur": 2000.0,
-   "dons_eur": 350.0,
-   "remboursement_eur": 1756.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BELLUROT Nadine",
-   "circonscription": "Indre",
-   "depenses_eur": 11064.0,
-   "recettes_eur": 11067.0,
-   "apport_personnel_eur": 5915.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 5912.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "DAMIEN Thierry",
-   "circonscription": "Indre",
-   "depenses_eur": 2314.0,
-   "recettes_eur": 2742.0,
-   "apport_personnel_eur": 2742.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 2314.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "GERBAUD Frédérique",
-   "circonscription": "Indre",
-   "depenses_eur": 10024.0,
-   "recettes_eur": 10100.0,
-   "apport_personnel_eur": 7400.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 7324.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "HUGON Jean-Yves",
-   "circonscription": "Indre",
-   "depenses_eur": 1981.0,
-   "recettes_eur": 2000.0,
-   "apport_personnel_eur": 2000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1981.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "LABBÉ Jean-Luc",
-   "circonscription": "Indre",
-   "remboursement_eur": 0.0,
-   "decision": "AD"
-  },
-  {
-   "candidat": "THORE Paul",
-   "circonscription": "Indre",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "WUNSCH Mylène",
-   "circonscription": "Indre",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BONTOUR Paul",
-   "circonscription": "Polynésie-Française",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "BRUNEAU Raïssa",
-   "circonscription": "Polynésie-Française",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "BRYANT Jacky",
-   "circonscription": "Polynésie-Française",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "CHANG Rolfi",
-   "circonscription": "Polynésie-Française",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "LAUREY Nuihau",
-   "circonscription": "Polynésie-Française",
-   "depenses_eur": 4386.99,
-   "recettes_eur": 5237.79,
-   "apport_personnel_eur": 1215.33,
-   "dons_eur": 4022.46,
-   "remboursement_eur": 364.53,
-   "decision": "AR"
-  },
-  {
-   "candidat": "NOUVEAU Lydia",
-   "circonscription": "Polynésie-Française",
-   "depenses_eur": 683.87,
-   "recettes_eur": 1218.1,
-   "apport_personnel_eur": 1218.1,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "OOPA Teriiorai",
-   "circonscription": "Polynésie-Française",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "ROHFRITSCH Teva",
-   "circonscription": "Polynésie-Française",
-   "depenses_eur": 6172.35,
-   "recettes_eur": 15105.17,
-   "apport_personnel_eur": 495.1,
-   "dons_eur": 14267.16,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "TEMARU Oscar",
-   "circonscription": "Polynésie-Française",
-   "depenses_eur": 781.97,
-   "recettes_eur": 972.72,
-   "apport_personnel_eur": 972.72,
-   "dons_eur": 0.0,
-   "remboursement_eur": 781.97,
-   "decision": "AR"
-  },
-  {
-   "candidat": "TEROOATEA Sylviane",
-   "circonscription": "Polynésie-Française",
-   "depenses_eur": 634.27,
-   "recettes_eur": 645.27,
-   "apport_personnel_eur": 645.27,
-   "dons_eur": 0.0,
-   "remboursement_eur": 634.27,
-   "decision": "AR"
-  },
-  {
-   "candidat": "TETUANUI Lana",
-   "circonscription": "Polynésie-Française",
-   "depenses_eur": 10296.27,
-   "recettes_eur": 15842.62,
-   "apport_personnel_eur": 1542.61,
-   "dons_eur": 13957.09,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "VERNAUDON Christian",
-   "circonscription": "Polynésie-Française",
-   "depenses_eur": 1666.1,
-   "recettes_eur": 3396.93,
-   "apport_personnel_eur": 3396.93,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "VILLAR Michel",
-   "circonscription": "Polynésie-Française",
-   "depenses_eur": 778.5,
-   "recettes_eur": 1055.9,
-   "apport_personnel_eur": 1055.9,
-   "dons_eur": 0.0,
-   "remboursement_eur": 778.5,
-   "decision": "AR"
-  },
-  {
-   "candidat": "JACQUES Micheline",
-   "circonscription": "Saint-Barthélemy",
-   "depenses_eur": 139.0,
-   "recettes_eur": 200.0,
-   "apport_personnel_eur": 200.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "HD"
-  },
-  {
-   "candidat": "ARNELL Guillaume Jacques",
-   "circonscription": "Saint-Martin",
-   "depenses_eur": 515.0,
-   "recettes_eur": 750.0,
-   "apport_personnel_eur": 750.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 515.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "JANUARY-OGOUNDELE-TESSI Marthe",
-   "circonscription": "Saint-Martin",
-   "depenses_eur": 320.0,
-   "recettes_eur": 400.0,
-   "apport_personnel_eur": 400.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "HD"
-  },
-  {
-   "candidat": "PÉTRUS Annick",
-   "circonscription": "Saint-Martin",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "TROTEL Erwan",
-   "circonscription": "Saint-Martin",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "BERNARD Brice",
-   "circonscription": "Savoie",
-   "depenses_eur": 2020.0,
-   "recettes_eur": 2020.0,
-   "apport_personnel_eur": 2020.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BERTHET Martine",
-   "circonscription": "Savoie",
-   "depenses_eur": 9279.0,
-   "recettes_eur": 9323.0,
-   "apport_personnel_eur": 5815.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 5771.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "BIGUET Pierre",
-   "circonscription": "Savoie",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "DANTIN Michel",
-   "circonscription": "Savoie",
-   "depenses_eur": 8721.0,
-   "recettes_eur": 9057.0,
-   "apport_personnel_eur": 5178.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 4842.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "FERRARI Catherine",
-   "circonscription": "Savoie",
-   "depenses_eur": 80.0,
-   "recettes_eur": 100.0,
-   "apport_personnel_eur": 100.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "GUILHAUDIN Nicole",
-   "circonscription": "Savoie",
-   "depenses_eur": 1422.0,
-   "recettes_eur": 1700.0,
-   "apport_personnel_eur": 1500.0,
-   "dons_eur": 200.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "HOCHARD Jean Luc",
-   "circonscription": "Savoie",
-   "depenses_eur": 1367.0,
-   "recettes_eur": 1367.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 367.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "LEGER Claudie",
-   "circonscription": "Savoie",
-   "depenses_eur": 1489.0,
-   "recettes_eur": 1489.0,
-   "apport_personnel_eur": 928.0,
-   "dons_eur": 61.0,
-   "remboursement_eur": 928.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "PENAROYAS Florian",
-   "circonscription": "Savoie",
-   "depenses_eur": 453.0,
-   "recettes_eur": 453.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "VAIRETTO André",
-   "circonscription": "Savoie",
-   "depenses_eur": 21173.0,
-   "recettes_eur": 22500.0,
-   "apport_personnel_eur": 22500.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 18439.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "VIAL Cédric",
-   "circonscription": "Savoie",
-   "depenses_eur": 6894.0,
-   "recettes_eur": 6894.0,
-   "apport_personnel_eur": 6894.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 6894.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "VULLIERMET Ludovic",
-   "circonscription": "Savoie",
-   "depenses_eur": 6735.0,
-   "recettes_eur": 6735.0,
-   "apport_personnel_eur": 6735.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 6735.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "ANTONIO Caroline",
-   "circonscription": "Tarn",
-   "depenses_eur": 4370.0,
-   "recettes_eur": 4773.0,
-   "apport_personnel_eur": 4571.0,
-   "dons_eur": 200.0,
-   "remboursement_eur": 4168.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "BONNECARRÈRE Philippe",
-   "circonscription": "Tarn",
-   "depenses_eur": 16154.0,
-   "recettes_eur": 16154.0,
-   "apport_personnel_eur": 15404.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 15404.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "CABROLIER Frédéric",
-   "circonscription": "Tarn",
-   "depenses_eur": 947.0,
-   "recettes_eur": 1310.0,
-   "apport_personnel_eur": 1310.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "FOLLIOT Philippe",
-   "circonscription": "Tarn",
-   "depenses_eur": 11735.0,
-   "recettes_eur": 11735.0,
-   "apport_personnel_eur": 9279.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 9279.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "FRANQUES Michel",
-   "circonscription": "Tarn",
-   "depenses_eur": 5509.0,
-   "recettes_eur": 5931.0,
-   "apport_personnel_eur": 3900.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 3478.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "GAREL Vincent",
-   "circonscription": "Tarn",
-   "depenses_eur": 1141.0,
-   "recettes_eur": 1200.0,
-   "apport_personnel_eur": 1200.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1141.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "GRANDIN Pascal",
-   "circonscription": "Tarn",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "MADELINE MAUGIN Myriam",
-   "circonscription": "Tarn",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PRAGNÈRE Pascal",
-   "circonscription": "Tarn",
-   "depenses_eur": 352.0,
-   "recettes_eur": 750.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "SALVADOR Paul",
-   "circonscription": "Tarn",
-   "depenses_eur": 4838.0,
-   "recettes_eur": 4838.0,
-   "apport_personnel_eur": 1146.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1146.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "SAN ANDRES Thierry",
-   "circonscription": "Tarn",
-   "depenses_eur": 2619.0,
-   "recettes_eur": 2639.0,
-   "apport_personnel_eur": 2639.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 2619.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "SOMEN Didier",
-   "circonscription": "Tarn",
-   "depenses_eur": 5256.0,
-   "recettes_eur": 6000.0,
-   "apport_personnel_eur": 6000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 5256.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "ALBERT Mathieu",
-   "circonscription": "Tarn-et-Garonne",
-   "depenses_eur": 664.0,
-   "recettes_eur": 664.0,
-   "apport_personnel_eur": 664.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 664.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "ASTOUL Etienne",
-   "circonscription": "Tarn-et-Garonne",
-   "depenses_eur": 14973.0,
-   "recettes_eur": 15046.0,
-   "apport_personnel_eur": 12580.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 12507.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "BONHOMME François",
-   "circonscription": "Tarn-et-Garonne",
-   "depenses_eur": 6106.0,
-   "recettes_eur": 6389.0,
-   "apport_personnel_eur": 6389.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 6106.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "DAIMÉ Guy",
-   "circonscription": "Tarn-et-Garonne",
-   "depenses_eur": 809.0,
-   "recettes_eur": 809.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "FERRERO Monique",
-   "circonscription": "Tarn-et-Garonne",
-   "depenses_eur": 5259.0,
-   "recettes_eur": 5259.0,
-   "apport_personnel_eur": 5259.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 5259.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "GRILHAULT DES FONTAINES Jean-François",
-   "circonscription": "Tarn-et-Garonne",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "ICHES Alain",
-   "circonscription": "Tarn-et-Garonne",
-   "depenses_eur": 4592.0,
-   "recettes_eur": 4933.0,
-   "apport_personnel_eur": 4533.0,
-   "dons_eur": 400.0,
-   "remboursement_eur": 4192.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "LÉVI Pierre-Antoine",
-   "circonscription": "Tarn-et-Garonne",
-   "depenses_eur": 3027.0,
-   "recettes_eur": 5801.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 5700.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "ROBLIN Cécile",
-   "circonscription": "Tarn-et-Garonne",
-   "depenses_eur": 50.0,
-   "recettes_eur": 50.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "TERRENNE Jean-Paul",
-   "circonscription": "Tarn-et-Garonne",
-   "depenses_eur": 4349.0,
-   "recettes_eur": 8831.0,
-   "apport_personnel_eur": 6452.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1970.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "VIALLON Thierry",
-   "circonscription": "Tarn-et-Garonne",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "CHEVALIER Bertrand",
-   "circonscription": "Territoire de Belfort",
-   "depenses_eur": 833.0,
-   "recettes_eur": 850.0,
-   "apport_personnel_eur": 850.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 833.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "DUCHANOY Marie-Laure",
-   "circonscription": "Territoire de Belfort",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "JEUDY Vincent",
-   "circonscription": "Territoire de Belfort",
-   "depenses_eur": 216.0,
-   "recettes_eur": 216.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "KERN Bruno",
-   "circonscription": "Territoire de Belfort",
-   "depenses_eur": 11807.0,
-   "recettes_eur": 11807.0,
-   "apport_personnel_eur": 10452.0,
-   "dons_eur": 300.0,
-   "remboursement_eur": 10010.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PERRIN Cédric",
-   "circonscription": "Territoire de Belfort",
-   "depenses_eur": 8360.0,
-   "recettes_eur": 8360.0,
-   "apport_personnel_eur": 3760.0,
-   "dons_eur": 4600.0,
-   "remboursement_eur": 3760.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BELIN Bruno",
-   "circonscription": "Vienne",
-   "depenses_eur": 8983.0,
-   "recettes_eur": 8983.0,
-   "apport_personnel_eur": 8983.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 8983.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BOULOUX Yves",
-   "circonscription": "Vienne",
-   "depenses_eur": 4009.0,
-   "recettes_eur": 4009.0,
-   "apport_personnel_eur": 4009.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 4009.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "FAGE Arnaud",
-   "circonscription": "Vienne",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "JEAN Gisèle",
-   "circonscription": "Vienne",
-   "depenses_eur": 10145.0,
-   "recettes_eur": 10145.0,
-   "apport_personnel_eur": 10145.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 10145.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PERREAU Thierry",
-   "circonscription": "Vienne",
-   "depenses_eur": 1020.0,
-   "recettes_eur": 1334.0,
-   "apport_personnel_eur": 1334.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1020.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "BLAISE Sandra",
-   "circonscription": "Vosges",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "FRANQUEVILLE Christian",
-   "circonscription": "Vosges",
-   "depenses_eur": 7128.0,
-   "recettes_eur": 8311.0,
-   "apport_personnel_eur": 3711.0,
-   "dons_eur": 4600.0,
-   "remboursement_eur": 2528.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "GREMILLET Daniel",
-   "circonscription": "Vosges",
-   "depenses_eur": 16444.0,
-   "recettes_eur": 16444.0,
-   "apport_personnel_eur": 15282.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 15282.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "HINGRAY Jean",
-   "circonscription": "Vosges",
-   "depenses_eur": 13404.0,
-   "recettes_eur": 13404.0,
-   "apport_personnel_eur": 6514.0,
-   "dons_eur": 6890.0,
-   "remboursement_eur": 6514.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "HUMBERT Sébastien",
-   "circonscription": "Vosges",
-   "depenses_eur": 1481.0,
-   "recettes_eur": 1481.0,
-   "apport_personnel_eur": 481.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "LAURENT Christophe",
-   "circonscription": "Vosges",
-   "depenses_eur": 8999.0,
-   "recettes_eur": 9300.0,
-   "apport_personnel_eur": 9300.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 8999.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "LECLERC Simon",
-   "circonscription": "Vosges",
-   "depenses_eur": 9180.0,
-   "recettes_eur": 9190.0,
-   "apport_personnel_eur": 4570.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 4560.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "KULIMOETOKE Mikaele",
-   "circonscription": "Wallis-et-Futuna",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "R"
-  },
-  {
-   "candidat": "LAUFOAULU Lopeleto Robert",
-   "circonscription": "Wallis-et-Futuna",
-   "depenses_eur": 2483.63,
-   "recettes_eur": 6544.88,
-   "apport_personnel_eur": 2773.82,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "LIKUVALU Apeleto",
-   "circonscription": "Wallis-et-Futuna",
-   "remboursement_eur": 0.0,
-   "decision": "AD"
-  },
-  {
-   "candidat": "MASEI Akatoto",
-   "circonscription": "Wallis-et-Futuna",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "VERGÉ David Stéphan",
-   "circonscription": "Wallis-et-Futuna",
-   "depenses_eur": 1295.01,
-   "recettes_eur": 1338.16,
-   "apport_personnel_eur": 1338.16,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1295.01,
-   "decision": "AR"
-  },
-  {
-   "candidat": "LEMOYNE Jean-Baptiste",
-   "circonscription": "Yonne",
-   "depenses_eur": 12929.0,
-   "recettes_eur": 12929.0,
-   "apport_personnel_eur": 12929.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 12929.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "LOURY Florence",
-   "circonscription": "Yonne",
-   "depenses_eur": 1663.0,
-   "recettes_eur": 1885.0,
-   "apport_personnel_eur": 1384.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1162.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PIRMAN Gilles",
-   "circonscription": "Yonne",
-   "depenses_eur": 14365.0,
-   "recettes_eur": 14365.0,
-   "apport_personnel_eur": 14365.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 14365.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "ROSALIE Xavier",
-   "circonscription": "Yonne",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "SACKEPEY Gilles",
-   "circonscription": "Yonne",
-   "depenses_eur": 1531.0,
-   "recettes_eur": 1531.0,
-   "apport_personnel_eur": 1104.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1104.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "VÉRIEN Dominique",
-   "circonscription": "Yonne",
-   "depenses_eur": 20903.0,
-   "recettes_eur": 20903.0,
-   "apport_personnel_eur": 14165.0,
-   "dons_eur": 2000.0,
-   "remboursement_eur": 14165.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "VILLIERS André",
-   "circonscription": "Yonne",
-   "depenses_eur": 5297.0,
-   "recettes_eur": 5300.0,
-   "apport_personnel_eur": 5300.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 5297.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BENMEDJAHED Ali",
-   "circonscription": "Ain",
-   "depenses_eur": 11456.0,
-   "recettes_eur": 11456.0,
-   "apport_personnel_eur": 6345.0,
-   "dons_eur": 1820.0,
-   "remboursement_eur": 6345.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "BLATRIX CONTAT Florence",
-   "circonscription": "Ain",
-   "depenses_eur": 9452.0,
-   "recettes_eur": 9839.0,
-   "apport_personnel_eur": 8500.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 8113.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BUISSON Jérôme",
-   "circonscription": "Ain",
-   "depenses_eur": 0.0,
-   "recettes_eur": 10.0,
-   "apport_personnel_eur": 10.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "CHAIZE Patrick",
-   "circonscription": "Ain",
-   "depenses_eur": 21226.0,
-   "recettes_eur": 21284.0,
-   "apport_personnel_eur": 8500.0,
-   "dons_eur": 9000.0,
-   "remboursement_eur": 8442.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "GOY-CHAVENT Sylvie",
-   "circonscription": "Ain",
-   "depenses_eur": 7288.0,
-   "recettes_eur": 8436.0,
-   "apport_personnel_eur": 4940.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 3792.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "PAPET Daniel",
-   "circonscription": "Ain",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "BERTIN Nicolas",
-   "circonscription": "Aisne",
-   "depenses_eur": 8060.0,
-   "recettes_eur": 8060.0,
-   "apport_personnel_eur": 8060.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 6560.0,
-   "decision": "ARM"
-  },
-  {
-   "candidat": "COUPAIN Etienne",
-   "circonscription": "Aisne",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "HD"
-  },
-  {
-   "candidat": "LEFÈVRE Antoine",
-   "circonscription": "Aisne",
-   "depenses_eur": 23491.0,
-   "recettes_eur": 23580.0,
-   "apport_personnel_eur": 14700.0,
-   "dons_eur": 8880.0,
-   "remboursement_eur": 12089.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "THOMAS Jean-Jacques",
-   "circonscription": "Aisne",
-   "depenses_eur": 9281.0,
-   "recettes_eur": 9897.0,
-   "apport_personnel_eur": 249.0,
-   "dons_eur": 848.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "VERZELEN Pierre-Jean",
-   "circonscription": "Aisne",
-   "depenses_eur": 15465.0,
-   "recettes_eur": 16387.0,
-   "apport_personnel_eur": 12000.0,
-   "dons_eur": 3400.0,
-   "remboursement_eur": 11078.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "CHERIF Imen",
-   "circonscription": "Alpes-Maritimes",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "ESTROSI-SASSONE Dominique",
-   "circonscription": "Alpes-Maritimes",
-   "depenses_eur": 20832.0,
-   "recettes_eur": 40989.0,
-   "apport_personnel_eur": 16913.0,
-   "dons_eur": 21065.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "MICHELIS Alain",
-   "circonscription": "Alpes-Maritimes",
-   "depenses_eur": 2879.0,
-   "recettes_eur": 2879.0,
-   "apport_personnel_eur": 2782.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 2782.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "SATTONNET Anne",
-   "circonscription": "Alpes-Maritimes",
-   "depenses_eur": 5159.0,
-   "recettes_eur": 5164.0,
-   "apport_personnel_eur": 5110.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 5105.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "TROMPIER Henri",
-   "circonscription": "Alpes-Maritimes",
-   "depenses_eur": 468.0,
-   "recettes_eur": 1000.0,
-   "apport_personnel_eur": 1000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "VARDON Philippe",
-   "circonscription": "Alpes-Maritimes",
-   "depenses_eur": 20222.0,
-   "recettes_eur": 20458.0,
-   "apport_personnel_eur": 6977.0,
-   "dons_eur": 13236.0,
-   "remboursement_eur": 6741.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BADER Jean-Claude",
-   "circonscription": "Bas-Rhin",
-   "depenses_eur": 1948.0,
-   "recettes_eur": 2300.0,
-   "apport_personnel_eur": 2300.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BOUQUET Gerard",
-   "circonscription": "Bas-Rhin",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "BUCHMANN Andrée",
-   "circonscription": "Bas-Rhin",
-   "depenses_eur": 5304.0,
-   "recettes_eur": 6505.0,
-   "apport_personnel_eur": 1000.0,
-   "dons_eur": 5505.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "FERNIQUE Jacques",
-   "circonscription": "Bas-Rhin",
-   "depenses_eur": 17092.0,
-   "recettes_eur": 18000.0,
-   "apport_personnel_eur": 18000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 17092.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "HERTH Antoine",
-   "circonscription": "Bas-Rhin",
-   "depenses_eur": 17841.0,
-   "recettes_eur": 18000.0,
-   "apport_personnel_eur": 18000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 17841.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "KERN Claude",
-   "circonscription": "Bas-Rhin",
-   "depenses_eur": 21230.0,
-   "recettes_eur": 21500.0,
-   "apport_personnel_eur": 20000.0,
-   "dons_eur": 1500.0,
-   "remboursement_eur": 18995.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "LEONHARDT Jean-Paul",
-   "circonscription": "Bas-Rhin",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "LEOPOLD Michel",
-   "circonscription": "Bas-Rhin",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "LUDWIG Pascale",
-   "circonscription": "Bas-Rhin",
-   "depenses_eur": 5541.0,
-   "recettes_eur": 5550.0,
-   "apport_personnel_eur": 5550.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "REICHARDT André",
-   "circonscription": "Bas-Rhin",
-   "depenses_eur": 25559.0,
-   "recettes_eur": 25559.0,
-   "apport_personnel_eur": 17109.0,
-   "dons_eur": 8000.0,
-   "remboursement_eur": 17109.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "ZITVOGEL Thiébault-Valéry",
-   "circonscription": "Bas-Rhin",
-   "depenses_eur": 4688.0,
-   "recettes_eur": 4688.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BACCHI Jérémy",
-   "circonscription": "Bouches-du-Rhône",
-   "depenses_eur": 3258.0,
-   "recettes_eur": 3258.0,
-   "apport_personnel_eur": 3258.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 3258.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "BORÉ Patrick",
-   "circonscription": "Bouches-du-Rhône",
-   "depenses_eur": 16522.0,
-   "recettes_eur": 16522.0,
-   "apport_personnel_eur": 3719.0,
-   "dons_eur": 12803.0,
-   "remboursement_eur": 3719.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "DUPOUX Ludovic",
-   "circonscription": "Bouches-du-Rhône",
-   "remboursement_eur": 0.0,
-   "decision": "DD"
-  },
-  {
-   "candidat": "GUÉRINI Jean-Noël",
-   "circonscription": "Bouches-du-Rhône",
-   "depenses_eur": 25450.0,
-   "recettes_eur": 44858.0,
-   "apport_personnel_eur": 38713.0,
-   "dons_eur": 2000.0,
-   "remboursement_eur": 19305.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "RAVIER Stéphane",
-   "circonscription": "Bouches-du-Rhône",
-   "depenses_eur": 23133.0,
-   "recettes_eur": 29000.0,
-   "apport_personnel_eur": 29000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 23133.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "SERRUS Jean-Pierre",
-   "circonscription": "Bouches-du-Rhône",
-   "depenses_eur": 9603.0,
-   "recettes_eur": 9695.0,
-   "apport_personnel_eur": 9695.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 9603.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "DE LA PROVÔTÉ Sonia",
-   "circonscription": "Calvados",
-   "depenses_eur": 21261.0,
-   "recettes_eur": 21261.0,
-   "apport_personnel_eur": 20261.0,
-   "dons_eur": 1000.0,
-   "remboursement_eur": 13953.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "FÉRET Corinne",
-   "circonscription": "Calvados",
-   "depenses_eur": 11897.0,
-   "recettes_eur": 12313.0,
-   "apport_personnel_eur": 10803.0,
-   "dons_eur": 160.0,
-   "remboursement_eur": 10387.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "GUÉGUÉNIAT Franck",
-   "circonscription": "Calvados",
-   "depenses_eur": 6251.0,
-   "recettes_eur": 6261.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "HIROUT Bruno",
-   "circonscription": "Calvados",
-   "remboursement_eur": 0.0,
-   "decision": "AD"
-  },
-  {
-   "candidat": "LE COUTOUR Xavier",
-   "circonscription": "Calvados",
-   "depenses_eur": 4984.0,
-   "recettes_eur": 7184.0,
-   "apport_personnel_eur": 4424.0,
-   "dons_eur": 2760.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "NORBERT-COUADE Emmanuel",
-   "circonscription": "Calvados",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "SÉRARD Pascal",
-   "circonscription": "Calvados",
-   "depenses_eur": 10657.0,
-   "recettes_eur": 13000.0,
-   "apport_personnel_eur": 13000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 10657.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "LALANDE Bernard",
-   "circonscription": "Charente-Maritime",
-   "depenses_eur": 11408.0,
-   "recettes_eur": 11408.0,
-   "apport_personnel_eur": 5179.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 5179.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "LAURENT Daniel",
-   "circonscription": "Charente-Maritime",
-   "depenses_eur": 9177.0,
-   "recettes_eur": 11029.0,
-   "apport_personnel_eur": 8000.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 6148.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "VALLET Mickaël",
-   "circonscription": "Charente-Maritime",
-   "depenses_eur": 11696.0,
-   "recettes_eur": 11696.0,
-   "apport_personnel_eur": 10239.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 10239.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "WERBROUCK Séverine",
-   "circonscription": "Charente-Maritime",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "GAILLARD Franck",
-   "circonscription": "Côte-d'Or",
-   "depenses_eur": 0.0,
-   "recettes_eur": 0.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "HERVIEU Catherine",
-   "circonscription": "Côte-d'Or",
-   "depenses_eur": 2286.0,
-   "recettes_eur": 2286.0,
-   "apport_personnel_eur": 2286.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 2286.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "HOUPERT Alain",
-   "circonscription": "Côte-d'Or",
-   "depenses_eur": 15267.0,
-   "recettes_eur": 15693.0,
-   "apport_personnel_eur": 12288.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 11862.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "PATRIAT François",
-   "circonscription": "Côte-d'Or",
-   "depenses_eur": 8076.0,
-   "recettes_eur": 9590.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 9200.0,
-   "remboursement_eur": 0.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "POPARD Colette",
-   "circonscription": "Côte-d'Or",
-   "depenses_eur": 12690.0,
-   "recettes_eur": 14860.0,
-   "apport_personnel_eur": 9042.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 6872.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "ROMMEL Jean-Paul",
-   "circonscription": "Côte-d'Or",
-   "depenses_eur": 641.0,
-   "recettes_eur": 641.0,
-   "apport_personnel_eur": 0.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "CADEC Alain",
-   "circonscription": "Côtes-d'Armor",
-   "depenses_eur": 10180.0,
-   "recettes_eur": 10180.0,
-   "apport_personnel_eur": 10080.0,
-   "dons_eur": 100.0,
-   "remboursement_eur": 10080.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "DE MELLON Gérard",
-   "circonscription": "Côtes-d'Armor",
-   "depenses_eur": 918.0,
-   "recettes_eur": 1100.0,
-   "apport_personnel_eur": 500.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 0.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "FORGET Michel",
-   "circonscription": "Côtes-d'Armor",
-   "depenses_eur": 1777.0,
-   "recettes_eur": 1777.0,
-   "apport_personnel_eur": 1777.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 1777.0,
-   "decision": "A"
-  },
-  {
-   "candidat": "GUIGNARD Thibaut",
-   "circonscription": "Côtes-d'Armor",
-   "depenses_eur": 16150.0,
-   "recettes_eur": 16150.0,
-   "apport_personnel_eur": 16150.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 12840.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "JOBIC Cyril",
-   "circonscription": "Côtes-d'Armor",
-   "depenses_eur": 4737.0,
-   "recettes_eur": 4789.0,
-   "apport_personnel_eur": 4789.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 4737.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "LE HOUEROU Annie",
-   "circonscription": "Côtes-d'Armor",
-   "depenses_eur": 12313.0,
-   "recettes_eur": 15490.0,
-   "apport_personnel_eur": 14963.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 11786.0,
    "decision": "AR"
   },
   {
@@ -3313,6 +2034,86 @@
    "decision": "A"
   },
   {
+   "candidat": "BARON Philippe",
+   "circonscription": "Gers",
+   "depenses_eur": 5426.0,
+   "recettes_eur": 5473.0,
+   "apport_personnel_eur": 5473.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 5426.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "DUFFOURG Alain",
+   "circonscription": "Gers",
+   "depenses_eur": 3782.0,
+   "recettes_eur": 9637.0,
+   "apport_personnel_eur": 9637.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 3482.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "DULONG Pierre",
+   "circonscription": "Gers",
+   "depenses_eur": 720.0,
+   "recettes_eur": 1305.0,
+   "apport_personnel_eur": 1266.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "DUPORT Romain",
+   "circonscription": "Gers",
+   "depenses_eur": 2582.0,
+   "recettes_eur": 2582.0,
+   "apport_personnel_eur": 2582.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 2582.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "MONTAUGE Franck",
+   "circonscription": "Gers",
+   "depenses_eur": 11846.0,
+   "recettes_eur": 11846.0,
+   "apport_personnel_eur": 3641.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 3641.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "SKOWRONEK Annabelle",
+   "circonscription": "Gers",
+   "depenses_eur": 822.0,
+   "recettes_eur": 1000.0,
+   "apport_personnel_eur": 1000.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 822.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "VALL Raymond",
+   "circonscription": "Gers",
+   "depenses_eur": 5885.0,
+   "recettes_eur": 5885.0,
+   "apport_personnel_eur": 3885.0,
+   "dons_eur": 2000.0,
+   "remboursement_eur": 3885.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "YELMA Jean-Luc",
+   "circonscription": "Gers",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
    "candidat": "CAILLAUD Mathieu",
    "circonscription": "Gironde",
    "depenses_eur": 779.0,
@@ -3403,6 +2204,196 @@
    "decision": "AR"
   },
   {
+   "candidat": "BELLONY Rollin",
+   "circonscription": "Guyane",
+   "depenses_eur": 3563.0,
+   "recettes_eur": 3563.0,
+   "apport_personnel_eur": 3563.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "BLACODON Stève",
+   "circonscription": "Guyane",
+   "depenses_eur": 3376.0,
+   "recettes_eur": 5300.0,
+   "apport_personnel_eur": 3800.0,
+   "dons_eur": 1500.0,
+   "remboursement_eur": 1876.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "MARIE-ANGÉLIQUE Samuel",
+   "circonscription": "Guyane",
+   "depenses_eur": 1192.0,
+   "recettes_eur": 4850.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 4000.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "PATIENT Georges",
+   "circonscription": "Guyane",
+   "depenses_eur": 20243.0,
+   "recettes_eur": 21410.0,
+   "apport_personnel_eur": 1210.0,
+   "dons_eur": 17200.0,
+   "remboursement_eur": 43.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "PHINÉRA-HORTH Marie-Laure",
+   "circonscription": "Guyane",
+   "depenses_eur": 5521.0,
+   "recettes_eur": 6042.0,
+   "apport_personnel_eur": 6000.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 5479.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "RÉZAIRE Eugénie",
+   "circonscription": "Guyane",
+   "depenses_eur": 1194.0,
+   "recettes_eur": 1264.0,
+   "apport_personnel_eur": 600.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 530.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "DEBEVE Christian",
+   "circonscription": "Haut-Rhin",
+   "depenses_eur": 24061.0,
+   "recettes_eur": 24061.0,
+   "apport_personnel_eur": 24061.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 14771.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "FLORY Yan",
+   "circonscription": "Haut-Rhin",
+   "depenses_eur": 7728.0,
+   "recettes_eur": 7728.0,
+   "apport_personnel_eur": 7593.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 7593.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "HOMÉ Antoine",
+   "circonscription": "Haut-Rhin",
+   "depenses_eur": 10335.0,
+   "recettes_eur": 10335.0,
+   "apport_personnel_eur": 7820.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 7820.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "KLINGER Christian",
+   "circonscription": "Haut-Rhin",
+   "depenses_eur": 19396.0,
+   "recettes_eur": 19396.0,
+   "apport_personnel_eur": 19396.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 14771.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "PAUVERT Bertrand",
+   "circonscription": "Haut-Rhin",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "SCHILLINGER Patricia",
+   "circonscription": "Haut-Rhin",
+   "depenses_eur": 12117.0,
+   "recettes_eur": 12117.0,
+   "apport_personnel_eur": 12117.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 12117.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "SEVIN Guillaume",
+   "circonscription": "Haut-Rhin",
+   "depenses_eur": 1273.0,
+   "recettes_eur": 1345.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 1000.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "TROUILLET Jean-Georges Ernest",
+   "circonscription": "Haut-Rhin",
+   "depenses_eur": 4071.0,
+   "recettes_eur": 4486.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "PARIGI Paul Toussaint",
+   "circonscription": "Haute-Corse",
+   "depenses_eur": 660.0,
+   "recettes_eur": 660.0,
+   "apport_personnel_eur": 660.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 660.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "PERETTI Philippe",
+   "circonscription": "Haute-Corse",
+   "depenses_eur": 250.0,
+   "recettes_eur": 500.0,
+   "apport_personnel_eur": 500.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "SAVELLI Jean-Simon",
+   "circonscription": "Haute-Corse",
+   "depenses_eur": 1590.0,
+   "recettes_eur": 1800.0,
+   "apport_personnel_eur": 500.0,
+   "dons_eur": 1300.0,
+   "remboursement_eur": 0.0,
+   "decision": "HD"
+  },
+  {
+   "candidat": "SEITE Jean-Marie",
+   "circonscription": "Haute-Corse",
+   "depenses_eur": 7131.0,
+   "recettes_eur": 7660.0,
+   "apport_personnel_eur": 7500.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 6971.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "VENTURINI Simon Jean",
+   "circonscription": "Haute-Corse",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
    "candidat": "CHATILLON Alain",
    "circonscription": "Haute-Garonne",
    "depenses_eur": 23140.0,
@@ -3483,6 +2474,102 @@
    "decision": "A"
   },
   {
+   "candidat": "GALDIN Gaëlle",
+   "circonscription": "Haute-Saône",
+   "depenses_eur": 13342.0,
+   "recettes_eur": 13426.0,
+   "apport_personnel_eur": 13320.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 12757.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "GERMAIN Benoît",
+   "circonscription": "Haute-Saône",
+   "depenses_eur": 120.0,
+   "recettes_eur": 120.0,
+   "apport_personnel_eur": 120.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "JOYANDET Alain",
+   "circonscription": "Haute-Saône",
+   "depenses_eur": 8684.0,
+   "recettes_eur": 8684.0,
+   "apport_personnel_eur": 8684.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 8684.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "KORNMANN André",
+   "circonscription": "Haute-Saône",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "LOMBARD Patrice",
+   "circonscription": "Haute-Saône",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "MANCASSOLA Sébastien",
+   "circonscription": "Haute-Saône",
+   "depenses_eur": 2837.0,
+   "recettes_eur": 2924.0,
+   "apport_personnel_eur": 2924.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 2837.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "PETIGNY Maxime",
+   "circonscription": "Haute-Saône",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "PORTAZ Maryse",
+   "circonscription": "Haute-Saône",
+   "depenses_eur": 120.0,
+   "recettes_eur": 120.0,
+   "apport_personnel_eur": 120.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "RIETMANN Olivier",
+   "circonscription": "Haute-Saône",
+   "depenses_eur": 17307.0,
+   "recettes_eur": 17320.0,
+   "apport_personnel_eur": 17320.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 8114.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "TISSERAND Franck",
+   "circonscription": "Haute-Saône",
+   "depenses_eur": 5233.0,
+   "recettes_eur": 5600.0,
+   "apport_personnel_eur": 5600.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 5233.0,
+   "decision": "A"
+  },
+  {
    "candidat": "ALLEGRET-PILOT Alexandre",
    "circonscription": "Haute-Savoie",
    "depenses_eur": 0.0,
@@ -3543,48 +2630,38 @@
    "decision": "AR"
   },
   {
-   "candidat": "DEBEVE Christian",
-   "circonscription": "Haut-Rhin",
-   "depenses_eur": 24061.0,
-   "recettes_eur": 24061.0,
-   "apport_personnel_eur": 24061.0,
+   "candidat": "BOST Jean-Marie",
+   "circonscription": "Haute-Vienne",
+   "depenses_eur": 9714.0,
+   "recettes_eur": 10000.0,
+   "apport_personnel_eur": 10000.0,
    "dons_eur": 0.0,
-   "remboursement_eur": 14771.0,
-   "decision": "AR"
+   "remboursement_eur": 0.0,
+   "decision": "R"
   },
   {
-   "candidat": "FLORY Yan",
-   "circonscription": "Haut-Rhin",
-   "depenses_eur": 7728.0,
-   "recettes_eur": 7728.0,
-   "apport_personnel_eur": 7593.0,
+   "candidat": "BRIQUET Isabelle",
+   "circonscription": "Haute-Vienne",
+   "depenses_eur": 6495.0,
+   "recettes_eur": 6495.0,
+   "apport_personnel_eur": 4553.0,
    "dons_eur": 0.0,
-   "remboursement_eur": 7593.0,
+   "remboursement_eur": 4553.0,
    "decision": "A"
   },
   {
-   "candidat": "HOMÉ Antoine",
-   "circonscription": "Haut-Rhin",
-   "depenses_eur": 10335.0,
-   "recettes_eur": 10335.0,
-   "apport_personnel_eur": 7820.0,
+   "candidat": "DARGENTOLLE Georges",
+   "circonscription": "Haute-Vienne",
+   "depenses_eur": 1136.0,
+   "recettes_eur": 1500.0,
+   "apport_personnel_eur": 1500.0,
    "dons_eur": 0.0,
-   "remboursement_eur": 7820.0,
-   "decision": "AR"
+   "remboursement_eur": 1136.0,
+   "decision": "A"
   },
   {
-   "candidat": "KLINGER Christian",
-   "circonscription": "Haut-Rhin",
-   "depenses_eur": 19396.0,
-   "recettes_eur": 19396.0,
-   "apport_personnel_eur": 19396.0,
-   "dons_eur": 0.0,
-   "remboursement_eur": 14771.0,
-   "decision": "AR"
-  },
-  {
-   "candidat": "PAUVERT Bertrand",
-   "circonscription": "Haut-Rhin",
+   "candidat": "FREYCHET Albin",
+   "circonscription": "Haute-Vienne",
    "depenses_eur": 0.0,
    "recettes_eur": 0.0,
    "apport_personnel_eur": 0.0,
@@ -3593,33 +2670,103 @@
    "decision": "A"
   },
   {
-   "candidat": "SCHILLINGER Patricia",
-   "circonscription": "Haut-Rhin",
-   "depenses_eur": 12117.0,
-   "recettes_eur": 12117.0,
-   "apport_personnel_eur": 12117.0,
+   "candidat": "GABOUTY Jean-Marc",
+   "circonscription": "Haute-Vienne",
+   "depenses_eur": 11934.0,
+   "recettes_eur": 12518.0,
+   "apport_personnel_eur": 12482.0,
    "dons_eur": 0.0,
-   "remboursement_eur": 12117.0,
+   "remboursement_eur": 11898.0,
    "decision": "AR"
   },
   {
-   "candidat": "SEVIN Guillaume",
-   "circonscription": "Haut-Rhin",
-   "depenses_eur": 1273.0,
-   "recettes_eur": 1345.0,
+   "candidat": "JARRY Laurent",
+   "circonscription": "Haute-Vienne",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
    "apport_personnel_eur": 0.0,
-   "dons_eur": 1000.0,
+   "dons_eur": 0.0,
    "remboursement_eur": 0.0,
    "decision": "A"
   },
   {
-   "candidat": "TROUILLET Jean-Georges Ernest",
-   "circonscription": "Haut-Rhin",
-   "depenses_eur": 4071.0,
-   "recettes_eur": 4486.0,
+   "candidat": "LOMBERTIE Emile Roger",
+   "circonscription": "Haute-Vienne",
+   "depenses_eur": 9516.0,
+   "recettes_eur": 9516.0,
+   "apport_personnel_eur": 6799.0,
+   "dons_eur": 2500.0,
+   "remboursement_eur": 6799.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "REDON-SARRAZY Christian",
+   "circonscription": "Haute-Vienne",
+   "depenses_eur": 5907.0,
+   "recettes_eur": 5907.0,
+   "apport_personnel_eur": 3727.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 3727.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "ROCHET Delphine",
+   "circonscription": "Haute-Vienne",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
    "apport_personnel_eur": 0.0,
    "dons_eur": 0.0,
    "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "TUYERAS Sylvie",
+   "circonscription": "Haute-Vienne",
+   "depenses_eur": 1333.0,
+   "recettes_eur": 2000.0,
+   "apport_personnel_eur": 2000.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1333.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "ARNAUD Jean Michel",
+   "circonscription": "Hautes-Alpes",
+   "depenses_eur": 6102.0,
+   "recettes_eur": 6161.0,
+   "apport_personnel_eur": 6161.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "DAVID Isabelle",
+   "circonscription": "Hautes-Alpes",
+   "depenses_eur": 1252.0,
+   "recettes_eur": 1273.0,
+   "apport_personnel_eur": 1238.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1217.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "LEGUEM Laurence",
+   "circonscription": "Hautes-Alpes",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "MORHET-RICHAUD Patricia",
+   "circonscription": "Hautes-Alpes",
+   "depenses_eur": 8134.0,
+   "recettes_eur": 12403.0,
+   "apport_personnel_eur": 12130.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 7861.0,
    "decision": "AR"
   },
   {
@@ -3805,6 +2952,192 @@
    "decision": "AR"
   },
   {
+   "candidat": "AVISSEAU François",
+   "circonscription": "Indre",
+   "depenses_eur": 2106.0,
+   "recettes_eur": 2350.0,
+   "apport_personnel_eur": 2000.0,
+   "dons_eur": 350.0,
+   "remboursement_eur": 1756.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "BELLUROT Nadine",
+   "circonscription": "Indre",
+   "depenses_eur": 11064.0,
+   "recettes_eur": 11067.0,
+   "apport_personnel_eur": 5915.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 5912.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "DAMIEN Thierry",
+   "circonscription": "Indre",
+   "depenses_eur": 2314.0,
+   "recettes_eur": 2742.0,
+   "apport_personnel_eur": 2742.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 2314.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "GERBAUD Frédérique",
+   "circonscription": "Indre",
+   "depenses_eur": 10024.0,
+   "recettes_eur": 10100.0,
+   "apport_personnel_eur": 7400.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 7324.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "HUGON Jean-Yves",
+   "circonscription": "Indre",
+   "depenses_eur": 1981.0,
+   "recettes_eur": 2000.0,
+   "apport_personnel_eur": 2000.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1981.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "LABBÉ Jean-Luc",
+   "circonscription": "Indre",
+   "remboursement_eur": 0.0,
+   "decision": "AD"
+  },
+  {
+   "candidat": "THORE Paul",
+   "circonscription": "Indre",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "WUNSCH Mylène",
+   "circonscription": "Indre",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "BONTOUR Paul",
+   "circonscription": "Polynésie-Française",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "BRUNEAU Raïssa",
+   "circonscription": "Polynésie-Française",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "BRYANT Jacky",
+   "circonscription": "Polynésie-Française",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "CHANG Rolfi",
+   "circonscription": "Polynésie-Française",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "LAUREY Nuihau",
+   "circonscription": "Polynésie-Française",
+   "depenses_eur": 4386.99,
+   "recettes_eur": 5237.79,
+   "apport_personnel_eur": 1215.33,
+   "dons_eur": 4022.46,
+   "remboursement_eur": 364.53,
+   "decision": "AR"
+  },
+  {
+   "candidat": "NOUVEAU Lydia",
+   "circonscription": "Polynésie-Française",
+   "depenses_eur": 683.87,
+   "recettes_eur": 1218.1,
+   "apport_personnel_eur": 1218.1,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "OOPA Teriiorai",
+   "circonscription": "Polynésie-Française",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "ROHFRITSCH Teva",
+   "circonscription": "Polynésie-Française",
+   "depenses_eur": 6172.35,
+   "recettes_eur": 15105.17,
+   "apport_personnel_eur": 495.1,
+   "dons_eur": 14267.16,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "TEMARU Oscar",
+   "circonscription": "Polynésie-Française",
+   "depenses_eur": 781.97,
+   "recettes_eur": 972.72,
+   "apport_personnel_eur": 972.72,
+   "dons_eur": 0.0,
+   "remboursement_eur": 781.97,
+   "decision": "AR"
+  },
+  {
+   "candidat": "TEROOATEA Sylviane",
+   "circonscription": "Polynésie-Française",
+   "depenses_eur": 634.27,
+   "recettes_eur": 645.27,
+   "apport_personnel_eur": 645.27,
+   "dons_eur": 0.0,
+   "remboursement_eur": 634.27,
+   "decision": "AR"
+  },
+  {
+   "candidat": "TETUANUI Lana",
+   "circonscription": "Polynésie-Française",
+   "depenses_eur": 10296.27,
+   "recettes_eur": 15842.62,
+   "apport_personnel_eur": 1542.61,
+   "dons_eur": 13957.09,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "VERNAUDON Christian",
+   "circonscription": "Polynésie-Française",
+   "depenses_eur": 1666.1,
+   "recettes_eur": 3396.93,
+   "apport_personnel_eur": 3396.93,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "VILLAR Michel",
+   "circonscription": "Polynésie-Française",
+   "depenses_eur": 778.5,
+   "recettes_eur": 1055.9,
+   "apport_personnel_eur": 1055.9,
+   "dons_eur": 0.0,
+   "remboursement_eur": 778.5,
+   "decision": "AR"
+  },
+  {
    "candidat": "ABABSA Farouk",
    "circonscription": "Rhône",
    "depenses_eur": 240.0,
@@ -3913,6 +3246,52 @@
    "dons_eur": 0.0,
    "remboursement_eur": 14733.0,
    "decision": "AR"
+  },
+  {
+   "candidat": "JACQUES Micheline",
+   "circonscription": "Saint-Barthélemy",
+   "depenses_eur": 139.0,
+   "recettes_eur": 200.0,
+   "apport_personnel_eur": 200.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "HD"
+  },
+  {
+   "candidat": "ARNELL Guillaume Jacques",
+   "circonscription": "Saint-Martin",
+   "depenses_eur": 515.0,
+   "recettes_eur": 750.0,
+   "apport_personnel_eur": 750.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 515.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "JANUARY-OGOUNDELE-TESSI Marthe",
+   "circonscription": "Saint-Martin",
+   "depenses_eur": 320.0,
+   "recettes_eur": 400.0,
+   "apport_personnel_eur": 400.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "HD"
+  },
+  {
+   "candidat": "PÉTRUS Annick",
+   "circonscription": "Saint-Martin",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "TROTEL Erwan",
+   "circonscription": "Saint-Martin",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
   },
   {
    "candidat": "DURAIN Jérôme",
@@ -4051,6 +3430,126 @@
    "decision": "AR"
   },
   {
+   "candidat": "BERNARD Brice",
+   "circonscription": "Savoie",
+   "depenses_eur": 2020.0,
+   "recettes_eur": 2020.0,
+   "apport_personnel_eur": 2020.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "BERTHET Martine",
+   "circonscription": "Savoie",
+   "depenses_eur": 9279.0,
+   "recettes_eur": 9323.0,
+   "apport_personnel_eur": 5815.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 5771.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BIGUET Pierre",
+   "circonscription": "Savoie",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "DANTIN Michel",
+   "circonscription": "Savoie",
+   "depenses_eur": 8721.0,
+   "recettes_eur": 9057.0,
+   "apport_personnel_eur": 5178.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 4842.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "FERRARI Catherine",
+   "circonscription": "Savoie",
+   "depenses_eur": 80.0,
+   "recettes_eur": 100.0,
+   "apport_personnel_eur": 100.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "GUILHAUDIN Nicole",
+   "circonscription": "Savoie",
+   "depenses_eur": 1422.0,
+   "recettes_eur": 1700.0,
+   "apport_personnel_eur": 1500.0,
+   "dons_eur": 200.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "HOCHARD Jean Luc",
+   "circonscription": "Savoie",
+   "depenses_eur": 1367.0,
+   "recettes_eur": 1367.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 367.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "LEGER Claudie",
+   "circonscription": "Savoie",
+   "depenses_eur": 1489.0,
+   "recettes_eur": 1489.0,
+   "apport_personnel_eur": 928.0,
+   "dons_eur": 61.0,
+   "remboursement_eur": 928.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "PENAROYAS Florian",
+   "circonscription": "Savoie",
+   "depenses_eur": 453.0,
+   "recettes_eur": 453.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "VAIRETTO André",
+   "circonscription": "Savoie",
+   "depenses_eur": 21173.0,
+   "recettes_eur": 22500.0,
+   "apport_personnel_eur": 22500.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 18439.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "VIAL Cédric",
+   "circonscription": "Savoie",
+   "depenses_eur": 6894.0,
+   "recettes_eur": 6894.0,
+   "apport_personnel_eur": 6894.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 6894.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "VULLIERMET Ludovic",
+   "circonscription": "Savoie",
+   "depenses_eur": 6735.0,
+   "recettes_eur": 6735.0,
+   "apport_personnel_eur": 6735.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 6735.0,
+   "decision": "A"
+  },
+  {
    "candidat": "BARON Mickaël",
    "circonscription": "Seine-Maritime",
    "depenses_eur": 1756.0,
@@ -4185,6 +3684,282 @@
    "dons_eur": 0.0,
    "remboursement_eur": 9573.0,
    "decision": "AR"
+  },
+  {
+   "candidat": "ANTONIO Caroline",
+   "circonscription": "Tarn",
+   "depenses_eur": 4370.0,
+   "recettes_eur": 4773.0,
+   "apport_personnel_eur": 4571.0,
+   "dons_eur": 200.0,
+   "remboursement_eur": 4168.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BONNECARRÈRE Philippe",
+   "circonscription": "Tarn",
+   "depenses_eur": 16154.0,
+   "recettes_eur": 16154.0,
+   "apport_personnel_eur": 15404.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 15404.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "CABROLIER Frédéric",
+   "circonscription": "Tarn",
+   "depenses_eur": 947.0,
+   "recettes_eur": 1310.0,
+   "apport_personnel_eur": 1310.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "FOLLIOT Philippe",
+   "circonscription": "Tarn",
+   "depenses_eur": 11735.0,
+   "recettes_eur": 11735.0,
+   "apport_personnel_eur": 9279.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 9279.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "FRANQUES Michel",
+   "circonscription": "Tarn",
+   "depenses_eur": 5509.0,
+   "recettes_eur": 5931.0,
+   "apport_personnel_eur": 3900.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 3478.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "GAREL Vincent",
+   "circonscription": "Tarn",
+   "depenses_eur": 1141.0,
+   "recettes_eur": 1200.0,
+   "apport_personnel_eur": 1200.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1141.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "GRANDIN Pascal",
+   "circonscription": "Tarn",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "MADELINE MAUGIN Myriam",
+   "circonscription": "Tarn",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "PRAGNÈRE Pascal",
+   "circonscription": "Tarn",
+   "depenses_eur": 352.0,
+   "recettes_eur": 750.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "SALVADOR Paul",
+   "circonscription": "Tarn",
+   "depenses_eur": 4838.0,
+   "recettes_eur": 4838.0,
+   "apport_personnel_eur": 1146.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1146.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "SAN ANDRES Thierry",
+   "circonscription": "Tarn",
+   "depenses_eur": 2619.0,
+   "recettes_eur": 2639.0,
+   "apport_personnel_eur": 2639.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 2619.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "SOMEN Didier",
+   "circonscription": "Tarn",
+   "depenses_eur": 5256.0,
+   "recettes_eur": 6000.0,
+   "apport_personnel_eur": 6000.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 5256.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "ALBERT Mathieu",
+   "circonscription": "Tarn-et-Garonne",
+   "depenses_eur": 664.0,
+   "recettes_eur": 664.0,
+   "apport_personnel_eur": 664.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 664.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "ASTOUL Etienne",
+   "circonscription": "Tarn-et-Garonne",
+   "depenses_eur": 14973.0,
+   "recettes_eur": 15046.0,
+   "apport_personnel_eur": 12580.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 12507.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BONHOMME François",
+   "circonscription": "Tarn-et-Garonne",
+   "depenses_eur": 6106.0,
+   "recettes_eur": 6389.0,
+   "apport_personnel_eur": 6389.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 6106.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "DAIMÉ Guy",
+   "circonscription": "Tarn-et-Garonne",
+   "depenses_eur": 809.0,
+   "recettes_eur": 809.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "FERRERO Monique",
+   "circonscription": "Tarn-et-Garonne",
+   "depenses_eur": 5259.0,
+   "recettes_eur": 5259.0,
+   "apport_personnel_eur": 5259.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 5259.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "GRILHAULT DES FONTAINES Jean-François",
+   "circonscription": "Tarn-et-Garonne",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "ICHES Alain",
+   "circonscription": "Tarn-et-Garonne",
+   "depenses_eur": 4592.0,
+   "recettes_eur": 4933.0,
+   "apport_personnel_eur": 4533.0,
+   "dons_eur": 400.0,
+   "remboursement_eur": 4192.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "LÉVI Pierre-Antoine",
+   "circonscription": "Tarn-et-Garonne",
+   "depenses_eur": 3027.0,
+   "recettes_eur": 5801.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 5700.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "ROBLIN Cécile",
+   "circonscription": "Tarn-et-Garonne",
+   "depenses_eur": 50.0,
+   "recettes_eur": 50.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "TERRENNE Jean-Paul",
+   "circonscription": "Tarn-et-Garonne",
+   "depenses_eur": 4349.0,
+   "recettes_eur": 8831.0,
+   "apport_personnel_eur": 6452.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1970.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "VIALLON Thierry",
+   "circonscription": "Tarn-et-Garonne",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "CHEVALIER Bertrand",
+   "circonscription": "Territoire de Belfort",
+   "depenses_eur": 833.0,
+   "recettes_eur": 850.0,
+   "apport_personnel_eur": 850.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 833.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "DUCHANOY Marie-Laure",
+   "circonscription": "Territoire de Belfort",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "JEUDY Vincent",
+   "circonscription": "Territoire de Belfort",
+   "depenses_eur": 216.0,
+   "recettes_eur": 216.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "KERN Bruno",
+   "circonscription": "Territoire de Belfort",
+   "depenses_eur": 11807.0,
+   "recettes_eur": 11807.0,
+   "apport_personnel_eur": 10452.0,
+   "dons_eur": 300.0,
+   "remboursement_eur": 10010.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "PERRIN Cédric",
+   "circonscription": "Territoire de Belfort",
+   "depenses_eur": 8360.0,
+   "recettes_eur": 8360.0,
+   "apport_personnel_eur": 3760.0,
+   "dons_eur": 4600.0,
+   "remboursement_eur": 3760.0,
+   "decision": "A"
   },
   {
    "candidat": "BONNUS Michel",
@@ -4351,6 +4126,238 @@
    "dons_eur": 0.0,
    "remboursement_eur": 7554.0,
    "decision": "AR"
+  },
+  {
+   "candidat": "BELIN Bruno",
+   "circonscription": "Vienne",
+   "depenses_eur": 8983.0,
+   "recettes_eur": 8983.0,
+   "apport_personnel_eur": 8983.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 8983.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "BOULOUX Yves",
+   "circonscription": "Vienne",
+   "depenses_eur": 4009.0,
+   "recettes_eur": 4009.0,
+   "apport_personnel_eur": 4009.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 4009.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "FAGE Arnaud",
+   "circonscription": "Vienne",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "JEAN Gisèle",
+   "circonscription": "Vienne",
+   "depenses_eur": 10145.0,
+   "recettes_eur": 10145.0,
+   "apport_personnel_eur": 10145.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 10145.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "PERREAU Thierry",
+   "circonscription": "Vienne",
+   "depenses_eur": 1020.0,
+   "recettes_eur": 1334.0,
+   "apport_personnel_eur": 1334.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1020.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "BLAISE Sandra",
+   "circonscription": "Vosges",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "FRANQUEVILLE Christian",
+   "circonscription": "Vosges",
+   "depenses_eur": 7128.0,
+   "recettes_eur": 8311.0,
+   "apport_personnel_eur": 3711.0,
+   "dons_eur": 4600.0,
+   "remboursement_eur": 2528.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "GREMILLET Daniel",
+   "circonscription": "Vosges",
+   "depenses_eur": 16444.0,
+   "recettes_eur": 16444.0,
+   "apport_personnel_eur": 15282.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 15282.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "HINGRAY Jean",
+   "circonscription": "Vosges",
+   "depenses_eur": 13404.0,
+   "recettes_eur": 13404.0,
+   "apport_personnel_eur": 6514.0,
+   "dons_eur": 6890.0,
+   "remboursement_eur": 6514.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "HUMBERT Sébastien",
+   "circonscription": "Vosges",
+   "depenses_eur": 1481.0,
+   "recettes_eur": 1481.0,
+   "apport_personnel_eur": 481.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "LAURENT Christophe",
+   "circonscription": "Vosges",
+   "depenses_eur": 8999.0,
+   "recettes_eur": 9300.0,
+   "apport_personnel_eur": 9300.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 8999.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "LECLERC Simon",
+   "circonscription": "Vosges",
+   "depenses_eur": 9180.0,
+   "recettes_eur": 9190.0,
+   "apport_personnel_eur": 4570.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 4560.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "KULIMOETOKE Mikaele",
+   "circonscription": "Wallis-et-Futuna",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "R"
+  },
+  {
+   "candidat": "LAUFOAULU Lopeleto Robert",
+   "circonscription": "Wallis-et-Futuna",
+   "depenses_eur": 2483.63,
+   "recettes_eur": 6544.88,
+   "apport_personnel_eur": 2773.82,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "LIKUVALU Apeleto",
+   "circonscription": "Wallis-et-Futuna",
+   "remboursement_eur": 0.0,
+   "decision": "AD"
+  },
+  {
+   "candidat": "MASEI Akatoto",
+   "circonscription": "Wallis-et-Futuna",
+   "remboursement_eur": 0.0,
+   "decision": "DD"
+  },
+  {
+   "candidat": "VERGÉ David Stéphan",
+   "circonscription": "Wallis-et-Futuna",
+   "depenses_eur": 1295.01,
+   "recettes_eur": 1338.16,
+   "apport_personnel_eur": 1338.16,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1295.01,
+   "decision": "AR"
+  },
+  {
+   "candidat": "LEMOYNE Jean-Baptiste",
+   "circonscription": "Yonne",
+   "depenses_eur": 12929.0,
+   "recettes_eur": 12929.0,
+   "apport_personnel_eur": 12929.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 12929.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "LOURY Florence",
+   "circonscription": "Yonne",
+   "depenses_eur": 1663.0,
+   "recettes_eur": 1885.0,
+   "apport_personnel_eur": 1384.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1162.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "PIRMAN Gilles",
+   "circonscription": "Yonne",
+   "depenses_eur": 14365.0,
+   "recettes_eur": 14365.0,
+   "apport_personnel_eur": 14365.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 14365.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "ROSALIE Xavier",
+   "circonscription": "Yonne",
+   "depenses_eur": 0.0,
+   "recettes_eur": 0.0,
+   "apport_personnel_eur": 0.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 0.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "SACKEPEY Gilles",
+   "circonscription": "Yonne",
+   "depenses_eur": 1531.0,
+   "recettes_eur": 1531.0,
+   "apport_personnel_eur": 1104.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 1104.0,
+   "decision": "AR"
+  },
+  {
+   "candidat": "VÉRIEN Dominique",
+   "circonscription": "Yonne",
+   "depenses_eur": 20903.0,
+   "recettes_eur": 20903.0,
+   "apport_personnel_eur": 14165.0,
+   "dons_eur": 2000.0,
+   "remboursement_eur": 14165.0,
+   "decision": "A"
+  },
+  {
+   "candidat": "VILLIERS André",
+   "circonscription": "Yonne",
+   "depenses_eur": 5297.0,
+   "recettes_eur": 5300.0,
+   "apport_personnel_eur": 5300.0,
+   "dons_eur": 0.0,
+   "remboursement_eur": 5297.0,
+   "decision": "A"
   }
  ],
  "regle": "Exception limitée aux candidats, pour les comptes de campagne publiés par la CNCCFP ou au Journal officiel : nom, nuance, circonscription, montants, décision. Ni adresse, ni date de naissance, ni donateur, ni mandataire financier."

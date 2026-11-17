@@ -757,7 +757,8 @@ def sociales() -> dict:
         "source": AUTRES["plfss2026_annexe4"]["titre"] + " ; " + AUTRES["urssaf_exos"]["titre"],
         "url": AUTRES["plfss2026_annexe4"]["url"],
         "unite": "millions d'euros (exonérations), milliards d'euros (exemptions d'assiette, synthèse)",
-        "avertissement": "Les niches sociales sont l'équivalent, pour la Sécurité sociale, des dépenses fiscales de "
+        "avertissement": "Les exonérations de cotisations (souvent appelées niches sociales) sont l'équivalent, pour la "
+                         "Sécurité sociale, des dépenses fiscales de "
                          "l'État. Les exonérations ciblées compensées sont remboursées par l'État (crédits des missions "
                          "indiquées) : elles figurent aussi dans la dépense budgétaire et ne s'ajoutent pas aux "
                          "dépenses fiscales. Les allègements généraux sont compensés par des recettes fiscales "
