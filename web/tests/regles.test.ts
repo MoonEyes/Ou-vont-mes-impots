@@ -71,3 +71,31 @@ describe('identité', () => {
     expect(css).not.toMatch(/box-shadow/)
   })
 })
+
+describe('navigation et métadonnées', () => {
+  const html = readFileSync(join(RACINE, 'index.html'), 'utf8')
+  it('barre de navigation : 5 entrées, sans numérotation, feuille « Plus » à 4 liens', () => {
+    const nav = /<nav id="navigation"[\s\S]*?<\/nav>/.exec(html)![0]
+    const entrees = [...nav.matchAll(/data-rubrique="([^"]+)"/g)].map((m) => m[1])
+    expect(entrees).toEqual(['/', '/calcul', '/explorer', '/local', '/plus'])
+    expect(nav).not.toMatch(/>\s*\d+\.\s/)
+    const feuille = /<div id="feuille-plus"[\s\S]*?<\/div>/.exec(nav)![0]
+    expect([...feuille.matchAll(/href="([^"]+)"/g)].map((m) => m[1])).toEqual(['#/beneficiaires', '#/decisions', '#/methode', '#/mentions'])
+  })
+  it('cibles de la barre >= 48 px', () => {
+    const bloc = /\.navigation > ul a,\n\.navigation > ul button \{([\s\S]*?)\}/.exec(css)![1]
+    expect(Number(/min-height: (\d+)px/.exec(bloc)![1])).toBeGreaterThanOrEqual(48)
+  })
+  it('titre, Open Graph, carte Twitter et JSON-LD vérifiables', () => {
+    expect(html).toContain('<title>Où vont mes impôts : vois où va l’argent que tu paies</title>')
+    for (const p of ['og:title', 'og:description', 'og:image', 'og:url']) expect(html).toContain(`property="${p}"`)
+    expect(html).toContain('name="twitter:card" content="summary_large_image"')
+    const ld = JSON.parse(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(html)![1])
+    const types = ld['@graph'].map((x: { '@type': string }) => x['@type'])
+    expect(types).toEqual(['WebSite', 'Dataset'])
+    for (const x of ld['@graph']) expect(x.creator.name).toBe('Projet citoyen Où vont mes impôts')
+    const png = readFileSync(join(RACINE, 'public', 'og.png'))
+    expect(png.readUInt32BE(16)).toBe(1200)
+    expect(png.readUInt32BE(20)).toBe(630)
+  })
+})

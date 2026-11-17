@@ -2,7 +2,7 @@
 // Tests de rendu des 10 écrans sur des fixtures (extraits réels de site/data).
 import { beforeAll, describe, expect, it } from 'vitest'
 import { ROUTES } from '../src/main'
-import { afficher } from '../src/routeur'
+import { afficher, redirection } from '../src/routeur'
 import { session } from '../src/etat'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -24,40 +24,64 @@ beforeAll(() => {
 })
 
 describe('écrans', () => {
-  it('1. saisie : formulaire, aide à la saisie, mention de confidentialité', async () => {
+  it('accueil : promesse, action unique répétée, étapes, garanties', async () => {
     await ecran('#/')
-    expect(main.querySelector('h1')?.textContent).toContain('Où va l’argent')
+    expect(main.querySelector('h1')?.textContent).toBe('Où va l’argent que tu paies ?')
+    expect(texte()).toContain('Indique ton salaire. Tu vois ce que tu verses chaque année, à qui, et à quoi cet argent sert.')
+    const boutons = Array.from(main.querySelectorAll('a.bouton-principal'))
+    expect(boutons).toHaveLength(2)
+    for (const b of boutons) {
+      expect(b.textContent).toBe('Calculer à partir de mon salaire')
+      expect(b.getAttribute('href')).toBe('#/calcul')
+    }
+    expect(texte()).toContain('Environ 2 minutes. Aucun compte à créer.')
+    expect(main.querySelector('a[href="#/explorer"]')?.textContent).toBe('Explorer sans saisir mon salaire')
+    expect(main.querySelectorAll('.etapes li')).toHaveLength(3)
+    expect(texte()).toContain('Rien ne quitte ton téléphone.')
+    expect(texte()).toContain('jusqu’à la ligne du budget voté')
+    expect(texte()).toContain('Site non officiel, réalisé à partir de données publiques ouvertes.')
+    expect(main.querySelector('.fil-ariane')).toBeNull()
+    expect(document.querySelector('.navigation [aria-current=page]')?.getAttribute('href')).toBe('#/')
+  })
+
+  it('1. saisie : formulaire, aide à la saisie, mention de confidentialité', async () => {
+    await ecran('#/calcul')
     expect(main.querySelector('#p1-net')).not.toBeNull()
     expect(texte()).toContain('Net à payer avant impôt sur le revenu')
     expect(texte()).toContain('rien de ce que tu saisis n’est envoyé')
-    expect(document.querySelector('a[aria-current=page]')?.getAttribute('href')).toBe('#/')
+    expect(document.querySelector('.navigation [aria-current=page]')?.getAttribute('href')).toBe('#/calcul')
+    expect(main.querySelector('nav.fil-ariane')).toBeNull()
   })
 
   it('1. saisie : salaire manquant signalé sur le champ', async () => {
-    await ecran('#/')
+    await ecran('#/calcul')
     main.querySelector<HTMLFormElement>('#formulaire')!.dispatchEvent(new Event('submit', { cancelable: true }))
     await attendreQue(() => main.querySelector('#p1-net')?.getAttribute('aria-invalid') === 'true')
     expect(main.querySelector('#p1-msg')?.textContent).toContain('supérieur à 0')
   })
 
   it('1. saisie : profil hors V1, message de sortie et redirection', async () => {
-    await ecran('#/')
+    await ecran('#/calcul')
     const s = main.querySelector<HTMLSelectElement>('#p1-statut')!
     s.value = 'fonctionnaire'
     s.dispatchEvent(new Event('change', { bubbles: true }))
     main.querySelector<HTMLFormElement>('#formulaire')!.dispatchEvent(new Event('submit', { cancelable: true }))
     await attendreQue(() => !!main.querySelector('#retour .avertissement'))
     expect(texte()).toContain('pension civile')
-    expect(main.querySelector('#retour a')?.getAttribute('href')).toBe('./#/etat')
+    expect(main.querySelector('#retour a')?.getAttribute('href')).toBe('./#/explorer')
   })
 
   it('1 puis 2. calcul complet puis « Ce que tu finances »', async () => {
-    await ecran('#/')
+    await ecran('#/calcul')
     ;(main.querySelector('#p1-net') as HTMLInputElement).value = '2100'
     main.querySelector<HTMLFormElement>('#formulaire')!.dispatchEvent(new Event('submit', { cancelable: true }))
     await attendreQue(() => session.resultat !== null, 60000)
-    expect(location.hash).toBe('#/paie')
-    await ecran('#/paie')
+    expect(location.hash).toBe('#/calcul/resultat')
+    await ecran('#/calcul/resultat')
+    expect(main.querySelector('nav.fil-ariane [aria-current=page]')?.textContent).toBe('Résultat')
+    for (const [t, href] of [['Où va l’argent de l’État', '#/explorer/etat'], ['Ta commune', '#/local'], ['Qui le reçoit', '#/beneficiaires']])
+      expect(Array.from(main.querySelectorAll('.cartes a')).find((a) => a.textContent?.includes(t))?.getAttribute('href')).toBe(href)
+    expect(main.querySelector('#partager-carte')?.textContent).toBe('Partager ma carte')
     expect(texte()).toContain('Ce que tu finances en un an')
     expect(texte()).toMatch(/Sur 100 € : \d+ € Sécurité sociale/)
     expect(texte()).toContain('1 004 €') // impôt C04 (OpenFisca : 1 004 €)
@@ -75,7 +99,7 @@ describe('écrans', () => {
   }, 90000)
 
   it('2. cas 2 100 € net, locataire à Lyon : taxes conso du 5e décile, TEOM, total complet', async () => {
-    await ecran('#/')
+    await ecran('#/calcul')
     ;(main.querySelector('#p1-net') as HTMLInputElement).value = '2100'
     const dep = main.querySelector<HTMLSelectElement>('#departement')!
     dep.value = '69'
@@ -93,7 +117,7 @@ describe('écrans', () => {
     expect(conso).toBeCloseTo(tva.tranches[4].taxes_produits_eur_par_uc.central, 0)
     expect(c.locaux.map((l) => l.id)).toEqual(['teom'])
     expect(c.locaux[0].non_chiffre).toBeUndefined()
-    await ecran('#/paie')
+    await ecran('#/calcul/resultat')
     expect(texte()).toContain('5e décile')
     expect(texte()).toContain('dans tes charges')
     expect(main.querySelector('.recap .surligne')?.textContent?.replace(/\s+/g, ' ')).toBe(eurFr(c.total.central))
@@ -120,10 +144,11 @@ describe('écrans', () => {
 
   it('4. détail : fil d’Ariane, barres, sous-arbre chargé à la demande', async () => {
     await ecran('#/detail?m=execution2024&id=Education%20et%20recherche%2FEnseignement%20scolaire%2F141')
-    expect(main.querySelectorAll('.fil-ariane li').length).toBe(4)
+    expect(main.querySelectorAll('nav[aria-label="Position dans l’arbre"] li').length).toBe(4)
+    expect(main.querySelectorAll('nav[aria-label="Fil d\'Ariane"] li').length).toBe(4)
     expect(texte()).toContain('Enseignement en collège')
     expect(texte()).toContain('Version texte du diagramme')
-    expect(main.querySelector('a[href="#/concret?p=141"]')).not.toBeNull()
+    expect(main.querySelector('a[href="#/beneficiaires/programme?p=141"]')).not.toBeNull()
     expect(requetes).toContain('data/arbre/Education-et-recherche_Enseignement-scolaire_141.json')
   })
 
@@ -186,7 +211,7 @@ describe('écrans', () => {
   })
 
   it('aucun attribut style en ligne (CSP) ni tiret long dans les écrans', async () => {
-    for (const f of ['#/', '#/paie', '#/etat', '#/detail', '#/concret?p=141', '#/beneficiaires?p=141', '#/realisations?p=141', '#/vie-politique?a=2024', '#/recettes', '#/methode', '#/mentions']) {
+    for (const f of ['#/', '#/calcul', '#/calcul/resultat', ...ROUTES.map((r) => '#' + r.chemin), '#/concret?p=141', '#/beneficiaires?p=141', '#/realisations?p=141', '#/vie-politique?a=2024', '#/local/commune?insee=69123', '#/decisions/votes?p=141']) {
       await ecran(f)
       // Seules les largeurs posées par le CSSOM (data-l, data-g) sont autorisées : pas de style en ligne dans le HTML.
       const fautifs = Array.from(main.querySelectorAll('[style]')).filter((el) => !el.hasAttribute('data-l') && !el.hasAttribute('data-g'))
@@ -197,11 +222,13 @@ describe('écrans', () => {
 
   it('règles 1, 5 et surligneur : chiffre clé en euros et sur 100 €, un seul surligneur, titres sans adjectif évaluatif', async () => {
     const INTERDITS = /\b(gaspillage|seulement|énorme|opaque|scandale|trop)\b/i
-    for (const f of ['#/', '#/paie', '#/etat', '#/etat?m=lfi2025', '#/detail', '#/detail?m=execution2024&id=Education%20et%20recherche%2FEnseignement%20scolaire%2F141', '#/concret?p=141', '#/beneficiaires?p=141', '#/beneficiaires?onglet=marches', '#/beneficiaires?onglet=france2030', '#/realisations?p=141', '#/vie-politique?a=2024', '#/vie-politique?a=2021', '#/recettes', '#/methode', '#/mentions']) {
+    for (const f of [...ROUTES.map((r) => '#' + r.chemin), '#/local/commune?insee=69123', '#/explorer/ue?dep=69', '#/etat?m=lfi2025', '#/detail', '#/detail?m=execution2024&id=Education%20et%20recherche%2FEnseignement%20scolaire%2F141', '#/concret?p=141', '#/beneficiaires?p=141', '#/beneficiaires?onglet=marches', '#/beneficiaires?onglet=france2030', '#/realisations?p=141', '#/vie-politique?a=2024', '#/vie-politique?a=2021', '#/recettes', '#/methode', '#/mentions']) {
       await ecran(f)
       const surlignes = main.querySelectorAll('.surligne')
       expect(surlignes.length, f).toBeLessThanOrEqual(1)
       for (const el of Array.from(surlignes)) {
+        // Un surligneur posé sur un chiffre : montant en euros et « sur 100 € » à côté.
+        if (!/\d/.test(el.textContent ?? '')) continue
         expect(el.textContent, f).toMatch(/€/)
         const cle = el.closest('[data-cle]')
         expect(cle, `${f} : chiffre clé sans conteneur data-cle`).not.toBeNull()
@@ -210,6 +237,95 @@ describe('écrans', () => {
       for (const t of Array.from(main.querySelectorAll('h1, h2, h3'))) expect(t.textContent ?? '', f).not.toMatch(INTERDITS)
       expect(document.title).not.toMatch(INTERDITS)
     }
+  })
+
+  it('anciennes adresses : chacune redirige vers la nouvelle, paramètres conservés', async () => {
+    const cas: [string, string][] = [
+      ['#/paie', '#/calcul/resultat'],
+      ['#/etat?m=lfi2025', '#/explorer/etat?m=lfi2025'],
+      ['#/detail?m=execution2024&id=Justice', '#/explorer/etat/detail?m=execution2024&id=Justice'],
+      ['#/concret?p=141', '#/beneficiaires/programme?p=141'],
+      ['#/realisations?p=141', '#/decisions/realisations?p=141'],
+      ['#/vie-politique?a=2022', '#/decisions/vie-politique?a=2022'],
+      ['#/recettes?i=D211', '#/explorer/recettes?i=D211'],
+    ]
+    for (const [ancien, nouveau] of cas) {
+      expect(redirection(ancien), ancien).toBe(nouveau)
+      if (ancien === '#/paie') continue
+      await ecran(ancien)
+      expect(location.hash, ancien).toBe(nouveau)
+    }
+  })
+
+  it('résultat sans saisie : retour au formulaire avec un message', async () => {
+    const r = session.resultat
+    session.resultat = null
+    await ecran('#/calcul/resultat')
+    expect(location.hash).toBe('#/calcul?retour=resultat')
+    await ecran(location.hash)
+    expect(texte()).toContain('Indique d’abord ton salaire')
+    session.resultat = r
+  })
+
+  it('chaque route rend un titre, un fil d’Ariane dès le niveau 2 et au moins une sortie', async () => {
+    const params: Record<string, string> = {
+      '/explorer/etat/detail': '?id=Justice',
+      '/local/commune': '?insee=69123',
+      '/beneficiaires/programme': '?p=141',
+      '/decisions/realisations': '?p=141',
+      '/decisions/votes': '?p=141',
+      '/explorer/ue': '?dep=69',
+      '/decisions/controle': '?dep=69',
+    }
+    for (const r of ROUTES) {
+      await ecran(`#${r.chemin}${params[r.chemin] ?? ''}`)
+      expect(main.querySelector('h1')?.textContent?.trim(), r.chemin).toBeTruthy()
+      expect(main.querySelector('.erreur'), `${r.chemin} : erreur affichée`).toBeNull()
+      if (r.parent) {
+        const fil = main.querySelector('nav[aria-label="Fil d\'Ariane"]')
+        expect(fil, r.chemin).not.toBeNull()
+        expect(fil!.querySelector('[aria-current=page]')?.getAttribute('href'), r.chemin).toBe(`#${r.chemin}`)
+      }
+      const sorties = Array.from(main.querySelectorAll('a[href^="#/"]')).filter((a) => !a.closest('.fil-ariane'))
+      expect(sorties.length, `${r.chemin} : aucune sortie`).toBeGreaterThan(0)
+      // Ancres qui nomment leur destination (pas de « cliquez ici »).
+      for (const a of sorties) expect(a.textContent ?? '', r.chemin).not.toMatch(/^\s*(ici|cliquez ici|lien|en savoir plus)\s*$/i)
+    }
+  }, 120000)
+
+  it('pages des jeux branchés : secu, UE, dette, niches, commune, votes, contrôle', async () => {
+    await ecran('#/explorer/secu')
+    expect(texte()).toContain('Traçabilité de ce bloc')
+    expect(texte()).toMatch(/sur 100 €/)
+    await ecran('#/explorer/ue?dep=69')
+    expect(texte()).toContain('22,3 Md€')
+    expect(texte()).toContain('Principaux bénéficiaires')
+    await ecran('#/explorer/dette')
+    expect(texte()).toContain('Qui détient la dette')
+    await ecran('#/explorer/niches')
+    expect(texte()).toContain('89,4 Md€')
+    await ecran('#/local/commune?insee=69123')
+    expect(main.querySelector('h1')?.textContent).toBe('Lyon')
+    expect(texte()).toContain('Dotation globale de fonctionnement')
+    expect(texte()).toContain('Les taux d’impôts locaux votés')
+    expect(main.querySelector('a[href="#/explorer/collectivites"]')).not.toBeNull()
+    await ecran('#/decisions/votes?p=141')
+    expect(texte()).toContain('Mouvements de crédits publiés au Journal officiel')
+    await ecran('#/decisions/controle?dep=69')
+    expect(texte()).toContain('représentants d’intérêts')
+  }, 60000)
+
+  it('dette et contrôle : état « en cours d’intégration » propre si les fichiers manquent', async () => {
+    const { rendre } = await import('../src/ecrans/dette')
+    const { viderCache } = await import('../src/donnees')
+    viderCache()
+    const vrai = globalThis.fetch
+    globalThis.fetch = (async (u: string) => (String(u).includes('dette/') ? new Response('', { status: 404 }) : vrai(u))) as typeof fetch
+    const z = document.createElement('div')
+    await rendre(z)
+    expect(z.textContent).toContain('Données en cours d’intégration')
+    globalThis.fetch = vrai
+    viderCache()
   })
 
   it('toutes les lectures de données sont relatives au site', () => {

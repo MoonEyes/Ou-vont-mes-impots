@@ -55,7 +55,10 @@ describe('bundle', () => {
   it('HTML et CSS ne chargent rien depuis un autre domaine ; CSP stricte présente', () => {
     const html = readFileSync(join(DIST, 'index.html'), 'utf8')
     expect(html).toContain("default-src 'self'")
-    expect(html).not.toMatch(/(?:src|href)=["'](?:https?:)?\/\//)
+    // Le lien canonique et les balises Open Graph nomment l'adresse publique du site : rien n'y est chargé.
+    const chargements = html.replace(/<link rel="canonical"[^>]*>/g, '')
+    expect(chargements).not.toMatch(/(?:src|href)=["'](?:https?:)?\/\//)
+    expect(html).not.toMatch(/<script[^>]+src=["'](?:https?:)?\/\//)
     for (const f of fichiers(DIST).filter((x) => x.endsWith('.css'))) expect(readFileSync(f, 'utf8')).not.toMatch(/url\(\s*["']?(?:https?:)?\/\//)
   })
 
