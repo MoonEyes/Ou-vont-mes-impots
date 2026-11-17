@@ -7,6 +7,7 @@ export async function rendre(cible: HTMLElement) {
   const bouton = `<p class="actions"><a class="bouton bouton-principal bouton-grand" href="#/calcul">Calculer à partir de mon salaire</a></p>`
   cible.innerHTML = `
 <div class="accueil-tete">
+  <p class="surtitre">Une démarche citoyenne</p>
   <h1>Où va l’argent que tu paies ?</h1>
   <p class="chapeau">Indique ton salaire. Tu vois ce que tu verses chaque année, à qui, et à quoi cet argent sert.</p>
   ${bouton}
@@ -46,7 +47,7 @@ export async function rendre(cible: HTMLElement) {
     </ul>
   </div>
 </div>
-<p><strong>Site non officiel, réalisé à partir de données publiques ouvertes.</strong></p>
+<p><strong>Une démarche citoyenne et indépendante :</strong> site non officiel, gratuit, sans publicité, réalisé à partir de données publiques ouvertes.</p>
 <p class="source">data.economie.gouv.fr, Insee, Eurostat, DGFiP, Urssaf (modele-social), Assemblée nationale, Cour des comptes, CNCCFP. <a href="#/demarche">La démarche</a> · <a href="#/methode">Méthode et sources</a></p>
 ${bouton}`
 }

@@ -7,8 +7,12 @@ const DEPOT = 'https://github.com/MoonEyes/Ou-vont-mes-impots'
 export async function rendre(cible: HTMLElement) {
   const [n, x] = await Promise.all([plusDeSources(), eurosNonPublies()])
   cible.innerHTML = `
+<p class="surtitre">Une démarche citoyenne</p>
 <h1>Pourquoi ce site, et comment il est fait</h1>
 <p class="chapeau">Chaque année, tu verses une part de ton revenu en cotisations, CSG, impôts et TVA. Ce que deviennent ces montants est public, mais dispersé dans des milliers de documents. Ce site les rassemble pour répondre à une question : <span class="surligne">où va ton argent ?</span></p>
+
+<h2>Une démarche citoyenne</h2>
+<p>Ce site est porté par un citoyen, pas par une administration, un parti ou une entreprise. Il est gratuit, sans publicité et ne collecte aucune donnée. Chacun peut vérifier le travail, signaler une erreur ou y contribuer.</p>
 
 <h2>En 4 étapes</h2>
 <ol class="etapes">
