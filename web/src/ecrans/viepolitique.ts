@@ -2,7 +2,7 @@
 // Seuls les candidats et les partis sont nommés (données publiques de la CNCCFP).
 import { charger, chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
-import { absent, entier, eur, eurLisible, h, source, sur100 } from '../util'
+import { absent, entier, eur, eurLisible, h, source, sur100, surligne } from '../util'
 
 interface AnneeVP {
   annee: number
@@ -106,8 +106,10 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 <h2>Programme 232 « Vie politique »</h2>
 ${
   p
-    ? `<div class="carte"><p class="grand-chiffre">${h(eurLisible(p.total_actions_01_a_03_eur))}</p>${
-        p.euros_sur_100_euros_etat !== undefined ? `<p class="sous-chiffre">soit ${h(sur100(p.euros_sur_100_euros_etat))} sur 100 € du budget général de l’État</p>` : ''
+    ? `<div class="carte" data-cle><p class="grand-chiffre">${surligne(eurLisible(p.total_actions_01_a_03_eur))}</p>${
+        p.euros_sur_100_euros_etat !== undefined
+          ? `<p class="sous-chiffre">soit ${h(sur100(p.euros_sur_100_euros_etat))} sur 100 € du budget général de l’État</p>`
+          : '<p class="sous-chiffre">Part sur 100 € du budget général non calculable cette année (dépense totale de référence non publiée).</p>'
       }<ul>${Object.entries(p.actions_eur)
         .map(([k, v]) => `<li>${h(ACTIONS[k] ?? k)} : ${h(eurLisible(v))}${p.estimations?.includes(k) ? ' (estimation)' : ''}</li>`)
         .join('')}</ul>${p.note ? `<p class="aide">${h(p.note)}</p>` : ''}${source(p.source, p.millesime)}</div>`

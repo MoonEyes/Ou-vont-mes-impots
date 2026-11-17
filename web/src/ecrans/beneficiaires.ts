@@ -1,8 +1,8 @@
 // Écran 6 : qui reçoit l'argent (associations, opérateurs, France 2030, marchés de l'État).
 // Seules des personnes morales sont nommées ; le reste est agrégé (règle du pipeline).
-import { listeProgrammes, chargerSiPresent } from '../donnees'
+import { charger, chargerSiPresent, listeProgrammes, type Noeud } from '../donnees'
 import { lien } from '../routeur'
-import { absent, entier, eurLisible, h, source, sur100 } from '../util'
+import { absent, entier, eurLisible, h, source, sur100, surligne } from '../util'
 
 interface Top {
   siren: string
@@ -84,8 +84,12 @@ async function ongletProgramme(p: string | null): Promise<string> {
     operateurs: { millesime: string; source: string; note?: string; liste: { operateur: string; categorie?: string; statut?: string }[] } | null
   }>(`beneficiaires/programme_${num}.json`)
   if (!d) return choix + absent('Pas de données de bénéficiaires pour ce programme.')
-  const asso = d.associations
-    ? `<h3>Associations subventionnées</h3>${tableGroupe(d.associations, `Associations, ${d.associations.millesime}`, 'objet')}${source(d.associations.source)}`
+  const a = d.associations as (Groupe & { eur_sur_100?: number; millesime: string }) | null
+  const asso = a
+    ? `<h3>Associations subventionnées</h3>
+<p class="carte" data-cle>Total versé aux associations (${h(a.millesime)}) : <strong>${surligne(eurLisible(a.total_source_eur ?? 0))}</strong>${
+        typeof a.eur_sur_100 === 'number' ? `, soit ${h(sur100(a.eur_sur_100))} sur 100 € du budget de l’État` : ', part sur 100 € non publiée'
+      }.</p>${tableGroupe(a, `Associations, ${a.millesime}`, 'objet')}${source(d.associations!.source)}`
     : absent('Aucune subvention à une association publiée pour ce programme.')
   const ops = d.operateurs?.liste?.length
     ? `<h3>Opérateurs rattachés</h3><p>${h(d.operateurs.note ?? '')}</p><ul>${d.operateurs.liste
@@ -115,7 +119,10 @@ async function ongletMarches(): Promise<string> {
     'beneficiaires/marches_etat.json',
   )
   if (!d) return absent()
-  return `<p>${h(d.millesime)} : <strong>${h(eurLisible(d.ensemble.total_eur))}</strong> (${h(d.unite)}), ${h(entier(d.ensemble.nombre_marches))} marchés.</p>
+  const budget = (await charger<Noeud>('arbre/racine.json')).md * 1e9
+  return `<p class="carte" data-cle>${h(d.millesime)} : <strong>${surligne(eurLisible(d.ensemble.total_eur))}</strong> (${h(d.unite)}), ${h(entier(d.ensemble.nombre_marches))} marchés, l’équivalent de ${h(
+    sur100((d.ensemble.total_eur / budget) * 100),
+  )} sur 100 € du budget de l’État (montants notifiés, pas des paiements).</p>
 <p class="aide">${h(d.perimetre)}</p>
 ${tableGroupe(d.ensemble, 'Principaux titulaires de marchés de l’État', 'nombre_marches')}
 <h3>Par ministère</h3>

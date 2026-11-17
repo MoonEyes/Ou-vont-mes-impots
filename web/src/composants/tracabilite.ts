@@ -1,7 +1,7 @@
 // Taux de traçabilité par bloc (site/data/tracabilite/, produit par une autre étape du pipeline).
 // Affiché seulement si le dossier existe et porte sur le même millésime que l'écran.
 import { charger, manifeste } from '../donnees'
-import { h, pct } from '../util'
+import { h, legendeStatuts, sur100, pct, type Statut, STATUTS, traitStatut } from '../util'
 
 interface Part {
   libelle: string
@@ -29,11 +29,10 @@ interface Resume {
 }
 
 const ORDRE = ['beneficiaire_identifie', 'nominatif_par_choix', 'anonyme_par_nature', 'non_publie']
-const CLASSES: Record<string, string> = {
-  beneficiaire_identifie: 'c0',
-  nominatif_par_choix: 'c2',
-  anonyme_par_nature: 'c9',
-  non_publie: 'c11',
+/** Statut de traçabilité d'une part : non publié, approché (millésime ou méthode d'estimation) ou tracé. */
+export function statutPart(cle: string, statut?: string): Statut {
+  if (cle === 'non_publie') return 'nonpub'
+  return statut === 'approche' ? 'approche' : 'trace'
 }
 
 async function resume(): Promise<Resume | null> {
@@ -72,15 +71,18 @@ export async function blocTracabilite(niveau: string, id: string, millesime: str
   const approche = parts.some((p) => p.statut === 'approche') || e.approche
   return `<details class="carte">
   <summary>Traçabilité de ce bloc : ${h(pct(e.taux_tracabilite_pct))}${approche ? ' (approché)' : ''}</summary>
-  <p>Part de l’argent dont on sait à qui il va : bénéficiaire nommé, catégorie d’agents publiée ou porteurs de la dette.</p>
-  <div class="empile" aria-hidden="true">${parts.map((p) => `<span class="${CLASSES[p.cle]}" data-l="${Math.max(0, p.pct).toFixed(3)}"></span>`).join('')}</div>
-  <ul>${parts
-    .map(
-      (p) =>
-        `<li><span class="pastille ${CLASSES[p.cle]}" aria-hidden="true"></span>${h(p.libelle)} : ${h(pct(p.pct))}${
-          p.statut === 'approche' ? ` (approché${p.ecart_millesime_ans ? `, données décalées de ${p.ecart_millesime_ans} an` : ''})` : ''
-        }</li>`,
-    )
+  <p>Sur 100 € de ce bloc, ${h(sur100(e.taux_tracabilite_pct))} vont à un destinataire connu : bénéficiaire nommé, catégorie d’agents publiée ou porteurs de la dette.</p>
+  ${legendeStatuts()}
+  <div class="empile" aria-hidden="true">${parts
+    .map((p) => `<span class="statut-${statutPart(p.cle, p.statut)}" data-l="${Math.max(0, p.pct).toFixed(3)}"></span>`)
+    .join('')}</div>
+  <ul class="legende-statuts">${parts
+    .map((p) => {
+      const s = statutPart(p.cle, p.statut)
+      return `<li>${traitStatut(s)}<span><strong>${STATUTS[s].libelle}</strong> · ${h(p.libelle)} : ${h(pct(p.pct))}${
+        s === 'approche' && p.ecart_millesime_ans ? ` (données décalées de ${p.ecart_millesime_ans} an)` : ''
+      }</span></li>`
+    })
     .join('')}</ul>
   ${r.limites?.length ? `<p class="aide">Limites : ${r.limites.map(h).join(' ')}</p>` : ''}
   <p class="source">site/data/tracabilite (${h(r.millesime)})</p>

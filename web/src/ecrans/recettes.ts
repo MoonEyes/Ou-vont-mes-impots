@@ -1,7 +1,7 @@
 // Écran 9 : les recettes. Chaque impôt et qui l'encaisse, depuis 2005 (Eurostat, comptabilité nationale).
 import { charger, chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
-import { barres, h, libelle, md, pct, source } from '../util'
+import { barres, h, libelle, md, pct, source, sur100, surligne } from '../util'
 
 interface Recettes {
   millesime: string
@@ -42,8 +42,13 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 <label for="impot">Impôt</label>
 <select id="impot">${ordre.map((c) => `<option value="${c}"${c === code ? ' selected' : ''}>${h(NOMS[c] ?? r.impots[c].nom)}</option>`).join('')}</select>
 <h2>${h(NOMS[code] ?? imp.nom)} en ${h(derniere)}</h2>
-<div class="carte">
-  <p class="grand-chiffre">${h(md(totalDerniere))}</p>
+<div class="carte" data-cle>
+  <p class="grand-chiffre">${surligne(md(totalDerniere))}</p>
+  ${
+    ad?.Ensemble?.TR
+      ? `<p class="sous-chiffre">soit ${h(sur100((totalDerniere / ad.Ensemble.TR) * 100))} sur 100 € de recettes des administrations publiques (${h(md(ad.Ensemble.TR))})</p>`
+      : '<p class="sous-chiffre">Part sur 100 € de recettes publiques : non disponible.</p>'
+  }
   <p class="sous-chiffre">Intitulé Eurostat : ${h(imp.nom)} (${h(code)})</p>
   ${barres(
     ADMINS.map((a) => ({

@@ -60,7 +60,7 @@ export async function rendre(cible: HTMLElement) {
 
   cible.innerHTML = `
 <h1>Où va l’argent que tu paies ?</h1>
-<p class="chapeau">Indique ton salaire : le site calcule ce que tu paies chaque année, à qui, puis montre où va l’argent public. Le calcul se fait <strong>sur ton appareil</strong> : rien de ce que tu saisis n’est envoyé ni enregistré.</p>
+<p class="chapeau">Indique ton salaire : le site calcule ce que tu finances chaque année, à qui va l’argent, puis montre où va l’argent public. Le calcul se fait <strong>sur ton appareil</strong> : rien de ce que tu saisis n’est envoyé ni enregistré.</p>
 <p class="aide">Version 1 : salarié·es du secteur privé vivant en métropole (hors Alsace-Moselle), revenus 2025.</p>
 <form id="formulaire" novalidate>
   <fieldset class="choix">

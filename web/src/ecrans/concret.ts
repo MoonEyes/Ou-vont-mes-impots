@@ -3,7 +3,7 @@ import { brancherFiltre, choixProgramme } from '../composants/choix-programme'
 import { blocTracabilite } from '../composants/tracabilite'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
-import { absent, barres, entier, eur, eurLisible, h, pct, source, sur100 } from '../util'
+import { absent, barres, entier, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
 
 interface Nature {
   millesime: string
@@ -40,8 +40,8 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const [nat, eff] = await Promise.all([chargerSiPresent<Nature>(`nature/${p}.json`), chargerSiPresent<Effectifs>(`effectifs/${p}.json`)])
   const titre = nat?.libelle ?? `Programme ${p}`
   const blocNature = nat
-    ? `<div class="carte">
-  <p>Dépense 2024 : <strong>${h(eurLisible(nat.total_eur))}</strong>, soit ${h(sur100(nat.eur_sur_100))} sur 100 € du budget de l’État.</p>
+    ? `<div class="carte" data-cle>
+  <p>Dépense 2024 : <strong>${surligne(eurLisible(nat.total_eur))}</strong>, soit ${h(sur100(nat.eur_sur_100))} sur 100 € du budget de l’État.</p>
   ${barres(
     nat.postes.map((x) => ({
       nom: x.libelle,

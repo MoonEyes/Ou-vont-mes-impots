@@ -61,25 +61,48 @@ const ACCENTS: Record<string, string> = {
 }
 export const libelle = (x: string) => ACCENTS[x] ?? x
 
+/** Statuts de traçabilité, codés trois fois : motif (trait plein, tirets, pointillés), libellé et couleur. */
+export type Statut = 'trace' | 'approche' | 'nonpub'
+export const STATUTS: Record<Statut, { libelle: string; lecture: string }> = {
+  trace: { libelle: 'Tracé', lecture: 'destinataire publié' },
+  approche: { libelle: 'Approché', lecture: 'estimé, méthode publiée' },
+  nonpub: { libelle: 'Non publié', lecture: 'aucune donnée ouverte' },
+}
+/** Échantillon de trait (SVG) du statut, décoratif : le libellé l'accompagne toujours. */
+export const traitStatut = (s: Statut) =>
+  `<svg class="trait-statut" width="40" height="8" aria-hidden="true" focusable="false"><line class="ligne-${s}" x1="2" y1="4" x2="38" y2="4"></line></svg>`
+export function legendeStatuts(statuts: Statut[] = ['trace', 'approche', 'nonpub']): string {
+  return `<ul class="legende-statuts" aria-label="Légende de la traçabilité">${statuts
+    .map((s) => `<li>${traitStatut(s)}<span><strong>${STATUTS[s].libelle}</strong> : ${STATUTS[s].lecture}</span></li>`)
+    .join('')}</ul>`
+}
+
+/** Le chiffre clé de l'écran (un seul surligneur par écran). */
+export const surligne = (texte: string) => `<span class="surligne">${h(texte)}</span>`
+
 export interface ElementBarre {
   nom: string
   valeur: number
   texte: string
   lien?: string
-  orange?: boolean
   detail?: string
+  statut?: Statut
 }
 
-/** Liste de barres proportionnelles (largeur appliquée ensuite par appliquerLargeurs, compatible CSP). */
-export function barres(elements: ElementBarre[], max?: number, etiquette?: string): string {
+/**
+ * Liste de barres proportionnelles (largeur appliquée ensuite par appliquerLargeurs, compatible CSP).
+ * Mise en avant : l'élément actif en vert, les autres en taupe ; actif = -1 pour n'en mettre aucun.
+ */
+export function barres(elements: ElementBarre[], max?: number, etiquette?: string, actif = 0): string {
   const m = max ?? Math.max(...elements.map((e) => e.valeur), 0)
   return `<ul class="barres"${etiquette ? ` aria-label="${h(etiquette)}"` : ''}>${elements
-    .map((e) => {
+    .map((e, i) => {
       const w = m > 0 ? Math.max(0, Math.min(100, (e.valeur / m) * 100)) : 0
       const nom = e.lien ? `<a href="${h(e.lien)}">${h(e.nom)}</a>` : `<span class="nom">${h(e.nom)}</span>`
-      return `<li><div class="barre-tete">${nom}<span class="valeur">${h(e.texte)}</span></div>${
-        e.detail ? `<div class="aide">${h(e.detail)}</div>` : ''
-      }<div class="barre" aria-hidden="true"><span class="barre-remplissage${e.orange ? ' orange' : ''}" data-l="${w.toFixed(2)}"></span></div></li>`
+      const statut = e.statut ? ` statut-${e.statut}` : ''
+      return `<li${i === actif ? ' class="actif"' : ''}><div class="barre-tete">${nom}<span class="valeur">${h(e.texte)}${
+        e.statut ? ` <span class="badge">${STATUTS[e.statut].libelle}</span>` : ''
+      }</span></div>${e.detail ? `<div class="aide">${h(e.detail)}</div>` : ''}<div class="barre" aria-hidden="true"><span class="barre-remplissage${statut}" data-l="${w.toFixed(2)}"></span></div></li>`
     })
     .join('')}</ul>`
 }

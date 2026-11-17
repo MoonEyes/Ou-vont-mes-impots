@@ -3,7 +3,7 @@ import { dessinerSankey, ecranLarge } from '../composants/sankey'
 import { blocTracabilite } from '../composants/tracabilite'
 import { charger, deplier, type Noeud, trouverNoeud, VUES_ARBRE, vueArbre } from '../donnees'
 import { lien } from '../routeur'
-import { appliquerLargeurs, barres, h, libelle, md, numeroProgramme, pct, source, sur100 } from '../util'
+import { appliquerLargeurs, barres, h, surligne, libelle, md, numeroProgramme, pct, source, sur100 } from '../util'
 
 const NIVEAUX: Record<string, string> = {
   racine: 'Budget',
@@ -76,8 +76,8 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   ${VUES_ARBRE.map((x) => `<a class="bouton" href="${lien('/detail', { m: x.cle })}"${x === vue ? ' aria-current="true"' : ''}>${h(x.libelle)}</a>`).join('')}
 </div>
 ${ariane}
-<div class="carte">
-  <p class="grand-chiffre">${h(md(noeud.md))}</p>
+<div class="carte" data-cle>
+  <p class="grand-chiffre">${surligne(md(noeud.md))}</p>
   <p class="sous-chiffre">${h(NIVEAUX[noeud.niveau] ?? noeud.niveau)}${prog ? ` ${h(prog)}` : ''} · ${h(sur100((noeud.md / racine.md) * 100))} sur 100 € du budget de l’État${
     parent ? ` · ${h(pct(parent.md > 0 ? (noeud.md / parent.md) * 100 : 0))} de « ${h(libelle(parent.nom))} »` : ''
   }</p>
@@ -102,7 +102,7 @@ ${alternative}
     // Le conteneur doit être dans le document pour avoir une taille : on attend l'insertion.
     const tenter = (essais: number) => {
       if (div.isConnected && div.clientWidth > 0) {
-        dessinerSankey(div, complet)
+        dessinerSankey(div, complet, racine.md)
           .then((f) => (nettoyer = f))
           .catch(() => (zone.innerHTML = ''))
       } else if (essais > 0) window.setTimeout(() => tenter(essais - 1), 60)

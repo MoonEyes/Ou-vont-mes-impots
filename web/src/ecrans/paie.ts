@@ -1,9 +1,10 @@
-// Écran 2 : ce que tu paies (total annuel, ligne par ligne avec destinataire, patronal à part).
+// Écran 2 : ce que tu finances (total annuel, ligne par ligne avec destinataire, patronal à part).
 import { destinataire, LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
 import type { Complet } from '../calcul/hors-bulletin'
 import type { Famille, Fourchette, Prelevement, ResultatOk } from '../calcul/types'
 import { session } from '../etat'
-import { appliquerLargeurs, barres, entier, eur, estFourchette, fourchette, h, pct, source } from '../util'
+import { ORDRE_ADMIN, NOM_SUR100, parAdministration, sur100Entiers } from '../calcul/repartition'
+import { appliquerLargeurs, barres, entier, eur, estFourchette, fourchette, h, pct, source, type Statut, STATUTS, surligne, traitStatut } from '../util'
 
 const FAMILLES: [Famille, string][] = [
   ['cotisation_salariale', 'Cotisations sociales prélevées sur ton salaire'],
@@ -14,6 +15,16 @@ const FAMILLES: [Famille, string][] = [
 ]
 
 const PERSONNES: Record<string, string> = { declarant1: '', declarant2: ' (personne 2)', foyer: '', logement: '' }
+
+/** Statut d'une ligne (motif + libellé) : non chiffré, ou estimation ; rien pour un calcul exact. */
+function statutLigne(l: Prelevement): string {
+  const s: Statut | null = l.non_chiffre
+    ? 'nonpub'
+    : l.famille === 'taxe_consommation' || estFourchette(l.montant_annuel_eur) || (l.famille === 'impot_local' && l.regle.startsWith('prelevements/'))
+      ? 'approche'
+      : null
+  return s ? `${traitStatut(s)}<strong>${STATUTS[s].libelle}</strong> · ` : ''
+}
 
 function ligne(l: Prelevement, couple: boolean): string {
   const m = l.montant_annuel_eur
@@ -27,7 +38,7 @@ function ligne(l: Prelevement, couple: boolean): string {
   return `<li${l.nature === 'reduction' ? ' class="reduction"' : ''}>
     <span>${h(l.libelle)}${couple ? h(PERSONNES[l.personne] ?? '') : ''}</span>
     <span class="montant">${h(montant)}${l.non_chiffre ? '' : '<span class="visuellement-cache"> par an</span>'}</span>
-    <span class="dest">Va à : ${h(dest)}${!parts && admin !== dest ? ` <span class="badge">${h(admin)}</span>` : ''}${h(nonSourcee)}${
+    <span class="dest">${statutLigne(l)}Va à : ${h(dest)}${!parts && admin !== dest ? ` <span class="badge">${h(admin)}</span>` : ''}${h(nonSourcee)}${
       !l.non_chiffre && estFourchette(m) ? ` · estimation (central ${h(eur(m.central))})` : ''
     }${l.note ? `<br />${h(l.note)}` : ''}</span>
   </li>`
@@ -44,31 +55,50 @@ function sousTotal(ls: Prelevement[]): Fourchette {
   return t
 }
 
+function profilTexte(): string {
+  const p = session.profil
+  if (!p) return ''
+  const sit: Record<string, string> = {
+    celibataire: 'Seul·e',
+    parent_isole: 'Seul·e avec enfant(s)',
+    couple_marie_pacse: 'En couple marié ou pacsé',
+    couple_union_libre: 'En couple',
+  }
+  const n = p.foyer.enfants.length
+  const nets = p.personnes.filter((x) => x.salaire_net_avant_impot_mensuel).map((x) => eur(x.salaire_net_avant_impot_mensuel!))
+  return `${sit[p.foyer.situation]}, ${n ? `${n} enfant${n > 1 ? 's' : ''}` : 'sans enfant'}, ${nets.join(' et ')} net avant impôt par mois`
+}
+
+/** Carte récapitulative « Ce que tu finances en un an » : total, fourchette, lignes, répartition sur 100 €. */
 function blocTotal(r: ResultatOk, c: Complet | null): string {
   const t = c ? c.total : r.totaux.paye_par_le_foyer
   const net = r.entree.personnes.reduce((s, p) => s + p.salaire_net_avant_impot_annuel, 0)
-  const brut = r.entree.personnes.reduce((s, p) => s + p.salaire_brut_annuel_estime.central, 0)
   const salaire = sousTotal((c?.lignes ?? r.prelevements).filter((l) => ['cotisation_salariale', 'csg_crds', 'impot_revenu'].includes(l.famille)))
   const conso = c ? sousTotal(c.conso) : null
   const locaux = c ? sousTotal(c.locaux) : null
-  return `<div class="carte">
-    <p>Chaque année, ton foyer paie</p>
-    <p class="grand-chiffre">${h(fourchette(t))}</p>
-    ${estFourchette(t) ? `<p>Valeur centrale : <strong>${h(eur(t.central))}</strong> par an.</p>` : ''}
-    <p class="sous-chiffre">soit ${h(fourchette(t, 12))} par mois, pour un salaire brut de ${h(eur(brut))} par an (${h(eur(net))} net avant impôt).</p>
-    <ul>
-      <li>Prélevé sur ton salaire et impôt sur le revenu : ${h(fourchette(salaire))}</li>
-      ${conso ? `<li>Taxes sur ta consommation : ${h(fourchette(conso))}</li>` : '<li>Taxes sur ta consommation : donnée non disponible</li>'}
-      ${
-        c && c.locaux.length
-          ? `<li>Impôts locaux de ton logement : ${c.locaux.every((l) => l.non_chiffre) ? 'non chiffré (indique ta commune)' : h(fourchette(locaux!))}</li>`
-          : ''
-      }
-    </ul>
-    <p class="aide">Hors cotisations payées par ton employeur (bloc séparé plus bas)${
+  const fx = (f: Fourchette) => (estFourchette(f) ? `${entier(Math.round(f.bas))} à ${eur(f.haut)}` : eur(f.central))
+  const lignes: [string, string][] = [['Prélevé sur le salaire et impôt sur le revenu', fx(salaire)]]
+  lignes.push(['TVA et taxes sur la consommation', conso ? fx(conso) : 'non disponible'])
+  if (c && c.locaux.length) {
+    const libLocaux = session.profil?.logement?.statut === 'locataire' ? 'TEOM (dans tes charges)' : 'Taxe foncière et TEOM'
+    lignes.push([libLocaux, c.locaux.every((l) => l.non_chiffre) ? 'non chiffré' : fx(locaux!)])
+  }
+  const admin = parAdministration(c?.lignes ?? r.prelevements.filter((l) => l.inclus_dans_total_paye))
+  const s100 = sur100Entiers(admin)
+  const phrase = ORDRE_ADMIN.filter((a) => s100[a] !== undefined && admin[a] > 0)
+    .map((a) => `<strong>${s100[a]} €</strong> ${h(NOM_SUR100[a])}`)
+    .join(', ')
+  return `<section class="recap" data-cle aria-labelledby="titre-recap">
+    <h2 id="titre-recap" class="recap-titre">Ce que tu finances en un an</h2>
+    <p class="grand-chiffre">${surligne(eur(t.central))}</p>
+    ${estFourchette(t) ? `<p class="aide">Fourchette : ${h(eur(t.bas))} à ${h(eur(t.haut))}</p>` : ''}
+    <ul class="recap-lignes">${lignes.map(([a, b]) => `<li><span>${h(a)}</span><span>${h(b)}</span></li>`).join('')}</ul>
+    <p class="recap-sur100">Sur 100 € : ${phrase}.</p>
+    <p class="aide">Soit ${h(eur(t.central / 12))} par mois, pour ${h(eur(net))} net avant impôt par an. Hors cotisations de ton employeur (plus bas)${
       c?.lignes.some((l) => l.non_chiffre) ? ' ; les montants « non chiffré » ne sont pas comptés' : ''
     }.</p>
-  </div>`
+    <p class="source">calcul sur ton appareil (modele-social, vérifié face à OpenFisca), Insee, PLF et PLFSS 2026, DGFiP. <a href="#/methode">Méthode</a></p>
+  </section>`
 }
 
 function blocPlacement(c: Complet | null): string {
@@ -95,7 +125,7 @@ function blocTaxeFonciere(): string {
 export async function rendre(cible: HTMLElement) {
   const r = session.resultat
   if (!r) {
-    cible.innerHTML = `<h1>Ce que tu paies</h1><p>Indique d’abord ton salaire pour voir ce que tu paies et à qui.</p><p><a class="bouton bouton-principal" href="#/">Saisir mon salaire</a></p><p><a href="#/etat">Ou explorer le budget de l’État</a></p>`
+    cible.innerHTML = `<h1>Ce que tu finances</h1><p>Indique d’abord ton salaire pour voir ce que tu finances et à qui va l’argent.</p><p><a class="bouton bouton-principal" href="#/">Saisir mon salaire</a></p><p><a href="#/etat">Ou explorer le budget de l’État</a></p>`
     return
   }
   const c = session.complet
@@ -131,7 +161,9 @@ export async function rendre(cible: HTMLElement) {
   }
 
   cible.innerHTML = `
-<h1>Ce que tu paies</h1>
+<p><a href="#/">Modifier mon salaire</a></p>
+<h1>Ce que tu finances chaque année</h1>
+<p class="chapeau">${h(profilTexte())}</p>
 ${blocTotal(r, c)}
 ${avert}
 <h2>Ligne par ligne, et qui le reçoit</h2>
@@ -140,7 +172,7 @@ ${csgAbsente ? `<p class="aide">${h(csgAbsente.message)}</p>` : ''}
 ${blocTaxeFonciere()}
 <h2>Par destinataire</h2>
 <div class="bascule" role="group" aria-label="Contenu de la répartition">
-  <button type="button" id="sans-patronal" aria-pressed="true">Ce que tu paies</button>
+  <button type="button" id="sans-patronal" aria-pressed="true">Ce que tu finances</button>
   <button type="button" id="avec-patronal" aria-pressed="false">Avec la part de l’employeur</button>
 </div>
 <div id="par-destinataire" aria-live="polite"></div>

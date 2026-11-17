@@ -1,26 +1,106 @@
-@import '@fontsource/inter/latin-400.css';
-@import '@fontsource/inter/latin-600.css';
-@import '@fontsource/space-grotesk/latin-500.css';
-@import '@fontsource/space-grotesk/latin-700.css';
+/* Polices auto-hébergées (Fontsource, SIL OFL 1.1), sous-ensemble latin seulement. */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('../node_modules/@fontsource/fraunces/files/fraunces-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('../node_modules/@fontsource/fraunces/files/fraunces-latin-700-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('../node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('../node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-700-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Recursive Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 1000;
+  src: url('../node_modules/@fontsource-variable/recursive/files/recursive-latin-mono-normal.woff2') format('woff2-variations');
+}
 
-/* Identité de la maquette validée. Contrastes vérifiés (tests/contrastes.test.ts). */
+/* Direction « hybride » (maquette D). Contrastes vérifiés dans les deux modes : tests/contrastes.test.ts.
+   Le texte secondaire ne se pose que sur --fond (7:1) ; --surface ne porte que du texte principal. */
 :root {
-  --fond: #f7f6f2;
-  --encre: #1b1f24;
-  --bleu: #1f4e8c;
-  --bleu-clair: #dbe5f2;
-  --orange: #e8893a;
-  --orange-texte: #8f4508;
-  --orange-clair: #fbe7d6;
-  --gris: #4a5058;
-  --trait: #c9c6bd;
-  --carte: #ffffff;
-  --erreur: #a1261b;
-  --ok: #1d6b3a;
-  --rayon: 10px;
-  --titre: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  --texte: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  color-scheme: light;
+  --fond: #ffffff;
+  --surface: #f4f6f2;
+  --texte: #1d2320;
+  --secondaire: #4f5a54;
+  --trait: #76817a;
+  --filet: #dfe4de;
+  --accent: #0b5a43;
+  --accent-survol: #08402f;
+  --sur-accent: #ffffff;
+  --surligneur: #e6f24a;
+  --taupe: #8c8577;
+  --cat-1: #0b5a43;
+  --cat-2: #2e9a72;
+  --cat-3: #a07400;
+  --cat-4: #7a4e8c;
+  --cat-5: #a8455d;
+  --cat-6: #3f6d8c;
+  --cat-7: #8c8577;
+  --cat-8: #4f8a6a;
+  --trace: #0b5a43;
+  --approche: #7a5c00;
+  --nonpub: #5f6a63;
+  --emprunt: #a07400;
+  --emprunt-texte: #6b5000;
+  --erreur: #7d2433;
+  --erreur-fond: #fbeef0;
+  --ok: #0b5a43;
+  --rayon: 6px;
+  --titre: 'Fraunces', Georgia, serif;
+  --texte-police: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --chiffres: 'Recursive Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fond: #121614;
+    --surface: #1b211e;
+    --texte: #eef2ec;
+    --secondaire: #a8b3ac;
+    --trait: #66736c;
+    --filet: #2c3430;
+    --accent: #6fd3a8;
+    --accent-survol: #9be3c3;
+    --sur-accent: #121614;
+    --taupe: #b8b0a2;
+    --cat-1: #6fd3a8;
+    --cat-2: #3fae84;
+    --cat-3: #e0c25a;
+    --cat-4: #c39bd3;
+    --cat-5: #e48aa0;
+    --cat-6: #83b3d6;
+    --cat-7: #b8b0a2;
+    --cat-8: #a8dcbf;
+    --trace: #6fd3a8;
+    --approche: #e0c25a;
+    --nonpub: #a8b3ac;
+    --emprunt: #e0c25a;
+    --emprunt-texte: #e0c25a;
+    --erreur: #f2a7b5;
+    --erreur-fond: #2a1a1e;
+    --ok: #6fd3a8;
+  }
 }
 
 *,
@@ -36,17 +116,19 @@ html {
 body {
   margin: 0;
   background: var(--fond);
-  color: var(--encre);
-  font-family: var(--texte);
-  font-size: 1rem;
+  color: var(--texte);
+  font-family: var(--texte-police);
+  font-size: 1.0625rem;
   line-height: 1.55;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 h1,
 h2,
 h3 {
   font-family: var(--titre);
-  line-height: 1.2;
+  font-weight: 700;
+  line-height: 1.15;
   margin: 1.4em 0 0.5em;
 }
 h1 {
@@ -54,22 +136,25 @@ h1 {
   margin-top: 0.6em;
 }
 h2 {
-  font-size: 1.3rem;
+  font-size: 1.32rem;
+  font-weight: 600;
 }
 h3 {
-  font-size: 1.08rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 a {
-  color: var(--bleu);
+  color: var(--accent);
   text-underline-offset: 2px;
 }
 a:hover {
+  color: var(--accent-survol);
   text-decoration-thickness: 2px;
 }
 
 :focus-visible {
-  outline: 3px solid var(--bleu);
+  outline: 3px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -77,8 +162,8 @@ a:hover {
   position: absolute;
   left: -9999px;
   top: 0;
-  background: var(--encre);
-  color: #fff;
+  background: var(--texte);
+  color: var(--fond);
   padding: 0.75rem 1rem;
   z-index: 10;
 }
@@ -95,8 +180,32 @@ a:hover {
   white-space: nowrap;
 }
 
+/* Chiffres : Recursive mono, tabulaires. */
+.chiffre,
+.grand-chiffre,
+.barre-tete .valeur,
+.lignes .montant,
+td.nombre,
+.recap-lignes {
+  font-family: var(--chiffres);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Un seul coup de surligneur par écran, en fond uniquement. */
+.surligne {
+  background: linear-gradient(100deg, transparent 1%, var(--surligneur) 4%, var(--surligneur) 96%, transparent 99%) 0 88% / 100% 42% no-repeat;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+@media (prefers-color-scheme: dark) {
+  .surligne {
+    background-position: 0 100%;
+    background-size: 100% 16%;
+  }
+}
+
 .entete {
-  border-bottom: 1px solid var(--trait);
+  border-bottom: 1px solid var(--filet);
   background: var(--fond);
   position: sticky;
   top: 0;
@@ -114,8 +223,8 @@ a:hover {
 .marque {
   font-family: var(--titre);
   font-weight: 700;
-  font-size: 1.15rem;
-  color: var(--encre);
+  font-size: 1.2rem;
+  color: var(--texte);
   text-decoration: none;
   min-height: 44px;
   display: inline-flex;
@@ -148,11 +257,14 @@ a:hover {
   padding: 0 0.75rem;
   border-radius: var(--rayon);
   text-decoration: none;
-  color: var(--encre);
+  color: var(--texte);
+}
+.navigation a:hover {
+  background: var(--surface);
 }
 .navigation a[aria-current='page'] {
-  background: var(--bleu);
-  color: #fff;
+  background: var(--accent);
+  color: var(--sur-accent);
 }
 
 @media (min-width: 60rem) {
@@ -167,7 +279,7 @@ a:hover {
     flex-wrap: wrap;
   }
   .navigation a {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
   }
 }
 
@@ -179,9 +291,9 @@ main {
 }
 
 .pied {
-  border-top: 1px solid var(--trait);
-  color: var(--gris);
-  font-size: 0.9rem;
+  border-top: 1px solid var(--filet);
+  color: var(--secondaire);
+  font-size: 0.92rem;
   max-width: 64rem;
   margin: 0 auto;
   padding: 1rem;
@@ -189,23 +301,19 @@ main {
 
 .chapeau {
   font-size: 1.08rem;
-  color: var(--gris);
+  color: var(--secondaire);
   max-width: 44rem;
 }
 
 .carte {
-  background: var(--carte);
-  border: 1px solid var(--trait);
+  background: var(--fond);
+  border: 1px solid var(--filet);
   border-radius: var(--rayon);
   padding: 1rem;
   margin: 1rem 0;
 }
 .carte > :first-child {
   margin-top: 0;
-}
-.carte-orange {
-  border-color: var(--orange);
-  background: var(--orange-clair);
 }
 
 .grand-chiffre {
@@ -216,48 +324,90 @@ main {
   margin: 0.2em 0;
 }
 .sous-chiffre {
-  color: var(--gris);
+  color: var(--secondaire);
 }
 
 .source {
-  font-size: 0.85rem;
-  color: var(--gris);
+  font-size: 0.88rem;
+  color: var(--secondaire);
   margin-top: 0.5rem;
 }
 .source::before {
   content: 'Source : ';
-  font-weight: 600;
+  font-weight: 700;
 }
 .source.sans-prefixe::before {
   content: '';
 }
 
 .avertissement {
-  border-left: 4px solid var(--orange);
-  background: var(--orange-clair);
+  border: 1px dashed var(--trait);
+  background: var(--fond);
   padding: 0.6rem 0.8rem;
-  border-radius: 0 var(--rayon) var(--rayon) 0;
+  border-radius: var(--rayon);
   margin: 0.75rem 0;
 }
 .erreur {
-  border-left: 4px solid var(--erreur);
-  background: #fbeceb;
+  border: 1px solid var(--erreur);
+  color: var(--erreur);
+  background: var(--erreur-fond);
   padding: 0.6rem 0.8rem;
   margin: 0.75rem 0;
-  border-radius: 0 var(--rayon) var(--rayon) 0;
+  border-radius: var(--rayon);
 }
 .absent {
-  color: var(--gris);
+  color: var(--secondaire);
   font-style: italic;
+}
+
+/* Récapitulatif « Ce que tu finances en un an » */
+.recap {
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+  padding: 1rem 1.1rem;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 34rem;
+}
+.recap-titre {
+  color: var(--secondaire);
+  font-size: 0.95rem;
+}
+.recap .grand-chiffre {
+  margin: 0;
+}
+.recap-lignes {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0 0;
+  border-top: 1px dashed var(--trait);
+}
+.recap-lignes li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px dotted var(--trait);
+}
+.recap-lignes li:last-child {
+  border-bottom: 0;
+}
+.recap-sur100 {
+  border-top: 1px dashed var(--trait);
+  padding-top: 0.5rem;
+  margin: 0;
 }
 
 /* Formulaire */
 fieldset {
-  border: 1px solid var(--trait);
+  border: 1px solid var(--filet);
   border-radius: var(--rayon);
   padding: 0.75rem 1rem 1rem;
   margin: 1rem 0;
-  background: var(--carte);
+  background: var(--fond);
 }
 legend {
   font-family: var(--titre);
@@ -266,7 +416,7 @@ legend {
 }
 label {
   display: block;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0.75rem 0 0.25rem;
 }
 .choix label,
@@ -282,7 +432,7 @@ input[type='radio'],
 input[type='checkbox'] {
   width: 1.4rem;
   height: 1.4rem;
-  accent-color: var(--bleu);
+  accent-color: var(--accent);
   flex: none;
 }
 input[type='number'],
@@ -292,10 +442,10 @@ select {
   font: inherit;
   min-height: 48px;
   padding: 0.4rem 0.7rem;
-  border: 1px solid #767b82;
-  border-radius: 8px;
-  background: #fff;
-  color: var(--encre);
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+  background: var(--fond);
+  color: var(--texte);
   width: 100%;
   max-width: 24rem;
 }
@@ -303,40 +453,55 @@ input[aria-invalid='true'] {
   border: 2px solid var(--erreur);
 }
 .aide {
-  font-size: 0.9rem;
-  color: var(--gris);
+  font-size: 0.92rem;
+  color: var(--secondaire);
   margin: 0.25rem 0;
 }
 .message-champ {
   color: var(--erreur);
-  font-weight: 600;
+  font-weight: 700;
   margin: 0.25rem 0;
 }
 
 button,
 .bouton {
   font: inherit;
-  font-weight: 600;
+  font-weight: 700;
   min-height: 48px;
   min-width: 44px;
   padding: 0.5rem 1.1rem;
   border-radius: var(--rayon);
-  border: 2px solid var(--bleu);
-  background: #fff;
-  color: var(--bleu);
+  border: 1px solid var(--accent);
+  background: var(--fond);
+  color: var(--accent);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
 }
-.bouton-principal {
-  background: var(--bleu);
-  color: #fff;
+button:hover,
+.bouton:hover {
+  border-color: var(--accent-survol);
+  color: var(--accent-survol);
 }
-button[aria-pressed='true'] {
-  background: var(--bleu);
-  color: #fff;
+.bouton-principal,
+.bouton-principal:hover {
+  background: var(--accent);
+  color: var(--sur-accent);
+}
+.bouton-principal:hover {
+  background: var(--accent-survol);
+}
+button[aria-pressed='true'],
+.bascule a[aria-current='true'] {
+  background: var(--accent);
+  color: var(--sur-accent);
+}
+button:disabled {
+  border-color: var(--trait);
+  color: var(--secondaire);
+  cursor: not-allowed;
 }
 .actions {
   display: flex;
@@ -359,11 +524,11 @@ summary {
   min-height: 44px;
   display: flex;
   align-items: center;
-  font-weight: 600;
-  color: var(--bleu);
+  font-weight: 700;
+  color: var(--accent);
 }
 
-/* Barres proportionnelles */
+/* Barres proportionnelles : la catégorie active en vert, le reste en taupe. */
 .barres {
   list-style: none;
   padding: 0;
@@ -371,6 +536,8 @@ summary {
 }
 .barres li {
   margin: 0.15rem 0 0.65rem;
+  border-bottom: 1px solid var(--filet);
+  padding-bottom: 0.4rem;
 }
 .barre-tete {
   display: flex;
@@ -380,7 +547,6 @@ summary {
 }
 .barre-tete .valeur {
   white-space: nowrap;
-  font-variant-numeric: tabular-nums;
   font-weight: 600;
 }
 .barre-tete a,
@@ -390,69 +556,103 @@ summary {
   align-items: center;
 }
 .barre {
-  height: 0.7rem;
-  background: var(--bleu-clair);
-  border-radius: 999px;
+  height: 0.5rem;
+  border-radius: 4px;
   overflow: hidden;
 }
 .barre-remplissage {
   display: block;
   height: 100%;
   width: 0;
-  background: var(--bleu);
-  border-radius: 999px;
+  background: var(--taupe);
+  border-radius: 4px;
 }
-.barre-remplissage.orange {
-  background: var(--orange);
-  box-shadow: inset 0 0 0 1px var(--encre);
+.barres li.actif .barre-remplissage {
+  background: var(--accent);
+}
+
+/* Statuts de traçabilité : triple codage motif + libellé + couleur. */
+.statut-trace,
+.barres li .barre-remplissage.statut-trace {
+  background: var(--trace);
+}
+.statut-approche,
+.barres li .barre-remplissage.statut-approche {
+  background: repeating-linear-gradient(90deg, var(--approche) 0 8px, transparent 8px 13px);
+  border: 1px solid var(--approche);
+}
+.statut-nonpub,
+.barres li .barre-remplissage.statut-nonpub {
+  background: radial-gradient(circle, var(--nonpub) 1.6px, transparent 1.8px) 0 50% / 6px 100% repeat-x;
+  border: 1px solid var(--nonpub);
+}
+.trait-statut {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+.trait-statut line {
+  stroke-width: 4;
+}
+.trait-statut .ligne-trace {
+  stroke: var(--trace);
+}
+.trait-statut .ligne-approche {
+  stroke: var(--approche);
+  stroke-dasharray: 8 5;
+}
+.trait-statut .ligne-nonpub {
+  stroke: var(--nonpub);
+  stroke-width: 3;
+  stroke-dasharray: 2 4;
+  stroke-linecap: round;
+}
+.legende-statuts {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+.legende-statuts li {
+  display: flex;
+  align-items: center;
+  min-height: 1.8rem;
 }
 
 /* Barre empilée « sur 100 € » */
 .empile {
   display: flex;
-  height: 2.6rem;
-  border-radius: 8px;
+  height: 1rem;
+  border-radius: var(--rayon);
   overflow: hidden;
-  border: 1px solid var(--encre);
   margin: 0.75rem 0 0.25rem;
+  gap: 1px;
+  background: var(--fond);
 }
 .empile span {
   display: block;
   height: 100%;
-  border-right: 1px solid var(--fond);
 }
-.empile span:last-child {
-  border-right: 0;
+.recettes-seg {
+  background: var(--accent);
 }
-.emprunt-regle {
-  position: relative;
-  height: 1.2rem;
+.emprunt-seg {
+  background: var(--emprunt);
 }
-.emprunt-regle span {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  background: repeating-linear-gradient(135deg, var(--orange) 0 6px, #f3b98a 6px 12px);
-  border: 1px solid var(--encre);
-  border-radius: 4px;
+.texte-emprunt {
+  color: var(--emprunt-texte);
 }
-.legende-orange {
-  color: var(--orange-texte);
-  font-weight: 600;
+.texte-accent {
+  color: var(--accent);
 }
 
-.c0 { background: #1f4e8c; }
-.c1 { background: #3f6fb0; }
-.c2 { background: #6b93c9; }
-.c3 { background: #9db7dc; }
-.c4 { background: #2f6b5e; }
-.c5 { background: #5c9384; }
-.c6 { background: #8db8aa; }
-.c7 { background: #5b4b8a; }
-.c8 { background: #8a7bb8; }
-.c9 { background: #4a5058; }
-.c10 { background: #7f858c; }
-.c11 { background: #b4b8bd; }
+.c0 { background: var(--cat-1); }
+.c1 { background: var(--cat-2); }
+.c2 { background: var(--cat-3); }
+.c3 { background: var(--cat-4); }
+.c4 { background: var(--cat-5); }
+.c5 { background: var(--cat-6); }
+.c6 { background: var(--cat-7); }
+.c7 { background: var(--cat-8); }
 
 .pastille {
   display: inline-block;
@@ -461,7 +661,6 @@ summary {
   border-radius: 3px;
   vertical-align: -0.1rem;
   margin-right: 0.4rem;
-  border: 1px solid var(--encre);
 }
 
 /* Tableaux */
@@ -473,24 +672,23 @@ summary {
 table {
   border-collapse: collapse;
   width: 100%;
-  font-variant-numeric: tabular-nums;
-  background: var(--carte);
+  background: var(--fond);
 }
 caption {
   text-align: left;
-  font-weight: 600;
+  font-weight: 700;
   padding: 0.4rem 0;
 }
 th,
 td {
   text-align: left;
   padding: 0.5rem 0.6rem;
-  border-bottom: 1px solid var(--trait);
+  border-bottom: 1px solid var(--filet);
   vertical-align: top;
 }
 th {
-  font-weight: 600;
-  background: #efede6;
+  font-weight: 700;
+  background: var(--surface);
 }
 td.nombre,
 th.nombre {
@@ -509,25 +707,24 @@ th.nombre {
   grid-template-columns: 1fr auto;
   gap: 0.15rem 0.75rem;
   padding: 0.6rem 0;
-  border-bottom: 1px solid var(--trait);
+  border-bottom: 1px solid var(--filet);
 }
 .lignes .montant {
   font-weight: 600;
   text-align: right;
   white-space: nowrap;
-  font-variant-numeric: tabular-nums;
 }
 .lignes .dest {
   grid-column: 1 / -1;
-  font-size: 0.88rem;
-  color: var(--gris);
+  font-size: 0.9rem;
+  color: var(--secondaire);
 }
 .badge {
   display: inline-block;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 0.05rem 0.45rem;
-  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0 0.45rem;
+  border-radius: var(--rayon);
   border: 1px solid currentColor;
   margin-left: 0.3rem;
 }
@@ -542,12 +739,12 @@ th.nombre {
   display: flex;
   flex-wrap: wrap;
   gap: 0.1rem 0.4rem;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
 }
 .fil-ariane li + li::before {
   content: '›';
   margin-right: 0.4rem;
-  color: var(--gris);
+  color: var(--secondaire);
 }
 .fil-ariane a {
   display: inline-flex;
@@ -570,20 +767,20 @@ th.nombre {
     grid-template-columns: 1fr 1fr;
   }
   h1 {
-    font-size: 2.1rem;
+    font-size: 2.15rem;
   }
 }
 
 .tendance-progres {
   color: var(--ok);
-  font-weight: 600;
+  font-weight: 700;
 }
 .tendance-recul {
   color: var(--erreur);
-  font-weight: 600;
+  font-weight: 700;
 }
 .chargement {
-  color: var(--gris);
+  color: var(--secondaire);
 }
 .pagination {
   display: flex;
@@ -592,12 +789,16 @@ th.nombre {
   flex-wrap: wrap;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .barre-remplissage {
-    transition: width 0.4s ease;
-  }
+/* Valeur finale affichée tout de suite ; transitions courtes, coupées si l'utilisateur le demande. */
+.barre-remplissage {
+  transition: width 0.3s ease-out;
 }
-.bascule a[aria-current='true'] {
-  background: var(--bleu);
-  color: #fff;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
 }

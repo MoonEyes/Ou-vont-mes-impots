@@ -13,8 +13,9 @@
     "verifier-bundle": "vitest run tests/bundle.test.ts"
   },
   "dependencies": {
-    "@fontsource/inter": "5.3.0",
-    "@fontsource/space-grotesk": "5.3.0",
+    "@fontsource-variable/recursive": "5.3.0",
+    "@fontsource/atkinson-hyperlegible-next": "5.3.0",
+    "@fontsource/fraunces": "5.3.0",
     "echarts": "6.1.0",
     "modele-social": "11.1.0",
     "publicodes": "1.10.4"

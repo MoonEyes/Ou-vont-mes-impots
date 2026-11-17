@@ -3,7 +3,7 @@ import { afficher, type Route } from './routeur'
 
 export const ROUTES: Route[] = [
   { chemin: '/', titre: 'Ton salaire', charger: () => import('./ecrans/saisie') },
-  { chemin: '/paie', titre: 'Ce que tu paies', charger: () => import('./ecrans/paie') },
+  { chemin: '/paie', titre: 'Ce que tu finances', charger: () => import('./ecrans/paie') },
   { chemin: '/etat', titre: 'Sur 100 € dépensés par l’État', charger: () => import('./ecrans/etat') },
   { chemin: '/detail', titre: 'Le détail du budget de l’État', charger: () => import('./ecrans/detail') },
   { chemin: '/concret', titre: 'Concrètement', charger: () => import('./ecrans/concret') },

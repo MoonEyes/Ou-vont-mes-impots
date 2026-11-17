@@ -137,7 +137,7 @@ ${adm ? `<li>Administrations publiques ${h(adm.annee)} : la somme des administra
 <ul>
 <li>Données : Licence Ouverte 2.0 (Etalab) ; Eurostat : réutilisation libre avec mention de la source.</li>
 <li>Code du site : MIT. <a href="${DEPOT}" rel="noopener noreferrer">Dépôt public</a>.</li>
-<li>Bibliothèques : modele-social ${h(__VERSION_MODELE_SOCIAL__)} (MIT), publicodes ${h(__VERSION_PUBLICODES__)} (MIT), Apache ECharts ${h(__VERSION_ECHARTS__)} (Apache-2.0), polices Inter et Space Grotesk (SIL Open Font License 1.1), hébergées avec le site.</li>
+<li>Bibliothèques : modele-social ${h(__VERSION_MODELE_SOCIAL__)} (MIT), publicodes ${h(__VERSION_PUBLICODES__)} (MIT), Apache ECharts ${h(__VERSION_ECHARTS__)} (Apache-2.0), polices Fraunces, Atkinson Hyperlegible Next et Recursive (SIL Open Font License 1.1), hébergées avec le site.</li>
 </ul>
 <p class="aide">Contrat d’interface des données : version ${h(meta.version_contrat ?? '1.0')}. Administrations : ${['Etat', 'Securite sociale', 'Collectivites locales'].map(libelle).join(', ')}.</p>`
 }

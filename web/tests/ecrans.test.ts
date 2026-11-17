@@ -51,14 +51,15 @@ describe('écrans', () => {
     expect(main.querySelector('#retour a')?.getAttribute('href')).toBe('./#/etat')
   })
 
-  it('1 puis 2. calcul complet puis « Ce que tu paies »', async () => {
+  it('1 puis 2. calcul complet puis « Ce que tu finances »', async () => {
     await ecran('#/')
     ;(main.querySelector('#p1-net') as HTMLInputElement).value = '2100'
     main.querySelector<HTMLFormElement>('#formulaire')!.dispatchEvent(new Event('submit', { cancelable: true }))
     await attendreQue(() => session.resultat !== null, 60000)
     expect(location.hash).toBe('#/paie')
     await ecran('#/paie')
-    expect(texte()).toContain('Chaque année, ton foyer paie')
+    expect(texte()).toContain('Ce que tu finances en un an')
+    expect(texte()).toMatch(/Sur 100 € : \d+ € Sécurité sociale/)
     expect(texte()).toContain('1 004 €') // impôt C04 (OpenFisca : 1 004 €)
     expect(texte()).toContain('CADES')
     expect(texte()).toContain('Agirc-Arrco')
@@ -95,23 +96,26 @@ describe('écrans', () => {
     await ecran('#/paie')
     expect(texte()).toContain('5e décile')
     expect(texte()).toContain('dans tes charges')
-    expect(texte()).toContain(`Valeur centrale : ${eurFr(c.total.central)}`)
-    expect(texte()).toContain(`entre ${eurFr(c.total.bas)} et ${eurFr(c.total.haut)}`)
+    expect(main.querySelector('.recap .surligne')?.textContent?.replace(/\s+/g, ' ')).toBe(eurFr(c.total.central))
+    expect(texte()).toContain(`Fourchette : ${eurFr(c.total.bas)} à ${eurFr(c.total.haut)}`)
+    // Sur 100 € : la somme des parts affichées fait 100.
+    const parts = [...(main.querySelector('.recap-sur100')?.textContent ?? '').matchAll(/(\d+) €/g)].map((m) => Number(m[1]))
+    expect(parts.slice(1).reduce((a, b) => a + b, 0)).toBe(100)
     writeFileSync(join(process.cwd(), 'ecarts_cas_types.json').replace('ecarts_cas_types', 'affichage_lyon'), JSON.stringify(c.total))
   }, 90000)
 
   it('3. sur 100 € : grands postes, part empruntée, choix du millésime', async () => {
     await ecran('#/etat')
-    expect(texte()).toContain('30,5 € empruntés')
+    expect(texte()).toContain('30,5 € ont été empruntés')
     expect(main.querySelectorAll('.barres li').length).toBe(12)
     const somme = Array.from(main.querySelector('.empile')!.querySelectorAll<HTMLElement>('span')).reduce((s, x) => s + Number(x.dataset.l), 0)
     expect(somme).toBeGreaterThan(99.9)
     expect(somme).toBeLessThan(100.1)
     expect(texte()).toContain('sur ce que tu verses à l’État')
-    expect(texte()).toContain('Et ce que tu paies ?')
+    expect(texte()).toContain('Et ce que tu finances ?')
     expect(texte()).toContain('Traçabilité de ce bloc')
     await ecran('#/etat?m=lfi2025')
-    expect(texte()).toContain('27,4 € empruntés')
+    expect(texte()).toContain('27,4 € ont été empruntés')
   })
 
   it('4. détail : fil d’Ariane, barres, sous-arbre chargé à la demande', async () => {
@@ -188,6 +192,23 @@ describe('écrans', () => {
       const fautifs = Array.from(main.querySelectorAll('[style]')).filter((el) => !el.hasAttribute('data-l') && !el.hasAttribute('data-g'))
       expect(fautifs.length, f).toBe(0)
       expect(main.textContent, f).not.toContain('\u2014')
+    }
+  })
+
+  it('règles 1, 5 et surligneur : chiffre clé en euros et sur 100 €, un seul surligneur, titres sans adjectif évaluatif', async () => {
+    const INTERDITS = /\b(gaspillage|seulement|énorme|opaque|scandale|trop)\b/i
+    for (const f of ['#/', '#/paie', '#/etat', '#/etat?m=lfi2025', '#/detail', '#/detail?m=execution2024&id=Education%20et%20recherche%2FEnseignement%20scolaire%2F141', '#/concret?p=141', '#/beneficiaires?p=141', '#/beneficiaires?onglet=marches', '#/beneficiaires?onglet=france2030', '#/realisations?p=141', '#/vie-politique?a=2024', '#/vie-politique?a=2021', '#/recettes', '#/methode', '#/mentions']) {
+      await ecran(f)
+      const surlignes = main.querySelectorAll('.surligne')
+      expect(surlignes.length, f).toBeLessThanOrEqual(1)
+      for (const el of Array.from(surlignes)) {
+        expect(el.textContent, f).toMatch(/€/)
+        const cle = el.closest('[data-cle]')
+        expect(cle, `${f} : chiffre clé sans conteneur data-cle`).not.toBeNull()
+        expect(cle!.textContent, f).toMatch(/sur 100 €/i)
+      }
+      for (const t of Array.from(main.querySelectorAll('h1, h2, h3'))) expect(t.textContent ?? '', f).not.toMatch(INTERDITS)
+      expect(document.title).not.toMatch(INTERDITS)
     }
   })
 

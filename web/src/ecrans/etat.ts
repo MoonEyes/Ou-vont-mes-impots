@@ -1,10 +1,11 @@
 // Écran 3 : où va l'argent de l'État « sur 100 € », avec la part empruntée.
 import { blocTracabilite } from '../composants/tracabilite'
 import { charger, chargerSiPresent, type Noeud, VUES_ARBRE, vueArbre } from '../donnees'
-import { destinataire, LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
+import { LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
+import { parAdministration, sur100Entiers } from '../calcul/repartition'
 import { session } from '../etat'
 import { lien } from '../routeur'
-import { absent, eur, h, libelle, md, pct, source, sur100 } from '../util'
+import { absent, barres, eur, h, libelle, md, pct, source, sur100, surligne } from '../util'
 
 interface Deficit {
   etat: { lecture: string; perimetre: string; comptabilite: string; annees: Record<string, { part_empruntee: number; solde_budgetaire_md: number }> }
@@ -25,17 +26,10 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const derniere = annees[annees.length - 1]
   const apu = derniere ? deficit!.administrations_publiques.annees[derniere] : null
 
-  // Ce que tu paies (écran 2), réparti par administration selon les destinataires de chaque prélèvement.
+  // Ce que tu finances (écran 2), réparti par administration selon les destinataires de chaque prélèvement.
   const lignes = session.complet?.lignes ?? session.resultat?.prelevements.filter((l) => l.inclus_dans_total_paye) ?? []
-  const parAdmin: Record<string, number> = {}
-  for (const l of lignes) {
-    if (l.non_chiffre) continue
-    const parts = l.ventilation?.length ? l.ventilation : [{ destinataire: l.destinataire.id, part: 1 }]
-    for (const v of parts) {
-      const a = v.destinataire === l.destinataire.id ? l.destinataire.administration : destinataire(v.destinataire).administration
-      parAdmin[a] = (parAdmin[a] ?? 0) + l.montant_annuel_eur.central * v.part
-    }
-  }
+  const parAdmin = parAdministration(lignes)
+  const s100Admin = sur100Entiers(parAdmin)
   const totalPaye = session.complet?.total.central ?? Object.values(parAdmin).reduce((a, b) => a + b, 0)
   const ir = parAdmin.Etat ?? 0
 
@@ -45,33 +39,36 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 <div class="bascule" role="group" aria-label="Millésime">
   ${vues.map((x) => `<a class="bouton" href="${lien('/etat', { m: x.cle })}"${x === v ? ' aria-current="true"' : ''}>${h(x.libelle)}</a>`).join('')}
 </div>
+${
+  emprunt
+    ? `<div class="carte" data-cle>
+  <div class="empile" aria-hidden="true"><span class="recettes-seg" data-l="${(100 - emprunt.part_empruntee * 100).toFixed(2)}"></span><span class="emprunt-seg" data-l="${(emprunt.part_empruntee * 100).toFixed(2)}"></span></div>
+  <p>Sur 100 € dépensés par l’État (${h(md(total))} au total) : <strong class="texte-accent">${h(sur100(100 - emprunt.part_empruntee * 100))}</strong> venaient des recettes de l’année, <strong class="texte-emprunt">${surligne(sur100(emprunt.part_empruntee * 100))}</strong> ont été empruntés (${h(racine.millesime ?? v.millesime)}).</p>
+</div>`
+    : absent('Part empruntée non disponible pour ce millésime.')
+}
 <div class="carte">
-  <div class="empile" role="img" aria-label="Répartition des 100 € par grand poste, détaillée dans la liste ci-dessous">
-    ${postes.map((p, i) => `<span class="c${i % 12}" data-l="${((p.md / total) * 100).toFixed(3)}"></span>`).join('')}
-  </div>
-  ${
-    emprunt
-      ? `<div class="emprunt-regle" aria-hidden="true"><span data-g="${(100 - emprunt.part_empruntee * 100).toFixed(2)}" data-l="${(emprunt.part_empruntee * 100).toFixed(2)}"></span></div>
-  <p class="legende-orange">Dont ${h(sur100(emprunt.part_empruntee * 100))} empruntés : sur 100 € dépensés, environ ${h(sur100(emprunt.part_empruntee * 100))} ne sont pas couverts par les recettes de l’année (${h(racine.millesime ?? v.millesime)}).</p>`
-      : absent('Part empruntée non disponible pour ce millésime.')
-  }
-  <ul class="barres">
-    ${postes
-      .map(
-        (p, i) =>
-          `<li><div class="barre-tete"><a href="${lien('/detail', { m: v.cle, id: p.id })}"><span class="pastille c${i % 12}" aria-hidden="true"></span>${h(libelle(p.nom))}</a><span class="valeur">${h(sur100((p.md / total) * 100))}</span></div><div class="aide">${h(md(p.md))}${
-            ir > 0 ? ` · sur ce que tu verses à l’État : ${h(eur((ir * p.md) / total))} par an` : ''
-          }</div></li>`,
-      )
-      .join('')}
-  </ul>
+  ${barres(
+    postes.map((p) => ({
+      nom: libelle(p.nom),
+      valeur: p.md,
+      texte: sur100((p.md / total) * 100),
+      lien: lien('/detail', { m: v.cle, id: p.id }),
+      detail: `${md(p.md)}${ir > 0 ? ` · sur ce que tu verses à l’État : ${eur((ir * p.md) / total)} par an` : ''}`,
+    })),
+    undefined,
+    'Grands postes, en euros sur 100 €',
+  )}
   ${source(racine.source ?? '', racine.millesime)}
 </div>
 ${
   ir > 0
-    ? `<div class="carte"><h2>Et ce que tu paies ?</h2><p>Sur les ${h(eur(totalPaye))} que ton foyer paie chaque année (écran 2, valeur centrale), environ :</p><ul>${Object.entries(parAdmin)
+    ? `<div class="carte"><h2>Et ce que tu finances ?</h2><p>Sur les ${h(eur(totalPaye))} que ton foyer verse chaque année (écran 2, valeur centrale), environ :</p><ul>${Object.entries(parAdmin)
         .sort((a, b) => b[1] - a[1])
-        .map(([a, v]) => `<li>${h(eur(v))} vont ${a === 'Plusieurs' ? 'à plusieurs administrations (répartition non sourcée)' : `à : ${h(LIBELLE_ADMINISTRATION[a as 'Etat'])}`}</li>`)
+        .map(
+          ([a, v]) =>
+            `<li>${h(eur(v))}, soit ${s100Admin[a] ?? 0} € sur 100 €, ${a === 'Plusieurs' ? 'sans destinataire publié' : `pour : ${h(LIBELLE_ADMINISTRATION[a as 'Etat'])}`}</li>`,
+        )
         .join('')}</ul><p class="aide">La part qui va à l’État (${h(eur(ir))}) n’est pas fléchée vers un poste : la liste ci-dessus l’applique au prorata du budget de l’État, pour donner un ordre de grandeur. Le reste finance la Sécurité sociale et les collectivités.</p></div>`
     : ''
 }

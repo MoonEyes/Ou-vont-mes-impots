@@ -1,7 +1,7 @@
 // Sankey sur deux niveaux (ECharts, Apache-2.0), chargé à la demande et seulement sur écran large.
 // L'alternative textuelle est la liste dépliable rendue à côté par l'écran.
 import type { Noeud } from '../donnees'
-import { libelle, md } from '../util'
+import { libelle, md, sur100 } from '../util'
 
 export const ECRAN_LARGE = '(min-width: 56rem)'
 
@@ -46,21 +46,33 @@ function echarts() {
   return echartsPromesse
 }
 
-/** Dessine le Sankey dans conteneur ; renvoie une fonction de nettoyage. */
-export async function dessinerSankey(conteneur: HTMLElement, n: Noeud): Promise<() => void> {
+/** Couleurs lues dans les variables CSS (thème clair ou sombre), aucune couleur en dur. */
+export function couleursTheme(racine: Element = document.documentElement) {
+  const st = getComputedStyle(racine)
+  const v = (n: string) => st.getPropertyValue(n).trim()
+  return { texte: v('--texte'), secondaire: v('--secondaire'), accent: v('--accent'), taupe: v('--taupe'), fond: v('--fond'), filet: v('--filet'), police: v('--texte-police') }
+}
+
+/** Dessine le Sankey dans conteneur ; renvoie une fonction de nettoyage. totalMd sert au « sur 100 € ». */
+export async function dessinerSankey(conteneur: HTMLElement, n: Noeud, totalMd?: number): Promise<() => void> {
   const ec = await echarts()
+  const c = couleursTheme()
   const graphe = ec.init(conteneur, undefined, { renderer: 'canvas' })
   const { nodes, links } = donneesSankey(n)
+  const s100 = (x: number) => (totalMd ? `, soit ${sur100((x / totalMd) * 100)} sur 100 €` : '')
   graphe.setOption({
     animation: false,
-    textStyle: { fontFamily: 'Inter, system-ui, sans-serif', color: '#1B1F24' },
+    textStyle: { fontFamily: c.police, color: c.texte },
     tooltip: {
       trigger: 'item',
+      backgroundColor: c.fond,
+      borderColor: c.secondaire,
+      textStyle: { color: c.texte, fontFamily: c.police },
       // Texte brut, sans style en ligne (CSP).
       formatter: (p: { dataType?: string; data: { source?: string; target?: string; value?: number; name?: string }; value?: number }) =>
         p.dataType === 'edge'
-          ? `${p.data.source} vers ${p.data.target} : ${md(p.data.value ?? 0)}`
-          : `${p.data.name} : ${md(Number(p.value ?? 0))}`,
+          ? `${p.data.source} vers ${p.data.target} : ${md(p.data.value ?? 0)}${s100(p.data.value ?? 0)}`
+          : `${p.data.name} : ${md(Number(p.value ?? 0))}${s100(Number(p.value ?? 0))}`,
     },
     series: [
       {
@@ -70,14 +82,15 @@ export async function dessinerSankey(conteneur: HTMLElement, n: Noeud): Promise<
         nodeAlign: 'left',
         nodeGap: 6,
         layoutIterations: 0,
-        emphasis: { focus: 'adjacency' },
-        lineStyle: { color: 'source', opacity: 0.35 },
-        itemStyle: { color: '#1F4E8C', borderColor: '#1B1F24', borderWidth: 0.5 },
-        label: { color: '#1B1F24', fontSize: 12, overflow: 'truncate', width: 220 },
+        // Rubans gris ; le flux survolé ou sélectionné passe en vert accent.
+        emphasis: { focus: 'adjacency', lineStyle: { color: c.accent, opacity: 0.75 } },
+        lineStyle: { color: c.taupe, opacity: 0.35 },
+        itemStyle: { color: c.taupe, borderWidth: 0 },
+        label: { color: c.texte, fontSize: 13, overflow: 'truncate', width: 220 },
         levels: [
-          { depth: 0, itemStyle: { color: '#1F4E8C' } },
-          { depth: 1, itemStyle: { color: '#3F6FB0' } },
-          { depth: 2, itemStyle: { color: '#6B93C9' } },
+          { depth: 0, itemStyle: { color: c.accent } },
+          { depth: 1, itemStyle: { color: c.taupe } },
+          { depth: 2, itemStyle: { color: c.taupe } },
         ],
       },
     ],

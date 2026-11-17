@@ -2,7 +2,7 @@
 import { brancherFiltre, choixProgramme } from '../composants/choix-programme'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
-import { absent, barres, eurLisible, h, pct, source } from '../util'
+import { absent, barres, eurLisible, h, pct, source, sur100, surligne } from '../util'
 
 interface Annee {
   annee: number
@@ -10,6 +10,7 @@ interface Annee {
   vote_lfi_eur: number | null
   depense_constatee_eur: number | null
   ecart_pct: number | null
+  eur_sur_100?: number
   trou?: string
 }
 interface Valeur {
@@ -117,10 +118,12 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
           }</td><td class="nombre">${a.ecart_pct !== null ? h((a.ecart_pct > 0 ? '+' : '') + pct(a.ecart_pct, 2)) : ''}</td></tr>`,
     )
     .join('')}</tbody></table></div>`
+  const cle = annees.find((a) => typeof a.eur_sur_100 === 'number' && a.depense_constatee_eur !== null)
   const depenses = barres(
     annees.filter((a) => a.depense_constatee_eur !== null).map((a) => ({ nom: String(a.annee), valeur: a.depense_constatee_eur!, texte: eurLisible(a.depense_constatee_eur!) })),
     max,
     'Dépense constatée par année',
+    -1,
   )
   const inds = r.resultats_mesures.indicateurs
   const tri = [...inds].sort((a, b) => Number(!!a.indicateur_de_contexte) - Number(!!b.indicateur_de_contexte))
@@ -131,6 +134,11 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 <p class="chapeau">Programme ${h(r.programme)} · mission ${h(r.mission)}. Ce qui était prévu, ce qui a été dépensé, et ce que disent les indicateurs.</p>
 <p><a href="${lien('/realisations')}">Choisir un autre programme</a></p>
 <h2>Prévu et dépensé</h2>
+${
+  cle
+    ? `<p class="carte" data-cle>Dépensé en ${cle.annee} : <strong>${surligne(eurLisible(cle.depense_constatee_eur!))}</strong>, soit ${h(sur100(cle.eur_sur_100!))} sur 100 € du budget de l’État.</p>`
+    : ''
+}
 <div class="carte">${depenses}${tableau}<p class="aide">${h(r.prevu_depense.lecture)} ${h(r.prevu_depense.note_perimetre)}</p>${source('voir chaque année', r.millesime)}</div>
 <h2>Résultats mesurés</h2>
 <p class="avertissement">${h(r.avertissement)}</p>
