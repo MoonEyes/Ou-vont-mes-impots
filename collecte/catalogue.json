@@ -3643,7 +3643,60 @@
   "titre": "API Decoupage administratif (geo.api.gouv.fr), liste des departements (nom -> code)",
   "licence": "Licence Ouverte 2.0",
   "module": "pipeline/associations.py"
- }
+ },
+  {
+   "id": "formation_cpf_engagees",
+   "domaine": "formation",
+   "type": "ods_export",
+   "portail": "cdc",
+   "dataset": "moncompteformation_formations_engagees",
+   "titre": "Moncompteformation, les formations engagees (CPF), 2,2 millions de lignes (Caisse des depots, DGEFP)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": true,
+   "lu_par": "pipeline/formation.py : agregats calcules par le portail (group_by), jamais le fichier entier"
+  },
+  {
+   "id": "formation_cpf_entrees_sorties",
+   "domaine": "formation",
+   "type": "ods_export",
+   "portail": "cdc",
+   "dataset": "entree_sortie_formation",
+   "titre": "Moncompteformation, entrees et sorties de formation par organisme (SIRET) ; la raison sociale saisie peut etre le nom d'un entrepreneur individuel",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": true,
+   "personnes_physiques": true,
+   "lu_par": "pipeline/formation.py : agregats calcules par le portail (group_by), jamais le fichier entier ni la raison sociale"
+  },
+  {
+   "id": "formation_cpf_usagers",
+   "domaine": "formation",
+   "type": "ods_export",
+   "portail": "cdc",
+   "dataset": "moncompteformation-les-usagers",
+   "titre": "Moncompteformation, les usagers : region, age, sexe, situation (agregats publies)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/formation.py"
+  },
+  {
+   "id": "formation_fiphfp_aides",
+   "domaine": "formation",
+   "type": "ods_export",
+   "portail": "cdc",
+   "dataset": "fiphfp_financement_aidesplateforme_dpt",
+   "titre": "FIPHFP, aides financieres attribuees aux employeurs publics par departement",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/formation.py"
+  },
+  {
+   "id": "formation_fiphfp_conventions",
+   "domaine": "formation",
+   "type": "ods_export",
+   "portail": "cdc",
+   "dataset": "fiphfp_financement_conv_employeur_reg",
+   "titre": "FIPHFP, masses attribuees par conventions aux employeurs publics par region",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/formation.py"
+  }
  ],
  "non_collectables": [
   {
@@ -3709,6 +3762,14 @@
   {
    "source": "Agence des participations de l'Etat (site de l'agence : rapports d'activite, portefeuille)",
    "motif": "refus d'acces HTTP 403 (constate le 17/11/2026), non contourne ; le compte, ses recettes et ses depenses sont lus dans les jeux budgetaires et les documents parlementaires (pipeline/etat_actionnaire.py)"
+  },
+  {
+   "source": "Caisse des depots, Moncompteelu, les formations realisees par les elus (moncompteelu-formations-elus)",
+   "motif": "le jeu nomme chaque elu (nom, prenom, lieu de mandat) : jamais collecte en entier, meme en zone restreinte ; pipeline/formation.py ne demande au portail que des agregats sans ces colonnes (organisme, type de mandat)"
+  },
+  {
+   "source": "DARES (data.dares.travail-emploi.gouv.fr), series sur le compte personnel de formation",
+   "motif": "protection contre les robots signalee : non collecte, non contourne (pipeline/formation.py)"
   }
  ]
 }

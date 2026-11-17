@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/formation_fiphfp.schema.json",
+  "title": "site/data/formation/fiphfp.json : FIPHFP, aides aux employeurs publics par département et conventions par région, par versant de la fonction publique",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "pattern": "Caisse des dépôts"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "versants": {
+      "type": "object",
+      "required": [
+        "fpe",
+        "fph",
+        "fpt"
+      ]
+    },
+    "aides": {
+      "type": "object",
+      "required": [
+        "colonnes",
+        "annees",
+        "departements",
+        "noms_departements",
+        "totaux",
+        "note",
+        "lignes_sans_annee_ni_montant"
+      ],
+      "properties": {
+        "colonnes": {
+          "const": [
+            "fpe",
+            "fph",
+            "fpt",
+            "employeurs_nationaux"
+          ]
+        },
+        "departements": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^20[0-9]{2}$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "totaux": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^20[0-9]{2}$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "total"
+            ],
+            "additionalProperties": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "conventions": {
+      "type": "object",
+      "required": [
+        "colonnes",
+        "annees",
+        "regions",
+        "noms_regions",
+        "totaux"
+      ],
+      "properties": {
+        "colonnes": {
+          "const": [
+            "fpe",
+            "fph",
+            "fpt"
+          ]
+        },
+        "regions": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^20[0-9]{2}$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "totaux": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^20[0-9]{2}$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "total"
+            ],
+            "additionalProperties": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "collecte_le",
+    "avertissement",
+    "versants",
+    "aides",
+    "conventions"
+  ]
+}

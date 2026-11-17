@@ -795,6 +795,46 @@ site/data/arbre : mission « Aide publique au développement » ┘
 
 **Absences et ordre.** `null` = valeur absente à la source, jamais 0. Lignes par année puis par ordre alphabétique (`ordre.regle`), aucun classement par montant. Pays : codes à trois lettres communs à `apd_declaree`, `afd` et `ocde` (Kosovo : `XKX` pour la DG Trésor et l'AFD, `XKV` pour l'OCDE) ; Expertise France et Proparco gardent les noms de leur source.
 
+### 2.32 Formation professionnelle : `formation/` (pipeline/formation.py)
+
+Compte personnel de formation (CPF), droit individuel à la formation des élus locaux et FIPHFP : ce que la Caisse des dépôts publie sur les dispositifs qu'elle gère (opendata.caissedesdepots.fr, Licence Ouverte 2.0). Agrégats seulement. Commandes : `python pipeline/formation.py collecter` (réseau ; le portail coupe souvent, reprises espacées ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/formation.py produire` (sans réseau). Tests : `pytest tests/test_formation.py`.
+
+```
+opendata.caissedesdepots.fr (API Explore v2.1, agrégats `group_by` calculés par le portail : le jeu des formations
+engagées, 2,2 millions de lignes, n'est jamais exporté en entier) ─> data/lake/formation/*.csv
+France compétences, rapport sur l'usage des fonds (PDF) ; Insee, répertoire Sirene (catégorie juridique)
+     └─> pipeline/formation.py ─> site/data/formation/index.json, cpf_mois.json, cpf_departements.json,
+                                    cpf_certifications.json, cpf_organismes.json, cpf_usagers.json, elus.json, fiphfp.json
+                                    └─ liens (fichier + id) vers operateurs/operateurs.json (France compétences) et arbre/ (programme 103)
+```
+
+| Fichier | Schéma | Contenu | Unité | Millésime |
+|---|---|---|---|---|
+| `formation/index.json` | `formation_index.schema.json` | CPF par année : dossiers, montant engagé, part de chaque financeur, statuts ; résumés élus et FIPHFP ; liens, écarts entre sources, sources, recherche préalable | €, dossiers | 2020 à 2026 |
+| `formation/cpf_mois.json` | `formation_cpf_mois.schema.json` | CPF par mois de validation, par financeur et par statut | €, dossiers | 2020 à 2026 |
+| `formation/cpf_departements.json` | `formation_cpf_departements.schema.json` | CPF par année et département du lieu de formation ; par modalité (présentiel, à distance, mixte) | €, dossiers | 2020 à 2026 |
+| `formation/cpf_certifications.json` | `formation_cpf_certifications.schema.json` | CPF par certification (400 premières par montant cumulé, reste additionné) et par référentiel | €, dossiers | 2020 à 2026 |
+| `formation/cpf_organismes.json` | `formation_cpf_organismes.schema.json` | entrées et sorties de formation par organisme (SIREN), montant approché | stagiaires, € approchés | 2022 à 2026 |
+| `formation/cpf_usagers.json` | `formation_cpf_usagers.schema.json` | dossiers entrés en formation par région de domicile, sexe, âge, situation | dossiers, € | 2020 à 2026 |
+| `formation/elus.json` | `formation_elus.schema.json` | formation des élus locaux par type de mandat, dispositif et organisme | dossiers, €, heures | 2022 à 2026 |
+| `formation/fiphfp.json` | `formation_fiphfp.schema.json` | FIPHFP : aides aux employeurs publics par département, conventions par région, par versant | € courants | aides 2008 à 2025, conventions 2010 à 2025 |
+
+| Champ | Sens |
+|---|---|
+| `montant_eur`, `dossiers` (CPF) | dossiers validés non annulés (`retenus` : `realise`, `realise_partiellement`, `en_cours`) ; montant engagé = somme des prix des formations, pas un montant payé ; les dossiers annulés ou rejetés sont publiés dans `par_statut.annule` |
+| `financeurs_eur`, `financeurs_pct` | `france_competences` (droits CPF mobilisés, nets des dotations des entreprises), `titulaire` (reste à charge), `etat`, `france_travail`, `regions`, `opco`, `entreprises`, `cec` ; `dossiers_cofinances` : dossiers où l'abondement est positif |
+| `complete` | faux pour l'année en cours (moins de douze mois, dossiers encore annulables) |
+| départements | `colonnes` = dossiers, montant, part France compétences, part titulaire, autres financeurs, dossiers annulés, montant annulé ; `lieu_non_communique` : dossiers sans lieu (dont formations à distance), rattachés à aucun département |
+| certifications | `referentiel` (`RNCP`, `RS`, `Autre` = hors répertoires, identifié par l'intitulé) ; `annees.<a>` = dossiers, montant, part France compétences, prix moyen |
+| `organismes[]` (CPF) | `siren`, `nom` (dénomination Sirene), `categorie_juridique`, `etablissements`, `annees.<a>` = entrées, sorties totales, sorties partielles, `montant_approche_eur` ; `agreges` : personnes morales non listées, entrepreneurs individuels, absents du répertoire, non vérifiés |
+| `estimation` | `statut: "approché"`, producteur (le projet), périmètre, méthode (entrées x prix moyen de la certification la même année), limites ; `totaux.<a>.controle_estimation` compare la somme des estimations au montant engagé RNCP et RS |
+| `par_mandat.<a>.<dispositif>[]` (élus) | `mandats` (types de mandat contenus dans la cellule), `valeurs` = dossiers, montant engagé, droits de l'élu, heures |
+| `aides`, `conventions` (FIPHFP) | par année et département (ou région) : `fpe`, `fph`, `fpt` ; `employeurs_nationaux` ; `totaux.<a>.non_localise` ; les deux séries ne sont pas additionnées |
+| `liens[]` (index) | `vue` (`operateurs`, `arbre_etat`), `fichier`, `id`, `lecture` : même argent vu du côté du financeur (France compétences, programme 103), jamais additionné au CPF |
+| `ecarts[]` (index) | montant du jeu ouvert (`cdc_formations_engagees`) contre montant net publié par France compétences (`france_competences_ruf_2025`), `ecart`, `ecart_pct`, `lecture_ecart` ; `verification_documents` : valeurs citées retrouvées dans le PDF collecté |
+
+Règles propres. Personnes : un organisme n'est nommé que si `sirene.personne_morale(catégorie juridique)` est vrai, sous la dénomination du répertoire Sirene ; la raison sociale saisie sur la plateforme n'est pas téléchargée ; entrepreneurs individuels, SIREN absents du répertoire ou non vérifiés sont additionnés. Élus : le jeu d'origine nomme chaque élu, les colonnes nom, prénom, genre et lieu de mandat ne sont jamais demandées au portail (requêtes `group_by` seulement) ; une cellule de moins de 5 dossiers n'est jamais publiée seule (fondue avec d'autres types de mandat) ; un organisme est nommé à partir de 5 dossiers cumulés, sans détail par année. Absences : une valeur vide à la source reste `null` (FIPHFP), jamais 0. Ordres : certifications par montant cumulé décroissant, organismes par entrées cumulées décroissantes puis SIREN, règle écrite dans `ordre`. Sources non reprises : `sources_inaccessibles` (DARES, montant versé par organisme, années antérieures).
+
 ### 2.33 L'État actionnaire : `etat_actionnaire/` (pipeline/etat_actionnaire.py)
 
 Producteur : `pipeline/etat_actionnaire.py`. Sources déclarées dans `collecte/catalogue.json` (`etat_actionnaire_*`, domaine `etat_actionnaire`) et collectées par `python collecte/collecte.py etat_actionnaire_plf25_recettes_bg etat_actionnaire_plf24_recettes_bg etat_actionnaire_plf25_recettes_cas etat_actionnaire_plf24_recettes_cas etat_actionnaire_lfi23_recettes_cas etat_actionnaire_plf25_depenses_destination etat_actionnaire_plrg_annexes etat_actionnaire_documents` (réseau ; un refus 401/403 n'est jamais contourné : le site de l'Agence des participations de l'État, qui répond 403, est listé dans `sources_inaccessibles`) ; `python pipeline/etat_actionnaire.py collecter` (catégorie juridique des entités nommées, API Recherche d'entreprises) ; `python pipeline/etat_actionnaire.py produire [--sortie DOSSIER]` (sans réseau ; échoue si une citation du Sénat n'est plus dans le document collecté ou si un total ne se retrouve pas). Tests : `pytest tests/test_etat_actionnaire.py`. Fichiers compacts, avec `millesime`, `source`, `unite`, `avertissement`, `collecte_le`.

@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/formation_elus.schema.json",
+  "title": "site/data/formation/elus.json : formation des élus locaux, agrégats par type de mandat et par organisme (personnes morales), aucun élu nommé",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "pattern": "Caisse des dépôts"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "regle_personnes": {
+      "type": "string",
+      "minLength": 80
+    },
+    "definitions": {
+      "type": "object",
+      "required": [
+        "mandats",
+        "dispositifs"
+      ]
+    },
+    "colonnes": {
+      "const": [
+        "dossiers",
+        "montant_engage_eur",
+        "droits_elu_eur",
+        "heures"
+      ]
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^20[0-9]{2}$"
+      }
+    },
+    "totaux": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^20[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 4,
+        "maxItems": 4,
+        "items": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "par_mandat": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^20[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "propertyNames": {
+          "enum": [
+            "exercice_du_mandat",
+            "reconversion"
+          ]
+        },
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mandats",
+              "valeurs"
+            ],
+            "properties": {
+              "mandats": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "enum": [
+                    "municipal",
+                    "departemental",
+                    "regional",
+                    "autres",
+                    "plusieurs_mandats"
+                  ]
+                }
+              },
+              "valeurs": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "cellules_regroupees": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "factures": {
+      "type": "object",
+      "required": [
+        "colonnes",
+        "annees"
+      ]
+    },
+    "dossiers_annules_exclus": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "regle",
+        "cles"
+      ],
+      "properties": {
+        "regle": {
+          "type": "string",
+          "minLength": 20
+        },
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "organismes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "siren",
+          "nom",
+          "categorie_juridique",
+          "cumul"
+        ],
+        "properties": {
+          "siren": {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          "nom": {
+            "type": "string",
+            "minLength": 1
+          },
+          "categorie_juridique": {
+            "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+          },
+          "cumul": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "prefixItems": [
+              {
+                "type": "integer",
+                "minimum": 5
+              }
+            ],
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "autres_organismes": {
+      "type": "object",
+      "required": [
+        "organismes",
+        "annees"
+      ]
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "collecte_le",
+    "avertissement",
+    "regle_personnes",
+    "definitions",
+    "colonnes",
+    "annees",
+    "totaux",
+    "par_mandat",
+    "cellules_regroupees",
+    "factures",
+    "ordre",
+    "organismes",
+    "autres_organismes"
+  ]
+}

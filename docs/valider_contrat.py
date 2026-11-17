@@ -179,6 +179,15 @@ FICHIERS = [
     ("aide_developpement_ocde.schema.json", "aide_developpement/ocde.json", "existant"),
     ("aide_developpement_expertise_france.schema.json", "aide_developpement/expertise_france.json", "existant"),
     ("aide_developpement_proparco.schema.json", "aide_developpement/proparco.json", "existant"),
+    # formation professionnelle : CPF, formation des élus, FIPHFP (pipeline/formation.py)
+    ("formation_index.schema.json", "formation/index.json", "existant"),
+    ("formation_cpf_mois.schema.json", "formation/cpf_mois.json", "existant"),
+    ("formation_cpf_departements.schema.json", "formation/cpf_departements.json", "existant"),
+    ("formation_cpf_certifications.schema.json", "formation/cpf_certifications.json", "existant"),
+    ("formation_cpf_organismes.schema.json", "formation/cpf_organismes.json", "existant"),
+    ("formation_cpf_usagers.schema.json", "formation/cpf_usagers.json", "existant"),
+    ("formation_elus.schema.json", "formation/elus.json", "existant"),
+    ("formation_fiphfp.schema.json", "formation/fiphfp.json", "existant"),
     # l'État actionnaire : dividendes, cessions, opérations en capital (pipeline/etat_actionnaire.py)
     ("etat_actionnaire_index.schema.json", "etat_actionnaire/index.json", "existant"),
     ("etat_actionnaire_flux.schema.json", "etat_actionnaire/flux.json", "existant"),
