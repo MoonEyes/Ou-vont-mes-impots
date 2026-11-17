@@ -6,6 +6,8 @@ Type=oneshot
 User=ovmi
 Group=ovmi
 EnvironmentFile=/etc/ovmi/stockage.env
+# jeton GitHub de l'alerte : fichier separe (600 root:root), lu par ce seul service, jamais par la collecte
+EnvironmentFile=-/etc/ovmi/alerte.env
 Environment=HOME=/var/lib/ovmi OVMI_RACINE=/var/lib/ovmi
 ExecStart=/var/lib/ovmi/venv/bin/python /var/lib/ovmi/ou-vont-mes-impots/deploy/alerte.py
 SyslogIdentifier=ovmi-alerte
@@ -13,6 +15,21 @@ Nice=10
 NoNewPrivileges=yes
 ProtectSystem=strict
 ProtectHome=yes
-ReadWritePaths=/var/lib/ovmi
+# l'alerte ne fait que lire les journaux et appeler l'API GitHub
+ReadOnlyPaths=/var/lib/ovmi
 PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
 CapabilityBoundingSet=
+UMask=0077
+TimeoutStartSec=5min

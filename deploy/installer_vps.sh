@@ -80,6 +80,14 @@ else
     echo "deja present, conserve"
 fi
 
+if [[ ! -f "$CONF/alerte.env" ]]; then
+    install -m 600 -o root -g root /dev/null "$CONF/alerte.env"
+    printf '%s\n' "# Alerte GitHub (lu par ovmi-collecte-alerte.service seulement). Jeton a portee issues: write sur le depot seul." \
+        "OVMI_GITHUB_DEPOT=MoonEyes/Ou-vont-mes-impots" "OVMI_ALERTE_GITHUB=0" "OVMI_ALERTE_GITHUB_JETON=" > "$CONF/alerte.env"
+else
+    chown root:root "$CONF/alerte.env"; chmod 600 "$CONF/alerte.env"
+fi
+
 etape "unites systemd"
 install -m 644 "$DEPOT"/deploy/systemd/ovmi-collecte.service "$DEPOT"/deploy/systemd/ovmi-collecte.timer \
     "$DEPOT"/deploy/systemd/ovmi-collecte-alerte.service /etc/systemd/system/
@@ -92,6 +100,7 @@ cat <<FIN
 
 Installation terminee. Etapes suivantes :
   1. sudo nano $CONF/stockage.env      (cles S3 OVH, OVMI_BUCKET_PUBLIC, OVMI_BUCKET_PRIVE)
+     facultatif : sudo nano $CONF/alerte.env (jeton GitHub de l'alerte, OVMI_ALERTE_GITHUB=1)
   2. sudo -u $UTILISATEUR bash -c 'set -a; . $CONF/stockage.env; cd $DEPOT && $RACINE/venv/bin/python collecte/stockage.py config'
   3. premier passage a la main (sinon lundi 3 h) : sudo systemctl start ovmi-collecte.service
      suivi : journalctl -u ovmi-collecte -f

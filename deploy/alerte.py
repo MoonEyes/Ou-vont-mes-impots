@@ -9,13 +9,15 @@ from __future__ import annotations
 
 import os
 import re
-import socket
 import sys
 from datetime import date
 from pathlib import Path
 
 ETIQUETTE = "collecte-echec"
-MASQUE = re.compile(r"(?i)_restreint|secret|token|access_key|password|authorization")
+# Lignes jamais publiees sur le depot public : zone restreinte, secrets (anglais et francais),
+# noms de buckets et configuration rclone, adresses IPv4 (VPS, sources).
+MASQUE = re.compile(r"(?i)_restreint|secret|token|jeton|access_key|password|mot_de_passe|authorization|bucket|rclone_config"
+                    r"|\b\d{1,3}(?:\.\d{1,3}){3}\b")
 UTILES = re.compile(r"ERREUR|ECHEC|ESPACE|ARRET|CONFIGURATION|Traceback|Error|=== |stockage :|sources collectees")
 
 
@@ -53,7 +55,8 @@ def ouvrir_issue(depot: str, jeton: str, titre: str, corps: str) -> str:
 
 def main() -> int:
     racine = Path(os.environ.get("OVMI_RACINE", "/var/lib/ovmi"))
-    titre = f"Collecte hebdomadaire en echec ({socket.gethostname()}, {date.today().isoformat()})"
+    # Pas de nom d'hote dans le titre : l'issue est publique et le nom du VPS l'identifie chez l'hebergeur.
+    titre = f"Collecte hebdomadaire en echec ({date.today().isoformat()})"
     extrait = extrait_journal(racine)
     print(f"ALERTE : {titre}\n{extrait}", file=sys.stderr)
     # Opt-in explicite : jamais declenche par un GITHUB_TOKEN generique present dans l'environnement
