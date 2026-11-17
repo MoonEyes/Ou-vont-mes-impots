@@ -81,6 +81,10 @@ Vérification : `python docs/valider_contrat.py` (installe `jsonschema` si absen
 | `secu/arbre_2025/racine.json` | `secu_arbre.schema.json` | même arbre, premier niveau publié | Md€ | Exécution 2025 | `secu.py` | existant |
 | `secu/cps/racine.json` + `secu/cps/<chemin>.json` | `secu_arbre.schema.json` | prestations de protection sociale par secteur, régime, risque et prestation (DREES) | Md€ | 2024 | `secu.py` | existant |
 | `secu/index.json` | `secu_index.schema.json` | vues, totaux, traçabilité, vérification des documents, sources, recherche préalable | divers | | `secu.py` | existant |
+| `ue/contribution.json` | `ue_contribution.schema.json` | PSR-UE et son usage : rubriques et pôles du CFP 2021-2027, NextGenerationEU, engagements FTS 2024 par programme | Md€ | Exécution 2024 (PSR) ; CFP 2021-2027 | `ue.py` | existant |
+| `ue/retours.json` | `ue_retours.schema.json` | dépenses de l'UE en France par année et rubrique, solde net (comptable, opérationnel) | Md€ | 2021 à 2025 | `ue.py` | existant |
+| `ue/beneficiaires/index.json` | `ue_beneficiaires_index.schema.json` | bénéficiaires des fonds européens : couverture, totaux par source, année, région, département | € | Kohesio 2014-2027, FTS 2023-2025, Horizon Europe 2021-2026 | `ue.py` | existant |
+| `ue/beneficiaires/<dep>.json` | `ue_beneficiaires_dep.schema.json` | bénéficiaires nommés d'un département (personnes morales) | € | idem | `ue.py` | existant |
 | `affectation_prelevements.json` | `affectation_prelevements.schema.json` | ancien format prévu, remplacé à terme par `prelevements/affectation.json` | parts (0 à 1) | | | **prévu** |
 
 Le millésime réel est toujours lu dans le fichier (`millesime`, `annee`, `annees`, clés d'année) ou dans `meta.json` (`millesime.etat_defaut`, `controle.exercice`, `controle.annee_cofog`, `controle.administrations_derniere_annee`, `controle.recettes_annees`, `controle.arbre_administrations.annee`) : le site ne code aucune année en dur.
@@ -421,6 +425,45 @@ Nœud : champs de l'arbre État (2.2 : `id`, `nom`, `niveau`, `md`, `enfants` ou
 Un montant négatif est une déduction publiée : transferts entre branches et avec le FSV (comptés deux fois dans les branches), remises sur les médicaments, clause de sauvegarde. Un écart de champ est un nœud `ecart` (ex. `robss/maladie/hors_ondam` : charges de la branche moins sous-objectifs ONDAM). Contrôles (`tests/test_secu.py`) : chaque nœud = somme de ses enfants, montants du PLACSS retrouvés, `tracabilite_pct` recalculable depuis les feuilles, destinataires connus d'`affectation.json`.
 
 **`secu/index.json`** : `vue_defaut`, `vues.<vue>` (`millesime`, `fichier`, `total_md`, `noeuds`, `feuilles`, `profondeur`, `fichiers`, `tracabilite_pct`, `modes_md`), `liens_affectation`, `verification_documents` (chaque document : `vérifié` ou absent ; la production échoue si un montant saisi n'est plus dans le document), `sources`, `sources_inaccessibles[]` (`{source, motif}`), `recherche_publique` (`trouvailles[]` : verdict `réutilisable tel quel`, `à adapter` ou `inspiration seulement`, licence, date du dernier commit ou de mise à jour).
+
+### 2.17 Union européenne : `ue/` (contrat 1.5)
+
+Producteur : `pipeline/ue.py`. Chaque fichier porte `millesime` et `source`. Commandes : `python pipeline/ue.py collecter` (réseau ; un refus 403/429 est noté, jamais contourné), `python pipeline/ue.py resoudre --budget <s>` (réseau, reprenable : noms Kohesio vers SIREN, SIREN vers catégorie juridique), `python pipeline/ue.py produire` (sans réseau). Tests : `pytest tests/test_ue.py`.
+
+```
+data/lake/europe/ue_documents/ (annexe PLF 2025 « Relations financières avec l'UE », notes du Sénat PLF 2026 et 2027)
+data/lake/_restreint/europe/ue/ (Kohesio France 2014-2020 et 2021-2027, FTS 2023-2025)
+data/lake/europe/esr__fr-esr-horizon-projects-entities.parquet (Horizon Europe, MESR)
++ site/data/arbre/racine.json (branche « Prelevements sur recettes/Union européenne »)
++ API Recherche d'entreprises (catégorie juridique, rapprochement des noms Kohesio ; caches data/lake/_cache/)
+     └─> pipeline/ue.py ─> site/data/ue/contribution.json, retours.json, beneficiaires/index.json, beneficiaires/<dep>.json
+```
+
+Les chiffres saisis depuis les PDF (CFP, retours, soldes, PSR) sont revérifiés à chaque `produire` contre le texte du PDF (`verification_documents`) : un document modifié fait échouer la production. Le PSR-UE de `contribution.json` est lu dans l'arbre État et doit égaler l'exécution 2024 publiée (22 276 M€).
+
+**`ue/contribution.json`** (ce qui part)
+
+| Champ | Type | Sens |
+|---|---|---|
+| `psr_ue` | `{annee, md, noeud_arbre, fichier_arbre, eur_sur_100_budget_etat, source}` | prélèvement sur recettes au profit de l'UE, nœud de l'arbre État |
+| `serie_psr_ue[]` | `{annee, vote_md, execute_md, statut, source}` | PSR voté et exécuté 2018 à 2026 (`statut` : `exécuté` ou `prévision d'exécution`) |
+| `usage.rubriques[7]` | `{code, nom, cfp_md, plafond_rubrique_md, part, contribution_france_md, eur_sur_100, poles[]}` | répartition conventionnelle du PSR au prorata des pôles du CFP 2021-2027 (marges exclues, `marges_exclues_md`) ; `poles[]` mêmes champs (PAC = pôle `8`) |
+| `next_generation_eu` | `{total_md, par_rubrique_md, note, source}` | plan de relance, financé par l'emprunt, hors PSR |
+| `programmes_engagements` | `{millesime, source, perimetre, total_md, programmes[], autres}` | engagements FTS 2024 de toute l'UE par programme (`code` du CFP, `rubrique`, `md`, `part`, `dont_france_md`), gestion directe et indirecte seulement |
+| `contribution_comptable_2024_md` | nombre | PSR + droits de douane reversés (méthode comptable) |
+| `sources_inaccessibles[]` | `{source, url, constat, effet}` | sources refusées (429, 404), non contournées |
+
+Lecture : `eur_sur_100` = « sur 100 € versés par la France au budget de l'UE, X € correspondent à cette politique » ; c'est la structure du budget de l'UE, pas un fléchage (avertissement publié).
+
+**`ue/retours.json`** (ce qui revient, solde net) : `annees[]` de `{annee, retours_md, par_rubrique, rubriques_completes, solde_net_comptable_md, solde_net_pct_rnb, contribution_comptable_md, psr_ue_execute_md, solde_net_operationnel_md?, source}`. `par_rubrique.<code>` = `{nom, md}` ; complet pour 2021-2023 (Commission, rapports financiers), partiel pour 2024 (PAC, compétitivité, cohésion) et 2025 (PAC). `contribution_comptable_md = retours_md - solde_net_comptable_md` (déduite). Retours hors NextGenerationEU. `methodes_solde` décrit les méthodes comptable, opérationnelle (Commission) et de la correction britannique ; `beneficiaires_nommes` résume `ue/beneficiaires/index.json`.
+
+**`ue/beneficiaires/index.json`** : `sources.<kohesio_2014_2020|kohesio_2021_2027|fts|horizon>` = `{total, nomme, lignes, titre, exclus_*, hors_total_*}` ; conservation : `nomme + somme(exclus_*) = total` (testé) ; `hors_total_*` (PAC non collectée, facilité pour la reprise NextGenerationEU) est hors total. `par_annee.<source>.<année>`, `par_region[]`, `departements[]` (`{code, nom, region, fichier, beneficiaires, total_eur, nomme_eur}`, `non_localise` compris), `total_eur`, `total_nomme_eur`, `part_nommee`, `beneficiaires_nommes` (SIREN distincts), `recherche_publique[]` (verdict : `réutilisable tel quel`, `à adapter`, `inspiration seulement`, licence, date), `sources_inaccessibles[]`. Les totaux excluent `horizon`, qui recoupe le programme FTS 1.0.11.
+
+**`ue/beneficiaires/<dep>.json`** (départements de l'API Découpage administratif, et `non_localise`) : `{departement, nom, region: {code, nom} | null, totaux.<source>: {total_eur, nomme_eur, non_nomme_eur}, beneficiaires[], beneficiaires_hors_fichier?}`. Un bénéficiaire : `{siren, denomination, categorie_juridique, montant_eur, montant_hors_horizon_eur, detail[]}` ; `detail[]` = `[source, année, fonds ou programme, montant_eur, lignes]`. Rattachement au département : lieu de l'opération (Kohesio : commune LAU, sinon NUTS 3), code postal du bénéficiaire (FTS), département d'activité (Horizon), à défaut siège SIRENE.
+
+Années : Kohesio = année de début de l'opération, montant = budget UE programmé de l'opération ; FTS = année d'engagement, montant contracté ; Horizon = année de l'appel, subvention signée.
+
+**Personnes physiques (bloquant).** Seules les personnes morales (catégorie `2xxx` à `9xxx`, vérifiée via l'API) sont nommées, sous leur dénomination SIRENE (jamais le nom brut de la source). Les noms Kohesio sont rapprochés d'un SIREN par l'API (même département, mots du nom identiques ou quasi identiques, résultat ambigu rejeté) ; un nom non rapproché, un entrepreneur individuel (`1000`) ou une ligne FTS « Private Persons » est agrégé (`exclus_*`). Les bénéficiaires de la PAC (FEAGA, FEADER, programmes FTS `3.1.x`) ne sont pas collectés. Les listes brutes restent dans `data/lake/_restreint/`.
 
 ## 3. Module de calcul personnel
 

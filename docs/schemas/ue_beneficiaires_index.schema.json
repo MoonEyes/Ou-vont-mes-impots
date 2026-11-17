@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/ue_beneficiaires_index.schema.json",
+  "title": "site/data/ue/beneficiaires/index.json : beneficiaires des fonds europeens en France, couverture et totaux",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "regle_personnes_physiques": {
+      "type": "string"
+    },
+    "lecture": {
+      "type": "string"
+    },
+    "rapprochement_kohesio": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "object",
+      "required": [
+        "kohesio_2014_2020",
+        "kohesio_2021_2027",
+        "fts",
+        "horizon"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number"
+          },
+          "nomme": {
+            "type": "number"
+          },
+          "lignes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "titre": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "total",
+          "lignes",
+          "titre"
+        ],
+        "propertyNames": {
+          "pattern": "^(total|nomme|lignes|titre|exclus_[a-z0-9_]+|hors_total_[a-z0-9_]+)$"
+        },
+        "additionalProperties": {
+          "type": "number"
+        }
+      }
+    },
+    "par_annee": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "number"
+        }
+      }
+    },
+    "par_region": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "total_eur": {
+            "type": "number"
+          },
+          "nomme_eur": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code",
+          "nom",
+          "total_eur",
+          "nomme_eur"
+        ]
+      }
+    },
+    "departements": {
+      "type": "array",
+      "minItems": 96,
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^([0-9]{2}|2A|2B|97[0-9]|non_localise)$"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "region": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fichier": {
+            "type": "string",
+            "pattern": "^ue/beneficiaires/.+\\.json$"
+          },
+          "beneficiaires": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total_eur": {
+            "type": "number"
+          },
+          "nomme_eur": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code",
+          "nom",
+          "fichier",
+          "beneficiaires",
+          "total_eur",
+          "nomme_eur"
+        ]
+      }
+    },
+    "total_eur": {
+      "type": "number"
+    },
+    "total_nomme_eur": {
+      "type": "number"
+    },
+    "part_nommee": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "beneficiaires_nommes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "recherche_publique": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "trouvaille": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string",
+            "pattern": "^(réutilisable tel quel|à adapter|inspiration seulement)"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "trouvaille",
+          "verdict",
+          "licence",
+          "date"
+        ]
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "constat": {
+            "type": "string"
+          },
+          "effet": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "constat"
+        ]
+      }
+    }
+  },
+  "required": [
+    "unite",
+    "regle_personnes_physiques",
+    "sources",
+    "par_annee",
+    "par_region",
+    "departements",
+    "total_eur",
+    "total_nomme_eur",
+    "beneficiaires_nommes",
+    "recherche_publique"
+  ]
+}

@@ -66,6 +66,11 @@ FICHIERS = [
     ("prelevements_tva_conso.schema.json", "prelevements/tva_conso.json", "existant"),
     ("prelevements_taxe_fonciere.schema.json", "prelevements/taxe_fonciere.json", "existant"),
     ("prelevements_taxe_fonciere_dep.schema.json", "prelevements/taxe_fonciere/*.json", "existant"),
+    # Union europeenne : contribution, retours, beneficiaires nommes (pipeline/ue.py)
+    ("ue_contribution.schema.json", "ue/contribution.json", "existant"),
+    ("ue_retours.schema.json", "ue/retours.json", "existant"),
+    ("ue_beneficiaires_index.schema.json", "ue/beneficiaires/index.json", "existant"),
+    ("ue_beneficiaires_dep.schema.json", "ue/beneficiaires/[0-9n]*.json", "existant"),
     ("affectation_prelevements.schema.json", "affectation_prelevements.json", "prevu"),
     # contrat 1.5 : Securite sociale et protection sociale (pipeline/secu.py)
     ("secu_arbre.schema.json", "secu/arbre/*.json", "existant"),

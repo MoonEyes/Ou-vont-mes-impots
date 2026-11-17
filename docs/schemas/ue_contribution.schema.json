@@ -1,0 +1,352 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/ue_contribution.schema.json",
+  "title": "site/data/ue/contribution.json : prelevement sur recettes au profit de l'UE et usage du budget de l'UE",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "type": "string",
+      "pattern": "^milliards d'euros"
+    },
+    "methode": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "psr_ue": {
+      "type": "object",
+      "properties": {
+        "annee": {
+          "$ref": "commun.schema.json#/$defs/annee_entier"
+        },
+        "md": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "noeud_arbre": {
+          "type": "string"
+        },
+        "fichier_arbre": {
+          "type": "string"
+        },
+        "eur_sur_100_budget_etat": {
+          "type": "number"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "annee",
+        "md",
+        "noeud_arbre",
+        "fichier_arbre",
+        "source"
+      ]
+    },
+    "serie_psr_ue": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "vote_md": {
+            "type": "number"
+          },
+          "execute_md": {
+            "type": "number"
+          },
+          "statut": {
+            "enum": [
+              "exécuté",
+              "prévision d'exécution"
+            ]
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "annee",
+          "execute_md",
+          "statut",
+          "source"
+        ]
+      }
+    },
+    "usage": {
+      "type": "object",
+      "properties": {
+        "cle": {
+          "type": "string"
+        },
+        "cfp_total_md": {
+          "type": "number"
+        },
+        "poles_total_md": {
+          "type": "number"
+        },
+        "marges_exclues_md": {
+          "type": "number"
+        },
+        "rubriques": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "nom": {
+                "type": "string"
+              },
+              "cfp_md": {
+                "type": "number"
+              },
+              "part": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "contribution_france_md": {
+                "type": "number"
+              },
+              "eur_sur_100": {
+                "type": "number"
+              },
+              "plafond_rubrique_md": {
+                "type": "number"
+              },
+              "poles": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "nom": {
+                      "type": "string"
+                    },
+                    "cfp_md": {
+                      "type": "number"
+                    },
+                    "part": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "contribution_france_md": {
+                      "type": "number"
+                    },
+                    "eur_sur_100": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "nom",
+                    "cfp_md",
+                    "part",
+                    "contribution_france_md",
+                    "eur_sur_100"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "code",
+              "nom",
+              "cfp_md",
+              "part",
+              "contribution_france_md",
+              "eur_sur_100",
+              "poles"
+            ]
+          }
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cle",
+        "rubriques",
+        "source"
+      ]
+    },
+    "next_generation_eu": {
+      "type": "object",
+      "properties": {
+        "total_md": {
+          "type": "number"
+        },
+        "par_rubrique_md": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "note": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "total_md",
+        "note",
+        "source"
+      ]
+    },
+    "programmes_engagements": {
+      "type": "object",
+      "properties": {
+        "millesime": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "perimetre": {
+          "type": "string"
+        },
+        "total_md": {
+          "type": "number"
+        },
+        "programmes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "nom": {
+                "type": "string"
+              },
+              "rubrique": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "md": {
+                "type": "number"
+              },
+              "part": {
+                "type": "number"
+              },
+              "dont_france_md": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "code",
+              "nom",
+              "md",
+              "part",
+              "dont_france_md"
+            ]
+          }
+        },
+        "autres": {
+          "type": "object",
+          "properties": {
+            "nombre": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "md": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "nombre",
+            "md"
+          ]
+        }
+      },
+      "required": [
+        "millesime",
+        "source",
+        "perimetre",
+        "total_md",
+        "programmes",
+        "autres"
+      ]
+    },
+    "contribution_comptable_2024_md": {
+      "type": "number"
+    },
+    "note_contribution_comptable": {
+      "type": "string"
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "constat": {
+            "type": "string"
+          },
+          "effet": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "constat"
+        ]
+      }
+    },
+    "verification_documents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "statut": {
+            "type": "string"
+          },
+          "motifs": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "statut"
+        ]
+      }
+    }
+  },
+  "required": [
+    "unite",
+    "methode",
+    "avertissement",
+    "psr_ue",
+    "serie_psr_ue",
+    "usage",
+    "next_generation_eu",
+    "programmes_engagements",
+    "sources_inaccessibles"
+  ]
+}

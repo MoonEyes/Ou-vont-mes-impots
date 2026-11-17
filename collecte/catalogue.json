@@ -1999,6 +1999,58 @@
    "timeout_s": 3000
   },
   {
+   "id": "ue",
+   "domaine": "europe",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://kohesio.ec.europa.eu/api/data/object?id=data/projects-2014-2020/2026-09-24/FR-pp14-20-20260924.csv",
+     "nom": "kohesio/FR-pp14-20-20260924.csv"
+    },
+    {
+     "url": "https://kohesio.ec.europa.eu/api/data/object?id=data/projects-2021-2027/2026-09-24/FR-pp21-27-20260924.csv",
+     "nom": "kohesio/FR-pp21-27-20260924.csv"
+    },
+    {
+     "url": "https://ec.europa.eu/budget/financial-transparency-system/download/2023_FTS_dataset_en.xlsx",
+     "nom": "fts/2023_FTS_dataset_en.xlsx"
+    },
+    {
+     "url": "https://ec.europa.eu/budget/financial-transparency-system/download/2024_FTS_dataset_en.xlsx",
+     "nom": "fts/2024_FTS_dataset_en.xlsx"
+    },
+    {
+     "url": "https://ec.europa.eu/budget/financial-transparency-system/download/2025_FTS_dataset_en.xlsx",
+     "nom": "fts/2025_FTS_dataset_en.xlsx"
+    }
+   ],
+   "titre": "Fonds européens en France : Kohesio (exports officiels France 2014-2020 et 2021-2027, instantané du 24/09/2026) et Financial Transparency System 2023-2025 (pipeline/ue.py)",
+   "licence": "Réutilisation autorisée (décision 2011/833/UE de la Commission)",
+   "personnes_physiques": true,
+   "lourd": true
+  },
+  {
+   "id": "ue_documents",
+   "domaine": "europe",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Jaunes/13-Jaune%20relations_financieres_UE.pdf",
+     "nom": "jaune_relations_financieres_ue_plf2025.pdf"
+    },
+    {
+     "url": "https://www.senat.fr/fileadmin/cru-1762483659/Commissions/Finances/2025-2026/PLF_2026/NP/Affaires_europeennes_NP_PLF_2026.pdf",
+     "nom": "senat_np_affaires_europeennes_plf2026.pdf"
+    },
+    {
+     "url": "https://www.senat.fr/fileadmin/cru-1792598966/Commissions/Finances/2026-2027/PLF_2027/NP/NP_Affaires_europeennes_PLF_2027.pdf",
+     "nom": "senat_np_affaires_europeennes_plf2027.pdf"
+    }
+   ],
+   "titre": "Relations financières France-UE : annexe PLF 2025 et notes de la commission des finances du Sénat PLF 2026 et 2027 (pipeline/ue.py)",
+   "licence": "Licence Ouverte 2.0 (annexe) ; documents parlementaires, réutilisation avec mention"
+  },
+  {
    "id": "secu_placss2024_texte",
    "domaine": "secu",
    "type": "url",

@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/ue_beneficiaires_dep.schema.json",
+  "title": "site/data/ue/beneficiaires/<dep>.json : beneficiaires nommes des fonds europeens dans un departement",
+  "description": "detail[] : [source, annee, fonds ou programme, montant_eur, nombre de lignes source]. Personnes morales seulement.",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "departement": {
+      "type": "string",
+      "pattern": "^([0-9]{2}|2A|2B|97[0-9]|non_localise)$"
+    },
+    "nom": {
+      "type": "string"
+    },
+    "region": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "nom": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "nom"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "totaux": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "total_eur": {
+            "type": "number"
+          },
+          "nomme_eur": {
+            "type": "number"
+          },
+          "non_nomme_eur": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "total_eur",
+          "nomme_eur",
+          "non_nomme_eur"
+        ]
+      }
+    },
+    "beneficiaires": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "siren": {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          "denomination": {
+            "type": "string",
+            "minLength": 1
+          },
+          "categorie_juridique": {
+            "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+          },
+          "montant_eur": {
+            "type": "number"
+          },
+          "montant_hors_horizon_eur": {
+            "type": "number"
+          },
+          "detail": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "enum": [
+                    "kohesio_2014_2020",
+                    "kohesio_2021_2027",
+                    "fts",
+                    "horizon"
+                  ]
+                },
+                {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              ],
+              "minItems": 5,
+              "maxItems": 5
+            }
+          }
+        },
+        "required": [
+          "siren",
+          "denomination",
+          "categorie_juridique",
+          "montant_eur",
+          "montant_hors_horizon_eur",
+          "detail"
+        ],
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom"
+          }
+        }
+      }
+    },
+    "beneficiaires_hors_fichier": {
+      "type": "object",
+      "properties": {
+        "nombre": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "montant_eur": {
+          "type": "number"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "nombre",
+        "montant_eur"
+      ]
+    }
+  },
+  "required": [
+    "unite",
+    "departement",
+    "nom",
+    "region",
+    "totaux",
+    "beneficiaires"
+  ]
+}

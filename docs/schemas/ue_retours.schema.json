@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/ue_retours.schema.json",
+  "title": "site/data/ue/retours.json : depenses de l'UE en France et solde net de la France",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "type": "string",
+      "pattern": "^milliards d'euros"
+    },
+    "lecture": {
+      "type": "string"
+    },
+    "methodes_solde": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "annees": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "retours_md": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "par_rubrique": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "nom": {
+                      "type": "string"
+                    },
+                    "md": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "nom",
+                    "md"
+                  ]
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rubriques_completes": {
+            "type": "boolean"
+          },
+          "solde_net_comptable_md": {
+            "type": "number"
+          },
+          "solde_net_pct_rnb": {
+            "type": "number"
+          },
+          "contribution_comptable_md": {
+            "type": "number"
+          },
+          "psr_ue_execute_md": {
+            "type": "number"
+          },
+          "solde_net_operationnel_md": {
+            "type": "number"
+          },
+          "solde_net_operationnel_pct_rnb": {
+            "type": "number"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "annee",
+          "retours_md",
+          "par_rubrique",
+          "rubriques_completes",
+          "solde_net_comptable_md",
+          "contribution_comptable_md",
+          "source"
+        ]
+      }
+    },
+    "fichier_beneficiaires": {
+      "type": "string"
+    },
+    "beneficiaires_nommes": {
+      "type": "object",
+      "properties": {
+        "nombre": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_nomme_eur": {
+          "type": "number"
+        },
+        "total_eur": {
+          "type": "number"
+        },
+        "part_nommee": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "nombre",
+        "total_nomme_eur",
+        "total_eur"
+      ]
+    },
+    "verification_documents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "statut": {
+            "type": "string"
+          },
+          "motifs": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "statut"
+        ]
+      }
+    }
+  },
+  "required": [
+    "unite",
+    "lecture",
+    "annees",
+    "fichier_beneficiaires"
+  ]
+}
