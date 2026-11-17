@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_fonctions_regions.schema.json",
+  "title": "site/data/local/fonctions/regions.json : depenses par fonction des regions et collectivites territoriales uniques",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      }
+    },
+    "colonnes": {
+      "const": [
+        "fonctionnement_eur",
+        "investissement_eur",
+        "fonctionnement_eur_hab",
+        "investissement_eur_hab",
+        "fonctionnement_sur_100",
+        "investissement_sur_100"
+      ]
+    },
+    "unite": {
+      "type": "string"
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 20
+    },
+    "regions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/collectivite"
+      }
+    }
+  },
+  "required": [
+    "annees",
+    "colonnes",
+    "methode",
+    "regions"
+  ],
+  "$defs": {
+    "ligne": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    },
+    "annee": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "nomenclature": {
+          "type": "string"
+        },
+        "population": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "total": {
+          "$ref": "#/$defs/ligne"
+        },
+        "non_ventile": {
+          "$ref": "#/$defs/ligne"
+        },
+        "part_ventilee": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "f": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[0-9A-Za-z]{1,2}$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/ligne"
+          }
+        },
+        "themes": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/ligne"
+          }
+        }
+      },
+      "required": [
+        "nomenclature",
+        "population",
+        "total",
+        "non_ventile",
+        "part_ventilee",
+        "f"
+      ],
+      "additionalProperties": false
+    },
+    "collectivite": {
+      "type": "object",
+      "properties": {
+        "nom": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "siren": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "statut": {
+          "enum": [
+            "publie",
+            "non_publie"
+          ]
+        },
+        "annees": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/annee"
+          }
+        }
+      },
+      "required": [
+        "nom",
+        "annees"
+      ]
+    }
+  }
+}

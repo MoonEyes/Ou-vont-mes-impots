@@ -127,6 +127,9 @@ FICHIERS = [
     ("local_budget_epci.schema.json", "local/budgets/epci/*.json", "existant"),
     ("local_fonctions_departements.schema.json", "local/budgets/fonctions/departements.json", "existant"),
     ("local_fonctions.schema.json", "local/budgets/fonctions/[0-9]*.json", "existant"),
+    ("local_fonctions_communes.schema.json", "local/fonctions/[0-9]*.json", "existant"),   # local_fonctions.py
+    ("local_fonctions_regions.schema.json", "local/fonctions/regions.json", "existant"),
+    ("local_fonctions_index.schema.json", "local/fonctions/index.json", "existant"),
     ("local_dotations_communes.schema.json", "local/dotations/communes/*.json", "existant"),
     ("local_dotations_epci.schema.json", "local/dotations/epci.json", "existant"),
     ("local_dotations_departements.schema.json", "local/dotations/departements.json", "existant"),

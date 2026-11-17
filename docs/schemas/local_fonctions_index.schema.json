@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_fonctions_index.schema.json",
+  "title": "site/data/local/fonctions/index.json : nomenclatures, themes, couverture, masque par commune",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      }
+    },
+    "colonnes": {
+      "const": [
+        "fonctionnement_eur",
+        "investissement_eur",
+        "fonctionnement_eur_hab",
+        "investissement_eur_hab",
+        "fonctionnement_sur_100",
+        "investissement_sur_100"
+      ]
+    },
+    "unite": {
+      "type": "string"
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 20
+    },
+    "non_publie": {
+      "type": "string"
+    },
+    "fichiers": {
+      "type": "object"
+    },
+    "nomenclatures": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      }
+    },
+    "themes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "libelle"
+        ]
+      }
+    },
+    "masques": {
+      "type": "object"
+    },
+    "couverture": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "communes",
+          "communes_total",
+          "part_population",
+          "epci",
+          "regions"
+        ]
+      }
+    },
+    "communes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[0-9][0-9AB][0-9]{3}$"
+      },
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 7
+      }
+    }
+  },
+  "required": [
+    "annees",
+    "colonnes",
+    "methode",
+    "non_publie",
+    "nomenclatures",
+    "themes",
+    "couverture",
+    "communes"
+  ]
+}

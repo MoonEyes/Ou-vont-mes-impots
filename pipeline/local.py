@@ -873,9 +873,15 @@ def contient_nom_de_personne(o: str, liste: set | None = None) -> bool:
     liste = prenoms() if liste is None else liste
     t = re.findall(r"[A-Z]+", unicodedata.normalize("NFKD", o.upper()).encode("ascii", "ignore").decode())
     for i, m in enumerate(t):
-        if m in liste and i + 1 < len(t) and len(t[i + 1]) >= 2 and t[i + 1] not in MOTS_OUTILS:
-            if i > 0 and t[i - 1] in ("SAINT", "SAINTE", "ST", "STE"):
-                continue
+        if m not in liste or i + 1 >= len(t):
+            continue
+        if i > 0 and t[i - 1] in ("SAINT", "SAINTE", "ST", "STE"):
+            continue
+        if len(t[i + 1]) >= 2 and t[i + 1] not in MOTS_OUTILS:
+            return True
+        # Particule de nom (« Marie de Kergariou », « Jean du Bois ») : prudence, le mot suivant est un nom.
+        if t[i + 1] in ("DE", "DU", "DES", "D") and i + 2 < len(t) and len(t[i + 2]) >= 2 \
+                and t[i + 2] not in MOTS_OUTILS:
             return True
     return False
 
@@ -1258,11 +1264,15 @@ def taille(d: Path) -> int:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("etape", choices=["tout", "decisions", "index"])
+    ap.add_argument("etape", choices=["tout", "decisions", "index", "fonctions"])
     ap.add_argument("--deps", default=",".join(DEPS_DEFAUT), help="departements (mode departement)")
     ap.add_argument("--tous", action="store_true", help="tous les departements (reprenable)")
     ap.add_argument("--budget", type=float, default=480, help="duree max d'un passage, en secondes")
     a = ap.parse_args()
+    if a.etape == "fonctions":  # depenses par fonction de toutes les communes, EPCI et regions (balances DGFiP)
+        import local_fonctions
+        local_fonctions.main([])
+        return
     debut = time.monotonic()
     con = ddb()
     annees = annees_ofgl(con)

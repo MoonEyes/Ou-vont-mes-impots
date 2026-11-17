@@ -273,7 +273,30 @@
    "dataset": "balances-comptables-des-collectivites-et-des-etablissements-publics-locaux-avec-la-presentation-croisee-nature-fonction-2024",
    "titre": "Balances comptables nature x fonction 2024 (DGFiP)",
    "licence": "Licence Ouverte 2.0",
-   "lourd": true
+   "lourd": true,
+   "lu_par": "pipeline/local_fonctions.py : exports agreges cote serveur (group_by siren x fonction), jamais le fichier entier"
+  },
+  {
+   "id": "local_balances_nature_fonction_2023",
+   "domaine": "collectivites",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "balances-comptables-des-collectivites-et-des-epl-avec-fonction-2023",
+   "titre": "Balances comptables nature x fonction 2023 (DGFiP)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": true,
+   "lu_par": "pipeline/local_fonctions.py : exports agreges cote serveur (group_by siren x fonction), jamais le fichier entier"
+  },
+  {
+   "id": "local_balances_nature_fonction_2025",
+   "domaine": "collectivites",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "balances-comptables-des-collectivites-et-des-etablissements-publics-locaux-avec-la-presentation-croisee-nature-fonction-2025",
+   "titre": "Balances comptables nature x fonction 2025 (DGFiP)",
+   "licence": "Licence Ouverte 2.0",
+   "lourd": true,
+   "lu_par": "pipeline/local_fonctions.py : exports agreges cote serveur (group_by siren x fonction), jamais le fichier entier"
   },
   {
    "id": "secu_protection_sociale",
@@ -2645,7 +2668,268 @@
    "titre": "Metadonnees et articles Eurostat cites pour les avertissements de comparabilite (COFOG, impots, pensions, prestations nettes)",
    "licence": "Eurostat, reutilisation libre avec mention",
    "module": "pipeline/europe_comparaison.py"
-  }
+  },
+  {
+   "id": "datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales",
+   "domaine": "collectivites",
+   "type": "datagouv",
+   "dataset": "6176785207139a929a2776fe",
+   "format": "csv",
+   "toutes": true,
+   "titre": "DGCL, projets finances par les dotations de soutien a l'investissement local (DETR, DSIL, DPV, DSID), 2018-2025, un CSV par annee",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/territoires.py (et pipeline/local.py)"
+  },
+  {
+   "id": "territoires_sru",
+   "domaine": "collectivites",
+   "type": "datagouv",
+   "dataset": "6564969d3579e21795ebd378",
+   "format": "csv",
+   "toutes": true,
+   "titre": "Communes et inventaire SRU (taux de logements sociaux, carence, prelevement), un CSV par inventaire",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/territoires.py"
+  },
+  {
+   "id": "drees__376_les-depenses-d-aide-sociale-departementale",
+   "domaine": "collectivites",
+   "type": "ods_pieces_jointes",
+   "portail": "drees",
+   "dataset": "376_les-depenses-d-aide-sociale-departementale",
+   "titre": "DREES, depenses d'aide sociale departementale (series longues 1999-2024, xlsx)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/territoires.py"
+  },
+  {
+   "id": "drees__619_indicateurs-financiers",
+   "domaine": "secu",
+   "type": "ods_export",
+   "portail": "drees",
+   "dataset": "619_indicateurs-financiers",
+   "titre": "DREES, indicateurs sociaux departementaux (ISD), indicateurs financiers",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/territoires.py"
+  },
+  {
+   "id": "drees__apa-et-pch-montants-verses",
+   "domaine": "collectivites",
+   "type": "ods_pieces_jointes",
+   "portail": "drees",
+   "dataset": "apa-et-pch-montants-verses",
+   "titre": "DREES, APA et PCH, montants verses par departement",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/territoires.py"
+  },
+ {
+  "id": "assoc_jaune_plf2012",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "plf2012-jaune-donnees-associations-subventionnees",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2012 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2013",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "plf2013-jaune-donnees-associations-subventionnees",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2013 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2014",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "plf-2014-jaune-donnees-associations-subventionnees-2012",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2014 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2015",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "plf-2015-jaune-effort-financier-de-letat-en-faveur-des-associations-",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2015 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2016",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "plf-2016-jaune-effort-financier-de-letat-en-faveur-des-associations-",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2016 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2017",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "projet-de-loi-de-finances-pour-2017-plf-2017-jaune-effort-financier-de-letat-en-",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2017 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2018",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "projet-de-loi-de-finances-pour-2018-plf-2018-donnees-de-lannexe-jaune-effort-fin",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2018 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2019",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "projet-de-loi-de-finances-pour-2019-plf-2019-donnees-de-lannexe-jaune-effort-fin",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2019 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2020",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "projet-de-loi-de-finances-pour-2020-plf-2020-donnees-de-lannexe-jaune-effort-fin",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2020 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2021",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "projet-de-loi-de-finances-pour-2021-plf-2021-donnees-de-lannexe-jaune-effort-fin",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2021 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2022",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "projet-de-loi-de-finances-pour-2022-plf-2022-donnees-de-lannexe-jaune-effort-fin",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2022 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2023",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "plf-2023-effort-financier-de-l-etat-en-faveur-des-associations-liste-des-credits",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2023 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_jaune_plf2024",
+  "domaine": "associations",
+  "type": "ods_export",
+  "portail": "economie",
+  "dataset": "plf24-donnees-de-l-annexe-jaune-effort-financier-de-l-etat-en-faveur-des-associa",
+  "format_export": "csv",
+  "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2024 (lu par pipeline/associations.py)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_rnf_fonds_fondations",
+  "domaine": "associations",
+  "type": "datagouv_ressources",
+  "ressources": [
+   "0563162b-e507-499e-aaac-e1aa11902a6e",
+   "997a4f1b-2abd-4094-9013-ddb553475857"
+  ],
+  "titre": "Registre national des fonds et fondations (RNF), donnees fonds/fondations csv/zip du 01/11/2026 et dictionnaire (jeu data.gouv.fr 6a04750602ec619fc638a075)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_reserve_an",
+  "domaine": "associations",
+  "type": "urls",
+  "personnes_physiques": true,
+  "urls": [
+   {
+    "url": "https://data.assemblee-nationale.fr/static/openData/repository/RESERVE_PARLEMENTAIRE/2013_reserve_parlementaire.csv",
+    "nom": "2013_reserve_parlementaire.csv"
+   },
+   {
+    "url": "https://data.assemblee-nationale.fr/static/openData/repository/RESERVE_PARLEMENTAIRE/2014_reserve_parlementaire.csv",
+    "nom": "2014_reserve_parlementaire.csv"
+   },
+   {
+    "url": "https://data.assemblee-nationale.fr/static/openData/repository/RESERVE_PARLEMENTAIRE/2015_reserve_parlementaire.csv",
+    "nom": "2015_reserve_parlementaire.csv"
+   },
+   {
+    "url": "https://data.assemblee-nationale.fr/static/openData/repository/RESERVE_PARLEMENTAIRE/2016_reserve_parlementaire.csv",
+    "nom": "2016_reserve_parlementaire.csv"
+   }
+  ],
+  "titre": "Reserve parlementaire de l'Assemblee nationale 2013-2016 (contient des adresses : zone restreinte)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ },
+ {
+  "id": "assoc_reserve_senat",
+  "domaine": "associations",
+  "type": "urls",
+  "personnes_physiques": true,
+  "urls": [
+   {
+    "url": "https://data.senat.fr/data/reserve/reserve2014.csv",
+    "nom": "reserve2014.csv"
+   },
+   {
+    "url": "https://data.senat.fr/data/reserve/reserve2015.csv",
+    "nom": "reserve2015.csv"
+   },
+   {
+    "url": "https://data.senat.fr/data/reserve/reserve2016.csv",
+    "nom": "reserve2016.csv"
+   },
+   {
+    "url": "https://data.senat.fr/data/reserve/reserve2017.csv",
+    "nom": "reserve2017.csv"
+   }
+  ],
+  "titre": "Reserve parlementaire du Senat 2014-2017 (contient des adresses : zone restreinte)",
+  "licence": "Licence Ouverte 2.0",
+  "module": "pipeline/associations.py"
+ }
  ],
  "non_collectables": [
   {
