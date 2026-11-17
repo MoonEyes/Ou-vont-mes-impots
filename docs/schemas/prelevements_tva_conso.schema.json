@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/prelevements_tva_conso.schema.json",
+  "title": "site/data/prelevements/tva_conso.json : taxes sur les produits par decile de niveau de vie",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "annee_reference": {
+      "$ref": "commun.schema.json#/$defs/annee"
+    },
+    "methode": {
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "non_sourcé": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deciles_niveau_de_vie": {
+      "type": "object",
+      "properties": {
+        "annee": {
+          "$ref": "commun.schema.json#/$defs/annee"
+        },
+        "bornes_eur_par_an": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 9,
+          "maxItems": 9
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "annee",
+        "bornes_eur_par_an",
+        "source"
+      ]
+    },
+    "recalage": {
+      "type": "object"
+    },
+    "totaux_nationaux_2025_md": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "md": {
+            "type": "number"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "md"
+        ]
+      }
+    },
+    "ecarts_au_total_national": {
+      "type": "object"
+    },
+    "tranches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decile": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10
+          },
+          "niveau_de_vie_min_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "niveau_de_vie_max_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "taxes_produits_eur_par_uc": {
+            "type": "object",
+            "properties": {
+              "bas": {
+                "type": "number"
+              },
+              "central": {
+                "type": "number"
+              },
+              "haut": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "bas",
+              "central",
+              "haut"
+            ]
+          },
+          "taux_effort_pct_revenu_disponible_2019": {
+            "type": "number"
+          },
+          "detail_eur_par_uc": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "bas": {
+                  "type": "number"
+                },
+                "central": {
+                  "type": "number"
+                },
+                "haut": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "central"
+              ]
+            }
+          },
+          "ajustements": {
+            "type": "object",
+            "properties": {
+              "voiture": {
+                "type": "object",
+                "properties": {
+                  "taux_equipement_pct_2017": {
+                    "type": "number"
+                  },
+                  "ticpe_si_voiture_eur_par_uc": {
+                    "type": "number"
+                  },
+                  "ticpe_sans_voiture_eur_par_uc": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "ticpe_si_voiture_eur_par_uc",
+                  "ticpe_sans_voiture_eur_par_uc"
+                ]
+              },
+              "fumeur": {
+                "type": "object",
+                "properties": {
+                  "tabac_non_fumeur_eur_par_uc": {
+                    "type": "number"
+                  },
+                  "tabac_fumeur_eur_par_uc": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "tabac_non_fumeur_eur_par_uc",
+                  "tabac_fumeur_eur_par_uc"
+                ]
+              }
+            },
+            "required": [
+              "voiture",
+              "fumeur"
+            ]
+          }
+        },
+        "required": [
+          "decile",
+          "niveau_de_vie_min_eur",
+          "niveau_de_vie_max_eur",
+          "taxes_produits_eur_par_uc",
+          "detail_eur_par_uc",
+          "ajustements"
+        ]
+      },
+      "minItems": 10,
+      "maxItems": 10
+    }
+  },
+  "required": [
+    "unite",
+    "methode",
+    "deciles_niveau_de_vie",
+    "totaux_nationaux_2025_md",
+    "tranches"
+  ]
+}

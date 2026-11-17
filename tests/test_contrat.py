@@ -84,3 +84,10 @@ def test_conservation_des_groupes_controlee():
 def test_lien_fichier_casse_detecte():
     doc = {"realisations_concretes": {"fichier_beneficiaires": "beneficiaires/programme_000.json"}}
     assert vc.liens_fichiers(SITE / "realisations" / "000.json", doc)
+
+
+def test_parts_d_un_prelevement_source_somment_a_un():
+    doc = _charger("prelevements/affectation.json")
+    pid = next(k for k, v in doc["prelevements"].items() if v["statut"] == "sourcee")
+    doc["prelevements"][pid]["ventilation"][0]["part"] += 0.01
+    assert vc.sommes_de_parts("prelevements_affectation.schema.json", doc)

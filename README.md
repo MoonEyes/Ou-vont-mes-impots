@@ -29,6 +29,7 @@ Modules du pipeline, dans l'ordre (chacun lit les sorties des précédents) :
 | `vie_politique.py` | `data/lake` (CNCCFP, JO, programme 232) | `vie_politique/` |
 | `decisions.py` | `data/lake` (AN, Sénat, JORF, PLRG) | `decisions/` (en cours) |
 | `tracabilite.py` | `site/data` + `data/lake` | `tracabilite/` (en cours) |
+| `prelevements.py` | `data/lake` (Insee, PLFSS, PLF, REI) + `recettes.json` | `prelevements/` |
 | `local.py` | `data/lake` + API géo et OFGL | `local/` (en cours) |
 
 ## Commandes
@@ -43,6 +44,7 @@ python pipeline/fetch.py && python pipeline/check_schema.py && python pipeline/t
 python pipeline/beneficiaires.py tout
 python pipeline/realisations.py produire
 python pipeline/vie_politique.py produire
+python pipeline/prelevements.py produire
 
 # contrôles
 frictionless validate datapackage.json
@@ -69,7 +71,9 @@ Changement de schéma attendu à la source : `python pipeline/check_schema.py --
 | Vie politique : programme 232, aide aux partis, comptes de campagne | 2012 à 2025 | CNCCFP, Journal officiel |
 | Dépenses publiques par fonction, par administration, recettes par impôt | 2005 à 2025 | Eurostat `gov_10a_exp`, `gov_10a_main`, `gov_10a_taxag` |
 | Solde public, part empruntée | État 2024-2025 ; APU 2015-2025 | DGFiP, Eurostat |
-| Taux de taxe foncière et TEOM par commune | exercice 2025 | DGFiP (REI) |
+| Taux de taxe foncière et TEOM par commune ; taxe foncière estimée et ses bénéficiaires | exercice 2025 | DGFiP (REI) |
+| Qui reçoit chaque prélèvement (cotisations, CSG, impôts) | 2025 | PLFSS 2026 annexe 3, PLF 2026 Voies et moyens |
+| TVA, TICPE, tabac, alcool par décile de niveau de vie | 2025 (Insee 2019 recalé) | Insee IA 88, Budget de famille 2017, ERFS 2024, Eurostat |
 
 Le détail (champs, unités, contrôles) est dans `docs/contrat_interface.md`.
 

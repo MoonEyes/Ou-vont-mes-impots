@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/prelevements_affectation.schema.json",
+  "title": "site/data/prelevements/affectation.json : qui recoit chaque prelevement (parts sourcees)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "annee": {
+      "$ref": "commun.schema.json#/$defs/annee"
+    },
+    "methode": {
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "verification_documents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "statut": {
+            "type": "string"
+          },
+          "motifs": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "manquants": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "statut"
+        ]
+      }
+    },
+    "destinataires": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9_]+$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "administration": {
+            "enum": [
+              "Etat",
+              "Collectivites locales",
+              "Securite sociale"
+            ]
+          }
+        },
+        "required": [
+          "nom",
+          "administration"
+        ]
+      }
+    },
+    "prelevements": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9_]+$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": "string"
+          },
+          "statut": {
+            "enum": [
+              "sourcee",
+              "non sourcee"
+            ]
+          },
+          "reference_juridique": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "ventilation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "destinataire": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$"
+                },
+                "part": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "source": {
+                  "type": "string"
+                },
+                "montant_md": {
+                  "type": "number"
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "destinataire",
+                "part",
+                "source"
+              ]
+            }
+          }
+        },
+        "required": [
+          "libelle",
+          "statut",
+          "ventilation"
+        ]
+      }
+    },
+    "correspondance_calcul": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9_]+$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-z0-9_]+$"
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "page": {
+            "type": "string"
+          },
+          "chemin": {
+            "type": "string"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "licence",
+          "verdict"
+        ],
+        "anyOf": [
+          {
+            "required": [
+              "url"
+            ]
+          },
+          {
+            "required": [
+              "page"
+            ]
+          }
+        ]
+      }
+    },
+    "sources_ecartees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string"
+          },
+          "raison": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nom",
+          "raison"
+        ]
+      }
+    }
+  },
+  "required": [
+    "annee",
+    "methode",
+    "destinataires",
+    "prelevements",
+    "correspondance_calcul",
+    "sources"
+  ],
+  "description": "Remplace a terme affectation_prelevements.json (prevu). Somme des parts = 1 pour statut sourcee (controle hors schema du validateur)."
+}

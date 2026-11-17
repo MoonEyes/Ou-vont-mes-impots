@@ -6,7 +6,8 @@ Usage :
     python docs/valider_contrat.py --strict   # un fichier JSON couvert par aucun schema est une erreur
 
 Controles : JSON Schema (docs/schemas/, references croisees via commun.schema.json), puis hors schema :
-liens `fichier` des arbres et des index, conservation des groupes de beneficiaires (a 1 euro pres).
+liens `fichier` des arbres et des index, conservation des groupes de beneficiaires (a 1 euro pres),
+sommes de parts des prelevements (= 1).
 
 Code de sortie : 0 si tout fichier present est conforme ; 1 si un fichier present est
 non conforme ou si un fichier marque "existant" manque. Un fichier "prevu" absent est
@@ -60,6 +61,11 @@ FICHIERS = [
     ("vie_politique_partis.schema.json", "vie_politique/partis/*.json", "existant"),
     ("vie_politique_scrutin.schema.json", "vie_politique/scrutins/*.json", "existant"),
     ("vie_politique_candidats.schema.json", "vie_politique/candidats/*.json", "existant"),
+    # contrat 1.4 : prelevements hors bulletin et affectation (pipeline/prelevements.py)
+    ("prelevements_affectation.schema.json", "prelevements/affectation.json", "existant"),
+    ("prelevements_tva_conso.schema.json", "prelevements/tva_conso.json", "existant"),
+    ("prelevements_taxe_fonciere.schema.json", "prelevements/taxe_fonciere.json", "existant"),
+    ("prelevements_taxe_fonciere_dep.schema.json", "prelevements/taxe_fonciere/*.json", "existant"),
     ("affectation_prelevements.schema.json", "affectation_prelevements.json", "prevu"),
 ]
 
@@ -180,6 +186,24 @@ def conservation_groupes(doc) -> list[str]:
     return ecarts
 
 
+def sommes_de_parts(nom_schema: str, doc) -> list[str]:
+    """Controle hors schema : parts d'un prelevement source (affectation) et parts communales (taxe fonciere) = 1."""
+    ecarts = []
+    if nom_schema == "prelevements_affectation.schema.json":
+        for pid, pr in doc["prelevements"].items():
+            somme = sum(v["part"] for v in pr["ventilation"])
+            if pr["statut"] == "sourcee" and abs(somme - 1) > 1e-4:
+                ecarts.append(f"/prelevements/{pid} : somme des parts {somme:.6f} != 1")
+            for v in pr["ventilation"]:
+                if v["destinataire"] not in doc["destinataires"]:
+                    ecarts.append(f"/prelevements/{pid} : destinataire inconnu {v['destinataire']}")
+    elif nom_schema == "prelevements_taxe_fonciere_dep.schema.json":
+        for code, v in doc["communes"].items():
+            if v is not None and abs(sum(v[6:12]) - 1) > 1e-3:
+                ecarts.append(f"/communes/{code} : parts 6 a 11 = {sum(v[6:12]):.4f} != 1")
+    return ecarts[:5]
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--quiet", action="store_true")
@@ -214,7 +238,7 @@ def main() -> int:
             if nom_schema in SCHEMAS_ARBRE:
                 errs += liens_arbre(p, doc)
             elif not errs:
-                errs += liens_fichiers(p, doc) + conservation_groupes(doc)
+                errs += liens_fichiers(p, doc) + conservation_groupes(doc) + sommes_de_parts(nom_schema, doc)
             if errs:
                 ko_motif += 1
                 print(f"KO       {p.relative_to(ROOT)}")

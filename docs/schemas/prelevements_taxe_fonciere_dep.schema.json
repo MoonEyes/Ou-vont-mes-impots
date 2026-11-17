@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/prelevements_taxe_fonciere_dep.schema.json",
+  "title": "site/data/prelevements/taxe_fonciere/<dep>.json : taxe fonciere et TEOM estimees par commune",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string"
+    },
+    "communes": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^([0-9]{2}|2[AB])[0-9]{3}$"
+      },
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "null"
+          },
+          {
+            "type": "array",
+            "minItems": 12,
+            "items": false,
+            "prefixItems": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "communes"
+  ],
+  "description": "Positions 0-2 : taxe fonciere bas/central/haut ; 3-5 : TEOM bas/central/haut (null = pas de TEOM) ; 6-11 : parts commune, EPCI, syndicats, TSE, TASA, frais de gestion (somme = 1)."
+}
