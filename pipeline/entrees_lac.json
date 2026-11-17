@@ -1310,6 +1310,46 @@
     "data/lake/sante/sirene_categories_juridiques.json"
    ],
    "octets_sources": 218186285
+  },
+  "recouvrement": {
+   "sources": {
+    "recouvrement_urssaf_controle": [
+     "data/lake/recouvrement/recouvrement_urssaf_controle.csv"
+    ],
+    "recouvrement_urssaf_travail_dissimule": [
+     "data/lake/recouvrement/recouvrement_urssaf_travail_dissimule.csv"
+    ],
+    "recouvrement_urssaf_impayes_national": [
+     "data/lake/recouvrement/recouvrement_urssaf_impayes_national.csv"
+    ],
+    "recouvrement_urssaf_impayes_regions": [
+     "data/lake/recouvrement/recouvrement_urssaf_impayes_regions.csv"
+    ],
+    "recouvrement_urssaf_lexique": [
+     "data/lake/recouvrement/recouvrement_urssaf_lexique.csv"
+    ],
+    "recouvrement_etat_apurements": [
+     "data/lake/recouvrement/recouvrement_etat_apurements.csv"
+    ],
+    "recouvrement_etat_plan_comptable": [
+     "data/lake/recouvrement/recouvrement_etat_plan_comptable/plan_comptable_de_l_etat.xlsx"
+    ],
+    "recouvrement_dgfip_annuaires": [
+     "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2010.zip",
+     "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2019.zip"
+    ],
+    "recouvrement_documents": [
+     "data/lake/recouvrement/recouvrement_documents/cour_des_comptes_lutte_fraude_fiscale_2025.pdf",
+     "data/lake/recouvrement/recouvrement_documents/dpt2026_fraude_fiscale.pdf",
+     "data/lake/recouvrement/recouvrement_documents/hcfips_synthese_fraude_sociale_2025.pdf"
+    ],
+    "recouvrement_ce_ecart_tva": [
+     "data/lake/recouvrement/recouvrement_ce_ecart_tva/vat_gap_en.html"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 24826525
   }
  },
  "urls": {
@@ -1735,6 +1775,19 @@
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2013_81e6d11b.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151646/hospidiag_opendata_2013.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2014_a2ad446d.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151545/hospidiag_opendata_2014.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2015_289b8533.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151239/hospidiag_opendata_2015.xlsx",
-  "data/lake/secu/secu_atih_finances_ebnl.parquet": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/isf-finance-ebnl-public/exports/parquet"
+  "data/lake/secu/secu_atih_finances_ebnl.parquet": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/isf-finance-ebnl-public/exports/parquet",
+  "data/lake/recouvrement/recouvrement_urssaf_controle.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/resultats-du-controle-par-les-urssaf/exports/csv",
+  "data/lake/recouvrement/recouvrement_urssaf_travail_dissimule.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/resultats-de-la-lutte-contre-le-travail-illegal/exports/csv",
+  "data/lake/recouvrement/recouvrement_urssaf_impayes_national.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/taux-rar-horsto-mensuels-entreprises-de-10-salaries-ou-plus/exports/csv",
+  "data/lake/recouvrement/recouvrement_urssaf_impayes_regions.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/taux-rar-horsto-mensuels-entreprises-de-10-salaries-ou-plus-par-region/exports/csv",
+  "data/lake/recouvrement/recouvrement_urssaf_lexique.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/lexique-des-activites-et-des-services-de-lurssaf/exports/csv",
+  "data/lake/recouvrement/recouvrement_etat_apurements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/balances_des_comptes_etat/exports/csv?where=compte+in+%28%226251400000%22%2C%226251800000%22%2C%226252400000%22%2C%226252800000%22%2C%226537100000%22%29&select=annee%2Ccompte%2Cmission%2Cprogramme%2Cbalance_sortie",
+  "data/lake/recouvrement/recouvrement_etat_plan_comptable/plan_comptable_de_l_etat.xlsx": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/balances_des_comptes_etat/attachments/plan_comptable_de_letatxlsx",
+  "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2010.zip": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip",
+  "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2019.zip": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-152555/annuaire-statistique-2019.zip",
+  "data/lake/recouvrement/recouvrement_documents/dpt2026_fraude_fiscale.pdf": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf",
+  "data/lake/recouvrement/recouvrement_documents/hcfips_synthese_fraude_sociale_2025.pdf": "https://www.strategie-plan.gouv.fr/files/files/Publications/2026/2026-01-13%20-%20HCFiPS%20-%20note%20annuelle%20fraude%20sociale/HCFIPS%20-%20Synth%C3%A8se%20Fraude%20sociale%202025%20-%20Version%20finalis%C3%A9e_0.pdf",
+  "data/lake/recouvrement/recouvrement_documents/cour_des_comptes_lutte_fraude_fiscale_2025.pdf": "https://www.ccomptes.fr/sites/default/files/2025-12/20251216-Lutte-contre-la-fraude-fiscale.pdf",
+  "data/lake/recouvrement/recouvrement_ce_ecart_tva/vat_gap_en.html": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
  }
 }

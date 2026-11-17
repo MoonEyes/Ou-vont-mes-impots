@@ -236,6 +236,13 @@ FICHIERS = [
     ("justice_defense_budget_justice.schema.json", "justice_defense/budget_justice.json", "existant"),
     ("justice_defense_ressorts.schema.json", "justice_defense/ressorts.json", "existant"),
     ("justice_defense_armement.schema.json", "justice_defense/armement.json", "existant"),
+    # contrôle et recouvrement : notifié, encaissé, estimations (pipeline/recouvrement.py)
+    ("recouvrement_index.schema.json", "recouvrement/index.json", "existant"),
+    ("recouvrement_controle_fiscal.schema.json", "recouvrement/controle_fiscal.json", "existant"),
+    ("recouvrement_controle_urssaf.schema.json", "recouvrement/controle_urssaf.json", "existant"),
+    ("recouvrement_impayes.schema.json", "recouvrement/impayes.json", "existant"),
+    ("recouvrement_apurements_etat.schema.json", "recouvrement/apurements_etat.json", "existant"),
+    ("recouvrement_estimations.schema.json", "recouvrement/estimations.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

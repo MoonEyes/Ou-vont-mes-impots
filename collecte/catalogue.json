@@ -3966,6 +3966,142 @@
    "titre": "Structures de la Justice : liste des juridictions avec leur commune (code Insee), ressource 2026-domaine-juridique-adresse.csv ; colonnes de voie, code postal, coordonnees, telephone et courriel jamais lues par le pipeline",
    "licence": "Licence Ouverte 2.0",
    "module": "pipeline/justice_defense.py"
+  },
+  {
+   "id": "recouvrement_urssaf_controle",
+   "domaine": "recouvrement",
+   "type": "ods_export",
+   "portail": "urssaf",
+   "dataset": "resultats-du-controle-par-les-urssaf",
+   "format_export": "csv",
+   "titre": "Resultats du controle et de la prevention par les Urssaf : actions, redressements, restitutions, regularisations, par organisme et par annee",
+   "licence": "ODbL",
+   "module": "pipeline/recouvrement.py"
+  },
+  {
+   "id": "recouvrement_urssaf_travail_dissimule",
+   "domaine": "recouvrement",
+   "type": "ods_export",
+   "portail": "urssaf",
+   "dataset": "resultats-de-la-lutte-contre-le-travail-illegal",
+   "format_export": "csv",
+   "titre": "Resultats de la lutte contre le travail dissimule par les Urssaf : actions et redressements, par organisme et par annee",
+   "licence": "ODbL",
+   "module": "pipeline/recouvrement.py"
+  },
+  {
+   "id": "recouvrement_urssaf_impayes_national",
+   "domaine": "recouvrement",
+   "type": "ods_export",
+   "portail": "urssaf",
+   "dataset": "taux-rar-horsto-mensuels-entreprises-de-10-salaries-ou-plus",
+   "format_export": "csv",
+   "titre": "Taux d'impayes mensuels (restes a recouvrer hors taxations d'office), entreprises de 10 salaries ou plus, metropole, depuis 2004",
+   "licence": "ODbL",
+   "module": "pipeline/recouvrement.py"
+  },
+  {
+   "id": "recouvrement_urssaf_impayes_regions",
+   "domaine": "recouvrement",
+   "type": "ods_export",
+   "portail": "urssaf",
+   "dataset": "taux-rar-horsto-mensuels-entreprises-de-10-salaries-ou-plus-par-region",
+   "format_export": "csv",
+   "titre": "Taux d'impayes mensuels, entreprises de 10 salaries ou plus, par region",
+   "licence": "ODbL",
+   "module": "pipeline/recouvrement.py"
+  },
+  {
+   "id": "recouvrement_urssaf_lexique",
+   "domaine": "recouvrement",
+   "type": "ods_export",
+   "portail": "urssaf",
+   "dataset": "lexique-des-activites-et-des-services-de-lurssaf",
+   "format_export": "csv",
+   "titre": "Lexique des activites et des services de l'Urssaf (definitions publiees : redressements, restitutions, regularisations, travail dissimule)",
+   "licence": "ODbL",
+   "module": "pipeline/recouvrement.py"
+  },
+  {
+   "id": "recouvrement_etat_apurements",
+   "domaine": "recouvrement",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "balances_des_comptes_etat",
+   "format_export": "csv",
+   "where": "compte in (\"6251400000\",\"6251800000\",\"6252400000\",\"6252800000\",\"6537100000\")",
+   "select": "annee,compte,mission,programme,balance_sortie",
+   "titre": "Comptabilite generale de l'Etat sur dix ans, comptes 62514, 62518, 62524, 62528 et 65371 : admissions en non-valeur et decisions gracieuses",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/recouvrement.py"
+  },
+  {
+   "id": "recouvrement_etat_plan_comptable",
+   "domaine": "recouvrement",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/balances_des_comptes_etat/attachments/plan_comptable_de_letatxlsx",
+     "nom": "plan_comptable_de_l_etat.xlsx"
+    }
+   ],
+   "titre": "Plan comptable de l'Etat (libelles des comptes), piece jointe du jeu balances_des_comptes_etat",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/recouvrement.py"
+  },
+  {
+   "id": "recouvrement_dgfip_annuaires",
+   "domaine": "recouvrement",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip",
+     "nom": "annuaire-statistique-2010.zip"
+    },
+    {
+     "url": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-152555/annuaire-statistique-2019.zip",
+     "nom": "annuaire-statistique-2019.zip"
+    }
+   ],
+   "titre": "Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
+   "licence": "Licence Ouverte",
+   "module": "pipeline/recouvrement.py"
+  },
+  {
+   "id": "recouvrement_documents",
+   "domaine": "recouvrement",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf",
+     "nom": "dpt2026_fraude_fiscale.pdf"
+    },
+    {
+     "url": "https://www.strategie-plan.gouv.fr/files/files/Publications/2026/2026-01-13%20-%20HCFiPS%20-%20note%20annuelle%20fraude%20sociale/HCFIPS%20-%20Synth%C3%A8se%20Fraude%20sociale%202025%20-%20Version%20finalis%C3%A9e_0.pdf",
+     "nom": "hcfips_synthese_fraude_sociale_2025.pdf"
+    },
+    {
+     "url": "https://www.ccomptes.fr/sites/default/files/2025-12/20251216-Lutte-contre-la-fraude-fiscale.pdf",
+     "nom": "cour_des_comptes_lutte_fraude_fiscale_2025.pdf"
+    }
+   ],
+   "titre": "Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
+   "licence": "documents budgetaires et rapports publics",
+   "module": "pipeline/recouvrement.py"
+  },
+  {
+   "id": "recouvrement_ce_ecart_tva",
+   "domaine": "recouvrement",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en",
+     "nom": "vat_gap_en.html"
+    }
+   ],
+   "titre": "Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
+   "licence": "Commission europeenne, reutilisation autorisee avec mention de la source (decision 2011/833/UE)",
+   "module": "pipeline/recouvrement.py"
   }
  ],
  "non_collectables": [
