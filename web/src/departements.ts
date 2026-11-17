@@ -22,6 +22,12 @@ export const DEPARTEMENTS: [string, string][] = [
   ['94', 'Val-de-Marne'], ['95', 'Val-d’Oise'],
 ]
 
+/** Départements d'outre-mer présents dans site/data/local (pages « Budget de ma commune »). */
+export const OUTRE_MER: [string, string][] = [
+  ['971', 'Guadeloupe'], ['972', 'Martinique'], ['973', 'Guyane'], ['974', 'La Réunion'], ['976', 'Mayotte'],
+]
+export const TOUS_DEPARTEMENTS: [string, string][] = [...DEPARTEMENTS, ...OUTRE_MER]
+
 export const ALSACE_MOSELLE = new Set(['57', '67', '68'])
 
 /** Département d'un code INSEE (2 caractères en métropole et Corse, 3 en outre-mer). */

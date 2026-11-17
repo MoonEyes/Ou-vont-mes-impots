@@ -45,6 +45,43 @@ describe('écrans', () => {
     expect(document.querySelector('.navigation [aria-current=page]')?.getAttribute('href')).toBe('#/')
   })
 
+  it('accueil : texte affiché sans attendre les données, puis nombre de sources ; recherche « à quoi servent mes impôts »', async () => {
+    const { rendre } = await import('../src/ecrans/accueil')
+    const zone = document.createElement('div')
+    const rendu = rendre(zone)
+    // Rendu synchrone : le titre, l'action et les rubriques sont là avant toute lecture de données.
+    expect(zone.querySelector('h1')?.textContent).toBe('Où va l’argent que tu verses ?')
+    expect(Array.from(zone.querySelectorAll('h2')).map((x) => x.textContent)).toContain('À quoi servent mes impôts ?')
+    expect(zone.querySelector('#nb-sources')?.textContent).toBe('Des sources publiques, vérifiées et reliées entre elles.')
+    expect(zone.querySelector('a[href="#/local"]')?.textContent).toBe('Budget de ma commune')
+    await rendu.suite
+    expect(zone.querySelector('#nb-sources')?.textContent).toBe('Plus de 120 sources publiques, vérifiées et reliées entre elles.')
+  })
+
+  it('titres de recherche : calcul, hub local, commune et département', async () => {
+    await ecran('#/calcul')
+    expect(document.title).toBe('Combien je verse d’impôts et de cotisations : calcul à partir du salaire · Où vont mes impôts')
+    await ecran('#/local')
+    expect(main.querySelector('h1')?.textContent).toBe('Budget de ma commune')
+    expect(document.title).toBe('Budget de ma commune · Où vont mes impôts')
+    expect(main.querySelectorAll('.liste-colonnes a')).toHaveLength(101)
+    expect(main.querySelector('a[href="#/local/departement?dep=69&page=rhone"]')?.textContent).toBe('Rhône (69)')
+    await ecran('#/local/commune?insee=69123')
+    expect(document.title).toBe('Budget de Lyon (Rhône) : dépenses, dotations, taux · Où vont mes impôts')
+    expect(Array.from(main.querySelectorAll('.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Chez moi', 'Rhône', 'Lyon'])
+    // Au moins trois chiffres propres à la commune, en texte.
+    expect(texte()).toMatch(/[\d\s]+ habitants/)
+    expect(texte()).toMatch(/de dépenses en \d{4}, soit [\d\s]+ € par habitant/)
+    expect(texte()).toMatch(/Dette en cours : [\d,\s]+ (M€|Md€|k€|€)/)
+    await ecran('#/local/departement?dep=69')
+    expect(main.querySelector('h1')?.textContent).toBe('Rhône (69) : le budget des communes')
+    expect(document.title).toBe('Rhône (69) : budget des communes, dépenses, dotations, taux · Où vont mes impôts')
+    expect(main.querySelector('a[href="#/local/commune?insee=69123&page=lyon"]')?.textContent).toBe('Lyon')
+    expect(texte()).toContain('Communes de plus de 5 000 habitants')
+    const { deCommune } = await import('../src/ecrans/commune')
+    expect(['Nantes', 'Angers', 'Le Mans', 'Les Abymes', 'La Rochelle', 'Évreux'].map(deCommune)).toEqual(['de Nantes', 'd’Angers', 'du Mans', 'des Abymes', 'de La Rochelle', 'd’Évreux'])
+  })
+
   it('1. saisie : formulaire, aide à la saisie, mention de confidentialité', async () => {
     await ecran('#/calcul')
     expect(main.querySelector('#p1-net')).not.toBeNull()
@@ -272,6 +309,7 @@ describe('écrans', () => {
     const params: Record<string, string> = {
       '/explorer/etat/detail': '?id=Justice',
       '/local/commune': '?insee=69123',
+      '/local/departement': '?dep=69',
       '/beneficiaires/programme': '?p=141',
       '/decisions/realisations': '?p=141',
       '/decisions/votes': '?p=141',
@@ -285,7 +323,8 @@ describe('écrans', () => {
       if (r.parent) {
         const fil = main.querySelector('nav[aria-label="Fil d\'Ariane"]')
         expect(fil, r.chemin).not.toBeNull()
-        expect(fil!.querySelector('[aria-current=page]')?.getAttribute('href'), r.chemin).toBe(`#${r.chemin}`)
+        // Commune et département : le dernier maillon porte le nom du lieu et son adresse propre.
+        expect(fil!.querySelector('[aria-current=page]')?.getAttribute('href')?.split('?')[0], r.chemin).toBe(`#${r.chemin}`)
       }
       const sorties = Array.from(main.querySelectorAll('a[href^="#/"]')).filter((a) => !a.closest('.fil-ariane'))
       expect(sorties.length, `${r.chemin} : aucune sortie`).toBeGreaterThan(0)
@@ -420,6 +459,7 @@ describe('écrans', () => {
       '#/explorer/ue?dep=69',
       '#/explorer/recettes?i=D211',
       '#/local/commune?insee=69123',
+      '#/local/departement?dep=69',
       '#/beneficiaires?p=141',
       '#/beneficiaires?onglet=marches',
       '#/beneficiaires?onglet=france2030',
@@ -442,6 +482,8 @@ describe('écrans', () => {
     main.querySelector<HTMLButtonElement>('[data-fichier*="presidentielle_2022"]')!.click()
     await attendreQue(() => (main.querySelector('#candidats')?.textContent ?? '').includes('ARTHAUD'))
     verifierLexique(main.textContent ?? '', 'candidats')
+    // Titres et descriptions des pages prérendues (balises title et meta description de chaque route).
+    for (const r of ROUTES) verifierLexique(`${r.titre} ${r.titrePage ?? ''} ${r.description}`, `${r.chemin} (titre et description)`)
     const html = readFileSync(join(process.cwd(), 'index.html'), 'utf8')
     for (const m of html.matchAll(/content="([^"]*)"/g)) verifierLexique(m[1], 'index.html (méta)')
     verifierLexique(html.replace(/<[^>]+>/g, ' '), 'index.html')

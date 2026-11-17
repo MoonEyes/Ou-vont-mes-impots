@@ -1,16 +1,40 @@
-// Routage par fragment (#/rubrique/page?param=valeur) : fonctionne sur GitHub Pages sans réécriture.
+// Routage : une adresse s'écrit « #/rubrique/page?param=valeur » dans le code (notation interne).
+// En développement et dans les tests, c'est le fragment de l'adresse. Sur le site publié, chaque route a sa page
+// HTML prérendue (scripts/prerendre.mjs) et src/main.ts branche ici de vrais chemins (voir src/chemins.ts).
 // Arborescence de trois niveaux au plus ; fil d'Ariane et liens « voir aussi » déduits de la table des routes.
+import { versChemin } from './chemins'
 import { annoncer, appliquerLargeurs, h } from './util'
 
 /**
  * Un écran remplit cible. Il peut rendre la main avant d'avoir tout chargé en renvoyant { suite } :
  * la page est alors affichée tout de suite et complétée ensuite (afficher attend la suite avant de se résoudre).
+ * titre et description remplacent ceux de la route quand la page dépend d'un paramètre (une commune, un département).
  */
-export type Ecran = (cible: HTMLElement, params: URLSearchParams) => Promise<void | { suite: Promise<void> }> | void | { suite: Promise<void> }
+export interface Rendu {
+  suite?: Promise<void>
+  titre?: string
+  description?: string
+  /** adresse interne propre de la page quand elle diffère de celle demandée (commune qui a sa page : /local/<insee>-<nom>/) */
+  adresse?: string
+  /** fin du fil d'Ariane propre à la page (département, commune), à la place du libellé de la route */
+  fil?: Maillon[]
+}
+export interface Maillon {
+  nom: string
+  /** adresse interne « #/… » */
+  fragment: string
+}
+export type Ecran = (cible: HTMLElement, params: URLSearchParams) => Promise<void | Rendu> | void | Rendu
 
 export interface Route {
   chemin: string
   titre: string
+  /** titre du document (balise title) quand il diffère du titre court de la page */
+  titrePage?: string
+  /** phrase de présentation de la page (balise meta description), propre à chaque route */
+  description: string
+  /** page sans contenu propre hors paramètre ou saisie : ni indexée, ni dans le plan du site */
+  sansIndex?: boolean
   /** libellé court (fil d'Ariane, cartes, liens) */
   court?: string
   charger: () => Promise<{ rendre: Ecran }>
@@ -69,17 +93,18 @@ export function chaine(routes: Route[], route: Route): Route[] {
   return out
 }
 
-function filAriane(routes: Route[], route: Route): string {
-  const c = chaine(routes, route)
-  if (c.length < 2) return ''
+/** Fil d'Ariane d'une page, accueil compris ; vide pour l'accueil. Sert aussi aux données structurées du prérendu. */
+export function maillons(routes: Route[], route: Route, fil?: Maillon[]): Maillon[] {
+  if (route.chemin === '/') return []
   const accueil = routes.find((r) => r.chemin === '/')!
-  const items = [accueil, ...c]
+  const c = chaine(routes, route).map((r) => ({ nom: nomCourt(r), fragment: '#' + r.chemin }))
+  return [{ nom: nomCourt(accueil), fragment: '#/' }, ...(fil ? [...c.slice(0, -1), ...fil] : c)]
+}
+
+function filAriane(items: Maillon[]): string {
+  if (items.length < 3) return ''
   return `<nav class="fil-ariane" aria-label="Fil d'Ariane"><ol>${items
-    .map((r, i) =>
-      i === items.length - 1
-        ? `<li><a href="#${r.chemin}" aria-current="page">${h(nomCourt(r))}</a></li>`
-        : `<li><a href="#${r.chemin}">${h(nomCourt(r))}</a></li>`,
-    )
+    .map((m, i) => `<li><a href="${h(m.fragment)}"${i === items.length - 1 ? ' aria-current="page"' : ''}>${h(m.nom)}</a></li>`)
     .join('')}</ol></nav>`
 }
 
@@ -94,46 +119,98 @@ function voirAussi(routes: Route[], route: Route): string {
   ].join('')}</ul></nav>`
 }
 
+export const NOM_SITE = 'Où vont mes impôts'
+export const TITRE_ACCUEIL = 'Où vont mes impôts : vois où va l’argent que tu verses'
+/** Titre du document d'une page ; propre (titre donné par l'écran) pour une commune ou un département. */
+export const titreDocument = (route: Route, propre?: string) =>
+  route.chemin === '/' ? TITRE_ACCUEIL : `${propre ?? route.titrePage ?? route.titre} · ${NOM_SITE}`
+
+/** Adresse canonique d'une adresse interne, relative à la racine du site : sans paramètre de vue. */
+export const cheminCanonique = (fragment: string) => versChemin(fragment).split('?')[0]
+
+// Lecture et remplacement de l'adresse courante : le fragment par défaut, de vrais chemins sur le site publié.
+let adresse = {
+  lire: (): string => location.hash,
+  remplacer: (fragment: string) => {
+    if (typeof history !== 'undefined' && history.replaceState) history.replaceState(null, '', fragment)
+    else location.hash = fragment
+  },
+}
+export function brancherAdresses(a: typeof adresse) {
+  adresse = a
+}
+
+/** Balises de l'en-tête tenues à jour pendant la navigation (pages prérendues : data-site sur <html>). */
+function majEntete(titre: string, description: string, fragment: string) {
+  document.title = titre
+  const site = document.documentElement?.dataset?.site
+  if (!site) return
+  const url = site + cheminCanonique(fragment)
+  const poser = (selecteur: string, attribut: string, valeur: string) => document.head.querySelector(selecteur)?.setAttribute(attribut, valeur)
+  poser('link[rel="canonical"]', 'href', url)
+  poser('meta[property="og:url"]', 'content', url)
+  poser('meta[name="description"]', 'content', description)
+  poser('meta[property="og:description"]', 'content', description)
+  poser('meta[name="twitter:description"]', 'content', description)
+  poser('meta[property="og:title"]', 'content', titre)
+  poser('meta[name="twitter:title"]', 'content', titre)
+}
+
 let jeton = 0
 
-export async function afficher(routes: Route[], cible: HTMLElement, fragment = location.hash, focus = true) {
+export async function afficher(routes: Route[], cible: HTMLElement, fragment = adresse.lire(), focus = true) {
   const nouveau = redirection(fragment)
   if (nouveau) {
-    if (typeof history !== 'undefined' && history.replaceState) history.replaceState(null, '', nouveau)
-    else location.hash = nouveau
+    adresse.remplacer(nouveau)
     fragment = nouveau
   }
   const { chemin, params } = lireFragment(fragment)
   const route = routes.find((r) => r.chemin === chemin) ?? routes[0]
   const moi = ++jeton
   let suite: Promise<void> | null = null
+  let propre: Rendu = {}
   cible.setAttribute('aria-busy', 'true')
   // Navigation interne : retour en haut avant de vider l'écran, pour que le pied de page ne remonte pas
   // dans la zone visible pendant le chargement (décalage de mise en page, CLS).
   if (focus) window.scrollTo?.(0, 0)
-  cible.innerHTML = '<p class="chargement">Chargement…</p>'
+  // Premier affichage d'une page prérendue : son contenu reste en place jusqu'à ce que l'écran soit complet
+  // (suite comprise), puis il est remplacé d'un coup, sans état intermédiaire ni décalage de mise en page.
+  const prerendu = !focus && !!cible.querySelector('.ecran')
+  if (!prerendu) cible.innerHTML = '<p class="chargement">Chargement…</p>'
   try {
     const mod = await route.charger()
     if (moi !== jeton) return
     const zone = document.createElement('div')
     zone.className = 'ecran'
     const rendu = await mod.rendre(zone, params)
-    if (rendu && typeof rendu === 'object' && 'suite' in rendu) suite = rendu.suite
+    if (rendu && typeof rendu === 'object') {
+      propre = rendu
+      suite = rendu.suite ?? null
+    }
+    if (prerendu && suite) {
+      await suite.catch((e) => console.error(e))
+      suite = null
+    }
     if (moi !== jeton) return
-    const redirige = lireFragment(location.hash).chemin
+    const redirige = lireFragment(adresse.lire()).chemin
     if (redirige !== chemin && routes.some((r) => r.chemin === redirige)) return
-    zone.insertAdjacentHTML('afterbegin', filAriane(routes, route))
+    zone.insertAdjacentHTML('afterbegin', filAriane(maillons(routes, route, propre.fil)))
     zone.insertAdjacentHTML('beforeend', voirAussi(routes, route))
     appliquerLargeurs(zone)
     cible.replaceChildren(zone)
   } catch (e) {
     if (moi !== jeton) return
     console.error(e)
-    cible.innerHTML = `${filAriane(routes, route)}<h1>${h(route.titre)}</h1><p class="erreur">Cette page n’a pas pu s’afficher : une donnée est manquante ou illisible. Le reste du site reste disponible.</p><p><a href="#/explorer">Explorer les dépenses publiques</a></p>`
+    cible.innerHTML = `${filAriane(maillons(routes, route))}<h1>${h(route.titre)}</h1><p class="erreur">Cette page n’a pas pu s’afficher : une donnée est manquante ou illisible. Le reste du site reste disponible.</p><p><a href="#/explorer">Explorer les dépenses publiques</a></p>`
   } finally {
     if (moi === jeton) cible.removeAttribute('aria-busy')
   }
-  document.title = route.chemin === '/' ? 'Où vont mes impôts : vois où va l’argent que tu verses' : `${route.titre} · Où vont mes impôts`
+  if (propre.adresse && propre.adresse !== fragment && moi === jeton && lireFragment(adresse.lire()).chemin === chemin) {
+    adresse.remplacer(propre.adresse)
+    fragment = propre.adresse
+  }
+  const page = { route, titre: titreDocument(route, propre.titre), description: propre.description ?? route.description, fil: maillons(routes, route, propre.fil) }
+  majEntete(page.titre, page.description, fragment)
   const racine = '/' + (route.chemin.split('/')[1] ?? '')
   document.querySelectorAll('.navigation [data-rubrique]').forEach((a) => {
     const r = a.getAttribute('data-rubrique')
@@ -156,4 +233,5 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = l
       console.error(e)
     }
   }
+  return page
 }

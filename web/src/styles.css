@@ -935,6 +935,22 @@ th.nombre {
   font-weight: 700;
 }
 
+/* Listes longues de liens (départements, communes) : colonnes selon la largeur disponible */
+.liste-colonnes {
+  list-style: none;
+  padding: 0;
+  columns: 16rem auto;
+  column-gap: 1.5rem;
+}
+.liste-colonnes li {
+  break-inside: avoid;
+}
+.liste-colonnes a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
 /* Accueil */
 .accueil-tete {
   max-width: 40rem;

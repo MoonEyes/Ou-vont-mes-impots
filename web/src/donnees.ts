@@ -13,11 +13,18 @@ export const VERSION_CONTRAT_SITE = '1.0'
 
 const cache = new Map<string, Promise<unknown>>()
 
+// Racine du site devant data/ : vide tant que la page est à la racine (développement, tests), chemin absolu
+// (« /Ou-vont-mes-impots/ ») sur les pages prérendues, qui vivent dans des sous-dossiers.
+let racineSite = ''
+export function definirRacine(r: string) {
+  racineSite = r
+}
+
 function cheminSur(chemin: string): string {
   // Refuse tout ce qui ressemble à une URL absolue ou à une remontée d'arborescence.
   if (!/^[A-Za-z0-9_\-./]+$/.test(chemin) || chemin.includes('..') || chemin.startsWith('/'))
     throw new DonneeAbsente(chemin)
-  return 'data/' + chemin
+  return racineSite + 'data/' + chemin
 }
 
 export function charger<T = any>(chemin: string): Promise<T> {

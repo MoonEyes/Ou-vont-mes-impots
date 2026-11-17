@@ -1,9 +1,9 @@
 // Accueil (page de démarrage) : une seule action principale, comment ça marche, garanties, limites.
 import { plusDeSources } from '../composants/chiffres-site'
-import { h } from '../util'
 
-export async function rendre(cible: HTMLElement) {
-  const n = await plusDeSources()
+// Le texte s'affiche tout de suite ; le nombre de sources, lu dans les données, complète ensuite sa phrase
+// (même paragraphe, donc sans décalage de mise en page).
+export function rendre(cible: HTMLElement) {
   const bouton = `<p class="actions"><a class="bouton bouton-principal bouton-grand" href="#/calcul">Calculer à partir de mon salaire</a></p>`
   cible.innerHTML = `
 <div class="accueil-tete">
@@ -24,9 +24,19 @@ export async function rendre(cible: HTMLElement) {
 
 <div class="garantie">
   <p><strong><span class="surligne">Rien ne quitte ton téléphone.</span></strong> Le calcul se fait dans ton navigateur : pas de compte, pas de cookie, pas de mesure d’audience.</p>
-  ${n ? `<p>Plus de ${h(String(n))} sources publiques, vérifiées et reliées entre elles.</p>` : ''}
+  <p id="nb-sources">Des sources publiques, vérifiées et reliées entre elles.</p>
   <p>Chaque montant renvoie au document public d’où il vient, jusqu’à la ligne du budget voté.</p>
 </div>
+
+<h2>À quoi servent mes impôts ?</h2>
+<p>Ce que tu verses en impôts, en cotisations et en taxes va à quatre ensembles : l’État, la Sécurité sociale, les collectivités locales et l’Union européenne. Le site suit chaque montant jusqu’au document public d’où il vient.</p>
+<ul class="liens-sortie">
+  <li><a href="#/explorer/etat">Sur 100 € dépensés par l’État</a></li>
+  <li><a href="#/explorer/secu">Sécurité sociale : retraites, santé, famille</a></li>
+  <li><a href="#/explorer/recettes">D’où vient l’argent : les recettes</a></li>
+  <li><a href="#/explorer/dette">La dette publique</a></li>
+  <li><a href="#/local">Budget de ma commune</a></li>
+</ul>
 
 <h2>Ce que le site fait, et ce qu’il ne fait pas</h2>
 <div class="grille-2">
@@ -50,4 +60,10 @@ export async function rendre(cible: HTMLElement) {
 <p><strong>Une démarche citoyenne et indépendante :</strong> site non officiel, gratuit, sans publicité, réalisé à partir de données publiques ouvertes.</p>
 <p class="source">data.economie.gouv.fr, Insee, Eurostat, DGFiP, Urssaf (modele-social), Assemblée nationale, Cour des comptes, CNCCFP. <a href="#/demarche">La démarche</a> · <a href="#/methode">Méthode et sources</a></p>
 ${bouton}`
+  return {
+    suite: plusDeSources().then((n) => {
+      const p = cible.querySelector('#nb-sources')
+      if (p && n) p.textContent = `Plus de ${n} sources publiques, vérifiées et reliées entre elles.`
+    }),
+  }
 }

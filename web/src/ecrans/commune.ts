@@ -1,18 +1,21 @@
 // Ta commune (site/data/local/) : budget de la commune, bloc communal, département, région,
 // dotations de l'État, taux votés, subventions publiées. Chaque niveau à part : on n'additionne jamais.
+import { fragmentCommune, fragmentDepartement } from '../chemins'
 import { partPersonnelle } from '../composants/hub'
 import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
-import { lien } from '../routeur'
+import { lien, type Rendu } from '../routeur'
 import { absent, appliquerLargeurs, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
 
-interface Geo {
+export interface Geo {
+  millesime: string
+  source: string
   departement: { code: string; nom: string }
   region: { code: string; nom: string }
   communes: Record<string, { nom: string; population: number; siren: string; epci: string | null; departement: string; region: string }>
   epci: Record<string, { nom: string; population: number; departement_siege: string }>
 }
-interface Budgets {
+export interface Budgets {
   millesime: string
   source: string
   annees: string[]
@@ -35,7 +38,7 @@ function lire(b: Budgets, eur: Record<string, (number | null)[]>, an: string, k:
   return typeof v === 'number' ? v : null
 }
 
-function blocBudget(b: Budgets, c: Budgets['collectivites'][string], titre: string, cle: boolean): string {
+export function blocBudget(b: Budgets, c: Budgets['collectivites'][string], titre: string, cle: boolean): string {
   const an = [...b.annees].reverse().find((a) => c.eur[a]) ?? b.annees[b.annees.length - 1]
   const total = lire(b, c.eur, an, 'depenses_totales')
   if (total === null || total <= 0) return `<h2>${h(titre)}</h2>${absent()}`
@@ -64,7 +67,15 @@ function blocBudget(b: Budgets, c: Budgets['collectivites'][string], titre: stri
 </div>`
 }
 
-export async function rendre(cible: HTMLElement, params: URLSearchParams): Promise<{ suite: Promise<void> } | void> {
+/** « de Nantes », « d’Angers », « du Mans », « des Abymes ». */
+export function deCommune(nom: string): string {
+  if (/^Le /.test(nom)) return `du ${nom.slice(3)}`
+  if (/^Les /.test(nom)) return `des ${nom.slice(4)}`
+  return /^[AEIOUYÀÂÉÈÊËÎÏÔÛÙŒ]/i.test(nom) ? `d’${nom}` : `de ${nom}`
+}
+export const titreCommune = (nom: string, departement: string) => `Budget ${deCommune(nom)} (${departement}) : dépenses, dotations, taux`
+
+export async function rendre(cible: HTMLElement, params: URLSearchParams): Promise<Rendu | void> {
   const insee = params.get('insee') ?? ''
   if (!/^(\d{5}|2[AB]\d{3})$/.test(insee)) {
     location.hash = '#/local'
@@ -98,6 +109,7 @@ ${attente('sec-subventions')}
   <li><a href="#/explorer/collectivites">Les collectivités locales en France</a></li>
   <li><a href="${lien('/decisions/controle', { dep })}">Les rapports de contrôle dans le département ${h(geo.departement.nom)}</a></li>
   <li><a href="${lien('/explorer/ue', { dep })}">Les fonds européens dans le département ${h(geo.departement.nom)}</a></li>
+  <li><a href="${fragmentDepartement(dep, geo.departement.nom)}">Les communes du département ${h(geo.departement.nom)}</a></li>
   <li><a href="#/local">Choisir une autre commune</a></li>
 </ul>
 ${partPersonnelle()}`
@@ -125,7 +137,7 @@ ${partPersonnelle()}`
     const reg = br?.collectivites[g.region]
     remplir(
       'sec-budgets',
-      `${commune && bc ? blocBudget(bc, commune, `Le budget de ${commune.nom}`, true) : absent('Budget de la commune non disponible.')}
+      `${commune && bc ? blocBudget(bc, commune, `Le budget ${deCommune(commune.nom)}`, true) : absent('Budget de la commune non disponible.')}
 ${bloc && be ? blocBudget(be, bloc, `Le bloc communal (communes et intercommunalité, sans double compte)`, false) : ep && be ? blocBudget(be, ep, `L’intercommunalité : ${ep.nom}`, false) : ''}
 ${dpt && bd ? blocBudget(bd, dpt, `Le département : ${dpt.nom}`, false) : ''}
 ${reg && br ? blocBudget(br, reg, `La région : ${reg.nom}`, false) : ''}`,
@@ -192,6 +204,13 @@ ${dec ? `<p class="aide">${h(dec.limites)}</p>` : ''}`,
     )
   })
   return {
+    titre: titreCommune(g.nom, geo.departement.nom),
+    adresse: fragmentCommune(insee, g.nom, g.population),
+    fil: [
+      { nom: geo.departement.nom, fragment: fragmentDepartement(dep, geo.departement.nom) },
+      { nom: g.nom, fragment: fragmentCommune(insee, g.nom, g.population) },
+    ],
+    description: `Budget ${deCommune(g.nom)} (${geo.departement.nom}, ${new Intl.NumberFormat('fr-FR').format(g.population)} habitants) : dépenses de la commune et par habitant, dotations versées par l’État, taux d’impôts locaux votés, budgets de l’intercommunalité, du département et de la région.`,
     suite: suite.catch((e) => {
       console.error(e)
       cible.querySelectorAll<HTMLElement>('.section-donnees[aria-busy]').forEach((z) => {

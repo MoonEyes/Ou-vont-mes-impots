@@ -7,7 +7,8 @@
   "scripts": {
     "copier-donnees": "node scripts/copier-donnees.mjs",
     "dev": "npm run copier-donnees && vite",
-    "build": "npm run copier-donnees && tsc --noEmit && vite build",
+    "build": "npm run copier-donnees && tsc --noEmit && vite build && node scripts/prerendre.mjs",
+    "prerendre": "node scripts/prerendre.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "verifier-bundle": "vitest run tests/bundle.test.ts"
