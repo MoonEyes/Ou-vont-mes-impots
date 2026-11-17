@@ -148,6 +148,13 @@ FICHIERS = [
     ("local_decisions_annee.schema.json", "local/decisions/*/inconnue*.json", "existant"),
     ("territoires_index.schema.json", "territoires/index.json", "existant"),   # territoires.py (contrat 2.25)
     ("territoires_departement.schema.json", "territoires/[0-9]*.json", "existant"),
+    # aide au développement : APD déclarée, AFD, OCDE, Expertise France, Proparco (pipeline/aide_developpement.py)
+    ("aide_developpement_index.schema.json", "aide_developpement/index.json", "existant"),
+    ("aide_developpement_apd_declaree.schema.json", "aide_developpement/apd_declaree.json", "existant"),
+    ("aide_developpement_afd.schema.json", "aide_developpement/afd.json", "existant"),
+    ("aide_developpement_ocde.schema.json", "aide_developpement/ocde.json", "existant"),
+    ("aide_developpement_expertise_france.schema.json", "aide_developpement/expertise_france.json", "existant"),
+    ("aide_developpement_proparco.schema.json", "aide_developpement/proparco.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

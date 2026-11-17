@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/aide_developpement_proparco.schema.json",
+  "title": "site/data/aide_developpement/proparco.json : financements signés par Proparco, agrégés par année, pays et instrument ; aucun client nommé",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "licence",
+    "definitions",
+    "regle_personnes",
+    "annees",
+    "ordre",
+    "par_annee",
+    "colonnes",
+    "lignes",
+    "ecartes",
+    "limites"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20,
+      "pattern": "ne s'additionnent pas"
+    },
+    "collecte_le": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "licence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "definitions": {
+      "type": "object",
+      "required": [
+        "pret",
+        "participation",
+        "garantie",
+        "don"
+      ]
+    },
+    "regle_personnes": {
+      "type": "string",
+      "minLength": 20
+    },
+    "annees": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      }
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "cles",
+        "regle"
+      ],
+      "properties": {
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "regle": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
+    "par_annee": {
+      "type": "object",
+      "required": [
+        "colonnes",
+        "lignes"
+      ],
+      "properties": {
+        "colonnes": {
+          "const": [
+            "annee",
+            "instrument",
+            "financements",
+            "montant_eur"
+          ]
+        },
+        "lignes": {
+          "type": "array",
+          "minItems": 10,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              {
+                "enum": [
+                  "pret",
+                  "participation",
+                  "garantie",
+                  "don",
+                  "accompagnement_technique",
+                  "obligation",
+                  "non_renseigne"
+                ]
+              },
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            ],
+            "items": false,
+            "minItems": 4
+          }
+        }
+      }
+    },
+    "colonnes": {
+      "const": [
+        "annee",
+        "pays",
+        "instrument",
+        "financements",
+        "montant_eur"
+      ]
+    },
+    "lignes": {
+      "type": "array",
+      "minItems": 100,
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          },
+          {
+            "enum": [
+              "pret",
+              "participation",
+              "garantie",
+              "don",
+              "accompagnement_technique",
+              "obligation",
+              "non_renseigne"
+            ]
+          },
+          {
+            "type": "integer",
+            "minimum": 1
+          },
+          {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        ],
+        "items": false,
+        "minItems": 5
+      }
+    },
+    "ecartes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "motif"
+        ]
+      }
+    },
+    "limites": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 20
+      }
+    }
+  }
+}

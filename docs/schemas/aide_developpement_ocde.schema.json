@@ -1,0 +1,428 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/aide_developpement_ocde.schema.json",
+  "title": "site/data/aide_developpement/ocde.json : statistiques du CAD de l'OCDE pour la France, versements par pays (DAC2A) et engagements par secteur (DAC5), millions de dollars courants",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "licence",
+    "versements_par_pays",
+    "engagements_par_secteur",
+    "limites"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "type": "string",
+      "pattern": "dollars"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20,
+      "pattern": "ne s'additionnent pas"
+    },
+    "collecte_le": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "licence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "versements_par_pays": {
+      "type": "object",
+      "required": [
+        "table",
+        "annees",
+        "mesures",
+        "pays",
+        "ordre",
+        "colonnes",
+        "lignes",
+        "ensemble_pays_en_developpement",
+        "note"
+      ],
+      "properties": {
+        "table": {
+          "const": "DAC2A"
+        },
+        "annees": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          }
+        },
+        "mesures": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "cle",
+              "code_ocde",
+              "nom"
+            ]
+          }
+        },
+        "pays": {
+          "type": "array",
+          "minItems": 50,
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "nom",
+              "nom_tri"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "pattern": "^([A-Z]{3}|R[0-9]+|NON_VENTILE)$"
+              },
+              "nom": {
+                "type": "string",
+                "minLength": 1
+              },
+              "nom_tri": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "enum": [
+                  "pays",
+                  "regroupement"
+                ]
+              },
+              "nom_source": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "ordre": {
+          "type": "object",
+          "required": [
+            "cles",
+            "regle"
+          ],
+          "properties": {
+            "cles": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "regle": {
+              "type": "string",
+              "minLength": 20
+            }
+          }
+        },
+        "colonnes": {
+          "const": [
+            "annee",
+            "code",
+            "dons_musd",
+            "prets_bruts_musd",
+            "remboursements_prets_musd",
+            "prets_nets_musd",
+            "apd_brute_musd",
+            "apd_nette_musd",
+            "multilaterale_imputee_musd"
+          ]
+        },
+        "lignes": {
+          "type": "array",
+          "minItems": 500,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              {
+                "type": "string",
+                "pattern": "^[A-Z]{3}$"
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            ],
+            "items": false,
+            "minItems": 9
+          }
+        },
+        "ensemble_pays_en_developpement": {
+          "type": "object",
+          "required": [
+            "colonnes",
+            "lignes"
+          ],
+          "properties": {
+            "lignes": {
+              "type": "array",
+              "minItems": 5,
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "$ref": "commun.schema.json#/$defs/annee_entier"
+                  },
+                  {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                ],
+                "items": false,
+                "minItems": 8
+              }
+            }
+          }
+        },
+        "note": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
+    "engagements_par_secteur": {
+      "type": "object",
+      "required": [
+        "table",
+        "annees",
+        "mesures",
+        "secteurs",
+        "ordre",
+        "colonnes",
+        "lignes",
+        "note"
+      ],
+      "properties": {
+        "table": {
+          "const": "DAC5"
+        },
+        "annees": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          }
+        },
+        "mesures": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "cle",
+              "code_ocde",
+              "nom"
+            ]
+          }
+        },
+        "ordre": {
+          "type": "object",
+          "required": [
+            "cles",
+            "regle"
+          ],
+          "properties": {
+            "cles": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "regle": {
+              "type": "string",
+              "minLength": 20
+            }
+          }
+        },
+        "secteurs": {
+          "type": "array",
+          "minItems": 20,
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "nom",
+              "nom_source",
+              "niveau"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "pattern": "^[0-9]{3,4}$"
+              },
+              "niveau": {
+                "enum": [
+                  "total",
+                  "groupe",
+                  "secteur",
+                  "sous_secteur"
+                ]
+              }
+            }
+          }
+        },
+        "colonnes": {
+          "const": [
+            "annee",
+            "code",
+            "engagements_apd_musd",
+            "dont_dons_musd",
+            "autres_apports_publics_musd"
+          ]
+        },
+        "lignes": {
+          "type": "array",
+          "minItems": 100,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              {
+                "type": "string",
+                "pattern": "^[0-9]{3,4}$"
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            ],
+            "items": false,
+            "minItems": 5
+          }
+        },
+        "note": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
+    "limites": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 20
+      }
+    }
+  }
+}

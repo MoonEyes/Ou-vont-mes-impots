@@ -3060,7 +3060,64 @@
   ],
   "titre": "Ministere de la Culture, aides a la presse par dispositif (index aides-a-la-presse-1), 2012-2025 (pipeline/subventions.py)",
   "licence": "Licence Ouverte 2.0"
- }
+ },
+  {
+   "id": "apd_afd_iati",
+   "domaine": "aide_developpement",
+   "type": "datagouv",
+   "dataset": "donnees-de-laide-au-developpement-de-lafd-1",
+   "format": "xml",
+   "toutes": true,
+   "titre": "AFD, donnees de l'aide au developpement au standard IATI 2.03 (un fichier par pays, projets multi-pays) : concours, engagements et versements par annee, type de financement (don, pret), secteur CAD",
+   "licence": "Licence Ouverte (fr-lo, data.gouv.fr)",
+   "producteur": "Agence francaise de developpement",
+   "module": "pipeline/aide_developpement.py"
+  },
+  {
+   "id": "apd_ocde_dac2a",
+   "domaine": "aide_developpement",
+   "type": "url",
+   "format": "csv",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.DCD.FSD,DSD_DAC2@DF_DAC2A,/FRA...USD.V?startPeriod=2015&format=csvfilewithlabels",
+   "titre": "OCDE CAD, table DAC2A : versements d'APD de la France par pays et region beneficiaires, dons, prets bruts, remboursements, APD multilaterale imputee (millions de dollars courants, depuis 2015)",
+   "licence": "CC BY 4.0 (acces ouvert de l'OCDE depuis le 1er juillet 2024, mention de la source) ; page des conditions d'utilisation de l'OCDE refusee aux scripts (403) le 17/11/2026, non contournee",
+   "producteur": "OCDE, Direction de la cooperation pour le developpement",
+   "module": "pipeline/aide_developpement.py"
+  },
+  {
+   "id": "apd_ocde_dac5",
+   "domaine": "aide_developpement",
+   "type": "url",
+   "format": "csv",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.DCD.FSD,DSD_DAC1@DF_DAC5,/FRA.....USD.V?startPeriod=2015&format=csvfilewithlabels",
+   "titre": "OCDE CAD, table DAC5 : engagements d'APD bilaterale de la France par secteur, dont dons, autres apports publics (millions de dollars courants, depuis 2015)",
+   "licence": "CC BY 4.0 (acces ouvert de l'OCDE depuis le 1er juillet 2024, mention de la source) ; page des conditions d'utilisation de l'OCDE refusee aux scripts (403) le 17/11/2026, non contournee",
+   "producteur": "OCDE, Direction de la cooperation pour le developpement",
+   "module": "pipeline/aide_developpement.py"
+  },
+  {
+   "id": "apd_expertise_france_contrats",
+   "domaine": "aide_developpement",
+   "type": "url",
+   "format": "csv",
+   "url": "https://opendata.afd.fr/api/explore/v2.1/catalog/datasets/donnees-des-contrats-dachats-et-de-subventions-dun-montant-superieur-a-15-000-ef/exports/csv",
+   "titre": "Expertise France, contrats d'achat et de subvention de plus de 15 000 euros (cooperation technique, depuis 2020) ; contient des experts individuels nommes : zone restreinte, agregats par pays et bailleur seulement",
+   "licence": "non precisee par le producteur (data.gouv.fr : notspecified ; portail AFD : vide) ; informations publiques reutilisables (CRPA, art. L. 321-1), mention de la source",
+   "producteur": "Expertise France (groupe AFD)",
+   "personnes_physiques": true,
+   "module": "pipeline/aide_developpement.py"
+  },
+  {
+   "id": "apd_proparco",
+   "domaine": "aide_developpement",
+   "type": "url",
+   "format": "csv",
+   "url": "https://opendata.afd.fr/api/explore/v2.1/catalog/datasets/donnees-de-laide-au-developpement-de-proparco/exports/csv",
+   "titre": "Proparco (groupe AFD), financements signes : pays, secteur, type de financement (pret, participation, garantie), montant ; agregats seulement",
+   "licence": "non precisee par le producteur (data.gouv.fr : notspecified ; portail AFD : vide) ; informations publiques reutilisables (CRPA, art. L. 321-1), mention de la source",
+   "producteur": "Proparco (groupe AFD)",
+   "module": "pipeline/aide_developpement.py"
+  }
  ],
  "non_collectables": [
   {
