@@ -107,7 +107,7 @@ Le millésime réel est toujours lu dans le fichier (`millesime`, `annee`, `anne
 | Champ | Type | Sens |
 |---|---|---|
 | `millesime` | `{etat_defaut, etat_disponibles[], nature_etat}` | vue par défaut de l'arbre État et vues disponibles |
-| `genere_le` | chaîne date-heure ISO 8601 | fin du passage du pipeline ; **ne déclenche jamais de commit à lui seul** (workflow `data.yml`) |
+| `genere_le` | chaîne date-heure ISO 8601 | `meta.json` : fin du passage du pipeline ; **ne déclenche jamais de commit à lui seul** (workflow `data.yml`). Ailleurs (`niches/`, `secu/`, `decisions/`, millésimes « Sources collectées au »), date de la dernière collecte de l'entrepôt (`pipeline/reproductible.py`, `SOURCE_DATE_EPOCH` prioritaire) : deux productions sur le même entrepôt donnent des fichiers identiques |
 | `sources.<jeu>.source` | chaîne | identifiant de la source (portail/jeu) |
 | `sources.<jeu>.maj_source` | chaîne ISO 8601 ou `null` | date de mise à jour déclarée par la source |
 | `controle.etat.<vue>` | objet | une entrée par vue (`execution_2024`, `lfi_2025`, `nature_plf2025`) : `total_md`, `arbre` (`{noeuds, feuilles, profondeur, fichiers}`), `prelevements_sur_recettes_md`, `hors_perimetre_md`, `remboursements_et_degrevements` (montant exclu et motif), `rapprochement_plrg` |
@@ -404,6 +404,8 @@ Pour une commune : ce que dépensent la commune, son intercommunalité, son dép
 | `local/decisions/index.json`, `<siren>/index.json`, `<siren>/<annee>.json` | `local_decisions_*` | subventions votées par collectivité, couverture publiée | SCDL, Région Pays de la Loire, SIRENE |
 
 Règles propres à ce bloc : on n'additionne jamais commune + EPCI (le bloc communal consolidé de l'OFGL sert à cela) ni département ou région au bloc communal. Bénéficiaires nommés : personnes morales seulement (`sirene.personne_morale`, groupements de personnes physiques exclus) ; le reste est agrégé dans `exclus_personnes_physiques_ou_non_identifies`. Les textes libres (objets de subvention, intitulés de projets, objets de délibération) sont remplacés par `null` s'ils contiennent une civilité ou un prénom suivi d'un nom.
+
+Année d'une subvention (`<siren>/<annee>.json`) : SCDL, année de la date de décision ou de convention, à défaut colonne d'année, puis année du jeu ; Région Pays de la Loire, préfixe du numéro d'opération, à défaut année d'exécution du mandatement. Faute de toute année, la ligne va dans `<siren>/inconnue.json` (`annee` = `"inconnue"`), jamais rattachée à une année devinée. Région Pays de la Loire : une opération à plusieurs tiers est attribuée au SIRET le plus mandaté (à égalité, le plus petit SIRET) et retirée des noms si l'un de ses tiers est une personne physique ; les mandatements sans numéro d'opération sont regroupés par SIRET et année d'exécution, sans vote (`mandatements_sans_operation` dans `<siren>/index.json`). Toute sélection est faite par un tri explicite sur des clés déterministes : deux productions sur le même entrepôt donnent des fichiers identiques octet pour octet (`tests/test_reproductibilite.py`).
 
 ### 2.16 Sécurité sociale et protection sociale : `secu/` (contrat 1.5)
 

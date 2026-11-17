@@ -86,6 +86,11 @@
     },
     "programmes": {
       "type": "object"
+    },
+    "mandatements_sans_operation": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Région Pays de la Loire : lignes de mandatements publiées sans numéro d'opération, regroupées par SIRET et année d'exécution."
     }
   },
   "required": [

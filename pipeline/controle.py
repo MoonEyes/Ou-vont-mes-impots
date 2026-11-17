@@ -37,6 +37,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import html
 import io
 import json
@@ -48,6 +49,12 @@ import zipfile
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
+from reproductible import date_sources  # noqa: E402
+
+def id_stable(texte: str) -> int:
+    """Identifiant numérique stable d'une adresse (9 chiffres, SHA-256) : hash() varie d'un processus à l'autre."""
+    return int(hashlib.sha256(texte.encode("utf-8")).hexdigest()[:15], 16) % 10**9
+
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -469,7 +476,7 @@ def lire_pages_ccomptes() -> list[dict]:
         principal = next((d for d in docs if TYPES_CONNUS.match(d["type"])), None)
         resume = texte_sans_personne(x.get("resume"))
         jur = x.get("juridiction") or ""
-        out.append({"id": f"cc-{x.get('node') or abs(hash(x['url'])) % 10**9}", "titre": x["titre"],
+        out.append({"id": f"cc-{x.get('node') or id_stable(x['url'])}", "titre": x["titre"],
                     "date": x.get("date"), "annee": int(x["date"][:4]) if x.get("date") else None,
                     "type": principal["type"] if principal else None,
                     "juridiction": jur.title() if jur.isupper() else jur or None,
@@ -548,7 +555,7 @@ def produire_controle(geo: dict) -> dict:
                 u = li.group(1).strip()
                 if any(p["url"] == u for p in pages):
                     continue
-                rss.append({"id": f"rss-{abs(hash(u)) % 10**9}", "titre": propre(re.sub(r"<!\[CDATA\[|\]\]>", "",
+                rss.append({"id": f"rss-{id_stable(u)}", "titre": propre(re.sub(r"<!\[CDATA\[|\]\]>", "",
                             ti.group(1))), "date": date, "annee": int(date[:4]) if date else None, "type": None,
                             "juridiction": None, "url": u, "source": "ccomptes.fr, flux RSS des publications"})
     # Collectivités : ROD des CRC (métadonnées data.gouv) + pages CRC lues sur ccomptes.fr
@@ -1166,7 +1173,7 @@ def produire() -> dict:
     i = produire_influence()
     a = produire_aides()
     index = {
-        "millesime": f"Généré le {datetime.now(timezone.utc):%Y-%m-%d}",
+        "millesime": f"Sources collectées au {date_sources()}",
         "source": "pipeline/controle.py (voir chaque fichier)",
         "fichiers": {"controle": sorted(c["fichiers"]), "influence": sorted(i["fichiers"]),
                      "aides": ["aides_entreprises.json"]},

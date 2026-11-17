@@ -43,6 +43,7 @@ import unicodedata
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
+from reproductible import date_sources  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 LAKE = ROOT / "data" / "lake"
@@ -948,7 +949,7 @@ def produire() -> dict:
         "sources": sources,
         "sources_inaccessibles": SOURCES_INACCESSIBLES,
         "recherche_publique": RECHERCHE_PUBLIQUE,
-        "genere_le": maintenant()[:10],
+        "genere_le": date_sources(),
     }
     dump(SORTIE / "index.json", idx)
     bilan = {"mesures": len(liste), "totaux_md": {a: round(t["chiffre_meur"] / 1000, 2) for a, t in tot.items()},

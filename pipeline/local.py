@@ -51,6 +51,7 @@ import requests
 
 import fetch
 import sirene
+from reproductible import date_sources  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 LAKE = ROOT / "data" / "lake"
@@ -471,7 +472,7 @@ def megalis_fonctions(con, rafraichir=False) -> Path:
     src = COLL / "collectivites_megalis_budgets" / "budget-*.csv"
     CACHE.mkdir(parents=True, exist_ok=True)
     con.execute(f"""copy (
-        select BGT_ANNEE annee, substr(BGT_SIRET,1,9) siren, any_value(BGT_NOM) nom_budget,
+        select BGT_ANNEE annee, substr(BGT_SIRET,1,9) siren, min(BGT_NOM) nom_budget,
                lower(BGT_SECTION) section, substr(BGT_FONCTION,1,1) fonction,
                sum(try_cast(BGT_MTREAL as double)) montant
         from read_csv('{src}', all_varchar=true, header=true, union_by_name=true)
@@ -888,23 +889,43 @@ def objet_publiable(o: str, liste: set | None = None, longueur: int = 140) -> st
 
 
 def lignes_pdl(con) -> tuple[list[dict], dict]:
-    """Region Pays de la Loire : une ligne par operation (vote a jour, somme des mandatements)."""
+    """Region Pays de la Loire : une ligne par operation (vote a jour, somme des mandatements).
+
+    Regles deterministes (documentees dans docs/contrat_interface.md) :
+    - beneficiaire d'une operation a plusieurs tiers : le SIRET qui a recu le plus de mandatements sur l'operation ;
+      a egalite, le plus petit SIRET (tri explicite, jamais un choix arbitraire du moteur) ;
+    - une operation est exclue des noms (personnes physiques) des qu'un de ses tiers est une personne physique ;
+    - mandatements publies sans numero d'operation : regroupes par (SIRET, annee de la date d'execution), sans vote
+      (vote non publie), annee = annee d'execution ;
+    - annee : prefixe du numero d'operation ; a defaut, annee de la date d'execution ; a defaut, « inconnue ».
+    """
     p = LAKE / "beneficiaires" / "decisions_pdl_subventions.parquet"
     if not p.exists():
         return [], {}
-    ops = rows(con, f"""select id_operation, max(vote_a_jour) vote, sum(mandat_valeur) mandat, min(date_execution) d1,
-                       any_value(tgen_siret_numero) siret, any_value(nature_tiers) nature, any_value(code_dossier) dossier,
-                       any_value(libelle_operation) objet, any_value(numero_programme) prog,
-                       any_value(libelle_programme) lib_prog from '{p}' group by 1""")
+    ops = rows(con, f"""
+        with src as (select *, coalesce(id_operation, 'sans-operation:' || coalesce(tgen_siret_numero, '?') || ':'
+                                        || coalesce(cast(year(date_execution) as varchar), '?')) cle
+                     from '{p}'),
+        tiers as (select cle, tgen_siret_numero siret, sum(coalesce(mandat_valeur, 0)) m from src group by 1, 2),
+        choix as (select cle, siret from (select cle, siret, row_number() over (
+                      partition by cle order by m desc, siret asc nulls last) rang from tiers) where rang = 1)
+        select s.cle, any_value(s.id_operation) id_operation, max(s.vote_a_jour) vote, sum(s.mandat_valeur) mandat,
+               min(s.date_execution) d1, c.siret,
+               bool_or(coalesce(s.nature_tiers, '') like '%PERSONNES PHYSIQUES%') pp,
+               min(s.code_dossier) dossier, min(s.libelle_operation) objet, min(s.numero_programme) prog,
+               min(s.libelle_programme) lib_prog
+        from src s join choix c using (cle) group by s.cle, c.siret order by s.cle""")
     res = []
     for r in ops:
-        an = "20" + r["id_operation"][:2] if re.match(r"^\d{2}", r["id_operation"] or "") else None
+        op = r["id_operation"]
+        an = ("20" + op[:2] if op and re.match(r"^\d{2}", op) else
+              str(r["d1"])[:4] if r["d1"] else None)
         res.append({"attribuant": "234400034", "nom_attribuant": "Région des Pays de la Loire",
                     "beneficiaire": siren_de(r["siret"]), "montant": r["vote"] if r["vote"] is not None else 0.0,
                     "vote_absent": r["vote"] is None, "mandate": r["mandat"] or 0.0,
-                    "date": None, "annee": an, "reference": r["dossier"] or r["id_operation"],
+                    "date": None, "annee": an, "reference": r["dossier"] or op,
                     "objet": r["objet"] or "", "programme": r["prog"], "lib_programme": r["lib_prog"],
-                    "pp_source": "PERSONNES PHYSIQUES" in (r["nature"] or "")})
+                    "pp_source": bool(r["pp"]), "sans_operation": op is None})
     # programme -> deliberations (l'objet des deliberations commence par le code programme, ex. « S101 - ... »)
     progs = {}
     pd = LAKE / "_restreint" / "decisions" / "decisions_pdl_deliberations.csv"
@@ -1030,8 +1051,8 @@ def decisions(con, sirens_coll: dict, g: dict) -> dict:
             noms = [f"{a}.json"] if len(morceaux) == 1 else [f"{a}-{i + 1}.json" for i in range(len(morceaux))]
             for nom, m in zip(noms, morceaux):
                 dump(base / nom, {**entete, "millesime": f"Subventions {a}" + (
-                    " (annee de l'operation, prefixe du numero d'operation)" if est_pdl else " (date de la decision "
-                    "ou de la convention ; a defaut, annee du jeu)"), "annee": a, "colonnes": colonnes, "lignes": m,
+                    " (annee de l'operation, prefixe du numero d'operation ; a defaut, annee d'execution du mandatement)" if est_pdl else " (date de la decision "
+                    "ou de la convention ; a defaut, colonne annee, puis annee du jeu ; sinon « inconnue »)"), "annee": a, "colonnes": colonnes, "lignes": m,
                     "unite": "euros" + (" ; montant_eur = vote a jour, mandate_eur = somme des mandatements"
                                         if est_pdl else "")})
             annees[a] = {"lignes": len(lgn), "montant_eur": round(sum(x[5] for x in lgn), 2), "fichiers": noms}
@@ -1057,7 +1078,12 @@ def decisions(con, sirens_coll: dict, g: dict) -> dict:
             idx["total_mandate_eur"] = round(total_mandate, 2)
             idx["operations_sans_vote_publie"] = sum(1 for r in ls if r.get("vote_absent"))
             idx["note_vote"] = ("Vote a jour = montant vote, ajuste des avenants ; mandate = somme des paiements. Une "
-                                "operation sans vote publie compte 0 en vote, ses mandatements sont gardes.")
+                                "operation sans vote publie compte 0 en vote, ses mandatements sont gardes. Les "
+                                "mandatements publies sans numero d'operation sont regroupes par SIRET et annee "
+                                "d'execution. Operation a plusieurs tiers : beneficiaire = SIRET le plus mandate "
+                                "(a egalite, le plus petit SIRET) ; exclue des noms si un tiers est une personne "
+                                "physique.")
+            idx["mandatements_sans_operation"] = sum(1 for r in ls if r.get("sans_operation"))
             idx["programmes"] = programmes
             idx["source_deliberations"] = SRC["pdl_delib"]
         dump(base / "index.json", idx)
@@ -1083,7 +1109,7 @@ def decisions(con, sirens_coll: dict, g: dict) -> dict:
     for t in totaux:
         couv[t]["couvertes_deliberations"] = sum(1 for s in delib["comptes"] if sirens_coll.get(s, ("",))[0] == t)
     dump(OUT / "decisions" / "index.json", {
-        "millesime": "Jeux publies au " + time.strftime("%Y-%m-%d"),
+        "millesime": "Jeux publies au " + date_sources(),
         "source": "SCDL subventions (data.gouv.fr, portails ODS) ; " + SRC["pdl_sub"] + " ; " + SRC["sirene"],
         "couverture": couv, "collectivites": resume,
         "attribuants_hors_collectivites": {"nombre": len(ignores), "lignes": int(sum(ignores.values())),
@@ -1172,7 +1198,7 @@ def ecrire_index(g: dict, annees) -> dict:
             for b in BLOCS:
                 stats[b] += ok[b]
     dump(OUT / "index.json", {
-        "millesime": f"Genere le {time.strftime('%Y-%m-%d')} ; comptes {annees[0]} a {annees[-1]}",
+        "millesime": f"Sources collectees au {date_sources()} ; comptes {annees[0]} a {annees[-1]}",
         "source": "pipeline/local.py (voir chaque fichier)", "blocs": BLOCS,
         "format": "communes.<insee> = masque de bits : le bloc blocs[i] est disponible si (valeur >> i) & 1",
         "fichiers": {"geo": "geo/<dep>.json", "budget_commune": "budgets/communes/<dep>.json",

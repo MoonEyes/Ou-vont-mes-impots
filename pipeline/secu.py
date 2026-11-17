@@ -39,6 +39,7 @@ import time
 import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
+from reproductible import date_sources  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -803,7 +804,7 @@ def produire() -> dict:
         "sources": sources_de(SOURCES),
         "sources_inaccessibles": INACCESSIBLES,
         "recherche_publique": RECHERCHE_PUBLIQUE,
-        "genere_le": datetime.now(timezone.utc).date().isoformat(),
+        "genere_le": date_sources(),
     }
     dump(SORTIE / "index.json", index)
     for k, v in vues.items():

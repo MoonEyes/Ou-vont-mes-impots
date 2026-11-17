@@ -44,6 +44,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
+from reproductible import date_sources  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 LAKE = ROOT / "data" / "lake"
@@ -153,22 +154,28 @@ def lire_plrg() -> dict[int, dict[str, dict]]:
 
 
 def nomenclature() -> dict:
-    """Entrées (mission, libellé, code) de toutes les sources disponibles (PLRG 2023-2025, budgets verts, arbres)."""
-    entrees = set()
-    for a, d in lire_plrg().items():
-        for p, e in d.items():
-            entrees.add((e["mission"], e["libelle"], p))
+    """Entrées (mission, libellé, code) de toutes les sources disponibles (PLRG 2023-2025, budgets verts, arbres).
+
+    Ordre de priorité déterministe : PLRG du plus récent au plus ancien, puis budgets verts (fichiers du plus récent
+    au plus ancien), puis arbres du site, puis alias. Pour un même code ou un même (mission, libellé), la première
+    entrée gagne : jamais l'ordre d'itération d'un ensemble, qui varie d'un processus à l'autre."""
+    entrees: list[tuple] = []
+    plrg = lire_plrg()
+    for a in sorted(plrg, reverse=True):
+        for p, e in sorted(plrg[a].items()):
+            entrees.append((e["mission"], e["libelle"], p))
     try:
         import duckdb
-        for f in sorted(ETAT.glob("*budget*vert*.parquet")) + sorted(ETAT.glob("*budgetvert*.parquet")):
+        for f in sorted(set(ETAT.glob("*budget*vert*.parquet")) | set(ETAT.glob("*budgetvert*.parquet")), reverse=True):
             try:
                 rows = duckdb.sql(f"select distinct mission, numero_programme, programme from '{f}' "
-                                  "where numero_programme is not null").fetchall()
+                                  "where numero_programme is not null order by all").fetchall()
             except Exception:  # noqa: BLE001 (colonnes différentes selon le millésime)
                 continue
             for mi, num, lib in rows:
                 if lib:
-                    entrees.add((propre(mi), propre(re.sub(r"^\s*\d{3}\s*[-–]\s*", "", str(lib))), str(int(num)).zfill(3)))
+                    entrees.append((propre(mi), propre(re.sub(r"^\s*\d{3}\s*[-–]\s*", "", str(lib))),
+                                    str(int(num)).zfill(3)))
     except ImportError:
         pass
     for arbre in ("arbre", "arbre_lfi2025"):
@@ -179,13 +186,13 @@ def nomenclature() -> dict:
             for m in g.get("enfants", []):
                 for p in m.get("enfants", []):
                     if p["niveau"] == "programme":
-                        entrees.add((m["nom"], p["nom"], p["id"].split("/")[-1]))
-    entrees |= ALIAS
+                        entrees.append((m["nom"], p["nom"], p["id"].split("/")[-1]))
+    entrees += sorted(ALIAS)
     par_mission = defaultdict(dict)
     par_lib = defaultdict(set)
     libelles = {}
-    for mi, lib, code in entrees:
-        par_mission[norm(mi)][norm(lib)] = code
+    for mi, lib, code in dict.fromkeys(entrees):  # dédoublonné, ordre de priorité conservé
+        par_mission[norm(mi)].setdefault(norm(lib), code)
         par_lib[norm(lib)].add(code)
         libelles.setdefault(code, lib)
     return {"par_mission": par_mission, "par_lib": par_lib, "libelles": libelles}
@@ -982,7 +989,7 @@ def produire() -> None:
                                                       "pour": s["pour"], "contre": s["contre"], "url": s["url"]})
     mvts, stats_mvt = mouvements_jorf(nomen)
     coh = coherence(mvts, plrg)
-    genere = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    genere = date_sources(avec_heure=True)
     SORTIE.mkdir(parents=True, exist_ok=True)
     for f in SORTIE.glob("*.json"):
         f.unlink()
