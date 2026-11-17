@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_dotations_communes.schema.json",
+  "title": "site/data/local/dotations/communes/<dep>.json : DGF et dotations d'investissement par commune",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "annees": {
+      "type": "array"
+    },
+    "communes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "eur": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "eur"
+        ]
+      }
+    },
+    "investissement_etat": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "propertyNames": {
+          "$ref": "commun.schema.json#/$defs/annee"
+        },
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "total": {
+              "type": "number"
+            },
+            "nb_projets": {
+              "type": "integer"
+            },
+            "par_dispositif": {
+              "type": "object"
+            },
+            "projets": {
+              "type": "array",
+              "maxItems": 15,
+              "items": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4
+              }
+            }
+          },
+          "required": [
+            "total",
+            "nb_projets",
+            "projets"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "communes",
+    "investissement_etat"
+  ]
+}

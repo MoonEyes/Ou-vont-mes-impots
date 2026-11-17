@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_dotations_epci.schema.json",
+  "title": "site/data/local/dotations/epci.json : dotations de l'Etat (epci)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "annees": {
+      "type": "array"
+    },
+    "epci": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "eur": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "eur"
+        ]
+      }
+    }
+  },
+  "required": [
+    "epci"
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_decisions_annee.schema.json",
+  "title": "site/data/local/decisions/<siren>/<annee>.json : subventions votees, personnes morales seulement",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "collectivite": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "commune",
+            "epci",
+            "departement",
+            "region"
+          ]
+        },
+        "siren": {
+          "$ref": "commun.schema.json#/$defs/siren"
+        }
+      },
+      "required": [
+        "type",
+        "code",
+        "siren"
+      ]
+    },
+    "annee": {
+      "type": "string"
+    },
+    "colonnes": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "date_decision"
+        },
+        {
+          "const": "reference_decision"
+        },
+        {
+          "const": "siren"
+        },
+        {
+          "const": "categorie_juridique"
+        },
+        {
+          "const": "denomination"
+        },
+        {
+          "const": "montant_eur"
+        },
+        {
+          "const": "objet"
+        }
+      ]
+    },
+    "lignes": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "array",
+        "minItems": 7,
+        "prefixItems": [
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          {
+            "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "collectivite",
+    "annee",
+    "colonnes",
+    "lignes"
+  ]
+}

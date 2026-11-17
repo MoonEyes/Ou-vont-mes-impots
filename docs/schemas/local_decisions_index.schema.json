@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_decisions_index.schema.json",
+  "title": "site/data/local/decisions/index.json : couverture des decisions locales",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "couverture": {
+      "type": "object",
+      "properties": {
+        "commune": {
+          "type": "object",
+          "required": [
+            "couvertes_subventions",
+            "total"
+          ]
+        },
+        "epci": {
+          "type": "object",
+          "required": [
+            "couvertes_subventions",
+            "total"
+          ]
+        },
+        "departement": {
+          "type": "object",
+          "required": [
+            "couvertes_subventions",
+            "total"
+          ]
+        },
+        "region": {
+          "type": "object",
+          "required": [
+            "couvertes_subventions",
+            "total"
+          ]
+        }
+      },
+      "required": [
+        "commune",
+        "epci",
+        "departement",
+        "region"
+      ]
+    },
+    "collectivites": {
+      "type": "object"
+    },
+    "regle": {
+      "type": "string"
+    },
+    "limites": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "couverture",
+    "collectivites",
+    "regle"
+  ]
+}

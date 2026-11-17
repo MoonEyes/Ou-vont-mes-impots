@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_budget.schema.json",
+  "title": "site/data/local/budgets/communes/<dep>.json, departements.json, regions.json : grands agregats OFGL",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "annees": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      }
+    },
+    "agregats": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "libelles_ofgl": {
+      "type": "object"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "collectivites": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "siren": {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          "population": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "eur": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "eur_hab": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "population",
+          "eur",
+          "eur_hab"
+        ]
+      }
+    }
+  },
+  "required": [
+    "annees",
+    "agregats",
+    "collectivites"
+  ]
+}

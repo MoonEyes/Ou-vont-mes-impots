@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_fonctions.schema.json",
+  "title": "site/data/local/budgets/fonctions/<siren>.json : detail par fonction (pilote 44 et Bretagne)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "collectivite": {
+      "type": "object",
+      "properties": {
+        "siren": {
+          "$ref": "commun.schema.json#/$defs/siren"
+        }
+      },
+      "required": [
+        "type",
+        "code",
+        "siren"
+      ]
+    },
+    "population": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "colonnes": {
+      "type": "array"
+    },
+    "fonctions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "eur": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "eur_hab": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "eur",
+          "eur_hab"
+        ]
+      }
+    }
+  },
+  "required": [
+    "collectivite",
+    "colonnes",
+    "fonctions"
+  ]
+}

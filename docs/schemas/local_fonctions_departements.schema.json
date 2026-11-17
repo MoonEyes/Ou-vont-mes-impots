@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_fonctions_departements.schema.json",
+  "title": "site/data/local/budgets/fonctions/departements.json : depenses des departements par fonction",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "annees": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      }
+    },
+    "colonnes": {
+      "type": "array"
+    },
+    "departements": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "population": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "fonctions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "libelle": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "eur": {
+                  "type": "object",
+                  "propertyNames": {
+                    "$ref": "commun.schema.json#/$defs/annee"
+                  },
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "eur_hab": {
+                  "type": "object",
+                  "propertyNames": {
+                    "$ref": "commun.schema.json#/$defs/annee"
+                  },
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "eur",
+                "eur_hab"
+              ]
+            }
+          }
+        },
+        "required": [
+          "population",
+          "fonctions"
+        ]
+      }
+    }
+  },
+  "required": [
+    "annees",
+    "colonnes",
+    "departements"
+  ]
+}

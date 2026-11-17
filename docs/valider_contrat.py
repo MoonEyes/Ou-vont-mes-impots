@@ -77,6 +77,24 @@ FICHIERS = [
     ("decisions_mouvements.schema.json", "decisions/mouvements_*.json", "existant"),
     ("decisions_coherence_plrg.schema.json", "decisions/coherence_plrg.json", "existant"),
     ("decisions_index.schema.json", "decisions/index.json", "existant"),
+    # axe « Pres de chez moi » (pipeline/local.py)
+    ("local_index.schema.json", "local/index.json", "existant"),
+    ("local_geo.schema.json", "local/geo/*.json", "existant"),
+    ("local_budget.schema.json", "local/budgets/communes/*.json", "existant"),
+    ("local_budget.schema.json", "local/budgets/departements.json", "existant"),
+    ("local_budget.schema.json", "local/budgets/regions.json", "existant"),
+    ("local_budget_epci.schema.json", "local/budgets/epci/*.json", "existant"),
+    ("local_fonctions_departements.schema.json", "local/budgets/fonctions/departements.json", "existant"),
+    ("local_fonctions.schema.json", "local/budgets/fonctions/[0-9]*.json", "existant"),
+    ("local_dotations_communes.schema.json", "local/dotations/communes/*.json", "existant"),
+    ("local_dotations_epci.schema.json", "local/dotations/epci.json", "existant"),
+    ("local_dotations_departements.schema.json", "local/dotations/departements.json", "existant"),
+    ("local_dotations_regions.schema.json", "local/dotations/regions.json", "existant"),
+    ("local_taux.schema.json", "local/taux/*.json", "existant"),
+    ("local_decisions_index.schema.json", "local/decisions/index.json", "existant"),
+    ("local_decisions_collectivite.schema.json", "local/decisions/*/index.json", "existant"),
+    ("local_decisions_annee.schema.json", "local/decisions/*/[0-9]*.json", "existant"),
+    ("local_decisions_annee.schema.json", "local/decisions/*/inconnue*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

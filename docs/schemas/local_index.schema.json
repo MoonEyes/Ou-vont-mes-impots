@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_index.schema.json",
+  "title": "site/data/local/index.json : blocs disponibles par commune (masque de bits)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "blocs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "fichiers": {
+      "type": "object"
+    },
+    "sirens": {
+      "type": "object",
+      "required": [
+        "departements",
+        "regions"
+      ]
+    },
+    "communes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^([0-9]{2}|2[AB])[0-9]{3}$"
+      },
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1
+      }
+    }
+  },
+  "required": [
+    "blocs",
+    "sirens",
+    "communes"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_taux.schema.json",
+  "title": "site/data/local/taux/<dep>.json : taux d'impots locaux votes (REI)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "exercices": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      }
+    },
+    "colonnes": {
+      "type": "array",
+      "minItems": 1
+    },
+    "communes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "propertyNames": {
+          "$ref": "commun.schema.json#/$defs/annee"
+        },
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "exercices",
+    "colonnes",
+    "communes"
+  ]
+}

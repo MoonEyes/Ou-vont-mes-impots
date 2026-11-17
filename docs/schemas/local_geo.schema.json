@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_geo.schema.json",
+  "title": "site/data/local/geo/<dep>.json : commune > EPCI > departement > region",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "departement": {
+      "type": "object",
+      "required": [
+        "code",
+        "nom"
+      ]
+    },
+    "region": {
+      "type": "object",
+      "required": [
+        "code",
+        "nom"
+      ]
+    },
+    "communes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^([0-9]{2}|2[AB])[0-9]{3}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "population": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "siren": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "epci": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "departement": {
+            "type": "string",
+            "minLength": 2
+          },
+          "region": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "required": [
+          "nom",
+          "departement",
+          "region"
+        ]
+      }
+    },
+    "epci": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "departement_siege"
+        ]
+      }
+    }
+  },
+  "required": [
+    "departement",
+    "region",
+    "communes",
+    "epci"
+  ]
+}

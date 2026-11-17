@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_decisions_collectivite.schema.json",
+  "title": "site/data/local/decisions/<siren>/index.json : totaux, exclus agreges, deliberations",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "collectivite": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "commune",
+            "epci",
+            "departement",
+            "region"
+          ]
+        },
+        "siren": {
+          "$ref": "commun.schema.json#/$defs/siren"
+        }
+      },
+      "required": [
+        "type",
+        "code",
+        "siren"
+      ]
+    },
+    "annees": {
+      "type": "object"
+    },
+    "total_source_eur": {
+      "type": "number"
+    },
+    "top_beneficiaires": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "properties": {
+          "siren": {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          "categorie_juridique": {
+            "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+          },
+          "denomination": {
+            "type": "string"
+          },
+          "montant_eur": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "siren",
+          "categorie_juridique",
+          "denomination",
+          "montant_eur"
+        ]
+      }
+    },
+    "exclus_personnes_physiques_ou_non_identifies": {
+      "type": "object",
+      "properties": {
+        "montant_eur": {
+          "type": "number"
+        },
+        "lignes": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "montant_eur",
+        "lignes"
+      ]
+    },
+    "deliberations_par_annee": {
+      "type": "object"
+    },
+    "deliberations_subventions": {
+      "type": "object"
+    },
+    "programmes": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "collectivite",
+    "annees",
+    "deliberations_par_annee"
+  ],
+  "dependentRequired": {
+    "total_source_eur": [
+      "top_beneficiaires",
+      "exclus_personnes_physiques_ou_non_identifies"
+    ]
+  }
+}

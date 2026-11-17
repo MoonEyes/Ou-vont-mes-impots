@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/local_budget_epci.schema.json",
+  "title": "site/data/local/budgets/epci/<dep>.json : EPCI et bloc communal consolide (OFGL ensembles intercommunaux)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "annees": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      }
+    },
+    "agregats": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "libelles_ofgl": {
+      "type": "object"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "collectivites": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "siren": {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          "population": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "eur": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "eur_hab": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "population",
+          "eur",
+          "eur_hab"
+        ]
+      }
+    },
+    "bloc_communal_consolide": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "siren": {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          "population": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "eur": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "eur_hab": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "population",
+          "eur",
+          "eur_hab"
+        ]
+      }
+    },
+    "methode_bloc_communal": {
+      "type": "string",
+      "minLength": 50
+    }
+  },
+  "required": [
+    "annees",
+    "agregats",
+    "collectivites",
+    "bloc_communal_consolide",
+    "methode_bloc_communal"
+  ]
+}
