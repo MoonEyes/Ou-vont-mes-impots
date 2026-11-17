@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/controle_programmes.schema.json",
+  "title": "Publications de la Cour des comptes reliées aux programmes LOLF",
+  "description": "controle/publications/programmes.json : publications rattachées par le titre (programme, mission, opérateur) et notes d'exécution budgétaire par mission.",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "avertissement": {
+      "type": "string"
+    },
+    "regles_rattachement": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "programmes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[0-9]{3}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": "string"
+          },
+          "mission": {
+            "type": "string"
+          },
+          "publications": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "neb_mission": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "libelle",
+          "mission",
+          "publications",
+          "neb_mission"
+        ]
+      }
+    },
+    "neb_par_mission": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "programmes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "annee_execution": {
+                  "type": "integer"
+                },
+                "url": {
+                  "type": "string",
+                  "pattern": "^https://"
+                },
+                "page": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "verifie_le": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "annee_execution",
+                "url"
+              ]
+            }
+          }
+        },
+        "required": [
+          "programmes",
+          "notes"
+        ]
+      }
+    },
+    "publications": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "controle_commun.schema.json#/$defs/publication"
+          },
+          {
+            "required": [
+              "programmes",
+              "operateurs",
+              "rattachement"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "programmes",
+    "neb_par_mission",
+    "publications",
+    "regles_rattachement"
+  ]
+}

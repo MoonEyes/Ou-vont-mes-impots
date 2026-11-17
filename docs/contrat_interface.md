@@ -89,6 +89,13 @@ Vérification : `python docs/valider_contrat.py` (installe `jsonschema` si absen
 | `niches/programmes.json` | `niches_programmes.schema.json` | dépense budgétaire + dépense fiscale par programme, mission, grand poste | M€ | fiscal 2024 constaté, 2025-2026 estimés ; budget exécution 2024 | `niches.py` | existant |
 | `niches/sociales.json` | `niches_sociales.schema.json` | niches sociales : exonérations, allègements, exemptions d'assiette ; série Urssaf par mesure | M€, Md€ | PLFSS 2026 (2023 à 2026) ; Urssaf 2019-2025 | `niches.py` | existant |
 | `niches/index.json` | `niches_index.schema.json` | totaux par année, top, couverture du rattachement, sources, recherche préalable | divers | | `niches.py` | existant |
+| `controle/index.json` | `controle_index.schema.json` | comptes, couverture ccomptes.fr, départements, sources inaccessibles, recherche publique | divers | | `controle.py` | existant |
+| `controle/publications/programmes.json` | `controle_programmes.schema.json` | publications de la Cour reliées aux programmes (titre), NEB par mission | | 2011 à 2026 | `controle.py` | existant |
+| `controle/publications/collectivites/<dep>.json` | `controle_collectivites.schema.json` | rapports des CRC reliés à la commune, l'EPCI, le département ou la région | | ROD 2015-2019 ; pages lues | `controle.py` | existant |
+| `controle/publications/autres.json` | `controle_autres.schema.json` | publications non rattachées, non localisées | | | `controle.py` | existant |
+| `controle/lobbying/organisations.json` | `controle_lobbying_organisations.schema.json` | représentants d'intérêts (organisations), dépenses déclarées par tranche, domaines, cibles | € (bornes) | exercices 2019 à 2026 | `controle.py` | existant |
+| `controle/lobbying/ministeres.json` | `controle_lobbying_ministeres.schema.json` | actions déclarées par fonction et ministère visés, domaines, missions LOLF | actions | idem | `controle.py` | existant |
+| `controle/aides_entreprises.json` | `controle_aides_entreprises.schema.json` | estimations publiées des aides aux entreprises (périmètre, année), exonérations Urssaf | Md€, € | estimations 2010-2026 (données 2019-2023) | `controle.py` | existant |
 | `affectation_prelevements.json` | `affectation_prelevements.schema.json` | ancien format prévu, remplacé à terme par `prelevements/affectation.json` | parts (0 à 1) | | | **prévu** |
 
 Le millésime réel est toujours lu dans le fichier (`millesime`, `annee`, `annees`, clés d'année) ou dans `meta.json` (`millesime.etat_defaut`, `controle.exercice`, `controle.annee_cofog`, `controle.administrations_derniere_annee`, `controle.recettes_annees`, `controle.arbre_administrations.annee`) : le site ne code aucune année en dur.

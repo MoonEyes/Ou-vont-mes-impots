@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/controle_lobbying_organisations.schema.json",
+  "title": "Représentants d'intérêts : organisations (HATVP)",
+  "description": "controle/lobbying/organisations.json : organisations seulement (personnes morales vérifiées, associations RNA, organisations à identifiant HATVP hors indépendants) ; dépenses déclarées par tranche ; aucune personne physique.",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "regle_personnes": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "colonnes": {
+      "const": [
+        "identifiant",
+        "type_identifiant",
+        "denomination",
+        "categorie",
+        "secteurs",
+        "depenses_declarees",
+        "activites",
+        "actions",
+        "domaines",
+        "cibles",
+        "missions_lolf"
+      ]
+    },
+    "colonnes_depenses": {
+      "type": "array"
+    },
+    "organisations": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "enum": [
+              "SIREN",
+              "RNA",
+              "HATVP"
+            ]
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ],
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "minItems": 11,
+        "maxItems": 11
+      }
+    },
+    "totaux_par_annee": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^(19|20)[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "organisations_declarantes": {
+            "type": "integer"
+          },
+          "depense_min_eur": {
+            "type": "number"
+          },
+          "depense_max_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "depense_max_hors_tranches_ouvertes_eur": {
+            "type": "number"
+          },
+          "tranches_ouvertes": {
+            "type": "integer"
+          },
+          "activites": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "organisations_declarantes",
+          "depense_min_eur",
+          "depense_max_eur",
+          "tranches_ouvertes"
+        ]
+      }
+    },
+    "exclus": {
+      "type": "object",
+      "properties": {
+        "organisations": {
+          "type": "integer"
+        },
+        "actions": {
+          "type": "integer"
+        },
+        "motifs": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "organisations",
+        "motifs"
+      ]
+    }
+  },
+  "required": [
+    "organisations",
+    "colonnes",
+    "totaux_par_annee",
+    "exclus",
+    "regle_personnes"
+  ],
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "dirigeants"
+        ]
+      },
+      {
+        "required": [
+          "collaborateurs"
+        ]
+      },
+      {
+        "required": [
+          "clients"
+        ]
+      }
+    ]
+  }
+}

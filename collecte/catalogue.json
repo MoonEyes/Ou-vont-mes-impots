@@ -1954,6 +1954,33 @@
    "licence": "Licence Ouverte 2.0"
   },
   {
+   "id": "controle_crc_rod_metadonnees",
+   "domaine": "controle",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://static.data.gouv.fr/resources/rapports-dobservations-definitives-des-chambres-regionales-des-comptes-crc-et-reponses-associees-1/20200122-192454/meta-rod-datasession.xlsx",
+   "titre": "Cour des comptes, metadonnees des rapports d'observations definitives des CRC 2015-2019",
+   "licence": "non precisee (data.gouv.fr)"
+  },
+  {
+   "id": "controle_ccomptes_publications_2011_2016",
+   "domaine": "controle",
+   "type": "url",
+   "format": "csv",
+   "url": "https://static.data.gouv.fr/resources/publications-de-la-cour-des-comptes-par-type-et-date-de-publication-2011-2016/20180507-120722/Publications_CDC_type_date__ISBN_v_04mai16.csv",
+   "titre": "Cour des comptes, publications par type et date (2011-2016)",
+   "licence": "ODbL"
+  },
+  {
+   "id": "controle_hcsp_2026_aides_entreprises",
+   "domaine": "controle",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.strategie-plan.gouv.fr/files/files/Publications/2026/2026-07-16%20-%20Rapport%20Aides%20aux%20entreprises/HCSP-2026-RAPPORT-AIDES-ENTREPRISES.pdf",
+   "titre": "HCSP, Les aides aux entreprises : definition, perimetres, cadre de suivi et d'evaluation (juillet 2026)",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
    "id": "decisions_constit_global",
    "domaine": "decisions",
    "type": "index_http",

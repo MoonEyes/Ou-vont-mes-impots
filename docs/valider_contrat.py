@@ -88,6 +88,14 @@ FICHIERS = [
     ("niches_programmes.schema.json", "niches/programmes.json", "existant"),
     ("niches_sociales.schema.json", "niches/sociales.json", "existant"),
     ("niches_index.schema.json", "niches/index.json", "existant"),
+    # contrôle (juridictions financières), influence (HATVP), aides aux entreprises (pipeline/controle.py)
+    ("controle_index.schema.json", "controle/index.json", "existant"),
+    ("controle_programmes.schema.json", "controle/publications/programmes.json", "existant"),
+    ("controle_collectivites.schema.json", "controle/publications/collectivites/*.json", "existant"),
+    ("controle_autres.schema.json", "controle/publications/autres.json", "existant"),
+    ("controle_lobbying_organisations.schema.json", "controle/lobbying/organisations.json", "existant"),
+    ("controle_lobbying_ministeres.schema.json", "controle/lobbying/ministeres.json", "existant"),
+    ("controle_aides_entreprises.schema.json", "controle/aides_entreprises.json", "existant"),
     # traçabilité et décisions (pipeline/tracabilite.py, pipeline/decisions.py)
     ("tracabilite_noeud.schema.json", "tracabilite/programme_*.json", "existant"),
     ("tracabilite_noeud.schema.json", "tracabilite/noeud_*.json", "existant"),

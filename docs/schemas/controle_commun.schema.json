@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/controle_commun.schema.json",
+  "title": "Définitions communes du bloc contrôle (pipeline/controle.py)",
+  "description": "Publication d'une juridiction financière : métadonnées seulement, jamais le titre d'une réponse ni un nom de personne.",
+  "$defs": {
+    "publication": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "titre": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]{4}(-[0-9]{2}){0,2}$"
+        },
+        "annee": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "famille": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nature_controle": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "juridiction": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "url_document": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^https://"
+        },
+        "document": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "constats_chiffres": {
+          "type": "array",
+          "items": {
+            "$ref": "controle_commun.schema.json#/$defs/constat"
+          }
+        },
+        "source": {
+          "type": "string",
+          "minLength": 3
+        },
+        "programmes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          }
+        },
+        "operateurs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "operateur": {
+                "type": "string"
+              },
+              "programme": {
+                "type": "string",
+                "pattern": "^[0-9]{3}$"
+              }
+            },
+            "required": [
+              "operateur",
+              "programme"
+            ]
+          }
+        },
+        "rattachement": {
+          "type": [
+            "array",
+            "string"
+          ]
+        },
+        "organisme": {
+          "type": "string"
+        },
+        "organisme_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "niveau": {
+          "enum": [
+            "commune",
+            "epci",
+            "departement",
+            "region",
+            "autre_organisme"
+          ]
+        },
+        "codes": {
+          "$ref": "controle_commun.schema.json#/$defs/codes"
+        }
+      },
+      "required": [
+        "id",
+        "titre",
+        "url",
+        "source"
+      ],
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "reponses"
+            ]
+          },
+          {
+            "required": [
+              "auteur_reponse"
+            ]
+          },
+          {
+            "required": [
+              "prenom"
+            ]
+          },
+          {
+            "required": [
+              "nom_dirigeant"
+            ]
+          }
+        ]
+      }
+    },
+    "codes": {
+      "type": "object",
+      "properties": {
+        "commune": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9][0-9AB][0-9]{3}$"
+        },
+        "epci": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]{9}$"
+        },
+        "departement": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^([0-9][0-9AB]|97[0-9])$"
+        },
+        "region": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]{2}$"
+        }
+      },
+      "required": [
+        "commune",
+        "epci",
+        "departement",
+        "region"
+      ],
+      "additionalProperties": false
+    },
+    "constat": {
+      "type": "object",
+      "properties": {
+        "montant": {
+          "type": "string"
+        },
+        "valeur_eur": {
+          "type": "number"
+        },
+        "extrait": {
+          "type": "string",
+          "maxLength": 300
+        }
+      },
+      "required": [
+        "montant",
+        "valeur_eur",
+        "extrait"
+      ]
+    }
+  }
+}

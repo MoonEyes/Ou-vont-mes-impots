@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/controle_lobbying_ministeres.schema.json",
+  "title": "Représentants d'intérêts : actions par cible et par domaine",
+  "description": "controle/lobbying/ministeres.json : actions déclarées par fonction et ministère ou institution visés (jamais une personne), domaines, correspondance avec les missions LOLF.",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "regle_personnes": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "cibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fonction": {
+            "type": "string"
+          },
+          "cible": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actions": {
+            "type": "integer"
+          },
+          "organisations": {
+            "type": "integer"
+          },
+          "par_annee": {
+            "type": "object"
+          },
+          "domaines": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "missions_lolf": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "fonction",
+          "cible",
+          "actions",
+          "organisations",
+          "missions_lolf"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "domaines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "domaine": {
+            "type": "string"
+          },
+          "activites": {
+            "type": "integer"
+          },
+          "organisations": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "domaine",
+          "activites",
+          "organisations"
+        ]
+      }
+    },
+    "correspondance_ministere_missions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "missions": {
+            "type": "array"
+          },
+          "programmes": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "missions",
+          "programmes"
+        ]
+      }
+    },
+    "correspondance_note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "cibles",
+    "domaines",
+    "correspondance_ministere_missions"
+  ]
+}

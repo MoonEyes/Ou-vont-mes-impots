@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/controle_index.schema.json",
+  "title": "Index du bloc contrôle, influence, aides aux entreprises",
+  "description": "controle/index.json : fichiers, comptes, couverture, sources inaccessibles, recherche publique.",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "fichiers": {
+      "type": "object"
+    },
+    "controle": {
+      "type": "object",
+      "properties": {
+        "departements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "nom": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "fichier": {
+                "type": "string"
+              },
+              "publications": {
+                "type": "integer"
+              },
+              "par_niveau": {
+                "type": "object"
+              }
+            },
+            "required": [
+              "code",
+              "fichier",
+              "publications"
+            ]
+          }
+        },
+        "couverture_ccomptes": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "departements",
+        "couverture_ccomptes"
+      ]
+    },
+    "influence": {
+      "type": "object"
+    },
+    "aides_entreprises": {
+      "type": "object"
+    },
+    "regle_personnes": {
+      "type": "string"
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "constat": {
+            "type": "string"
+          },
+          "effet": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "constat",
+          "effet"
+        ]
+      }
+    },
+    "recherche_publique": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "verdict": {
+            "enum": [
+              "réutilisable tel quel",
+              "à adapter",
+              "inspiration seulement"
+            ]
+          },
+          "licence": {
+            "type": "string"
+          },
+          "mise_a_jour": {
+            "type": "string"
+          },
+          "usage": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nom",
+          "url",
+          "verdict",
+          "licence",
+          "mise_a_jour"
+        ]
+      }
+    }
+  },
+  "required": [
+    "fichiers",
+    "controle",
+    "influence",
+    "aides_entreprises",
+    "sources_inaccessibles",
+    "recherche_publique",
+    "regle_personnes"
+  ]
+}

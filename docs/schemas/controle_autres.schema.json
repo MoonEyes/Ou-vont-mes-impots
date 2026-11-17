@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/controle_autres.schema.json",
+  "title": "Publications non rattachées",
+  "description": "controle/publications/autres.json : publications lues mais rattachées à aucun programme ni collectivité.",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "note": {
+      "type": "string"
+    },
+    "comptes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "juridiction": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "publications": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "juridiction",
+          "type",
+          "publications"
+        ]
+      }
+    },
+    "publications": {
+      "type": "array",
+      "items": {
+        "$ref": "controle_commun.schema.json#/$defs/publication"
+      }
+    },
+    "non_localisees": {
+      "type": "array",
+      "items": {
+        "$ref": "controle_commun.schema.json#/$defs/publication"
+      }
+    }
+  },
+  "required": [
+    "comptes",
+    "publications",
+    "non_localisees"
+  ]
+}

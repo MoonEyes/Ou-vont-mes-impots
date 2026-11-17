@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/controle_aides_entreprises.schema.json",
+  "title": "Aides publiques aux entreprises : estimations publiées",
+  "description": "controle/aides_entreprises.json : estimations côte à côte avec leur périmètre et leur année (jamais départagées), exonérations Urssaf par année, liens vers les données du site sans copie.",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "types": {
+      "type": "object"
+    },
+    "estimations": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "auteur": {
+            "type": "string"
+          },
+          "annee_publication": {
+            "type": "integer"
+          },
+          "annee_donnees": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "publication": {
+            "type": "string"
+          },
+          "md": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "md_haut": {
+            "type": "number"
+          },
+          "perimetre": {
+            "type": "string",
+            "minLength": 5
+          },
+          "inclut": {
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "exclut": {
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "composantes_md": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "composantes_note": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "auteur",
+          "annee_publication",
+          "annee_donnees",
+          "publication",
+          "md",
+          "perimetre",
+          "source"
+        ]
+      }
+    },
+    "fourchette": {
+      "type": "object",
+      "properties": {
+        "basse_md": {
+          "type": "number"
+        },
+        "haute_md": {
+          "type": "number"
+        },
+        "basse": {
+          "type": "array"
+        },
+        "haute": {
+          "type": "array"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "basse_md",
+        "haute_md",
+        "note"
+      ]
+    },
+    "exonerations_cotisations_urssaf": {
+      "type": "object",
+      "properties": {
+        "champ": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "annees": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "total_eur": {
+                "type": "number"
+              },
+              "par_categorie_eur": {
+                "type": "object"
+              }
+            },
+            "required": [
+              "annee",
+              "total_eur",
+              "par_categorie_eur"
+            ]
+          }
+        }
+      },
+      "required": [
+        "source",
+        "annees"
+      ]
+    },
+    "donnees_du_site": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fichier": {
+            "type": "string"
+          },
+          "champ": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "type": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fichier",
+          "type",
+          "note"
+        ]
+      }
+    },
+    "verification_documents": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "estimations",
+    "fourchette",
+    "avertissement",
+    "types"
+  ]
+}
