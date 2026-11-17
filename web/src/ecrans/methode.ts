@@ -33,7 +33,14 @@ export async function rendre(cible: HTMLElement) {
   const real = await chargerSiPresent<{ fiabilite_regle_position_cibles?: { concordance_pct?: number } | number }>('realisations/index.json')
   const tva = await chargerSiPresent<{ millesime: string; source: string; methode: string[]; limites: string[]; ecarts_au_total_national: Record<string, { estime_md: number; reel_md: number; ecart_pct: number }>; recalage?: { lecture_ecart?: string }; non_sourcé?: string[] }>('prelevements/tva_conso.json')
   const tf = await chargerSiPresent<{ millesime: string; source: string; methode: string[]; limites: string[] }>('prelevements/taxe_fonciere.json')
-  const aff = await chargerSiPresent<{ millesime: string; source: string; methode?: string }>('prelevements/affectation.json')
+  const aff = await chargerSiPresent<{ millesime: string; source: string; methode?: string; destinataires?: Record<string, { nom: string }>; prelevements?: Record<string, { points?: Record<string, number> }> }>('prelevements/affectation.json')
+  const points = aff?.prelevements?.csg_activite?.points
+  const nf = (x: number) => x.toLocaleString('fr-FR', { maximumFractionDigits: 2 })
+  const exempleCsg = points
+    ? `(par exemple la CSG sur les salaires : ${Object.entries(points)
+        .map(([k, v]) => `${nf(v)} point${v >= 2 ? 's' : ''} pour ${h(aff?.destinataires?.[k]?.nom ?? k)}`)
+        .join(', ')}, sur ${nf(Object.values(points).reduce((a, b) => a + b, 0))})`
+    : ''
   const NOMS_TAXES: Record<string, string> = { tva: 'TVA', ticpe: 'Carburants (ex-TICPE)', tabac: 'Tabac', alcool: 'Alcools', autres: 'Autres taxes sur les produits', total_taxes_produits: 'Total des taxes sur les produits' }
   const etats = Object.values(meta.controle.etat ?? {}).filter((e) => e && typeof e === 'object' && 'total_md' in e && 'millesime' in e)
   const ex = etats[0]
@@ -84,7 +91,7 @@ ${
 }
 ${
   aff
-    ? `<h3>Qui reçoit chaque prélèvement</h3><p>Chaque prélèvement est réparti entre ses destinataires selon les parts fixées par la loi pour 2025 (par exemple la CSG sur les salaires : 4,25 points pour l’Assurance maladie, 2,08 pour la branche autonomie, 1,47 pour l’Unédic, 0,95 pour les allocations familiales, 0,45 pour la CADES, sur 9,2). Une répartition sans source publiée est affichée « non sourcée », jamais estimée.</p>${source(aff.source, aff.millesime)}`
+    ? `<h3>Qui reçoit chaque prélèvement</h3><p>Chaque prélèvement est réparti entre ses destinataires selon les parts fixées par la loi (${h(aff.millesime)}) ${exempleCsg}. Une répartition sans source publiée est affichée « non sourcée », jamais estimée.</p>${source(aff.source, aff.millesime)}`
     : ''
 }
 
@@ -117,7 +124,13 @@ ${adm ? `<li>Administrations publiques ${h(adm.annee)} : la somme des administra
 
 <h2>Limites connues</h2>
 <ul>
-<li>Nature de la dépense : écart global de ${h(pct(benef?.controle?.nature?.ecart_global_pct ?? 1.93, 2))} avec l’arbre (tolérance publiée ${h(pct(benef?.controle?.nature?.tolerance_pct ?? 3, 0))}), dû aux retraitements du budget vert.</li>
+${
+  benef?.controle?.nature?.ecart_global_pct !== undefined
+    ? `<li>Nature de la dépense : écart global de ${h(pct(benef.controle.nature.ecart_global_pct, 2))} avec l’arbre${
+        benef.controle.nature.tolerance_pct !== undefined ? ` (tolérance publiée ${h(pct(benef.controle.nature.tolerance_pct, 0))})` : ''
+      }, dû aux retraitements du budget vert.</li>`
+    : ''
+}
 <li>Effectifs : plafonds d’emplois votés en LFI 2023, dernier millésime publié par programme, rapportés aux dépenses de personnel 2024.</li>
 <li>Associations : crédits versés en 2023 (dernier « jaune » publié).</li>
 <li>Indicateurs de performance : choisis par l’administration ; une évolution ne prouve pas l’effet de la dépense. Quand le sens souhaité n’est pas publié, il est déduit de la position des cibles${fiabPct ? ` (règle concordante à ${h(pct(fiabPct, 0))} avec le sens publié là où les deux existent)` : ''}.</li>

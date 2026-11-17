@@ -328,6 +328,47 @@ describe('écrans', () => {
     viderCache()
   })
 
+  it('opérateurs : liste filtrable et triable, fiches, statuts de traçabilité, aucune personne nommée', async () => {
+    await ecran('#/explorer/operateurs')
+    expect(main.querySelector('h1')?.textContent).toBe('Les opérateurs de l’État')
+    expect(texte()).toMatch(/sur 100 € de subventions/)
+    for (const l of ['Tracé', 'Approché nommé', 'Approché par catégorie']) expect(texte()).toContain(l)
+    // Filtre par catégorie d'opérateurs
+    const cat = main.querySelector<HTMLSelectElement>('#op-categorie')!
+    cat.value = '__categorie'
+    cat.dispatchEvent(new Event('input', { bubbles: true }))
+    const lignes = main.querySelectorAll('#liste-op details[data-id]')
+    expect(lignes.length).toBe(4)
+    // Fiche d'une catégorie : séries, LFI 2025, établissements, rémunérations en somme seulement
+    const d = lignes[0] as HTMLDetailsElement
+    d.open = true
+    d.dispatchEvent(new Event('toggle'))
+    const fiche = d.querySelector('.fiche')!.textContent ?? ''
+    expect(fiche).toContain('2025 (LFI)')
+    expect(fiche).toContain('Approché par catégorie')
+    expect(fiche).toMatch(/dix plus hautes rémunérations 2024 \(somme\)/)
+    // Tri par nom
+    cat.value = ''
+    const tri = main.querySelector<HTMLSelectElement>('#op-tri')!
+    tri.value = 'nom'
+    tri.dispatchEvent(new Event('input', { bubbles: true }))
+    const noms = Array.from(main.querySelectorAll('#liste-op summary')).map((x) => x.textContent ?? '')
+    expect(noms).toEqual([...noms].sort((a, b) => a.localeCompare(b, 'fr')))
+    // Depuis un programme
+    await ecran('#/beneficiaires/programme?p=141')
+    expect(main.querySelector('a[href="#/explorer/operateurs?p=141"]')?.textContent).toBe('Opérateurs financés par ce programme')
+    await ecran('#/explorer/operateurs?p=141')
+    expect(texte()).toContain('Opérateurs financés par le programme 141')
+    expect(main.querySelectorAll('#liste-op details[data-id]').length).toBeGreaterThan(0)
+    expect(Array.from(main.querySelectorAll('.cartes a, .voir-aussi a')).length).toBeGreaterThan(0)
+  })
+
+  it('traçabilité : taux lu dans les données, lien vers les opérateurs', async () => {
+    await ecran('#/methode/tracabilite')
+    expect(texte()).toContain('69,14 %')
+    expect(main.querySelector('a[href="#/explorer/operateurs"]')).not.toBeNull()
+  })
+
   it('toutes les lectures de données sont relatives au site', () => {
     expect(requetes.length).toBeGreaterThan(10)
     for (const u of requetes) expect(u).toMatch(/^data\//)

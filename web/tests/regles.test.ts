@@ -99,3 +99,15 @@ describe('navigation et métadonnées', () => {
     expect(png.readUInt32BE(20)).toBe(630)
   })
 })
+
+describe('aucun taux codé en dur', () => {
+  it('accueil et méthode lisent leurs pourcentages et parts dans les données', () => {
+    for (const f of ['accueil.ts', 'methode.ts', 'tracabilite.ts']) {
+      const c = readFileSync(join(RACINE, 'src', 'ecrans', f), 'utf8')
+      // Taux de traçabilité publiés par le pipeline (actuels et passés) : jamais recopiés dans le code.
+      expect(c, f).not.toMatch(/(62|69|78|95)[,.]\d+\s*%/)
+      if (f === 'accueil.ts') expect(c, f).not.toMatch(/\d\s*%/)
+      expect(c, f).not.toMatch(/\?\?\s*\d+\.\d+/)
+    }
+  })
+})
