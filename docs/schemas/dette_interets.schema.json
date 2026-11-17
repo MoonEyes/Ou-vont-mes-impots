@@ -367,6 +367,78 @@
         },
         "lecture_budgetaire_etat": {
           "type": "object"
+        },
+        "perimetre": {
+          "type": "string",
+          "minLength": 10
+        },
+        "commune": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fourchette_eur": {
+          "type": "object",
+          "properties": {
+            "bas": {
+              "type": "number"
+            },
+            "central": {
+              "type": "number"
+            },
+            "haut": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "bas",
+            "central",
+            "haut"
+          ]
+        },
+        "variantes": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "commune": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "definition": {
+                "type": "string",
+                "minLength": 5
+              },
+              "teom_eur": {
+                "type": "number",
+                "minimum": 0
+              },
+              "fourchette_eur": {
+                "type": "object"
+              },
+              "total_annuel_eur": {
+                "type": "number"
+              },
+              "interets_annuel_eur": {
+                "type": "number"
+              },
+              "interets_sur_100_eur": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "commune",
+              "definition",
+              "teom_eur",
+              "fourchette_eur",
+              "total_annuel_eur",
+              "interets_sur_100_eur"
+            ]
+          }
         }
       },
       "required": [
@@ -375,7 +447,11 @@
         "interets_sur_100_eur",
         "annee_ratios",
         "methode",
-        "par_administration"
+        "par_administration",
+        "perimetre",
+        "commune",
+        "fourchette_eur",
+        "variantes"
       ]
     },
     "sensibilite": {

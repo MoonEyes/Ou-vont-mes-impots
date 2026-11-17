@@ -94,6 +94,22 @@ def test_cas_c04_coherent_avec_openfisca_et_arithmetique():
     assert 0 < c["interets_sur_100_eur"] < 10
 
 
+def test_cas_c04_meme_perimetre_que_la_carte_du_site():
+    c = ITR["cas_type"]
+    # carte du site (ecran resultat, locataire a Lyon) : 13 892 EUR central, fourchette 12 428 a 14 031 EUR
+    assert c["commune"].startswith("69123")
+    assert abs(c["total_annuel_eur"] - 13891.94) < 0.05
+    assert round(c["fourchette_eur"]["bas"]) == 12428 and round(c["fourchette_eur"]["haut"]) == 14031
+    v = c["variantes"]
+    # seule la TEOM separe les variantes ; sans commune, elle vaut 0 (non chiffree)
+    base = v["sans_commune"]["total_annuel_eur"]
+    for cle, x in v.items():
+        assert abs(x["total_annuel_eur"] - base - x["teom_eur"]) < 0.05, cle
+        assert x["fourchette_eur"]["bas"] <= x["fourchette_eur"]["central"] <= x["fourchette_eur"]["haut"]
+    assert v["sans_commune"]["teom_eur"] == 0
+    assert abs(v["lyon"]["total_annuel_eur"] - c["total_annuel_eur"]) < 1e-9
+
+
 def test_detenteurs_somment_au_total():
     der = DET["derniere_annee"]
     somme = sum(v["md"][der] for v in DET["eurostat"].values())

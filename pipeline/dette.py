@@ -532,25 +532,41 @@ def interets(pib_md: dict[str, float], c04: dict) -> dict:
     # Part de 100 EUR d'impot qui paie des interets (cas C04, comptabilite nationale)
     annee_ratio = derniere_nat
     correspondance = {"Etat": "S1311", "Securite sociale": "S1314", "Collectivites locales": "S1313", "Plusieurs": "S13"}
-    total = sum(c04["par_administration_eur"].values())
-    lignes_cas, interets_eur = {}, 0.0
-    for adm, montant in c04["par_administration_eur"].items():
-        ratio = nat_euro[correspondance[adm]]["part_depenses"][annee_ratio]
-        lignes_cas[adm] = {"montant_annuel_eur": _r(montant, 2), "sur_100_eur": _r(montant / total * 100, 2),
-                           "secteur": correspondance[adm], "part_interets_dans_depenses": ratio,
-                           "interets_annuel_eur": _r(montant * ratio, 2)}
-        interets_eur += montant * ratio
+
+    def evaluer(par_admin: dict) -> dict:
+        total = sum(par_admin.values())
+        lignes_cas, interets_eur = {}, 0.0
+        for adm, montant in par_admin.items():
+            ratio = nat_euro[correspondance[adm]]["part_depenses"][annee_ratio]
+            lignes_cas[adm] = {"montant_annuel_eur": _r(montant, 2), "sur_100_eur": _r(montant / total * 100, 2),
+                               "secteur": correspondance[adm], "part_interets_dans_depenses": ratio,
+                               "interets_annuel_eur": _r(montant * ratio, 2)}
+            interets_eur += montant * ratio
+        return {"total_annuel_eur": _r(total, 2), "par_administration": lignes_cas,
+                "interets_annuel_eur": _r(interets_eur, 2), "interets_sur_100_eur": _r(interets_eur / total * 100, 2)}
+    princ = c04["variantes"][c04["variante_principale"]]
+    variantes = {}
+    for cle, v in c04["variantes"].items():
+        ev = evaluer(v["par_administration_eur"])
+        variantes[cle] = {"commune": v["commune"], "definition": v["definition"], "teom_eur": v["teom_eur"],
+                          "fourchette_eur": v["fourchette_eur"], "total_annuel_eur": ev["total_annuel_eur"],
+                          "interets_annuel_eur": ev["interets_annuel_eur"], "interets_sur_100_eur": ev["interets_sur_100_eur"]}
+    principal = evaluer(princ["par_administration_eur"])
     racine_etat = json.loads((SITE / "arbre" / "racine.json").read_text(encoding="utf-8"))
     md117 = _cherche_md(racine_etat, "117")
     part_117 = md117 / racine_etat["md"] if md117 else None
     cas = {
         "profil": c04["profil"],
         "calcul": c04["calcul"],
-        "total_annuel_eur": _r(total, 2),
+        "perimetre": princ["definition"],
+        "commune": princ["commune"],
+        "fourchette_eur": princ["fourchette_eur"],
+        **principal,
         "annee_ratios": annee_ratio,
-        "par_administration": lignes_cas,
-        "interets_annuel_eur": _r(interets_eur, 2),
-        "interets_sur_100_eur": _r(interets_eur / total * 100, 2),
+        "variantes": variantes,
+        "ecart_variantes": "Seule la TEOM change d'une variante à l'autre (taux de la commune, base de logement estimée) ; "
+                           "sans commune, la TEOM n'est pas chiffrée (0 €). Prélevé sur salaire et IR : 7 638,36 € ; taxes sur la "
+                           "consommation : valeurs centrales de prelevements/tva_conso.json (5e décile), identiques partout.",
         "methode": "Comptabilité nationale : pour chaque administration qui reçoit une part de ce que paie le foyer, part des intérêts "
                    "(D41) dans ses dépenses totales (TE, Eurostat gov_10a_main), appliquée à cette part. « Plusieurs » (taxes sans "
                    "destinataire publié) prend le ratio de l'ensemble des APU. Les transferts entre administrations ne sont pas suivis "
@@ -829,14 +845,30 @@ def dette_sociale(encours_doc: dict) -> dict:
 
 
 # Cas type C04 (2 100 EUR net, celibataire, locataire) : repartition par administration calculee le 17/11/2026 avec le
-# module de calcul du site (web/src/calcul : calculer + assembler + parAdministration), affectation 2025, taxes sur la
-# consommation centrales (habitudes inconnues), sans taxe fonciere (locataire). Recontrole dans tests/test_dette.py :
-# la part prelevee sur le salaire (cotisations, CSG, CRDS, impot) retombe sur la reference OpenFisca de cas_types.json.
+# module de calcul du site, a l'identique de l'ecran resultat (web/src/ecrans/saisie.ts : calculer(profil, {affectation,
+# commune}) puis assembler(..., {tva, affectation, tfDep, ligneCommune}, habitudes inconnues) puis parAdministration).
+# La variante principale (Lyon, 69123) reproduit la carte du site : 13 891,94 EUR (12 428,23 a 14 031,18). La seule
+# difference entre variantes est la TEOM (payee par le locataire via ses charges) ; sans commune elle n'est pas chiffree.
+# Recontrole dans tests/test_dette.py : prelevements sur salaire = reference OpenFisca de cas_types.json.
+_SANS_TEOM = {"Securite sociale": 7969.54, "Etat": 3146.69, "Plusieurs": 1504.69}
 C04 = {
     "profil": {"cas_type": "C04", "libelle": "Célibataire au salaire médian (2 100 € net par mois), locataire"},
-    "calcul": "web/src/calcul (calculer, assembler, parAdministration), affectation 2025, taxes sur la consommation centrales, "
-              "calcul du 17/11/2026",
-    "par_administration_eur": {"Securite sociale": 7969.54, "Etat": 3146.69, "Collectivites locales": 1160.46, "Plusieurs": 1504.69},
+    "calcul": "web/src/calcul (calculer, assembler, parAdministration) appelé comme l'écran résultat (web/src/ecrans/saisie.ts), "
+              "affectation 2025, taxes sur la consommation centrales (habitudes inconnues), calcul du 17/11/2026",
+    "variante_principale": "lyon",
+    "variantes": {
+        "lyon": {"commune": "69123 (Lyon)", "teom_eur": 110.57, "fourchette_eur": {"bas": 12428.23, "central": 13891.94, "haut": 14031.18},
+                 "definition": "Périmètre de la carte du site : prélevé sur salaire et IR, taxes sur la consommation centrales, TEOM "
+                               "de la commune (locataire à Lyon)",
+                 "par_administration_eur": {**_SANS_TEOM, "Collectivites locales": 1271.03}},
+        "nantes": {"commune": "44109 (Nantes, commune du cas type C04 dans tests/cas_types)", "teom_eur": 155.57,
+                   "fourchette_eur": {"bas": 12474.56, "central": 13936.94, "haut": 14060.5},
+                   "definition": "Même périmètre, TEOM de Nantes",
+                   "par_administration_eur": {**_SANS_TEOM, "Collectivites locales": 1316.03}},
+        "sans_commune": {"commune": None, "teom_eur": 0.0, "fourchette_eur": {"bas": 12318.99, "central": 13781.37, "haut": 13781.37},
+                         "definition": "Même périmètre sans commune saisie : TEOM non chiffrée (0 €)",
+                         "par_administration_eur": {**_SANS_TEOM, "Collectivites locales": 1160.46}},
+    },
     "salaire_seul_eur": {"Securite sociale": 6634.36, "Etat": 1004.0},
 }
 
