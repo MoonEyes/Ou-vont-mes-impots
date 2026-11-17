@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/subventions_departements.schema.json",
+  "title": "site/data/subventions/departements.json : subventions par département et par source (pipeline/subventions.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "const": "euros"
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "departements": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string",
+            "minLength": 1
+          },
+          "total_additionne_eur": {
+            "type": "number"
+          },
+          "conventions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "par_source": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^subv_[a-z0-9_]+$"
+            },
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "par_annee": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^20[0-9]{2}$"
+            },
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "nom",
+          "total_additionne_eur",
+          "conventions",
+          "par_source",
+          "par_annee"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "non_localise": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^subv_[a-z0-9_]+$"
+      },
+      "additionalProperties": {
+        "type": "number"
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "note",
+    "departements",
+    "non_localise"
+  ],
+  "additionalProperties": false
+}

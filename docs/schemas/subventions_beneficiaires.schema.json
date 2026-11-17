@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/subventions_beneficiaires.schema.json",
+  "title": "site/data/subventions/beneficiaires.json : bénéficiaires nommés, sources additionnées (pipeline/subventions.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    },
+    {
+      "$ref": "commun.schema.json#/$defs/groupe_beneficiaires"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "const": "euros"
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "regle_personnes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "total_eur": {
+      "type": "number"
+    },
+    "top": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "properties": {
+          "siren": {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          "denomination": {
+            "type": "string",
+            "minLength": 1
+          },
+          "categorie_juridique": {
+            "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+          },
+          "montant_eur": {
+            "type": "number"
+          },
+          "conventions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^subv_[a-z0-9_]+$"
+            }
+          },
+          "noms_usage": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "siren",
+          "denomination",
+          "categorie_juridique",
+          "montant_eur",
+          "conventions"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "autres_personnes_morales": {
+      "type": "object"
+    },
+    "autres_non_verifies": {
+      "type": "object"
+    },
+    "exclus_personnes_physiques_ou_non_identifies": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "note",
+    "regle_personnes",
+    "total_eur",
+    "top"
+  ],
+  "additionalProperties": false
+}

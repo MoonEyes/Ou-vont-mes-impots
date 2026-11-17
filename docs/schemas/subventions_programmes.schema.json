@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/subventions_programmes.schema.json",
+  "title": "site/data/subventions/programmes.json : rattachement des subventions aux programmes LOLF (pipeline/subventions.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "const": "euros"
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "programmes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "source": {
+            "type": "string",
+            "pattern": "^subv_[a-z0-9_]+$"
+          },
+          "rattachement": {
+            "enum": [
+              "programme_source",
+              "programme_dispositif"
+            ]
+          },
+          "additionne": {
+            "type": "boolean"
+          },
+          "montant_eur": {
+            "type": "number"
+          },
+          "par_annee": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "annee": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 2000,
+                  "maximum": 2035
+                },
+                "montant_eur": {
+                  "type": "number"
+                },
+                "montant_nomme_eur": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annee",
+                "montant_eur",
+                "montant_nomme_eur"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "programme",
+          "source",
+          "rattachement",
+          "additionne",
+          "montant_eur",
+          "par_annee"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "operateurs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "pattern": "^subv_[a-z0-9_]+$"
+          },
+          "operateur": {
+            "type": "string",
+            "minLength": 1
+          },
+          "programme_chef_de_file": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "fichier": {
+            "type": "string",
+            "pattern": "^operateurs/.+\\.json$"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "source",
+          "operateur",
+          "programme_chef_de_file",
+          "fichier",
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "note",
+    "programmes",
+    "operateurs"
+  ],
+  "additionalProperties": false
+}

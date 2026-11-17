@@ -1,0 +1,531 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/subventions_attribuant.schema.json",
+  "title": "site/data/subventions/attribuants/<source>.json : une source de subventions (pipeline/subventions.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "const": "euros"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^subv_[a-z0-9_]+$"
+    },
+    "attribuant": {
+      "type": "string",
+      "minLength": 1
+    },
+    "producteur": {
+      "type": "string",
+      "minLength": 1
+    },
+    "licence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "collecte_le": {
+      "type": "string",
+      "format": "date"
+    },
+    "rattachement": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "programme_source",
+            "programme_dispositif",
+            "operateur",
+            "hors_budget_etat"
+          ]
+        },
+        "programmes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          }
+        },
+        "colonne": {
+          "type": "string"
+        },
+        "operateur": {
+          "type": "string"
+        },
+        "siren": {
+          "type": "string",
+          "pattern": "^[0-9]{9}$"
+        },
+        "programme_chef_de_file": {
+          "type": "string",
+          "pattern": "^[0-9]{3}$"
+        },
+        "fichier": {
+          "type": "string",
+          "pattern": "^operateurs/.+\\.json$"
+        },
+        "id": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "additionne": {
+      "type": "boolean"
+    },
+    "inclus_dans": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^subv_[a-z0-9_]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "total_eur": {
+      "type": "number"
+    },
+    "conventions": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lignes_montant_non_communique": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "conventions_sans_annee": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "montant_retire_des_totaux_eur": {
+      "type": "number"
+    },
+    "par_annee": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "annee": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 2000,
+            "maximum": 2035
+          },
+          "montant_eur": {
+            "type": "number"
+          },
+          "conventions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "lignes_montant_non_communique": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "montant_nomme_eur": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "annee",
+          "montant_eur",
+          "conventions",
+          "lignes_montant_non_communique"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "par_departement": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "departement": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "montant_eur": {
+            "type": "number"
+          },
+          "conventions": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "departement",
+          "nom",
+          "montant_eur",
+          "conventions"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "par_programme": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "montant_eur": {
+            "type": "number"
+          },
+          "par_annee": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "annee": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 2000,
+                  "maximum": 2035
+                },
+                "montant_eur": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annee",
+                "montant_eur"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "programme",
+          "montant_eur",
+          "par_annee"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "par_dispositif": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "properties": {
+          "dispositif": {
+            "type": "string",
+            "minLength": 1
+          },
+          "montant_eur": {
+            "type": "number"
+          },
+          "conventions": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "dispositif",
+          "montant_eur",
+          "conventions"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "par_dispositif_autres": {
+      "type": "object",
+      "properties": {
+        "nombre": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "montant_eur": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "nombre",
+        "montant_eur"
+      ],
+      "additionalProperties": false
+    },
+    "beneficiaires": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "commun.schema.json#/$defs/groupe_beneficiaires"
+        }
+      ],
+      "properties": {
+        "total_eur": {
+          "type": "number"
+        },
+        "top": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "object",
+            "properties": {
+              "siren": {
+                "$ref": "commun.schema.json#/$defs/siren"
+              },
+              "denomination": {
+                "type": "string",
+                "minLength": 1
+              },
+              "categorie_juridique": {
+                "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+              },
+              "montant_eur": {
+                "type": "number"
+              },
+              "conventions": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^subv_[a-z0-9_]+$"
+                }
+              },
+              "noms_usage": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "siren",
+              "denomination",
+              "categorie_juridique",
+              "montant_eur",
+              "conventions"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "autres_personnes_morales": {
+          "type": "object"
+        },
+        "autres_non_verifies": {
+          "type": "object"
+        },
+        "exclus_personnes_physiques_ou_non_identifies": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "total_eur"
+      ],
+      "additionalProperties": false
+    },
+    "titres": {
+      "type": "object",
+      "properties": {
+        "total_eur": {
+          "type": "number"
+        },
+        "top": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "object",
+            "properties": {
+              "titre": {
+                "type": "string",
+                "minLength": 1
+              },
+              "montant_eur": {
+                "type": "number"
+              },
+              "lignes": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "titre",
+              "montant_eur",
+              "lignes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "autres_titres": {
+          "type": "object",
+          "properties": {
+            "nombre": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "montant_eur": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "nombre",
+            "montant_eur"
+          ],
+          "additionalProperties": false
+        },
+        "titres_non_nommes": {
+          "type": "object",
+          "properties": {
+            "nombre": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "montant_eur": {
+              "type": "number"
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "nombre",
+            "montant_eur",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "total_eur",
+        "top",
+        "autres_titres",
+        "titres_non_nommes"
+      ],
+      "additionalProperties": false
+    },
+    "regle_personnes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nommes": {
+      "type": "object",
+      "properties": {
+        "nombre": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "montant_eur": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "nombre",
+        "montant_eur"
+      ],
+      "additionalProperties": false
+    },
+    "agrege_confidentialite": {
+      "type": "object",
+      "properties": {
+        "montant_eur": {
+          "type": "number"
+        },
+        "part_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "montant_eur",
+        "part_pct"
+      ],
+      "additionalProperties": false
+    },
+    "region": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "nom": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "code",
+        "nom"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "id",
+    "attribuant",
+    "rattachement",
+    "additionne",
+    "total_eur",
+    "conventions",
+    "lignes_montant_non_communique",
+    "par_annee",
+    "par_departement",
+    "par_dispositif",
+    "nommes",
+    "agrege_confidentialite",
+    "regle_personnes"
+  ],
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "required": [
+        "beneficiaires"
+      ]
+    },
+    {
+      "required": [
+        "titres"
+      ]
+    }
+  ]
+}

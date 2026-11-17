@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/subventions_annees.schema.json",
+  "title": "site/data/subventions/annees.json : subventions par année et par source (pipeline/subventions.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "const": "euros"
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sources_additionnees": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^subv_[a-z0-9_]+$"
+      }
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "annee": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 2000,
+            "maximum": 2035
+          },
+          "total_additionne_eur": {
+            "type": "number"
+          },
+          "conventions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "par_source": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^subv_[a-z0-9_]+$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "montant_eur": {
+                  "type": "number"
+                },
+                "conventions": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "lignes_montant_non_communique": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "montant_eur",
+                "conventions",
+                "lignes_montant_non_communique"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "annee",
+          "total_additionne_eur",
+          "conventions",
+          "par_source"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "note",
+    "sources_additionnees",
+    "annees"
+  ],
+  "additionalProperties": false
+}

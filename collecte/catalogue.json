@@ -2929,6 +2929,137 @@
   "titre": "Reserve parlementaire du Senat 2014-2017 (contient des adresses : zone restreinte)",
   "licence": "Licence Ouverte 2.0",
   "module": "pipeline/associations.py"
+ },
+ {
+  "id": "subv_ademe_aides",
+  "domaine": "subventions",
+  "type": "url",
+  "format": "csv",
+  "url": "https://data.ademe.fr/data-fair/api/v1/datasets/les-aides-financieres-de-l%27ademe/full",
+  "titre": "ADEME, les aides financieres de l'ADEME, conventions 2021-2026, format SCDL (API data-fair, fichier enrichi) (pipeline/subventions.py)",
+  "licence": "Licence Ouverte 2.0",
+  "personnes_physiques": true
+ },
+ {
+  "id": "subv_fonds_vert",
+  "domaine": "subventions",
+  "type": "datagouv_ressources",
+  "ressources": [
+   "ac2da594-aea2-4b87-973f-03f406ec4cfd",
+   "1fdc94e1-0f50-4d39-8be3-40ab381ee9c4",
+   "b5d38c64-3ab9-4d88-acc3-d0a5fd651132",
+   "558ace5f-64ed-42c3-9957-d8e232fa5061",
+   "df1c6fc7-bddb-4708-9d9b-40543206f0ed"
+  ],
+  "titre": "Fonds vert, liste des projets subventionnes 2023-2025 (programmes 380 et 113) (pipeline/subventions.py)",
+  "licence": "Licence Ouverte 2.0",
+  "personnes_physiques": true
+ },
+ {
+  "id": "subv_aeap",
+  "domaine": "subventions",
+  "type": "datagouv_ressources",
+  "ressources": [
+   "3dc1e530-f28c-445d-ae1c-a9a57efc0f4b",
+   "06f0f6e2-a9fd-402e-b8a8-1232f182894b"
+  ],
+  "titre": "Agence de l'eau Artois-Picardie, conventions de subvention signees (10e a 12e programmes) (pipeline/subventions.py)",
+  "licence": "Licence Ouverte 2.0",
+  "personnes_physiques": true
+ },
+ {
+  "id": "subv_culture_scdl",
+  "domaine": "subventions",
+  "type": "datagouv_ressources",
+  "lourd": true,
+  "ressources": [
+   "bd069434-e9da-4667-8152-f63a64d0945d"
+  ],
+  "titre": "Ministere de la Culture, donnees essentielles des conventions de subvention 2019-2025 (163 Mo, cp1252, lu en flux) (pipeline/subventions.py)",
+  "licence": "Licence Ouverte 2.0",
+  "personnes_physiques": true
+ },
+ {
+  "id": "subv_culture_festivals_p131",
+  "domaine": "subventions",
+  "type": "datagouv_ressources",
+  "ressources": [
+   "e4761b32-c601-4ec9-b361-658315d07389"
+  ],
+  "titre": "Ministere de la Culture, festivals finances au titre du programme 131 (2023-2024) (pipeline/subventions.py)",
+  "licence": "Licence Ouverte 2.0",
+  "personnes_physiques": true
+ },
+ {
+  "id": "subv_culture_adsv",
+  "domaine": "subventions",
+  "type": "datagouv_ressources",
+  "ressources": [
+   "2610916e-6d08-4c5b-807e-62d4e375f5af"
+  ],
+  "titre": "Ministere de la Culture, aides deconcentrees au spectacle vivant (ADSV) 2022-2024 (pipeline/subventions.py)",
+  "licence": "Licence Ouverte 2.0",
+  "personnes_physiques": true
+ },
+ {
+  "id": "subv_politique_ville_p147",
+  "domaine": "subventions",
+  "type": "datagouv_ressources",
+  "ressources": [
+   "27007c8c-3811-4100-a414-569c45a74266",
+   "6908329e-655a-4662-a39d-488c6c48e7c7",
+   "1c7757a3-c43f-4b14-9afc-82e945fb595f",
+   "5afe59f6-4dd5-4346-ad9a-371c18a8a71d",
+   "b2f8b9cf-ac82-440d-87ed-5af2fc3eeb6a",
+   "752e897c-3e15-49a8-b9b1-0350e900628d",
+   "9402b3b4-e59f-46eb-8fe1-08d6ab26a286",
+   "d20faec1-633a-4859-912a-e0ddbfcad568",
+   "3a03a2ed-1a27-4999-b3e4-dd2a872b1314",
+   "eb4d30f8-1d3b-4f5c-809c-e93176cfc540"
+  ],
+  "titre": "ANCT, subventions politique de la ville, programme 147, 2016-2025 (Latin-1) (pipeline/subventions.py)",
+  "licence": "Licence Ouverte 2.0",
+  "personnes_physiques": true
+ },
+ {
+  "id": "subv_ars_pdl_fir",
+  "domaine": "subventions",
+  "type": "datagouv_ressources",
+  "ressources": [
+   "c3828ae2-40c5-466f-a2cb-671b15c18e1c"
+  ],
+  "titre": "ARS Pays de la Loire, subventions au titre du Fonds d'intervention regional (FIR) 2025 (pipeline/subventions.py)",
+  "licence": "Licence Ouverte 2.0",
+  "personnes_physiques": true
+ },
+ {
+  "id": "subv_presse_titres",
+  "domaine": "subventions",
+  "type": "datagouv_ressources",
+  "ressources": [
+   "fdbf8702-28a8-44b9-9183-3bfdbfbd9d8b"
+  ],
+  "titre": "Ministere de la Culture, aides a la presse : classement des titres de presse aides 2015-2023 (pipeline/subventions.py)",
+  "licence": "Licence Ouverte 2.0"
+ },
+ {
+  "id": "subv_presse_dispositifs",
+  "domaine": "subventions",
+  "type": "datagouv_ressources",
+  "ressources": [
+   "9af88bf7-f197-4c13-83c0-cd8c34e7d5e5",
+   "58300293-3f3e-43ea-8196-61b74e0f9459",
+   "64ad7473-57ca-4412-a318-5ddf144afe99",
+   "7ba8071d-3df0-47d0-9fb7-f8a6c14a9123",
+   "dba1f9a9-843b-4407-88a8-8c902796c300",
+   "58065ce0-fec7-424b-9b72-1a214a8bf753",
+   "81de0b56-0d97-43dc-9e2d-59fa2832ba38",
+   "3be0c144-65cb-4a32-b25c-5d083da4204f",
+   "b4c8722e-1caf-4c2b-addc-a501c0b5a064",
+   "801735a1-04bd-43dd-9866-f07e5a89e32c"
+  ],
+  "titre": "Ministere de la Culture, aides a la presse par dispositif (index aides-a-la-presse-1), 2012-2025 (pipeline/subventions.py)",
+  "licence": "Licence Ouverte 2.0"
  }
  ],
  "non_collectables": [

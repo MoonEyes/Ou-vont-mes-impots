@@ -81,6 +81,13 @@ FICHIERS = [
     ("prestations_index.schema.json", "prestations/index.json", "existant"),
     ("prestations_nationales.schema.json", "prestations/nationales.json", "existant"),
     ("prestations_departement.schema.json", "prestations/departements/*.json", "existant"),
+    # subventions au format des données essentielles des conventions de subvention (pipeline/subventions.py)
+    ("subventions_index.schema.json", "subventions/index.json", "existant"),
+    ("subventions_attribuant.schema.json", "subventions/attribuants/*.json", "existant"),
+    ("subventions_annees.schema.json", "subventions/annees.json", "existant"),
+    ("subventions_departements.schema.json", "subventions/departements.json", "existant"),
+    ("subventions_beneficiaires.schema.json", "subventions/beneficiaires.json", "existant"),
+    ("subventions_programmes.schema.json", "subventions/programmes.json", "existant"),
     # dette publique : encours, intérêts, détenteurs, financement (pipeline/dette.py)
     ("dette_index.schema.json", "dette/index.json", "existant"),
     ("dette_encours.schema.json", "dette/encours.json", "existant"),
