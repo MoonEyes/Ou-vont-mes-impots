@@ -245,10 +245,27 @@
           "properties": {
             "annee": {
               "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "somme_md": {
+              "type": "number"
+            },
+            "total_consolide_s13_md": {
+              "type": "number"
+            },
+            "ecart_consolidation_md": {
+              "type": "number",
+              "description": "somme_md - total_consolide_s13_md (valeurs publiées)."
+            },
+            "ecart_depenses_totales_md": {
+              "type": "number",
+              "description": "Même écart sur les dépenses totales (TE, gov_10a_main), tous transferts compris."
             }
           },
           "required": [
-            "annee"
+            "annee",
+            "somme_md",
+            "total_consolide_s13_md",
+            "ecart_consolidation_md"
           ]
         }
       },

@@ -1096,7 +1096,13 @@ def produire_aides() -> dict:
                        "note": "écart dû au périmètre retenu (aides d'État au sens européen jusqu'à l'agrégat "
                                "macroéconomique), pas à une divergence de mesure sur un même périmètre"},
         "exonerations_cotisations_urssaf": {"champ": "secteur privé (champ des ETE et hors champ), secteur public "
-                                                     "exclu", "source": SRC_URSSAF, "annees": serie},
+                                                     "exclu", "source": SRC_URSSAF,
+                                            "renvoi": "niches/sociales.json (`urssaf`) publie l'autre jeu Urssaf, "
+                                                      "par mesure, sur le champ des cotisations recouvrées par les "
+                                                      "Urssaf : champ différent, totaux annuels voisins sans être "
+                                                      "égaux (moins de 0,5 % d'écart) ; les deux séries ne "
+                                                      "s'additionnent pas.",
+                                            "annees": serie},
         "donnees_du_site": lies,
         "verification_documents": {"document": str(HCSP_PDF.relative_to(ROOT)), "url": URL_HCSP, "estimations": verif}})
     return {"estimations": len(estimations), "fourchette_md": [min(basses), max(hautes)],

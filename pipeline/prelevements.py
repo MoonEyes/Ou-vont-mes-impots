@@ -273,7 +273,9 @@ def affectation_parametres(rei_tf: dict | None) -> dict:
                                "2023 art. 55 (collectivités) ; CSS art. L. 131-8 (sécurité sociale) ; LFR 2022 "
                                "(audiovisuel public)",
         "note": "Comptabilité budgétaire. En comptabilité nationale (Eurostat D211, 2025) : État 98,70, collectivités "
-                "52,75, sécurité sociale 57,37 Md€ (site/data/recettes.json).",
+                "52,75, sécurité sociale 57,37 Md€, ensemble 208,82 Md€ (site/data/recettes.json), contre 210,0 Md€ ici : "
+                "les deux sources n'ont ni la même comptabilité ni la même date, parts et montants diffèrent donc "
+                "(moins d'un point sur la part de l'État).",
     }
 
     # Accise sur les produits énergétiques (ex-TICPE), 2025.

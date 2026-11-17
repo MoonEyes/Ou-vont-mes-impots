@@ -1,10 +1,37 @@
 # Qualité des données publiées : cohérence croisée
 
-Relecture indépendante de `site/data/` (état du 17/11/2026) et de `docs/contrat_interface.md` (version 1.6). Aucun pipeline ni fichier de données n'a été modifié : les corrections ci-dessous sont proposées aux producteurs.
+Relecture indépendante de `site/data/` (état du 17/11/2026) et de `docs/contrat_interface.md` (version 1.6). La relecture n'a modifié ni pipeline ni fichier de données ; les corrections ont été faites ensuite par les producteurs, le même jour : leur statut est en section 0, les constats d'origine sont gardés tels quels en section 1.
 
-Test : `pytest tests/test_coherence.py` (sans réseau, sans `data/lake`). Chaque règle vérifiable est un test `test_Rnn_...`. Un écart publié et documenté est une **tolérance explicite** (constante `TOL_*` ou liste d'exceptions nommée dans le test). Un vrai défaut est marqué `xfail(strict=True)` avec la référence du constat : quand le producteur le corrige, le test passe, le xfail échoue et oblige à retirer la marque.
+Test : `pytest tests/test_coherence.py` (sans réseau, sans `data/lake`). Chaque règle vérifiable est un test `test_Rnn_...`. Un écart publié et documenté est une **tolérance explicite** (constante `TOL_*`). Un vrai défaut se marque `xfail(strict=True)` avec la référence du constat : quand le producteur le corrige, le test passe, le xfail échoue et oblige à retirer la marque.
 
-Bilan : 53 règles (56 cas avec les paramètres), 48 vertes, 8 défauts en xfail. Constats : 1 bloquant, 3 importants, 13 mineurs.
+Bilan à la relecture : 53 règles (56 cas avec les paramètres), 48 vertes, 8 défauts en xfail ; 1 constat bloquant, 3 importants, 13 mineurs.
+
+Bilan après correction : 54 règles (57 cas), toutes vertes, aucun xfail ni liste d'exceptions. 16 constats corrigés à la source (B1, I1 à I3, M1 à M11, M13), 1 documenté sans changement (M12), 1 nouveau constat mineur ouvert (M14).
+
+## 0. Statut des constats après correction
+
+| Id | Statut | Ce qui a été fait | Garde-fou |
+|---|---|---|---|
+| B1 | corrigé | Cause exacte : l'annexe 1 du PLRG 2023 publie trois cellules du programme 200 en notation scientifique de tableur (« 1,27055E+11 », « 1,39544E+11 », « 1,37322E+11 » : LFI, crédits ouverts, dépenses de la ligne « autres titres ») ; `montant()` de `pipeline/decisions.py` n'acceptait que des chiffres et renvoyait 0,0 pour tout le reste ; il ne restait que la ligne « titre 2 » (279,28 €). Un seul programme et une seule année touchés : 3 cellules sur les trois annexes 2023 à 2025, 1 170 valeurs de 135 programmes comparées à `realisations/`. `montant()` lit la notation scientifique et renvoie `None` pour une valeur non vide illisible (jamais 0) ; `lire_plrg()` publie alors `null` avec `valeurs_illisibles_plrg`, et signale l'arrondi de la source dans `precision_plrg` ; les amendements s'arrêtent sur une valeur illisible (`montant_strict`). Nouvelle étape `python pipeline/decisions.py plrg` : régénération ciblée des seuls champs du PLRG, sans archive JORF ; seul `decisions/programme_200.json` a changé. | contrôle bloquant en fin de `produire` et de `plrg` (`controler_realisations`) ; R25a (tous les programmes, sans exception), R25b, R25d ; `tests/test_unitaires_decisions.py` |
+| I1 | corrigé | `transform.py` publie `ecart_consolidation_md` = `somme_administrations_md` - `total_consolide_md` (60,9) et, à part, `ecart_depenses_totales_md` (106,3) avec `definitions` ; l'écran Méthode lit les deux dans `meta.json`. | R28a ; `tests/test_pipeline.py` ; test web « méthode : l'écart de consolidation affiché… » |
+| I2 | corrigé | `niches.py` : un coût `hors_reference` n'entre plus dans aucune somme par programme, mission ou grand poste ; il est publié dans `hors_reference_meur` (programme 343 : 19 M€ en 2024, `fiscal_meur` 0). Somme des programmes 2024 = 89 406 M€. | contrôle bloquant de `produire` ; R20f ; `tests/test_niches.py`, `tests/test_unitaires_niches.py` |
+| I3 | corrigé | `fiscal_meur.<année>` = `null` et `mention.<année>` pour les 12 couples programme-année sans mesure chiffrée (151, 158, 345 : 2024 à 2026 ; 142 : 2024 ; 305, 101 : 2026) ; missions et grands postes comptent ces programmes dans `programmes_non_chiffres`. | R20g (équivalence dans les deux sens) ; schéma `niches_programmes` |
+| M1 | corrigé | `dette.py`, `dette/interets.json` et contrat 2.19 : « Nantes, variante de comparaison ; le cas type C04 habite Lyon, 69123 ». | R14b |
+| M2 | corrigé | fixtures web `dette/` recopiées des fichiers publiés. | R15b (égalité complète des quatre fichiers) |
+| M3 | corrigé | `secu/index.json`, `liens_affectation.sans_noeud` : `acoss`, `msa_maladie`, `msa_vieillesse`, `msa_rco` avec motif et nœud englobant. Aucun montant n'est rattaché à un nœud par hypothèse. | R22b |
+| M4 | corrigé | docstring de `scsp_par_programme` et contrat 2.14 : le plafond est la part de catégorie 32 × montant de l'arbre. | R16b |
+| M5 | corrigé | note des 101 fichiers communaux réécrite (`dgf_commune_nouvelle` hors `dgf_totale`, DACOM comprise) ; EPCI : `dgf_ecart_composantes` publié pour les 199 lignes (47 EPCI) dont le total diffère de ses deux composantes. | R24a (EPCI : égalité exacte), R24b (1 267 lignes) |
+| M6 | corrigé | note de `tva` dans `prelevements/affectation.json` : 208,82 Md€ (Eurostat) contre 210,0 Md€. | R21b (tolérance conservée) |
+| M7 | corrigé | renvoi croisé (`renvoi`) entre `niches/sociales.json` et `controle/aides_entreprises.json`. | R30 (tolérance conservée) |
+| M8 | corrigé | `dette/detenteurs.json`, `ecarts[]` : écart 2025 de 0,4 Md€ entre détenteurs et encours. | R29 |
+| M9 | corrigé | `ue/contribution.json` et `ue/retours.json` se renvoient l'un à l'autre (24,3 arrondi, 24,356 déduit). | R08 (tolérance conservée) |
+| M10 | corrigé | exception de `vie_politique/annees.json` écrite dans la règle `eur_sur_100` du contrat. | R31 |
+| M11 | corrigé | `budget_arbre_meur` ajouté aux missions et grands postes (Engagements financiers de l'État : 58 764,6 M€) ; `budget_meur` gardé et défini. | R20d |
+| M12 | documenté, inchangé | l'écran et `deficit.json` publient déjà le périmètre ; aucune donnée à corriger. | R27 (tolérance 3 %) |
+| M13 | corrigé | `arbre_administrations/methode.json` : `depenses_totales_ensemble_md` et `ecart_tables_eurostat_md` (0,9). | `tests/test_pipeline.py` ; R28b |
+| M14 | ouvert (nouveau, mineur) | `realisations/200.json`, exercice 2023 : LFI, crédits ouverts et dépenses viennent des mêmes trois cellules en notation scientifique, arrondies par la source à 6 chiffres significatifs (500 000 € près), sans mention ; « 137 322 000 279,28 € » affiche une précision que la source n'a pas. Correction proposée à `realisations.py` : mention de précision, comme `precision_plrg`. | aucun (à ajouter avec la correction) |
+
+Régénérations : ciblées (`decisions.py plrg`, `niches.py produire` et `transform.py` rejoués sur les mêmes sources, notes et renvois réécrits dans les fichiers publiés à partir des constantes des pipelines). Fichiers de `site/data/` modifiés : `decisions/programme_200.json`, `niches/programmes.json`, `niches/sociales.json`, `arbre_administrations/methode.json`, `meta.json` (bloc `controle.arbre_administrations`, `genere_le` inchangé), `dette/interets.json`, `dette/detenteurs.json`, `secu/index.json`, `prelevements/affectation.json`, `ue/contribution.json`, `ue/retours.json`, `controle/aides_entreprises.json`, `local/dotations/epci.json` et les 101 `local/dotations/communes/*.json` (note seule).
 
 ## 1. Constats
 
@@ -76,14 +103,14 @@ Bilan : 53 règles (56 cas avec les paramètres), 48 vertes, 8 défauts en xfail
 | R11-R13 | dette : programme 117 sur cinq fichiers, part anonyme, cas type interne | `test_R11_*` à `test_R13_*` |
 | R14-R15 | cas type C04 : pipeline, OpenFisca, données, web, fixtures | `test_R14*`, `test_R15*` |
 | R16-R19 | SCSP, nature, bénéficiaires, traçabilité | `test_R16*` à `test_R19_*` |
-| R20 | dépenses fiscales : null, totaux, rattachement, sommes par programme | `test_R20a_*` à `test_R20g_*` |
+| R20 | dépenses fiscales : null, totaux, rattachement, sommes par programme, coûts hors référence, programme non chiffré | `test_R20a_*` à `test_R20g_*` |
 | R21-R22 | affectation, TVA, déciles, taxe foncière, liens Sécurité sociale | `test_R21*`, `test_R22*` |
 | R23-R24 | DGF et PSR collectivités, composantes, comptes et notifications | `test_R23_*`, `test_R24*` |
-| R25 | décisions = réalisations (PLRG), conformité JO/PLRG selon la tolérance publiée | `test_R25*` |
+| R25 | décisions = réalisations (PLRG) pour chaque programme, null avec raison, conformité JO/PLRG selon la tolérance publiée | `test_R25*` |
 | R26-R28 | déficit, écran 3, administrations, COFOG, recettes | `test_R26_*` à `test_R28*` |
 | R29-R31 | détenteurs et encours, contrôle (Urssaf, France 2030), vie politique | `test_R29_*` à `test_R31_*` |
 | R32-R33 | `null` propagé (effectifs, trous de la dette) | `test_R32_*`, `test_R33_*` |
 
 Hors champ de ce fichier (déjà couverts ailleurs) : conformité aux schémas (`test_contrat.py`), personnes physiques (`test_confidentialite.py`), conservation des groupes de bénéficiaires et contrôles internes de chaque producteur (`test_<producteur>.py`).
 
-Capital utilisé : tests et validateur existants du dépôt (`tests/`, `docs/valider_contrat.py`) réutilisés tels quels ; recherche publique sans objet (contrôle interne de données déjà produites, aucun outil externe nécessaire).
+Capital utilisé : tests et validateur existants du dépôt (`tests/`, `docs/valider_contrat.py`) réutilisés tels quels ; corrections faites dans les pipelines existants avec leurs commandes `collecter` et `produire` ; recherche publique sans objet (contrôle interne de données déjà produites, aucun outil externe nécessaire).

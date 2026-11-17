@@ -199,9 +199,14 @@ def test_arbre_administrations_coherent_et_double_compte_explique():
     visite(racine)
     m = json.loads((SITE / "arbre_administrations" / "methode.json").read_text(encoding="utf-8"))
     surplus = m["somme_administrations_md"] - m["total_consolide_md"]
-    # Le surplus restant est positif et ne depasse pas les transferts entre administrations publies.
-    assert 0 <= surplus <= m["ecart_consolidation_md"]
-    assert m["ecart_consolidation_md"] >= m["transferts_courants_entre_administrations_md"]
+    # L'ecart de consolidation publie est exactement la difference des deux montants publies (constat I1) ; il est
+    # positif et ne depasse pas l'ecart sur les depenses totales, qui couvre tous les transferts entre administrations.
+    assert m["ecart_consolidation_md"] == pytest.approx(surplus, abs=0.05)
+    assert 0 <= surplus <= m["ecart_depenses_totales_md"]
+    assert m["ecart_depenses_totales_md"] >= m["transferts_courants_entre_administrations_md"]
+    assert set(m["definitions"]) == {"ecart_consolidation_md", "ecart_depenses_totales_md", "ecart_tables_eurostat_md"}
+    # constat M13 : l'ecart entre les deux tables Eurostat est publie, pas seulement tolere
+    assert m["ecart_tables_eurostat_md"] == pytest.approx(m["depenses_totales_ensemble_md"] - m["total_consolide_md"], abs=0.05)
 
 
 def test_recettes_un_impot_va_a_une_seule_administration():

@@ -189,8 +189,10 @@ def scsp_par_programme(feuilles: list[dict], operateurs: dict | None) -> dict[st
 
     Le jaune donne, par opérateur, la SCSP 2024 et la liste de ses programmes financeurs (toutes natures), pas la
     répartition. Ajustement proportionnel itératif (RAS) : la somme par opérateur tend vers sa SCSP (jaune), la somme par
-    programme ne dépasse jamais sa catégorie 32 (PLRG). Un opérateur à un seul programme porteur de catégorie 32,
-    retrouvé en entier, est exact ; une répartition entre plusieurs programmes est approchée.
+    programme ne dépasse jamais son plafond. Ce plafond est la part de la catégorie 32 dans la nature du programme
+    (nature/<n>.json) multipliée par le montant du programme dans l'arbre, et non la catégorie 32 du PLRG, que l'arbre
+    retraité peut dépasser. Un opérateur à un seul programme porteur de catégorie 32, retrouvé en entier, est exact ;
+    une répartition entre plusieurs programmes est approchée.
     """
     if not operateurs:
         return {}

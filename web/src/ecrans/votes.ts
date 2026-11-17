@@ -18,7 +18,7 @@ interface Programme {
   programme: string
   libelle: string
   annees: Record<string, Annee>
-  chronologie: { date: string; etape: string; cp: number; url: string }[]
+  chronologie: { date: string; etape: string; cp: number | null; url: string; raison?: string; precision?: string }[]
 }
 interface Index {
   source: string
@@ -34,6 +34,8 @@ interface Scrutins {
 export const REGLE_AMENDEMENTS = 'Ordre : date d’adoption, du plus récent au plus ancien (les 12 derniers), quel que soit le groupe de l’auteur.'
 
 const signe = (x: number) => `${x > 0 ? '+' : x < 0 ? '−' : ''}${eurLisible(Math.abs(x))}`
+/** Montant d’une étape : null (valeur illisible dans la source) n’est jamais affiché comme 0 €. */
+export const montantEtape = (c: { cp: number | null; raison?: string }) => (c.cp === null ? `non lisible${c.raison ? ` (${c.raison})` : ' dans la source'}` : signe(c.cp))
 
 export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const p = params.get('p')
@@ -78,7 +80,7 @@ ${
 <ul class="lignes">${d.chronologie
         .slice(-12)
         .reverse()
-        .map((c) => `<li><span>${lienSiUrl(c.url, c.etape)}</span><span class="montant">${h(signe(c.cp))}</span><span class="dest">${h(c.date)}</span></li>`)
+        .map((c) => `<li><span>${lienSiUrl(c.url, c.etape)}</span><span class="montant">${h(montantEtape(c))}</span><span class="dest">${h(c.date)}${c.precision ? ` · ${h(c.precision)}` : ''}</span></li>`)
         .join('')}</ul>
 ${source(d.source, d.millesime)}
 <ul class="liens-sortie">

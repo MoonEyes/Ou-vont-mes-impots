@@ -29,7 +29,25 @@
       "type": "number"
     },
     "ecart_consolidation_md": {
+      "type": "number",
+      "description": "somme_administrations_md - total_consolide_md, sur les valeurs publiées (la soustraction affichée est exacte)."
+    },
+    "ecart_depenses_totales_md": {
+      "type": "number",
+      "description": "Dépenses totales (TE, gov_10a_main) des trois administrations moins celles de l'ensemble : tous les transferts entre administrations."
+    },
+    "depenses_totales_ensemble_md": {
       "type": "number"
+    },
+    "ecart_tables_eurostat_md": {
+      "type": "number",
+      "description": "depenses_totales_ensemble_md (gov_10a_main) - total_consolide_md (gov_10a_exp)."
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
     }
   },
   "required": [
@@ -38,6 +56,7 @@
     "somme_administrations_md",
     "total_consolide_md",
     "transferts_courants_entre_administrations_md",
-    "ecart_consolidation_md"
+    "ecart_consolidation_md",
+    "ecart_depenses_totales_md"
   ]
 }

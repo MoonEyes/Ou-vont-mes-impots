@@ -19,7 +19,7 @@ interface Meta {
       remboursements_et_degrevements: { montant_md: number; motif: string; traitement: string }
       rapprochement_plrg?: { ecart_md: number; lecture: string; source: string }
     }>
-    arbre_administrations?: { annee: string; somme_md: number; total_consolide_s13_md: number; ecart_consolidation_md: number }
+    arbre_administrations?: { annee: string; somme_md: number; total_consolide_s13_md: number; ecart_consolidation_md: number; ecart_depenses_totales_md?: number }
     part_empruntee_etat?: Record<string, number>
     communes?: number
   }
@@ -116,7 +116,7 @@ ${ex.rapprochement_plrg ? `<li>Contrôle : écart de ${h(md(ex.rapprochement_plr
 
 <h2>Doubles comptes</h2>
 <ul>
-${adm ? `<li>Administrations publiques ${h(adm.annee)} : la somme des administrations (${h(md(adm.somme_md))}) dépasse le total consolidé (${h(md(adm.total_consolide_s13_md))}) de ${h(md(adm.ecart_consolidation_md))}, à cause des transferts entre administrations (dotations de l’État aux collectivités, à la Sécurité sociale).</li>` : ''}
+${adm ? `<li>Administrations publiques ${h(adm.annee)} : la somme des administrations (${h(md(adm.somme_md))}) dépasse le total consolidé (${h(md(adm.total_consolide_s13_md))}) de ${h(md(adm.ecart_consolidation_md))}, à cause des transferts entre administrations qui restent dans cette somme (dotations de l’État aux collectivités, à la Sécurité sociale).${adm.ecart_depenses_totales_md !== undefined ? ` Sur les dépenses totales de chaque administration, tous transferts compris, l’écart est de ${h(md(adm.ecart_depenses_totales_md))}.` : ''}</li>` : ''}
 <li>Les prélèvements sur recettes au profit des collectivités apparaissent dans le budget de l’État et dans les recettes des collectivités : ne pas les additionner.</li>
 <li>Les montants France 2030 sont des engagements cumulés 2021 à 2025, à ne pas comparer à la dépense d’une année.</li>
 <li>Les marchés publics sont des montants notifiés (pour un accord-cadre, le maximum estimé), pas des paiements.</li>

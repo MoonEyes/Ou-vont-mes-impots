@@ -20,6 +20,13 @@ Commandes (chacune < 9 min) :
   python pipeline/decisions.py jorf       # lit l'archive JORF en flux, garde les textes de mouvements de crédits
                                           # (filtre sur le titre) dans data/lake/_cache/decisions_jorf/
   python pipeline/decisions.py produire   # sans réseau : écrit site/data/decisions/
+  python pipeline/decisions.py plrg       # sans réseau, sans archive JORF : recale les seuls champs tirés du PLRG
+                                          # dans les fiches publiées (régénération ciblée)
+
+Montants : une cellule vide vaut 0 ; une valeur non vide illisible devient null avec sa raison
+(`valeurs_illisibles_plrg`), jamais 0 ; une valeur en notation scientifique (PLRG 2023, programme 200) est lue et
+signalée (`precision_plrg`). `produire` et `plrg` s'arrêtent si LFI, crédits ouverts ou dépenses diffèrent de
+site/data/realisations/<n>.json de plus de 1 €.
 
 Personnes : seuls les élus (députés, sénateurs) et le Gouvernement sont nommés comme auteurs ; aucune autre donnée
 personnelle n'est lue ni écrite (pas de date de naissance, d'adresse, de profession).
@@ -99,16 +106,48 @@ def norm(s) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
 
-def montant(v) -> float:
-    """'89 753 974', '-3000000', '+ 1 000', '' -> nombre (euros)."""
-    if v is None:
-        return 0.0
+SCI_RE = re.compile(r"^[+]?(-?\d+(?:\.\d+)?)[eE]([+-]?\d+)$")
+
+
+def lecture_montant(v) -> tuple[float | None, str | None]:
+    """(valeur en euros ou None, remarque ou None).
+
+    Cellule vide ou absente : 0.0 (aucun montant publié sur la ligne). Valeur non vide illisible : None et la raison,
+    jamais 0. Notation scientifique d'un tableur (« 1,27055E+11 ») : lue, avec la remarque d'arrondi (la source ne
+    garde que les chiffres significatifs écrits)."""
+    if v is None or nil(v):
+        return 0.0, None
+    if isinstance(v, bool):
+        return None, f"valeur illisible dans la source : « {v} »"
     if isinstance(v, (int, float)):
-        return float(v)
-    s = propre(v).replace(" ", "").replace(",", ".")
+        return (float(v), None) if v == v else (None, "valeur illisible dans la source : « NaN »")
+    s = re.sub(r"[\s\u00a0\u202f\u2009]", "", propre(v)).replace(",", ".")
     s = s.replace("−", "-").replace("–", "-")
+    if s == "":
+        return 0.0, None
     m = re.search(r"^[+]?(-?\d+(?:\.\d+)?)$", s)
-    return float(m.group(1)) if m else 0.0
+    if m:
+        return float(m.group(1)), None
+    m = SCI_RE.search(s)
+    if m:
+        chiffres = len(m.group(1).replace("-", "").replace(".", "").lstrip("0")) or 1
+        return float(f"{m.group(1)}e{m.group(2)}"), (f"valeur publiée en notation scientifique (« {propre(v)} ») : "
+                                                     f"arrondie à {chiffres} chiffres significatifs dans la source")
+    return None, f"valeur illisible dans la source : « {propre(v)[:40]} »"
+
+
+def montant(v) -> float | None:
+    """'89 753 974', '-3000000', '+ 1 000', '1,27055E+11' -> nombre (euros) ; '' ou None -> 0.0 (cellule vide) ;
+    valeur non vide illisible -> None, jamais 0 (la raison est donnée par `lecture_montant`)."""
+    return lecture_montant(v)[0]
+
+
+def montant_strict(v, contexte: str) -> float:
+    """Montant d'une ligne qui entre dans une somme : une valeur illisible arrête la production (jamais 0)."""
+    x, raison = lecture_montant(v)
+    if x is None:
+        raise SystemExit(f"{contexte} : {raison}")
+    return x
 
 
 def nil(v) -> bool:
@@ -130,26 +169,79 @@ def _plrg_fichiers() -> dict[int, Path]:
             2025: ETAT / "etat_plrg_2025" / "Annexe1-Etat_CP-2025.csv"}
 
 
+PLRG_COLS = {"LFI": "lfi", "LFR": "lfr", "Report_N-1": "reports_entrants",
+             "Mvts_reglementaires": "mouvements_reglementaires", "FDC_et_ADP": "fonds_de_concours",
+             "Total_CP_Ouverts": "ouverts", "Depenses_constatees": "depenses"}
+
+
 def lire_plrg() -> dict[int, dict[str, dict]]:
-    """{annee: {programme: {lfi, lfr, reports, mouvements, fdc, ouverts, depenses, libelle, mission}}}."""
-    cols = {"LFI": "lfi", "LFR": "lfr", "Report_N-1": "reports_entrants", "Mvts_reglementaires": "mouvements_reglementaires",
-            "FDC_et_ADP": "fonds_de_concours", "Total_CP_Ouverts": "ouverts", "Depenses_constatees": "depenses"}
+    """{annee: {programme: {lfi, lfr, reports, mouvements, fdc, ouverts, depenses, libelle, mission, illisibles,
+    precision}}}. Un montant illisible sur une ligne rend la colonne du programme None (`illisibles[colonne]` dit
+    pourquoi) ; un montant en notation scientifique est lu et signalé dans `precision[colonne]`."""
     out = {}
     for a, f in _plrg_fichiers().items():
         if not f.exists():
             continue
         d = {}
-        for r in csv.DictReader(io.StringIO(f.read_text(encoding="utf-8-sig")), delimiter=";"):
+        lignes = list(csv.DictReader(io.StringIO(f.read_text(encoding="utf-8-sig")), delimiter=";"))
+        manquantes = (set(PLRG_COLS) | {"Mission", "Programme"}) - set(lignes[0] if lignes else [])
+        if manquantes:
+            raise SystemExit(f"{f} : colonnes manquantes {sorted(manquantes)}")
+        for r in lignes:
             m = re.search(r"(\d{3})\s*$", r["Programme"])
             if not m:
                 continue
             p = m.group(1)
-            e = d.setdefault(p, {k: 0.0 for k in cols.values()})
+            e = d.setdefault(p, {**{k: 0.0 for k in PLRG_COLS.values()}, "illisibles": {}, "precision": {}})
             e["libelle"] = propre(re.sub(r"\s*-\s*\d{3}\s*$", "", r["Programme"]))
             e["mission"] = propre(r["Mission"])
-            for c, k in cols.items():
-                e[k] += montant(r.get(c))
+            for c, k in PLRG_COLS.items():
+                x, remarque = lecture_montant(r.get(c))
+                if x is None:
+                    e[k] = None
+                    e["illisibles"][k] = remarque
+                    continue
+                if remarque:
+                    e["precision"][k] = remarque
+                if e[k] is not None:
+                    e[k] += x
         out[a] = d
+    return out
+
+
+CHAMPS_PLRG = (("lfi_cp", "lfi"), ("lfr_cp", "lfr"), ("reports_entrants_cp", "reports_entrants"),
+               ("mouvements_reglementaires_plrg_cp", "mouvements_reglementaires"),
+               ("fonds_de_concours_plrg_cp", "fonds_de_concours"), ("ouverts_cp", "ouverts"),
+               ("depenses_cp", "depenses"))
+ETAPE_LFI, ETAPE_LFR, ETAPE_EXEC = "LFI votée", "Loi de finances rectificative ou de fin de gestion", "Exécution"
+
+
+def bloc_plrg(x: dict, a: int) -> dict:
+    """Champs PLRG d'une année de la fiche programme ; un montant illisible est null avec sa raison."""
+    e = {champ: x[k] for champ, k in CHAMPS_PLRG}
+    e["source_plrg"] = SRC_PLRG.format(a=a)
+    illisibles = {champ: x["illisibles"][k] for champ, k in CHAMPS_PLRG if k in x["illisibles"]}
+    if illisibles:
+        e["valeurs_illisibles_plrg"] = illisibles
+    precision = {champ: x["precision"][k] for champ, k in CHAMPS_PLRG if k in x["precision"] and x[k] is not None}
+    if precision:
+        e["precision_plrg"] = precision
+    return e
+
+
+def etapes_plrg(x: dict, a: int) -> list[dict]:
+    """Étapes de la chronologie tirées du PLRG : LFI votée, LFR (si non nulle), exécution."""
+    def etape(date: str, nom: str, k: str) -> dict:
+        c = {"date": date, "annee": a, "etape": nom, "cp": x[k], "source": SRC_PLRG.format(a=a)}
+        if x[k] is None:
+            c["raison"] = x["illisibles"][k]
+        elif k in x["precision"]:
+            c["precision"] = x["precision"][k]
+        return c
+    out = [etape(f"{a}-01-01", ETAPE_LFI, "lfi")]
+    if x["lfr"] or x["lfr"] is None:
+        out.append(etape(f"{a}-12-01", ETAPE_LFR, "lfr"))
+    out.append(etape(f"{a}-12-31", ETAPE_EXEC, "depenses"))
     return out
 
 
@@ -268,9 +360,10 @@ def acteurs_an() -> tuple[dict, dict]:
 
 def ae_cp(p: dict, cle: str) -> float:
     """Montant signé d'une ligne : PLF (`creditPaiement`) ou PLFR (`creditPaiementSupplementaire` + `...Annule`, négatif)."""
+    ctx = f"amendement, {cle} du programme « {propre(p.get('libelle'))[:60]} »"
     if cle in p:
-        return montant(p.get(cle))
-    return montant(p.get(cle + "Supplementaire")) - abs(montant(p.get(cle + "Annule")))
+        return montant_strict(p.get(cle), ctx)
+    return montant_strict(p.get(cle + "Supplementaire"), ctx) - abs(montant_strict(p.get(cle + "Annule"), ctx))
 
 
 LIEUX_AN = {"AN": "séance", "CION_FIN": "commission des finances"}
@@ -427,7 +520,7 @@ def premier_nombre(cellule: str) -> float:
     """Premier montant d'une cellule (une cellule peut porter le montant puis « dont titre 2 » sur une 2e ligne)."""
     morceau = next((x for x in (cellule or "").split("|") if re.search(r"\d", x)), "")
     m = NOMBRE_RE.search(morceau)
-    return montant(re.sub(r"[ \u00a0\u202f]", "", m.group(0)).replace(",", ".")) if m else 0.0
+    return montant_strict(re.sub(r"[ \u00a0\u202f]", "", m.group(0)).replace(",", "."), "cellule de tableau") if m else 0.0
 
 
 def lignes_tableau_credits(dis_html: str) -> list[dict]:
@@ -901,18 +994,22 @@ def coherence(mouvements: list[dict], plrg: dict) -> dict:
                         jo[l["programme"]] += montant_compare(t, l, col)
             progs = []
             for p, e in sorted(P.items()):
+                if e[col] is None:  # colonne illisible au PLRG : pas de comparaison, jamais 0
+                    progs.append({"programme": p, "jo_cp": round(jo.get(p, 0.0), 2), "plrg_cp": None,
+                                  "ecart_cp": None, "conforme": None, "raison": e["illisibles"][col]})
+                    continue
                 ecart = jo.get(p, 0.0) - e[col]
                 progs.append({"programme": p, "jo_cp": round(jo.get(p, 0.0), 2), "plrg_cp": round(e[col], 2),
                               "ecart_cp": round(ecart, 2), "conforme": abs(ecart) <= TOLERANCE_EUR})
-            base = sum(abs(x["plrg_cp"]) for x in progs)
-            ecart_abs = sum(abs(x["ecart_cp"]) for x in progs)
+            base = sum(abs(x["plrg_cp"]) for x in progs if x["plrg_cp"] is not None)
+            ecart_abs = sum(abs(x["ecart_cp"]) for x in progs if x["ecart_cp"] is not None)
             ecart_pct = round(100 * ecart_abs / base, 3) if base else None
             res[col] = {"libelle": LIB_COMPARAISON[col], "total_jo_cp": round(sum(x["jo_cp"] for x in progs), 2),
-                        "total_plrg_cp": round(sum(x["plrg_cp"] for x in progs), 2),
+                        "total_plrg_cp": round(sum(x["plrg_cp"] for x in progs if x["plrg_cp"] is not None), 2),
                         "somme_valeurs_absolues_plrg_cp": round(base, 2), "ecart_absolu_cp": round(ecart_abs, 2),
                         "ecart_pct": ecart_pct, "conforme": ecart_pct is not None and ecart_pct <= TOLERANCE_PCT,
-                        "programmes_conformes": sum(x["conforme"] for x in progs), "programmes": len(progs),
-                        "ecarts": [x for x in progs if not x["conforme"]]}
+                        "programmes_conformes": sum(x["conforme"] is True for x in progs), "programmes": len(progs),
+                        "ecarts": [x for x in progs if x["conforme"] is not True]}
         out[str(annee)] = res
     return out
 
@@ -972,6 +1069,90 @@ def masquer(amdts: list[dict], scrutins: list[dict], noms: set[str]) -> int:
 # --- d. Production ----------------------------------------------------------------------------------------------------
 
 ADOPTE = "Adopté"
+
+
+def controle_jo_plrg(coh: dict, a: int, p: str) -> dict:
+    return {col: next((z for z in coh[str(a)][col]["ecarts"] if z["programme"] == p), None) or {"conforme": True}
+            for col in COMPARAISON}
+
+
+def controler_realisations() -> int:
+    """Contrôle bloquant : LFI, crédits ouverts et dépenses de decisions/programme_<n>.json égaux à ceux de
+    realisations/<n>.json (même PLRG) à 1 € près, pour chaque programme et chaque année. Renvoie le nombre de
+    valeurs comparées. Un null de decisions/ doit porter sa raison (`valeurs_illisibles_plrg`)."""
+    ecarts, n = [], 0
+    for f in sorted(SORTIE.glob("programme_*.json")):
+        d = json.loads(f.read_text(encoding="utf-8"))
+        rf = SITE / "realisations" / f"{d['programme']}.json"
+        R = {}
+        if rf.exists():
+            R = {x["annee"]: x for x in json.loads(rf.read_text(encoding="utf-8"))["prevu_depense"]["annees"]}
+        for y, e in d["annees"].items():
+            if "source_plrg" not in e:
+                continue
+            for champ, _ in CHAMPS_PLRG:
+                if e[champ] is None and champ not in e.get("valeurs_illisibles_plrg", {}):
+                    ecarts.append((d["programme"], y, champ, "null sans raison"))
+            r = R.get(int(y))
+            if not r:
+                continue
+            for champ, v in (("depenses_cp", r.get("depense_constatee_eur")), ("lfi_cp", r.get("vote_lfi_eur")),
+                             ("ouverts_cp", (r.get("ouvert_en_gestion") or {}).get("total_eur"))):
+                if v is None or e[champ] is None:
+                    continue
+                n += 1
+                if abs(v - e[champ]) > 1:
+                    ecarts.append((d["programme"], y, champ, e[champ], v))
+    if ecarts:
+        raise SystemExit(f"decisions/ et realisations/ divergent sur le même PLRG ({len(ecarts)} valeurs) : {ecarts[:10]}")
+    return n
+
+
+def recaler_plrg() -> None:
+    """Régénération ciblée, sans archive JORF ni amendements : relit les annexes 1 du PLRG et réécrit, dans les
+    fiches publiées, les seuls champs qui en viennent (montants, étapes LFI / LFR / exécution, contrôle JO / PLRG
+    recalculé sur les mouvements publiés). Les fichiers dont le contenu ne change pas ne sont pas réécrits."""
+    plrg = lire_plrg()
+    absents = [str(f) for f in _plrg_fichiers().values() if not f.exists()]
+    if absents:
+        raise SystemExit(f"annexes PLRG absentes : {absents} (python pipeline/realisations.py collecter)")
+    mvts = [t for f in sorted(SORTIE.glob("mouvements_*.json"))
+            for t in json.loads(f.read_text(encoding="utf-8"))["textes"]]
+    coh = coherence(mvts, plrg)
+    fc = SORTIE / "coherence_plrg.json"
+    publie = json.loads(fc.read_text(encoding="utf-8"))
+    if publie["annees"] != coh:
+        raise SystemExit("coherence_plrg.json diffère du recalcul sur les mouvements publiés : lancer `jorf` puis "
+                         "`produire` (régénération complète)")
+    fiches = {f.stem.split("_")[1]: f for f in SORTIE.glob("programme_*.json")}
+    sans_fiche = sorted({p for d in plrg.values() for p in d} - set(fiches))
+    if sans_fiche:
+        raise SystemExit(f"programmes du PLRG sans fiche publiée : {sans_fiche} (régénération complète nécessaire)")
+    modifies = []
+    for p, f in sorted(fiches.items()):
+        texte = f.read_text(encoding="utf-8")
+        d = json.loads(texte)
+        chrono = [c for c in d["chronologie"] if not (c["etape"] in (ETAPE_LFI, ETAPE_LFR, ETAPE_EXEC)
+                                                      and "url" not in c)]
+        for a in sorted(plrg):
+            if p not in plrg[a]:
+                continue
+            x = plrg[a][p]
+            ancien = d["annees"].get(str(a), {})
+            reste = {k: v for k, v in ancien.items() if k not in bloc_plrg(x, a) and k not in (
+                "controle_jo_plrg", "valeurs_illisibles_plrg", "precision_plrg")}
+            d["annees"][str(a)] = {**bloc_plrg(x, a), "controle_jo_plrg": controle_jo_plrg(coh, a, p), **reste}
+            chrono.extend(etapes_plrg(x, a))
+        d["annees"] = dict(sorted(d["annees"].items()))
+        chrono.sort(key=lambda c: (c["date"] or "", c["etape"]))
+        d["chronologie"] = chrono
+        nouveau = json.dumps(d, ensure_ascii=False, separators=(",", ":")) + "\n"
+        if nouveau != texte:
+            dump(f, d)
+            modifies.append(p)
+    n = controler_realisations()
+    print(f"PLRG recalé : {len(modifies)} fiche(s) réécrite(s) {modifies} ; {n} valeurs égales à realisations/",
+          file=sys.stderr)
 
 
 def produire() -> None:
@@ -1094,20 +1275,9 @@ def produire() -> None:
             e = {}
             if a in plrg and p in plrg[a]:
                 x = plrg[a][p]
-                e.update({"lfi_cp": x["lfi"], "lfr_cp": x["lfr"], "reports_entrants_cp": x["reports_entrants"],
-                          "mouvements_reglementaires_plrg_cp": x["mouvements_reglementaires"],
-                          "fonds_de_concours_plrg_cp": x["fonds_de_concours"], "ouverts_cp": x["ouverts"],
-                          "depenses_cp": x["depenses"], "source_plrg": SRC_PLRG.format(a=a)})
-                chrono.append({"date": f"{a}-01-01", "annee": a, "etape": "LFI votée", "cp": x["lfi"],
-                               "source": SRC_PLRG.format(a=a)})
-                if x["lfr"]:
-                    chrono.append({"date": f"{a}-12-01", "annee": a, "etape": "Loi de finances rectificative ou de "
-                                   "fin de gestion", "cp": x["lfr"], "source": SRC_PLRG.format(a=a)})
-                chrono.append({"date": f"{a}-12-31", "annee": a, "etape": "Exécution", "cp": x["depenses"],
-                               "source": SRC_PLRG.format(a=a)})
-                for col in COMPARAISON:
-                    c = next((z for z in coh[str(a)][col]["ecarts"] if z["programme"] == p), None)
-                    e.setdefault("controle_jo_plrg", {})[col] = c or {"conforme": True}
+                e.update(bloc_plrg(x, a))
+                chrono.extend(etapes_plrg(x, a))
+                e["controle_jo_plrg"] = controle_jo_plrg(coh, a, p)
             r = resume.get(p, {}).get(str(a))
             if r:
                 e["amendements"] = r
@@ -1167,6 +1337,7 @@ def produire() -> None:
             "Sénat : sort en séance publié, date de décision absente du dump.",
             "Décrets d'annulation et d'avance : publiés, sans colonne de comparaison dans l'annexe 1 du PLRG.",
         ]})
+    controler_realisations()
     print(f"amendements {len(amdts)} (adoptés {len(adoptes)}), scrutins {len(scr)}, textes JO {stats_mvt}, "
           f"fiches {len(fichiers)}", file=sys.stderr)
     for a, r in coh.items():
@@ -1175,11 +1346,13 @@ def produire() -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("etape", choices=["jorf", "produire"])
+    ap.add_argument("etape", choices=["jorf", "produire", "plrg"])
     ap.add_argument("--budget", type=float, default=540.0, help="secondes (étape jorf)")
     args = ap.parse_args()
     if args.etape == "jorf":
         scanner_jorf(archives_jorf(), args.budget)
+    elif args.etape == "plrg":
+        recaler_plrg()
     else:
         produire()
 

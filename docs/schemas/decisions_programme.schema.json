@@ -49,7 +49,14 @@
             "type": "string"
           },
           "cp": {
-            "type": "number"
+            "type": ["number", "null"],
+            "description": "null : montant illisible dans la source, `raison` dit pourquoi."
+          },
+          "raison": {
+            "type": "string"
+          },
+          "precision": {
+            "type": "string"
           },
           "auteur": {
             "type": ["string", "null"]
@@ -146,30 +153,47 @@
     },
     "annee": {
       "type": "object",
+      "description": "Montants du PLRG : null = valeur illisible dans la source (raison dans `valeurs_illisibles_plrg`), jamais 0.",
       "properties": {
         "lfi_cp": {
-          "type": "number"
+          "type": ["number", "null"]
         },
         "lfr_cp": {
-          "type": "number"
+          "type": ["number", "null"]
         },
         "reports_entrants_cp": {
-          "type": "number"
+          "type": ["number", "null"]
         },
         "mouvements_reglementaires_plrg_cp": {
-          "type": "number"
+          "type": ["number", "null"]
         },
         "fonds_de_concours_plrg_cp": {
-          "type": "number"
+          "type": ["number", "null"]
         },
         "ouverts_cp": {
-          "type": "number"
+          "type": ["number", "null"]
         },
         "depenses_cp": {
-          "type": "number"
+          "type": ["number", "null"]
         },
         "source_plrg": {
           "type": "string"
+        },
+        "valeurs_illisibles_plrg": {
+          "type": "object",
+          "description": "Raison de chaque montant du PLRG publié à null : valeur non vide que le pipeline n'a pas su lire (jamais remplacée par 0).",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "precision_plrg": {
+          "type": "object",
+          "description": "Montants que la source publie en notation scientifique : lus, arrondis par la source aux chiffres significatifs écrits.",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "controle_jo_plrg": {
           "type": "object"

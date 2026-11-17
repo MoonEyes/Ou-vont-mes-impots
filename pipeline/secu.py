@@ -737,6 +737,22 @@ def decorer_et_ecrire(rows: list[dict], noms_niveaux: list[str], nom_racine: str
 
 DEST_ROBSS = {f"robss/{k}": v for k, v in DESTINATAIRES.items() if k in ROBSS_2024}
 DEST_ROBSS.update({"complementaires/agirc_arrco": "agirc_arrco", "unedic": "unedic", "cades": "cades"})
+# Destinataires « Sécurité sociale » de prelevements/affectation.json sans nœud propre dans les arbres secu/
+# (constat M3 de docs/QUALITE.md) : dits ici, avec le motif, plutôt que laissés sans lien ni explication.
+DEST_SANS_NOEUD = {
+    "acoss": {"motif": "Caisse de recouvrement (Urssaf Caisse nationale) : la recette est répartie ensuite entre les "
+                       "branches ; cette répartition par branche n'est pas publiée dans prelevements/affectation.json, "
+                       "donc aucun nœud unique ne la reçoit.", "noeud_englobant": "robss"},
+    "msa_maladie": {"motif": "Régime des non-salariés agricoles : sa branche maladie fait partie des régimes "
+                             "obligatoires de base, que l'arbre présente par branche et non par régime.",
+                    "noeud_englobant": "robss/maladie"},
+    "msa_vieillesse": {"motif": "Régime des non-salariés agricoles : sa retraite de base fait partie des régimes "
+                                "obligatoires de base, que l'arbre présente par branche et non par régime.",
+                       "noeud_englobant": "robss/vieillesse"},
+    "msa_rco": {"motif": "Retraite complémentaire obligatoire des non-salariés agricoles : aucun nœud propre ; son "
+                         "rattachement à un nœud des régimes complémentaires n'est pas établi poste par poste.",
+                "noeud_englobant": None},
+}
 
 
 def sources_de(cles) -> dict:
@@ -799,7 +815,8 @@ def produire() -> dict:
             "fichier": "prelevements/affectation.json",
             "regle": "un nœud portant `destinataire` = X reçoit les prélèvements dont la ventilation désigne le "
                      "destinataire X de prelevements/affectation.json",
-            "noeuds": {v: k for k, v in DEST_ROBSS.items()}},
+            "noeuds": {v: k for k, v in DEST_ROBSS.items()},
+            "sans_noeud": DEST_SANS_NOEUD},
         "verification_documents": verif,
         "sources": sources_de(SOURCES),
         "sources_inaccessibles": INACCESSIBLES,

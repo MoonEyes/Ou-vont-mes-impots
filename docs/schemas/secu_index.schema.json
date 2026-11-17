@@ -17,7 +17,11 @@
           "tracabilite_pct": {"type": "number", "minimum": 0, "maximum": 100},
           "modes_md": {"type": "object"}},
         "required": ["millesime", "fichier", "total_md", "noeuds", "profondeur", "tracabilite_pct", "modes_md"]}},
-    "liens_affectation": {"type": "object", "required": ["fichier", "noeuds"]},
+    "liens_affectation": {"type": "object", "required": ["fichier", "noeuds"], "properties": {
+      "noeuds": {"type": "object", "additionalProperties": {"type": "string"}},
+      "sans_noeud": {"type": "object", "description": "Destinataires Sécurité sociale de prelevements/affectation.json sans nœud propre dans secu/, avec le motif.",
+                     "additionalProperties": {"type": "object", "required": ["motif", "noeud_englobant"],
+                                              "properties": {"motif": {"type": "string", "minLength": 20}, "noeud_englobant": {"type": ["string", "null"]}}}}}},
     "verification_documents": {"type": "object", "additionalProperties": {"type": "object", "required": ["statut"]}},
     "sources": {"type": "object", "additionalProperties": {"type": "object",
       "properties": {"titre": {"type": "string"}, "url": {"type": "string", "pattern": "^https://"},

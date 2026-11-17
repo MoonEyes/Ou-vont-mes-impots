@@ -861,7 +861,7 @@ C04 = {
                  "definition": "Périmètre de la carte du site : prélevé sur salaire et IR, taxes sur la consommation centrales, TEOM "
                                "de la commune (locataire à Lyon)",
                  "par_administration_eur": {**_SANS_TEOM, "Collectivites locales": 1271.03}},
-        "nantes": {"commune": "44109 (Nantes, commune du cas type C04 dans tests/cas_types)", "teom_eur": 155.57,
+        "nantes": {"commune": "44109 (Nantes, variante de comparaison ; le cas type C04 de tests/cas_types habite Lyon, 69123)", "teom_eur": 155.57,
                    "fourchette_eur": {"bas": 12474.56, "central": 13936.94, "haut": 14060.5},
                    "definition": "Même périmètre, TEOM de Nantes",
                    "par_administration_eur": {**_SANS_TEOM, "Collectivites locales": 1316.03}},
@@ -873,12 +873,24 @@ C04 = {
 }
 
 
+def ecart_detenteurs_encours(det: dict, enc: dict) -> None:
+    """Ajoute à `ecarts` de detenteurs.json l'écart entre le total des détenteurs (gov_10dd_ggd) et l'encours de
+    Maastricht des APU (gov_10dd_edpt1, dette/encours.json), pour chaque année où il atteint 0,05 Md€ (constat M8)."""
+    for a, total in sorted(det["total_md"].items()):
+        e = enc["eurostat"]["S13"]["md"].get(a)
+        if e is not None and abs(total - e) >= 0.05:
+            det["ecarts"].append({"annee": a, "agregat": "Ensemble APU : total des détenteurs (Eurostat gov_10dd_ggd) / "
+                                  "encours (Eurostat gov_10dd_edpt1, dette/encours.json)", "detenteurs_md": total,
+                                  "encours_md": e, "ecart_md": _r(total - e, 1)})
+
+
 def produire() -> None:
     verifs = verifier_citations()
     pib_md, _ = pib()
     enc = encours(pib_md)
     itr = interets(pib_md, C04)
     det = detenteurs()
+    ecart_detenteurs_encours(det, enc)
     fin = financement()
     soc = dette_sociale(enc)
     SORTIE.mkdir(parents=True, exist_ok=True)

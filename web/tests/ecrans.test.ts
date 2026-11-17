@@ -535,6 +535,29 @@ describe('écrans', () => {
     expect([...dates].sort().reverse()).toEqual(dates)
   }, 60000)
 
+  it('méthode : l’écart de consolidation affiché est la différence des deux montants affichés', async () => {
+    const meta = JSON.parse(readFileSync(join(process.cwd(), 'tests', 'fixtures', 'data', 'meta.json'), 'utf8'))
+    const adm = meta.controle.arbre_administrations
+    await ecran('#/methode')
+    const md = (x: number) => new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(x).replace(/\s+/g, ' ')
+    const phrase = texte().match(/la somme des administrations \(([^)]*)\) dépasse le total consolidé \(([^)]*)\) de (.*?), à cause/)
+    expect(phrase).not.toBeNull()
+    // Les trois nombres viennent des données, et le troisième est bien la différence des deux premiers.
+    expect(phrase![1]).toContain(md(adm.somme_md))
+    expect(phrase![2]).toContain(md(adm.total_consolide_s13_md))
+    expect(phrase![3]).toContain(md(adm.somme_md - adm.total_consolide_s13_md))
+    expect(Math.abs(adm.somme_md - adm.total_consolide_s13_md - adm.ecart_consolidation_md)).toBeLessThan(0.051)
+    expect(texte()).toContain(`tous transferts compris, l’écart est de ${md(adm.ecart_depenses_totales_md)}`)
+  })
+
+  it('votes : un montant illisible dans la source n’est jamais affiché comme 0 €', async () => {
+    const { montantEtape } = await import('../src/ecrans/votes')
+    expect(montantEtape({ cp: null, raison: 'valeur illisible dans la source : « #REF! »' })).toBe('non lisible (valeur illisible dans la source : « #REF! »)')
+    expect(montantEtape({ cp: null })).toBe('non lisible dans la source')
+    expect(montantEtape({ cp: 0 })).toMatch(/^0/)
+    expect(montantEtape({ cp: -1500 })).toMatch(/^−/)
+  })
+
   it('toutes les lectures de données sont relatives au site', () => {
     expect(requetes.length).toBeGreaterThan(10)
     for (const u of requetes) expect(u).toMatch(/^data\//)

@@ -599,6 +599,30 @@ NOTE_DILICO = ("DILICO : dispositif de lissage conjoncturel des recettes fiscale
                "est un montant retenu, publie en valeur positive, a deduire.")
 
 
+# Constat M5 de docs/QUALITE.md : la dotation des communes nouvelles n'est jamais comprise dans le total notifie.
+NOTE_DGF_COMMUNES = ("dgf_totale = forfaitaire + DSU + DSR + DNP, plus la DACOM outre-mer (dgf_dacom). La dotation des "
+                     "communes nouvelles (dgf_commune_nouvelle) est publiee a part : elle n'est pas comprise dans "
+                     "dgf_totale.")
+NOTE_DGF_GFP = ("dgf_totale = dotation d'intercommunalite + dotation de compensation. Quand le total notifie differe "
+                "de la somme de ces deux composantes de plus de 2 euros, la difference est publiee dans "
+                "dgf_ecart_composantes (ecart calcule : la source ne le detaille pas).")
+
+
+def completer_dgf_gfp(tg: dict) -> int:
+    """Ajoute dgf_ecart_composantes = dgf_totale - intercommunalite - compensation quand il depasse 2 euros."""
+    n = 0
+    for x in tg.values():
+        for v in x["eur"].values():
+            v.pop("dgf_ecart_composantes", None)
+            if v.get("dgf_totale") is None:
+                continue
+            ecart = v["dgf_totale"] - (v.get("dgf_intercommunalite") or 0) - (v.get("dgf_compensation") or 0)
+            if abs(ecart) > 2:
+                v["dgf_ecart_composantes"] = ecart
+                n += 1
+    return n
+
+
 def annee_dot(v: str) -> str:
     return str(v)[:4]
 
@@ -665,7 +689,7 @@ def ecrire_dotations_communes(dep: str, a0: str, invest: dict, siren_insee: dict
                      f"projets d'investissement 2018 a 2025",
         "source": SRC["dot_communes"] + " ; " + SRC["dgcl_invest"], "unite": "euros", "annees": annees,
         "cles": sorted(set(DOT_COMMUNES.values())),
-        "note": "dgf_totale = forfaitaire + DSU + DSR + DNP (+ dotations des communes nouvelles). " + NOTE_DILICO,
+        "note": NOTE_DGF_COMMUNES + " " + NOTE_DILICO,
         "communes": t, "investissement_etat": inv,
         "format_investissement": "investissement_etat.<insee>.<annee> = {total, par_dispositif, nb_projets, "
                                  "projets: [[dispositif, intitule, subvention, cout_ht], 15 plus gros]}"})
@@ -684,13 +708,14 @@ def ecrire_dotations_nationales(con, a0: str, invest: dict) -> dict:
     for s, x in tg.items():
         if s in invest:
             x["investissement_etat"] = invest[s]
+    completer_dgf_gfp(tg)
     tr, ar = table_dot([{**r, "nom": r["nom_region"]} for r in lire_csv(pr)], "code_region", DOT_REG)
     dl = rows(con, f"select cast(exercice as varchar) exercice, code_departement, nom_departement nom, variable, valeur "
                    f"from '{COLL / 'local_dotations_departements.parquet'}' where year(exercice)>={a0} and unite='euros'")
     td, ad = table_dot(dl, "code_departement", DOT_DEP)
     dump(OUT / "dotations" / "epci.json", {"millesime": f"Dotations notifiees {ag[0]} a {ag[-1]}",
                                            "source": SRC["dot_gfp"] + " ; " + SRC["dgcl_invest"], "unite": "euros",
-                                           "annees": ag, "note": NOTE_DILICO, "epci": tg})
+                                           "annees": ag, "note": NOTE_DGF_GFP + " " + NOTE_DILICO, "epci": tg})
     dump(OUT / "dotations" / "departements.json", {"millesime": f"Dotations notifiees {ad[0]} a {ad[-1]}",
                                                    "source": SRC["dot_dep"], "unite": "euros", "annees": ad,
                                                    "note": NOTE_DILICO, "departements": td})

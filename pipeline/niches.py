@@ -575,9 +575,15 @@ def programmes_arbre() -> tuple[dict, dict]:
 
 
 def par_programme(mesures: dict, progs: dict, entete_arbre: dict) -> dict:
+    """Dépense fiscale par programme de l'arbre. Deux règles (constats I2 et I3 de docs/QUALITE.md) :
+    - un coût `hors_reference` (lu dans une édition qui n'est pas celle de référence de l'année) reste hors des
+      sommes par programme, mission et grand poste, comme il reste hors des totaux ;
+    - un programme sans aucune mesure chiffrée une année, mais avec au moins une mesure « nc » ou « ε », publie
+      `fiscal_meur` = null et la mention (`mention`), jamais 0 ; 0 reste juste quand toutes ses mesures sont « - »."""
     annees = ["2024", "2025", "2026"]
     agg = {}
-    hors = defaultdict(lambda: {"mesures": [], **{a: 0.0 for a in annees}})
+    hors = defaultdict(lambda: {"mesures": [], "fiscal_meur": {a: 0.0 for a in annees},
+                                "chiffrees": {a: 0 for a in annees}, "nc": {a: 0 for a in annees}})
     for m in mesures.values():
         p = (m.get("programme") or {}).get("code")
         if not any(a in m["couts"] for a in annees):
@@ -585,29 +591,56 @@ def par_programme(mesures: dict, progs: dict, entete_arbre: dict) -> dict:
         if p and p in progs:
             g = agg.setdefault(p, {"programme": p, **progs[p], "mesures": [],
                                    "fiscal_meur": {a: 0.0 for a in annees},
-                                   "non_chiffrees": {a: 0 for a in annees}})
+                                   "non_chiffrees": {a: 0 for a in annees},
+                                   "chiffrees": {a: 0 for a in annees}, "nc": {a: 0 for a in annees}})
         else:
             g = hors[p or "aucun"]
         for a in annees:
             v = m["couts"].get(a)
             if v is None:
                 continue
+            if v.get("hors_reference"):  # hors totaux : publié à part, jamais additionné
+                if v["meur"] is not None:
+                    g.setdefault("hors_reference_meur", {})[a] = round(
+                        g.get("hors_reference_meur", {}).get(a, 0.0) + v["meur"], 1)
+                continue
             if v["meur"] is not None:
-                (g["fiscal_meur"] if "fiscal_meur" in g else g)[a] = \
-                    (g["fiscal_meur"] if "fiscal_meur" in g else g)[a] + v["meur"]
-            elif "non_chiffrees" in g and v["brut"] in ("nc", "ε"):
-                g["non_chiffrees"][a] += 1
+                g["fiscal_meur"][a] += v["meur"]
+                g["chiffrees"][a] += 1
+            elif v["brut"] in ("nc", "ε"):
+                g["nc"][a] += 1
+                if "non_chiffrees" in g:
+                    g["non_chiffrees"][a] += 1
         g["mesures"].append(m["id"])
+
+    def publier(g: dict) -> tuple[dict, dict]:
+        """(fiscal_meur, mention) : null et mention quand aucune mesure n'est chiffrée et qu'une au moins est
+        non chiffrée."""
+        fiscal, mention = {}, {}
+        for a in annees:
+            if g["chiffrees"][a] == 0 and g["nc"][a] > 0:
+                fiscal[a] = None
+                mention[a] = (f"non chiffré : {g['nc'][a]} mesure{'s' if g['nc'][a] > 1 else ''} sans montant publié "
+                              "(« nc » ou « ε »), aucune mesure chiffrée")
+            else:
+                fiscal[a] = round(g["fiscal_meur"][a], 1)
+        return fiscal, mention
+
     liste = []
     for p, g in sorted(agg.items(), key=lambda kv: -kv[1]["fiscal_meur"]["2024"]):
-        f24 = g["fiscal_meur"]["2024"]
-        liste.append({**g, "fiscal_meur": {a: round(x, 1) for a, x in g["fiscal_meur"].items()},
+        fiscal, mention = publier(g)
+        f24 = fiscal["2024"]
+        total24 = g["budget_md"] * 1000 + (f24 or 0.0)
+        e = {k: v for k, v in g.items() if k not in ("chiffrees", "nc", "budget_md")}
+        liste.append({**e, "fiscal_meur": fiscal, **({"mention": mention} if mention else {}),
                       "budget_meur": round(g["budget_md"] * 1000, 1),
-                      "total_2024_meur": round(g["budget_md"] * 1000 + f24, 1),
-                      "part_fiscale_2024": round(f24 / (g["budget_md"] * 1000 + f24), 4)
-                      if g["budget_md"] * 1000 + f24 > 0 else None})
-    for e in liste:
-        del e["budget_md"]
+                      "total_2024_meur": round(total24, 1),
+                      "part_fiscale_2024": round(f24 / total24, 4) if f24 is not None and total24 > 0 else None})
+
+    budget_arbre = {"mission": defaultdict(float), "grand_poste": defaultdict(float)}
+    for x in progs.values():  # tous les programmes de l'arbre, porteurs de mesures ou non (constat M11)
+        for cle in budget_arbre:
+            budget_arbre[cle][x[cle]] += x["budget_md"] * 1000
 
     def regrouper(cle):
         out = {}
@@ -617,23 +650,29 @@ def par_programme(mesures: dict, progs: dict, entete_arbre: dict) -> dict:
                                    "fiscal_2026_meur": 0.0, "mesures": 0, "programmes": 0,
                                    **({"grand_poste": e["grand_poste"]} if cle == "mission" else {})})
             o["budget_meur"] += e["budget_meur"]
-            o["fiscal_2024_meur"] += e["fiscal_meur"]["2024"]
-            o["fiscal_2025_meur"] += e["fiscal_meur"]["2025"]
-            o["fiscal_2026_meur"] += e["fiscal_meur"]["2026"]
+            for a in annees:  # un programme non chiffré (null) n'ajoute rien ; il est compté à part
+                if e["fiscal_meur"][a] is None:
+                    o.setdefault("programmes_non_chiffres", {x: 0 for x in annees})[a] += 1
+                else:
+                    o[f"fiscal_{a}_meur"] += e["fiscal_meur"][a]
             o["mesures"] += len(e["mesures"])
             o["programmes"] += 1
         res = []
         for o in out.values():
             for k in ("budget_meur", "fiscal_2024_meur", "fiscal_2025_meur", "fiscal_2026_meur"):
                 o[k] = round(o[k], 1)
+            o["budget_arbre_meur"] = round(budget_arbre[cle][o["nom"]], 1)
             t = o["budget_meur"] + o["fiscal_2024_meur"]
             o["part_fiscale_2024"] = round(o["fiscal_2024_meur"] / t, 4) if t > 0 else None
             res.append(o)
         return sorted(res, key=lambda o: -o["fiscal_2024_meur"])
 
-    hors_liste = [{"programme": None if k == "aucun" else k, "mesures": v["mesures"],
-                   "fiscal_meur": {a: round(v[a], 1) for a in annees}}
-                  for k, v in sorted(hors.items(), key=lambda kv: -kv[1]["2024"])]
+    hors_liste = []
+    for k, v in sorted(hors.items(), key=lambda kv: -kv[1]["fiscal_meur"]["2024"]):
+        fiscal, mention = publier(v)
+        hors_liste.append({"programme": None if k == "aucun" else k, "mesures": v["mesures"], "fiscal_meur": fiscal,
+                           **({"mention": mention} if mention else {}),
+                           **({"hors_reference_meur": v["hors_reference_meur"]} if "hors_reference_meur" in v else {})})
     return {"programmes": liste, "missions": regrouper("mission"), "grands_postes": regrouper("grand_poste"),
             "hors_arbre": hors_liste, "arbre": entete_arbre}
 
@@ -725,6 +764,9 @@ def lire_urssaf() -> dict | None:
     return {"source": AUTRES["urssaf_exos"]["titre"], "url": AUTRES["urssaf_exos"]["url"],
             "champ": "secteur privé, cotisations recouvrées par les Urssaf (hors MSA, hors régimes spéciaux) : "
                      "exonérations et allègements, pas les exemptions d'assiette",
+            "renvoi": "controle/aides_entreprises.json (`exonerations_cotisations_urssaf`) publie l'autre jeu Urssaf, "
+                      "« champ large, par grandes catégories » : champ différent, totaux annuels voisins sans être "
+                      "égaux (moins de 0,5 % d'écart) ; les deux séries ne s'additionnent pas.",
             "totaux_meur": totaux, "mesures": liste}
 
 
@@ -866,7 +908,7 @@ def produire() -> dict:
     # couverture du rattachement (2024, constaté)
     total24 = sum(m["couts"]["2024"]["meur"] or 0 for m in mesures.values()
                   if "2024" in m["couts"] and not m["couts"]["2024"].get("hors_reference"))
-    rattache24 = sum(p["fiscal_meur"]["2024"] for p in pp["programmes"])
+    rattache24 = sum(p["fiscal_meur"]["2024"] or 0.0 for p in pp["programmes"])
     rattache_ref = sum(m["couts"]["2024"]["meur"] or 0 for m in mesures.values()
                        if "2024" in m["couts"] and not m["couts"]["2024"].get("hors_reference")
                        and (m.get("programme") or {}).get("code") in progs)
@@ -876,7 +918,11 @@ def produire() -> dict:
                   "mesures_programme_dans_arbre": sum(1 for m in mesures.values()
                                                       if (m.get("programme") or {}).get("code") in progs),
                   "mesures": len(mesures)}
-    del rattache24
+    # contrôles bloquants : aucun coût hors référence dans les sommes par programme (constat I2)
+    hors24 = sum(h["fiscal_meur"]["2024"] or 0.0 for h in pp["hors_arbre"])
+    if abs(rattache24 - rattache_ref) > 0.5 or abs(rattache24 + hors24 - total24) > 0.5:
+        raise SystemExit(f"programmes 2024 : {rattache24:.1f} M€ rattachés + {hors24:.1f} hors arbre, "
+                         f"{rattache_ref:.1f} attendus sur {total24:.1f} M€ chiffrés")
 
     sources = {f"plf{p}": {k: (str(v) if isinstance(v, Path) else v) for k, v in e.items() if k != "chemin"}
                for p, e in EDITIONS.items()}
@@ -908,7 +954,12 @@ def produire() -> dict:
         "avertissement": "Chaque dépense fiscale est rattachée à son programme principal (tome II) ; la dépense "
                          "fiscale et la dépense budgétaire d'un programme s'additionnent pour lire l'effort de l'État "
                          "par politique, mais la première est une perte de recettes estimée, la seconde un décaissement "
-                         "constaté. Les mesures non chiffrées (« nc », « ε ») sont comptées à part (non_chiffrees).",
+                         "constaté. Les mesures non chiffrées (« nc », « ε ») sont comptées à part (non_chiffrees) ; un programme "
+                         "dont aucune mesure n'est chiffrée une année publie `fiscal_meur` = null et la raison dans "
+                         "`mention`, jamais 0. Les coûts `hors_reference` restent hors des sommes, comme des totaux. "
+                         "Missions et grands postes : `budget_meur` ne compte que les programmes porteurs d'au moins "
+                         "une mesure (dénominateur de `part_fiscale_2024`) ; `budget_arbre_meur` est le budget de "
+                         "tous leurs programmes dans l'arbre.",
         **pp, "couverture": couverture})
 
     soc = sociales()

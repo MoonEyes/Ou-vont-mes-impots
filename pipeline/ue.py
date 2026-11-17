@@ -739,7 +739,10 @@ def contribution(programmes: dict, fts_france: list[dict]) -> dict:
             "autres": {"nombre": len(reste), "md": round(sum(v[0] for _, v in reste) / 1e9, 6)}},
         "contribution_comptable_2024_md": 24.3,
         "note_contribution_comptable": ("Contribution totale 2024 au sens de la méthode comptable (PSR + droits de douane "
-                                        "reversés, nets des frais de perception) : 24,3 Md€ (Sénat, NP PLF 2027)."),
+                                        "reversés, nets des frais de perception) : 24,3 Md€ (Sénat, NP PLF 2027). "
+                                        "ue/retours.json publie la même grandeur déduite (retours - solde net "
+                                        "comptable) : " + str(md(RETOURS_TOTAL[2024] - SOLDE_COMPTABLE[2024][0])
+                                                             ).replace(".", ",") + " Md€ pour 2024, avant arrondi."),
         "sources_inaccessibles": INACCESSIBLES,
     }
 
@@ -776,7 +779,9 @@ def retours() -> dict:
         "unite": "milliards d'euros",
         "lecture": ("Retours = dépenses du budget de l'UE réalisées en France, hors plan de relance NextGenerationEU. "
                     "Solde net comptable = retours - contribution totale (PSR + droits de douane reversés) ; négatif = la "
-                    "France verse plus qu'elle ne reçoit. contribution_comptable_md est déduite (retours - solde)."),
+                    "France verse plus qu'elle ne reçoit. contribution_comptable_md est déduite (retours - solde) ; "
+                    "ue/contribution.json (`contribution_comptable_2024_md`) en publie la valeur arrondie citée par le "
+                    "Sénat pour 2024."),
         "methodes_solde": {
             "comptable": "contribution totale, droits de douane compris, moins toutes les dépenses de l'UE en France",
             "operationnel": "méthode de la Commission : hors droits de douane et hors dépenses administratives",

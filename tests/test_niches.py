@@ -105,12 +105,18 @@ def test_programmes_existent_dans_l_arbre(programmes):
 
 
 def test_conservation_par_programme(mesures, programmes):
-    """Somme des programmes + hors arbre = somme des mesures (2024, édition de référence)."""
+    """Somme des programmes + hors arbre = somme des mesures de l'édition de référence ; les coûts `hors_reference`
+    restent hors des sommes (publiés à part) ; un programme sans mesure chiffrée est null avec sa mention, jamais 0."""
+    groupes = programmes["programmes"] + programmes["hors_arbre"]
     for a in ("2024", "2025", "2026"):
-        s_mes = sum(m["couts"][a]["meur"] or 0 for m in mesures if a in m["couts"])
-        s_prog = sum(p["fiscal_meur"][a] for p in programmes["programmes"]) + \
-            sum(h["fiscal_meur"][a] for h in programmes["hors_arbre"])
+        couts = [m["couts"][a] for m in mesures if a in m["couts"]]
+        s_mes = sum(c["meur"] or 0 for c in couts if not c.get("hors_reference"))
+        s_prog = sum(g["fiscal_meur"][a] or 0 for g in groupes)
         assert abs(s_mes - s_prog) < 1, a
+        s_hors = sum(c["meur"] or 0 for c in couts if c.get("hors_reference"))
+        assert abs(s_hors - sum(g.get("hors_reference_meur", {}).get(a, 0) for g in groupes)) < 1, a
+        for g in groupes:
+            assert (g["fiscal_meur"][a] is None) == (a in g.get("mention", {})), (g["programme"], a)
     c = programmes["couverture"]
     assert 0.9 <= c["part_rattachee"] <= 1
 

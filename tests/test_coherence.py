@@ -336,14 +336,20 @@ def test_R14_cas_type_c04_pipeline_egale_reference_et_donnees():
     assert abs(v["fourchette_eur"]["central"] - sc["fourchette_eur"]["central"] - v["teom_eur"]) < 0.02
 
 
-@pytest.mark.xfail(strict=True, reason="M1 : la variante « nantes » et le contrat 2.19 disent Nantes commune du cas type C04 ; cas_types.json C04 = 69123 (Lyon)")
 def test_R14b_libelle_commune_du_cas_type():
+    """Constat M1 (corrigé) : seule la variante principale est la commune du cas type C04 ; une autre variante ne
+    s'en réclame jamais."""
     besoin("dette/interets.json")
-    v = lire("dette/interets.json")["cas_type"]["variantes"]
+    ct = lire("dette/interets.json")["cas_type"]
     commune_c04 = C04["profil"]["residence"]["commune_insee"]
-    for nom, x in v.items():
-        if x["commune"] and "commune du cas type" in x["commune"]:
-            assert x["commune"].startswith(commune_c04), (nom, x["commune"])
+    assert ct["commune"].startswith(commune_c04)
+    for nom, x in ct["variantes"].items():
+        if not x["commune"] or x["commune"] == ct["commune"]:
+            continue
+        assert not x["commune"].startswith(commune_c04), nom
+        assert "commune du cas type" not in x["commune"], (nom, x["commune"])
+        if "cas type" in x["commune"]:  # la mention du cas type renvoie à sa vraie commune
+            assert commune_c04 in x["commune"], (nom, x["commune"])
 
 
 def test_R14c_affichage_web_egale_pipeline():
@@ -382,11 +388,11 @@ def test_R15_fixtures_web_entrees_du_cas_type_egales_site():
     assert _fixture("deficit.json")["etat"] == lire("deficit.json")["etat"]
 
 
-@pytest.mark.xfail(strict=True, reason="M2 : fixtures web dette/ antérieures (variante sans commune : 2,8 € sur 100 € contre 2,79 publiés)")
 def test_R15b_fixtures_web_dette_egales_site():
+    """Constat M2 (corrigé) : les fixtures web de dette/ sont les fichiers publiés."""
     besoin("dette/interets.json", "dette/index.json")
-    assert _fixture("dette/interets.json")["cas_type"]["interets_sur_100_eur"] == lire("dette/interets.json")["cas_type"]["interets_sur_100_eur"]
-    assert _fixture("dette/index.json")["synthese"]["interets_sur_100_eur_cas_c04"] == lire("dette/index.json")["synthese"]["interets_sur_100_eur_cas_c04"]
+    for rel in ("dette/interets.json", "dette/index.json", "dette/detenteurs.json", "dette/encours.json"):
+        assert _fixture(rel) == lire(rel), rel
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -595,10 +601,23 @@ def test_R20d_niches_missions_et_grands_postes_sommes_des_programmes():
         acc = defaultdict(lambda: [0.0, 0.0])
         for p in pr["programmes"]:
             acc[p[cle]][0] += p["budget_meur"]
-            acc[p[cle]][1] += p["fiscal_meur"]["2024"]
+            acc[p[cle]][1] += p["fiscal_meur"]["2024"] or 0  # null (non chiffré) n'ajoute rien
         for x in pr[niveau]:
             assert abs(acc[x[champ]][0] - x["budget_meur"]) < 0.5, x[champ]
             assert abs(acc[x[champ]][1] - x["fiscal_2024_meur"]) < 0.5, x[champ]
+    # constat M11 (corrigé) : le budget de la mission dans l'arbre est publié à côté, et il est celui de l'arbre
+    arbre_mission, arbre_gp = defaultdict(float), defaultdict(float)
+    for g in RACINE["enfants"]:
+        for m in g.get("enfants", []):
+            for p in m.get("enfants", []):
+                if p["niveau"] == "programme":
+                    arbre_mission[m["nom"]] += p["md"] * 1000
+                    arbre_gp[g["nom"]] += p["md"] * 1000
+    for x in pr["missions"]:
+        assert abs(x["budget_arbre_meur"] - arbre_mission[x["nom"]]) < 0.5, x["nom"]
+        assert x["budget_arbre_meur"] >= x["budget_meur"] - 0.5, x["nom"]
+    for x in pr["grands_postes"]:
+        assert abs(x["budget_arbre_meur"] - arbre_gp[x["nom"]]) < 0.5, x["nom"]
 
 
 def _fiscal_attendu(M, p, y):
@@ -608,45 +627,49 @@ def _fiscal_attendu(M, p, y):
     return (sum(ch) if ch else None), cs
 
 
-def test_R20e_niches_fiscal_programme_egale_somme_mesures_hors_exceptions():
+def test_R20e_niches_fiscal_programme_egale_somme_mesures():
     _, M, pr, _ = _niches()
     ecarts = []
     for p in pr["programmes"] + pr["hors_arbre"]:
         for y, v in p["fiscal_meur"].items():
             att, _ = _fiscal_attendu(M, p, y)
-            if (p["programme"], y) in EXCEPTIONS_I2 or att is None:
+            if att is None or v is None:
                 continue
             if abs(v - att) > 0.5:
                 ecarts.append((p["programme"], y, v, att))
     assert not ecarts, ecarts
 
 
-EXCEPTIONS_I2 = {("343", "2024")}
-
-
-@pytest.mark.xfail(strict=True, reason="I2 : niches/programmes.json, programme 343 : 19 M€ « hors_reference » comptés dans fiscal_meur 2024 (somme des programmes 89 425 M€ contre 89 406)")
 def test_R20f_niches_hors_reference_hors_totaux_des_programmes():
-    _, M, pr, idx = _niches()
-    for p in pr["programmes"]:
-        for y in EXCEPTIONS_I2:
-            if p["programme"] == y[0]:
-                att, _ = _fiscal_attendu(M, p, y[1])
-                assert p["fiscal_meur"][y[1]] == (att or 0)
-    s = sum(p["fiscal_meur"]["2024"] for p in pr["programmes"] + pr["hors_arbre"])
-    assert abs(s - idx["totaux"]["2024"]["chiffre_meur"]) < 0.5
-    assert abs(pr["couverture"]["rattache_arbre_meur"] - sum(p["fiscal_meur"]["2024"] for p in pr["programmes"])) < 0.5
+    """Constat I2 (corrigé) : un coût `hors_reference` n'entre dans aucune somme par programme ; il est publié à part."""
+    m, M, pr, idx = _niches()
+    groupes = pr["programmes"] + pr["hors_arbre"]
+    for y in ("2024", "2025", "2026"):
+        hors = sum(x["couts"][y]["meur"] or 0 for x in m["mesures"] if y in x["couts"] and x["couts"][y].get("hors_reference"))
+        assert abs(hors - sum(g.get("hors_reference_meur", {}).get(y, 0) for g in groupes)) < 0.5, y
+        s = sum(g["fiscal_meur"][y] or 0 for g in groupes)
+        assert abs(s - idx["totaux"][y]["chiffre_meur"]) < 0.5, y
+    p343 = next(p for p in pr["programmes"] if p["programme"] == "343")
+    assert p343["fiscal_meur"]["2024"] == 0 and p343["hors_reference_meur"]["2024"] == 19
+    assert abs(pr["couverture"]["rattache_arbre_meur"] - sum(p["fiscal_meur"]["2024"] or 0 for p in pr["programmes"])) < 0.5
 
 
-@pytest.mark.xfail(strict=True, reason="I3 : niches/programmes.json publie fiscal_meur = 0 pour un programme dont aucune mesure n'est chiffrée (ex. 151 : mesure 070205 « nc » en 2024-2026)")
 def test_R20g_niches_programme_sans_mesure_chiffree_jamais_zero():
+    """Constat I3 (corrigé) : aucune mesure chiffrée et au moins une « nc » ou « ε » : null avec la mention, jamais
+    0 ; à l'inverse un null porte toujours sa mention et un montant publié a au moins une mesure chiffrée ou « - »."""
     _, M, pr, _ = _niches()
-    zeros = []
+    zeros, nuls = [], 0
     for p in pr["programmes"] + pr["hors_arbre"]:
         for y, v in p["fiscal_meur"].items():
             att, cs = _fiscal_attendu(M, p, y)
-            if att is None and any(str(c["brut"]).strip() == "nc" for c in cs) and v is not None:
+            non_chiffre = att is None and any(str(c["brut"]).strip() in ("nc", "ε") for c in cs)
+            if non_chiffre != (v is None):
                 zeros.append((p["programme"], y, v))
+            if (v is None) != (y in p.get("mention", {})):
+                zeros.append((p["programme"], y, "mention"))
+            nuls += v is None
     assert not zeros, zeros
+    assert nuls >= 12, nuls  # les 12 couples programme-année du constat
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -733,14 +756,26 @@ def test_R22a_liens_affectation_secu_existent():
         assert a[d]["administration"] == "Securite sociale", d
 
 
-@pytest.mark.xfail(strict=True, reason="M3 : destinataires Sécurité sociale de l'affectation sans nœud dans secu/ (acoss : TVA 7,5 Md€ ; msa_* : alcools 4,1 Md€)")
-def test_R22b_tout_destinataire_secu_a_un_noeud():
+def test_R22b_tout_destinataire_secu_a_un_noeud_ou_un_motif():
+    """Constat M3 (corrigé) : un destinataire Sécurité sociale de l'affectation a un nœud dans secu/, ou figure dans
+    `liens_affectation.sans_noeud` avec son motif."""
     besoin("secu/index.json")
     a = lire("prelevements/affectation.json")
-    liens = lire("secu/index.json")["liens_affectation"]["noeuds"]
+    la = lire("secu/index.json")["liens_affectation"]
     utilises = {v["destinataire"] for p in a["prelevements"].values() for v in p["ventilation"] if v["part"] > 0}
-    sans = sorted(d for d in utilises if a["destinataires"][d]["administration"] == "Securite sociale" and d not in liens)
-    assert not sans, sans
+    sans = sorted(d for d in utilises if a["destinataires"][d]["administration"] == "Securite sociale" and d not in la["noeuds"])
+    assert sans == sorted(la["sans_noeud"]), (sans, sorted(la["sans_noeud"]))
+    ids = set()
+
+    def w(n):
+        ids.add(n["id"])
+        for c in n.get("enfants", []):
+            w(c)
+
+    w(lire("secu/arbre/racine.json"))
+    for d, x in la["sans_noeud"].items():
+        assert len(x["motif"]) >= 20 and d not in la["noeuds"], d
+        assert x["noeud_englobant"] is None or x["noeud_englobant"] in ids, d
 
 
 def test_R22c_secu_index_egale_racines():
@@ -776,7 +811,7 @@ def test_R23_dgf_notifiee_dans_psr_collectivites():
     assert total >= 0.5 * PSR_COLL["md"], (total, PSR_COLL["md"])
 
 
-TOL_DGF_LIGNES_HORS_COMPOSANTES = 0.005  # constat M5 : lignes de la source dont le total diffère de ses composantes
+TOL_DGF_LIGNES_HORS_COMPOSANTES = 0.0005  # communes et départements : lignes de la source dont le total diffère de ses composantes
 
 
 def test_R24a_dgf_totale_egale_composantes():
@@ -792,7 +827,10 @@ def test_R24a_dgf_totale_egale_composantes():
     for c in lire("local/dotations/epci.json")["epci"].values():
         for v in c["eur"].values():
             n += 1
-            ko += abs((v.get("dgf_intercommunalite") or 0) + (v.get("dgf_compensation") or 0) - v["dgf_totale"]) > 2
+            comp = (v.get("dgf_intercommunalite") or 0) + (v.get("dgf_compensation") or 0)
+            # constat M5 (corrigé) : l'écart au total notifié est publié (dgf_ecart_composantes), jamais implicite
+            assert (abs(comp - v["dgf_totale"]) > 2) == ("dgf_ecart_composantes" in v), c["nom"]
+            assert comp + v.get("dgf_ecart_composantes", 0) == v["dgf_totale"] or abs(comp - v["dgf_totale"]) <= 2, c["nom"]
     for c in lire("local/dotations/departements.json")["departements"].values():
         for v in c["eur"].values():
             comp = sum(v.get(k) or 0 for k in ("dgf_forfaitaire", "dgf_compensation", "dgf_fonctionnement_minimale", "dgf_perequation_urbaine"))
@@ -801,15 +839,21 @@ def test_R24a_dgf_totale_egale_composantes():
     assert ko / n <= TOL_DGF_LIGNES_HORS_COMPOSANTES, (ko, n)
 
 
-@pytest.mark.xfail(strict=True, reason="M5 : la note de local/dotations/communes dit dgf_totale « (+ dotations des communes nouvelles) » ; les données ne l'incluent jamais")
 def test_R24b_note_dgf_communes_nouvelles():
-    d = lire("local/dotations/communes/17.json")
-    assert "communes nouvelles" in d["note"]
-    for c in d["communes"].values():
-        for v in c["eur"].values():
-            if v.get("dgf_commune_nouvelle"):
-                base = sum(v.get(k) or 0 for k in ("dgf_forfaitaire", "dgf_dsu", "dgf_dsr", "dgf_dnp"))
-                assert abs(v["dgf_totale"] - base - v["dgf_commune_nouvelle"]) <= 2
+    """Constat M5 (corrigé) : la note dit que la dotation des communes nouvelles est hors `dgf_totale`, et les données
+    le confirment pour chaque ligne qui la publie."""
+    n = 0
+    for f in glob.glob(str(SITE / "local" / "dotations" / "communes" / "*.json")):
+        d = json.loads(Path(f).read_text(encoding="utf-8"))
+        assert "pas comprise dans dgf_totale" in d["note"] and "(+ dotations des communes nouvelles)" not in d["note"], f
+        for c in d["communes"].values():
+            for v in c["eur"].values():
+                if v.get("dgf_commune_nouvelle"):
+                    base = sum(v.get(k) or 0 for k in ("dgf_forfaitaire", "dgf_dsu", "dgf_dsr", "dgf_dnp", "dgf_dacom"))
+                    n += 1
+                    assert abs(v["dgf_totale"] - base) <= 2, (f, c["nom"])
+    assert n > 1000, n
+    assert "dgf_ecart_composantes" in lire("local/dotations/epci.json")["note"]
 
 
 def test_R24c_dgf_comptes_departements_egale_dotations_notifiees():
@@ -834,39 +878,63 @@ def test_R24c_dgf_comptes_departements_egale_dotations_notifiees():
 # R25 Décisions : montants du PLRG identiques à ceux de realisations/ (null jamais 0)
 # ---------------------------------------------------------------------------------------------------------------------
 
-EXCEPTIONS_B1 = {("200", "2023")}
-
-
 def _ecarts_decisions():
-    out = []
-    for f in glob.glob(str(SITE / "decisions" / "programme_*.json")):
+    """(écarts, nombre de valeurs comparées, programmes comparés) entre decisions/ et realisations/ (même PLRG)."""
+    out, n, progs = [], 0, set()
+    for f in sorted(glob.glob(str(SITE / "decisions" / "programme_*.json"))):
         p = json.loads(Path(f).read_text(encoding="utf-8"))
         rf = SITE / "realisations" / f"{p['programme']}.json"
-        if not rf.exists():
-            continue
-        R = {a["annee"]: a for a in json.loads(rf.read_text(encoding="utf-8"))["prevu_depense"]["annees"]}
+        R = {}
+        if rf.exists():
+            R = {a["annee"]: a for a in json.loads(rf.read_text(encoding="utf-8"))["prevu_depense"]["annees"]}
         for y, a in p["annees"].items():
-            r = R.get(int(y))
-            if not r or "depenses_cp" not in a:
+            if "source_plrg" not in a:
                 continue
-            for cd, cr in (("depenses_cp", "depense_constatee_eur"), ("lfi_cp", "vote_lfi_eur")):
-                if r.get(cr) is not None and a.get(cd) is not None and abs(r[cr] - a[cd]) > 1:
-                    out.append((p["programme"], y, cd, a[cd], r[cr]))
-            og = (r.get("ouvert_en_gestion") or {}).get("total_eur")
-            if og is not None and a.get("ouverts_cp") is not None and abs(og - a["ouverts_cp"]) > 1:
-                out.append((p["programme"], y, "ouverts_cp", a["ouverts_cp"], og))
-    return out
+            for cd in ("lfi_cp", "lfr_cp", "reports_entrants_cp", "mouvements_reglementaires_plrg_cp",
+                       "fonds_de_concours_plrg_cp", "ouverts_cp", "depenses_cp"):
+                if a[cd] is None and cd not in a.get("valeurs_illisibles_plrg", {}):
+                    out.append((p["programme"], y, cd, "null sans raison"))
+            r = R.get(int(y))
+            if not r:
+                continue
+            for cd, vr in (("depenses_cp", r.get("depense_constatee_eur")), ("lfi_cp", r.get("vote_lfi_eur")),
+                           ("ouverts_cp", (r.get("ouvert_en_gestion") or {}).get("total_eur"))):
+                if vr is None or a[cd] is None:
+                    continue
+                n += 1
+                progs.add(p["programme"])
+                if abs(vr - a[cd]) > 1:
+                    out.append((p["programme"], y, cd, a[cd], vr))
+    return out, n, progs
 
 
-def test_R25a_decisions_egalent_realisations_hors_exceptions():
-    e = [x for x in _ecarts_decisions() if (x[0], x[1]) not in EXCEPTIONS_B1]
+def test_R25a_decisions_egalent_realisations_pour_chaque_programme():
+    """Constat B1 (corrigé) : LFI, crédits ouverts et dépenses de decisions/ = realisations/ à 1 € près, pour chaque
+    programme et chaque année du PLRG, sans exception ; un null porte sa raison."""
+    besoin("decisions/index.json", "realisations/index.json")
+    e, n, progs = _ecarts_decisions()
     assert not e, e[:10]
+    assert n >= 1000 and len(progs) >= 130, (n, len(progs))
 
 
-@pytest.mark.xfail(strict=True, reason="B1 : decisions/programme_200.json 2023 : dépenses 279,28 € (137 322 000 279,28 € au PLRG), LFI et ouverts 0 € (127,1 et 139,5 Md€)")
 def test_R25b_decisions_programme_200_2023():
-    e = [x for x in _ecarts_decisions() if (x[0], x[1]) in EXCEPTIONS_B1]
-    assert not e, e
+    """Le cas du constat B1 : annexe 2023 en notation scientifique pour le programme 200 (« 1,37322E+11 »)."""
+    besoin("decisions/programme_200.json")
+    d = lire("decisions/programme_200.json")
+    a = d["annees"]["2023"]
+    assert a["depenses_cp"] == 137322000279.28 and a["lfi_cp"] == 127055000000.0 and a["ouverts_cp"] == 139544000000.0
+    assert set(a["precision_plrg"]) == {"lfi_cp", "ouverts_cp", "depenses_cp"}
+    etapes = {c["etape"]: c for c in d["chronologie"] if c["annee"] == 2023 and "url" not in c}
+    assert etapes["LFI votée"]["cp"] == a["lfi_cp"] and etapes["Exécution"]["cp"] == a["depenses_cp"]
+    assert "notation scientifique" in etapes["Exécution"]["precision"]
+
+
+def test_R25d_decisions_chronologie_null_avec_raison():
+    """Une étape de la chronologie sans montant lisible porte sa raison (null, jamais 0 muet)."""
+    for f in glob.glob(str(SITE / "decisions" / "programme_*.json")):
+        p = json.loads(Path(f).read_text(encoding="utf-8"))
+        for c in p["chronologie"]:
+            assert c["cp"] is not None or c.get("raison"), (p["programme"], c)
 
 
 def test_R25c_decisions_coherence_plrg_conforme_selon_tolerance():
@@ -925,12 +993,16 @@ def test_R27_ecran3_part_empruntee_et_vues_arbre():
         assert abs(sum(c["md"] for c in r["enfants"]) - r["md"]) < 1e-4
 
 
-@pytest.mark.xfail(strict=True, reason="I1 : arbre_administrations/methode.json et meta : ecart_consolidation_md 106,3 ≠ somme 1 732,7 - consolidé 1 671,8 = 60,9 (phrase de l'écran Méthode fausse)")
 def test_R28a_methode_administrations_ecart_egale_difference():
     m = lire("arbre_administrations/methode.json")
     assert abs(m["somme_administrations_md"] - m["total_consolide_md"] - m["ecart_consolidation_md"]) < 0.15
     c = lire("meta.json")["controle"]["arbre_administrations"]
     assert abs(c["somme_md"] - c["total_consolide_s13_md"] - c["ecart_consolidation_md"]) < 0.15
+    # constat I1 (corrigé) : l'écart sur les dépenses totales (TE) est publié à part, sous un autre nom
+    assert m["ecart_depenses_totales_md"] == c["ecart_depenses_totales_md"] >= m["ecart_consolidation_md"]
+    f = FIXT / "meta.json"
+    if f.exists():  # la fixture web porte les mêmes valeurs : le test de l'écran Méthode prouve la phrase affichée
+        assert json.loads(f.read_text(encoding="utf-8"))["controle"]["arbre_administrations"] == c
 
 
 # Constat M13 : COFOG gov_10a_exp (1 671,8 Md€) et gov_10a_main TE (1 672,7 Md€) pour 2024, deux tables Eurostat.
@@ -957,7 +1029,7 @@ def test_R28b_administrations_sommes_et_cofog():
 # R29-R31 Dette (encours, détenteurs), contrôle, vie politique
 # ---------------------------------------------------------------------------------------------------------------------
 
-TOL_DETENTEURS_ENCOURS_MD = 1.0  # constat M8 : gov_10dd_ggd (détenteurs) contre edpt1 (encours), non listé dans ecarts[]
+TOL_DETENTEURS_ENCOURS_MD = 1.0  # constat M8 : gov_10dd_ggd (détenteurs) contre edpt1 (encours), écart publié dans ecarts[]
 
 
 def test_R29_detenteurs_somme_et_encours():
@@ -969,6 +1041,9 @@ def test_R29_detenteurs_somme_et_encours():
     assert abs(sum(v["md"][y] for v in d["eurostat"].values()) - total) < 0.2
     e = lire("dette/encours.json")
     assert abs(e["eurostat"]["S13"]["md"][y] - total) <= TOL_DETENTEURS_ENCOURS_MD
+    if abs(e["eurostat"]["S13"]["md"][y] - total) >= 0.05:  # constat M8 (corrigé) : l'écart est publié
+        x = [z for z in d["ecarts"] if z["annee"] == y and "encours_md" in z]
+        assert len(x) == 1 and abs(x[0]["ecart_md"] - (total - e["eurostat"]["S13"]["md"][y])) < 0.06, x
     ins = e["insee"]
     for an in ins["Ensemble"]["md"]:
         s = sum((ins[k]["md"].get(an) or 0) for k in ("Etat", "ODAC", "APUL", "ASSO"))

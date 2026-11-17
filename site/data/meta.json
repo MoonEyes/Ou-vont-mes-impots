@@ -4,7 +4,8 @@
   "annee_cofog": "2024",
   "arbre_administrations": {
    "annee": "2024",
-   "ecart_consolidation_md": 106.3,
+   "ecart_consolidation_md": 60.9,
+   "ecart_depenses_totales_md": 106.3,
    "feuilles": 118,
    "fichiers": 1,
    "noeuds": 145,

@@ -537,17 +537,36 @@ def arbre_administrations() -> dict:
     te = {r["sector"]: r["valeur"] / 1000 for r in comptes if r["na_item"] == "TE" and r["time"] == annee}
     d73 = sum(r["valeur"] for r in comptes if r["na_item"] == "D73PAY" and r["time"] == annee
               and r["sector"] != "S13") / 1000
-    ecart_comptable = te["S1311"] + te["S1313"] + te["S1314"] - te["S13"]
+    # Deux ecarts distincts, jamais confondus :
+    # - ecart_consolidation : difference des deux montants publies ci-dessous (somme de l'arbre, GF0108 retiree,
+    #   moins total consolide COFOG), calculee sur les valeurs arrondies pour que la soustraction affichee soit exacte ;
+    # - ecart_depenses_totales : meme difference sur les depenses totales (TE) de gov_10a_main, transferts compris.
+    ecart_consolidation = round(round(somme, 1) - round(total_s13, 1), 1)
+    ecart_te = te["S1311"] + te["S1313"] + te["S1314"] - te["S13"]
     dump(SITE / "arbre_administrations" / "methode.json", {
         **entete, "source": "Eurostat gov_10a_exp et gov_10a_main", "annee": annee,
         "lecture": "Chaque administration est montree avec ses depenses propres. Une partie est reversee a une autre "
                    "administration, qui la depense a son tour : la vue nationale utilise donc le total consolide.",
         "somme_administrations_md": round(somme, 1), "total_consolide_md": round(total_s13, 1),
         "transferts_courants_entre_administrations_md": round(d73, 1),
-        "ecart_consolidation_md": round(ecart_comptable, 1)})
+        "ecart_consolidation_md": ecart_consolidation,
+        "ecart_depenses_totales_md": round(ecart_te, 1),
+        "depenses_totales_ensemble_md": round(te["S13"], 1),
+        "ecart_tables_eurostat_md": round(round(te["S13"], 1) - round(total_s13, 1), 1),
+        "definitions": {
+            "ecart_tables_eurostat_md": "depenses_totales_ensemble_md (TE de l'ensemble des administrations, Eurostat "
+                                        "gov_10a_main) - total_consolide_md (total COFOG, Eurostat gov_10a_exp) : deux "
+                                        "tables Eurostat distinctes, ecart publie tel quel",
+            "ecart_consolidation_md": "somme_administrations_md - total_consolide_md (Eurostat gov_10a_exp) : "
+                                      "transferts entre administrations restant dans l'arbre apres retrait de la "
+                                      "sous-fonction GF0108",
+            "ecart_depenses_totales_md": "depenses totales (TE) de l'Etat, des collectivites locales et de la "
+                                         "Securite sociale, moins celles de l'ensemble des administrations "
+                                         "(Eurostat gov_10a_main) : tous les transferts entre administrations"}})
     return {"arbre_administrations": {**stats, "annee": annee, "somme_md": round(somme, 1),
                                       "total_consolide_s13_md": round(total_s13, 1),
-                                      "ecart_consolidation_md": round(ecart_comptable, 1),
+                                      "ecart_consolidation_md": ecart_consolidation,
+                                      "ecart_depenses_totales_md": round(ecart_te, 1),
                                       "transferts_d73_md": round(d73, 1)}}
 
 
