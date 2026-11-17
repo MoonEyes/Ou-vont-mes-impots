@@ -23,7 +23,11 @@ from __future__ import annotations
 
 import argparse
 import contextlib
-import fcntl
+try:
+    import fcntl  # Linux, macOS
+except ImportError:  # Windows
+    fcntl = None
+    import msvcrt
 import hashlib
 import json
 import os
@@ -351,11 +355,19 @@ def decrire(chemin: Path) -> dict:
 def _verrou(chemin: Path):
     chemin.parent.mkdir(parents=True, exist_ok=True)
     with open(chemin.with_name(chemin.name + ".lock"), "w") as v:
-        fcntl.flock(v, fcntl.LOCK_EX)
+        if fcntl:
+            fcntl.flock(v, fcntl.LOCK_EX)
+        else:
+            v.write("0"); v.flush(); v.seek(0)
+            msvcrt.locking(v.fileno(), msvcrt.LK_LOCK, 1)
         try:
             yield
         finally:
-            fcntl.flock(v, fcntl.LOCK_UN)
+            if fcntl:
+                fcntl.flock(v, fcntl.LOCK_UN)
+            else:
+                v.seek(0)
+                msvcrt.locking(v.fileno(), msvcrt.LK_UNLCK, 1)
 
 
 def lire_manifeste(chemin: Path | None = None) -> dict:
