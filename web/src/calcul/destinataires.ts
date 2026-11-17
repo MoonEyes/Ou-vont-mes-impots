@@ -24,7 +24,18 @@ export const DESTINATAIRES: Record<IdDestinataire, Destinataire> = {
   plusieurs: D('plusieurs', 'Sécurité sociale (plusieurs branches)', 'Securite sociale'),
 }
 
+/** Destinataires lus dans prelevements/affectation.json (contrat 1.4), ajoutés au registre du contrat. */
+const SUPPLEMENTAIRES: Record<string, Destinataire> = {}
+export function enregistrerDestinataires(d: Record<string, { nom: string; administration: string }> | undefined) {
+  for (const [id, v] of Object.entries(d ?? {}))
+    if (!(id in DESTINATAIRES)) SUPPLEMENTAIRES[id] = { id, nom: v.nom, administration: v.administration as Administration }
+}
+export function destinataire(id: string): Destinataire {
+  return (DESTINATAIRES as Record<string, Destinataire>)[id] ?? SUPPLEMENTAIRES[id] ?? { id, nom: id, administration: 'Plusieurs' }
+}
+
 export const LIBELLE_ADMINISTRATION: Record<Administration, string> = {
+  Plusieurs: 'Plusieurs administrations',
   Etat: 'État',
   'Collectivites locales': 'Collectivités locales',
   'Securite sociale': 'Sécurité sociale',

@@ -1,14 +1,15 @@
 // Écran 2 : ce que tu paies (total annuel, ligne par ligne avec destinataire, patronal à part).
-import { DESTINATAIRES, LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
-import type { Famille, Prelevement, ResultatOk } from '../calcul/types'
-import { charger, manifeste } from '../donnees'
+import { destinataire, LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
+import type { Complet } from '../calcul/hors-bulletin'
+import type { Famille, Fourchette, Prelevement, ResultatOk } from '../calcul/types'
 import { session } from '../etat'
-import { appliquerLargeurs, barres, eur, estFourchette, fourchette, h, pct, source } from '../util'
+import { appliquerLargeurs, barres, entier, eur, estFourchette, fourchette, h, pct, source } from '../util'
 
 const FAMILLES: [Famille, string][] = [
   ['cotisation_salariale', 'Cotisations sociales prélevées sur ton salaire'],
   ['csg_crds', 'CSG et CRDS'],
   ['impot_revenu', 'Impôt sur le revenu'],
+  ['taxe_consommation', 'Taxes sur ta consommation (estimation)'],
   ['impot_local', 'Impôts locaux'],
 ]
 
@@ -16,49 +17,69 @@ const PERSONNES: Record<string, string> = { declarant1: '', declarant2: ' (perso
 
 function ligne(l: Prelevement, couple: boolean): string {
   const m = l.montant_annuel_eur
-  const dest = l.ventilation?.length
-    ? l.ventilation.map((v) => `${DESTINATAIRES[v.destinataire].nom} ${pct(v.part * 100, 0)}`).join(', ')
-    : l.destinataire.nom
   const admin = LIBELLE_ADMINISTRATION[l.destinataire.administration]
+  const parts = l.ventilation && l.ventilation.length > 1
+  const dest = parts
+    ? l.ventilation!.map((v) => `${destinataire(v.destinataire).nom} ${pct(v.part * 100, v.part < 0.01 ? 1 : 0)}`).join(', ')
+    : l.destinataire.nom
+  const nonSourcee = l.statut_affectation === 'non sourcee' ? ' · répartition non sourcée' : ''
+  const montant = l.non_chiffre ? 'non chiffré' : `${l.nature === 'reduction' ? '− ' : ''}${fourchette(m)}`
   return `<li${l.nature === 'reduction' ? ' class="reduction"' : ''}>
     <span>${h(l.libelle)}${couple ? h(PERSONNES[l.personne] ?? '') : ''}</span>
-    <span class="montant">${l.nature === 'reduction' ? '− ' : ''}${h(fourchette(m))}<span class="visuellement-cache"> par an</span></span>
-    <span class="dest">Va à : ${h(dest)}${admin !== dest ? ` <span class="badge">${h(admin)}</span>` : ''}${
-      estFourchette(m) ? ` · estimation (central ${h(eur(m.central))})` : ''
-    }</span>
+    <span class="montant">${h(montant)}${l.non_chiffre ? '' : '<span class="visuellement-cache"> par an</span>'}</span>
+    <span class="dest">Va à : ${h(dest)}${!parts && admin !== dest ? ` <span class="badge">${h(admin)}</span>` : ''}${h(nonSourcee)}${
+      !l.non_chiffre && estFourchette(m) ? ` · estimation (central ${h(eur(m.central))})` : ''
+    }${l.note ? `<br />${h(l.note)}` : ''}</span>
   </li>`
 }
 
-function blocTotal(r: ResultatOk): string {
-  const t = r.totaux.paye_par_le_foyer
+function sousTotal(ls: Prelevement[]): Fourchette {
+  const t = { bas: 0, central: 0, haut: 0 }
+  for (const l of ls) {
+    if (l.non_chiffre) continue
+    t.bas += l.montant_annuel_eur.bas
+    t.central += l.montant_annuel_eur.central
+    t.haut += l.montant_annuel_eur.haut
+  }
+  return t
+}
+
+function blocTotal(r: ResultatOk, c: Complet | null): string {
+  const t = c ? c.total : r.totaux.paye_par_le_foyer
   const net = r.entree.personnes.reduce((s, p) => s + p.salaire_net_avant_impot_annuel, 0)
   const brut = r.entree.personnes.reduce((s, p) => s + p.salaire_brut_annuel_estime.central, 0)
+  const salaire = sousTotal((c?.lignes ?? r.prelevements).filter((l) => ['cotisation_salariale', 'csg_crds', 'impot_revenu'].includes(l.famille)))
+  const conso = c ? sousTotal(c.conso) : null
+  const locaux = c ? sousTotal(c.locaux) : null
   return `<div class="carte">
     <p>Chaque année, ton foyer paie</p>
     <p class="grand-chiffre">${h(fourchette(t))}</p>
+    ${estFourchette(t) ? `<p>Valeur centrale : <strong>${h(eur(t.central))}</strong> par an.</p>` : ''}
     <p class="sous-chiffre">soit ${h(fourchette(t, 12))} par mois, pour un salaire brut de ${h(eur(brut))} par an (${h(eur(net))} net avant impôt).</p>
-    <p class="aide">Hors TVA et autres taxes sur ta consommation, et hors cotisations payées par ton employeur (bloc séparé plus bas).</p>
+    <ul>
+      <li>Prélevé sur ton salaire et impôt sur le revenu : ${h(fourchette(salaire))}</li>
+      ${conso ? `<li>Taxes sur ta consommation : ${h(fourchette(conso))}</li>` : '<li>Taxes sur ta consommation : donnée non disponible</li>'}
+      ${
+        c && c.locaux.length
+          ? `<li>Impôts locaux de ton logement : ${c.locaux.every((l) => l.non_chiffre) ? 'non chiffré (indique ta commune)' : h(fourchette(locaux!))}</li>`
+          : ''
+      }
+    </ul>
+    <p class="aide">Hors cotisations payées par ton employeur (bloc séparé plus bas)${
+      c?.lignes.some((l) => l.non_chiffre) ? ' ; les montants « non chiffré » ne sont pas comptés' : ''
+    }.</p>
   </div>`
 }
 
-async function blocConsommation(): Promise<string> {
-  const m = await manifeste()
-  const fichiers = m.optionnels.prelevements
-  if (!fichiers || !fichiers.length)
-    return `<div class="carte"><h2>TVA et taxe foncière</h2><p><strong>Estimation à venir.</strong> La TVA que tu paies en consommant et la taxe foncière estimée pour ta commune seront ajoutées quand les données seront publiées par le site.</p></div>`
-  // Dossier prelevements/ présent : on affiche sa provenance ; le chiffrage personnel suit son contrat.
-  const infos: string[] = []
-  for (const f of fichiers.slice(0, 5)) {
-    try {
-      const d = await charger<{ millesime?: string; source?: string; libelle?: string }>(f)
-      infos.push(`${d.libelle ?? f}${d.millesime ? `, ${d.millesime}` : ''}${d.source ? ` (${d.source})` : ''}`)
-    } catch {
-      /* fichier illisible : ignoré, signalé par l'absence */
-    }
-  }
-  return `<div class="carte"><h2>TVA et taxe foncière</h2><p><strong>Estimation à venir sur cet écran.</strong> Les données sont publiées et en cours d’intégration :</p><ul>${infos
-    .map((i) => `<li>${h(i)}</li>`)
-    .join('')}</ul></div>`
+function blocPlacement(c: Complet | null): string {
+  const p = c?.placement
+  if (!p) return ''
+  return `<p class="aide">Pour estimer tes taxes sur la consommation, ton foyer compte ${h(String(p.unites_consommation).replace('.', ','))} unité${
+    p.unites_consommation > 1 ? 's' : ''
+  } de consommation ; revenu disponible estimé ${h(eur(p.revenu_disponible_eur))} par an (salaires nets moins impôt sur le revenu, sans prestations ni autres revenus), soit un niveau de vie de ${h(
+    eur(p.niveau_de_vie_eur),
+  )} : <strong>${h(entier(p.decile))}e décile</strong> sur 10. Montants moyens de ce décile, recalés sur 2025.</p>
+  <p class="source">Insee (comptes nationaux distribués 2019, Budget de famille 2017, ERFS 2024), Eurostat ; site/data/prelevements/tva_conso.json</p>`
 }
 
 function blocTaxeFonciere(): string {
@@ -77,14 +98,16 @@ export async function rendre(cible: HTMLElement) {
     cible.innerHTML = `<h1>Ce que tu paies</h1><p>Indique d’abord ton salaire pour voir ce que tu paies et à qui.</p><p><a class="bouton bouton-principal" href="#/">Saisir mon salaire</a></p><p><a href="#/etat">Ou explorer le budget de l’État</a></p>`
     return
   }
+  const c = session.complet
+  const patronales = r.prelevements.filter((l) => l.famille === 'cotisation_patronale')
   const couple = r.entree.personnes.length > 1
+  const toutes = c ? c.lignes : r.prelevements.filter((l) => l.inclus_dans_total_paye)
   const groupes = FAMILLES.map(([fam, titre]) => {
-    const ls = r.prelevements.filter((l) => l.famille === fam)
-    if (!ls.length) return ''
-    return `<h3>${h(titre)}</h3><ul class="lignes">${ls.map((l) => ligne(l, couple)).join('')}</ul>`
+    const ls = toutes.filter((l) => l.famille === fam)
+    if (!ls.length) return fam === 'taxe_consommation' ? `<h3>${h(titre)}</h3><p class="absent">Donnée non disponible.</p>` : ''
+    return `<h3>${h(titre)}</h3>${fam === 'taxe_consommation' ? blocPlacement(c) : ''}<ul class="lignes">${ls.map((l) => ligne(l, couple)).join('')}</ul>`
   }).join('')
 
-  const patronales = r.prelevements.filter((l) => l.famille === 'cotisation_patronale')
   const avert = r.avertissements
     .filter((a) => a.code !== 'DONNEE_ABSENTE')
     .map((a) => `<p class="avertissement">${h(a.message)}</p>`)
@@ -94,10 +117,10 @@ export async function rendre(cible: HTMLElement) {
   const parDest = (avecPatronal: boolean) => {
     const moteur = import('../calcul/moteur')
     return moteur.then((m) => {
-      const lignes = m.parDestinataire(r.prelevements, avecPatronal)
+      const lignes = m.parDestinataire(avecPatronal ? [...toutes, ...patronales] : toutes, avecPatronal)
       return barres(
         lignes.map((x) => ({
-          nom: `${DESTINATAIRES[x.destinataire].nom} (${LIBELLE_ADMINISTRATION[DESTINATAIRES[x.destinataire].administration]})`,
+          nom: `${destinataire(x.destinataire).nom} (${LIBELLE_ADMINISTRATION[destinataire(x.destinataire).administration]})`,
           valeur: x.montant_annuel_eur.central,
           texte: fourchette(x.montant_annuel_eur),
         })),
@@ -109,13 +132,12 @@ export async function rendre(cible: HTMLElement) {
 
   cible.innerHTML = `
 <h1>Ce que tu paies</h1>
-${blocTotal(r)}
+${blocTotal(r, c)}
 ${avert}
 <h2>Ligne par ligne, et qui le reçoit</h2>
 ${groupes}
 ${csgAbsente ? `<p class="aide">${h(csgAbsente.message)}</p>` : ''}
 ${blocTaxeFonciere()}
-<div id="conso"><p class="chargement">Chargement…</p></div>
 <h2>Par destinataire</h2>
 <div class="bascule" role="group" aria-label="Contenu de la répartition">
   <button type="button" id="sans-patronal" aria-pressed="true">Ce que tu paies</button>
@@ -147,6 +169,4 @@ ${blocTaxeFonciere()}
   cible.querySelector('#sans-patronal')?.addEventListener('click', () => montrer(false))
   cible.querySelector('#avec-patronal')?.addEventListener('click', () => montrer(true))
   await montrer(false)
-  const conso = cible.querySelector('#conso') as HTMLElement
-  conso.innerHTML = await blocConsommation()
 }

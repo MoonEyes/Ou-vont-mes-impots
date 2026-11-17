@@ -4,7 +4,11 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import { ROUTES } from '../src/main'
 import { afficher } from '../src/routeur'
 import { session } from '../src/etat'
+import { readFileSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { attendreQue, monterPage, requetes } from './aide-dom'
+
+const eurFr = (x: number) => `${new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(Math.round(x))} €`.replace(/\s+/g, ' ')
 
 let main: HTMLElement
 const ecran = async (fragment: string) => {
@@ -59,13 +63,41 @@ describe('écrans', () => {
     expect(texte()).toContain('CADES')
     expect(texte()).toContain('Agirc-Arrco')
     expect(texte()).toContain('ce que paie ton employeur')
-    expect(texte()).toContain('Estimation à venir')
+    expect(texte()).toContain('Taxes sur ta consommation')
+    expect(texte()).toContain('Assurance maladie 46 %, Branche autonomie 23 %, Unédic')
     const patronal = main.querySelector('[aria-labelledby=titre-patronal]')!
     expect(patronal.querySelectorAll('.lignes li').length).toBeGreaterThan(8)
     await attendreQue(() => main.querySelectorAll('#par-destinataire li').length > 0)
     main.querySelector<HTMLButtonElement>('#avec-patronal')!.click()
     await attendreQue(() => main.querySelector('#avec-patronal')?.getAttribute('aria-pressed') === 'true')
     expect(texte()).toContain('Assurance maladie')
+  }, 90000)
+
+  it('2. cas 2 100 € net, locataire à Lyon : taxes conso du 5e décile, TEOM, total complet', async () => {
+    await ecran('#/')
+    ;(main.querySelector('#p1-net') as HTMLInputElement).value = '2100'
+    const dep = main.querySelector<HTMLSelectElement>('#departement')!
+    dep.value = '69'
+    dep.dispatchEvent(new Event('change', { bubbles: true }))
+    await attendreQue(() => !!main.querySelector('#commune option[value="69123"]'))
+    main.querySelector<HTMLSelectElement>('#commune')!.value = '69123'
+    session.resultat = null
+    session.complet = null
+    main.querySelector<HTMLFormElement>('#formulaire')!.dispatchEvent(new Event('submit', { cancelable: true }))
+    await attendreQue(() => session.complet !== null && session.resultat !== null, 60000)
+    const tva = JSON.parse(readFileSync(join(process.cwd(), 'tests/fixtures/data/prelevements/tva_conso.json'), 'utf8'))
+    const c = session.complet!
+    expect(c.placement!.decile).toBe(5)
+    const conso = c.conso.reduce((s, l) => s + l.montant_annuel_eur.central, 0)
+    expect(conso).toBeCloseTo(tva.tranches[4].taxes_produits_eur_par_uc.central, 0)
+    expect(c.locaux.map((l) => l.id)).toEqual(['teom'])
+    expect(c.locaux[0].non_chiffre).toBeUndefined()
+    await ecran('#/paie')
+    expect(texte()).toContain('5e décile')
+    expect(texte()).toContain('dans tes charges')
+    expect(texte()).toContain(`Valeur centrale : ${eurFr(c.total.central)}`)
+    expect(texte()).toContain(`entre ${eurFr(c.total.bas)} et ${eurFr(c.total.haut)}`)
+    writeFileSync(join(process.cwd(), 'ecarts_cas_types.json').replace('ecarts_cas_types', 'affichage_lyon'), JSON.stringify(c.total))
   }, 90000)
 
   it('3. sur 100 € : grands postes, part empruntée, choix du millésime', async () => {
@@ -75,7 +107,8 @@ describe('écrans', () => {
     const somme = Array.from(main.querySelector('.empile')!.querySelectorAll<HTMLElement>('span')).reduce((s, x) => s + Number(x.dataset.l), 0)
     expect(somme).toBeGreaterThan(99.9)
     expect(somme).toBeLessThan(100.1)
-    expect(texte()).toContain('sur ton impôt sur le revenu')
+    expect(texte()).toContain('sur ce que tu verses à l’État')
+    expect(texte()).toContain('Et ce que tu paies ?')
     expect(texte()).toContain('Traçabilité de ce bloc')
     await ecran('#/etat?m=lfi2025')
     expect(texte()).toContain('27,4 € empruntés')

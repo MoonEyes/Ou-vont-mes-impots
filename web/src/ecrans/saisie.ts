@@ -2,7 +2,7 @@
 import { verifierProfil } from '../calcul/perimetre'
 import type { Personne, Profil, ResultatErreur, StatutActivite } from '../calcul/types'
 import { ALSACE_MOSELLE, DEPARTEMENTS, departementDe } from '../departements'
-import { chargerSiPresent, manifeste } from '../donnees'
+import { chargerSiPresent } from '../donnees'
 import { session } from '../etat'
 import { annoncer, h } from '../util'
 
@@ -86,6 +86,22 @@ export async function rendre(cible: HTMLElement) {
     <div id="tf-bloc" hidden>
       <label for="tf">Montant de ta taxe foncière sur l’avis, par an (facultatif)</label>
       <input id="tf" type="number" inputmode="decimal" min="0" step="any" value="${pr?.logement?.taxe_fonciere_annuelle_eur ?? ''}" />
+    </div>
+  </fieldset>
+  <fieldset class="choix">
+    <legend>Ta consommation (facultatif)</legend>
+    <p class="aide">Sert à affiner les taxes sur la consommation (carburant, tabac).</p>
+    <p id="voiture-titre"><strong>Le foyer a-t-il une voiture ?</strong></p>
+    <div role="radiogroup" aria-labelledby="voiture-titre">
+      ${choix('voiture', 'inconnu', session.habitudes.voiture, 'Ne pas préciser')}
+      ${choix('voiture', 'oui', session.habitudes.voiture, 'Oui')}
+      ${choix('voiture', 'non', session.habitudes.voiture, 'Non')}
+    </div>
+    <p id="fumeur-titre"><strong>Quelqu’un fume-t-il dans le foyer ?</strong></p>
+    <div role="radiogroup" aria-labelledby="fumeur-titre">
+      ${choix('fumeur', 'inconnu', session.habitudes.fumeur, 'Ne pas préciser')}
+      ${choix('fumeur', 'oui', session.habitudes.fumeur, 'Oui')}
+      ${choix('fumeur', 'non', session.habitudes.fumeur, 'Non')}
     </div>
   </fieldset>
   <fieldset>
@@ -241,12 +257,26 @@ export async function rendre(cible: HTMLElement) {
     retour.innerHTML = '<p class="chargement">Calcul en cours sur ton appareil…</p>'
     annoncer('Calcul en cours')
     try {
-      const [moteur, man] = await Promise.all([import('../calcul/moteur'), manifeste()])
-      const affectation = man.optionnels.affectation_prelevements ? await chargerSiPresent('affectation_prelevements.json') : null
       const communeCode = profil.residence.commune_insee
+      const dep = communeCode ? departementDe(communeCode) : null
+      const [moteur, hb, affectation, tva, tfDep] = await Promise.all([
+        import('../calcul/moteur'),
+        import('../calcul/hors-bulletin'),
+        chargerSiPresent('prelevements/affectation.json'),
+        chargerSiPresent('prelevements/tva_conso.json'),
+        dep ? chargerSiPresent(`prelevements/taxe_fonciere/${dep}.json`) : Promise.resolve(null),
+      ])
       const commune = communeCode ? (communes[communeCode] ?? null) : undefined
       const res = moteur.calculer(profil, { affectation, commune })
       if (res.statut === 'erreur') return montrerErreur(res)
+      const valeur = (n: string) => ((form.querySelector(`input[name=${n}]:checked`) as HTMLInputElement | null)?.value ?? 'inconnu') as 'oui'
+      session.habitudes = { voiture: valeur('voiture'), fumeur: valeur('fumeur') }
+      session.complet = hb.assembler(
+        profil,
+        res,
+        { tva, affectation, tfDep, ligneCommune: communeCode && tfDep ? (tfDep.communes[communeCode] ?? null) : undefined },
+        session.habitudes,
+      )
       session.profil = profil
       session.resultat = res
       session.communeNom = commune ? commune[0] : null

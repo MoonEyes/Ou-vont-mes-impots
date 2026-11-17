@@ -1,1 +1,1 @@
-{"genere_le": "2026-11-17T00:00:00Z", "version_contrat": null, "optionnels": {"prelevements": null, "tracabilite": ["tracabilite/programme_141.json", "tracabilite/resume.json"], "affectation_prelevements": false}}
+{"genere_le": "2026-11-17T00:00:00Z", "version_contrat": null, "optionnels": {"prelevements": ["prelevements/affectation.json", "prelevements/taxe_fonciere.json", "prelevements/taxe_fonciere/69.json", "prelevements/tva_conso.json"], "tracabilite": ["tracabilite/programme_141.json", "tracabilite/resume.json"], "affectation_prelevements": false}}

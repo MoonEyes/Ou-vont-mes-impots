@@ -3,3 +3,4 @@ dist/
 public/data/
 *.log
 ecarts_cas_types.json
+affichage_lyon.json

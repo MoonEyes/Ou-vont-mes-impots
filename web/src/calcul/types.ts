@@ -63,15 +63,17 @@ export type IdDestinataire =
   | 'departement'
   | 'plusieurs'
 
-export type Administration = 'Etat' | 'Collectivites locales' | 'Securite sociale'
+export type Administration = 'Etat' | 'Collectivites locales' | 'Securite sociale' | 'Plusieurs'
 
 export interface Destinataire {
-  id: IdDestinataire
+  /** identifiant du contrat (3.5) ou de prelevements/affectation.json (contrat 1.4) */
+  id: IdDestinataire | string
   nom: string
   administration: Administration
 }
 
-export type Famille = 'cotisation_salariale' | 'csg_crds' | 'impot_revenu' | 'cotisation_patronale' | 'impot_local'
+// taxe_consommation : lignes hors bulletin calculées par le site (contrat 1.4, prelevements/tva_conso.json).
+export type Famille = 'cotisation_salariale' | 'csg_crds' | 'impot_revenu' | 'cotisation_patronale' | 'impot_local' | 'taxe_consommation'
 
 export interface Prelevement {
   id: string
@@ -83,7 +85,13 @@ export interface Prelevement {
   montant_annuel_eur: Fourchette
   nature?: 'prelevement' | 'reduction'
   destinataire: Destinataire
-  ventilation?: { destinataire: IdDestinataire; part: number }[]
+  ventilation?: { destinataire: string; part: number; source?: string }[]
+  /** statut de la répartition dans prelevements/affectation.json */
+  statut_affectation?: 'sourcee' | 'non sourcee'
+  /** montant non chiffrable faute de source (ex. tabac pour un fumeur) : exclu des totaux */
+  non_chiffre?: boolean
+  note?: string
+  source?: string
   inclus_dans_total_paye: boolean
   regle: string
   hypothese_fourchette?: string
@@ -121,7 +129,7 @@ export interface ResultatOk {
     paye_par_le_foyer: Fourchette
     patronal: Fourchette
     cout_total_employeur?: Fourchette
-    par_destinataire: { destinataire: IdDestinataire; montant_annuel_eur: Fourchette; inclut_patronal: boolean }[]
+    par_destinataire: { destinataire: string; montant_annuel_eur: Fourchette; inclut_patronal: boolean }[]
   }
   avertissements: Avertissement[]
 }
