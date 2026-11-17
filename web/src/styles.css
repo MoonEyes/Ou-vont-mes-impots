@@ -991,3 +991,42 @@ th.nombre {
 }
 
 .surtitre{margin:0 0 .25rem;font-size:.8125rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+
+/* Recette du 17/11/2026 (docs/RECETTE.md) */
+/* Le pied de page ne remonte plus au-dessus du pli pendant le chargement de l'écran (CLS). */
+main {
+  min-height: 100vh;
+}
+/* Reflow à 320 px : les libellés de source longs (adresses, identifiants) passent à la ligne. */
+body {
+  overflow-wrap: break-word;
+}
+.source {
+  overflow-wrap: anywhere;
+}
+/* Tableaux défilants atteignables au clavier (WCAG 2.1.1) : focus visible sur la zone. */
+.tableau-defile:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+/* Cibles tactiles de la liste des programmes (44 px). */
+#liste-prog a {
+  display: inline-block;
+  padding-block: 0.6rem;
+}
+/* Mentions : fiche d'information RGPD. */
+.fiche-rgpd dt {
+  font-weight: 700;
+  margin-top: 1rem;
+}
+.fiche-rgpd dd {
+  margin: 0.25rem 0 0.25rem 0;
+}
+.a-completer {
+  border: 1px dashed var(--trait);
+  padding: 0 0.25rem;
+}
+/* Commune : réserve la place des budgets pendant leur chargement (pas de décalage visible). */
+.section-attente {
+  min-height: 100vh;
+}

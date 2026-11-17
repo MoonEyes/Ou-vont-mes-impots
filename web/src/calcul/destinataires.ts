@@ -25,7 +25,10 @@ export const DESTINATAIRES: Record<IdDestinataire, Destinataire> = {
 }
 
 /** Destinataires lus dans prelevements/affectation.json (contrat 1.4), ajoutés au registre du contrat. */
-const SUPPLEMENTAIRES: Record<string, Destinataire> = {}
+const SUPPLEMENTAIRES: Record<string, Destinataire> = {
+  // Taxes sur la consommation sans affectation publiée (calcul/hors-bulletin.ts) : libellé lisible, jamais l'identifiant.
+  autres_taxes_produits: { id: 'autres_taxes_produits', nom: 'Plusieurs bénéficiaires (répartition non sourcée)', administration: 'Plusieurs' },
+}
 export function enregistrerDestinataires(d: Record<string, { nom: string; administration: string }> | undefined) {
   for (const [id, v] of Object.entries(d ?? {}))
     if (!(id in DESTINATAIRES)) SUPPLEMENTAIRES[id] = { id, nom: v.nom, administration: v.administration as Administration }

@@ -2,7 +2,11 @@
 // Arborescence de trois niveaux au plus ; fil d'Ariane et liens « voir aussi » déduits de la table des routes.
 import { annoncer, appliquerLargeurs, h } from './util'
 
-export type Ecran = (cible: HTMLElement, params: URLSearchParams) => Promise<void> | void
+/**
+ * Un écran remplit cible. Il peut rendre la main avant d'avoir tout chargé en renvoyant { suite } :
+ * la page est alors affichée tout de suite et complétée ensuite (afficher attend la suite avant de se résoudre).
+ */
+export type Ecran = (cible: HTMLElement, params: URLSearchParams) => Promise<void | { suite: Promise<void> }> | void | { suite: Promise<void> }
 
 export interface Route {
   chemin: string
@@ -102,14 +106,19 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = l
   const { chemin, params } = lireFragment(fragment)
   const route = routes.find((r) => r.chemin === chemin) ?? routes[0]
   const moi = ++jeton
+  let suite: Promise<void> | null = null
   cible.setAttribute('aria-busy', 'true')
+  // Navigation interne : retour en haut avant de vider l'écran, pour que le pied de page ne remonte pas
+  // dans la zone visible pendant le chargement (décalage de mise en page, CLS).
+  if (focus) window.scrollTo?.(0, 0)
   cible.innerHTML = '<p class="chargement">Chargement…</p>'
   try {
     const mod = await route.charger()
     if (moi !== jeton) return
     const zone = document.createElement('div')
     zone.className = 'ecran'
-    await mod.rendre(zone, params)
+    const rendu = await mod.rendre(zone, params)
+    if (rendu && typeof rendu === 'object' && 'suite' in rendu) suite = rendu.suite
     if (moi !== jeton) return
     const redirige = lireFragment(location.hash).chemin
     if (redirige !== chemin && routes.some((r) => r.chemin === redirige)) return
@@ -139,5 +148,12 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = l
     }
     window.scrollTo?.(0, 0)
     annoncer(route.titre)
+  }
+  if (suite) {
+    try {
+      await suite
+    } catch (e) {
+      console.error(e)
+    }
   }
 }

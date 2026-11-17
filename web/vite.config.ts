@@ -13,6 +13,8 @@ export default defineConfig({
     __VERSION_PUBLICODES__: JSON.stringify(version('publicodes')),
     __VERSION_ECHARTS__: JSON.stringify(version('echarts')),
   },
+  // Worker du calcul (src/calcul/travailleur.ts) en module ES, comme le reste du site.
+  worker: { format: 'es' },
   build: {
     target: 'es2020',
     sourcemap: false,

@@ -4,6 +4,10 @@ import { lien } from '../routeur'
 import { absent, eurLisible, h, source } from '../util'
 import { enCours } from './dette'
 
+/** Lien vers la source publiée, ou texte seul quand l'adresse manque (jamais de lien vide qui recharge la page). */
+const lienSiUrl = (url: string | null | undefined, texte: string) =>
+  url && /^https:\/\//.test(url) ? `<a href="${h(url)}" rel="noopener noreferrer">${h(texte)}</a>` : h(texte)
+
 interface Annee {
   amendements?: { deposes_an: number; deposes_senat: number; adoptes_seance_an: number; adoptes_seance_senat: number; adoptes_commission_an: number; net_cp_adopte_seance: number }
   amendements_adoptes?: { chambre: string; texte: string; lieu: string; numero: string; date: string; auteur: { type: string; nom: string | null; groupe: string | null }; cp: number; url: string }[]
@@ -65,7 +69,7 @@ ${
     ? `<h3>Derniers amendements adoptés</h3><p class="aide" data-regle-ordre>${h(REGLE_AMENDEMENTS)}</p><ul class="lignes">${adoptes
         .map(
           (a) =>
-            `<li><span><a href="${h(a.url)}" rel="noopener noreferrer">${h(a.texte)}, amendement ${h(a.numero)}</a></span><span class="montant">${h(signe(a.cp))}</span><span class="dest">${h(a.date)} · ${h(a.lieu)} · ${h(a.auteur.nom ?? a.auteur.type)}${a.auteur.groupe ? ` (${h(a.auteur.groupe)})` : ''}</span></li>`,
+            `<li><span>${lienSiUrl(a.url, `${a.texte}, amendement ${a.numero}`)}</span><span class="montant">${h(signe(a.cp))}</span><span class="dest">${h(a.date)} · ${h(a.lieu)} · ${h(a.auteur.nom ?? a.auteur.type)}${a.auteur.groupe ? ` (${h(a.auteur.groupe)})` : ''}</span></li>`,
         )
         .join('')}</ul>`
     : ''
@@ -74,7 +78,7 @@ ${
 <ul class="lignes">${d.chronologie
         .slice(-12)
         .reverse()
-        .map((c) => `<li><span><a href="${h(c.url)}" rel="noopener noreferrer">${h(c.etape)}</a></span><span class="montant">${h(signe(c.cp))}</span><span class="dest">${h(c.date)}</span></li>`)
+        .map((c) => `<li><span>${lienSiUrl(c.url, c.etape)}</span><span class="montant">${h(signe(c.cp))}</span><span class="dest">${h(c.date)}</span></li>`)
         .join('')}</ul>
 ${source(d.source, d.millesime)}
 <ul class="liens-sortie">
@@ -92,7 +96,7 @@ ${
         .filter((s) => s.type === 'ensemble')
         .slice(-10)
         .reverse()
-        .map((s) => `<li><span><a href="${h(s.url)}" rel="noopener noreferrer">${h(s.texte)} : ${h(s.objet)}</a></span><span class="montant">${h(s.resultat)}</span><span class="dest">${h(s.date)} · ${s.pour} pour, ${s.contre} contre, ${s.abstentions} abstentions</span></li>`)
+        .map((s) => `<li><span>${lienSiUrl(s.url, `${s.texte} : ${s.objet}`)}</span><span class="montant">${h(s.resultat)}</span><span class="dest">${h(s.date)} · ${s.pour} pour, ${s.contre} contre, ${s.abstentions} abstentions</span></li>`)
         .join('')}</ul>${source(sc.source)}`
     : ''
 }`

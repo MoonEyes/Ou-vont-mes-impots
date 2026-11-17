@@ -1,4 +1,5 @@
 // Écran 2 : ce que tu verses (total annuel, ligne par ligne avec destinataire, patronal à part).
+import { parDestinataire } from '../calcul/agregats'
 import { destinataire, LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
 import type { Complet } from '../calcul/hors-bulletin'
 import type { Famille, Fourchette, Prelevement, ResultatOk } from '../calcul/types'
@@ -147,9 +148,8 @@ export async function rendre(cible: HTMLElement) {
   const csgAbsente = r.avertissements.find((a) => a.code === 'DONNEE_ABSENTE')
 
   const parDest = (avecPatronal: boolean) => {
-    const moteur = import('../calcul/moteur')
-    return moteur.then((m) => {
-      const lignes = m.parDestinataire(avecPatronal ? [...toutes, ...patronales] : toutes, avecPatronal)
+    return Promise.resolve().then(() => {
+      const lignes = parDestinataire(avecPatronal ? [...toutes, ...patronales] : toutes, avecPatronal)
       return barres(
         lignes.map((x) => ({
           nom: `${destinataire(x.destinataire).nom} (${LIBELLE_ADMINISTRATION[destinataire(x.destinataire).administration]})`,

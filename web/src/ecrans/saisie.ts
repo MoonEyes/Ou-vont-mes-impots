@@ -1,6 +1,7 @@
 // Écran 1 : saisie du salaire net avant impôt et du profil facultatif.
 import { verifierProfil } from '../calcul/perimetre'
 import type { Personne, Profil, ResultatErreur, StatutActivite } from '../calcul/types'
+import { enregistrerDestinataires } from '../calcul/destinataires'
 import { ALSACE_MOSELLE, DEPARTEMENTS, departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { session } from '../etat'
@@ -33,14 +34,14 @@ function blocPersonne(n: 1 | 2, p?: Personne): string {
   </select>
   <div id="${id('salarie')}">
     <label for="${id('net')}">Salaire net avant impôt, par mois (en euros)</label>
-    <input id="${id('net')}" name="${id('net')}" type="number" inputmode="decimal" min="1" step="any" autocomplete="off" aria-describedby="${id('aide')} ${id('msg')}" value="${p?.salaire_net_avant_impot_mensuel ?? ''}" />
+    <input id="${id('net')}" name="${id('net')}" type="text" inputmode="decimal" spellcheck="false" autocomplete="off" aria-describedby="${id('aide')} ${id('msg')}" value="${p?.salaire_net_avant_impot_mensuel ?? ''}" />
     <p class="message-champ" id="${id('msg')}" hidden></p>
     <details><summary>Où trouver ce montant ?</summary><p class="aide" id="${id('aide')}">${AIDE_SALAIRE}</p></details>
     <label class="case"><input type="checkbox" id="${id('cadre')}"${p?.cadre ? ' checked' : ''} /> Statut cadre</label>
     <label class="case"><input type="checkbox" id="${id('partiel')}"${tp !== null ? ' checked' : ''} /> Temps partiel</label>
     <div id="${id('quotite-bloc')}" ${tp === null ? 'hidden' : ''}>
       <label for="${id('quotite')}">Quotité de travail (en % d’un temps plein)</label>
-      <input id="${id('quotite')}" type="number" inputmode="decimal" min="1" max="100" step="any" value="${tp !== null ? Math.round(tp * 100) : 80}" aria-describedby="${id('msg-q')}" />
+      <input id="${id('quotite')}" type="text" inputmode="decimal" spellcheck="false" autocomplete="off" value="${tp !== null ? Math.round(tp * 100) : 80}" aria-describedby="${id('msg-q')}" />
       <p class="message-champ" id="${id('msg-q')}" hidden></p>
     </div>
     <label class="case"><input type="checkbox" id="${id('frontalier')}"${p?.frontalier ? ' checked' : ''} /> Je travaille hors de France (frontalier)</label>
@@ -74,7 +75,8 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
       <label for="enfants">Nombre d’enfants à charge</label>
       <input id="enfants" type="number" inputmode="numeric" min="0" max="10" step="1" value="${nbEnfants}" />
       <label for="alternee">Dont en garde alternée</label>
-      <input id="alternee" type="number" inputmode="numeric" min="0" max="10" step="1" value="${nbAlternee}" />
+      <input id="alternee" type="number" inputmode="numeric" min="0" max="10" step="1" value="${nbAlternee}" aria-describedby="msg-alternee" />
+      <p class="message-champ" id="msg-alternee" hidden></p>
     </div>
   </fieldset>
   ${blocPersonne(1, pr?.personnes[0])}
@@ -86,7 +88,7 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
     ${choix('logement', 'loge_gratuitement', logement, 'Logé·e gratuitement')}
     <div id="tf-bloc" hidden>
       <label for="tf">Montant de ta taxe foncière sur l’avis, par an (facultatif)</label>
-      <input id="tf" type="number" inputmode="decimal" min="0" step="any" value="${pr?.logement?.taxe_fonciere_annuelle_eur ?? ''}" />
+      <input id="tf" type="text" inputmode="decimal" spellcheck="false" autocomplete="off" value="${pr?.logement?.taxe_fonciere_annuelle_eur ?? ''}" />
     </div>
   </fieldset>
   <fieldset class="choix">
@@ -172,8 +174,8 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
     await chargerCommunes(depSel.value, insee)
   }
 
-  // Le moteur de calcul (environ 160 Ko compressés) est préchargé dès que l'on commence la saisie.
-  const precharger = () => void import('../calcul/moteur').catch(() => {})
+  // Le moteur de calcul (environ 160 Ko compressés, exécuté dans un Web Worker) est préchargé dès que l'on commence la saisie.
+  const precharger = () => void import('../calcul/hors-fil').then((m) => m.prechauffer()).catch(() => {})
   $('#p1-net').addEventListener('focus', precharger, { once: true })
 
   const retour = $('#retour')
@@ -183,6 +185,12 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
     retour.innerHTML = ''
   }
 
+  // Montants saisis en texte : « 2 100,50 », « 2100.5 » ; une saisie illisible donne NaN (refusée ensuite).
+  const nombre = (v: string) => {
+    const t = v.replace(/[\s\u00a0\u202f]/g, '').replace(',', '.').replace(/€$/, '')
+    return t === '' ? NaN : Number(t)
+  }
+
   const lireProfil = (): Profil => {
     const s = situation()
     const couple = s.startsWith('couple')
@@ -190,12 +198,12 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
       const statut = $<HTMLSelectElement>(`#p${n}-statut`).value as StatutActivite
       const p: Personne = { role: n === 1 ? 'declarant1' : 'declarant2', statut_activite: statut, frontalier: false }
       if (statut === 'salarie_prive') {
-        const net = parseFloat($<HTMLInputElement>(`#p${n}-net`).value.replace(',', '.'))
+        const net = nombre($<HTMLInputElement>(`#p${n}-net`).value)
         p.salaire_net_avant_impot_mensuel = Number.isFinite(net) ? net : 0
         p.cadre = $<HTMLInputElement>(`#p${n}-cadre`).checked
         p.frontalier = $<HTMLInputElement>(`#p${n}-frontalier`).checked
         const partiel = $<HTMLInputElement>(`#p${n}-partiel`).checked
-        const q = parseFloat($<HTMLInputElement>(`#p${n}-quotite`).value.replace(',', '.')) / 100
+        const q = nombre($<HTMLInputElement>(`#p${n}-quotite`).value.replace(/%$/, '')) / 100
         p.temps_travail = partiel ? { type: 'temps_partiel', quotite: Number.isFinite(q) ? q : 0 } : { type: 'temps_plein' }
       }
       return p
@@ -204,7 +212,7 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
     const alt = Math.max(0, Math.min(nb, Math.floor(Number($<HTMLInputElement>('#alternee').value) || 0)))
     const z = $<HTMLSelectElement>('#zone').value
     const logement = (form.querySelector('input[name=logement]:checked') as HTMLInputElement).value as 'locataire'
-    const tf = parseFloat($<HTMLInputElement>('#tf').value.replace(',', '.'))
+    const tf = nombre($<HTMLInputElement>('#tf').value)
     const commune = comSel.value
     return {
       version_contrat: '1.0',
@@ -242,16 +250,28 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
       }
     }
     if (e.code === 'PROFIL_HORS_V1') {
-      retour.innerHTML = `<div class="avertissement"><p><strong>Ce cas n’est pas encore couvert par la version 1.</strong></p><p>${h(e.message)}</p>${
+      retour.innerHTML = `<div class="avertissement" tabindex="-1"><p><strong>Ce cas n’est pas encore couvert par la version 1.</strong></p><p>${h(e.message)}</p>${
         e.redirection ? `<p><a class="bouton" href="${h(e.redirection.url)}">${h(e.redirection.libelle)}</a></p>` : ''
       }</div>`
-    } else retour.innerHTML = `<p class="erreur">${h(e.message)}</p>`
-    retour.querySelector<HTMLElement>('a, p')?.focus?.()
+    } else retour.innerHTML = `<p class="erreur" tabindex="-1">${h(e.message)}</p>`
+    retour.querySelector<HTMLElement>('[tabindex="-1"]')?.focus?.()
   }
 
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault()
     effacerErreurs()
+    const s = situation()
+    const nbE = Math.floor(Number($<HTMLInputElement>('#enfants').value) || 0)
+    const nbA = Math.floor(Number($<HTMLInputElement>('#alternee').value) || 0)
+    if (s !== 'celibataire' && nbA > nbE) {
+      const champ = $<HTMLInputElement>('#alternee')
+      const msg = $('#msg-alternee')
+      champ.setAttribute('aria-invalid', 'true')
+      msg.textContent = `Le nombre d’enfants en garde alternée (${nbA}) dépasse le nombre d’enfants à charge (${nbE}).`
+      msg.hidden = false
+      champ.focus()
+      return
+    }
     const profil = lireProfil()
     const err = verifierProfil(profil)
     if (err) return montrerErreur(err)
@@ -260,15 +280,17 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
     try {
       const communeCode = profil.residence.commune_insee
       const dep = communeCode ? departementDe(communeCode) : null
-      const [moteur, hb, affectation, tva, tfDep] = await Promise.all([
-        import('../calcul/moteur'),
+      const [horsFil, hb, affectation, tva, tfDep] = await Promise.all([
+        import('../calcul/hors-fil'),
         import('../calcul/hors-bulletin'),
         chargerSiPresent('prelevements/affectation.json'),
         chargerSiPresent('prelevements/tva_conso.json'),
         dep ? chargerSiPresent(`prelevements/taxe_fonciere/${dep}.json`) : Promise.resolve(null),
       ])
       const commune = communeCode ? (communes[communeCode] ?? null) : undefined
-      const res = moteur.calculer(profil, { affectation, commune })
+      // Destinataires propres à affectation.json : enregistrés ici aussi, le moteur tournant dans un worker.
+      enregistrerDestinataires((affectation as { destinataires?: Record<string, { nom: string; administration: string }> } | null)?.destinataires)
+      const res = await horsFil.calculerHorsFil(profil, { affectation, commune })
       if (res.statut === 'erreur') return montrerErreur(res)
       const valeur = (n: string) => ((form.querySelector(`input[name=${n}]:checked`) as HTMLInputElement | null)?.value ?? 'inconnu') as 'oui'
       session.habitudes = { voiture: valeur('voiture'), fumeur: valeur('fumeur') }

@@ -2,7 +2,7 @@
 // taxes sur la consommation par décile de niveau de vie, taxe foncière et TEOM par commune.
 // Aucun appel réseau ici : les fichiers sont fournis par l'écran.
 import { destinataire } from './destinataires'
-import { additionner, appliquerAffectation, type Affectation } from './moteur'
+import { additionner, appliquerAffectation, type Affectation } from './agregats'
 import type { Fourchette, Prelevement, Profil, ResultatOk } from './types'
 
 type F = { bas: number; central: number; haut: number }

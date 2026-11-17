@@ -115,6 +115,20 @@ export function appliquerLargeurs(racine: ParentNode) {
   racine.querySelectorAll<HTMLElement>('[data-g]').forEach((el) => {
     el.style.left = `${el.dataset.g}%`
   })
+  rendreDefilables(racine)
+}
+
+/**
+ * Zones de tableau défilantes atteignables au clavier (WCAG 2.1.1, RGAA 7.3) : focus possible,
+ * rôle de région nommée d'après la légende du tableau.
+ */
+export function rendreDefilables(racine: ParentNode) {
+  racine.querySelectorAll<HTMLElement>('.tableau-defile:not([tabindex])').forEach((el) => {
+    el.tabIndex = 0
+    el.setAttribute('role', 'region')
+    const legende = el.querySelector('caption')?.textContent?.trim()
+    el.setAttribute('aria-label', legende ? `${legende} (tableau défilant)` : 'Tableau défilant')
+  })
 }
 
 export function source(texte: string, millesime?: string): string {

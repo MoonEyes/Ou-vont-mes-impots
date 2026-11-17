@@ -4,7 +4,7 @@ import { partPersonnelle } from '../composants/hub'
 import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
-import { absent, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
+import { absent, appliquerLargeurs, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
 
 interface Geo {
   departement: { code: string; nom: string }
@@ -64,7 +64,7 @@ function blocBudget(b: Budgets, c: Budgets['collectivites'][string], titre: stri
 </div>`
 }
 
-export async function rendre(cible: HTMLElement, params: URLSearchParams) {
+export async function rendre(cible: HTMLElement, params: URLSearchParams): Promise<{ suite: Promise<void> } | void> {
   const insee = params.get('insee') ?? ''
   if (!/^(\d{5}|2[AB]\d{3})$/.test(insee)) {
     location.hash = '#/local'
@@ -78,44 +78,82 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
     return
   }
   const epci = g.epci ? geo.epci[g.epci] : null
-  const [bc, be, bd, br, dot, taux, dec] = await Promise.all([
-    chargerSiPresent<Budgets>(`local/budgets/communes/${dep}.json`),
-    epci ? chargerSiPresent<Budgets>(`local/budgets/epci/${epci.departement_siege}.json`) : Promise.resolve(null),
-    chargerSiPresent<Budgets>('local/budgets/departements.json'),
-    chargerSiPresent<Budgets>('local/budgets/regions.json'),
-    chargerSiPresent<{ source: string; millesime: string; annees: string[]; communes: Record<string, { eur: Record<string, Record<string, number>> }>; investissement_etat: Record<string, Record<string, { total: number; nb_projets: number; projets: [string, string | null, number, number][] }>> }>(`local/dotations/communes/${dep}.json`),
-    chargerSiPresent<{ source: string; colonnes: string[]; communes: Record<string, Record<string, number[]>> }>(`local/taux/${dep}.json`),
-    chargerSiPresent<{ source: string; limites: string; collectivites: Record<string, { type: string; code: string; nom: string; lignes: number; total_eur: number; annees: string[] }> }>('local/decisions/index.json'),
-  ])
-  const commune = bc?.collectivites[insee]
-  const ep = g.epci && be ? be.collectivites[g.epci] : null
-  const bloc = g.epci && be?.bloc_communal_consolide ? be.bloc_communal_consolide[g.epci] : null
-  const dpt = bd?.collectivites[g.departement]
-  const reg = br?.collectivites[g.region]
-  const d = dot?.communes[insee]
-  const t = taux?.communes[insee]
-  const inv = dot?.investissement_etat[insee]
-  const subv = dec ? Object.values(dec.collectivites).filter((c) => c.type === 'commune' && c.code === insee) : []
-  const derniereDot = d ? Object.keys(d.eur).sort().pop() : undefined
-  const tExo = t ? Object.keys(t).sort().pop() : undefined
-  const col = (k: string) => taux?.colonnes.indexOf(k) ?? -1
+  const attente = (id: string, classe = '') => `<div id="${id}" class="section-donnees${classe}" aria-busy="true"><p class="chargement">Chargement…</p></div>`
 
+  // Rendu progressif (recette perf, docs/RECETTE.md) : le titre et les liens s'affichent dès la géographie
+  // chargée (environ 100 Ko) ; les budgets puis les dotations, taux et subventions arrivent ensuite.
   cible.innerHTML = `
 <h1>${h(g.nom)}</h1>
 <p class="chapeau">${h(new Intl.NumberFormat('fr-FR').format(g.population))} habitants · ${epci ? `${h(epci.nom)} · ` : ''}${h(geo.departement.nom)} · ${h(geo.region.nom)}</p>
 <p class="aide">Chaque collectivité a son propre budget : ne pas additionner commune, intercommunalité, département et région (une partie de l’argent passe de l’une à l’autre).</p>
-${commune && bc ? blocBudget(bc, commune, `Le budget de ${commune.nom}`, true) : absent('Budget de la commune non disponible.')}
+${attente('sec-budgets', ' section-attente')}
+<h2>Ce que l’État verse à la commune</h2>
+${attente('sec-dotations')}
+<h2>Les taux d’impôts locaux votés</h2>
+${attente('sec-taux')}
+<h2>Subventions votées et publiées</h2>
+${attente('sec-subventions')}
+<h2>Pour aller plus loin</h2>
+<ul class="liens-sortie">
+  <li><a href="#/explorer/collectivites">Les collectivités locales en France</a></li>
+  <li><a href="${lien('/decisions/controle', { dep })}">Les rapports de contrôle dans le département ${h(geo.departement.nom)}</a></li>
+  <li><a href="${lien('/explorer/ue', { dep })}">Les fonds européens dans le département ${h(geo.departement.nom)}</a></li>
+  <li><a href="#/local">Choisir une autre commune</a></li>
+</ul>
+${partPersonnelle()}`
+
+  const remplir = (id: string, html: string) => {
+    const z = cible.querySelector<HTMLElement>(`#${id}`)
+    if (!z) return
+    z.innerHTML = html
+    z.removeAttribute('aria-busy')
+    z.classList.remove('section-attente')
+    appliquerLargeurs(z)
+  }
+
+  const budgets = (async () => {
+    const [bc, be, bd, br] = await Promise.all([
+      chargerSiPresent<Budgets>(`local/budgets/communes/${dep}.json`),
+      epci ? chargerSiPresent<Budgets>(`local/budgets/epci/${epci.departement_siege}.json`) : Promise.resolve(null),
+      chargerSiPresent<Budgets>('local/budgets/departements.json'),
+      chargerSiPresent<Budgets>('local/budgets/regions.json'),
+    ])
+    const commune = bc?.collectivites[insee]
+    const ep = g.epci && be ? be.collectivites[g.epci] : null
+    const bloc = g.epci && be?.bloc_communal_consolide ? be.bloc_communal_consolide[g.epci] : null
+    const dpt = bd?.collectivites[g.departement]
+    const reg = br?.collectivites[g.region]
+    remplir(
+      'sec-budgets',
+      `${commune && bc ? blocBudget(bc, commune, `Le budget de ${commune.nom}`, true) : absent('Budget de la commune non disponible.')}
 ${bloc && be ? blocBudget(be, bloc, `Le bloc communal (communes et intercommunalité, sans double compte)`, false) : ep && be ? blocBudget(be, ep, `L’intercommunalité : ${ep.nom}`, false) : ''}
 ${dpt && bd ? blocBudget(bd, dpt, `Le département : ${dpt.nom}`, false) : ''}
-${reg && br ? blocBudget(br, reg, `La région : ${reg.nom}`, false) : ''}
-<h2>Ce que l’État verse à la commune</h2>
-${
-  d && derniereDot && dot
-    ? `<div class="tableau-defile"><table><caption>Dotation globale de fonctionnement (DGF), euros</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">DGF totale</th><th scope="col" class="nombre">Par habitant</th></tr></thead><tbody>${Object.keys(d.eur)
-        .sort()
-        .reverse()
-        .map((a) => `<tr><th scope="row">${a}</th><td class="nombre">${d.eur[a].dgf_totale !== undefined ? h(eur(d.eur[a].dgf_totale)) : '–'}</td><td class="nombre">${d.eur[a].dgf_totale !== undefined ? h(eur(d.eur[a].dgf_totale / g.population)) : '–'}</td></tr>`)
-        .join('')}</tbody></table></div>
+${reg && br ? blocBudget(br, reg, `La région : ${reg.nom}`, false) : ''}`,
+    )
+  })()
+
+  // Fichiers plus bas dans la page : demandés après les budgets pour ne pas leur prendre la bande passante.
+  const suite = budgets.then(async () => {
+    const [dot, taux, dec] = await Promise.all([
+      chargerSiPresent<{ source: string; millesime: string; annees: string[]; communes: Record<string, { eur: Record<string, Record<string, number>> }>; investissement_etat: Record<string, Record<string, { total: number; nb_projets: number; projets: [string, string | null, number, number][] }>> }>(`local/dotations/communes/${dep}.json`),
+      chargerSiPresent<{ source: string; colonnes: string[]; communes: Record<string, Record<string, number[]>> }>(`local/taux/${dep}.json`),
+      chargerSiPresent<{ source: string; limites: string; collectivites: Record<string, { type: string; code: string; nom: string; lignes: number; total_eur: number; annees: string[] }> }>('local/decisions/index.json'),
+    ])
+    const d = dot?.communes[insee]
+    const t = taux?.communes[insee]
+    const inv = dot?.investissement_etat[insee]
+    const subv = dec ? Object.values(dec.collectivites).filter((c) => c.type === 'commune' && c.code === insee) : []
+    const derniereDot = d ? Object.keys(d.eur).sort().pop() : undefined
+    const tExo = t ? Object.keys(t).sort().pop() : undefined
+    const col = (k: string) => taux?.colonnes.indexOf(k) ?? -1
+    remplir(
+      'sec-dotations',
+      d && derniereDot && dot
+        ? `<div class="tableau-defile"><table><caption>Dotation globale de fonctionnement (DGF), euros</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">DGF totale</th><th scope="col" class="nombre">Par habitant</th></tr></thead><tbody>${Object.keys(d.eur)
+            .sort()
+            .reverse()
+            .map((a) => `<tr><th scope="row">${a}</th><td class="nombre">${d.eur[a].dgf_totale !== undefined ? h(eur(d.eur[a].dgf_totale)) : '–'}</td><td class="nombre">${d.eur[a].dgf_totale !== undefined ? h(eur(d.eur[a].dgf_totale / g.population)) : '–'}</td></tr>`)
+            .join('')}</tbody></table></div>
 ${
   inv
     ? `<h3>Subventions de l’État aux projets d’investissement</h3><ul>${Object.keys(inv)
@@ -126,36 +164,41 @@ ${
         .join('')}</ul>`
     : ''
 }${source(dot.source, dot.millesime)}`
-    : absent('Dotations non disponibles.')
-}
-<h2>Les taux d’impôts locaux votés</h2>
-${
-  t && tExo && taux
-    ? `<div class="tableau-defile"><table><caption>Taux votés en % (commune, intercommunalité et taxes annexes)</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Taxe foncière bâti</th><th scope="col" class="nombre">Taxe foncière non bâti</th><th scope="col" class="nombre">Taxe d’habitation (résidences secondaires)</th><th scope="col" class="nombre">Ordures ménagères</th></tr></thead><tbody>${Object.keys(t)
-        .sort()
-        .reverse()
-        .map(
-          (a) =>
-            `<tr><th scope="row">${a}</th>${['tfb_global', 'tfnb_global', 'thrs_global', 'teom_taux_plein']
-              .map((k) => `<td class="nombre">${col(k) >= 0 && t[a][col(k)] !== null && t[a][col(k)] !== undefined ? h(pct(t[a][col(k)], 2)) : '–'}</td>`)
-              .join('')}</tr>`,
-        )
-        .join('')}</tbody></table></div>${source(taux.source)}`
-    : absent('Taux non disponibles.')
-}
-<h2>Subventions votées et publiées</h2>
-${
-  subv.length
-    ? `<ul>${subv.map((s) => `<li>${h(s.nom)} : ${h(eurLisible(s.total_eur))} sur ${s.lignes} ligne${s.lignes > 1 ? 's' : ''} publiées${s.annees.length ? ` (${h(s.annees.join(', '))})` : ''}</li>`).join('')}</ul>`
-    : '<p>Aucune liste de subventions publiée en données ouvertes pour cette commune.</p>'
-}
-${dec ? `<p class="aide">${h(dec.limites)}</p>` : ''}
-<h2>Pour aller plus loin</h2>
-<ul class="liens-sortie">
-  <li><a href="#/explorer/collectivites">Les collectivités locales en France</a></li>
-  <li><a href="${lien('/decisions/controle', { dep })}">Les rapports de contrôle dans le département ${h(geo.departement.nom)}</a></li>
-  <li><a href="${lien('/explorer/ue', { dep })}">Les fonds européens dans le département ${h(geo.departement.nom)}</a></li>
-  <li><a href="#/local">Choisir une autre commune</a></li>
-</ul>
-${partPersonnelle()}`
+        : absent('Dotations non disponibles.'),
+    )
+    remplir(
+      'sec-taux',
+      t && tExo && taux
+        ? `<div class="tableau-defile"><table><caption>Taux votés en % (commune, intercommunalité et taxes annexes)</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Taxe foncière bâti</th><th scope="col" class="nombre">Taxe foncière non bâti</th><th scope="col" class="nombre">Taxe d’habitation (résidences secondaires)</th><th scope="col" class="nombre">Ordures ménagères</th></tr></thead><tbody>${Object.keys(t)
+            .sort()
+            .reverse()
+            .map(
+              (a) =>
+                `<tr><th scope="row">${a}</th>${['tfb_global', 'tfnb_global', 'thrs_global', 'teom_taux_plein']
+                  .map((k) => `<td class="nombre">${col(k) >= 0 && t[a][col(k)] !== null && t[a][col(k)] !== undefined ? h(pct(t[a][col(k)], 2)) : '–'}</td>`)
+                  .join('')}</tr>`,
+            )
+            .join('')}</tbody></table></div>${source(taux.source)}`
+        : absent('Taux non disponibles.'),
+    )
+    remplir(
+      'sec-subventions',
+      `${
+        subv.length
+          ? `<ul>${subv.map((s) => `<li>${h(s.nom)} : ${h(eurLisible(s.total_eur))} sur ${s.lignes} ligne${s.lignes > 1 ? 's' : ''} publiées${s.annees.length ? ` (${h(s.annees.join(', '))})` : ''}</li>`).join('')}</ul>`
+          : '<p>Aucune liste de subventions publiée en données ouvertes pour cette commune.</p>'
+      }
+${dec ? `<p class="aide">${h(dec.limites)}</p>` : ''}`,
+    )
+  })
+  return {
+    suite: suite.catch((e) => {
+      console.error(e)
+      cible.querySelectorAll<HTMLElement>('.section-donnees[aria-busy]').forEach((z) => {
+        z.innerHTML = absent()
+        z.removeAttribute('aria-busy')
+        z.classList.remove('section-attente')
+      })
+    }),
+  }
 }

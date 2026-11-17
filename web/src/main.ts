@@ -1,5 +1,6 @@
 import './styles.css'
 import { afficher } from './routeur'
+import { rendreDefilables } from './util'
 import { ROUTES } from './routes'
 
 export { ROUTES }
@@ -27,6 +28,13 @@ function demarrer() {
       plus?.focus()
     }
   })
+  // La feuille « Plus » se ferme quand le focus clavier en sort (elle ne masque plus l'élément actif).
+  document.getElementById('navigation')?.addEventListener('focusout', (e) => {
+    const vers = (e as FocusEvent).relatedTarget as Node | null
+    if (feuille && !feuille.hidden && vers && !document.getElementById('navigation')!.contains(vers)) fermer()
+  })
+  // Tableaux insérés après le rendu (fiches dépliées, pagination) : rendus atteignables au clavier.
+  if (typeof MutationObserver !== 'undefined') new MutationObserver(() => rendreDefilables(main)).observe(main, { childList: true, subtree: true })
   window.addEventListener('hashchange', () => {
     fermer()
     afficher(ROUTES, main)
