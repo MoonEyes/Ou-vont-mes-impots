@@ -1,10 +1,10 @@
 // Échoue si le site construit (dist/) contient un appel réseau vers un domaine externe
 // (fetch, XMLHttpRequest, WebSocket, sendBeacon, polices ou scripts tiers).
-import { execSync } from 'node:child_process'
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
+import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { gzipSync } from 'node:zlib'
 import { beforeAll, describe, expect, it } from 'vitest'
+import { assurerSite } from './construire'
 
 const RACINE = process.cwd()
 const DIST = join(RACINE, 'dist')
@@ -33,7 +33,7 @@ export function appelsExternes(code: string): string[] {
 }
 
 beforeAll(() => {
-  if (!existsSync(join(DIST, 'index.html'))) execSync('npx vite build', { cwd: RACINE, stdio: 'ignore' })
+  assurerSite()
 }, 300000)
 
 describe('bundle', () => {

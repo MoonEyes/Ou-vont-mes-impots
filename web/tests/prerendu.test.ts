@@ -1,12 +1,12 @@
 // Prérendu (scripts/prerendre.mjs) : chaque route a sa page HTML avec un titre, une description et une adresse
 // canonique uniques ; le plan du site liste exactement les pages indexables ; rien n'est chargé d'un autre domaine.
-import { execSync } from 'node:child_process'
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { beforeAll, describe, expect, it } from 'vitest'
 import { versChemin } from '../src/chemins'
 import { ROUTES } from '../src/routes'
 import { titreDocument } from '../src/routeur'
+import { assurerSite } from './construire'
 
 const RACINE = process.cwd()
 const DIST = join(RACINE, 'dist')
@@ -35,12 +35,8 @@ function fichiersHtml(d: string): string[] {
 const compter = (d: string): number => readdirSync(d).reduce((s, n) => s + (statSync(join(d, n)).isDirectory() ? compter(join(d, n)) : 1), 0)
 
 beforeAll(() => {
-  // En intégration continue, « npm run build » a déjà tout produit ; sinon on construit ce qui manque.
-  if (!existsSync(join(DIST, 'prerendu.json'))) {
-    const gabarit = existsSync(join(DIST, 'index.html')) ? readFileSync(join(DIST, 'index.html'), 'utf8') : ''
-    if (!gabarit || gabarit.includes('data-racine=')) execSync('npx vite build', { cwd: RACINE, stdio: 'ignore' })
-    execSync('node scripts/prerendre.mjs', { cwd: RACINE, stdio: 'ignore' })
-  }
+  // En intégration continue, « npm run build » a déjà tout produit ; sinon (clone propre) on copie les données et on construit.
+  assurerSite()
   bilan = JSON.parse(readFileSync(join(DIST, 'prerendu.json'), 'utf8'))
   site = JSON.parse(readFileSync(join(DIST, 'prerendu.json'), 'utf8')).site
   pages = fichiersHtml(DIST).map((f) => {
