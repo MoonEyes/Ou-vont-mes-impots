@@ -35,7 +35,7 @@
   "url": "https://github.com/MoonEyes/Ou-vont-mes-impots"
  },
  "version": "1.5.0",
- "dateModified": "2026-11-17T19:02:10Z",
+ "dateModified": "2026-11-17T20:44:01Z",
  "temporalCoverage": "1991/2027",
  "spatialCoverage": {
   "@type": "Place",
@@ -76,15 +76,15 @@
   "https://data.capatlantique.fr/api/explore/v2.1/catalog/datasets/214400699-subventions-liste/exports/parquet",
   "https://data.capatlantique.fr/api/explore/v2.1/catalog/datasets/215600586_subventions_liste/exports/parquet",
   "https://data.capatlantique.fr/api/explore/v2.1/catalog/datasets/244400610_subventions_liste/exports/parquet",
-  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2018/exports/parquet",
-  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2019/exports/parquet",
-  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2020/exports/parquet",
-  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2021/exports/parquet",
-  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2022/exports/parquet",
-  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2023/exports/parquet",
-  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2024/exports/parquet",
-  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2025/exports/parquet",
-  "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2026/exports/parquet",
+  "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2018/",
+  "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2019/",
+  "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2020/",
+  "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2021/",
+  "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2022/",
+  "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2023/",
+  "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2024/",
+  "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2025/",
+  "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2026/",
   "https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/",
   "https://data.economie.gouv.fr/explore/dataset/budgetvert_plf2024_opendata_vf/",
   "https://data.economie.gouv.fr/explore/dataset/etpt-par-ministere-mission-programme-pour-le-bg-et-les-ba-lfi-2023/",
@@ -133,8 +133,8 @@
   "https://data.haute-garonne.fr/api/explore/v2.1/catalog/datasets/subventions-direction-prevention-lutte-contre-precarites-departement-haute-garonne/exports/parquet",
   "https://data.haute-garonne.fr/api/explore/v2.1/catalog/datasets/subventions-education-departement-haute-garonne/exports/parquet",
   "https://data.iledefrance-mobilites.fr/api/explore/v2.1/catalog/datasets/subventions-2017/exports/parquet",
-  "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/subventions-ile-de-france-mobilites/exports/parquet",
-  "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/subventions-versees-par-la-region-ile-de-france-aux-associations/exports/parquet",
+  "https://data.iledefrance.fr/explore/dataset/subventions-ile-de-france-mobilites/",
+  "https://data.iledefrance.fr/explore/dataset/subventions-versees-par-la-region-ile-de-france-aux-associations/",
   "https://data.issy.com/api/explore/v2.1/catalog/datasets/subventions-asso/exports/parquet",
   "https://data.lamayenne.fr/api/explore/v2.1/catalog/datasets/225300011_cd53_scdl_subventions/exports/parquet",
   "https://data.laregion.fr/api/explore/v2.1/catalog/datasets/subventions-du-conseil-regional/exports/parquet",
@@ -525,6 +525,30 @@
    "name": "rattachement des subventions aux programmes LOLF (pipeline/subventions.py)",
    "encodingFormat": "application/json",
    "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/programmes.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "années, totaux, fichiers, règles et sources inaccessibles (pipeline/associations.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/associations/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "crédits de l'État par association (personnes morales) et par année, un programme",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/associations/programmes/101.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "Registre national des fonds et fondations (sans adresse ni dirigeant)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/associations/fonds_fondations.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "réserve parlementaire, bénéficiaires personnes morales nommés, le reste agrégé",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/associations/reserve/an_2013.json"
   },
   {
    "@type": "DataDownload",
@@ -984,6 +1008,78 @@
   },
   {
    "@type": "DataDownload",
+   "name": "CPF par année et financeur, formation des élus, FIPHFP, liens vers les financeurs, écarts entre sources, sources, recherche préalable",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "CPF, dossiers et montants engagés par mois de validation, par financeur et par statut",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/cpf_mois.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "CPF par année et département du lieu de formation, par modalité",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/cpf_departements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "CPF par certification et par année (dossiers non annulés)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/cpf_certifications.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "CPF, entrées en formation par organisme (personnes morales nommées, autres agrégés), montant approché",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/cpf_organismes.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "CPF, dossiers entrés en formation par région de domicile, sexe, âge et situation",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/cpf_usagers.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "formation des élus locaux, agrégats par type de mandat et par organisme (personnes morales), aucun élu nommé",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/elus.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "FIPHFP, aides aux employeurs publics par département et conventions par région, par versant de la fonction publique",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/fiphfp.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "définitions, fichiers, chiffres clés, liens avec recettes.json et l'arbre, sources, sources inaccessibles, recherche publique",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "dividendes (lignes 2110, 2116, 2199), recettes, dépenses et solde du compte « Participations financières de l'État », par année, en prévision et en exécution",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/flux.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "dividendes par ligne d'exécution et par entité (personnes morales seulement), opérations de 2025 citées par le Sénat",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/entites.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "sociétés contrôlées majoritairement par l'État, nombre, effectifs et activités (Insee)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/societes_controlees.json"
+  },
+  {
+   "@type": "DataDownload",
    "name": "sources, licences, totaux par source, écarts, liens, limites et recherche préalable de l'axe éducation et recherche (pipeline/education_recherche.py)",
    "encodingFormat": "application/json",
    "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/index.json"
@@ -1020,27 +1116,51 @@
   },
   {
    "@type": "DataDownload",
-   "name": "définitions, fichiers, chiffres clés, liens avec recettes.json et l'arbre, sources, sources inaccessibles, recherche publique",
+   "name": "repères, fichiers, règles sans double compte, écarts entre sources, recherche préalable (pipeline/fonction_publique.py)",
    "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/index.json"
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonction_publique/index.json"
   },
   {
    "@type": "DataDownload",
-   "name": "dividendes (lignes 2110, 2116, 2199), recettes, dépenses et solde du compte « Participations financières de l'État », par année, en prévision et en exécution",
+   "name": "effectifs par versant, type d'employeur, ministère et statut, une valeur par série annuelle (Insee, Siasp)",
    "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/flux.json"
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonction_publique/effectifs_series.json"
   },
   {
    "@type": "DataDownload",
-   "name": "dividendes par ligne d'exécution et par entité (personnes morales seulement), opérations de 2025 citées par le Sénat",
+   "name": "tableaux de l'Insee Première sur l'emploi dans la fonction publique (effectifs, équivalents temps plein, caractéristiques, entrées et sorties)",
    "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/entites.json"
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonction_publique/emploi.json"
   },
   {
    "@type": "DataDownload",
-   "name": "sociétés contrôlées majoritairement par l'État, nombre, effectifs et activités (Insee)",
+   "name": "effectifs de la fonction publique par versant, par région et département (Insee, TCRD 052)",
    "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/societes_controlees.json"
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonction_publique/territoires.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "ministères du budget de l'État, leurs programmes (ETPT, titre 2, conseils) et les repères Insee et cabinets, sans double compte",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonction_publique/ministeres.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "personnels affectés dans les cabinets ministériels, agrégats par pôle ministériel (jaunes PLF), aucun nom",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonction_publique/cabinets.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "recours de l'État aux conseils extérieurs par exercice, ministère, mission, programme et prestataire personne morale (jaunes PLF)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonction_publique/conseils.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "plafonds légaux des indemnités de fonction brutes mensuelles des élus locaux, par fonction et strate de population (DGCL), aucun élu nommé",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonction_publique/indemnites_elus.json"
   },
   {
    "@type": "DataDownload",
