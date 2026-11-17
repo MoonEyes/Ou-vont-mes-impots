@@ -436,7 +436,7 @@ main {
   font-style: italic;
 }
 
-/* Récapitulatif « Ce que tu finances en un an » */
+/* Récapitulatif « Ce que tu verses en un an » */
 .recap {
   background: var(--fond);
   border: 1px solid var(--trait);
@@ -804,8 +804,9 @@ th.nombre {
   border: 1px solid currentColor;
   margin-left: 0.3rem;
 }
+/* Réduction : signe « − » et texte, sans couleur connotée (pas de vert « bonne nouvelle »). */
 .reduction .montant {
-  color: var(--ok);
+  color: var(--texte);
 }
 
 .fil-ariane ol {
@@ -847,12 +848,10 @@ th.nombre {
   }
 }
 
-.tendance-progres {
-  color: var(--ok);
-  font-weight: 700;
-}
+/* Tendances : même couleur dans les deux sens (pas de vert « bon » ni de rouge « mauvais ») ; le libellé porte le sens. */
+.tendance-progres,
 .tendance-recul {
-  color: var(--erreur);
+  color: var(--texte);
   font-weight: 700;
 }
 .chargement {

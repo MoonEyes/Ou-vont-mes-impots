@@ -503,7 +503,7 @@ export function calculer(profil: Profil, options: OptionsCalcul = {}): Resultat 
         message:
           net / q < SMIC_NET_MENSUEL_2025 * 0.98
             ? "Ce salaire, ramené à un temps plein, est inférieur au SMIC net : vérifie la saisie. Le résultat reste affiché mais il est moins fiable."
-            : 'Au-delà de 4 plafonds de la Sécurité sociale, certaines règles (prévoyance, retraite supplémentaire) pèsent davantage : résultat moins fiable.',
+            : 'Au-delà de 4 plafonds de la Sécurité sociale, certaines règles (prévoyance, retraite supplémentaire) comptent davantage : résultat moins fiable.',
         champ: `/personnes/${profil.personnes.indexOf(p)}/salaire_net_avant_impot_mensuel`,
       })
   }

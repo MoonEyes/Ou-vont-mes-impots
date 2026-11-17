@@ -12,7 +12,7 @@ export async function rendre(cible: HTMLElement) {
 <p class="chapeau">Chaque année, tu verses une part de ton revenu en cotisations, CSG, impôts et TVA. Ce que deviennent ces montants est public, mais dispersé dans des milliers de documents. Ce site les rassemble pour répondre à une question : <span class="surligne">où va ton argent ?</span></p>
 
 <h2>Une démarche citoyenne</h2>
-<p>Ce site est porté par un citoyen, pas par une administration, un parti ou une entreprise. Il est gratuit, sans publicité et ne collecte aucune donnée. Chacun peut vérifier le travail, signaler une erreur ou y contribuer.</p>
+<p>Ce site est porté par un citoyen, pas par une administration, un parti ou une entreprise. Il est gratuit, sans publicité et ne collecte aucune donnée. Chacun peut vérifier le travail, signaler une erreur ou y contribuer. Le site ne soutient aucun parti, aucun candidat ni aucune position sur le niveau des impôts ou des dépenses.</p>
 
 <h2>En 4 étapes</h2>
 <ol class="etapes">
@@ -25,6 +25,8 @@ export async function rendre(cible: HTMLElement) {
 <h2>Nos règles</h2>
 <ul>
   <li>Aucun jugement sur les dépenses : des montants, des sources, des écarts.</li>
+  <li>Chaque sujet est présenté avec les mêmes formats : montant, source, part tracée, écarts.</li>
+  <li>Partis et candidats : même tableau pour tous, dans un ordre neutre affiché sous chaque liste.</li>
   <li>Rien sur toi : le calcul se fait dans ton téléphone.</li>
   <li>Aucune personne nommée, sauf les élus et candidats pour l’argent public de leurs campagnes.</li>
   <li>Aucun accès forcé : une source qui refuse l’accès est signalée, pas contournée.</li>
@@ -34,7 +36,7 @@ export async function rendre(cible: HTMLElement) {
 <div class="carte encadre">
   <h2>Ce qu’on ne peut pas dire</h2>
   <p>Un euro de TVA n’est pas fléché vers une dépense précise : on montre une répartition.${
-    x ? ` Et sur 100 € dépensés par l’État, ${h(String(x.euros))} € n’ont pas de destinataire publié.` : ''
+    x ? ` Et sur 100 € dépensés par l’État, ${h(String(x.euros))} € n’ont pas de destinataire publié en données ouvertes : cela décrit l’état de la publication, pas l’usage de l’argent.` : ''
   }</p>
 </div>
 ${x ? `<p class="source">site/data/tracabilite/resume.json (${h(x.millesime)})</p>` : ''}

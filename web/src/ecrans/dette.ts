@@ -68,7 +68,7 @@ export async function rendre(cible: HTMLElement) {
   const derniere = det?.derniere_annee
   cible.innerHTML = `
 <h1>La dette publique</h1>
-<p class="chapeau">Ce que doivent l’État, la Sécurité sociale et les collectivités, ce que coûtent les intérêts chaque année, et qui détient cette dette.</p>
+<p class="chapeau">Ce que doivent l’État, la Sécurité sociale et les collectivités, le montant des intérêts payés chaque année, et qui détient cette dette. Les montants sont aussi donnés en part du PIB, pour comparer les années.</p>
 <div class="carte" data-cle>
   <p>Intérêts payés par l’ensemble des administrations en ${h(s.interets_apu_d41.annee)} :</p>
   <p class="grand-chiffre">${surligne(md(s.interets_apu_d41.md))}</p>

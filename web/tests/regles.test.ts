@@ -87,7 +87,7 @@ describe('navigation et métadonnées', () => {
     expect(Number(/min-height: (\d+)px/.exec(bloc)![1])).toBeGreaterThanOrEqual(48)
   })
   it('titre, Open Graph, carte Twitter et JSON-LD vérifiables', () => {
-    expect(html).toContain('<title>Où vont mes impôts : vois où va l’argent que tu paies</title>')
+    expect(html).toContain('<title>Où vont mes impôts : vois où va l’argent que tu verses</title>')
     for (const p of ['og:title', 'og:description', 'og:image', 'og:url']) expect(html).toContain(`property="${p}"`)
     expect(html).toContain('name="twitter:card" content="summary_large_image"')
     const ld = JSON.parse(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(html)![1])
@@ -111,5 +111,22 @@ describe('aucun taux codé en dur', () => {
       if (f === 'accueil.ts' || f === 'demarche.ts') expect(c, f).not.toMatch(/(Plus de|plus de) \d|\d+ € n’ont pas/)
       expect(c, f).not.toMatch(/\?\?\s*\d+\.\d+/)
     }
+  })
+})
+
+// Charte de neutralité (docs/NEUTRALITE.md), règles 7 et 10 : couleurs sans valeur morale, aucun code institutionnel.
+describe('neutralité : couleurs et identité visuelle', () => {
+  const regle = (sel: string) => new RegExp(`(^|\\n)[^{}]*${sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[^{]*\\{([^}]*)\\}`).exec(css)?.[2] ?? ''
+  it('tendances et réductions : même couleur que le texte, ni vert « bon » ni rouge « mauvais »', () => {
+    for (const sel of ['.tendance-progres', '.tendance-recul', '.reduction .montant']) {
+      const r = regle(sel)
+      expect(r, sel).toContain('color: var(--texte)')
+      expect(r, sel).not.toMatch(/--(ok|erreur|accent)\b/)
+    }
+  })
+  it('aucun code visuel institutionnel (bleu et rouge de l’État, Marianne, DSFR)', () => {
+    for (const [f, c] of tout) expect(c, f).not.toMatch(/#000091|#e1000f|#6a6af4|marianne|\bdsfr\b|République française/i)
+    const html = readFileSync(join(RACINE, 'index.html'), 'utf8')
+    expect(html).toContain('<span class="non-officiel">Site citoyen, non officiel</span>')
   })
 })

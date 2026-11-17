@@ -8,7 +8,7 @@ export async function rendre(cible: HTMLElement) {
   cible.innerHTML = `
 <div class="accueil-tete">
   <p class="surtitre">Une démarche citoyenne</p>
-  <h1>Où va l’argent que tu paies ?</h1>
+  <h1>Où va l’argent que tu verses ?</h1>
   <p class="chapeau">Indique ton salaire. Tu vois ce que tu verses chaque année, à qui, et à quoi cet argent sert.</p>
   ${bouton}
   <p class="aide">Environ 2 minutes. Aucun compte à créer.</p>
@@ -18,7 +18,7 @@ export async function rendre(cible: HTMLElement) {
 <h2>Comment ça marche</h2>
 <ol class="etapes">
   <li><span>Tu indiques ton salaire net avant impôt et ta situation de famille.</span></li>
-  <li><span>Ton téléphone calcule ce que tu paies : cotisations, CSG, impôt sur le revenu, TVA estimée, impôts locaux.</span></li>
+  <li><span>Ton téléphone calcule ce que tu verses : cotisations, CSG, impôt sur le revenu, TVA estimée, impôts locaux.</span></li>
   <li><span>Tu suis chaque euro : retraites, santé, école, dette, ta commune, et les organismes qui le reçoivent.</span></li>
 </ol>
 

@@ -44,6 +44,18 @@ const ACTIONS: Record<string, string> = {
 
 const PAR_PAGE = 50
 
+// Ordre d'affichage neutre et explicite (charte docs/NEUTRALITE.md) : jamais l'ordre brut du fichier source.
+const alpha = (a: string, b: string) => a.localeCompare(b, 'fr', { sensitivity: 'base', numeric: true })
+export const REGLE_PARTIS =
+  'Ordre du tableau : aide publique totale, de la plus élevée à la plus faible (montant fixé par la loi d’après les résultats aux élections législatives et le nombre de parlementaires rattachés) ; à égalité, ordre alphabétique.'
+export const REGLE_CANDIDATS = 'Ordre du tableau : circonscription, puis nom du candidat, par ordre alphabétique.'
+export function trierPartis<T extends { nom: string; total_eur: number }>(l: T[]): T[] {
+  return [...l].sort((a, b) => b.total_eur - a.total_eur || alpha(a.nom, b.nom))
+}
+export function trierCandidats<T extends { candidat: string; circonscription?: string }>(l: T[]): T[] {
+  return [...l].sort((a, b) => alpha(a.circonscription ?? '', b.circonscription ?? '') || alpha(a.candidat, b.candidat))
+}
+
 async function afficherCandidats(zone: HTMLElement, fichier: string, libelle: string) {
   zone.innerHTML = '<p class="chargement">Chargement des comptes de campagne…</p>'
   const d = await chargerSiPresent<{ millesime: string; source: string; candidats: Candidat[]; regle?: string }>(fichier)
@@ -51,16 +63,18 @@ async function afficherCandidats(zone: HTMLElement, fichier: string, libelle: st
     zone.innerHTML = absent()
     return
   }
+  const candidats = trierCandidats(d.candidats)
   let page = 0
   let filtre = ''
   zone.innerHTML = `<h3>Candidats : ${h(libelle)}</h3>
+<p class="aide" data-regle-ordre>${h(REGLE_CANDIDATS)}</p>
 <label for="filtre-cand">Chercher un candidat, une nuance ou une circonscription</label>
 <input id="filtre-cand" type="search" autocomplete="off" />
 <div id="table-cand"></div>
 ${source(d.source, d.millesime)}`
   const table = zone.querySelector('#table-cand') as HTMLElement
   const dessiner = () => {
-    const liste = d.candidats.filter((c) => !filtre || `${c.candidat} ${c.nuance ?? ''} ${c.circonscription ?? ''}`.toLowerCase().includes(filtre))
+    const liste = candidats.filter((c) => !filtre || `${c.candidat} ${c.nuance ?? ''} ${c.circonscription ?? ''}`.toLowerCase().includes(filtre))
     const pages = Math.max(1, Math.ceil(liste.length / PAR_PAGE))
     page = Math.min(page, pages - 1)
     const tranche = liste.slice(page * PAR_PAGE, (page + 1) * PAR_PAGE)
@@ -100,7 +114,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 
   cible.innerHTML = `
 <h1>Vie politique en ${a.annee}</h1>
-<p class="chapeau">Ce que l’État dépense pour la démocratie : organisation des élections, aide publique aux partis, remboursement des campagnes des candidats.</p>
+<p class="chapeau">Ce que l’État dépense au titre de la vie politique : organisation des élections, aide publique aux partis, remboursement des campagnes des candidats.</p>
 <label for="annee-vp">Année</label>
 <select id="annee-vp">${annees.map((x) => `<option value="${x}"${x === a.annee ? ' selected' : ''}>${x}</option>`).join('')}</select>
 <h2>Programme 232 « Vie politique »</h2>
@@ -121,9 +135,9 @@ ${
     ? `<div class="carte"><p><strong>${h(eurLisible(a.aide_publique_partis.total_eur))}</strong> versés à ${h(a.aide_publique_partis.nombre_partis)} partis (1re fraction, selon les résultats aux législatives : ${h(eurLisible(a.aide_publique_partis.premiere_fraction_eur))} ; 2de fraction, selon les parlementaires rattachés : ${h(eurLisible(a.aide_publique_partis.seconde_fraction_eur))}).</p>
 ${
   partis
-    ? `<div class="tableau-defile"><table><caption>Aide publique par parti, ${h(partis.millesime)}</caption><thead><tr><th scope="col">Parti</th><th scope="col" class="nombre">1re fraction</th><th scope="col" class="nombre">2de fraction</th><th scope="col" class="nombre">Total</th></tr></thead><tbody>${partis.partis
+    ? `<div class="tableau-defile"><table><caption>Aide publique par parti, ${h(partis.millesime)}</caption><thead><tr><th scope="col">Parti</th><th scope="col" class="nombre">1re fraction</th><th scope="col" class="nombre">2de fraction</th><th scope="col" class="nombre">Total</th></tr></thead><tbody>${trierPartis(partis.partis)
         .map((x) => `<tr><td>${h(x.nom)}</td><td class="nombre">${h(eur(x.premiere_fraction_eur))}</td><td class="nombre">${h(eur(x.seconde_fraction_eur))}</td><td class="nombre">${h(eur(x.total_eur))}</td></tr>`)
-        .join('')}</tbody></table></div><p class="aide">${h(partis.definition)}</p>`
+        .join('')}</tbody></table></div><p class="aide" data-regle-ordre>${h(REGLE_PARTIS)}</p><p class="aide">${h(partis.definition)}</p>`
     : ''
 }
 ${source(a.aide_publique_partis.source)}</div>`

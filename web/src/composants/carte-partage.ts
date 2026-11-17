@@ -44,7 +44,7 @@ export async function dessinerCarte(r: ResultatOk, c: Complet | null): Promise<B
   const total = c ? c.total : r.totaux.paye_par_le_foyer
   ctx.fillStyle = k.secondaire
   ctx.font = `400 36px ${texte}`
-  ctx.fillText('Ce que je finance en un an', 80, 150)
+  ctx.fillText('Ce que je verse en un an', 80, 150)
   const montant = eur(total.central)
   ctx.font = `700 120px ${titre}`
   const largeur = ctx.measureText(montant).width
@@ -102,7 +102,7 @@ export async function partagerCarte(r: ResultatOk, c: Complet | null): Promise<s
   const nav = navigator as Navigator & { canShare?: (d: { files: File[] }) => boolean }
   if (nav.share && nav.canShare?.({ files: [fichier] })) {
     try {
-      await nav.share({ files: [fichier], title: 'Ce que je finance en un an' })
+      await nav.share({ files: [fichier], title: 'Ce que je verse en un an' })
       return 'Carte partagée.'
     } catch {
       return 'Partage annulé.'

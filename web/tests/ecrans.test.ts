@@ -26,7 +26,7 @@ beforeAll(() => {
 describe('écrans', () => {
   it('accueil : promesse, action unique répétée, étapes, garanties', async () => {
     await ecran('#/')
-    expect(main.querySelector('h1')?.textContent).toBe('Où va l’argent que tu paies ?')
+    expect(main.querySelector('h1')?.textContent).toBe('Où va l’argent que tu verses ?')
     expect(texte()).toContain('Indique ton salaire. Tu vois ce que tu verses chaque année, à qui, et à quoi cet argent sert.')
     const boutons = Array.from(main.querySelectorAll('a.bouton-principal'))
     expect(boutons).toHaveLength(2)
@@ -72,7 +72,7 @@ describe('écrans', () => {
     expect(main.querySelector('#retour a')?.getAttribute('href')).toBe('./#/explorer')
   })
 
-  it('1 puis 2. calcul complet puis « Ce que tu finances »', async () => {
+  it('1 puis 2. calcul complet puis « Ce que tu verses »', async () => {
     await ecran('#/calcul')
     ;(main.querySelector('#p1-net') as HTMLInputElement).value = '2100'
     main.querySelector<HTMLFormElement>('#formulaire')!.dispatchEvent(new Event('submit', { cancelable: true }))
@@ -83,7 +83,7 @@ describe('écrans', () => {
     for (const [t, href] of [['Où va l’argent de l’État', '#/explorer/etat'], ['Ta commune', '#/local'], ['Qui le reçoit', '#/beneficiaires']])
       expect(Array.from(main.querySelectorAll('.cartes a')).find((a) => a.textContent?.includes(t))?.getAttribute('href')).toBe(href)
     expect(main.querySelector('#partager-carte')?.textContent).toBe('Partager ma carte')
-    expect(texte()).toContain('Ce que tu finances en un an')
+    expect(texte()).toContain('Ce que tu verses en un an')
     expect(texte()).toMatch(/Sur 100 € : \d+ € Sécurité sociale/)
     expect(texte()).toContain('1 004 €') // impôt C04 (OpenFisca : 1 004 €)
     expect(texte()).toContain('CADES')
@@ -137,7 +137,7 @@ describe('écrans', () => {
     expect(somme).toBeGreaterThan(99.9)
     expect(somme).toBeLessThan(100.1)
     expect(texte()).toContain('sur ce que tu verses à l’État')
-    expect(texte()).toContain('Et ce que tu finances ?')
+    expect(texte()).toContain('Et ce que tu verses ?')
     expect(texte()).toContain('Traçabilité de ce bloc')
     await ecran('#/etat?m=lfi2025')
     expect(texte()).toContain('27,4 € ont été empruntés')
@@ -376,7 +376,9 @@ describe('écrans', () => {
     expect(main.querySelector('.surligne')?.textContent).toBe('où va ton argent ?')
     expect(main.querySelectorAll('.etapes li')).toHaveLength(4)
     expect(texte()).toContain('Plus de 120 sources publiques ouvertes')
-    expect(texte()).toContain('Et sur 100 € dépensés par l’État, 31 € n’ont pas de destinataire publié.')
+    expect(texte()).toContain('Et sur 100 € dépensés par l’État, 31 € n’ont pas de destinataire publié en données ouvertes : cela décrit l’état de la publication, pas l’usage de l’argent.')
+    expect(texte()).toContain('Le site ne soutient aucun parti, aucun candidat ni aucune position sur le niveau des impôts ou des dépenses.')
+    expect(texte()).toContain('Chaque sujet est présenté avec les mêmes formats : montant, source, part tracée, écarts.')
     expect(main.querySelector('a[href$="/issues"]')?.textContent).toBe('Signale-la sur GitHub')
     expect(main.querySelector('a[href="#/methode"]')?.textContent).toBe('Méthode détaillée')
     expect(document.querySelector('#bouton-plus')?.getAttribute('aria-current')).toBe('page')
@@ -384,6 +386,118 @@ describe('écrans', () => {
     expect(texte()).toContain('Plus de 120 sources publiques, vérifiées et reliées entre elles.')
     expect(main.querySelector('a[href="#/demarche"]')?.textContent).toBe('La démarche')
   })
+
+  // Lexique neutre (charte docs/NEUTRALITE.md, règle 2) étendu à TOUT le texte affiché, pas seulement aux titres.
+  // Fondements : effet de cadrage (Tversky et Kahneman, 1981) ; réactance (Brehm, 1966) : un texte qui pousse à
+  // conclure provoque le rejet ; effet de média hostile (Vallone, Ross et Lepper, 1985) : chaque camp lit un biais
+  // contre lui dans un texte qui choisit ses mots ; pratiques des Décodeurs, de Full Fact et de The Markup : le chiffre,
+  // sa base et sa source, sans adjectif. Chaque entrée dit pourquoi le terme est exclu.
+  const LEXIQUE_INTERDIT: [RegExp, string][] = [
+    [/\b(seulement|à peine|tout juste|pas moins de|pas plus de|rien que)\s+(\d|un |une )|\d[\d\s,]*\s?(%|€|M€|Md€|k€)?\s+seulement\b/i, 'minimise ou grossit un montant : le chiffre et sa base suffisent'],
+    [/\b(énorme|colossa\w*|astronomique\w*|faramineu\w*|exorbitant\w*|dérisoire\w*|vertigineu\w*)\b/i, 'adjectif d’intensité'],
+    [/\b(gaspill\w*|gabegie|scandal\w*|opaque\w*|fardeau\w*|matraqu\w*|ponction\w*|racket\w*|assistanat|profiteur\w*|dérap\w*)\b/i, 'jugement négatif'],
+    [/\b(cadeaux?|généreu\w*|bienfait\w*)\b/i, 'jugement positif ou ironique'],
+    [/\b(englout\w*|siphonn\w*|plomb(e|ent|er)|explos(e|ent|er|ion))\b/i, 'verbe imagé de perte ou de hausse'],
+    [/\bcoût(e|ent|eux|euse|euses)\b/i, 'cadrage en perte : dire « montant » ou « dépense »'],
+    [/\b(pèse|pèsent|peser)\b/i, 'image du poids'],
+    [/\btrop\b/i, 'jugement de niveau'],
+    [/\b(que tu paies|ce que tu finances|ce que je finance)\b/i, 'cadrage incohérent : le site dit partout « ce que tu verses »'],
+    [/\b(influenc\w*|lobby\w*|les plus visés)\b/i, 'insinuation : dire « représentation d’intérêts », terme de la HATVP'],
+  ]
+  // Libellés venus des données ou titres officiels, reproduits tels quels et listés dans docs/NEUTRALITE.md.
+  const EXCEPTIONS_DONNEES = ['« Entreprises et niches fiscales et sociales »', '« Un capitalisme sous perfusion »', 'déclassées, niches sociales ;', 'ces taxes pèsent sur les revenus', 'Diplomatie culturelle et d’influence', "Diplomatie culturelle et d'influence"]
+  // « Niche » n'est admis qu'avec sa définition : « dépense fiscale (souvent appelée niche fiscale) ».
+  const NICHE_DEFINIE = /souvent appelées? niches? (fiscales?|sociales?)/gi
+
+  function verifierLexique(t: string, ou: string) {
+    // Les chemins de fichiers et adresses (site/data/niches/index.json...) ne sont pas de la rédaction.
+    let x = t.replace(/\s+/g, ' ').replace(/[\w./:-]*\/[\w./-]+/g, ' ')
+    for (const e of EXCEPTIONS_DONNEES) x = x.split(e).join(' ')
+    for (const [re, raison] of LEXIQUE_INTERDIT) expect(x, `${ou} : ${raison} (${re})`).not.toMatch(re)
+    expect(x.replace(NICHE_DEFINIE, ' '), `${ou} : « niche » sans définition`).not.toMatch(/\bniches?\b/i)
+  }
+
+  it('lexique neutre : aucun terme évaluatif dans tout le texte affiché, pages, en-tête, pied, métadonnées, image de partage', async () => {
+    const pages = [
+      ...ROUTES.map((r) => '#' + r.chemin),
+      '#/calcul/resultat',
+      '#/explorer/etat?m=lfi2025',
+      '#/explorer/etat/detail?m=execution2024&id=Education%20et%20recherche%2FEnseignement%20scolaire%2F141',
+      '#/explorer/ue?dep=69',
+      '#/explorer/recettes?i=D211',
+      '#/local/commune?insee=69123',
+      '#/beneficiaires?p=141',
+      '#/beneficiaires?onglet=marches',
+      '#/beneficiaires?onglet=france2030',
+      '#/beneficiaires/programme?p=141',
+      '#/decisions/realisations?p=141',
+      '#/decisions/votes?p=141',
+      '#/decisions/controle?dep=69',
+      '#/decisions/vie-politique?a=2022',
+      '#/decisions/vie-politique?a=2024',
+    ]
+    for (const f of pages) {
+      await ecran(f)
+      // Textes repliés compris (details, lignes masquées) : textContent lit tout le DOM.
+      verifierLexique(document.body.textContent ?? '', f)
+      verifierLexique(document.title, `${f} (titre du document)`)
+      for (const el of Array.from(main.querySelectorAll('[aria-label], [title], [alt]')))
+        verifierLexique(['aria-label', 'title', 'alt'].map((a) => el.getAttribute(a) ?? '').join(' '), `${f} (attribut)`)
+    }
+    await ecran('#/decisions/vie-politique?a=2022')
+    main.querySelector<HTMLButtonElement>('[data-fichier*="presidentielle_2022"]')!.click()
+    await attendreQue(() => (main.querySelector('#candidats')?.textContent ?? '').includes('ARTHAUD'))
+    verifierLexique(main.textContent ?? '', 'candidats')
+    const html = readFileSync(join(process.cwd(), 'index.html'), 'utf8')
+    for (const m of html.matchAll(/content="([^"]*)"/g)) verifierLexique(m[1], 'index.html (méta)')
+    verifierLexique(html.replace(/<[^>]+>/g, ' '), 'index.html')
+    verifierLexique(readFileSync(join(process.cwd(), 'scripts', 'og.html'), 'utf8').replace(/<style>[\s\S]*?<\/style>/, '').replace(/<[^>]+>/g, ' '), 'og.html (image de partage)')
+    verifierLexique(readFileSync(join(process.cwd(), 'src', 'composants', 'carte-partage.ts'), 'utf8').match(/'[^']*'/g)!.join(' '), 'carte de partage')
+  }, 180000)
+
+  it('partis et candidats : ordre neutre, règle explicite affichée sous chaque liste', async () => {
+    const { trierPartis, trierCandidats, REGLE_PARTIS, REGLE_CANDIDATS } = await import('../src/ecrans/viepolitique')
+    // Règles pures : montant décroissant puis alphabétique ; circonscription puis nom.
+    expect(trierPartis([{ nom: 'B', total_eur: 1 }, { nom: 'C', total_eur: 2 }, { nom: 'A', total_eur: 1 }]).map((x) => x.nom)).toEqual(['C', 'A', 'B'])
+    expect(
+      trierCandidats([
+        { candidat: 'ZOLA Émile', circonscription: 'Ain (1re)' },
+        { candidat: 'ARAGON Louis', circonscription: 'Ain (2e)' },
+        { candidat: 'ÉLUARD Paul', circonscription: 'Ain (1re)' },
+      ]).map((x) => x.candidat),
+    ).toEqual(['ÉLUARD Paul', 'ZOLA Émile', 'ARAGON Louis'])
+    await ecran('#/decisions/vie-politique?a=2022')
+    const regles = Array.from(main.querySelectorAll('[data-regle-ordre]')).map((x) => x.textContent)
+    expect(regles).toContain(REGLE_PARTIS)
+    const lignes = Array.from(main.querySelectorAll('table')).find((t) => t.caption?.textContent?.startsWith('Aide publique par parti'))!.querySelectorAll('tbody tr')
+    const partis = JSON.parse(readFileSync(join(process.cwd(), 'tests/fixtures/data/vie_politique/partis/2022.json'), 'utf8')).partis as { nom: string; total_eur: number }[]
+    expect(lignes.length).toBe(partis.length)
+    expect(Array.from(lignes).map((tr) => tr.querySelector('td')!.textContent)).toEqual(trierPartis(partis).map((x) => x.nom))
+    // Même format pour chaque parti : quatre colonnes, aucune ligne mise en avant.
+    for (const tr of Array.from(lignes)) {
+      expect(tr.querySelectorAll('td').length).toBe(4)
+      expect(tr.querySelector('.surligne, strong, mark')).toBeNull()
+    }
+    main.querySelector<HTMLButtonElement>('[data-fichier*="presidentielle_2022"]')!.click()
+    await attendreQue(() => (main.querySelector('#candidats')?.textContent ?? '').includes('ARTHAUD'))
+    expect(main.querySelector('#candidats [data-regle-ordre]')?.textContent).toBe(REGLE_CANDIDATS)
+    const cands = JSON.parse(readFileSync(join(process.cwd(), 'tests/fixtures/data/vie_politique/candidats/presidentielle_2022.json'), 'utf8')).candidats as { candidat: string; circonscription?: string }[]
+    const affiches = Array.from(main.querySelectorAll('#table-cand tbody tr')).map((tr) => tr.querySelector('td')!.textContent)
+    expect(affiches).toEqual(trierCandidats(cands).slice(0, 50).map((x) => x.candidat))
+    for (const tr of Array.from(main.querySelectorAll('#table-cand tbody tr'))) expect(tr.querySelector('.surligne, strong, mark')).toBeNull()
+    // Équilibre de la sélection : les pages sur les entreprises et les organismes renvoient aux prestations aux ménages.
+    for (const f of ['#/beneficiaires', '#/decisions/controle']) {
+      await ecran(f)
+      expect(main.querySelector('a[href="#/explorer/secu"]'), f).not.toBeNull()
+    }
+    // Amendements : ordre chronologique explicite.
+    const { REGLE_AMENDEMENTS } = await import('../src/ecrans/votes')
+    await ecran('#/decisions/votes?p=141')
+    expect(main.querySelector('[data-regle-ordre]')?.textContent).toBe(REGLE_AMENDEMENTS)
+    const dates = Array.from(main.querySelectorAll('[data-regle-ordre] + ul.lignes .dest')).map((d) => (d.textContent ?? '').slice(0, 10))
+    expect(dates.length).toBeGreaterThan(1)
+    expect([...dates].sort().reverse()).toEqual(dates)
+  }, 60000)
 
   it('toutes les lectures de données sont relatives au site', () => {
     expect(requetes.length).toBeGreaterThan(10)

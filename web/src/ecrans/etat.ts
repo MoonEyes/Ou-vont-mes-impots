@@ -26,7 +26,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const derniere = annees[annees.length - 1]
   const apu = derniere ? deficit!.administrations_publiques.annees[derniere] : null
 
-  // Ce que tu finances (écran 2), réparti par administration selon les destinataires de chaque prélèvement.
+  // Ce que tu verses (écran 2), réparti par administration selon les destinataires de chaque prélèvement.
   const lignes = session.complet?.lignes ?? session.resultat?.prelevements.filter((l) => l.inclus_dans_total_paye) ?? []
   const parAdmin = parAdministration(lignes)
   const s100Admin = sur100Entiers(parAdmin)
@@ -63,13 +63,13 @@ ${
 </div>
 ${
   ir > 0
-    ? `<div class="carte"><h2>Et ce que tu finances ?</h2><p>Sur les ${h(eur(totalPaye))} que ton foyer verse chaque année (écran 2, valeur centrale), environ :</p><ul>${Object.entries(parAdmin)
+    ? `<div class="carte"><h2>Et ce que tu verses ?</h2><p>Sur les ${h(eur(totalPaye))} que ton foyer verse chaque année (écran 2, valeur centrale), environ :</p><ul>${Object.entries(parAdmin)
         .sort((a, b) => b[1] - a[1])
         .map(
           ([a, v]) =>
             `<li>${h(eur(v))}, soit ${s100Admin[a] ?? 0} € sur 100 €, ${a === 'Plusieurs' ? 'sans destinataire publié' : `pour : ${h(LIBELLE_ADMINISTRATION[a as 'Etat'])}`}</li>`,
         )
-        .join('')}</ul><p class="aide">La part qui va à l’État (${h(eur(ir))}) n’est pas fléchée vers un poste : la liste ci-dessus l’applique au prorata du budget de l’État, pour donner un ordre de grandeur. Le reste finance la Sécurité sociale et les collectivités.</p></div>`
+        .join('')}</ul><p class="aide">La part qui va à l’État (${h(eur(ir))}) n’est pas fléchée vers un poste : la liste ci-dessus l’applique au prorata du budget de l’État, pour donner un ordre de grandeur. Le reste va à la Sécurité sociale et aux collectivités.</p></div>`
     : ''
 }
 ${

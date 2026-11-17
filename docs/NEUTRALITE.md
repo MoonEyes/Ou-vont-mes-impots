@@ -1,0 +1,75 @@
+# Charte de neutralité
+
+Le site ne soutient aucun parti, aucun candidat ni aucune position sur le niveau des impôts ou des dépenses. Il n'est ni pour ni contre l'impôt : il donne des montants, leurs sources et leurs limites.
+
+## Références
+
+- Effet de cadrage (Tversky et Kahneman, « The Framing of Decisions and the Psychology of Choice », 1981) : la même somme présentée comme une perte (« ce que tu paies ») ou comme un gain (« ce que tu finances ») oriente le jugement. Le site garde un seul cadrage neutre.
+- Effet de média hostile (Vallone, Ross et Lepper, 1985) : chaque camp perçoit un biais contre lui dans un même texte. Seule parade : des mots sans valeur, des formats identiques, des règles d'ordre affichées.
+- Réactance (Brehm, 1966) : un texte qui pousse à une conclusion provoque le rejet du chiffre lui-même.
+- Pluralisme et équilibre : principes de l'Arcom (équité de traitement entre partis, présentation honnête des questions controversées).
+- Présentation des chiffres : pratiques des Décodeurs (Le Monde), de Full Fact et de The Markup (méthode publiée, chiffre avec sa base et sa source, pas d'adjectif à la place d'une comparaison).
+
+## Règles (chacune vérifiée par un test)
+
+| N° | Règle | Test |
+|----|-------|------|
+| 1 | Aucun soutien ni opposition : la page « La démarche » le dit en toutes lettres. | `ecrans.test.ts`, « la démarche » |
+| 2 | Lexique neutre dans tout le texte affiché (pages, en-tête, pied, attributs, métadonnées, image de partage) : pas de minimisation ou d'amplification (« seulement 3 % »), d'adjectif d'intensité, de jugement (« gaspillage », « cadeau »), de verbe imagé (« engloutit », « pèse »), de « coûteux », de « trop ». | `ecrans.test.ts`, « lexique neutre » |
+| 3 | Un seul cadrage pour l'argent du foyer : « ce que tu verses ». Jamais « ce que tu paies » ni « ce que tu finances ». | idem (entrée « cadrage incohérent ») |
+| 4 | « Niche » n'apparaît qu'avec sa définition : « dépense fiscale (souvent appelée niche fiscale) ». | idem (règle « niche sans définition ») |
+| 5 | Même format pour chaque sujet : montant en euros, « sur 100 € », source, millésime, part tracée et écarts ; un seul chiffre surligné par écran. | `ecrans.test.ts`, « règles 1, 5 et surligneur » |
+| 6 | Partis, candidats, amendements : même tableau pour tous, aucune ligne mise en avant, ordre neutre écrit sous la liste (partis : aide totale fixée par la loi, puis alphabétique ; candidats : circonscription puis nom ; amendements : date). | `ecrans.test.ts`, « partis et candidats » |
+| 7 | Couleurs sans valeur morale : pas de vert « bon » ni de rouge « mauvais » ; tendances et réductions dans la couleur du texte, le libellé porte le sens. Statuts de traçabilité codés trois fois (motif, libellé, couleur). | `regles.test.ts`, « neutralité : couleurs » ; « règle 2 » |
+| 8 | Équilibre de la sélection : une page consacrée aux entreprises ou aux organismes renvoie aux sommes versées aux ménages (Sécurité sociale), avec le même format. | `ecrans.test.ts`, « partis et candidats » (bloc équilibre) |
+| 9 | La part « non publiée » est décrite comme un état de la publication, jamais comme un soupçon sur l'usage de l'argent. La représentation d'intérêts est nommée avec le terme de la HATVP, sans « influence » ni « visés ». | `ecrans.test.ts`, « la démarche » et « lexique neutre » |
+| 10 | Aucun code visuel institutionnel (Marianne, bleu et rouge de l'État, DSFR) ; mention « Site citoyen, non officiel » dans l'en-tête. | `regles.test.ts`, « aucun code visuel institutionnel » |
+
+Exceptions admises par le test du lexique (libellés repris tels quels de documents officiels, listés dans `EXCEPTIONS_DONNEES`) : titres de publications entre guillemets (« Un capitalisme sous perfusion », « Entreprises et niches fiscales et sociales »), intitulé du programme 185 « Diplomatie culturelle et d'influence », et les deux libellés de données listés plus bas, en attendant leur correction dans le pipeline.
+
+## Libellés à corriger côté pipeline (site/data non modifié)
+
+| Fichier | Libellé actuel | Correction proposée | Raison |
+|---------|----------------|---------------------|--------|
+| `realisations/*.json`, `tendance.valeur` | « en progrès », « en recul » | « dans le sens souhaité publié », « à l'inverse du sens souhaité publié » | Le site ne juge pas : la tendance se lit par rapport au sens publié par l'administration. Le web traduit déjà ces valeurs (`LIBELLE_TENDANCE`). |
+| `controle/aides_entreprises.json`, estimation CPO, `perimetre` | « …, niches sociales ; … » | « …, exonérations de cotisations (souvent appelées niches sociales) ; … » | Règle 4. |
+| `controle/aides_entreprises.json`, `publication` | titres et renvois « idem, … » mélangés | séparer `titre_publication` et `variante_perimetre` | Le web met les titres entre guillemets et devine les « idem ». |
+| `controle/aides_entreprises.json`, estimation CPO | `annee_donnees: null` | renseigner l'année ou un champ `annee_donnees_note` | Le web affichait « (données null) » ; il masque désormais la mention. |
+| `prelevements/tva_conso.json`, `methode` | « variante Insee où ces taxes pèsent sur les revenus » | « variante Insee où ces taxes sont imputées aux revenus » | Règle 2 (image du poids). Même correction faite dans `web/src/calcul/hors-bulletin.ts`. |
+| `vie_politique/partis/*.json`, `vie_politique/candidats/*.json` | ordre brut du fichier source, noms de partis de casse et de forme variables (« UMP », « l'UNION POUR UN MOUVEMENT POPULAIRE ») | publier un champ `ordre` (règle écrite) et normaliser les noms (forme officielle, casse unique) | Règle 6 : le web trie déjà, mais le départage alphabétique dépend de la forme du nom. |
+| `local/decisions/index.json`, `limites` | « reste tres partielle » | « couvre N collectivités sur M » (et accents) | Remplacer une appréciation par un chiffre. |
+
+## Journal des corrections (17/11/2026)
+
+| Type | Avant | Après | Raison |
+|------|-------|-------|--------|
+| Cadrage | « Où va l'argent que tu paies ? » (accueil, titre du document, Open Graph, Twitter, image de partage) | « Où va l'argent que tu verses ? » | Règle 3 : « paies » cadre en perte, « finances » en gain. |
+| Cadrage | « Ton téléphone calcule ce que tu paies » | « … ce que tu verses » | Règle 3. |
+| Cadrage | « Ce que tu finances chaque année », « Ce que tu finances en un an », bouton « Ce que tu finances », titre de route | « Ce que tu verses … » | Règle 3. |
+| Cadrage | Saisie : « le site calcule ce que tu finances » | « … ce que tu verses » | Règle 3. |
+| Cadrage | État : « Et ce que tu finances ? » ; « Le reste finance la Sécurité sociale » | « Et ce que tu verses ? » ; « Le reste va à la Sécurité sociale et aux collectivités » | Règle 3. |
+| Cadrage | Carte de partage : « Ce que je finance en un an » | « Ce que je verse en un an » | Règle 3. |
+| Lexique | Dépenses fiscales : « Elle n'est pas versée, mais elle coûte comme une dépense » | « Elle n'est pas versée : elle diminue les recettes publiques. L'administration en publie une estimation, mesure par mesure. » | Règle 2 (« coûte » cadre en perte). |
+| Lexique | « Les mesures les plus coûteuses en 2025 (estimation) » | « Les mesures au montant estimé le plus élevé en 2025 » | Règle 2. |
+| Lexique | Contrôle : « qui cherche à peser sur les décisions » | « quelles organisations déclarent des actions de représentation d'intérêts auprès des décideurs publics » | Règle 9 (insinuation). |
+| Lexique | « Contrôle, influence et aides aux entreprises » (titre, route, page vide) | « Contrôle, représentation d'intérêts et aides aux entreprises » | Règle 9 : terme de la HATVP. |
+| Lexique | « Ministères les plus visés par des actions déclarées » | « Ministères les plus souvent désignés comme destinataires d'actions déclarées, par nombre d'actions » | Règle 9. |
+| Lexique | Contrôle : « combien les entreprises reçoivent selon les études publiées » | « ce que les études publiées comptent comme aides aux entreprises » | Le montant dépend du périmètre de chaque étude. |
+| Lexique | Dette : « ce que coûtent les intérêts chaque année » | « le montant des intérêts payés chaque année » + « Les montants sont aussi donnés en part du PIB » | Règle 2 ; dette remise en contexte. |
+| Lexique | Vie politique : « Ce que l'État dépense pour la démocratie » | « … au titre de la vie politique » | Formule laudative. |
+| Lexique | Calcul : « variante Insee où ces taxes pèsent sur les revenus » ; « certaines règles pèsent davantage » | « … sont imputées aux revenus » ; « … comptent davantage » | Règle 2. |
+| Niche | « Dépenses fiscales et niches sociales » (titre, route), menu « Niches fiscales » | « Dépenses fiscales et exonérations de cotisations », menu « Dépenses fiscales », définition « (souvent appelée niche fiscale) » | Règle 4. |
+| Niche | « Niches sociales » | « Exonérations de cotisations sociales (souvent appelées niches sociales) » | Règle 4. |
+| Couleur | Tendance « en progrès » en vert, « en recul » en rouge (couleur d'erreur) | couleur du texte, en gras, pour les deux | Règle 7. |
+| Couleur | Réductions d'impôt en vert | couleur du texte, signe « − » conservé | Règle 7. |
+| Libellé | Tendances « en progrès » / « en recul » | « dans le sens souhaité publié » / « à l'inverse du sens souhaité publié » | La tendance est relative au sens publié par l'administration. |
+| Ordre | Partis dans l'ordre du fichier source | aide totale décroissante, puis alphabétique, règle écrite sous le tableau | Règle 6. |
+| Ordre | Candidats dans l'ordre du fichier source | circonscription puis nom, règle écrite sous le tableau | Règle 6. |
+| Ordre | Amendements adoptés : ordre implicite | date décroissante, règle écrite | Règle 6 (auteurs et groupes cités). |
+| Sélection | « Qui reçoit l'argent » : organismes seulement | renvoi aux prestations aux personnes (Sécurité sociale) | Règle 8. |
+| Sélection | Aides aux entreprises sans contrepoint | renvoi aux sommes versées aux ménages, même format | Règle 8. |
+| Sélection | UE : solde net sans ses limites | limites publiées affichées sous le tableau (marché unique, rubriques partielles) | Le solde comptable seul suggère une conclusion. |
+| Citation | Titres de publications sans marque ; « (données null) » | titres entre guillemets, mention d'année masquée si absente | Distinguer le titre d'un auteur et le texte du site. |
+| Non publié | « 31 € n'ont pas de destinataire publié. » | « … publié en données ouvertes : cela décrit l'état de la publication, pas l'usage de l'argent. » | Règle 9. |
+| Non publié | Traçabilité : part non publiée sans précision | « elle ne dit rien de la régularité ni de l'utilité de la dépense » | Règle 9. |
+| Charte | (absent) | Démarche : « Le site ne soutient aucun parti, aucun candidat ni aucune position sur le niveau des impôts ou des dépenses. » ; règles « Chaque sujet est présenté avec les mêmes formats : montant, source, part tracée, écarts. » et « Partis et candidats : même tableau pour tous, dans un ordre neutre affiché sous chaque liste. » | Règles 1, 5, 6. |

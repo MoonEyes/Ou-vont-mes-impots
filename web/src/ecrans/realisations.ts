@@ -60,6 +60,12 @@ interface Realisations {
 }
 
 const CLASSE_TENDANCE: Record<string, string> = { 'en progrès': 'tendance-progres', 'en recul': 'tendance-recul' }
+/** Libellés affichés : la tendance est mesurée par rapport au sens souhaité publié par l'administration, pas jugée par le site. */
+export const LIBELLE_TENDANCE: Record<string, string> = {
+  'en progrès': 'dans le sens souhaité publié',
+  'en recul': 'à l’inverse du sens souhaité publié',
+}
+const tendance = (v: string) => LIBELLE_TENDANCE[v] ?? v
 
 function justification(t: Indicateur['tendance']): string {
   if (typeof t.justification === 'string') return t.justification
@@ -72,7 +78,7 @@ function carteIndicateur(i: Indicateur, cache: boolean): string {
   const derniere = [...i.valeurs].reverse().find((v) => v.valeur !== null)
   const cible = i.cibles.find((c) => c.valeur !== null && derniere && c.annee >= derniere.annee)
   return `<details class="carte"${cache ? ' data-plus hidden' : ''}>
-  <summary>${h(i.sous_indicateur || i.indicateur)}${i.unite ? ` (${h(i.unite)})` : ''} : <span class="${CLASSE_TENDANCE[t.valeur] ?? ''}">&nbsp;${h(t.valeur)}</span></summary>
+  <summary>${h(i.sous_indicateur || i.indicateur)}${i.unite ? ` (${h(i.unite)})` : ''} : <span class="${CLASSE_TENDANCE[t.valeur] ?? ''}">&nbsp;${h(tendance(t.valeur))}</span></summary>
   <p><strong>${h(i.indicateur)}</strong>${i.indicateur_de_contexte ? ' <span class="badge">indicateur de contexte</span>' : ''}</p>
   <p class="aide">Objectif : ${h(i.objectif)}</p>
   <div class="tableau-defile"><table><caption>Valeurs réalisées et cibles</caption>
@@ -85,7 +91,7 @@ function carteIndicateur(i: Indicateur, cache: boolean): string {
       return `<tr><th scope="row">${a}</th><td class="nombre">${h(v?.brut ?? '')}</td><td class="nombre">${h(c?.brut ?? '')}</td></tr>`
     })
     .join('')}</tbody></table></div>
-  <p>Tendance : <strong>${h(t.valeur)}</strong>${
+  <p>Tendance : <strong>${h(tendance(t.valeur))}</strong>${
     t.de_annee && t.a_annee ? ` entre ${t.de_annee} (${h(t.de)}) et ${t.a_annee} (${h(t.a)})${t.variation_relative_pct !== undefined ? `, ${h(pct(t.variation_relative_pct))}` : ''}` : ''
   }. Pourquoi : ${h(justification(t))}.</p>
   <p class="aide">Sens souhaité : ${h(i.sens_souhaite.valeur)}. ${h(i.sens_souhaite.justification)}${cible ? ` Prochaine cible : ${h(cible.brut)} en ${cible.annee}.` : ''}</p>
@@ -145,7 +151,7 @@ ${
 ${
   inds.length
     ? `<p>${inds.length} indicateurs : ${Object.entries(comptes)
-        .map(([k, n]) => `${n} ${h(k)}`)
+        .map(([k, n]) => `${n} ${h(tendance(k))}`)
         .join(', ')}. ${h(r.resultats_mesures.lecture)}</p>
 ${tri.map((i, k) => carteIndicateur(i, k >= 12)).join('')}
 ${tri.length > 12 ? `<button type="button" id="plus-ind">Afficher les ${tri.length} indicateurs</button>` : ''}`

@@ -134,7 +134,7 @@ export function taxesConsommation(placement: Placement, t: TvaConso, h: Habitude
           : destinataire('etat'),
       inclus_dans_total_paye: true,
       regle: `prelevements/tva_conso.json, décile ${placement.decile}, ${taxe} × ${uc} UC`,
-      hypothese_fourchette: 'Central : taxes réparties comme la consommation (hypothèse Insee de référence). Bas et haut : variante Insee où ces taxes pèsent sur les revenus.',
+      hypothese_fourchette: 'Central : taxes réparties comme la consommation (hypothèse Insee de référence). Bas et haut : variante Insee où ces taxes sont imputées aux revenus.',
       ...(taxe === 'autres' ? { statut_affectation: 'non sourcee' as const } : {}),
       ...(note ? { note } : {}),
       ...(non_chiffre ? { non_chiffre: true } : {}),

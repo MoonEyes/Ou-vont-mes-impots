@@ -1,4 +1,4 @@
-// Dépenses fiscales et niches sociales (site/data/niches/) : pertes de recettes estimées, mesure par mesure.
+// Dépenses fiscales et exonérations de cotisations (site/data/niches/) : moindres recettes estimées, mesure par mesure.
 import { partPersonnelle } from '../composants/hub'
 import { charger, chargerSiPresent, type Noeud } from '../donnees'
 import { lien } from '../routeur'
@@ -18,21 +18,21 @@ interface Index {
 export async function rendre(cible: HTMLElement) {
   const idx = await chargerSiPresent<Index>('niches/index.json')
   if (!idx) {
-    cible.innerHTML = enCours('Dépenses fiscales et niches sociales', 'Réductions d’impôt et de cotisations, mesure par mesure.') + partPersonnelle()
+    cible.innerHTML = enCours('Dépenses fiscales et exonérations de cotisations', 'Réductions d’impôt et de cotisations, mesure par mesure.') + partPersonnelle()
     return
   }
   const budget = (await charger<Noeud>('arbre/racine.json')).md * 1000
   const t24 = idx.totaux['2024']
   const annees = Object.keys(idx.totaux).sort()
   cible.innerHTML = `
-<h1>Dépenses fiscales et niches sociales</h1>
-<p class="chapeau">Une dépense fiscale est un impôt que l’État renonce à percevoir (crédit d’impôt, taux réduit, exonération). Elle n’est pas versée, mais elle coûte comme une dépense.</p>
+<h1>Dépenses fiscales et exonérations de cotisations</h1>
+<p class="chapeau">Une dépense fiscale (souvent appelée niche fiscale) est une disposition qui réduit l’impôt dû par certains contribuables ou certaines activités : crédit d’impôt, taux réduit, exonération. Elle n’est pas versée : elle diminue les recettes publiques. L’administration en publie une estimation, mesure par mesure.</p>
 <div class="carte" data-cle>
   <p class="grand-chiffre">${surligne(md(t24.chiffre_meur / 1000))}</p>
   <p class="sous-chiffre">de dépenses fiscales chiffrées en 2024 (${h(t24.statut)}, ${h(entier(t24.chiffrees))} mesures chiffrées sur ${h(entier(t24.mesures))}), l’équivalent de ${h(sur100((t24.chiffre_meur / budget) * 100))} sur 100 € de dépense du budget de l’État.</p>
   ${source(idx.source, idx.millesime)}
 </div>
-<h2>Les mesures les plus coûteuses en 2025 (estimation)</h2>
+<h2>Les mesures au montant estimé le plus élevé en 2025</h2>
 ${barres(
   idx.top_2025.slice(0, 12).map((m) => ({
     nom: m.libelle,
@@ -43,7 +43,7 @@ ${barres(
     statut: 'approche' as const,
   })),
   undefined,
-  'Mesures les plus coûteuses en 2025',
+  'Mesures au montant estimé le plus élevé en 2025',
 )}
 <h2>Par impôt, en 2025</h2>
 ${barres(
@@ -58,7 +58,7 @@ ${barres(
     })
     .join('')}</tbody></table></div>
 <p class="aide">Les mesures « non chiffrées » par l’administration ne sont jamais comptées pour zéro : elles sont exclues de la somme.</p>
-<h2>Niches sociales</h2>
+<h2>Exonérations de cotisations sociales (souvent appelées niches sociales)</h2>
 <p>Exonérations et allègements de cotisations : ${h(md(idx.niches_sociales.exonerations_robss_md['2024']))} en 2024. Elles sont en grande partie compensées à la Sécurité sociale par l’État : ne pas les ajouter aux dépenses fiscales.</p>
 <p class="aide">${h(idx.beneficiaires_nommes.constat)}</p>
 <p class="liens-sortie"><a href="#/explorer/recettes">Les recettes : chaque impôt et qui l’encaisse</a></p>

@@ -124,7 +124,7 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = l
   } finally {
     if (moi === jeton) cible.removeAttribute('aria-busy')
   }
-  document.title = route.chemin === '/' ? 'Où vont mes impôts : vois où va l’argent que tu paies' : `${route.titre} · Où vont mes impôts`
+  document.title = route.chemin === '/' ? 'Où vont mes impôts : vois où va l’argent que tu verses' : `${route.titre} · Où vont mes impôts`
   const racine = '/' + (route.chemin.split('/')[1] ?? '')
   document.querySelectorAll('.navigation [data-rubrique]').forEach((a) => {
     const r = a.getAttribute('data-rubrique')

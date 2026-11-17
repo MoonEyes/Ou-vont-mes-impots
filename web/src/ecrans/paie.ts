@@ -1,4 +1,4 @@
-// Écran 2 : ce que tu finances (total annuel, ligne par ligne avec destinataire, patronal à part).
+// Écran 2 : ce que tu verses (total annuel, ligne par ligne avec destinataire, patronal à part).
 import { destinataire, LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
 import type { Complet } from '../calcul/hors-bulletin'
 import type { Famille, Fourchette, Prelevement, ResultatOk } from '../calcul/types'
@@ -69,7 +69,7 @@ function profilTexte(): string {
   return `${sit[p.foyer.situation]}, ${n ? `${n} enfant${n > 1 ? 's' : ''}` : 'sans enfant'}, ${nets.join(' et ')} net avant impôt par mois`
 }
 
-/** Carte récapitulative « Ce que tu finances en un an » : total, fourchette, lignes, répartition sur 100 €. */
+/** Carte récapitulative « Ce que tu verses en un an » : total, fourchette, lignes, répartition sur 100 €. */
 function blocTotal(r: ResultatOk, c: Complet | null): string {
   const t = c ? c.total : r.totaux.paye_par_le_foyer
   const net = r.entree.personnes.reduce((s, p) => s + p.salaire_net_avant_impot_annuel, 0)
@@ -89,7 +89,7 @@ function blocTotal(r: ResultatOk, c: Complet | null): string {
     .map((a) => `<strong>${s100[a]} €</strong> ${h(NOM_SUR100[a])}`)
     .join(', ')
   return `<section class="recap" data-cle aria-labelledby="titre-recap">
-    <h2 id="titre-recap" class="recap-titre">Ce que tu finances en un an</h2>
+    <h2 id="titre-recap" class="recap-titre">Ce que tu verses en un an</h2>
     <p class="grand-chiffre">${surligne(eur(t.central))}</p>
     ${estFourchette(t) ? `<p class="aide">Fourchette : ${h(eur(t.bas))} à ${h(eur(t.haut))}</p>` : ''}
     <ul class="recap-lignes">${lignes.map(([a, b]) => `<li><span>${h(a)}</span><span>${h(b)}</span></li>`).join('')}</ul>
@@ -127,7 +127,7 @@ export async function rendre(cible: HTMLElement) {
   if (!r) {
     // Pas de saisie : retour au formulaire, avec un message.
     location.hash = '#/calcul?retour=resultat'
-    cible.innerHTML = `<h1>Ce que tu finances</h1><p>Indique d’abord ton salaire.</p><p><a href="#/calcul">Saisir mon salaire</a></p>`
+    cible.innerHTML = `<h1>Ce que tu verses</h1><p>Indique d’abord ton salaire.</p><p><a href="#/calcul">Saisir mon salaire</a></p>`
     return
   }
   const c = session.complet
@@ -164,7 +164,7 @@ export async function rendre(cible: HTMLElement) {
 
   cible.innerHTML = `
 <p><a href="#/calcul">Modifier mon salaire</a></p>
-<h1>Ce que tu finances chaque année</h1>
+<h1>Ce que tu verses chaque année</h1>
 <p class="chapeau">${h(profilTexte())}</p>
 ${blocTotal(r, c)}
 ${avert}
@@ -174,7 +174,7 @@ ${csgAbsente ? `<p class="aide">${h(csgAbsente.message)}</p>` : ''}
 ${blocTaxeFonciere()}
 <h2>Par destinataire</h2>
 <div class="bascule" role="group" aria-label="Contenu de la répartition">
-  <button type="button" id="sans-patronal" aria-pressed="true">Ce que tu finances</button>
+  <button type="button" id="sans-patronal" aria-pressed="true">Ce que tu verses</button>
   <button type="button" id="avec-patronal" aria-pressed="false">Avec la part de l’employeur</button>
 </div>
 <div id="par-destinataire" aria-live="polite"></div>

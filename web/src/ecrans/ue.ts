@@ -17,6 +17,7 @@ interface Contribution {
 interface Retours {
   source: string
   lecture: string
+  limites?: string[]
   annees: { annee: number; retours_md: number; solde_net_comptable_md: number; contribution_comptable_md: number; solde_net_pct_rnb: number }[]
   beneficiaires_nommes?: { nombre: number; total_nomme_eur: number; total_eur: number; part_nommee: number }
 }
@@ -66,7 +67,7 @@ ${
 <tbody>${r.annees
         .map((a) => `<tr><th scope="row">${a.annee}</th><td class="nombre">${h(md(a.contribution_comptable_md))}</td><td class="nombre">${h(md(a.retours_md))}</td><td class="nombre">${h(md(a.solde_net_comptable_md))}</td></tr>`)
         .join('')}</tbody></table></div>
-<p class="aide">${h(r.lecture)}</p>${source(r.source)}`
+<p class="aide">${h(r.lecture)}</p>${r.limites?.length ? `<ul class="aide">${r.limites.map((l) => `<li>${h(l)}</li>`).join('')}</ul>` : ''}${source(r.source)}`
     : ''
 }
 <h2>Qui reçoit les fonds européens près de chez toi</h2>

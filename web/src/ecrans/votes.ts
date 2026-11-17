@@ -27,6 +27,8 @@ interface Scrutins {
   scrutins: { numero: number; date: string; texte: string; type: string; objet: string; resultat: string; pour: number; contre: number; abstentions: number; url: string }[]
 }
 
+export const REGLE_AMENDEMENTS = 'Ordre : date d’adoption, du plus récent au plus ancien (les 12 derniers), quel que soit le groupe de l’auteur.'
+
 const signe = (x: number) => `${x > 0 ? '+' : x < 0 ? '−' : ''}${eurLisible(Math.abs(x))}`
 
 export async function rendre(cible: HTMLElement, params: URLSearchParams) {
@@ -46,7 +48,10 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
     if (!d) corps = absent(`Pas de décisions publiées pour le programme ${p}.`)
     else {
       const annees = Object.keys(d.annees).sort().reverse()
-      const adoptes = annees.flatMap((a) => d.annees[a].amendements_adoptes ?? []).slice(0, 12)
+      const adoptes = annees
+        .flatMap((a) => d.annees[a].amendements_adoptes ?? [])
+        .sort((a, b) => b.date.localeCompare(a.date) || a.numero.localeCompare(b.numero, 'fr', { numeric: true }))
+        .slice(0, 12)
       corps = `<h2>Programme ${h(d.programme)} : ${h(d.libelle)}</h2>
 <div class="tableau-defile"><table><caption>Amendements de crédits (Assemblée et Sénat)</caption><thead><tr><th scope="col">Loi de finances</th><th scope="col" class="nombre">Déposés</th><th scope="col" class="nombre">Adoptés en séance</th><th scope="col" class="nombre">Effet net adopté en séance</th></tr></thead><tbody>${annees
         .filter((a) => d.annees[a].amendements)
@@ -57,7 +62,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
         .join('')}</tbody></table></div>
 ${
   adoptes.length
-    ? `<h3>Derniers amendements adoptés</h3><ul class="lignes">${adoptes
+    ? `<h3>Derniers amendements adoptés</h3><p class="aide" data-regle-ordre>${h(REGLE_AMENDEMENTS)}</p><ul class="lignes">${adoptes
         .map(
           (a) =>
             `<li><span><a href="${h(a.url)}" rel="noopener noreferrer">${h(a.texte)}, amendement ${h(a.numero)}</a></span><span class="montant">${h(signe(a.cp))}</span><span class="dest">${h(a.date)} · ${h(a.lieu)} · ${h(a.auteur.nom ?? a.auteur.type)}${a.auteur.groupe ? ` (${h(a.auteur.groupe)})` : ''}</span></li>`,
