@@ -3902,6 +3902,70 @@
    "licence": "Licence Ouverte",
    "producteur": "ANAP",
    "module": "pipeline/sante_etablissements.py"
+  },
+  {
+   "id": "justice_defense_population_ecrouee",
+   "domaine": "justice_defense",
+   "type": "datagouv",
+   "dataset": "5369a048a3a729239d206322",
+   "format": "xlsx",
+   "toutes": true,
+   "max_ressources": 300,
+   "titre": "Statistique mensuelle de la population ecrouee et detenue, par etablissement (capacite operationnelle, personnes detenues ; agregats, aucun individu), classeurs xlsx mensuels",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/justice_defense.py"
+  },
+  {
+   "id": "justice_defense_structures_justice",
+   "domaine": "justice_defense",
+   "type": "datagouv",
+   "dataset": "5369932fa3a729239d20410c",
+   "format": "csv",
+   "titre_contient": "donnees-geocodees",
+   "titre": "Donnees geocodees des structures de la Justice (juridictions, etablissements penitentiaires, services) ; colonnes d'adresse, de telephone et de courriel jamais lues par le pipeline",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/justice_defense.py"
+  },
+  {
+   "id": "justice_defense_effectifs_defense_2025",
+   "domaine": "justice_defense",
+   "type": "datagouv",
+   "dataset": "53699ef2a3a729239d205fea",
+   "format": "xls",
+   "titre": "Repartition des effectifs militaires et civils par categorie et BOP en 2025 (ministere des Armees)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/justice_defense.py"
+  },
+  {
+   "id": "justice_defense_chiffres_cles_justice_2026",
+   "domaine": "justice_defense",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.justice.gouv.fr/sites/default/files/2026-10/Chiffres_cles_Justice_2026.pdf",
+   "titre": "Les chiffres cles de la Justice, edition 2026 : budget par programme, frais de justice, aide juridictionnelle",
+   "licence": "document administratif public",
+   "module": "pipeline/justice_defense.py"
+  },
+  {
+   "id": "justice_defense_rapport_exportations_armement_2025",
+   "domaine": "justice_defense",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.vie-publique.fr/files/rapport/pdf/300296.pdf",
+   "titre": "Rapport au Parlement 2025 sur les exportations d'armement de la France : prises de commandes et livraisons par pays, licences par categorie",
+   "licence": "document administratif public",
+   "module": "pipeline/justice_defense.py"
+  },
+  {
+   "id": "justice_defense_juridictions",
+   "domaine": "justice_defense",
+   "type": "datagouv_ressources",
+   "ressources": [
+    "9204b2e2-9f20-4a36-86ce-83493303d987"
+   ],
+   "titre": "Structures de la Justice : liste des juridictions avec leur commune (code Insee), ressource 2026-domaine-juridique-adresse.csv ; colonnes de voie, code postal, coordonnees, telephone et courriel jamais lues par le pipeline",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/justice_defense.py"
   }
  ],
  "non_collectables": [

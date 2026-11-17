@@ -230,6 +230,12 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # justice et défense : établissements pénitentiaires, budget de la justice, ressorts, armement (pipeline/justice_defense.py)
+    ("justice_defense_index.schema.json", "justice_defense/index.json", "existant"),
+    ("justice_defense_prisons.schema.json", "justice_defense/prisons.json", "existant"),
+    ("justice_defense_budget_justice.schema.json", "justice_defense/budget_justice.json", "existant"),
+    ("justice_defense_ressorts.schema.json", "justice_defense/ressorts.json", "existant"),
+    ("justice_defense_armement.schema.json", "justice_defense/armement.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
