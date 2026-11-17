@@ -77,6 +77,10 @@ FICHIERS = [
     ("secu_arbre.schema.json", "secu/arbre_2025/*.json", "existant"),
     ("secu_arbre.schema.json", "secu/cps/*.json", "existant"),
     ("secu_index.schema.json", "secu/index.json", "existant"),
+    # prestations versées aux ménages : montants, bénéficiaires, départements (pipeline/prestations.py)
+    ("prestations_index.schema.json", "prestations/index.json", "existant"),
+    ("prestations_nationales.schema.json", "prestations/nationales.json", "existant"),
+    ("prestations_departement.schema.json", "prestations/departements/*.json", "existant"),
     # dette publique : encours, intérêts, détenteurs, financement (pipeline/dette.py)
     ("dette_index.schema.json", "dette/index.json", "existant"),
     ("dette_encours.schema.json", "dette/encours.json", "existant"),

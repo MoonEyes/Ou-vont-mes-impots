@@ -2270,6 +2270,51 @@
    "licence": "document administratif public"
   },
   {
+   "id": "secu_caf_s_ben_dep",
+   "domaine": "secu",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "s_ben_dep",
+   "titre": "CNAF, foyers et montants mensuels par prestation et par departement (pipeline/prestations.py)",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "secu_drees_minima_nationales",
+   "domaine": "secu",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/336_minima-sociaux-rsa-et-prime-d-activite/attachments/minima_sociaux_donnees_nationales_par_dispositif_xlsx",
+   "titre": "DREES, minima sociaux, allocataires au 31 decembre par dispositif (pipeline/prestations.py)",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "secu_drees_minima_departementales",
+   "domaine": "secu",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/336_minima-sociaux-rsa-et-prime-d-activite/attachments/minima_sociaux_donnees_departementales_par_dispositif_xlsx",
+   "titre": "DREES, minima sociaux, allocataires par departement (pipeline/prestations.py)",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "secu_drees_minima_depenses",
+   "domaine": "secu",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/336_minima-sociaux-rsa-et-prime-d-activite/attachments/minima_sociaux_donnees_de_depenses_par_dispositif_xlsx",
+   "titre": "DREES, minima sociaux, depenses par dispositif (pipeline/prestations.py)",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "id": "secu_francetravail_indemnises",
+   "domaine": "secu",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://statistiques.francetravail.org/indem/teleindemalloc",
+   "titre": "France Travail, allocataires indemnises par allocation, mensuel (pipeline/prestations.py)",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
    "id": "eu_comparaison_cofog_pib",
    "domaine": "europe",
    "type": "eurostat",

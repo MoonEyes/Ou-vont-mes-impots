@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/prestations_nationales.schema.json",
+  "title": "site/data/prestations/nationales.json : montant, bénéficiaires et montant moyen par prestation et par année (pipeline/prestations.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "$defs": {
+    "serie": {"type": "object", "propertyNames": {"$ref": "commun.schema.json#/$defs/annee"},
+      "additionalProperties": {"type": ["number", "string", "null"],
+        "description": "null = absent à la source ; chaîne = marque de la source (nd, ns, s...) gardée telle quelle, jamais 0"}}
+  },
+  "properties": {
+    "unite": {"type": "string"},
+    "annees": {"type": "array", "items": {"$ref": "commun.schema.json#/$defs/annee_entier"}},
+    "prestations": {"type": "object", "propertyNames": {"pattern": "^[a-z_]+$"},
+      "additionalProperties": {"type": "object",
+        "properties": {
+          "nom": {"type": "string"}, "groupe": {"type": "string"}, "financeur": {"type": "string"},
+          "serie_principale": {"enum": ["cnaf_depenses", "drees_cps", "unedic"]},
+          "montant_eur": {"$ref": "#/$defs/serie"},
+          "sources_montant": {"type": "object", "additionalProperties": {"$ref": "#/$defs/serie"}},
+          "derniere_annee": {"type": ["integer", "null"]},
+          "beneficiaires": {"$ref": "#/$defs/serie"},
+          "beneficiaires_moyenne_mensuelle": {"$ref": "#/$defs/serie"},
+          "beneficiaires_definition": {"type": "string"}, "source_beneficiaires": {"type": "string"},
+          "montant_moyen_eur": {"$ref": "#/$defs/serie"},
+          "montant_moyen_periode": {"enum": ["mois", "an"]}, "montant_moyen_methode": {"type": "string"},
+          "comparaison_beneficiaires": {"type": "object", "required": ["source", "definition", "valeurs"],
+            "properties": {"valeurs": {"$ref": "#/$defs/serie"}}},
+          "detail": {"type": "object", "additionalProperties": {"type": "object", "required": ["source", "montant_eur"],
+            "properties": {"montant_eur": {"$ref": "#/$defs/serie"}}}},
+          "par_regime": {"type": "array", "items": {"type": "object",
+            "properties": {"code_secteur": {"type": "string"}, "regime": {"type": "string"},
+              "fichier": {"type": "string", "pattern": "^secu/cps/.+\\.json$"},
+              "montant_eur": {"$ref": "#/$defs/serie"}},
+            "required": ["code_secteur", "regime", "montant_eur"]}}},
+        "required": ["nom", "groupe", "financeur", "serie_principale", "montant_eur", "sources_montant",
+                     "derniere_annee", "beneficiaires", "montant_moyen_eur", "montant_moyen_methode"]}}
+  },
+  "required": ["unite", "annees", "prestations"]
+}

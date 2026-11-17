@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/prestations_departement.schema.json",
+  "title": "site/data/prestations/departements/<annee>.json : prestations par département, une année (pipeline/prestations.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "$defs": {
+    "valeur": {"type": ["number", "string", "null"],
+      "description": "null = absent ou année incomplète à la source ; chaîne = marque de la source gardée telle quelle"},
+    "triplet": {"type": "array", "prefixItems": [{"$ref": "#/$defs/valeur"}, {"$ref": "#/$defs/valeur"},
+      {"$ref": "#/$defs/valeur"}], "minItems": 3, "maxItems": 3},
+    "ligne": {"type": "object",
+      "properties": {"nom": {"type": "string"},
+        "financeur_rsa": {"enum": ["departement", "etat", "departement_puis_etat"]}},
+      "additionalProperties": {"$ref": "#/$defs/triplet"}}
+  },
+  "properties": {
+    "unite": {"type": "string"},
+    "annee": {"$ref": "commun.schema.json#/$defs/annee_entier"},
+    "colonnes": {"const": ["foyers_decembre", "montant_annuel_eur", "montant_moyen_eur"]},
+    "definitions": {"type": "object"},
+    "prestations": {"type": "object", "additionalProperties": {"type": "string"}},
+    "departements": {"type": "object", "propertyNames": {"pattern": "^([0-9]{2}|2A|2B|97[1-6])$"},
+      "additionalProperties": {"allOf": [{"$ref": "#/$defs/ligne"}, {"required": ["nom", "financeur_rsa"]}]}},
+    "hors_departements": {"type": "object", "additionalProperties": {"$ref": "#/$defs/ligne"}},
+    "note_perimetre": {"type": "string"}
+  },
+  "required": ["unite", "annee", "colonnes", "definitions", "prestations", "departements", "hors_departements"]
+}

@@ -81,6 +81,9 @@ Vérification : `python docs/valider_contrat.py` (installe `jsonschema` si absen
 | `secu/arbre_2025/racine.json` | `secu_arbre.schema.json` | même arbre, premier niveau publié | Md€ | Exécution 2025 | `secu.py` | existant |
 | `secu/cps/racine.json` + `secu/cps/<chemin>.json` | `secu_arbre.schema.json` | prestations de protection sociale par secteur, régime, risque et prestation (DREES) | Md€ | 2024 | `secu.py` | existant |
 | `secu/index.json` | `secu_index.schema.json` | vues, totaux, traçabilité, vérification des documents, sources, recherche préalable | divers | | `secu.py` | existant |
+| `prestations/index.json` | `prestations_index.schema.json` | prestations versées aux ménages : financeur et liens vers les arbres, totaux par source, écarts entre sources, couverture départementale, sources, recherche préalable | € | 2019 à 2025 (CNAF, Unédic), 2020 à 2024 (DREES) | `prestations.py` | existant |
+| `prestations/nationales.json` | `prestations_nationales.schema.json` | par prestation et par année : montant (chaque source), bénéficiaires, montant moyen, pensions par régime | €, foyers | idem | `prestations.py` | existant |
+| `prestations/departements/<annee>.json` | `prestations_departement.schema.json` | par département : foyers, montant annuel, montant moyen (CAF) ; allocataires de l'Aspa (DREES) ; financeur du RSA | foyers, € | 2019 à 2025 | `prestations.py` | existant |
 | `ue/contribution.json` | `ue_contribution.schema.json` | PSR-UE et son usage : rubriques et pôles du CFP 2021-2027, NextGenerationEU, engagements FTS 2024 par programme | Md€ | Exécution 2024 (PSR) ; CFP 2021-2027 | `ue.py` | existant |
 | `ue/retours.json` | `ue_retours.schema.json` | dépenses de l'UE en France par année et rubrique, solde net (comptable, opérationnel) | Md€ | 2021 à 2025 | `ue.py` | existant |
 | `ue/beneficiaires/index.json` | `ue_beneficiaires_index.schema.json` | bénéficiaires des fonds européens : couverture, totaux par source, année, région, département | € | Kohesio 2014-2027, FTS 2023-2025, Horizon Europe 2021-2026 | `ue.py` | existant |
@@ -601,6 +604,29 @@ Couverture : France, UE à 27 (`EU27_2020`), zone euro (`EA20`) et les 27 pays ;
 | `comparaison/fiches.json` | une fiche par grand poste (santé GF07, retraites GF1002 avec survivants GF1003 en `voir_aussi`, éducation GF09, défense GF02, ordre public GF03, transports GF0405, logement GF0601 + GF1006, environnement GF05, intérêts de la dette GF0107) et deux repères (`depenses_totales`, `prelevements_obligatoires`) : `annee`, `france`, `ue27`, `zone_euro`, `mediane_ue_pct_pib` (médiane non pondérée des pays publiés), `ecart_mediane_points_pib`, `rang`/`rang_sur`, `evolution_10_ans`, `pays_par_valeur[]`, `mode` (publié ou calculé), `avertissements[]` (identifiants de `index.json`) |
 
 **Neutralité.** Aucun qualificatif de niveau (« trop », « pas assez », couleurs de classement) : un rang, une médiane, un écart en points, une évolution. Ordre des pays : alphabétique (`index.json`) ou par valeur décroissante puis nom (`fiches.json`), règle écrite dans `ordre.regle`. Rang 1 = valeur la plus haute ; valeurs égales, même rang.
+
+### 2.24 Prestations versées aux ménages : `prestations/` (pipeline/prestations.py)
+
+Allocations familiales, aides personnelles au logement (APL, ALF, ALS), RSA, prime d'activité, AAH, minimum vieillesse (Aspa et ASV), PAJE, ARS, ARE (y compris formation), pensions de retraite par régime, indemnités journalières : montant total, bénéficiaires et montant moyen par année depuis 2019, par département quand c'est publié. Agrégats publiés seulement. Commandes : `python pipeline/prestations.py collecter` (réseau ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/prestations.py produire` (sans réseau). Tests : `pytest tests/test_prestations.py`.
+
+```
+data/lake/secu/ (CNAF dep_tr_nat, s_ben_nat, s_ben_dep ; DREES comptes de la protection sociale et minima sociaux ;
+                 Unédic ; France Travail allocataires indemnisés)
+     └─> pipeline/prestations.py ─> site/data/prestations/index.json, nationales.json, departements/<annee>.json
+                                      └─ liens (fichier + id) vers arbre/, secu/arbre/, secu/cps/, local/budgets/
+```
+
+| Champ | Sens |
+|---|---|
+| `sources_montant.<source>` | une série par source, jamais additionnée à une autre : `cnaf_depenses` (dépenses tous régimes, CAF et MSA), `drees_cps` (comptabilité nationale, détail par prestation depuis 2020), `unedic` ; `montant_eur` reprend la `serie_principale` |
+| `beneficiaires` | foyers CAF payés en décembre (CNAF, champ CAF), allocataires au 31 décembre (DREES, Aspa) ou allocataires indemnisés fin décembre (France Travail, ARE) ; `beneficiaires_definition` le précise ; null pour les pensions et les indemnités journalières |
+| `montant_moyen_eur` | par foyer et par mois (ARS : par an) ; `montant_moyen_methode` donne le calcul ; null quand effectifs et montants n'ont pas le même champ |
+| `liens[]` (index) | `vue` (`arbre_etat`, `secu_arbre`, `secu_cps`, `local`), `fichier`, `id`, `md` (exécution 2024), `partage_avec` quand le nœud finance plusieurs prestations : même argent vu du côté du financeur, jamais additionné au montant de la prestation |
+| `totaux.<source>` | somme des prestations couvertes dans une seule source (chaque code DREES compté une fois) ; `drees_cps` est rapproché du total de toutes les prestations de protection sociale |
+| `ecarts[]`, `ecarts_departements[]` | `source`/`montant` contre `autre_source`/`autre_montant`, `ecart`, `ecart_pct`, `lecture_ecart` ; somme des départements (CAF) contre dépenses nationales tous régimes, `codes_mois_manquants` quand un mois manque à la source |
+| départements | `colonnes` = `foyers_decembre`, `montant_annuel_eur`, `montant_moyen_eur` ; `financeur_rsa` = `departement`, `etat` (RSA recentralisé : 973 et 976 depuis 2019, 974 depuis 2020, 93 et 66 depuis 2022, 09 depuis décembre 2022) ou `departement_puis_etat` ; `hors_departements` : codes CNAF 978, 99, XX |
+
+Règles propres : une valeur masquée ou absente à la source reste telle quelle (chaîne de la source ou null), jamais 0 ; une année incomplète à la source (Mayotte, décembre 2020 à 2024) a un montant annuel null. Non couverts par département : ARE, pensions, indemnités journalières (`couverture_departementale.non_couvert`, `sources_inaccessibles`).
 
 ## 3. Module de calcul personnel
 
