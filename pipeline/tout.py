@@ -155,7 +155,7 @@ ETAPES: tuple[Etape, ...] = (
     axe("numerique_etat", "Numérique de l'État", ("base", "territoires"), collecte=False),
     axe("outremer", "Outre-mer", ("base",)),
     axe("recouvrement", "Recouvrement", ("base",), collecte=False),
-    axe("retraites", "Retraites", ("base",)),
+    axe("retraites", "Retraites par régime", ("base", "secu", "prestations"), duree_s=30),
     axe("sante_etablissements", "Établissements de santé", ("secu", "subventions")),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.

@@ -219,6 +219,10 @@ FICHIERS = [
     ("local_satellites_ccas.schema.json", "local_satellites/ccas/*.json", "existant"),
     ("local_satellites_mobilite.schema.json", "local_satellites/mobilite/*.json", "existant"),
     ("local_satellites_eau.schema.json", "local_satellites/eau/*.json", "existant"),
+    # retraites par régime : retraités, pensions moyennes, cotisants publiés, CAS Pensions (pipeline/retraites.py)
+    ("retraites_index.schema.json", "retraites/index.json", "existant"),
+    ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
+    ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

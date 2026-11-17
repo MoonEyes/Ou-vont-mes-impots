@@ -1,0 +1,311 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/retraites_regimes.schema.json",
+  "title": "site/data/retraites/regimes.json : retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "annees",
+    "definitions",
+    "note_perimetre",
+    "regimes"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "note_perimetre": {
+      "type": "string"
+    },
+    "regimes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z0-9_]+$"
+      },
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "nom",
+          "code_caisse",
+          "libelle_source",
+          "type",
+          "premiere_annee",
+          "derniere_annee",
+          "source_eacr",
+          "retraites_droit_direct",
+          "retraites_droit_derive",
+          "retraites_tous_droits",
+          "nouveaux_retraites_droit_direct",
+          "pension_droit_direct_eur_mois",
+          "pension_totale_eur_mois",
+          "pension_droit_derive_eur_mois"
+        ],
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "code_caisse": {
+            "type": "string",
+            "pattern": "^[0-9]{4}$"
+          },
+          "libelle_source": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "base",
+              "complementaire",
+              "integre",
+              "ensemble",
+              null
+            ]
+          },
+          "premiere_annee": {
+            "anyOf": [
+              {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "derniere_annee": {
+            "anyOf": [
+              {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "retraites_droit_direct": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "description": "null = absent à la source, jamais 0"
+            }
+          },
+          "retraites_droit_derive": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "description": "null = absent à la source, jamais 0"
+            }
+          },
+          "retraites_tous_droits": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "description": "null = absent à la source, jamais 0"
+            }
+          },
+          "nouveaux_retraites_droit_direct": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "description": "null = absent à la source, jamais 0"
+            }
+          },
+          "pension_droit_direct_eur_mois": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "description": "null = absent à la source, jamais 0"
+            }
+          },
+          "pension_totale_eur_mois": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "description": "null = absent à la source, jamais 0"
+            }
+          },
+          "pension_droit_derive_eur_mois": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "description": "null = absent à la source, jamais 0"
+            }
+          },
+          "source_eacr": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "cotisants": {
+            "type": "object",
+            "required": [
+              "source",
+              "annees",
+              "definition",
+              "valeurs"
+            ],
+            "properties": {
+              "source": {
+                "type": "string"
+              },
+              "annees": {
+                "type": "array",
+                "items": {
+                  "$ref": "commun.schema.json#/$defs/annee_entier"
+                }
+              },
+              "definition": {
+                "type": "string"
+              },
+              "valeurs": {
+                "type": "object",
+                "propertyNames": {
+                  "$ref": "commun.schema.json#/$defs/annee"
+                },
+                "additionalProperties": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "description": "null = absent à la source, jamais 0"
+                }
+              },
+              "rapport_cotisants_retraites_publie": {
+                "type": "object",
+                "propertyNames": {
+                  "$ref": "commun.schema.json#/$defs/annee"
+                },
+                "additionalProperties": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "description": "null = absent à la source, jamais 0"
+                }
+              },
+              "retraites_droit_direct_publies": {
+                "type": "object",
+                "propertyNames": {
+                  "$ref": "commun.schema.json#/$defs/annee"
+                },
+                "additionalProperties": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "description": "null = absent à la source, jamais 0"
+                }
+              },
+              "rapport_cotisants_retraites_droit_direct": {
+                "type": "object",
+                "propertyNames": {
+                  "$ref": "commun.schema.json#/$defs/annee"
+                },
+                "additionalProperties": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "description": "null = absent à la source, jamais 0"
+                }
+              },
+              "rapport_methode": {
+                "type": "string"
+              }
+            }
+          },
+          "zeros_source": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              }
+            },
+            "description": "séries de pension dont la source donne 0 pour ces années : publiées null"
+          }
+        }
+      }
+    }
+  }
+}

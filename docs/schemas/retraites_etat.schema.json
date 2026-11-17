@@ -1,0 +1,481 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/retraites_etat.schema.json",
+  "title": "site/data/retraites/etat.json : compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "cas_pensions",
+    "retraites_etat",
+    "credits_regimes_speciaux",
+    "limites"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "cas_pensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "millesime",
+        "definition",
+        "depenses_cp_eur",
+        "recettes_eur",
+        "recettes_moins_depenses_eur",
+        "programmes",
+        "recettes_par_origine_eur",
+        "recettes_par_origine_pct",
+        "origines",
+        "sections",
+        "methode"
+      ],
+      "properties": {
+        "millesime": {
+          "type": "string"
+        },
+        "definition": {
+          "type": "string"
+        },
+        "depenses_cp_eur": {
+          "type": "integer"
+        },
+        "recettes_eur": {
+          "type": "integer"
+        },
+        "recettes_moins_depenses_eur": {
+          "type": "integer"
+        },
+        "programmes": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "programme",
+              "nom",
+              "cp_eur",
+              "actions"
+            ],
+            "properties": {
+              "programme": {
+                "enum": [
+                  "741",
+                  "742",
+                  "743"
+                ]
+              },
+              "nom": {
+                "type": "string"
+              },
+              "cp_eur": {
+                "type": "integer"
+              },
+              "actions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "action",
+                    "nom",
+                    "cp_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "pattern": "^[0-9]{3}-[0-9]{2}$"
+                    },
+                    "nom": {
+                      "type": "string"
+                    },
+                    "cp_eur": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "minItems": 1
+              }
+            }
+          }
+        },
+        "recettes_par_origine_eur": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "cotisations_salariales",
+              "contributions_employeurs",
+              "cotisations_salariales_et_patronales",
+              "contribution_fspoeie_ratocem",
+              "budget_general",
+              "transferts",
+              "autres"
+            ]
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "recettes_par_origine_pct": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "cotisations_salariales",
+              "contributions_employeurs",
+              "cotisations_salariales_et_patronales",
+              "contribution_fspoeie_ratocem",
+              "budget_general",
+              "transferts",
+              "autres"
+            ]
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "origines": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "cotisations_salariales",
+              "contributions_employeurs",
+              "cotisations_salariales_et_patronales",
+              "contribution_fspoeie_ratocem",
+              "budget_general",
+              "transferts",
+              "autres"
+            ]
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "section",
+              "nom",
+              "programme",
+              "regimes",
+              "recettes_eur",
+              "depenses_cp_eur",
+              "recettes_moins_depenses_eur",
+              "par_origine_eur",
+              "lignes"
+            ],
+            "properties": {
+              "section": {
+                "type": "string"
+              },
+              "nom": {
+                "type": "string"
+              },
+              "programme": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "regimes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$"
+                }
+              },
+              "recettes_eur": {
+                "type": "integer"
+              },
+              "depenses_cp_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "recettes_moins_depenses_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "par_origine_eur": {
+                "type": "object",
+                "propertyNames": {
+                  "enum": [
+                    "cotisations_salariales",
+                    "contributions_employeurs",
+                    "cotisations_salariales_et_patronales",
+                    "contribution_fspoeie_ratocem",
+                    "budget_general",
+                    "transferts",
+                    "autres"
+                  ]
+                },
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              "lignes": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "code",
+                    "libelle",
+                    "origine",
+                    "montant_eur"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "libelle": {
+                      "type": "string"
+                    },
+                    "origine": {
+                      "enum": [
+                        "cotisations_salariales",
+                        "contributions_employeurs",
+                        "cotisations_salariales_et_patronales",
+                        "contribution_fspoeie_ratocem",
+                        "budget_general",
+                        "transferts",
+                        "autres"
+                      ]
+                    },
+                    "montant_eur": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "methode": {
+          "type": "string"
+        }
+      }
+    },
+    "retraites_etat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "definition",
+        "annees",
+        "populations",
+        "note"
+      ],
+      "properties": {
+        "definition": {
+          "type": "string"
+        },
+        "annees": {
+          "type": "array",
+          "items": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          }
+        },
+        "note": {
+          "type": "string"
+        },
+        "populations": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "sre_civils",
+              "sre_militaires",
+              "sre_gendarmes"
+            ]
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "nom",
+              "effectif",
+              "pension_moyenne_eur_mois"
+            ],
+            "properties": {
+              "nom": {
+                "type": "string"
+              },
+              "effectif": {
+                "type": "object",
+                "propertyNames": {
+                  "$ref": "commun.schema.json#/$defs/annee"
+                },
+                "additionalProperties": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "description": "null = absent à la source, jamais 0"
+                }
+              },
+              "pension_moyenne_eur_mois": {
+                "type": "object",
+                "propertyNames": {
+                  "$ref": "commun.schema.json#/$defs/annee"
+                },
+                "additionalProperties": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "description": "null = absent à la source, jamais 0"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "credits_regimes_speciaux": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "definition",
+        "programmes",
+        "total_execution_2024_eur",
+        "total_plf_2025_cp_eur"
+      ],
+      "properties": {
+        "definition": {
+          "type": "string"
+        },
+        "total_execution_2024_eur": {
+          "type": "integer"
+        },
+        "total_plf_2025_cp_eur": {
+          "type": "integer"
+        },
+        "programmes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "programme",
+              "nom",
+              "execution_2024_eur",
+              "plf_2025_cp_eur",
+              "actions"
+            ],
+            "properties": {
+              "programme": {
+                "enum": [
+                  "195",
+                  "197",
+                  "198"
+                ]
+              },
+              "nom": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "execution_2024_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "plf_2025_cp_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "fichier": {
+                "type": "string",
+                "pattern": "^arbre/.+\\.json$"
+              },
+              "id": {
+                "type": "string"
+              },
+              "actions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "action",
+                    "nom",
+                    "regime",
+                    "execution_2024_eur",
+                    "plf_2025_cp_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "action": {
+                      "type": "string"
+                    },
+                    "nom": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "regime": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[a-z0-9_]+$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "execution_2024_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "plf_2025_cp_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "fichier": {
+                      "type": "string",
+                      "pattern": "^arbre/.+\\.json$"
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
