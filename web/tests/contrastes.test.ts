@@ -1,4 +1,6 @@
 // Règle 3 : contraste du texte >= 7:1 et de tout état >= 4,5:1, dans les deux modes (jetons de styles.css).
+// Direction « le billet découpé » : les couleurs de famille ne changent pas d'un mode à l'autre et portent
+// toujours un texte encre (blanc sur la famille État) ; chaque forme colorée a un contour.
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
@@ -19,46 +21,53 @@ export const ratio = (a: string, b: string) => {
   return (x + 0.05) / (y + 0.05)
 }
 
-// Texte : couples réellement utilisés (le texte secondaire ne se pose que sur --fond).
+const FAMILLES_ENCRE = ['secu', 'collectivites', 'ue', 'dette', 'niches', 'operateurs', 'prestations']
+// Texte : couples réellement utilisés.
 const TEXTE: [string, string][] = [
   ['texte', 'fond'],
-  ['texte', 'surface'],
+  ['texte', 'papier'],
   ['secondaire', 'fond'],
-  ['accent', 'fond'],
-  ['accent', 'surface'],
-  ['accent-survol', 'fond'],
-  ['erreur', 'fond'],
-  ['erreur', 'erreur-fond'],
-  ['emprunt-texte', 'fond'],
-  ['ok', 'fond'],
-  ['sur-accent', 'accent'],
-  ['sur-accent', 'accent-survol'],
-  ['fond', 'texte'],
+  ['secondaire', 'papier'],
+  ['sur-bandeau', 'bandeau'],
+  ['sur-principal', 'principal'],
+  ['sur-principal', 'principal-survol'],
+  ['blanc', 'etat'],
+  ['encre', 'blanc'],
+  ...FAMILLES_ENCRE.map((f): [string, string] => ['encre', f]),
 ]
-// États : statuts de traçabilité, focus, saisie invalide.
+// États : contours, focus, motifs de traçabilité (tracés avec le jeton de contour), saisie invalide (contour épais).
 const ETATS: [string, string][] = [
-  ['trace', 'fond'],
-  ['approche', 'fond'],
-  ['nonpub', 'fond'],
-  ['trace', 'surface'],
-  ['approche', 'surface'],
-  ['nonpub', 'surface'],
+  ['contour', 'fond'],
+  ['contour', 'papier'],
+  ['encre', 'secu'],
   ['accent', 'fond'],
-  ['erreur', 'fond'],
+  ['accent', 'papier'],
 ]
 
 for (const [nom, t] of [['clair', clair], ['sombre', sombre]] as const)
   describe(`contrastes, mode ${nom}`, () => {
     for (const [a, b] of TEXTE) it(`texte ${a} sur ${b} >= 7:1`, () => expect(ratio(t[a], t[b])).toBeGreaterThanOrEqual(7))
     for (const [a, b] of ETATS) it(`état ${a} sur ${b} >= 4,5:1`, () => expect(ratio(t[a], t[b])).toBeGreaterThanOrEqual(4.5))
-    it('les barres actives et l’emprunt restent visibles (>= 3:1)', () => {
-      expect(ratio(t.accent, t.fond)).toBeGreaterThanOrEqual(3)
-      expect(ratio(t.taupe, t.fond)).toBeGreaterThanOrEqual(3)
-      expect(ratio(t.emprunt, t.fond)).toBeGreaterThanOrEqual(3)
+    it('les formes colorées restent visibles : leur contour tranche sur les deux fonds (>= 3:1)', () => {
+      expect(ratio(t.contour, t.fond)).toBeGreaterThanOrEqual(3)
+      expect(ratio(t.contour, t.papier)).toBeGreaterThanOrEqual(3)
+      expect(ratio(t.taupe, t.fond)).toBeGreaterThanOrEqual(1.5)
     })
   })
 
+describe('formes colorées', () => {
+  const regle = (sel: string) => new RegExp(`(^|\\n)${sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\{([^}]*)\\}`).exec(css)?.[2] ?? ''
+  it('barres, pastilles, motifs, tuiles et segments portent un contour', () => {
+    for (const sel of ['.barre', '.pastille', '.motif', '.tuiles a', '.empile', '.jauge', '.cles li', '.ruban li']) expect(regle(sel), sel).toMatch(/border: [^;]*var\(--contour\)/)
+    expect(regle('.billet .b-forme')).toContain('stroke: var(--contour)')
+  })
+  it('les couleurs de famille ne sont pas redéfinies en mode sombre', () => {
+    const bloc = /@media \(prefers-color-scheme: dark\) \{\s*:root \{([\s\S]*?)\n  \}/.exec(css)![1]
+    for (const f of ['secu', 'etat', 'collectivites', 'ue', 'dette', 'niches', 'operateurs', 'prestations', 'encre', 'blanc']) expect(bloc, f).not.toMatch(new RegExp(`--${f}:`))
+  })
+})
+
 it('jetons demandés présents', () => {
-  expect(clair).toMatchObject({ fond: '#ffffff', surface: '#f4f6f2', texte: '#1d2320', secondaire: '#4f5a54', accent: '#0b5a43', surligneur: '#e6f24a', trace: '#0b5a43', approche: '#7a5c00', nonpub: '#5f6a63' })
-  expect(sombre).toMatchObject({ fond: '#121614', surface: '#1b211e', texte: '#eef2ec', secondaire: '#a8b3ac', accent: '#6fd3a8' })
+  expect(clair).toMatchObject({ fond: '#f3f0ff', papier: '#ffffff', texte: '#1e1548', secondaire: '#4b4470', filet: '#dcd6f2', secu: '#ffc93c', etat: '#4f2fcc', collectivites: '#19c3b1', ue: '#7cc4ff', dette: '#ff8fc7', niches: '#ffa552', operateurs: '#b6e36b', prestations: '#c9b8ff' })
+  expect(sombre).toMatchObject({ fond: '#15102e', papier: '#241b4f', texte: '#f3f0ff', secondaire: '#c9c2ea', contour: '#f3f0ff' })
 })

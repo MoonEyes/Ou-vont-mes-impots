@@ -5,7 +5,7 @@ import { partPersonnelle } from '../composants/hub'
 import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { lien, type Rendu } from '../routeur'
-import { absent, appliquerLargeurs, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
+import { absent, appliquerLargeurs, badgeStatut, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
 
 export interface Geo {
   millesime: string
@@ -65,6 +65,22 @@ export function blocBudget(b: Budgets, c: Budgets['collectivites'][string], titr
   </ul>
   ${source(b.source, an)}
 </div>`
+}
+
+/** Trois chiffres clés d'une collectivité, en cartes : par habitant, total, versé par l'État. */
+export function clesBudget(b: Budgets, c: Budgets['collectivites'][string]): string {
+  const an = [...b.annees].reverse().find((a) => c.eur[a]) ?? b.annees[b.annees.length - 1]
+  const total = lire(b, c.eur, an, 'depenses_totales')
+  if (total === null || total <= 0) return ''
+  const pop = c.population[an]
+  const etat = lire(b, c.eur, an, 'concours_etat')
+  const dette = lire(b, c.eur, an, 'encours_dette')
+  const items = [
+    pop ? `<li class="cle-famille"><strong>${h(eur(total / pop))}</strong><span>dépensés par habitant en ${h(an)}</span>${badgeStatut('trace')}</li>` : '',
+    etat !== null ? `<li><strong>${h(eurLisible(etat))}</strong><span>versés par l’État : dotations et compensations</span>${badgeStatut('trace')}</li>` : '',
+    dette !== null ? `<li><strong>${h(eurLisible(dette))}</strong><span>de dette en cours${pop ? `, soit ${h(eur(dette / pop))} par habitant` : ''}</span>${badgeStatut('trace')}</li>` : '',
+  ].filter(Boolean)
+  return items.length ? `<ul class="cles" aria-label="Chiffres clés de ${h(c.nom)}">${items.join('')}</ul>` : ''
 }
 
 /** « de Nantes », « d’Angers », « du Mans », « des Abymes ». */
@@ -137,7 +153,7 @@ ${partPersonnelle()}`
     const reg = br?.collectivites[g.region]
     remplir(
       'sec-budgets',
-      `${commune && bc ? blocBudget(bc, commune, `Le budget ${deCommune(commune.nom)}`, true) : absent('Budget de la commune non disponible.')}
+      `${commune && bc ? clesBudget(bc, commune) : ''}${commune && bc ? blocBudget(bc, commune, `Le budget ${deCommune(commune.nom)}`, true) : absent('Budget de la commune non disponible.')}
 ${bloc && be ? blocBudget(be, bloc, `Le bloc communal (communes et intercommunalité, sans double compte)`, false) : ep && be ? blocBudget(be, ep, `L’intercommunalité : ${ep.nom}`, false) : ''}
 ${dpt && bd ? blocBudget(bd, dpt, `Le département : ${dpt.nom}`, false) : ''}
 ${reg && br ? blocBudget(br, reg, `La région : ${reg.nom}`, false) : ''}`,

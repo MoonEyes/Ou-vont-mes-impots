@@ -3,7 +3,8 @@ import { parAdministration } from '../calcul/repartition'
 import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent } from '../donnees'
 import { session } from '../etat'
-import { barres, eur, h, md, pct, source, sur100, surligne } from '../util'
+import { mdCourt } from '../composants/caisses'
+import { badgeStatut, barres, eur, h, md, pct, source, sur100, surligne } from '../util'
 
 type Serie = Record<string, number>
 interface Index {
@@ -69,6 +70,19 @@ export async function rendre(cible: HTMLElement) {
   cible.innerHTML = `
 <h1>La dette publique</h1>
 <p class="chapeau">Ce que doivent l’État, la Sécurité sociale et les collectivités, le montant des intérêts payés chaque année, et qui détient cette dette. Les montants sont aussi donnés en part du PIB, pour comparer les années.</p>
+<ul class="cles" aria-label="Chiffres clés de la dette publique">
+  <li class="cle-famille"><strong>${h(mdCourt(s.encours_maastricht.md))}</strong><span>de dette publique fin ${h(s.encours_maastricht.annee)}</span>${badgeStatut('trace')}</li>
+  <li><strong>${h(pct(s.encours_maastricht.pct_pib))}</strong><span>de ce que le pays produit en un an (le PIB)</span>${badgeStatut('trace')}</li>
+  ${s.interets_sur_100_eur_cas_c04 !== undefined ? `<li><strong>${h(sur100(s.interets_sur_100_eur_cas_c04))}</strong><span>sur 100 € versés par un salarié au salaire médian servent aux intérêts</span>${badgeStatut('approche')}</li>` : `<li><strong>${h(md(s.interets_apu_d41.md))}</strong><span>d’intérêts payés en ${h(s.interets_apu_d41.annee)}</span>${badgeStatut('trace')}</li>`}
+</ul>
+${
+  s.interets_sur_100_eur_cas_c04 !== undefined
+    ? `<h2>Dans un billet de 100 €</h2>
+<ul class="ruban f-dette" aria-hidden="true"><li class="r-tete">100 € versés</li><li data-f="${s.interets_sur_100_eur_cas_c04.toFixed(2)}" class="r-etroit"></li><li class="fond-papier r-reste" data-f="${(100 - s.interets_sur_100_eur_cas_c04).toFixed(2)}">${h(sur100(100 - s.interets_sur_100_eur_cas_c04))} vont ailleurs</li></ul>
+<p class="aide">La part rose, tout à gauche : ${h(sur100(s.interets_sur_100_eur_cas_c04))} d’intérêts, pour un salarié seul au salaire médian.</p>`
+    : ''
+}
+<h2>Les intérêts payés chaque année</h2>
 <div class="carte" data-cle>
   <p>Intérêts payés par l’ensemble des administrations en ${h(s.interets_apu_d41.annee)} :</p>
   <p class="grand-chiffre">${surligne(md(s.interets_apu_d41.md))}</p>

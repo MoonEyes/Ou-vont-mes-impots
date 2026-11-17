@@ -2,7 +2,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { legendeStatuts, STATUTS, traitStatut } from '../src/util'
+import { badgeStatut, legendeStatuts, STATUTS, traitStatut } from '../src/util'
 
 const RACINE = process.cwd()
 const css = readFileSync(join(RACINE, 'src', 'styles.css'), 'utf8')
@@ -15,16 +15,15 @@ describe('règle 2 : trois statuts distincts sans la couleur', () => {
     const l = Object.values(STATUTS).map((s) => s.libelle)
     expect(new Set(l).size).toBe(3)
   })
-  it('motifs distincts (plein, tirets, pointillés) dans la légende et les barres', () => {
-    expect(legendeStatuts()).toContain('ligne-trace')
-    expect(legendeStatuts()).toContain('ligne-approche')
-    expect(legendeStatuts()).toContain('ligne-nonpub')
-    const dash = (c: string) => new RegExp(`\\.trait-statut \\.ligne-${c} \\{[^}]*\\}`).exec(css)![0]
-    expect(dash('trace')).not.toContain('dasharray')
-    expect(dash('approche')).toContain('stroke-dasharray: 8 5')
-    expect(dash('nonpub')).toContain('stroke-dasharray: 2 4')
-    expect(css).toMatch(/\.statut-approche,[\s\S]*?repeating-linear-gradient/)
-    expect(css).toMatch(/\.statut-nonpub,[\s\S]*?radial-gradient/)
+  it('motifs distincts (plein, pointillé, hachuré) dans la légende, les pastilles et les barres', () => {
+    for (const c of ['trace', 'approche', 'nonpub']) expect(legendeStatuts()).toContain(`motif-${c}`)
+    const fond = (c: string) => new RegExp(`\\.motif-${c},\\n\\.statut-${c},\\n\\.barres li \\.barre-remplissage\\.statut-${c} \\{([^}]*)\\}`).exec(css)![1]
+    expect(fond('trace')).toMatch(/background: var\(--contour\);/)
+    expect(fond('approche')).toContain('radial-gradient')
+    expect(fond('nonpub')).toContain('repeating-linear-gradient(45deg')
+    expect(new Set(['trace', 'approche', 'nonpub'].map(fond)).size).toBe(3)
+    // Le motif n'est jamais seul : chaque statut a son mot (« tracé », « approché », « non publié »).
+    for (const c of ['trace', 'approche', 'nonpub'] as const) expect(badgeStatut(c)).toContain(STATUTS[c].libelle)
     expect(traitStatut('approche')).toContain('aria-hidden="true"')
   })
 })
@@ -63,28 +62,49 @@ describe('identité', () => {
       expect(c, f).not.toMatch(/marianne|dsfr|#000091|#e1000f|#002395|#ed2939/i)
     }
   })
-  it('polices auto-hébergées de la direction hybride, plus d’Inter ni de Space Grotesk', () => {
-    expect(css).toContain("font-family: 'Fraunces'")
-    expect(css).toContain("'Atkinson Hyperlegible Next'")
-    expect(css).toContain("'Recursive Mono'")
-    expect(css).not.toMatch(/Inter|Space Grotesk/)
-    expect(css).not.toMatch(/box-shadow/)
+  it('polices auto-hébergées de la direction « billet découpé » : Bricolage Grotesque et Figtree, rien d’autre', () => {
+    expect(css).toContain("font-family: 'Bricolage Grotesque'")
+    expect(css).toContain("font-family: 'Figtree'")
+    expect([...css.matchAll(/@font-face/g)]).toHaveLength(2)
+    for (const m of css.matchAll(/url\('([^']+\.woff2)'\)/g)) expect(m[1]).toMatch(/^\.\.\/node_modules\/@fontsource-variable\//)
+    expect(css).not.toMatch(/Inter|Space Grotesk|Fraunces|Atkinson|Recursive/)
+    // Pas de police à chasse fixe, pas de capitales forcées pour les libellés.
+    expect(css).not.toMatch(/monospace|text-transform:\s*uppercase/)
+  })
+  it('ombres pleines seulement (effet autocollant) : aucun flou, aucune ombre grise', () => {
+    const ombres = [...css.matchAll(/box-shadow:\s*([^;]+);/g)].map((m) => m[1])
+    expect(ombres.length).toBeGreaterThan(0)
+    for (const o of ombres) expect(o).toMatch(/^0 \dpx 0 var\(--[a-z-]+\)$/)
+    expect(css).not.toMatch(/rgba?\(|linear-gradient\([^)]*transparent\s+\d+%,\s*#/)
   })
 })
 
 describe('navigation et métadonnées', () => {
   const html = readFileSync(join(RACINE, 'index.html'), 'utf8')
-  it('barre de navigation : 5 entrées, sans numérotation, feuille « Plus » à 4 liens', () => {
+  it('site web : navigation horizontale à 6 entrées dans l’en-tête, bouton « Menu » sur téléphone, plus de barre d’onglets', () => {
     const nav = /<nav id="navigation"[\s\S]*?<\/nav>/.exec(html)![0]
     const entrees = [...nav.matchAll(/data-rubrique="([^"]+)"/g)].map((m) => m[1])
-    expect(entrees).toEqual(['/', '/calcul', '/explorer', '/local', '/plus'])
+    expect(entrees).toEqual(['/calcul', '/explorer', '/local', '/beneficiaires', '/decisions', '/demarche'])
+    expect([...nav.matchAll(/<a [^>]*>([^<]+)<\/a>/g)].map((m) => m[1])).toEqual(['Mon calcul', 'Explorer', 'Chez moi', 'Qui reçoit', 'Décisions', 'La démarche'])
     expect(nav).not.toMatch(/>\s*\d+\.\s/)
-    const feuille = /<div id="feuille-plus"[\s\S]*?<\/div>/.exec(nav)![0]
-    expect([...feuille.matchAll(/href="([^"]+)"/g)].map((m) => m[1])).toEqual(['#/demarche', '#/beneficiaires', '#/decisions', '#/methode', '#/mentions'])
+    expect(nav).toMatch(/<button type="button" id="bouton-menu" aria-expanded="false" aria-controls="menu">/)
+    expect(html).toMatch(/<header class="entete">[\s\S]*<nav id="navigation"[\s\S]*<\/header>/)
+    expect(html).not.toMatch(/bouton-plus|feuille-plus/)
+    // La navigation n'est jamais fixée en bas de l'écran.
+    expect(css).not.toMatch(/position:\s*fixed/)
+    expect(css).not.toMatch(/safe-area-inset-bottom/)
   })
-  it('cibles de la barre >= 48 px', () => {
-    const bloc = /\.navigation > ul a,\n\.navigation > ul button \{([\s\S]*?)\}/.exec(css)![1]
+  it('pied de page complet : le site, sources et méthode, le projet et les mentions', () => {
+    const pied = /<footer class="pied">[\s\S]*?<\/footer>/.exec(html)![0]
+    for (const t of ['Le site', 'Sources et méthode', 'Le projet']) expect(pied).toContain(`>${t}</h2>`)
+    for (const l of ['#/calcul', '#/explorer', '#/local', '#/beneficiaires', '#/decisions', '#/methode', '#/methode/tracabilite', '#/methode/limites', '#/demarche', '#/mentions']) expect(pied).toContain(`href="${l}"`)
+    expect(pied).toContain('Aucun cookie, aucune mesure d’audience')
+  })
+  it('cibles de la navigation >= 48 px, bouton « Menu » compris', () => {
+    const bloc = /\.navigation ul a \{([\s\S]*?)\}/.exec(css)![1]
     expect(Number(/min-height: (\d+)px/.exec(bloc)![1])).toBeGreaterThanOrEqual(48)
+    const menu = /#bouton-menu \{([\s\S]*?)\}/.exec(css)![1]
+    expect(Number(/min-height: (\d+)px/.exec(menu)![1])).toBeGreaterThanOrEqual(48)
   })
   it('titre, Open Graph, carte Twitter et JSON-LD vérifiables', () => {
     expect(html).toContain('<title>Où vont mes impôts : vois où va l’argent que tu verses</title>')
@@ -128,5 +148,6 @@ describe('neutralité : couleurs et identité visuelle', () => {
     for (const [f, c] of tout) expect(c, f).not.toMatch(/#000091|#e1000f|#6a6af4|marianne|\bdsfr\b|République française/i)
     const html = readFileSync(join(RACINE, 'index.html'), 'utf8')
     expect(html).toContain('<span class="non-officiel">Site citoyen, non officiel</span>')
+    expect(html).toContain('Il ne remplace pas impots.gouv.fr et ne juge aucune dépense.')
   })
 })

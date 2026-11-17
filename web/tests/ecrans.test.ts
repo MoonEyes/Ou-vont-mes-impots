@@ -24,38 +24,75 @@ beforeAll(() => {
 })
 
 describe('écrans', () => {
-  it('accueil : promesse, action unique répétée, étapes, garanties', async () => {
+  it('accueil : billet découpé de l’exemple, champ qui lance le calcul, étapes, garanties', async () => {
     await ecran('#/')
-    expect(main.querySelector('h1')?.textContent).toBe('Où va l’argent que tu verses ?')
-    expect(texte()).toContain('Indique ton salaire. Tu vois ce que tu verses chaque année, à qui, et à quoi cet argent sert.')
-    const boutons = Array.from(main.querySelectorAll('a.bouton-principal'))
-    expect(boutons).toHaveLength(2)
-    for (const b of boutons) {
-      expect(b.textContent).toBe('Calculer à partir de mon salaire')
-      expect(b.getAttribute('href')).toBe('#/calcul')
-    }
-    expect(texte()).toContain('Environ 2 minutes. Aucun compte à créer.')
-    expect(main.querySelector('a[href="#/explorer"]')?.textContent).toBe('Explorer sans saisir mon salaire')
+    expect(main.querySelector('h1')?.textContent?.replace(/\s+/g, ' ')).toBe('Tu verses 100 €. Voilà où ils partent.')
+    expect(texte()).toContain('on additionne tout ce que tu verses en un an, puis on suit chaque euro jusqu’à ceux qui le reçoivent.')
+    // Un seul bouton principal : celui du champ salaire, qui lance le calcul.
+    const boutons = Array.from(main.querySelectorAll('.bouton-principal'))
+    expect(boutons).toHaveLength(1)
+    expect(boutons[0].textContent).toBe('Découper mon billet')
+    expect(main.querySelector('#heros-form #heros-net')).not.toBeNull()
+    expect(main.querySelector('label[for="heros-net"]')?.textContent).toBe('Ton salaire net par mois')
+    expect(texte()).toContain('Aucun compte, rien n’est envoyé. Environ 2 minutes.')
+    expect(main.querySelector('a.bouton[href="#/explorer"]')?.textContent).toBe('Tout explorer')
     expect(main.querySelectorAll('.etapes li')).toHaveLength(3)
-    expect(texte()).toContain('Rien ne quitte ton téléphone.')
+    expect(texte()).toContain('Rien ne quitte ton navigateur')
     expect(texte()).toContain('jusqu’à la ligne du budget voté')
     expect(texte()).toContain('Une démarche citoyenne et indépendante')
     expect(texte()).toContain('site non officiel, gratuit, sans publicité')
     expect(main.querySelector('.fil-ariane')).toBeNull()
-    expect(document.querySelector('.navigation [aria-current=page]')?.getAttribute('href')).toBe('#/')
+    expect(document.querySelector('.entete [aria-current=page]')?.getAttribute('href')).toBe('#/')
+    expect(document.querySelector('.navigation [aria-current=page]')).toBeNull()
+    // Le billet : parts proportionnelles en liens, dont la somme fait 100, lues dans l'exemple (jamais en dur).
+    const ex = JSON.parse(readFileSync(join(process.cwd(), 'src/exemple-lyon.json'), 'utf8'))
+    const billet = main.querySelector('.billet .billet-large')!
+    expect(ex.profil.commune.toLowerCase()).toBe('lyon')
+    expect(billet.getAttribute('aria-label')).toContain('à Lyon')
+    const parts = Array.from(billet.querySelectorAll('a')).map((a) => a.getAttribute('aria-label') ?? '')
+    expect(parts.map((p) => Number(/: (\d+) €/.exec(p)![1])).reduce((a, b) => a + b, 0)).toBe(100)
+    expect(parts[0]).toBe(`Sécurité sociale : ${ex.sur100['Securite sociale']} € sur 100 €`)
+    expect(texte()).toContain(`Billet affiché : celui d’un salaire de ${eurFr(ex.profil.net_mensuel)} net par mois, à Lyon.`)
+    expect(texte()).toContain(eurFr(ex.total.central))
+    expect(main.querySelectorAll('.parts li')).toHaveLength(parts.length)
+    // Les 8 caisses, avec leur chiffre lu dans les données.
+    expect(main.querySelectorAll('.tuiles a')).toHaveLength(8)
+    expect(main.querySelector('[data-caisse="dette"] .t-chiffre')?.textContent?.replace(/\s+/g, ' ')).toBe('3 460 Md€')
+    expect(main.querySelector('[data-caisse="etat"] .t-chiffre')?.textContent).toMatch(/^\d+ Md€$/)
+  })
+
+  it('accueil : le champ du héros garde le salaire en mémoire (jamais dans une adresse) et ouvre le calcul', async () => {
+    await ecran('#/')
+    ;(main.querySelector('#heros-net') as HTMLInputElement).value = 'deux mille'
+    main.querySelector<HTMLFormElement>('#heros-form')!.dispatchEvent(new Event('submit', { cancelable: true }))
+    expect(main.querySelector('#heros-net')?.getAttribute('aria-invalid')).toBe('true')
+    expect(main.querySelector('#heros-msg')?.textContent).toBe('Écris ton salaire en chiffres.')
+    ;(main.querySelector('#heros-net') as HTMLInputElement).value = ''
+    main.querySelector<HTMLFormElement>('#heros-form')!.dispatchEvent(new Event('submit', { cancelable: true }))
+    expect(location.hash).toBe('#/calcul')
+    expect(session.amorce).toBeNull()
   })
 
   it('accueil : texte affiché sans attendre les données, puis nombre de sources ; recherche « à quoi servent mes impôts »', async () => {
     const { rendre } = await import('../src/ecrans/accueil')
     const zone = document.createElement('div')
     const rendu = rendre(zone)
-    // Rendu synchrone : le titre, l'action et les rubriques sont là avant toute lecture de données.
-    expect(zone.querySelector('h1')?.textContent).toBe('Où va l’argent que tu verses ?')
+    // Rendu synchrone : le titre, le billet, l'action et les rubriques sont là avant toute lecture de données.
+    expect(zone.querySelector('h1')?.textContent).toContain('Voilà où ils partent.')
+    expect(zone.querySelector('.billet svg')).not.toBeNull()
     expect(Array.from(zone.querySelectorAll('h2')).map((x) => x.textContent)).toContain('À quoi servent mes impôts ?')
-    expect(zone.querySelector('#nb-sources')?.textContent).toBe('Des sources publiques, vérifiées et reliées entre elles.')
+    expect(zone.querySelector('#nb-sources')?.textContent).toBe('Des sources publiques')
     expect(zone.querySelector('a[href="#/local"]')?.textContent).toBe('Budget de ma commune')
     await rendu.suite
-    expect(zone.querySelector('#nb-sources')?.textContent).toBe('Plus de 120 sources publiques, vérifiées et reliées entre elles.')
+    expect(zone.querySelector('#nb-sources')?.textContent).toBe('Plus de 120 sources publiques')
+  })
+
+  it('adresse inconnue : page introuvable, avec le billet 4-0-4 et deux sorties', async () => {
+    await ecran('#/nimporte-quoi')
+    expect(main.querySelector('h1')?.textContent).toBe('Ce billet-là, on ne le trouve pas')
+    expect(Array.from(main.querySelectorAll('.actions a')).map((a) => a.getAttribute('href'))).toEqual(['#/', '#/explorer'])
+    expect(document.title).toBe('Page introuvable · Où vont mes impôts')
+    expect(document.querySelector('.entete [aria-current=page]')).toBeNull()
   })
 
   it('titres de recherche : calcul, hub local, commune et département', async () => {
@@ -65,7 +102,9 @@ describe('écrans', () => {
     expect(main.querySelector('h1')?.textContent).toBe('Budget de ma commune')
     expect(document.title).toBe('Budget de ma commune · Où vont mes impôts')
     expect(main.querySelectorAll('.liste-colonnes a')).toHaveLength(101)
-    expect(main.querySelector('a[href="#/local/departement?dep=69&page=rhone"]')?.textContent).toBe('Rhône (69)')
+    expect(main.querySelector('.liste-colonnes a[href="#/local/departement?dep=69&page=rhone"]')?.textContent).toBe('Rhône (69)')
+    expect(main.querySelector('.trame a[href="#/local/departement?dep=69&page=rhone"]')?.getAttribute('aria-label')).toBe('69 Rhône')
+    expect(main.querySelectorAll('.trame a')).toHaveLength(101)
     await ecran('#/local/commune?insee=69123')
     expect(document.title).toBe('Budget de Lyon (Rhône) : dépenses, dotations, taux · Où vont mes impôts')
     expect(Array.from(main.querySelectorAll('.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Chez moi', 'Rhône', 'Lyon'])
@@ -88,7 +127,7 @@ describe('écrans', () => {
     expect(texte()).toContain('Net à payer avant impôt sur le revenu')
     expect(texte()).toContain('rien de ce que tu saisis n’est envoyé')
     expect(document.querySelector('.navigation [aria-current=page]')?.getAttribute('href')).toBe('#/calcul')
-    expect(main.querySelector('nav.fil-ariane')).toBeNull()
+    expect(Array.from(main.querySelectorAll('nav.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Mon calcul'])
   })
 
   it('1. saisie : salaire manquant signalé sur le champ', async () => {
@@ -164,6 +203,19 @@ describe('écrans', () => {
     const parts = [...(main.querySelector('.recap-sur100')?.textContent ?? '').matchAll(/(\d+) €/g)].map((m) => Number(m[1]))
     expect(parts.slice(1).reduce((a, b) => a + b, 0)).toBe(100)
     writeFileSync(join(process.cwd(), 'ecarts_cas_types.json').replace('ecarts_cas_types', 'affichage_lyon'), JSON.stringify(c.total))
+    // L'exemple de l'accueil (billet, total, trois sorties) est ce calcul-ci, écrit dans src/exemple-lyon.json : jamais recopié à la main.
+    const { resumer } = await import('../src/composants/resume-calcul')
+    const exemple = { profil: { net_mensuel: 2100, commune: session.communeNom, insee: '69123' }, ...resumer(session.resultat!, c) }
+    const fichier = join(process.cwd(), 'src/exemple-lyon.json')
+    const avant = readFileSync(fichier, 'utf8')
+    writeFileSync(fichier, JSON.stringify(exemple) + '\n')
+    expect(JSON.parse(avant), 'src/exemple-lyon.json n’était plus à jour : il vient d’être réécrit, relance les tests').toEqual(exemple)
+    // Le résultat porte le billet personnel, sa version tableau, la liste des parts et le fil de l'euro.
+    expect(main.querySelectorAll('.billet .billet-large a')).toHaveLength(Object.keys(exemple.sur100).length)
+    expect(main.querySelector('.billet-tableau table')).not.toBeNull()
+    expect(main.querySelectorAll('.parts li')).toHaveLength(Object.keys(exemple.sur100).length)
+    expect(main.querySelector('.fil-euro svg')).not.toBeNull()
+    expect(texte()).toContain('Le fil de l’euro')
   }, 90000)
 
   it('3. sur 100 € : grands postes, part empruntée, choix du millésime', async () => {
@@ -252,7 +304,7 @@ describe('écrans', () => {
     for (const f of ['#/', '#/calcul', '#/calcul/resultat', ...ROUTES.map((r) => '#' + r.chemin), '#/concret?p=141', '#/beneficiaires?p=141', '#/realisations?p=141', '#/vie-politique?a=2024', '#/local/commune?insee=69123', '#/decisions/votes?p=141']) {
       await ecran(f)
       // Seules les largeurs posées par le CSSOM (data-l, data-g) sont autorisées : pas de style en ligne dans le HTML.
-      const fautifs = Array.from(main.querySelectorAll('[style]')).filter((el) => !el.hasAttribute('data-l') && !el.hasAttribute('data-g'))
+      const fautifs = Array.from(main.querySelectorAll('[style]')).filter((el) => !el.hasAttribute('data-l') && !el.hasAttribute('data-g') && !el.hasAttribute('data-f'))
       expect(fautifs.length, f).toBe(0)
       expect(main.textContent, f).not.toContain('\u2014')
     }
@@ -420,10 +472,10 @@ describe('écrans', () => {
     expect(texte()).toContain('Chaque sujet est présenté avec les mêmes formats : montant, source, part tracée, écarts.')
     expect(main.querySelector('a[href$="/issues"]')?.textContent).toBe('Signale-la sur GitHub')
     expect(main.querySelector('a[href="#/methode"]')?.textContent).toBe('Méthode détaillée')
-    expect(document.querySelector('#bouton-plus')?.getAttribute('aria-current')).toBe('page')
+    expect(document.querySelector('.navigation [aria-current=page]')?.getAttribute('href')).toBe('#/demarche')
     await ecran('#/')
-    expect(texte()).toContain('Plus de 120 sources publiques, vérifiées et reliées entre elles.')
-    expect(main.querySelector('a[href="#/demarche"]')?.textContent).toBe('La démarche')
+    expect(main.querySelector('#nb-sources')?.textContent).toBe('Plus de 120 sources publiques')
+    expect(main.querySelector('a[href="#/demarche"]')?.textContent).toBe('Lire la démarche')
   })
 
   // Lexique neutre (charte docs/NEUTRALITE.md, règle 2) étendu à TOUT le texte affiché, pas seulement aux titres.

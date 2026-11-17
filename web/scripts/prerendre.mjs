@@ -119,25 +119,25 @@ const jeuLd = jeuDeDonnees(ldSource['@graph'].find((x) => x['@type'] === 'Datase
 
 // Polices du premier écran (texte courant et titres), préchargées : elles arrivent avec la feuille de style, avant le
 // premier affichage, ce qui évite le décalage de mise en page au remplacement de la police de repli.
-const POLICES = ['atkinson-hyperlegible-next-latin-400-normal', 'atkinson-hyperlegible-next-latin-700-normal', 'fraunces-latin-700-normal']
+const POLICES = ['figtree-latin-wght-normal', 'bricolage-grotesque-latin-opsz-normal']
 const polices = readdirSync(join(DIST, 'assets')).filter((f) => f.endsWith('.woff2') && POLICES.some((p) => f.startsWith(p + '-')))
 
 const pages = []
 
 /** Compose la page : gabarit de Vite, en-tête propre à la page, contenu prérendu, liens en vrais chemins. */
-function composer({ chemin, titre, description, fil, contenu, indexable }) {
-  const prefixe = prefixeRacine(chemin)
+function composer({ chemin, titre, description, fil, contenu, indexable, racine }) {
+  // racine : préfixe absolu pour la page 404, servie par l'hébergeur à n'importe quelle profondeur
+  const prefixe = racine ?? prefixeRacine(chemin)
   const url = SITE + chemin
   const rel = (fragment) => prefixe + versChemin(fragment)
   const graphe = [siteLd]
   if (!chemin) graphe.push(jeuLd)
   else
-    graphe.push({ '@type': 'WebPage', '@id': url, url, name: titre, description, inLanguage: 'fr', isPartOf: { '@id': `${SITE}#site` } }, {
-      '@type': 'BreadcrumbList',
-      itemListElement: fil.map((m, i) => ({ '@type': 'ListItem', position: i + 1, name: m.nom, item: SITE + versChemin(m.fragment).split('?')[0] })),
-    })
-  const rubrique = '/' + (chemin.split('/')[0] ?? '')
-  const active = ['/demarche', '/beneficiaires', '/decisions', '/methode', '/mentions'].includes(rubrique) ? '/plus' : rubrique
+    graphe.push(
+      { '@type': 'WebPage', '@id': url, url, name: titre, description, inLanguage: 'fr', isPartOf: { '@id': `${SITE}#site` } },
+      ...(fil.length ? [{ '@type': 'BreadcrumbList', itemListElement: fil.map((m, i) => ({ '@type': 'ListItem', position: i + 1, name: m.nom, item: SITE + versChemin(m.fragment).split('?')[0] })) }] : []),
+    )
+  const active = '/' + (chemin.split('/')[0] ?? '')
   const meta = (html, re, valeur) => {
     if (!re.test(html)) throw new Error(`gabarit : balise attendue absente (${re})`)
     return html.replace(re, (_, a, b) => `${a}${echapper(valeur)}${b}`)
@@ -194,6 +194,16 @@ async function prerendre(fragment, { indexable = true, lastmod = dateDonnees } =
 try {
   for (const r of ROUTES) await prerendre('#' + r.chemin, { indexable: !r.sansIndex })
   const nbRoutes = pages.length
+
+  // Page introuvable : 404.html à la racine, avec des chemins absolus (elle répond à toute adresse inconnue).
+  {
+    const base = new URL(SITE).pathname
+    courant = '#/introuvable'
+    main.innerHTML = ''
+    const page = await afficher(ROUTES, main, courant, false)
+    main.querySelectorAll('a[href^="#/"]').forEach((a) => a.setAttribute('href', base + versChemin(a.getAttribute('href'))))
+    writeFileSync(join(DIST, '404.html'), composer({ chemin: '404.html', titre: page.titre, description: page.description, fil: [], contenu: main.innerHTML, indexable: false, racine: base }))
+  }
 
   if (AVEC_COMMUNES) {
     const noms = new Map(TOUS_DEPARTEMENTS)

@@ -174,6 +174,18 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
     await chargerCommunes(depSel.value, insee)
   }
 
+  // Arrivée depuis le héros de l'accueil : salaire et commune repris de la mémoire de la page (jamais d'une adresse),
+  // puis calcul lancé tout de suite avec la situation par défaut, que l'on peut modifier ensuite.
+  const amorce = session.amorce
+  session.amorce = null
+  if (amorce) {
+    $<HTMLInputElement>('#p1-net').value = amorce.net
+    if (amorce.insee && /^(\d{5}|2[AB]\d{3})$/.test(amorce.insee)) {
+      depSel.value = departementDe(amorce.insee)
+      if (depSel.value) await chargerCommunes(depSel.value, amorce.insee)
+    }
+  }
+
   // Le moteur de calcul (environ 160 Ko compressés, exécuté dans un Web Worker) est préchargé dès que l'on commence la saisie.
   const precharger = () => void import('../calcul/hors-fil').then((m) => m.prechauffer()).catch(() => {})
   $('#p1-net').addEventListener('focus', precharger, { once: true })
@@ -310,4 +322,5 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
       retour.innerHTML = '<p class="erreur">Le calcul est indisponible pour le moment. Tu peux toujours <a href="#/explorer/etat">explorer le budget</a>.</p>'
     }
   })
+  if (amorce) form.dispatchEvent(new Event('submit', { cancelable: true }))
 }

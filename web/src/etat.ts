@@ -10,7 +10,9 @@ export const session: {
   communeTaux: [number | null, number | null] | null
   habitudes: HabitudesConso
   complet: Complet | null
-} = { profil: null, resultat: null, communeNom: null, communeTaux: null, habitudes: { voiture: 'inconnu', fumeur: 'inconnu' }, complet: null }
+  /** saisie commencée dans le héros de l'accueil (salaire, commune) : reprise une fois par le formulaire, jamais mise dans une adresse */
+  amorce: { net: string; insee?: string } | null
+} = { profil: null, resultat: null, communeNom: null, communeTaux: null, habitudes: { voiture: 'inconnu', fumeur: 'inconnu' }, complet: null, amorce: null }
 
 export function oublier() {
   session.profil = null

@@ -6,7 +6,7 @@ import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent } from '../donnees'
 import type { Rendu } from '../routeur'
 import { absent, appliquerLargeurs, entier, h, source } from '../util'
-import { blocBudget, type Budgets, type Geo } from './commune'
+import { blocBudget, clesBudget, type Budgets, type Geo } from './commune'
 
 export const titreDepartement = (nom: string, code: string) => `${nom} (${code}) : budget des communes, dépenses, dotations, taux`
 
@@ -56,7 +56,7 @@ ${partPersonnelle()}`
     const z = cible.querySelector<HTMLElement>('#sec-budget-dep')!
     const bd = await chargerSiPresent<Budgets>('local/budgets/departements.json')
     const dpt = bd?.collectivites[dep]
-    z.innerHTML = bd && dpt ? blocBudget(bd, dpt, `Le budget du département : ${dpt.nom}`, true) : `<h2>Le budget du département</h2>${absent('Budget du département non disponible.')}`
+    z.innerHTML = bd && dpt ? clesBudget(bd, dpt) + blocBudget(bd, dpt, `Le budget du département : ${dpt.nom}`, true) : `<h2>Le budget du département</h2>${absent('Budget du département non disponible.')}`
     z.removeAttribute('aria-busy')
     appliquerLargeurs(z)
   })()

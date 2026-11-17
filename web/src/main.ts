@@ -9,31 +9,28 @@ export { ROUTES }
 
 function demarrer() {
   const main = document.getElementById('contenu') as HTMLElement
-  const plus = document.querySelector<HTMLButtonElement>('#bouton-plus')
-  const feuille = document.getElementById('feuille-plus')
-  const fermer = () => {
-    plus?.setAttribute('aria-expanded', 'false')
-    if (feuille) feuille.hidden = true
-  }
-  plus?.addEventListener('click', () => {
-    const ouvert = plus.getAttribute('aria-expanded') === 'true'
-    plus.setAttribute('aria-expanded', String(!ouvert))
-    if (feuille) feuille.hidden = ouvert
-    if (!ouvert) feuille?.querySelector<HTMLElement>('a')?.focus()
+  // Téléphone : la navigation s'ouvre par le bouton « Menu » (sur ordinateur elle est toujours visible).
+  const menu = document.querySelector<HTMLButtonElement>('#bouton-menu')
+  const liste = document.getElementById('menu')
+  const fermer = () => menu?.setAttribute('aria-expanded', 'false')
+  menu?.addEventListener('click', () => {
+    const ouvert = menu.getAttribute('aria-expanded') === 'true'
+    menu.setAttribute('aria-expanded', String(!ouvert))
+    if (!ouvert) liste?.querySelector<HTMLElement>('a')?.focus()
   })
-  feuille?.addEventListener('click', (e) => {
+  liste?.addEventListener('click', (e) => {
     if ((e.target as HTMLElement).closest('a')) fermer()
   })
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && feuille && !feuille.hidden) {
+    if (e.key === 'Escape' && menu?.getAttribute('aria-expanded') === 'true') {
       fermer()
-      plus?.focus()
+      menu.focus()
     }
   })
-  // La feuille « Plus » se ferme quand le focus clavier en sort (elle ne masque plus l'élément actif).
+  // Le menu se referme quand le focus clavier en sort (il ne masque pas l'élément actif).
   document.getElementById('navigation')?.addEventListener('focusout', (e) => {
     const vers = (e as FocusEvent).relatedTarget as Node | null
-    if (feuille && !feuille.hidden && vers && !document.getElementById('navigation')!.contains(vers)) fermer()
+    if (vers && !document.getElementById('navigation')!.contains(vers)) fermer()
   })
   // Tableaux insérés après le rendu (fiches dépliées, pagination) : rendus atteignables au clavier.
   if (typeof MutationObserver !== 'undefined') new MutationObserver(() => rendreDefilables(main)).observe(main, { childList: true, subtree: true })

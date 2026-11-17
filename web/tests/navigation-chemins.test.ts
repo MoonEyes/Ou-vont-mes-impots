@@ -53,7 +53,8 @@ describe('navigation en vrais chemins', () => {
   it('liens : vrais chemins absolus dans l’en-tête, le pied et le contenu ; plus aucun fragment', async () => {
     expect(document.querySelector('.marque')?.getAttribute('href')).toBe(BASE)
     expect(document.querySelector('.navigation a[data-rubrique="/calcul"]')?.getAttribute('href')).toBe(`${BASE}calcul/`)
-    expect(document.querySelector('.pied a')?.getAttribute('href')).toBe(`${BASE}methode/`)
+    expect(document.querySelector('.pied .marque')?.getAttribute('href')).toBe(BASE)
+    expect(document.querySelector('.pied nav a')?.getAttribute('href')).toBe(`${BASE}calcul/`)
     await attendreQue(() => main.querySelectorAll('a[href^="#/"]').length === 0 && main.querySelectorAll('a').length > 2)
     expect(main.querySelector('.fil-ariane a')?.getAttribute('href')).toBe(BASE)
     expect(document.querySelectorAll('a[href^="#/"]')).toHaveLength(0)

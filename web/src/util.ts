@@ -61,20 +61,27 @@ const ACCENTS: Record<string, string> = {
 }
 export const libelle = (x: string) => ACCENTS[x] ?? x
 
-/** Statuts de traçabilité, codés trois fois : motif (trait plein, tirets, pointillés), libellé et couleur. */
+/** Statuts de traçabilité, toujours codés par un motif et un mot : plein (tracé), pointillé (approché), hachuré (non publié). */
 export type Statut = 'trace' | 'approche' | 'nonpub'
-export const STATUTS: Record<Statut, { libelle: string; lecture: string }> = {
-  trace: { libelle: 'Tracé', lecture: 'destinataire publié' },
-  approche: { libelle: 'Approché', lecture: 'estimé, méthode publiée' },
-  nonpub: { libelle: 'Non publié', lecture: 'aucune donnée ouverte' },
+export const STATUTS: Record<Statut, { libelle: string; lecture: string; motif: string; phrase: string }> = {
+  trace: { libelle: 'Tracé', lecture: 'destinataire publié', motif: 'Plein', phrase: 'Le montant figure dans un document public.' },
+  approche: { libelle: 'Approché', lecture: 'estimé, méthode publiée', motif: 'Pointillé', phrase: 'Une fourchette ou une estimation, dont la méthode est publiée.' },
+  nonpub: { libelle: 'Non publié', lecture: 'aucune donnée ouverte', motif: 'Hachuré', phrase: 'Le destinataire n’apparaît dans aucun document public.' },
 }
-/** Échantillon de trait (SVG) du statut, décoratif : le libellé l'accompagne toujours. */
-export const traitStatut = (s: Statut) =>
-  `<svg class="trait-statut" width="40" height="8" aria-hidden="true" focusable="false"><line class="ligne-${s}" x1="2" y1="4" x2="38" y2="4"></line></svg>`
+/** Pastille du motif du statut, décorative : le libellé l'accompagne toujours. */
+export const traitStatut = (s: Statut) => `<span class="motif motif-${s}" aria-hidden="true"></span>`
+/** Motif et mot, côte à côte : « ▪ tracé ». */
+export const badgeStatut = (s: Statut) => `<span class="badge">${traitStatut(s)}${STATUTS[s].libelle}</span>`
 export function legendeStatuts(statuts: Statut[] = ['trace', 'approche', 'nonpub']): string {
   return `<ul class="legende-statuts" aria-label="Légende de la traçabilité">${statuts
     .map((s) => `<li>${traitStatut(s)}<span><strong>${STATUTS[s].libelle}</strong> : ${STATUTS[s].lecture}</span></li>`)
     .join('')}</ul>`
+}
+/** Légende longue « Comment lire les motifs ». */
+export function lireLesMotifs(): string {
+  return `<div class="carte carte-contour"><h3>Comment lire les motifs</h3><ul class="legende-statuts">${(['trace', 'approche', 'nonpub'] as Statut[])
+    .map((s) => `<li>${traitStatut(s)}<span><strong>${STATUTS[s].motif} : ${STATUTS[s].libelle.toLowerCase()}.</strong> ${STATUTS[s].phrase}</span></li>`)
+    .join('')}</ul></div>`
 }
 
 /** Le chiffre clé de l'écran (un seul surligneur par écran). */
@@ -91,7 +98,7 @@ export interface ElementBarre {
 
 /**
  * Liste de barres proportionnelles (largeur appliquée ensuite par appliquerLargeurs, compatible CSP).
- * Mise en avant : l'élément actif en vert, les autres en taupe ; actif = -1 pour n'en mettre aucun.
+ * Toutes les barres portent la couleur de famille de la page et un contour : aucune n'est mise en avant par la couleur.
  */
 export function barres(elements: ElementBarre[], max?: number, etiquette?: string, actif = 0): string {
   const m = max ?? Math.max(...elements.map((e) => e.valeur), 0)
@@ -101,7 +108,7 @@ export function barres(elements: ElementBarre[], max?: number, etiquette?: strin
       const nom = e.lien ? `<a href="${h(e.lien)}">${h(e.nom)}</a>` : `<span class="nom">${h(e.nom)}</span>`
       const statut = e.statut ? ` statut-${e.statut}` : ''
       return `<li${i === actif ? ' class="actif"' : ''}><div class="barre-tete">${nom}<span class="valeur">${h(e.texte)}${
-        e.statut ? ` <span class="badge">${STATUTS[e.statut].libelle}</span>` : ''
+        e.statut ? ` ${badgeStatut(e.statut)}` : ''
       }</span></div>${e.detail ? `<div class="aide">${h(e.detail)}</div>` : ''}<div class="barre" aria-hidden="true"><span class="barre-remplissage${statut}" data-l="${w.toFixed(2)}"></span></div></li>`
     })
     .join('')}</ul>`
@@ -114,6 +121,9 @@ export function appliquerLargeurs(racine: ParentNode) {
   })
   racine.querySelectorAll<HTMLElement>('[data-g]').forEach((el) => {
     el.style.left = `${el.dataset.g}%`
+  })
+  racine.querySelectorAll<HTMLElement>('[data-f]').forEach((el) => {
+    el.style.flexGrow = el.dataset.f ?? '1'
   })
   rendreDefilables(racine)
 }
@@ -146,6 +156,9 @@ export function annoncer(texte: string) {
     window.setTimeout(() => (z.textContent = texte), 50)
   }
 }
+
+/** « LYON » ou « SAINT-ETIENNE » (fichiers fiscaux en capitales) deviennent « Lyon », « Saint-Etienne ». */
+export const nomVille = (nom: string) => (nom === nom.toUpperCase() ? nom.toLowerCase().replace(/(^|[\s'’-])(\p{L})/gu, (_, a, b) => a + b.toUpperCase()) : nom)
 
 export const numeroProgramme = (id: string) => {
   const m = /(?:^|\/)(\d{3})$/.exec(id)

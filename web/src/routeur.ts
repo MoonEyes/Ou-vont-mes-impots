@@ -3,6 +3,7 @@
 // HTML prérendue (scripts/prerendre.mjs) et src/main.ts branche ici de vrais chemins (voir src/chemins.ts).
 // Arborescence de trois niveaux au plus ; fil d'Ariane et liens « voir aussi » déduits de la table des routes.
 import { versChemin } from './chemins'
+import { picto } from './composants/pictos'
 import { annoncer, appliquerLargeurs, h } from './util'
 
 /**
@@ -46,6 +47,20 @@ export interface Route {
   resume?: string
   /** pas de bloc « voir aussi » ajouté automatiquement */
   sansVoisins?: boolean
+  /** famille de dépense de la page (couleur des barres et du picto) : secu, etat, collectivites, ue, dette, niches, operateurs, prestations */
+  famille?: string
+  /** picto du thème, posé devant le titre de la page (src/composants/pictos.ts) */
+  picto?: string
+}
+
+/** Adresse inconnue : page « introuvable » (elle n'est ni dans la table des routes ni dans le plan du site). */
+export const ROUTE_INTROUVABLE: Route = {
+  chemin: '/introuvable',
+  titre: 'Page introuvable',
+  description: 'Cette adresse ne correspond à aucune page du site.',
+  sansIndex: true,
+  sansVoisins: true,
+  charger: () => import('./ecrans/introuvable'),
 }
 
 /** Anciennes adresses (V1) vers les nouvelles ; les paramètres sont conservés. */
@@ -102,7 +117,7 @@ export function maillons(routes: Route[], route: Route, fil?: Maillon[]): Maillo
 }
 
 function filAriane(items: Maillon[]): string {
-  if (items.length < 3) return ''
+  if (items.length < 2) return ''
   return `<nav class="fil-ariane" aria-label="Fil d'Ariane"><ol>${items
     .map((m, i) => `<li><a href="${h(m.fragment)}"${i === items.length - 1 ? ' aria-current="page"' : ''}>${h(m.nom)}</a></li>`)
     .join('')}</ol></nav>`
@@ -165,7 +180,7 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
     fragment = nouveau
   }
   const { chemin, params } = lireFragment(fragment)
-  const route = routes.find((r) => r.chemin === chemin) ?? routes[0]
+  const route = routes.find((r) => r.chemin === chemin) ?? ROUTE_INTROUVABLE
   const moi = ++jeton
   let suite: Promise<void> | null = null
   let propre: Rendu = {}
@@ -181,7 +196,7 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
     const mod = await route.charger()
     if (moi !== jeton) return
     const zone = document.createElement('div')
-    zone.className = 'ecran'
+    zone.className = `ecran${route.famille ? ` f-${route.famille}` : ''}`
     const rendu = await mod.rendre(zone, params)
     if (rendu && typeof rendu === 'object') {
       propre = rendu
@@ -194,7 +209,14 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
     if (moi !== jeton) return
     const redirige = lireFragment(adresse.lire()).chemin
     if (redirige !== chemin && routes.some((r) => r.chemin === redirige)) return
-    zone.insertAdjacentHTML('afterbegin', filAriane(maillons(routes, route, propre.fil)))
+    zone.insertAdjacentHTML('afterbegin', route === ROUTE_INTROUVABLE ? '' : filAriane(maillons(routes, route, propre.fil)))
+    if (route.picto) {
+      const t = zone.querySelector('h1')
+      if (t && !t.querySelector('.picto')) {
+        t.classList.add('avec-picto')
+        t.insertAdjacentHTML('afterbegin', picto(route.picto, 'picto-grand'))
+      }
+    }
     zone.insertAdjacentHTML('beforeend', voirAussi(routes, route))
     appliquerLargeurs(zone)
     cible.replaceChildren(zone)
@@ -212,9 +234,8 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
   const page = { route, titre: titreDocument(route, propre.titre), description: propre.description ?? route.description, fil: maillons(routes, route, propre.fil) }
   majEntete(page.titre, page.description, fragment)
   const racine = '/' + (route.chemin.split('/')[1] ?? '')
-  document.querySelectorAll('.navigation [data-rubrique]').forEach((a) => {
-    const r = a.getAttribute('data-rubrique')
-    if (r === racine || (r === '/plus' && ['/demarche', '/beneficiaires', '/decisions', '/methode', '/mentions'].includes(racine))) a.setAttribute('aria-current', 'page')
+  document.querySelectorAll('.entete [data-rubrique]').forEach((a) => {
+    if (a.getAttribute('data-rubrique') === racine && route !== ROUTE_INTROUVABLE) a.setAttribute('aria-current', 'page')
     else a.removeAttribute('aria-current')
   })
   if (focus) {

@@ -2,10 +2,13 @@
 import { parDestinataire } from '../calcul/agregats'
 import { destinataire, LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
 import type { Complet } from '../calcul/hors-bulletin'
-import type { Famille, Fourchette, Prelevement, ResultatOk } from '../calcul/types'
+import type { Famille, Prelevement, ResultatOk } from '../calcul/types'
 import { session } from '../etat'
-import { ORDRE_ADMIN, NOM_SUR100, parAdministration, sur100Entiers } from '../calcul/repartition'
-import { appliquerLargeurs, barres, entier, eur, estFourchette, fourchette, h, pct, source, type Statut, STATUTS, surligne, traitStatut } from '../util'
+import { ORDRE_ADMIN, NOM_SUR100 } from '../calcul/repartition'
+import { billet, type Famille as FamilleBillet, FAMILLE_ADMIN, listeParts, partsAdministrations, tableauBillet } from '../composants/billet'
+import { filEuro } from '../composants/fil-euro'
+import { resumer, sorties } from '../composants/resume-calcul'
+import { appliquerLargeurs, badgeStatut, barres, entier, eur, estFourchette, fourchette, h, lireLesMotifs, nomVille, pct, source, type Statut, STATUTS, surligne, traitStatut } from '../util'
 
 const FAMILLES: [Famille, string][] = [
   ['cotisation_salariale', 'Cotisations sociales prélevées sur ton salaire'],
@@ -39,21 +42,10 @@ function ligne(l: Prelevement, couple: boolean): string {
   return `<li${l.nature === 'reduction' ? ' class="reduction"' : ''}>
     <span>${h(l.libelle)}${couple ? h(PERSONNES[l.personne] ?? '') : ''}</span>
     <span class="montant">${h(montant)}${l.non_chiffre ? '' : '<span class="visuellement-cache"> par an</span>'}</span>
-    <span class="dest">${statutLigne(l)}Va à : ${h(dest)}${!parts && admin !== dest ? ` <span class="badge">${h(admin)}</span>` : ''}${h(nonSourcee)}${
+    <span class="dest">${statutLigne(l)}Va à : ${h(dest)}${!parts && admin !== dest ? ` <span class="badge badge-admin">${h(admin)}</span>` : ''}${h(nonSourcee)}${
       !l.non_chiffre && estFourchette(m) ? ` · estimation (central ${h(eur(m.central))})` : ''
     }${l.note ? `<br />${h(l.note)}` : ''}</span>
   </li>`
-}
-
-function sousTotal(ls: Prelevement[]): Fourchette {
-  const t = { bas: 0, central: 0, haut: 0 }
-  for (const l of ls) {
-    if (l.non_chiffre) continue
-    t.bas += l.montant_annuel_eur.bas
-    t.central += l.montant_annuel_eur.central
-    t.haut += l.montant_annuel_eur.haut
-  }
-  return t
 }
 
 function profilTexte(): string {
@@ -70,36 +62,71 @@ function profilTexte(): string {
   return `${sit[p.foyer.situation]}, ${n ? `${n} enfant${n > 1 ? 's' : ''}` : 'sans enfant'}, ${nets.join(' et ')} net avant impôt par mois`
 }
 
-/** Carte récapitulative « Ce que tu verses en un an » : total, fourchette, lignes, répartition sur 100 €. */
+/** Qui bénéficie, en exemples sans montant (les montants sont dans chaque thème d'Explorer). */
+const POUR_QUI: Record<string, string[]> = {
+  'Securite sociale': ['Retraités', 'Malades et hôpitaux', 'Familles'],
+  Etat: ['Élèves et enseignants', 'Armées, police, justice'],
+  'Collectivites locales': ['Ta commune'],
+  Plusieurs: ['Destinataire non publié'],
+}
+
+/** Carte principale « Ce que tu verses en un an » : total, jauge de la fourchette, répartition sur 100 €. */
 function blocTotal(r: ResultatOk, c: Complet | null): string {
   const t = c ? c.total : r.totaux.paye_par_le_foyer
   const net = r.entree.personnes.reduce((s, p) => s + p.salaire_net_avant_impot_annuel, 0)
-  const salaire = sousTotal((c?.lignes ?? r.prelevements).filter((l) => ['cotisation_salariale', 'csg_crds', 'impot_revenu'].includes(l.famille)))
-  const conso = c ? sousTotal(c.conso) : null
-  const locaux = c ? sousTotal(c.locaux) : null
-  const fx = (f: Fourchette) => (estFourchette(f) ? `${entier(Math.round(f.bas))} à ${eur(f.haut)}` : eur(f.central))
-  const lignes: [string, string][] = [['Prélevé sur le salaire et impôt sur le revenu', fx(salaire)]]
-  lignes.push(['TVA et taxes sur la consommation', conso ? fx(conso) : 'non disponible'])
-  if (c && c.locaux.length) {
-    const libLocaux = session.profil?.logement?.statut === 'locataire' ? 'TEOM (dans tes charges)' : 'Taxe foncière et TEOM'
-    lignes.push([libLocaux, c.locaux.every((l) => l.non_chiffre) ? 'non chiffré' : fx(locaux!)])
-  }
-  const admin = parAdministration(c?.lignes ?? r.prelevements.filter((l) => l.inclus_dans_total_paye))
-  const s100 = sur100Entiers(admin)
-  const phrase = ORDRE_ADMIN.filter((a) => s100[a] !== undefined && admin[a] > 0)
+  const s100 = resumer(r, c).sur100
+  const phrase = ORDRE_ADMIN.filter((a) => s100[a] !== undefined)
     .map((a) => `<strong>${s100[a]} €</strong> ${h(NOM_SUR100[a])}`)
     .join(', ')
+  const plage = estFourchette(t)
   return `<section class="recap" data-cle aria-labelledby="titre-recap">
-    <h2 id="titre-recap" class="recap-titre">Ce que tu verses en un an</h2>
+    <h2 id="titre-recap" class="recap-titre">Ce que tu verses en un an${plage ? ', environ' : ''}</h2>
     <p class="grand-chiffre">${surligne(eur(t.central))}</p>
-    ${estFourchette(t) ? `<p class="aide">Fourchette : ${h(eur(t.bas))} à ${h(eur(t.haut))}</p>` : ''}
-    <ul class="recap-lignes">${lignes.map(([a, b]) => `<li><span>${h(a)}</span><span>${h(b)}</span></li>`).join('')}</ul>
+    ${
+      plage
+        ? `<div class="jauge" aria-hidden="true"><span class="j-plein" data-l="${((t.bas / t.haut) * 100).toFixed(1)}"></span><span class="j-points" data-l="${(((t.haut - t.bas) / t.haut) * 100).toFixed(1)}"></span></div>
+    <p class="jauge-bornes">Fourchette : ${h(eur(t.bas))} à ${h(eur(t.haut))}</p>
+    <p class="aide">La fourchette dépend de ce que tu achètes et de tes impôts locaux.</p>`
+        : ''
+    }
     <p class="recap-sur100">Sur 100 € : ${phrase}.</p>
     <p class="aide">Soit ${h(eur(t.central / 12))} par mois, pour ${h(eur(net))} net avant impôt par an. Hors cotisations de ton employeur (plus bas)${
       c?.lignes.some((l) => l.non_chiffre) ? ' ; les montants « non chiffré » ne sont pas comptés' : ''
     }.</p>
     <p class="source">calcul sur ton appareil (modele-social, vérifié face à OpenFisca), Insee, PLF et PLFSS 2026, DGFiP. <a href="#/methode">Méthode</a></p>
   </section>`
+}
+
+/** Billet personnel, parts sur 100 €, les trois sorties et le fil de l'euro. */
+function blocBillet(r: ResultatOk, c: Complet | null): { gauche: string; droite: string; fil: string } {
+  const res = resumer(r, c)
+  const parts = partsAdministrations(res.sur100, ORDRE_ADMIN)
+  const locataire = session.profil?.logement?.statut !== 'proprietaire'
+  const lignes = sorties(res.sources, locataire)
+  const consoAbsente = !res.sources.achats
+  const orduresNonChiffre = !!c && c.locaux.length > 0 && c.locaux.every((l) => l.non_chiffre)
+  return {
+    gauche: `<h2>Ton billet de 100 €</h2>
+${billet(parts, { etiquette: 'Ton billet de 100 € découpé par destinataire' })}
+${tableauBillet(parts, 'Sur 100 € que tu verses, par destinataire')}`,
+    droite: `<h2>Où ça va, sur 100 €</h2>
+${listeParts(parts, 'Où vont 100 € que tu verses')}
+<h2>D’où ça sort</h2>
+<p class="chapeau">${lignes.length > 1 ? 'Ce qui est pris sur ton salaire, ce que tu verses en achetant, et tes impôts locaux.' : 'Ce qui est pris sur ton salaire.'}</p>
+<ul class="postes">${lignes
+      .map((l) => `<li><span class="p-nom">${h(l.nom)}<small>${h(l.detail)}</small></span><span class="p-montant">${h(l.texte)}</span>${badgeStatut(l.statut)}</li>`)
+      .join('')}${consoAbsente ? `<li><span class="p-nom">Sur tes achats<small>TVA et taxes sur la consommation</small></span><span class="p-montant">non disponible</span>${badgeStatut('nonpub')}</li>` : ''}${
+      orduresNonChiffre ? `<li><span class="p-nom">Impôts locaux<small>${locataire ? 'TEOM (dans tes charges)' : 'Taxe foncière et TEOM'}</small></span><span class="p-montant">non chiffré</span>${badgeStatut('nonpub')}</li>` : ''
+    }</ul>`,
+    fil: `<h2>Le fil de l’euro</h2>
+<p class="chapeau">De ce qui sort de ta poche jusqu’à ceux qui reçoivent. L’épaisseur de chaque ruban suit le montant.</p>
+${filEuro(
+  lignes.map((l) => ({ nom: l.nom, court: l.court, texte: l.texte, valeur: l.f.central, statut: l.statut })),
+  eur(res.total.central),
+  ORDRE_ADMIN.filter((a) => res.sur100[a] !== undefined).map((a) => ({ nom: FAMILLE_ADMIN[a].nom.replace('Sans destinataire publié', 'Non publié'), texte: `${res.sur100[a]} €`, valeur: res.sur100[a], famille: FAMILLE_ADMIN[a].famille as FamilleBillet, pour: POUR_QUI[a] ?? [] })),
+)}
+<p class="aide">Les bénéficiaires cités sont des exemples. Leurs montants sont dans chaque thème d’<a href="#/explorer">Explorer</a>.</p>`,
+  }
 }
 
 function blocPlacement(c: Complet | null): string {
@@ -162,11 +189,26 @@ export async function rendre(cible: HTMLElement) {
     })
   }
 
+  const bb = blocBillet(r, c)
   cible.innerHTML = `
-<p><a href="#/calcul">Modifier mon salaire</a></p>
-<h1>Ce que tu verses chaque année</h1>
-<p class="chapeau">${h(profilTexte())}</p>
-${blocTotal(r, c)}
+<h1>Ce que tu verses en un an</h1>
+<p class="chapeau">${h(profilTexte())}${session.communeNom ? `, à ${h(nomVille(session.communeNom))}` : ''}. <a href="#/calcul">Modifier mon salaire</a></p>
+<div class="colonnes">
+  <div>
+    ${blocTotal(r, c)}
+    ${bb.gauche}
+    <div class="actions">
+      <a class="bouton bouton-principal" href="#/explorer/etat">Suivre mes euros</a>
+      <button type="button" id="partager-carte">Partager ma carte</button>
+    </div>
+    <p class="aide" id="partage-info">La carte est une image de ton billet, créée sur ton appareil. Aucun montant n’est mis dans une adresse ni envoyé au site.</p>
+    ${lireLesMotifs()}
+  </div>
+  <div>
+    ${bb.droite}
+  </div>
+</div>
+${bb.fil}
 ${avert}
 <h2>Ligne par ligne, et qui le reçoit</h2>
 ${groupes}
@@ -188,13 +230,9 @@ ${blocTaxeFonciere()}
   <p class="aide">Non comptées : participation à l’effort de construction (Action Logement) et contribution au dialogue social, versées à des organismes hors administrations publiques ; complémentaire santé et prévoyance d’entreprise, variables d’un employeur à l’autre.</p>
 </section>
 <p class="source">Calcul sur ton appareil avec modele-social ${h(r.moteur.version)} (règles de l’Urssaf, licence MIT) et publicodes ${h(r.moteur.publicodes ?? '')}, législation ${h(r.annee_legislation)}. Vérifié sur 20 cas types face à OpenFisca : écart inférieur à 1 % sur le brut, les cotisations salariales, la CSG, la CRDS et l’impôt (voir <a href="#/methode">méthode</a>).</p>
-<div class="actions">
-  <button type="button" id="partager-carte">Partager ma carte</button>
-  <a class="bouton" href="#/calcul">Modifier ma saisie</a>
-</div>
-<p class="aide" id="partage-info">La carte est une image créée sur ton téléphone. Aucun montant n’est mis dans une adresse ni envoyé au site.</p>
+<div class="actions"><a class="bouton" href="#/calcul">Modifier ma saisie</a></div>
 <h2>Et maintenant ?</h2>
-<ul class="cartes">
+<ul class="cartes par-3">
   <li><a href="#/explorer/etat"><strong>Où va l’argent de l’État</strong><span>Les grands postes du budget, jusqu’à la ligne votée.</span></a></li>
   <li><a href="${session.profil?.residence.commune_insee ? `#/local/commune?insee=${encodeURIComponent(session.profil.residence.commune_insee)}` : '#/local'}"><strong>Ta commune</strong><span>Son budget, ses impôts locaux, ce que l’État lui verse.</span></a></li>
   <li><a href="#/beneficiaires"><strong>Qui le reçoit</strong><span>Associations, entreprises, organismes : les bénéficiaires nommés.</span></a></li>

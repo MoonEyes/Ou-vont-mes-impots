@@ -161,7 +161,7 @@ describe('prérendu', () => {
     }
   })
 
-  it('plan du site : exactement les pages indexables, datées par les données ; robots.txt ; pas de 404.html', () => {
+  it('plan du site : exactement les pages indexables, datées par les données ; robots.txt ; 404.html hors plan', () => {
     const xml = readFileSync(join(DIST, 'sitemap.xml'), 'utf8')
     const entrees = [...xml.matchAll(/<url><loc>([^<]+)<\/loc>(?:<lastmod>([^<]+)<\/lastmod>)?<\/url>/g)].map((m) => ({ loc: m[1].replace(/&amp;/g, '&'), lastmod: m[2] }))
     expect(entrees.length).toBe((xml.match(/<url>/g) ?? []).length)
@@ -177,17 +177,27 @@ describe('prérendu', () => {
     expect(entrees[0]).toEqual({ loc: site, lastmod: maj.slice(0, 10) })
     for (const r of ROUTES.filter((x) => x.sansIndex)) expect(xml.includes(`<loc>${site}${versChemin('#' + r.chemin)}</loc>`), r.chemin).toBe(false)
     expect(readFileSync(join(DIST, 'robots.txt'), 'utf8')).toBe(`User-agent: *\nAllow: /\n\nSitemap: ${site}sitemap.xml\n`)
-    expect(existsSync(join(DIST, '404.html'))).toBe(false)
+    // Page introuvable : servie par l'hébergeur avec le statut 404, à n'importe quelle profondeur (chemins absolus), jamais indexée.
+    const introuvable = readFileSync(join(DIST, '404.html'), 'utf8')
+    expect(introuvable).toContain('Ce billet-là, on ne le trouve pas')
+    expect(introuvable).toContain('<meta name="robots" content="noindex, follow" />')
+    const base = new URL(site).pathname
+    expect(introuvable).toContain(`data-racine="${base}"`)
+    expect(introuvable).not.toMatch(/(?:src|href)="\.\.?\//)
+    expect(xml.includes('404.html')).toBe(false)
   })
 
   it('accueil et pages de recherche : contenu lisible sans JavaScript', () => {
     const accueil = page('')
-    expect(texte(accueil).includes('Où va l’argent que tu verses ?')).toBe(true)
+    expect(texte(accueil).includes('Voilà où ils partent.')).toBe(true)
+    // Le billet découpé est dans la page servie, avec ses proportions (SVG en attributs), et les tuiles ont leurs chiffres.
+    expect(/<svg class="billet-large"[^>]*role="group"/.test(contenu(accueil))).toBe(true)
+    expect(/data-caisse="etat">[\s\S]*?<span class="t-chiffre">\d+ Md€<\/span>/.test(contenu(accueil))).toBe(true)
     expect(/<h2>À quoi servent mes impôts \?<\/h2>/.test(contenu(accueil))).toBe(true)
     expect(/Plus de \d+ sources publiques/.test(texte(accueil))).toBe(true)
     expect(contenu(accueil).includes('href="./calcul/"')).toBe(true)
     expect(page('calcul/').titre).toBe('Combien je verse d’impôts et de cotisations : calcul à partir du salaire · Où vont mes impôts')
-    expect(/<h1>Budget de ma commune<\/h1>/.test(contenu(page('local/')))).toBe(true)
+    expect(/<h1[^>]*>(<span class="picto[^>]*>.*?<\/span>)?Budget de ma commune<\/h1>/.test(contenu(page('local/')))).toBe(true)
     expect(/sur 100 €/i.test(texte(page('explorer/etat/')))).toBe(true)
     expect(page('explorer/etat/').html.includes('data-rubrique="/explorer" aria-current="page"')).toBe(true)
     for (const p of pages) expect(p.html.includes('<noscript>'), p.chemin).toBe(true)
