@@ -39,7 +39,7 @@ Exceptions admises (libellés officiels repris tels quels) : titres de publicati
 | `prelevements/tva_conso.json`, `methode` | « ces taxes pèsent sur les revenus » | « ces taxes sont imputées aux revenus » | `prelevements.py` |
 | `vie_politique/partis/*.json` | ordre implicite, départage dépendant de la forme du nom | champ `ordre` (aide totale décroissante, puis `nom_tri`) ; nouveau champ `nom_tri` (capitales sans accents, article initial retiré) ; `nom` reste la dénomination publiée | `vie_politique.py` |
 | `vie_politique/candidats/*.json` | ordre du fichier source | champ `ordre` (circonscription puis nom, alphabétique) et liste triée ; `collecte_le` lu dans les manifestes de collecte (une reproduction sans téléchargement ne change plus la date) | `vie_politique.py` |
-| `local/decisions/index.json`, `limites` | « reste tres partielle » | « Listes publiées et collectées : 32 communes sur 34 969, 14 intercommunalités sur 1 255, 15 départements sur 101, 8 régions sur 18 » (calculé à chaque production) | `local.py` |
+| `local/decisions/index.json`, `limites` | « reste tres partielle » | « Listes publiées et collectées : 32 communes sur 34 875, 14 intercommunalités sur 1 255, 15 départements sur 101, 8 régions sur 18 » (calculé à chaque production) | `local.py` |
 | `niches/sociales.json`, `avertissement` | « Les niches sociales sont l'équivalent… » | « Les exonérations de cotisations (souvent appelées niches sociales) sont l'équivalent… » | `niches.py` |
 
 ## Journal des corrections (17/11/2026)

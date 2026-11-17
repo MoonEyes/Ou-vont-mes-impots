@@ -1102,7 +1102,8 @@ def decisions(con, sirens_coll: dict, g: dict) -> dict:
             "deliberations_par_annee": dict(sorted(ans.items()))})
         resume.setdefault(att, {"type": typ, "code": code, "lignes": 0, "annees": [], "total_eur": 0.0,
                                 "deliberations_seulement": True})
-    totaux = {"commune": len(g["communes"]), "epci": len(g["epcis"]), "departement": len(g["departements"]),
+    # Denominateur = communes des 101 departements couverts (hors collectivites d'outre-mer 975 a 989, sans budget publie ici).
+    totaux = {"commune": sum(1 for c in g["communes"] if c.get("codeDepartement") in g["departements"]), "epci": len(g["epcis"]), "departement": len(g["departements"]),
               "region": len(g["regions"])}
     couv = {t: {"couvertes_subventions": len(couverts[t]), "total": totaux[t],
                 "part_pct": round(100 * len(couverts[t]) / totaux[t], 2) if totaux[t] else 0} for t in totaux}
