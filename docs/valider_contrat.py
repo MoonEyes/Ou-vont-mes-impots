@@ -77,6 +77,12 @@ FICHIERS = [
     ("secu_arbre.schema.json", "secu/arbre_2025/*.json", "existant"),
     ("secu_arbre.schema.json", "secu/cps/*.json", "existant"),
     ("secu_index.schema.json", "secu/index.json", "existant"),
+    # dette publique : encours, intérêts, détenteurs, financement (pipeline/dette.py)
+    ("dette_index.schema.json", "dette/index.json", "existant"),
+    ("dette_encours.schema.json", "dette/encours.json", "existant"),
+    ("dette_interets.schema.json", "dette/interets.json", "existant"),
+    ("dette_detenteurs.schema.json", "dette/detenteurs.json", "existant"),
+    ("dette_financement.schema.json", "dette/financement.json", "existant"),
     # depenses fiscales et niches sociales (pipeline/niches.py)
     ("niches_mesures.schema.json", "niches/mesures.json", "existant"),
     ("niches_programmes.schema.json", "niches/programmes.json", "existant"),

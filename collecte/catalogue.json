@@ -436,6 +436,79 @@
    "licence": "Licence Ouverte 2.0"
   },
   {
+   "id": "dette_series_publiques",
+   "domaine": "dette",
+   "type": "urls",
+   "titre": "Dette publique : encours par sous-secteur, interets, detenteurs, emissions, maturite (Insee BDM, Eurostat, BCE, Senat) ; lu par pipeline/dette.py",
+   "licence": "Licence Ouverte 2.0 (Insee) ; Eurostat et BCE, reutilisation libre avec mention ; documents parlementaires publics",
+   "urls": [
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_ggd?geo=FR&lang=fr&sinceTimePeriod=2000",
+     "nom": "eurostat_gov_10dd_ggd.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=FR&lang=fr&na_item=GD&sinceTimePeriod=2000",
+     "nom": "eurostat_gov_10dd_edpt1.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FR&lang=fr&na_item=D41PAY&na_item=TE&sector=S13&sector=S1311&sector=S1313&sector=S1314&unit=MIO_EUR&unit=PC_GDP&sinceTimePeriod=2000",
+     "nom": "eurostat_gov_10a_main.json"
+    },
+    {
+     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nama_10_gdp?geo=FR&lang=fr&na_item=B1GQ&unit=CP_MEUR&sinceTimePeriod=2000",
+     "nom": "eurostat_nama_10_gdp.json"
+    },
+    {
+     "url": "https://bdm.insee.fr/series/sdmx/data/DETTE-TRIM-APU-2020?startPeriod=2000",
+     "nom": "insee_dette_trim_apu_2020.xml"
+    },
+    {
+     "url": "https://bdm.insee.fr/series/sdmx/data/DETTE-NEGOCIABLE-ETAT?startPeriod=2000",
+     "nom": "insee_dette_negociable_etat.xml"
+    },
+    {
+     "url": "https://data-api.ecb.europa.eu/service/data/GFS/A.N.FR.W0+W1+W2.S13+S1311+S1313+S1314.S1+S121+S12K+S12P+S12T+S1U.C.L.LE.GD.T._Z.XDC._T.F.V.N._T?format=csvdata&startPeriod=2000",
+     "nom": "bce_gfs_detenteurs.csv"
+    },
+    {
+     "url": "https://data-api.ecb.europa.eu/service/data/GFS/M.N.FR.W0.S13.S1.N.LI.F.F3.T._Z.EUR._T.F.V.N._T?format=csvdata&startPeriod=2000-01",
+     "nom": "bce_gfs_emissions.csv"
+    },
+    {
+     "url": "https://data-api.ecb.europa.eu/service/data/GFS/M.N.FR.W0.S13.S1.N.LD.F.F3.T._Z.EUR._T.F.V.N._T?format=csvdata&startPeriod=2000-01",
+     "nom": "bce_gfs_remboursements.csv"
+    },
+    {
+     "url": "https://data-api.ecb.europa.eu/service/data/GFS/M.N.FR.W0.S13.S1.N.L.LE.F3.TT+T._Z.YR._T.F.V.A1._T?format=csvdata&startPeriod=2000-01",
+     "nom": "bce_gfs_maturite.csv"
+    },
+    {
+     "url": "https://data-api.ecb.europa.eu/service/data/GFS/M.N.FR.W0.S13.S1.N.L+LI.LE+LX.F3.T._Z.RT._T.F.V.A1+A12._T?format=csvdata&startPeriod=2000-01",
+     "nom": "bce_gfs_rendements.csv"
+    },
+    {
+     "url": "https://www.ecb.europa.eu/mopo/pdf/PSPP_breakdown_history.csv",
+     "nom": "bce_pspp.csv"
+    },
+    {
+     "url": "https://www.ecb.europa.eu/mopo/pdf/PEPP_public_sector_securities_breakdown_history.csv",
+     "nom": "bce_pepp.csv"
+    },
+    {
+     "url": "https://www.senat.fr/rap/l25-139-312/l25-139-312_mono.html",
+     "nom": "senat_plf2026_efe.html"
+    },
+    {
+     "url": "https://www.senat.fr/fileadmin/cru-1792598966/Commissions/Finances/2026-2027/PLF_2027/Essentiels/Essentiel_EFE_PLF_2027_post-commission.pdf",
+     "nom": "senat_plf2027_efe.pdf"
+    },
+    {
+     "url": "https://www.senat.fr/rap/r24-902/r24-902-syn.pdf",
+     "nom": "senat_r902.pdf"
+    }
+   ]
+  },
+  {
    "id": "benef_projets_achats_publics",
    "domaine": "beneficiaires",
    "type": "ods_export",

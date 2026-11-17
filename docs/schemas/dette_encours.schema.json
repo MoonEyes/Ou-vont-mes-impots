@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/dette_encours.schema.json",
+  "title": "site/data/dette/encours.json : encours de la dette de Maastricht par sous-secteur",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string",
+      "pattern": "^milliards d'euros"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 10
+    },
+    "definition": {
+      "type": "string",
+      "minLength": 10
+    },
+    "derniere_annee": {
+      "$ref": "commun.schema.json#/$defs/annee"
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "titre": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "maj": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "titre",
+          "url",
+          "licence"
+        ]
+      }
+    },
+    "insee": {
+      "type": "object",
+      "required": [
+        "Etat",
+        "ODAC",
+        "APUL",
+        "ASSO",
+        "Ensemble"
+      ],
+      "additionalProperties": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "md": {
+                "type": "object",
+                "propertyNames": {
+                  "$ref": "commun.schema.json#/$defs/annee"
+                },
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              "pct_pib": {
+                "type": "object",
+                "propertyNames": {
+                  "$ref": "commun.schema.json#/$defs/annee"
+                },
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              "pct_pib_mode": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "libelle",
+              "md"
+            ]
+          },
+          {
+            "properties": {
+              "idbank": {
+                "type": "string",
+                "pattern": "^[0-9]{9}$"
+              },
+              "dernier_trimestre": {
+                "type": "object",
+                "properties": {
+                  "periode": {
+                    "type": "string",
+                    "pattern": "^20[0-9]{2}-Q[1-4]$"
+                  },
+                  "md": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "periode",
+                  "md"
+                ]
+              }
+            },
+            "required": [
+              "idbank",
+              "pct_pib",
+              "dernier_trimestre"
+            ]
+          }
+        ]
+      }
+    },
+    "eurostat": {
+      "type": "object",
+      "required": [
+        "S13",
+        "S1311",
+        "S1313",
+        "S1314"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "md": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "pct_pib": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "pct_pib_mode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "libelle",
+          "md"
+        ]
+      }
+    },
+    "bce": {
+      "type": "object",
+      "properties": {
+        "secteurs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "md": {
+                "type": "object",
+                "propertyNames": {
+                  "$ref": "commun.schema.json#/$defs/annee"
+                },
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              "pct_pib": {
+                "type": "object",
+                "propertyNames": {
+                  "$ref": "commun.schema.json#/$defs/annee"
+                },
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              "pct_pib_mode": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "libelle",
+              "md"
+            ]
+          }
+        }
+      },
+      "required": [
+        "secteurs"
+      ]
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "ecart_md": {
+            "type": "number"
+          },
+          "explication": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "annee"
+        ]
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "definition",
+    "derniere_annee",
+    "insee",
+    "eurostat",
+    "ecarts"
+  ]
+}

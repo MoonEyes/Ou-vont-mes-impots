@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/dette_detenteurs.schema.json",
+  "title": "site/data/dette/detenteurs.json : qui détient la dette publique",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string",
+      "pattern": "^milliards d'euros"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 10
+    },
+    "definition": {
+      "type": "string"
+    },
+    "derniere_annee": {
+      "$ref": "commun.schema.json#/$defs/annee"
+    },
+    "total_md": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      },
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "controle_somme_derniere_annee": {
+      "type": "object",
+      "properties": {
+        "somme_md": {
+          "type": "number"
+        },
+        "total_md": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "somme_md",
+        "total_md"
+      ]
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "titre": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "maj": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "titre",
+          "url",
+          "licence"
+        ]
+      }
+    },
+    "eurostat": {
+      "type": "object",
+      "required": [
+        "S2",
+        "S121",
+        "S122_S123",
+        "S124-S129",
+        "S11_S14_S15"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": "string"
+          },
+          "md": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "part": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "libelle",
+          "md",
+          "part"
+        ]
+      }
+    },
+    "bce": {
+      "type": "object",
+      "properties": {
+        "total_md": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "detenteurs_md": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "parts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "required": [
+        "total_md",
+        "detenteurs_md",
+        "parts"
+      ]
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "ecart_md": {
+            "type": "number"
+          },
+          "explication": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "annee"
+        ]
+      }
+    },
+    "eurosysteme_achats_nets_cumules": {
+      "type": "object",
+      "properties": {
+        "definition": {
+          "type": "string"
+        },
+        "pspp_md": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^((19|20)[0-9]{2}|dernier)$"
+          },
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "pepp_md": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^((19|20)[0-9]{2}|dernier)$"
+          },
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "definition",
+        "pspp_md",
+        "pepp_md"
+      ]
+    },
+    "banque_de_france_publie": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "part": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": [
+              "date",
+              "part"
+            ]
+          }
+        }
+      },
+      "required": [
+        "source",
+        "points"
+      ]
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "definition",
+    "eurostat",
+    "bce",
+    "ecarts"
+  ]
+}

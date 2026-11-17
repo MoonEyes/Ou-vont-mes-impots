@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/dette_index.schema.json",
+  "title": "site/data/dette/index.json : synthèse, dette sociale, vérifications, recherche publique",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string",
+      "pattern": "^milliards d'euros"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 10
+    },
+    "fichiers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^dette/[a-z_]+\\.json$"
+      }
+    },
+    "synthese": {
+      "type": "object",
+      "properties": {
+        "encours_maastricht": {
+          "type": "object",
+          "required": [
+            "annee",
+            "md",
+            "pct_pib",
+            "source"
+          ]
+        },
+        "interets_apu_d41": {
+          "type": "object",
+          "required": [
+            "annee",
+            "md",
+            "source"
+          ]
+        },
+        "programme_117": {
+          "type": "object"
+        },
+        "interets_sur_100_eur_cas_c04": {
+          "type": "number"
+        },
+        "non_residents_part": {
+          "type": "number"
+        },
+        "banque_de_france_part": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "encours_maastricht",
+        "interets_apu_d41",
+        "programme_117",
+        "interets_sur_100_eur_cas_c04"
+      ]
+    },
+    "dette_sociale": {
+      "type": "object",
+      "properties": {
+        "definition": {
+          "type": "string"
+        },
+        "asso_maastricht_md": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "cades": {
+          "type": "object",
+          "required": [
+            "source",
+            "situation_nette_md",
+            "dette_amortie_md"
+          ]
+        },
+        "liens_secu": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "fichier": {
+                "type": "string",
+                "pattern": "^secu/.+\\.json$"
+              },
+              "noeud": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "fichier",
+              "noeud"
+            ]
+          }
+        }
+      },
+      "required": [
+        "definition",
+        "asso_maastricht_md",
+        "cades",
+        "liens_secu"
+      ]
+    },
+    "verification_documents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "statut": {
+            "const": "vérifié"
+          },
+          "citations": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "statut",
+          "citations"
+        ]
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "motif": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "motif"
+        ]
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "trouvailles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "nom": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "verdict": {
+                "enum": [
+                  "réutilisable tel quel",
+                  "à adapter",
+                  "inspiration seulement"
+                ]
+              },
+              "licence": {
+                "type": "string"
+              },
+              "mise_a_jour": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "nom",
+              "url",
+              "verdict",
+              "licence",
+              "mise_a_jour"
+            ]
+          }
+        }
+      },
+      "required": [
+        "date",
+        "trouvailles"
+      ]
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "fichiers",
+    "synthese",
+    "dette_sociale",
+    "verification_documents",
+    "sources_inaccessibles",
+    "recherche_publique"
+  ]
+}

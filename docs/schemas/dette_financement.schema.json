@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/dette_financement.schema.json",
+  "title": "site/data/dette/financement.json : émissions, amortissements, durée de vie, OAT indexées",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string",
+      "pattern": "^milliards d'euros"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 10
+    },
+    "dette_negociable_etat": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "object",
+          "properties": {
+            "titre": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "licence": {
+              "type": "string"
+            },
+            "maj": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "titre",
+            "url",
+            "licence"
+          ]
+        },
+        "total_md": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "indexee_inflation_md": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "part_indexee": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "dernier": {
+          "type": "object",
+          "required": [
+            "periode",
+            "total_md"
+          ]
+        }
+      },
+      "required": [
+        "source",
+        "total_md",
+        "indexee_inflation_md",
+        "part_indexee",
+        "dernier"
+      ]
+    },
+    "programme_financement_etat": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "annees": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "statut": {
+                "type": "string"
+              },
+              "emissions_nettes_rachats_md": {
+                "type": "number"
+              },
+              "amortissements_md": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "statut",
+              "emissions_nettes_rachats_md",
+              "amortissements_md"
+            ]
+          }
+        },
+        "ecarts": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "source",
+        "annees",
+        "ecarts"
+      ]
+    },
+    "titres_apu_bce": {
+      "type": "object",
+      "properties": {
+        "emissions_brutes_md": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "remboursements_bruts_md": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "maturite_residuelle_moyenne_ans": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^((19|20)[0-9]{2}|dernier)$"
+          },
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "maturite_initiale_moyenne_ans": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "emissions_brutes_md",
+        "remboursements_bruts_md",
+        "maturite_residuelle_moyenne_ans"
+      ]
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "dette_negociable_etat",
+    "programme_financement_etat",
+    "titres_apu_bce"
+  ]
+}

@@ -1,0 +1,417 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/dette_interets.schema.json",
+  "title": "site/data/dette/interets.json : charge d'intérêts (budgétaire et nationale), part de 100 € d'impôt",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string",
+      "pattern": "^milliards d'euros"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 10
+    },
+    "derniere_annee_nationale": {
+      "$ref": "commun.schema.json#/$defs/annee"
+    },
+    "budgetaire": {
+      "type": "object",
+      "properties": {
+        "comptabilite": {
+          "type": "string"
+        },
+        "programme": {
+          "const": "117"
+        },
+        "annees": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "md": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "statut": {
+                "type": "string",
+                "minLength": 3
+              },
+              "source": {
+                "type": "string"
+              },
+              "motif": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "md",
+              "statut"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "md": {
+                      "type": "null"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "motif"
+                  ]
+                },
+                "else": {
+                  "required": [
+                    "source"
+                  ]
+                }
+              }
+            ]
+          },
+          "minProperties": 27
+        },
+        "previsions": {
+          "type": "object"
+        },
+        "ecarts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "$ref": "commun.schema.json#/$defs/annee"
+              },
+              "ecart_md": {
+                "type": "number"
+              },
+              "explication": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "annee"
+            ]
+          }
+        }
+      },
+      "required": [
+        "comptabilite",
+        "programme",
+        "annees",
+        "ecarts"
+      ]
+    },
+    "nationale": {
+      "type": "object",
+      "properties": {
+        "comptabilite": {
+          "type": "string"
+        },
+        "eurostat": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "object",
+              "properties": {
+                "titre": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "licence": {
+                  "type": "string"
+                },
+                "maj": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "titre",
+                "url",
+                "licence"
+              ]
+            },
+            "secteurs": {
+              "type": "object",
+              "required": [
+                "S13",
+                "S1311",
+                "S1313",
+                "S1314"
+              ],
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "libelle": {
+                    "type": "string"
+                  },
+                  "md": {
+                    "type": "object",
+                    "propertyNames": {
+                      "$ref": "commun.schema.json#/$defs/annee"
+                    },
+                    "additionalProperties": {
+                      "type": "number"
+                    }
+                  },
+                  "pct_pib": {
+                    "type": "object",
+                    "propertyNames": {
+                      "$ref": "commun.schema.json#/$defs/annee"
+                    },
+                    "additionalProperties": {
+                      "type": "number"
+                    }
+                  },
+                  "part_depenses": {
+                    "type": "object",
+                    "propertyNames": {
+                      "$ref": "commun.schema.json#/$defs/annee"
+                    },
+                    "additionalProperties": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "required": [
+                  "libelle",
+                  "md"
+                ]
+              }
+            }
+          },
+          "required": [
+            "source",
+            "secteurs"
+          ]
+        },
+        "insee": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "object",
+              "properties": {
+                "titre": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "licence": {
+                  "type": "string"
+                },
+                "maj": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "titre",
+                "url",
+                "licence"
+              ]
+            },
+            "secteurs": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "libelle": {
+                    "type": "string"
+                  },
+                  "md": {
+                    "type": "object",
+                    "propertyNames": {
+                      "$ref": "commun.schema.json#/$defs/annee"
+                    },
+                    "additionalProperties": {
+                      "type": "number"
+                    }
+                  },
+                  "pct_pib": {
+                    "type": "object",
+                    "propertyNames": {
+                      "$ref": "commun.schema.json#/$defs/annee"
+                    },
+                    "additionalProperties": {
+                      "type": "number"
+                    }
+                  },
+                  "part_depenses": {
+                    "type": "object",
+                    "propertyNames": {
+                      "$ref": "commun.schema.json#/$defs/annee"
+                    },
+                    "additionalProperties": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "required": [
+                  "libelle",
+                  "md"
+                ]
+              }
+            }
+          },
+          "required": [
+            "source",
+            "secteurs"
+          ]
+        },
+        "ecarts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "$ref": "commun.schema.json#/$defs/annee"
+              },
+              "ecart_md": {
+                "type": "number"
+              },
+              "explication": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "annee"
+            ]
+          }
+        }
+      },
+      "required": [
+        "comptabilite",
+        "eurostat",
+        "insee",
+        "ecarts"
+      ]
+    },
+    "cas_type": {
+      "type": "object",
+      "properties": {
+        "total_annuel_eur": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "interets_annuel_eur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "interets_sur_100_eur": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "annee_ratios": {
+          "$ref": "commun.schema.json#/$defs/annee"
+        },
+        "methode": {
+          "type": "string"
+        },
+        "par_administration": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "Etat",
+              "Securite sociale",
+              "Collectivites locales",
+              "Plusieurs"
+            ]
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "montant_annuel_eur": {
+                "type": "number"
+              },
+              "sur_100_eur": {
+                "type": "number"
+              },
+              "secteur": {
+                "type": "string"
+              },
+              "part_interets_dans_depenses": {
+                "type": "number"
+              },
+              "interets_annuel_eur": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "montant_annuel_eur",
+              "sur_100_eur",
+              "secteur",
+              "part_interets_dans_depenses",
+              "interets_annuel_eur"
+            ]
+          }
+        },
+        "lecture_budgetaire_etat": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "total_annuel_eur",
+        "interets_annuel_eur",
+        "interets_sur_100_eur",
+        "annee_ratios",
+        "methode",
+        "par_administration"
+      ]
+    },
+    "sensibilite": {
+      "type": "object",
+      "properties": {
+        "choc": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "hausse_md": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "choc",
+        "source",
+        "hausse_md"
+      ]
+    },
+    "rendements_moyens_pct": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "budgetaire",
+    "nationale",
+    "cas_type",
+    "sensibilite"
+  ]
+}
