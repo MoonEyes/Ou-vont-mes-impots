@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/secu_arbre.schema.json",
+  "title": "site/data/secu/{arbre,arbre_2025,cps}/*.json : arbres Securite sociale et protection sociale (pipeline/secu.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "$ref": "#/$defs/noeud",
+  "properties": {"unite": {"type": "string", "pattern": "^milliards d'euros"}},
+  "required": ["unite"],
+  "$defs": {
+    "mode": {"enum": ["publie", "tableau_image", "derive", "ecart"]},
+    "noeud": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "nom": {"type": "string", "minLength": 1},
+        "niveau": {"enum": ["racine", "organisme", "branche", "poste", "sous_poste", "detail",
+                             "secteur", "regime", "risque", "sous_risque", "groupe", "prestation"]},
+        "md": {"type": "number", "description": "Milliards d'euros, 6 decimales ; somme des enfants ; negatif pour une deduction (transferts internes, remises)"},
+        "sources": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9_]+$"}, "minItems": 1},
+        "tracabilite_pct": {"type": ["number", "null"], "minimum": 0, "maximum": 100,
+                            "description": "part (en valeur absolue) du montant lue directement dans une source (modes publie et tableau_image)"},
+        "mode": {"$ref": "#/$defs/mode"},
+        "modes_md": {"type": "object", "propertyNames": {"$ref": "#/$defs/mode"}, "additionalProperties": {"type": "number"}},
+        "note": {"type": "string"},
+        "ref": {"type": "string"},
+        "destinataire": {"type": "string", "pattern": "^[a-z_]+$", "description": "identifiant de destinataire de prelevements/affectation.json"},
+        "ecarts": {"type": "array", "items": {"type": "object",
+          "properties": {"source": {"type": "string"}, "md": {"type": ["number", "null"]}, "libelle": {"type": "string"}},
+          "required": ["source", "md", "libelle"], "additionalProperties": false}},
+        "enfants": {"type": "array", "items": {"$ref": "#/$defs/noeud"}, "minItems": 1},
+        "fichier": {"type": "string", "pattern": "^secu/(arbre|arbre_2025|cps)/[0-9A-Za-z_-]+\\.json$"},
+        "nb_enfants": {"type": "integer", "minimum": 1},
+        "millesime": {"type": "string"},
+        "source": {"type": "string"},
+        "unite": {"type": "string"},
+        "methode": {"type": "string"},
+        "avertissement": {"type": "string"},
+        "sources_detail": {"type": "object", "additionalProperties": {"type": "object",
+          "properties": {"titre": {"type": "string"}, "url": {"type": "string", "pattern": "^https://"}},
+          "required": ["titre", "url"]}}
+      },
+      "required": ["id", "nom", "niveau", "md", "sources", "tracabilite_pct"],
+      "additionalProperties": false,
+      "dependentRequired": {"fichier": ["nb_enfants"], "nb_enfants": ["fichier"]},
+      "not": {"required": ["enfants", "fichier"]},
+      "if": {"not": {"anyOf": [{"required": ["enfants"]}, {"required": ["fichier"]}]}},
+      "then": {"required": ["mode"]}
+    }
+  }
+}

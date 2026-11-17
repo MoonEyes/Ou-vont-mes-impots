@@ -1,6 +1,6 @@
 # Contrat d'interface pipeline / site
 
-Version du contrat : **1.4** (17/11/2026).
+Version du contrat : **1.5** (17/11/2026).
 
 | Version | Date | Changement |
 |---|---|---|
@@ -9,6 +9,7 @@ Version du contrat : **1.4** (17/11/2026).
 | 1.2 | 16/11/2026 | bloc « Ce qui a été fait » : `realisations/` |
 | 1.3 | 17/11/2026 | `vie_politique/` ; schémas 1.0 alignés sur les fichiers réellement produits (en-tête `millesime`/`source`, enveloppe `communes`, `deficit.json` État et APU, nœuds `psr:` du sankey, montants d'exécution négatifs, arbres LFI 2025 et nature PLF 2025) |
 | 1.4 | 17/11/2026 | `prelevements/` : affectation sourcée de chaque prélèvement, taxes sur la consommation par décile, taxe foncière estimée par commune |
+| 1.5 | 17/11/2026 | `secu/` : arbres Sécurité sociale et protection sociale (comptes des organismes, exécution 2024 et 2025 ; prestations DREES 2024), source, millésime et taux de traçabilité par nœud, écarts entre sources |
 
 Ce document fixe ce que le pipeline (`pipeline/`) écrit dans `site/data/` et ce que le site lit, ainsi que le format d'entrée et de sortie du module de calcul personnel (exécuté dans le navigateur). Chaque format a son JSON Schema dans `docs/schemas/` ; les définitions partagées (en-tête, SIREN, groupe de bénéficiaires) sont dans `commun.schema.json`. Le schéma fait foi en cas de doute ; ce document en donne le sens.
 
@@ -76,6 +77,10 @@ Vérification : `python docs/valider_contrat.py` (installe `jsonschema` si absen
 | `prelevements/tva_conso.json` | `prelevements_tva_conso.schema.json` | TVA, TICPE, tabac, alcool par décile de niveau de vie | € par an et par UC | 2025 (Insee 2019 recalé sur Eurostat) | `prelevements.py` | existant |
 | `prelevements/taxe_fonciere.json` | `prelevements_taxe_fonciere.schema.json` | méthode, limites, agrégats de l'estimation de taxe foncière | € | Exercice 2025 (REI) | `prelevements.py` | existant |
 | `prelevements/taxe_fonciere/<dep>.json` | `prelevements_taxe_fonciere_dep.schema.json` | taxe foncière et TEOM estimées par commune, parts par bénéficiaire | € | Exercice 2025 (REI) | `prelevements.py` | existant |
+| `secu/arbre/racine.json` | `secu_arbre.schema.json` | dépenses des organismes de sécurité sociale et des régimes sociaux par branche et par nature (vue par défaut) | Md€ | Exécution 2024 | `secu.py` | existant |
+| `secu/arbre_2025/racine.json` | `secu_arbre.schema.json` | même arbre, premier niveau publié | Md€ | Exécution 2025 | `secu.py` | existant |
+| `secu/cps/racine.json` + `secu/cps/<chemin>.json` | `secu_arbre.schema.json` | prestations de protection sociale par secteur, régime, risque et prestation (DREES) | Md€ | 2024 | `secu.py` | existant |
+| `secu/index.json` | `secu_index.schema.json` | vues, totaux, traçabilité, vérification des documents, sources, recherche préalable | divers | | `secu.py` | existant |
 | `affectation_prelevements.json` | `affectation_prelevements.schema.json` | ancien format prévu, remplacé à terme par `prelevements/affectation.json` | parts (0 à 1) | | | **prévu** |
 
 Le millésime réel est toujours lu dans le fichier (`millesime`, `annee`, `annees`, clés d'année) ou dans `meta.json` (`millesime.etat_defaut`, `controle.exercice`, `controle.annee_cofog`, `controle.administrations_derniere_annee`, `controle.recettes_annees`, `controle.arbre_administrations.annee`) : le site ne code aucune année en dur.
@@ -382,6 +387,40 @@ Pour une commune : ce que dépensent la commune, son intercommunalité, son dép
 | `local/decisions/index.json`, `<siren>/index.json`, `<siren>/<annee>.json` | `local_decisions_*` | subventions votées par collectivité, couverture publiée | SCDL, Région Pays de la Loire, SIRENE |
 
 Règles propres à ce bloc : on n'additionne jamais commune + EPCI (le bloc communal consolidé de l'OFGL sert à cela) ni département ou région au bloc communal. Bénéficiaires nommés : personnes morales seulement (`sirene.personne_morale`, groupements de personnes physiques exclus) ; le reste est agrégé dans `exclus_personnes_physiques_ou_non_identifies`. Les textes libres (objets de subvention, intitulés de projets, objets de délibération) sont remplacés par `null` s'ils contiennent une civilité ou un prénom suivi d'un nom.
+
+### 2.16 Sécurité sociale et protection sociale : `secu/` (contrat 1.5)
+
+Producteur : `pipeline/secu.py` (arbres construits par le module générique `pipeline/arbre.py`). Chaque fichier porte `millesime`, `source` et `unite` (Md€). Commandes : `python pipeline/secu.py collecter` (réseau, reprenable ; un refus 401/403/429 est noté, jamais contourné ; OCR des tableaux publiés en image, mis en cache dans `data/lake/secu/_ocr_secu/`), `python pipeline/secu.py produire` (sans réseau). Tests : `pytest tests/test_secu.py`.
+
+```
+data/lake/secu/ (PLACSS 2024 texte et annexes 1, 3, 4, 7 ; PLACSS 2025 texte ; DSS Chiffres clés 2024 ;
+                 Unédic data.gouv.fr ; DREES comptes de la protection sociale)
+     └─> pipeline/secu.py (arbre.construire) ─> site/data/secu/arbre/, arbre_2025/, cps/, index.json
+```
+
+Deux comptabilités, jamais additionnées : `arbre` et `arbre_2025` suivent les comptes des organismes (droits constatés : tableau d'équilibre par branche des régimes obligatoires de base, ONDAM, comptes du FSV et de la CADES, compte consolidé des régimes complémentaires, Unédic) ; `cps` suit les comptes de la protection sociale de la DREES (base comptabilité nationale, prestations seulement, tous financeurs).
+
+| Vue | Niveaux | Total | Traçabilité directe |
+|---|---|---|---|
+| `arbre` (Exécution 2024) | `organisme` (régimes de base et FSV, retraites complémentaires, Unédic, CADES) > `branche` (ou poste) > `poste` > `sous_poste` > `detail` | 827,9 Md€ | 78,8 % |
+| `arbre_2025` (Exécution 2025) | `organisme` > `branche` (ou poste) | 727,5 Md€ (sans les retraites complémentaires, non publiées) | 95,1 % |
+| `cps` (2024) | `secteur` > `regime` > `risque` > `sous_risque` > `groupe` > `prestation` > `detail` ; découpe après `regime` | 933,2 Md€ | 100 % |
+
+Nœud : champs de l'arbre État (2.2 : `id`, `nom`, `niveau`, `md`, `enfants` ou `fichier` + `nb_enfants`, chemin relatif à `site/data/`), plus :
+
+| Champ | Type | Sens |
+|---|---|---|
+| `sources` | tableau de clés | sources du montant ; détail (titre, URL, licence, millésime, verdict) dans `sources_detail` de la racine et `sources` de `index.json` |
+| `tracabilite_pct` | nombre (0 à 100) | part du montant (en valeur absolue) lue directement dans une source (`publie` ou `tableau_image`) |
+| `mode` | feuille seulement | `publie` (texte ou jeu ouvert), `tableau_image` (tableau publié en image, revérifié par OCR ou somme de contrôle), `derive` (part publiée × total, différence, arrondis ou non-ventilé de la source), `ecart` (différence de champ entre deux sources) |
+| `modes_md` | nœud intermédiaire | montant par mode |
+| `note`, `ref` | chaînes | calcul d'un montant dérivé ; page de la source |
+| `ecarts[]` | `{source, md, libelle}` | autre montant publié pour le même agrégat (`md` à `null` : comparaison renvoyée à une autre vue), jamais lissé |
+| `destinataire` | chaîne | identifiant de `prelevements/affectation.json` (`cnam`, `branche_atmp`, `cnav`, `cnaf`, `cnsa`, `agirc_arrco`, `unedic`, `cades`) : relie un prélèvement au nœud qui le dépense |
+
+Un montant négatif est une déduction publiée : transferts entre branches et avec le FSV (comptés deux fois dans les branches), remises sur les médicaments, clause de sauvegarde. Un écart de champ est un nœud `ecart` (ex. `robss/maladie/hors_ondam` : charges de la branche moins sous-objectifs ONDAM). Contrôles (`tests/test_secu.py`) : chaque nœud = somme de ses enfants, montants du PLACSS retrouvés, `tracabilite_pct` recalculable depuis les feuilles, destinataires connus d'`affectation.json`.
+
+**`secu/index.json`** : `vue_defaut`, `vues.<vue>` (`millesime`, `fichier`, `total_md`, `noeuds`, `feuilles`, `profondeur`, `fichiers`, `tracabilite_pct`, `modes_md`), `liens_affectation`, `verification_documents` (chaque document : `vérifié` ou absent ; la production échoue si un montant saisi n'est plus dans le document), `sources`, `sources_inaccessibles[]` (`{source, motif}`), `recherche_publique` (`trouvailles[]` : verdict `réutilisable tel quel`, `à adapter` ou `inspiration seulement`, licence, date du dernier commit ou de mise à jour).
 
 ## 3. Module de calcul personnel
 

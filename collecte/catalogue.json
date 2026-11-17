@@ -1997,6 +1997,69 @@
    "titre": "Avis d'attribution de marches des acheteurs francais publies au JOUE (TED) en 2026",
    "licence": "Union europeenne, reutilisation libre (decision 2011/833/UE)",
    "timeout_s": 3000
+  },
+  {
+   "id": "secu_placss2024_texte",
+   "domaine": "secu",
+   "type": "url",
+   "format": "html",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1456.html",
+   "titre": "PLACSS 2024, texte (tableaux d'equilibre par branche, ONDAM, CADES)",
+   "licence": "document administratif public"
+  },
+  {
+   "id": "secu_placss2025_texte",
+   "domaine": "secu",
+   "type": "url",
+   "format": "html",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2843.html",
+   "titre": "PLACSS 2025, texte (tableaux d'equilibre par branche, ONDAM, CADES)",
+   "licence": "document administratif public"
+  },
+  {
+   "id": "secu_placss2024_annexe1_maladie",
+   "domaine": "secu",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/922279/file/x",
+   "titre": "PLACSS 2024, annexe 1, rapport d'evaluation des politiques de securite sociale, Maladie (8 Mo)",
+   "licence": "document administratif public"
+  },
+  {
+   "id": "secu_placss2024_annexe3",
+   "domaine": "secu",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/922636/file/PLACSS2024-Annexe3.pdf",
+   "titre": "PLACSS 2024, annexe 3, ONDAM et depenses de sante",
+   "licence": "document administratif public"
+  },
+  {
+   "id": "secu_placss2024_annexe4",
+   "domaine": "secu",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/922285/file/Annexe%204",
+   "titre": "PLACSS 2024, annexe 4, assurance chomage et retraites complementaires",
+   "licence": "document administratif public"
+  },
+  {
+   "id": "secu_placss2024_annexe7",
+   "domaine": "secu",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/922288/file/Annexe%207",
+   "titre": "PLACSS 2024, annexe 7, comptes definitifs du FSV, de la CADES et du FRR",
+   "licence": "document administratif public"
+  },
+  {
+   "id": "secu_dss_chiffres_cles_2024",
+   "domaine": "secu",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://solidarites.gouv.fr/sites/solidarite/files/2025-09/Chiffres-cles-DSS-2024-ed25.pdf",
+   "titre": "DSS, Les chiffres cles de la securite sociale 2024 (edition 2025)",
+   "licence": "document administratif public"
   }
  ],
  "non_collectables": [

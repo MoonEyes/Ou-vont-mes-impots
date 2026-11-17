@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/secu_index.schema.json",
+  "title": "site/data/secu/index.json : vues, totaux, tracabilite, sources et recherche prealable (pipeline/secu.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "properties": {
+    "unite": {"type": "string"},
+    "vue_defaut": {"enum": ["arbre", "arbre_2025", "cps"]},
+    "vues": {"type": "object", "propertyNames": {"enum": ["arbre", "arbre_2025", "cps"]},
+      "additionalProperties": {"type": "object",
+        "properties": {
+          "millesime": {"type": "string"},
+          "fichier": {"type": "string", "pattern": "^secu/(arbre|arbre_2025|cps)/racine\\.json$"},
+          "total_md": {"type": "number"}, "noeuds": {"type": "integer"}, "feuilles": {"type": "integer"},
+          "profondeur": {"type": "integer"}, "fichiers": {"type": "integer"},
+          "tracabilite_pct": {"type": "number", "minimum": 0, "maximum": 100},
+          "modes_md": {"type": "object"}},
+        "required": ["millesime", "fichier", "total_md", "noeuds", "profondeur", "tracabilite_pct", "modes_md"]}},
+    "liens_affectation": {"type": "object", "required": ["fichier", "noeuds"]},
+    "verification_documents": {"type": "object", "additionalProperties": {"type": "object", "required": ["statut"]}},
+    "sources": {"type": "object", "additionalProperties": {"type": "object",
+      "properties": {"titre": {"type": "string"}, "url": {"type": "string", "pattern": "^https://"},
+                     "licence": {"type": "string"}, "verdict": {"type": "string"}, "millesime": {"type": "string"}},
+      "required": ["titre", "url", "licence", "verdict", "millesime"]}},
+    "sources_inaccessibles": {"type": "array", "items": {"type": "object", "required": ["source", "motif"]}},
+    "recherche_publique": {"type": "object", "required": ["date", "conclusion", "trouvailles"],
+      "properties": {"trouvailles": {"type": "array", "items": {"type": "object",
+        "properties": {"verdict": {"type": "string", "pattern": "^(réutilisable tel quel|à adapter|inspiration seulement|aucun)"}},
+        "required": ["nom", "url", "licence", "verdict"]}}}},
+    "genere_le": {"type": "string"}
+  },
+  "required": ["vue_defaut", "vues", "liens_affectation", "verification_documents", "sources", "sources_inaccessibles", "recherche_publique"]
+}

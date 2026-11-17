@@ -67,6 +67,11 @@ FICHIERS = [
     ("prelevements_taxe_fonciere.schema.json", "prelevements/taxe_fonciere.json", "existant"),
     ("prelevements_taxe_fonciere_dep.schema.json", "prelevements/taxe_fonciere/*.json", "existant"),
     ("affectation_prelevements.schema.json", "affectation_prelevements.json", "prevu"),
+    # contrat 1.5 : Securite sociale et protection sociale (pipeline/secu.py)
+    ("secu_arbre.schema.json", "secu/arbre/*.json", "existant"),
+    ("secu_arbre.schema.json", "secu/arbre_2025/*.json", "existant"),
+    ("secu_arbre.schema.json", "secu/cps/*.json", "existant"),
+    ("secu_index.schema.json", "secu/index.json", "existant"),
     # traçabilité et décisions (pipeline/tracabilite.py, pipeline/decisions.py)
     ("tracabilite_noeud.schema.json", "tracabilite/programme_*.json", "existant"),
     ("tracabilite_noeud.schema.json", "tracabilite/noeud_*.json", "existant"),
