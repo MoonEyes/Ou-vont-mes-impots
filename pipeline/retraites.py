@@ -958,7 +958,9 @@ def produire() -> dict:
             "ressources par origine : publiées en données ouvertes pour le compte d'affectation spéciale Pensions "
             "(prévisions du PLF 2025) et pour les crédits de l'État aux régimes spéciaux seulement",
         ],
-        "sources": {k: dict(v) for k, v in sorted(SOURCES.items())},
+        # `entrepot` : nom dans data/lake/secu/ (pas `fichier`, réservé par le contrat aux liens vers site/data)
+        "sources": {k: {("entrepot" if c == "fichier" else c): x for c, x in v.items()}
+                    for k, v in sorted(SOURCES.items())},
         "sources_inaccessibles": INACCESSIBLES,
         "recherche_publique": RECHERCHE_PUBLIQUE,
     }

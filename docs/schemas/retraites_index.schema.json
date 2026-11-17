@@ -394,7 +394,7 @@
       "additionalProperties": {
         "type": "object",
         "required": [
-          "fichier",
+          "entrepot",
           "url",
           "page",
           "titre",
@@ -415,6 +415,10 @@
           "verdict": {
             "type": "string",
             "pattern": "^(réutilisable tel quel|à adapter|inspiration seulement)"
+          },
+          "entrepot": {
+            "type": "string",
+            "description": "nom du fichier ou du dossier brut dans data/lake/secu/ (non versionné)"
           }
         }
       }
