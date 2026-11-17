@@ -89,3 +89,38 @@ def test_resoudre_complete_et_sauve_le_cache(api):
 def test_charger_cache_absent(monkeypatch, tmp_path):
     monkeypatch.setattr(sirene, "CACHE", tmp_path / "absent.json")
     assert sirene.charger_cache() == {}
+
+
+def test_sauver_fusionne_avec_le_disque(monkeypatch, tmp_path):
+    # une autre collecte a ecrit entre-temps : ses entrees ne sont pas perdues, une categorie connue n'est pas
+    # ecrasee par une entree sans categorie, et le cache en memoire est complete
+    monkeypatch.setattr(sirene, "CACHE", tmp_path / "cache.json")
+    sirene.CACHE.write_text(json.dumps({"111111111": {"cj": "5710", "trouve": True, "nom": "A"},
+                                        "222222222": {"cj": "7210", "trouve": True}}), encoding="utf-8")
+    mien = {"222222222": {"cj": None, "trouve": False}, "333333333": {"cj": "9220", "trouve": True}}
+    sirene._sauver(mien)
+    disque = json.loads(sirene.CACHE.read_text(encoding="utf-8"))
+    assert set(disque) == {"111111111", "222222222", "333333333"}
+    assert disque["222222222"]["cj"] == "7210"
+    assert mien == disque
+    assert not list(tmp_path.glob("*.part"))
+
+
+def _ecrire_cache(args):
+    chemin, debut, n = args
+    sys.path.insert(0, str(ROOT / "pipeline"))
+    import sirene as s
+    s.CACHE = Path(chemin)
+    for i in range(debut, debut + n):
+        s._sauver({f"{i:09d}": {"cj": "5710", "trouve": True}})
+
+
+def test_sauver_concurrent_ne_perd_aucune_entree(tmp_path):
+    # quatre processus ecrivent chacun 25 SIREN distincts, une sauvegarde par SIREN : l'union complete est sur disque
+    import multiprocessing
+    chemin = str(tmp_path / "cache.json")
+    with multiprocessing.get_context("spawn").Pool(4) as pool:
+        pool.map(_ecrire_cache, [(chemin, k * 100, 25) for k in range(4)])
+    disque = json.loads(Path(chemin).read_text(encoding="utf-8"))
+    assert set(disque) == {f"{k * 100 + i:09d}" for k in range(4) for i in range(25)}
+    assert not list(tmp_path.glob("*.part"))

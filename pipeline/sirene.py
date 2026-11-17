@@ -48,11 +48,52 @@ def charger_cache() -> dict:
     return {}
 
 
+def _fusionner(disque: dict, cache: dict) -> dict:
+    """Union des deux caches. Pour un meme SIREN, l'entree en memoire l'emporte, sauf si elle est sans categorie
+    juridique alors que le disque en connait une (une collecte concurrente l'a resolue entre-temps)."""
+    fusion = dict(disque)
+    for s, e in cache.items():
+        d = disque.get(s)
+        if d and d.get("cj") and not (e or {}).get("cj"):
+            continue
+        fusion[s] = e
+    return fusion
+
+
 def _sauver(cache: dict) -> None:
-    CACHE.parent.mkdir(parents=True, exist_ok=True)
-    tmp = CACHE.with_suffix(".part")
-    tmp.write_text(json.dumps(cache, ensure_ascii=False, sort_keys=True), encoding="utf-8")
-    tmp.replace(CACHE)
+    """Ecriture atomique et fusionnante du cache partage (plusieurs collectes concurrentes l'utilisent).
+
+    Sous verrou exclusif (fcntl.flock sur <cache>.lock) : relecture du fichier sur disque, fusion avec `cache`
+    (rien de ce qu'une autre collecte a ecrit n'est perdu), ecriture dans un fichier temporaire propre au
+    processus, puis os.replace (un lecteur voit toujours un fichier complet). `cache` est complete en place
+    par les entrees venues du disque."""
+    import fcntl
+    import os
+    import tempfile
+
+    cible = CACHE
+    cible.parent.mkdir(parents=True, exist_ok=True)
+    with open(cible.with_name(cible.name + ".lock"), "a") as verrou:
+        fcntl.flock(verrou, fcntl.LOCK_EX)
+        try:
+            try:
+                disque = json.loads(cible.read_text(encoding="utf-8")) if cible.exists() else {}
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                disque = {}
+            fusion = _fusionner(disque if isinstance(disque, dict) else {}, cache)
+            fd, tmp = tempfile.mkstemp(prefix=cible.name + ".", suffix=".part", dir=cible.parent)
+            try:
+                with os.fdopen(fd, "w", encoding="utf-8") as f:
+                    f.write(json.dumps(fusion, ensure_ascii=False, sort_keys=True))
+                    f.flush()
+                    os.fsync(f.fileno())
+                os.replace(tmp, cible)
+            except BaseException:
+                Path(tmp).unlink(missing_ok=True)
+                raise
+        finally:
+            fcntl.flock(verrou, fcntl.LOCK_UN)
+    cache.update(fusion)
 
 
 def _interroger(siren: str) -> dict | None:
