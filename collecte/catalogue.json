@@ -3536,6 +3536,96 @@
    "titre": "Etat actionnaire, documents : Insee, societes controlees majoritairement par l'Etat fin 2022 (xlsx) ; Senat, rapport n° 736 (2025-2026), tome II, annexe 21, compte Participations financieres de l'Etat (PDF) ; projet annuel de performances 2026 du compte, miroir Assemblee nationale (PDF) (lu par pipeline/etat_actionnaire.py)",
    "licence": "Licence Ouverte 2.0 (Insee) ; documents parlementaires et budgetaires publics",
    "module": "pipeline/etat_actionnaire.py"
+  },
+  {
+   "id": "fp_insee_effectifs_versants",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/2493501/marc-empl-eff-fonc-pub.xlsx",
+   "titre": "Insee, effectifs dans la fonction publique par versant, statut, ministere et type d'employeur, 2011-2024 (Siasp)",
+   "licence": "Licence Ouverte 2.0 (Insee, reutilisation libre avec mention de la source)",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_insee_ip2094",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/8732435/IP2094.xlsx",
+   "titre": "Insee Premiere n° 2094, L'emploi dans la fonction publique en 2024 : donnees des figures et tableaux complementaires",
+   "licence": "Licence Ouverte 2.0 (Insee, reutilisation libre avec mention de la source)",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_insee_tcrd052",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/2012758/TCRD_052.xlsx",
+   "titre": "Insee, TCRD 052 : effectifs de la fonction publique par versant au 31 decembre 2023, par region et departement",
+   "licence": "Licence Ouverte 2.0 (Insee, reutilisation libre avec mention de la source)",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_jaune_cabinets_plf2026",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1090016/file/20-Jaune2026_Cabinets.pdf",
+   "titre": "Annexe au PLF 2026 (jaune), Personnels affectes dans les cabinets ministeriels : effectifs et dotation ISP par ministere au 1er juillet 2025, agregats sans nom",
+   "licence": "document administratif public",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_jaune_cabinets_plf2025",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Jaunes/20-Jaune_cabinets.pdf",
+   "titre": "Annexe au PLF 2025 (jaune), Personnels affectes dans les cabinets ministeriels : effectifs et dotation ISP par ministere au 1er juillet 2024, agregats sans nom",
+   "licence": "document administratif public",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_jaune_conseils_plf2026",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1090037/file/27-Jaune2026_Recours_Conseils.pdf",
+   "titre": "Annexe au PLF 2026 (jaune), Recours aux conseils exterieurs : depenses 2023 et 2024 par ministere, mission, programme et prestataire (personnes morales)",
+   "licence": "document administratif public",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_jaune_conseils_plf2025",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Jaunes/27-Jaune_recours_conseils.pdf",
+   "titre": "Annexe au PLF 2025 (jaune), Recours aux conseils exterieurs : depenses 2022 et 2023 par ministere, mission, programme et prestataire (personnes morales)",
+   "licence": "document administratif public",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_jaune_conseils_plf2024",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www2.assemblee-nationale.fr/static/16/pdf/Annexes_PLF/Recours_conseils_ext%C3%A9rieurs.pdf",
+   "titre": "Annexe au PLF 2024 (jaune), Recours aux conseils exterieurs : depenses 2021, 2022 et premier semestre 2023",
+   "licence": "document administratif public",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_dgcl_indemnites_elus",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.collectivites-locales.gouv.fr/files/files/1.%20Connaitre%20les%20acteurs%20et%20les%20institutions/3.%20Elus%20locaux/Montants%20plafonds%20indemnit%C3%A9s%20%C3%A9lus%20locaux%20Autom%200723-1-2.pdf",
+   "titre": "DGCL, bareme des indemnites de fonction brutes mensuelles des elus locaux (plafonds legaux par fonction et strate de population, valeur du point au 1er janvier 2024), aucun elu nomme",
+   "licence": "document administratif public",
+   "module": "pipeline/fonction_publique.py"
   }
  ],
  "non_collectables": [

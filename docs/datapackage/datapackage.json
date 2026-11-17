@@ -5,7 +5,7 @@
  "title": "Où vont mes impôts : données publiques retraitées sur les dépenses et recettes publiques",
  "description": "Budget de l'État, Sécurité sociale, collectivités, prélèvements, dette, bénéficiaires nommés (personnes morales), décisions et contrôle, retraités à partir de jeux publics ouverts (data.economie.gouv.fr, data.gouv.fr, Eurostat, Insee, DGFiP, OFGL, Assemblée nationale, Sénat, DILA, CNCCFP, HATVP, Cour des comptes). Site citoyen, non officiel. Chaque fichier JSON porte son millésime et sa source ; un montant écarté est publié avec sa raison. Précautions de lecture et exemples : docs/REUTILISER.md.",
  "homepage": "https://mooneyes.github.io/Ou-vont-mes-impots/",
- "version": "1.6.0",
+ "version": "1.5.0",
  "created": "2026-11-17T19:02:10Z",
  "keywords": [
   "budget de l'État",
@@ -2272,7 +2272,7 @@
    ],
    "motif": "site/data/prestations/index.json",
    "nombre_fichiers": 1,
-   "etape_pipeline": "non rattachée",
+   "etape_pipeline": "prestations",
    "millesimes": [
     "2019 à 2025 (CNAF, Unédic) ; 2020 à 2024 (DREES)"
    ],
@@ -2306,7 +2306,7 @@
    ],
    "motif": "site/data/prestations/nationales.json",
    "nombre_fichiers": 1,
-   "etape_pipeline": "non rattachée",
+   "etape_pipeline": "prestations",
    "millesimes": [
     "2019 à 2025 (CNAF, Unédic) ; 2020 à 2024 (DREES)"
    ],
@@ -2340,7 +2340,7 @@
    ],
    "motif": "site/data/prestations/departements/*.json",
    "nombre_fichiers": 7,
-   "etape_pipeline": "non rattachée",
+   "etape_pipeline": "prestations",
    "millesimes": [
     "Année 2019",
     "Année 2020",
@@ -2352,6 +2352,273 @@
    ],
    "sources_declarees": [
     "CNAF, « Toutes prestations : répartition des allocataires selon la prestation [Départemental] » (s_ben_dep) : foyers, personnes couvertes et montant versé chaque mois, par département, champ CAF ; Aspa : DREES, « Minima sociaux : données départementales par dispositif », tableau 7 : allocataires de l'ASV et de l'Aspa selon le département de résidence au 31 décembre"
+   ]
+  },
+  {
+   "name": "subventions-index",
+   "title": "sources de subventions, totaux, part nommée et agrégée, recouvrements, recherche préalable (pipeline/subventions.py)",
+   "description": "site/data/subventions/index.json : sources de subventions, totaux, part nommée et agrégée, recouvrements, recherche préalable (pipeline/subventions.py). Fichier site/data/subventions/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/subventions_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.gouv.fr et data.ademe.fr (sources ci-dessous) ; Insee, base SIRENE des unités légales (data.gouv.fr, stock du 1er novembre 2026), catégorie juridique",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/subventions/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "subventions",
+   "millesimes": [
+    "2016 à 2026 selon la source"
+   ],
+   "sources_declarees": [
+    "data.gouv.fr et data.ademe.fr (sources ci-dessous) ; Insee, base SIRENE des unités légales (data.gouv.fr, stock du 1er novembre 2026), catégorie juridique"
+   ]
+  },
+  {
+   "name": "subventions-attribuants",
+   "title": "une source de subventions (pipeline/subventions.py)",
+   "description": "site/data/subventions/attribuants/<source>.json : une source de subventions (pipeline/subventions.py). Famille de 10 fichiers (motif site/data/subventions/attribuants/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/attribuants/subv_ademe_aides.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/subventions_attribuant.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "ADEME, « Les aides financières de l'ADEME » (conventions de subvention au format SCDL), https://data.ademe.fr/datasets/les-aides-financieres-de-l'ademe",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    },
+    {
+     "title": "ANCT, « Subventions politique de la ville » (programme 147, format SCDL), https://www.data.gouv.fr/datasets/5a69f47e88ee385c0c053a21",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    },
+    {
+     "title": "ARS Pays de la Loire, « Subventions au titre du Fonds d'intervention régional (FIR) 2025 », https://www.data.gouv.fr/datasets/subventions-de-lars-des-pays-de-la-loire-au-titre-du-fonds-dintervention-regional-fir-2025",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    },
+    {
+     "title": "Agence de l'eau Artois-Picardie, « Conventions de subvention signées » (format SCDL), https://www.data.gouv.fr/datasets/5b9249d2634f411b8339f194",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    },
+    {
+     "title": "Ministère de la Culture, aides à la presse par dispositif (jeux listés par « Aides à la presse »), https://www.data.gouv.fr/datasets/aides-a-la-presse-1",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    },
+    {
+     "title": "Ministère de la Culture, « Aides à la presse : classement des titres de presse aidés », https://www.data.gouv.fr/datasets/aides-a-la-presse-classement-des-titres-de-presse-aides",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    },
+    {
+     "title": "Ministère de la Culture, « Données essentielles des conventions de subvention », https://www.data.gouv.fr/datasets/donnees-essentielles-des-conventions-de-subvention-5",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    },
+    {
+     "title": "Ministère de la Culture, « Festivals financés au titre du programme 131 : Création », https://www.data.gouv.fr/datasets/695b8b6f6bf16db672fa28df",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    },
+    {
+     "title": "Ministère de la Culture, « Les aides déconcentrées au spectacle vivant (ADSV) », https://www.data.gouv.fr/datasets/656565de619420d81ca3e3dc",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    },
+    {
+     "title": "Ministère de la Transition écologique, « Fonds vert : liste des projets subventionnés », https://www.data.gouv.fr/datasets/66a215a463a9da4fb801b8cf",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/subventions/attribuants/*.json",
+   "nombre_fichiers": 10,
+   "etape_pipeline": "subventions",
+   "millesimes": [
+    "Aides 2012 à 2025",
+    "Aides 2015 à 2023",
+    "Aides 2022 à 2024",
+    "Aides 2023 et 2024",
+    "Conventions 2025",
+    "Conventions signées de 2017 à 2026 (10e, 11e et 12e programmes d'intervention)",
+    "Conventions signées de 2021 à 2026",
+    "Dossiers engagés de 2016 à 2025",
+    "Montants engagés de 2019 à 2025",
+    "Montants engagés en 2023, 2024 et 2025"
+   ],
+   "sources_declarees": [
+    "ADEME, « Les aides financières de l'ADEME » (conventions de subvention au format SCDL), https://data.ademe.fr/datasets/les-aides-financieres-de-l'ademe",
+    "ANCT, « Subventions politique de la ville » (programme 147, format SCDL), https://www.data.gouv.fr/datasets/5a69f47e88ee385c0c053a21",
+    "ARS Pays de la Loire, « Subventions au titre du Fonds d'intervention régional (FIR) 2025 », https://www.data.gouv.fr/datasets/subventions-de-lars-des-pays-de-la-loire-au-titre-du-fonds-dintervention-regional-fir-2025",
+    "Agence de l'eau Artois-Picardie, « Conventions de subvention signées » (format SCDL), https://www.data.gouv.fr/datasets/5b9249d2634f411b8339f194",
+    "Ministère de la Culture, aides à la presse par dispositif (jeux listés par « Aides à la presse »), https://www.data.gouv.fr/datasets/aides-a-la-presse-1",
+    "Ministère de la Culture, « Aides à la presse : classement des titres de presse aidés », https://www.data.gouv.fr/datasets/aides-a-la-presse-classement-des-titres-de-presse-aides",
+    "Ministère de la Culture, « Données essentielles des conventions de subvention », https://www.data.gouv.fr/datasets/donnees-essentielles-des-conventions-de-subvention-5",
+    "Ministère de la Culture, « Festivals financés au titre du programme 131 : Création », https://www.data.gouv.fr/datasets/695b8b6f6bf16db672fa28df",
+    "Ministère de la Culture, « Les aides déconcentrées au spectacle vivant (ADSV) », https://www.data.gouv.fr/datasets/656565de619420d81ca3e3dc",
+    "Ministère de la Transition écologique, « Fonds vert : liste des projets subventionnés », https://www.data.gouv.fr/datasets/66a215a463a9da4fb801b8cf"
+   ]
+  },
+  {
+   "name": "subventions-annees",
+   "title": "subventions par année et par source (pipeline/subventions.py)",
+   "description": "site/data/subventions/annees.json : subventions par année et par source (pipeline/subventions.py). Fichier site/data/subventions/annees.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/annees.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/subventions_annees.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "voir subventions/index.json (sources)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/subventions/annees.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "subventions",
+   "millesimes": [
+    "2016 à 2026 selon la source"
+   ],
+   "sources_declarees": [
+    "voir subventions/index.json (sources)"
+   ]
+  },
+  {
+   "name": "subventions-departements",
+   "title": "subventions par département et par source (pipeline/subventions.py)",
+   "description": "site/data/subventions/departements.json : subventions par département et par source (pipeline/subventions.py). Fichier site/data/subventions/departements.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/departements.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/subventions_departements.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "voir subventions/index.json (sources)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/subventions/departements.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "subventions",
+   "millesimes": [
+    "2016 à 2026 selon la source"
+   ],
+   "sources_declarees": [
+    "voir subventions/index.json (sources)"
+   ]
+  },
+  {
+   "name": "subventions-beneficiaires",
+   "title": "bénéficiaires nommés, sources additionnées (pipeline/subventions.py)",
+   "description": "site/data/subventions/beneficiaires.json : bénéficiaires nommés, sources additionnées (pipeline/subventions.py). Fichier site/data/subventions/beneficiaires.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/beneficiaires.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/subventions_beneficiaires.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "voir subventions/index.json (sources) ; Insee, base SIRENE des unités légales (data.gouv.fr, stock du 1er novembre 2026), catégorie juridique",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/subventions/beneficiaires.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "subventions",
+   "millesimes": [
+    "2016 à 2026 selon la source"
+   ],
+   "sources_declarees": [
+    "voir subventions/index.json (sources) ; Insee, base SIRENE des unités légales (data.gouv.fr, stock du 1er novembre 2026), catégorie juridique"
+   ]
+  },
+  {
+   "name": "subventions-programmes",
+   "title": "rattachement des subventions aux programmes LOLF (pipeline/subventions.py)",
+   "description": "site/data/subventions/programmes.json : rattachement des subventions aux programmes LOLF (pipeline/subventions.py). Fichier site/data/subventions/programmes.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/programmes.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/subventions_programmes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "voir subventions/index.json (sources)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/subventions/programmes.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "subventions",
+   "millesimes": [
+    "2016 à 2026 selon la source"
+   ],
+   "sources_declarees": [
+    "voir subventions/index.json (sources)"
    ]
   },
   {
@@ -3189,7 +3456,7 @@
    ],
    "motif": "site/data/comparaison/index.json",
    "nombre_fichiers": 1,
-   "etape_pipeline": "non rattachée",
+   "etape_pipeline": "europe_comparaison",
    "millesimes": [
     "Eurostat, dépenses 2000-2024, prélèvements 2000-2025"
    ],
@@ -3223,7 +3490,7 @@
    ],
    "motif": "site/data/comparaison/depenses/*.json",
    "nombre_fichiers": 11,
-   "etape_pipeline": "non rattachée",
+   "etape_pipeline": "europe_comparaison",
    "millesimes": [
     "Eurostat, 2000-2024"
    ],
@@ -3257,7 +3524,7 @@
    ],
    "motif": "site/data/comparaison/prelevements.json",
    "nombre_fichiers": 1,
-   "etape_pipeline": "non rattachée",
+   "etape_pipeline": "europe_comparaison",
    "millesimes": [
     "Eurostat, 2000-2025"
    ],
@@ -3291,7 +3558,7 @@
    ],
    "motif": "site/data/comparaison/fiches.json",
    "nombre_fichiers": 1,
-   "etape_pipeline": "non rattachée",
+   "etape_pipeline": "europe_comparaison",
    "millesimes": [
     "Eurostat, dépenses 2024, prélèvements 2025 (dernière année publiée par la France et au moins 25 pays)"
    ],
@@ -4088,32 +4355,22 @@
    "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_fonctions_communes.schema.json",
    "licenses": [
     {
-     "name": "ODbL-1.0",
-     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
-     "title": "Open Database License 1.0"
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
     }
    ],
-   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (CD25, Commune de Saint-Claude, Conseil départemental de la Dordogne, Ville de Grenoble, Ville de Montbéliard, ...) ; la lignée est connue par étape, pas par fichier.",
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
    "sources": [
     {
-     "title": "12 jeux de 6 éditeurs (dont CD25, Commune de Saint-Claude, Conseil départemental de la Dordogne, Ville de Grenoble, Ville de Montbéliard) ; détail par jeu : sources.csv, étape local",
-     "licence": "ODbL 1.0 (partage à l'identique)",
-     "licence_normalisee": "ODbL-1.0"
-    },
-    {
-     "title": "228 jeux de 96 éditeurs (dont ADEME, Agence de l'eau Artois-Picardie, Agglomération Montargoise, Bordeaux Métropole, CD28) ; détail par jeu : sources.csv, étape local",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0"
-    },
-    {
-     "title": "23 jeux de 20 éditeurs (dont COMMUNE DE COMMUNAY, COMMUNE DE MANOSQUE, Commune de Plouézec, Commune de Saint-Claude, Commune de Tarbes) ; détail par jeu : sources.csv, étape local",
-     "licence": "licence non précisée par l'éditeur",
+     "title": "data.economie.gouv.fr, DGFiP « Balances comptables des collectivites et des etablissements publics locaux avec la presentation croisee nature-fonction » 2023, 2024, 2025 (budget principal, agrege cote serveur)",
+     "licence": "voir la source citée",
      "licence_normalisee": "non-precisee"
     }
    ],
    "motif": "site/data/local/fonctions/[0-9]*.json",
    "nombre_fichiers": 171,
-   "etape_pipeline": "local",
+   "etape_pipeline": "local_fonctions",
    "millesimes": [
     "Comptes 2023 a 2025 (exercices clos, balances DGFiP)"
    ],
@@ -4132,32 +4389,22 @@
    "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_fonctions_regions.schema.json",
    "licenses": [
     {
-     "name": "ODbL-1.0",
-     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
-     "title": "Open Database License 1.0"
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
     }
    ],
-   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (CD25, Commune de Saint-Claude, Conseil départemental de la Dordogne, Ville de Grenoble, Ville de Montbéliard, ...) ; la lignée est connue par étape, pas par fichier.",
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
    "sources": [
     {
-     "title": "12 jeux de 6 éditeurs (dont CD25, Commune de Saint-Claude, Conseil départemental de la Dordogne, Ville de Grenoble, Ville de Montbéliard) ; détail par jeu : sources.csv, étape local",
-     "licence": "ODbL 1.0 (partage à l'identique)",
-     "licence_normalisee": "ODbL-1.0"
-    },
-    {
-     "title": "228 jeux de 96 éditeurs (dont ADEME, Agence de l'eau Artois-Picardie, Agglomération Montargoise, Bordeaux Métropole, CD28) ; détail par jeu : sources.csv, étape local",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0"
-    },
-    {
-     "title": "23 jeux de 20 éditeurs (dont COMMUNE DE COMMUNAY, COMMUNE DE MANOSQUE, Commune de Plouézec, Commune de Saint-Claude, Commune de Tarbes) ; détail par jeu : sources.csv, étape local",
-     "licence": "licence non précisée par l'éditeur",
+     "title": "data.economie.gouv.fr, DGFiP « Balances comptables des collectivites et des etablissements publics locaux avec la presentation croisee nature-fonction » 2023, 2024, 2025 (budget principal, agrege cote serveur)",
+     "licence": "voir la source citée",
      "licence_normalisee": "non-precisee"
     }
    ],
    "motif": "site/data/local/fonctions/regions.json",
    "nombre_fichiers": 1,
-   "etape_pipeline": "local",
+   "etape_pipeline": "local_fonctions",
    "millesimes": [
     "Comptes 2023 a 2025 (exercices clos, balances DGFiP)"
    ],
@@ -4176,32 +4423,22 @@
    "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_fonctions_index.schema.json",
    "licenses": [
     {
-     "name": "ODbL-1.0",
-     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
-     "title": "Open Database License 1.0"
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
     }
    ],
-   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (CD25, Commune de Saint-Claude, Conseil départemental de la Dordogne, Ville de Grenoble, Ville de Montbéliard, ...) ; la lignée est connue par étape, pas par fichier.",
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
    "sources": [
     {
-     "title": "12 jeux de 6 éditeurs (dont CD25, Commune de Saint-Claude, Conseil départemental de la Dordogne, Ville de Grenoble, Ville de Montbéliard) ; détail par jeu : sources.csv, étape local",
-     "licence": "ODbL 1.0 (partage à l'identique)",
-     "licence_normalisee": "ODbL-1.0"
-    },
-    {
-     "title": "228 jeux de 96 éditeurs (dont ADEME, Agence de l'eau Artois-Picardie, Agglomération Montargoise, Bordeaux Métropole, CD28) ; détail par jeu : sources.csv, étape local",
-     "licence": "Licence Ouverte 2.0",
-     "licence_normalisee": "etalab-2.0"
-    },
-    {
-     "title": "23 jeux de 20 éditeurs (dont COMMUNE DE COMMUNAY, COMMUNE DE MANOSQUE, Commune de Plouézec, Commune de Saint-Claude, Commune de Tarbes) ; détail par jeu : sources.csv, étape local",
-     "licence": "licence non précisée par l'éditeur",
+     "title": "data.economie.gouv.fr, DGFiP « Balances comptables des collectivites et des etablissements publics locaux avec la presentation croisee nature-fonction » 2023, 2024, 2025 (budget principal, agrege cote serveur)",
+     "licence": "voir la source citée",
      "licence_normalisee": "non-precisee"
     }
    ],
    "motif": "site/data/local/fonctions/index.json",
    "nombre_fichiers": 1,
-   "etape_pipeline": "local",
+   "etape_pipeline": "local_fonctions",
    "millesimes": [
     "Sources collectees au 2026-11-17 ; comptes 2023 a 2025"
    ],
@@ -4709,6 +4946,1210 @@
     "data.gouv.fr et portails ODS, jeux SCDL subventions : ods_seinesaintdenis__subventions-versees-associations-seine-saint-denis",
     "data.gouv.fr et portails ODS, jeux SCDL subventions : ods_sicoval__subventions-versees-aux-associations",
     "data.gouv.fr et portails ODS, jeux SCDL subventions : ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-tm, ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-tm-2023, ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-vt-2024, ods_toulouse_metropole__subv-versees-a-des-organismes-2022-tm, ods_toulouse_metropole__subventions-versees-a-des-organismes-2012-toulouse-metropole, ods_toulouse_metropole__subventions-v"
+   ]
+  },
+  {
+   "name": "territoires-index",
+   "title": "couverture, totaux, écarts entre sources, sources et recherche préalable (pipeline/territoires.py)",
+   "description": "site/data/territoires/index.json : couverture, totaux, écarts entre sources, sources et recherche préalable (pipeline/territoires.py). Fichier site/data/territoires/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/territoires/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/territoires_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DGCL (DETR, DSIL, DPV, DSID), ministère chargé du logement (inventaire SRU), DREES (enquête Aide sociale, ISD, APA et PCH) ; liens vers site/data/local",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/territoires/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "territoires",
+   "millesimes": [
+    "Projets 2018 à 2025 ; SRU éditions 2023 à 2026 ; aide sociale 1999 à 2024 ; sources collectées au 2026-11-17"
+   ],
+   "sources_declarees": [
+    "DGCL (DETR, DSIL, DPV, DSID), ministère chargé du logement (inventaire SRU), DREES (enquête Aide sociale, ISD, APA et PCH) ; liens vers site/data/local"
+   ]
+  },
+  {
+   "name": "territoires-n",
+   "title": "projets DETR/DSIL/DPV/DSID, inventaire SRU, aide sociale départementale d'un département (pipeline/territoires.py)",
+   "description": "site/data/territoires/<dep>.json : projets DETR/DSIL/DPV/DSID, inventaire SRU, aide sociale départementale d'un département (pipeline/territoires.py). Famille de 101 fichiers (motif site/data/territoires/[0-9]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/territoires/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/territoires_departement.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DGCL (DETR, DSIL, DPV, DSID), ministère chargé du logement (inventaire SRU), DREES (enquête Aide sociale, ISD, APA et PCH) ; liens vers site/data/local",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/territoires/[0-9]*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "territoires",
+   "millesimes": [
+    "Projets 2018 à 2025 ; SRU éditions 2023 à 2026 ; aide sociale 1999 à 2024 ; sources collectées au 2026-11-17"
+   ],
+   "sources_declarees": [
+    "DGCL (DETR, DSIL, DPV, DSID), ministère chargé du logement (inventaire SRU), DREES (enquête Aide sociale, ISD, APA et PCH) ; liens vers site/data/local"
+   ]
+  },
+  {
+   "name": "numerique-etat-index",
+   "title": "sources, synthèse du panorama des grands projets numériques, fonds de transformation numérique, liens vers l'arbre État, recherche publique",
+   "description": "site/data/numerique_etat/index.json : sources, synthèse du panorama des grands projets numériques, fonds de transformation numérique, liens vers l'arbre État, recherche publique. Fichier site/data/numerique_etat/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DINUM, France Relance, DITP, beta.gouv.fr via data.gouv.fr (détail dans `sources`)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "Éditions 2016-11 à 2025-12 du panorama (22 éditions) ; fonds : décisions 2019 à 2025 selon la source"
+   ],
+   "sources_declarees": [
+    "DINUM, France Relance, DITP, beta.gouv.fr via data.gouv.fr (détail dans `sources`)"
+   ]
+  },
+  {
+   "name": "numerique-etat-annees",
+   "title": "par année, chaque source dans sa colonne (éditions du panorama, décisions France Relance et FITN8, appels FAST), sans addition entre sources",
+   "description": "site/data/numerique_etat/annees.json : par année, chaque source dans sa colonne (éditions du panorama, décisions France Relance et FITN8, appels FAST), sans addition entre sources. Fichier site/data/numerique_etat/annees.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/annees.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_annees.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "panorama DINUM, France Relance (enveloppe MTFP), guichets DITP, FAST : voir numerique_etat/index.json",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/annees.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "2016 à 2025 selon la source"
+   ],
+   "sources_declarees": [
+    "panorama DINUM, France Relance (enveloppe MTFP), guichets DITP, FAST : voir numerique_etat/index.json"
+   ]
+  },
+  {
+   "name": "numerique-etat-panorama-projets",
+   "title": "évolution du coût estimé publié et de la durée publiée de chaque grand projet numérique, édition par édition ; rapprochements de noms documentés",
+   "description": "site/data/numerique_etat/panorama/projets.json : évolution du coût estimé publié et de la durée publiée de chaque grand projet numérique, édition par édition ; rapprochements de noms documentés. Fichier site/data/numerique_etat/panorama/projets.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/panorama/projets.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_panorama_projets.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DINUM, « Panorama des grands projets numériques de l’État », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/582e1e2888ee386b7ac65bb4), 22 éditions de 2016-11 à 2025-12",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/panorama/projets.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "Éditions 2016-11 à 2025-12 du panorama (22 éditions)"
+   ],
+   "sources_declarees": [
+    "DINUM, « Panorama des grands projets numériques de l’État », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/582e1e2888ee386b7ac65bb4), 22 éditions de 2016-11 à 2025-12"
+   ]
+  },
+  {
+   "name": "numerique-etat-panorama-editions",
+   "title": "chaque édition du panorama (projets, coûts estimés publiés, entrants, sortants, par ministère) et éditions par année",
+   "description": "site/data/numerique_etat/panorama/editions.json : chaque édition du panorama (projets, coûts estimés publiés, entrants, sortants, par ministère) et éditions par année. Fichier site/data/numerique_etat/panorama/editions.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/panorama/editions.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_panorama_editions.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DINUM, « Panorama des grands projets numériques de l’État », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/582e1e2888ee386b7ac65bb4), 22 éditions de 2016-11 à 2025-12",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/panorama/editions.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "Éditions 2016-11 à 2025-12 du panorama (22 éditions)"
+   ],
+   "sources_declarees": [
+    "DINUM, « Panorama des grands projets numériques de l’État », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/582e1e2888ee386b7ac65bb4), 22 éditions de 2016-11 à 2025-12"
+   ]
+  },
+  {
+   "name": "numerique-etat-panorama-ministeres",
+   "title": "projets et coûts estimés publiés par ministère porteur tel que publié, édition par édition",
+   "description": "site/data/numerique_etat/panorama/ministeres.json : projets et coûts estimés publiés par ministère porteur tel que publié, édition par édition. Fichier site/data/numerique_etat/panorama/ministeres.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/panorama/ministeres.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_panorama_ministeres.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DINUM, « Panorama des grands projets numériques de l’État », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/582e1e2888ee386b7ac65bb4), 22 éditions de 2016-11 à 2025-12",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/panorama/ministeres.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "Éditions 2016-11 à 2025-12 du panorama (22 éditions)"
+   ],
+   "sources_declarees": [
+    "DINUM, « Panorama des grands projets numériques de l’État », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/582e1e2888ee386b7ac65bb4), 22 éditions de 2016-11 à 2025-12"
+   ]
+  },
+  {
+   "name": "numerique-etat-panorama-programmes",
+   "title": "programmes LOLF cités par les projets du panorama, reliés aux noeuds de l'arbre État",
+   "description": "site/data/numerique_etat/panorama/programmes.json : programmes LOLF cités par les projets du panorama, reliés aux noeuds de l'arbre État. Fichier site/data/numerique_etat/panorama/programmes.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/panorama/programmes.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_panorama_programmes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DINUM, « Panorama des grands projets numériques de l’État », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/582e1e2888ee386b7ac65bb4), 22 éditions de 2016-11 à 2025-12 (colonne « Financement [programme(s)] ») ; arbre État site/data/arbre/racine.json",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/panorama/programmes.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "Éditions 2016-11 à 2025-12 du panorama (22 éditions) ; arbre État : Exécution 2024"
+   ],
+   "sources_declarees": [
+    "DINUM, « Panorama des grands projets numériques de l’État », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/582e1e2888ee386b7ac65bb4), 22 éditions de 2016-11 à 2025-12 (colonne « Financement [programme(s)] ») ; arbre État site/data/arbre/racine.json"
+   ]
+  },
+  {
+   "name": "numerique-etat-fonds-france-relance",
+   "title": "lauréats France Relance du volet mise à niveau numérique de l'État et des territoires, par dispositif, ministère, année et département",
+   "description": "site/data/numerique_etat/fonds/france_relance.json : lauréats France Relance du volet mise à niveau numérique de l'État et des territoires, par dispositif, ministère, année et département. Fichier site/data/numerique_etat/fonds/france_relance.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/france_relance.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_france_relance.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "France Relance (ministère de la Transformation et de la Fonction publiques), « France Relance, lauréats du volet « Mise à niveau numérique de l’État et des territoires » (enveloppe MTFP), édition d'octobre 2022 », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/604b41376268c26e7f983c50)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/fonds/france_relance.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "Décisions du 2021-01-07 au 2022-11-28 (édition d'octobre 2022 du jeu, dernière publiée)"
+   ],
+   "sources_declarees": [
+    "France Relance (ministère de la Transformation et de la Fonction publiques), « France Relance, lauréats du volet « Mise à niveau numérique de l’État et des territoires » (enveloppe MTFP), édition d'octobre 2022 », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/604b41376268c26e7f983c50)"
+   ]
+  },
+  {
+   "name": "numerique-etat-fonds-france-relance-x",
+   "title": "projets lauréats France Relance (numérique) d'un département",
+   "description": "site/data/numerique_etat/fonds/france_relance/<dep>.json : projets lauréats France Relance (numérique) d'un département. Famille de 101 fichiers (motif site/data/numerique_etat/fonds/france_relance/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/france_relance/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_france_relance_dep.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "France Relance (ministère de la Transformation et de la Fonction publiques), « France Relance, lauréats du volet « Mise à niveau numérique de l’État et des territoires » (enveloppe MTFP), édition d'octobre 2022 », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/604b41376268c26e7f983c50)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/fonds/france_relance/*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "Décisions du 2021-01-07 au 2022-11-28 (édition d'octobre 2022 du jeu, dernière publiée)"
+   ],
+   "sources_declarees": [
+    "France Relance (ministère de la Transformation et de la Fonction publiques), « France Relance, lauréats du volet « Mise à niveau numérique de l’État et des territoires » (enveloppe MTFP), édition d'octobre 2022 », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/604b41376268c26e7f983c50)"
+   ]
+  },
+  {
+   "name": "numerique-etat-fonds-ditp",
+   "title": "France Relance, guichets de la DITP (appels FITN8, fonds déconcentré ITN7 par département)",
+   "description": "site/data/numerique_etat/fonds/ditp.json : France Relance, guichets de la DITP (appels FITN8, fonds déconcentré ITN7 par département). Fichier site/data/numerique_etat/fonds/ditp.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/ditp.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_ditp.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Direction interministérielle de la transformation publique (DITP), « France Relance, lauréats des guichets de la DITP (ITN7 déconcentré, FITN8) », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/63ca4ba359801bcd8e64bd98)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/fonds/ditp.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "Projets financés en 2021 et 2022 (jeu publié en janvier 2023)"
+   ],
+   "sources_declarees": [
+    "Direction interministérielle de la transformation publique (DITP), « France Relance, lauréats des guichets de la DITP (ITN7 déconcentré, FITN8) », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/63ca4ba359801bcd8e64bd98)"
+   ]
+  },
+  {
+   "name": "numerique-etat-fonds-ditp-itn7",
+   "title": "projets de collectivités financés par le fonds déconcentré ITN7 (DITP) dans un département",
+   "description": "site/data/numerique_etat/fonds/ditp_itn7/<dep>.json : projets de collectivités financés par le fonds déconcentré ITN7 (DITP) dans un département. Famille de 98 fichiers (motif site/data/numerique_etat/fonds/ditp_itn7/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/ditp_itn7/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_ditp_itn7_dep.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Direction interministérielle de la transformation publique (DITP), « France Relance, lauréats des guichets de la DITP (ITN7 déconcentré, FITN8) », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/63ca4ba359801bcd8e64bd98), classeur ITN7, feuille « Volet 1 »",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/fonds/ditp_itn7/*.json",
+   "nombre_fichiers": 98,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "Projets financés en 2021 et 2022 (jeu publié en janvier 2023)"
+   ],
+   "sources_declarees": [
+    "Direction interministérielle de la transformation publique (DITP), « France Relance, lauréats des guichets de la DITP (ITN7 déconcentré, FITN8) », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/63ca4ba359801bcd8e64bd98), classeur ITN7, feuille « Volet 1 »"
+   ]
+  },
+  {
+   "name": "numerique-etat-fonds-ftap",
+   "title": "lauréats des guichets numériques du Fonds pour la transformation de l'action publique",
+   "description": "site/data/numerique_etat/fonds/ftap.json : lauréats des guichets numériques du Fonds pour la transformation de l'action publique. Fichier site/data/numerique_etat/fonds/ftap.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/ftap.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_ftap.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Direction interministérielle du numérique (DINUM), « Lauréats des guichets numériques du Fonds pour la transformation de l'action publique (FTAP), conventions signées au 23/10/2024 », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/67190c3a47790f31885a4486)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/fonds/ftap.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "Lauréats effectifs au 23/10/2024 (conventions de financement signées depuis 2023)"
+   ],
+   "sources_declarees": [
+    "Direction interministérielle du numérique (DINUM), « Lauréats des guichets numériques du Fonds pour la transformation de l'action publique (FTAP), conventions signées au 23/10/2024 », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/67190c3a47790f31885a4486)"
+   ]
+  },
+  {
+   "name": "numerique-etat-fonds-fast",
+   "title": "projets lauréats du Fonds d'accélération des startups d'État et de territoires, par appel et par année",
+   "description": "site/data/numerique_etat/fonds/fast.json : projets lauréats du Fonds d'accélération des startups d'État et de territoires, par appel et par année. Fichier site/data/numerique_etat/fonds/fast.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/fast.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/numerique_etat_fast.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "beta.gouv.fr (DINUM), « Fonds d'accélération des startups d'État et de territoires (FAST), tableau récapitulatif », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/67051ed2df66a794ed0f016a)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/numerique_etat/fonds/fast.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "numerique_etat",
+   "millesimes": [
+    "Appels à projets 1 à 17 (2019 à 2025), tableau mis à jour le 12/01/2026"
+   ],
+   "sources_declarees": [
+    "beta.gouv.fr (DINUM), « Fonds d'accélération des startups d'État et de territoires (FAST), tableau récapitulatif », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/67051ed2df66a794ed0f016a)"
+   ]
+  },
+  {
+   "name": "marches-index",
+   "title": "marchés publics de tous les acheteurs (DECP consolidées), règles de qualité et lignes écartées, totaux, repère du recensement OECP, centrales d'achat, doublons entre sources, limites (pipeline/marches.py)",
+   "description": "site/data/marches/index.json : marchés publics de tous les acheteurs (DECP consolidées), règles de qualité et lignes écartées, totaux, repère du recensement OECP, centrales d'achat, doublons entre sources, limites (pipeline/marches.py). Fichier site/data/marches/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/marches_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.gouv.fr, « Données essentielles de la commande publique consolidées (format tabulaire) », Colmo (jeu 608c055b35eb4e6ee20eb325, Licence Ouverte 2.0, mise à jour quotidienne) : https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire ; Insee, base SIRENE des unités légales (catégorie juridique et dénomination)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/marches/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "marches",
+   "millesimes": [
+    "Marchés notifiés de 2019 à 2025 (DECP consolidées, version du 2026-11-17)"
+   ],
+   "sources_declarees": [
+    "data.gouv.fr, « Données essentielles de la commande publique consolidées (format tabulaire) », Colmo (jeu 608c055b35eb4e6ee20eb325, Licence Ouverte 2.0, mise à jour quotidienne) : https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire ; Insee, base SIRENE des unités légales (catégorie juridique et dénomination)"
+   ]
+  },
+  {
+   "name": "marches-annees",
+   "title": "marchés retenus par année, par nature et par type, part nommée et part agrégée, lignes écartées de l'année (pipeline/marches.py)",
+   "description": "site/data/marches/annees.json : marchés retenus par année, par nature et par type, part nommée et part agrégée, lignes écartées de l'année (pipeline/marches.py). Fichier site/data/marches/annees.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/annees.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/marches_annees.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.gouv.fr, « Données essentielles de la commande publique consolidées (format tabulaire) », Colmo (jeu 608c055b35eb4e6ee20eb325, Licence Ouverte 2.0, mise à jour quotidienne) : https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire ; Insee, base SIRENE des unités légales (catégorie juridique et dénomination)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/marches/annees.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "marches",
+   "millesimes": [
+    "Marchés notifiés de 2019 à 2025 (DECP consolidées, version du 2026-11-17)"
+   ],
+   "sources_declarees": [
+    "data.gouv.fr, « Données essentielles de la commande publique consolidées (format tabulaire) », Colmo (jeu 608c055b35eb4e6ee20eb325, Licence Ouverte 2.0, mise à jour quotidienne) : https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire ; Insee, base SIRENE des unités légales (catégorie juridique et dénomination)"
+   ]
+  },
+  {
+   "name": "marches-categories",
+   "title": "marchés retenus par catégorie d'acheteur et par année (pipeline/marches.py)",
+   "description": "site/data/marches/categories.json : marchés retenus par catégorie d'acheteur et par année (pipeline/marches.py). Fichier site/data/marches/categories.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/categories.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/marches_categories.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.gouv.fr, « Données essentielles de la commande publique consolidées (format tabulaire) », Colmo (jeu 608c055b35eb4e6ee20eb325, Licence Ouverte 2.0, mise à jour quotidienne) : https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire ; Insee, base SIRENE des unités légales (catégorie juridique et dénomination)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/marches/categories.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "marches",
+   "millesimes": [
+    "Marchés notifiés de 2019 à 2025 (DECP consolidées, version du 2026-11-17)"
+   ],
+   "sources_declarees": [
+    "data.gouv.fr, « Données essentielles de la commande publique consolidées (format tabulaire) », Colmo (jeu 608c055b35eb4e6ee20eb325, Licence Ouverte 2.0, mise à jour quotidienne) : https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire ; Insee, base SIRENE des unités légales (catégorie juridique et dénomination)"
+   ]
+  },
+  {
+   "name": "marches-departements",
+   "title": "marchés retenus par département de l'acheteur et par année, liens vers les fichiers par département (pipeline/marches.py)",
+   "description": "site/data/marches/departements.json : marchés retenus par département de l'acheteur et par année, liens vers les fichiers par département (pipeline/marches.py). Fichier site/data/marches/departements.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/departements.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/marches_departements.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.gouv.fr, « Données essentielles de la commande publique consolidées (format tabulaire) », Colmo (jeu 608c055b35eb4e6ee20eb325, Licence Ouverte 2.0, mise à jour quotidienne) : https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire ; Insee, base SIRENE des unités légales (catégorie juridique et dénomination)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/marches/departements.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "marches",
+   "millesimes": [
+    "Marchés notifiés de 2019 à 2025 (DECP consolidées, version du 2026-11-17)"
+   ],
+   "sources_declarees": [
+    "data.gouv.fr, « Données essentielles de la commande publique consolidées (format tabulaire) », Colmo (jeu 608c055b35eb4e6ee20eb325, Licence Ouverte 2.0, mise à jour quotidienne) : https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire ; Insee, base SIRENE des unités légales (catégorie juridique et dénomination)"
+   ]
+  },
+  {
+   "name": "marches-departements-x",
+   "title": "acheteurs (SIREN) d'un département, montants par année et premiers titulaires nommés (personnes morales seulement) (pipeline/marches.py)",
+   "description": "site/data/marches/departements/<code>.json : acheteurs (SIREN) d'un département, montants par année et premiers titulaires nommés (personnes morales seulement) (pipeline/marches.py). Famille de 106 fichiers (motif site/data/marches/departements/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/departements/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/marches_departement.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.gouv.fr, « Données essentielles de la commande publique consolidées (format tabulaire) », Colmo (jeu 608c055b35eb4e6ee20eb325, Licence Ouverte 2.0, mise à jour quotidienne) : https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire ; Insee, base SIRENE des unités légales (catégorie juridique et dénomination)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/marches/departements/*.json",
+   "nombre_fichiers": 106,
+   "etape_pipeline": "marches",
+   "millesimes": [
+    "Marchés notifiés de 2019 à 2025 (DECP consolidées, version du 2026-11-17)"
+   ],
+   "sources_declarees": [
+    "data.gouv.fr, « Données essentielles de la commande publique consolidées (format tabulaire) », Colmo (jeu 608c055b35eb4e6ee20eb325, Licence Ouverte 2.0, mise à jour quotidienne) : https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire ; Insee, base SIRENE des unités légales (catégorie juridique et dénomination)"
+   ]
+  },
+  {
+   "name": "aide-developpement-index",
+   "title": "grandeurs de l'aide au développement (jamais additionnées), lien avec la mission budgétaire, totaux par grandeur, écarts entre sources, sources et licences",
+   "description": "site/data/aide_developpement/index.json : grandeurs de l'aide au développement (jamais additionnées), lien avec la mission budgétaire, totaux par grandeur, écarts entre sources, sources et licences. Fichier site/data/aide_developpement/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/aide_developpement_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DG Trésor (data.economie.gouv.fr), AFD (data.gouv.fr, opendata.afd.fr), OCDE (sdmx.oecd.org), budget de l'État (site/data/arbre)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/aide_developpement/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "aide_developpement",
+   "millesimes": [
+    "APD déclarée 2018-2024 ; AFD 2018-2026 ; OCDE 2015-2024 ; Expertise France 2020-2026 ; Proparco 2009-2026"
+   ],
+   "sources_declarees": [
+    "DG Trésor (data.economie.gouv.fr), AFD (data.gouv.fr, opendata.afd.fr), OCDE (sdmx.oecd.org), budget de l'État (site/data/arbre)"
+   ]
+  },
+  {
+   "name": "aide-developpement-apd-declaree",
+   "title": "aide publique au développement déclarée par la France au CAD de l'OCDE (DG Trésor), dons et prêts séparés",
+   "description": "site/data/aide_developpement/apd_declaree.json : aide publique au développement déclarée par la France au CAD de l'OCDE (DG Trésor), dons et prêts séparés. Fichier site/data/aide_developpement/apd_declaree.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/apd_declaree.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/aide_developpement_apd_declaree.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DG Trésor, « Aide publique au développement » : activités déclarées par la France au CAD de l'OCDE (https://data.economie.gouv.fr/explore/dataset/aide-publique-au-developpement/)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/aide_developpement/apd_declaree.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "aide_developpement",
+   "millesimes": [
+    "Déclarations 2018 à 2024"
+   ],
+   "sources_declarees": [
+    "DG Trésor, « Aide publique au développement » : activités déclarées par la France au CAD de l'OCDE (https://data.economie.gouv.fr/explore/dataset/aide-publique-au-developpement/)"
+   ]
+  },
+  {
+   "name": "aide-developpement-afd",
+   "title": "concours de l'AFD (standard IATI), dons et prêts séparés, engagements et versements par année, pays et secteur",
+   "description": "site/data/aide_developpement/afd.json : concours de l'AFD (standard IATI), dons et prêts séparés, engagements et versements par année, pays et secteur. Fichier site/data/aide_developpement/afd.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/afd.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/aide_developpement_afd.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "AFD, « Données de l'aide au développement de l'AFD » (standard IATI 2.03, un fichier par pays) (https://www.data.gouv.fr/datasets/donnees-de-laide-au-developpement-de-lafd-1/)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/aide_developpement/afd.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "aide_developpement",
+   "millesimes": [
+    "Engagements et versements 2018 à 2026 (publication du 2026-10-25)"
+   ],
+   "sources_declarees": [
+    "AFD, « Données de l'aide au développement de l'AFD » (standard IATI 2.03, un fichier par pays) (https://www.data.gouv.fr/datasets/donnees-de-laide-au-developpement-de-lafd-1/)"
+   ]
+  },
+  {
+   "name": "aide-developpement-ocde",
+   "title": "statistiques du CAD de l'OCDE pour la France, versements par pays (DAC2A) et engagements par secteur (DAC5), millions de dollars courants",
+   "description": "site/data/aide_developpement/ocde.json : statistiques du CAD de l'OCDE pour la France, versements par pays (DAC2A) et engagements par secteur (DAC5), millions de dollars courants. Fichier site/data/aide_developpement/ocde.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/ocde.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/aide_developpement_ocde.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "OCDE, CAD, table DAC2A : versements d'APD aux pays et régions (donneur : France) ; OCDE, CAD, table DAC5 : engagements d'APD bilatérale par secteur (donneur : France) (https://sdmx.oecd.org/public/rest/)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/aide_developpement/ocde.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "aide_developpement",
+   "millesimes": [
+    "Versements par pays 2015 à 2024 ; engagements par secteur 2015 à 2024"
+   ],
+   "sources_declarees": [
+    "OCDE, CAD, table DAC2A : versements d'APD aux pays et régions (donneur : France) ; OCDE, CAD, table DAC5 : engagements d'APD bilatérale par secteur (donneur : France) (https://sdmx.oecd.org/public/rest/)"
+   ]
+  },
+  {
+   "name": "aide-developpement-expertise-france",
+   "title": "contrats d'Expertise France de plus de 15 000 euros, agrégés par pays, bailleur, année et type d'acte ; aucun attributaire nommé",
+   "description": "site/data/aide_developpement/expertise_france.json : contrats d'Expertise France de plus de 15 000 euros, agrégés par pays, bailleur, année et type d'acte ; aucun attributaire nommé. Fichier site/data/aide_developpement/expertise_france.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/expertise_france.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/aide_developpement_expertise_france.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Expertise France, contrats d'achat et de subvention de plus de 15 000 euros (coopération technique) (https://opendata.afd.fr/explore/dataset/donnees-des-contrats-dachats-et-de-subventions-dun-montant-superieur-a-15-000-ef/)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/aide_developpement/expertise_france.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "aide_developpement",
+   "millesimes": [
+    "Contrats entrés en vigueur de 2020 à 2026"
+   ],
+   "sources_declarees": [
+    "Expertise France, contrats d'achat et de subvention de plus de 15 000 euros (coopération technique) (https://opendata.afd.fr/explore/dataset/donnees-des-contrats-dachats-et-de-subventions-dun-montant-superieur-a-15-000-ef/)"
+   ]
+  },
+  {
+   "name": "aide-developpement-proparco",
+   "title": "financements signés par Proparco, agrégés par année, pays et instrument ; aucun client nommé",
+   "description": "site/data/aide_developpement/proparco.json : financements signés par Proparco, agrégés par année, pays et instrument ; aucun client nommé. Fichier site/data/aide_developpement/proparco.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/proparco.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/aide_developpement_proparco.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Proparco, « Données de l'aide au développement de Proparco » (financements signés) (https://opendata.afd.fr/explore/dataset/donnees-de-laide-au-developpement-de-proparco/)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/aide_developpement/proparco.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "aide_developpement",
+   "millesimes": [
+    "Financements signés de 2009 à 2026"
+   ],
+   "sources_declarees": [
+    "Proparco, « Données de l'aide au développement de Proparco » (financements signés) (https://opendata.afd.fr/explore/dataset/donnees-de-laide-au-developpement-de-proparco/)"
+   ]
+  },
+  {
+   "name": "education-recherche-index",
+   "title": "sources, licences, totaux par source, écarts, liens, limites et recherche préalable de l'axe éducation et recherche (pipeline/education_recherche.py)",
+   "description": "site/data/education_recherche/index.json : sources, licences, totaux par source, écarts, liens, limites et recherche préalable de l'axe éducation et recherche (pipeline/education_recherche.py). Fichier site/data/education_recherche/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/education_recherche_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Agence nationale de la recherche (https://www.data.gouv.fr/datasets/60ca244980d5c4f0aecd07d1) ; Agence nationale de la recherche (https://www.data.gouv.fr/datasets/60ca2086030c7b7e52e2c02e) ; Ministère de l'Éducation nationale (https://data.education.gouv.fr/explore/dataset/fr-en-annuaire-education/) ; Ministère chargé de l'enseignement supérieur et de la recherche (SIES) (https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-budget-collectivites-recherche-technologie-enseignement-superieur/) ; Ministère chargé de l'enseignement supérieur et de la recherche (https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-statistiques-sur-les-effectifs-d-etudiants-inscrits-par-etablissement/) ; Région Île-de-France (https://data.iledefrance.fr/explore/dataset/subventions-votees-pour-les-lycees/) ; Région Centre-Val de Loire (https://data.centrevaldeloire.fr/explore/dataset/dotations-de-fonctionnement-versees-aux-lycees-de-la-region-centre-val-de-loire-en-2025/) ; Région des Pays de la Loire (https://data.paysdelaloire.fr/explore/dataset/234400034_012-001_actions-educatives-lycees-publics-et-prives-rpdl/)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/education_recherche/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "education_recherche",
+   "millesimes": [
+    "ANR 2005-2009 et programmes d'investissements d'avenir 2006-2026 ; lycées : Île-de-France 2021-2023, Centre-Val de Loire 2017-2025, Pays de la Loire 2017-2020 ; budgets des collectivités 2006-2025 ; effectifs étudiants 2006-07 à 2024-25"
+   ],
+   "sources_declarees": [
+    "Agence nationale de la recherche (https://www.data.gouv.fr/datasets/60ca244980d5c4f0aecd07d1) ; Agence nationale de la recherche (https://www.data.gouv.fr/datasets/60ca2086030c7b7e52e2c02e) ; Ministère de l'Éducation nationale (https://data.education.gouv.fr/explore/dataset/fr-en-annuaire-education/) ; Ministère chargé de l'enseignement supérieur et de la recherche (SIES) (https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-budget-collectivites-recherche-technologie-enseignement-superieur/) ; Ministère chargé de l'enseignement supérieur et de la recherche (https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-statistiques-sur-les-effectifs-d-etudiants-inscrits-par-etablissement/) ; Région Île-de-France (https://data.iledefrance.fr/explore/dataset/subventions-votees-pour-les-lycees/) ; Région Centre-Val de Loire (https://data.centrevaldeloire.fr/explore/dataset/dotations-de-fonctionnement-versees-aux-lycees-de-la-region-centre-val-de-loire-en-2025/) ; Région des Pays de la Loire (https://data.paysdelaloire.fr/explore/dataset/234400034_012-001_actions-educatives-lycees-publics-et-prives-rpdl/)"
+   ]
+  },
+  {
+   "name": "education-recherche-anr-etablissements",
+   "title": "projets de l'ANR par établissement (SIREN), organismes non appariés agrégés par catégorie (pipeline/education_recherche.py)",
+   "description": "site/data/education_recherche/anr_etablissements.json : projets de l'ANR par établissement (SIREN), organismes non appariés agrégés par catégorie (pipeline/education_recherche.py). Fichier site/data/education_recherche/anr_etablissements.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/anr_etablissements.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/education_recherche_anr_etablissements.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "ANR, « ANR_02 Projets ANR DGPIE : détail des projets et des partenaires » : projets des programmes d'investissements d'avenir et de France 2030 opérés par l'ANR, partenaires et aide allouée par projet (https://www.data.gouv.fr/datasets/60ca244980d5c4f0aecd07d1) ; Insee, base SIRENE des unités légales (stock, Licence Ouverte 2.0) : catégorie juridique et dénomination ; ANR, « ANR_01 Projets ANR DOS et DGDS : détail des projets et des partenaires », fichiers 2005-2009 : projets, partenaires et aide allouée par partenaire (https://www.data.gouv.fr/datasets/60ca2086030c7b7e52e2c02e)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/education_recherche/anr_etablissements.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "education_recherche",
+   "millesimes": [
+    "ANR : programmes d'investissements d'avenir et France 2030, éditions 2006 à 2026 ; projets financés, éditions 2005 à 2009"
+   ],
+   "sources_declarees": [
+    "ANR, « ANR_02 Projets ANR DGPIE : détail des projets et des partenaires » : projets des programmes d'investissements d'avenir et de France 2030 opérés par l'ANR, partenaires et aide allouée par projet (https://www.data.gouv.fr/datasets/60ca244980d5c4f0aecd07d1) ; Insee, base SIRENE des unités légales (stock, Licence Ouverte 2.0) : catégorie juridique et dénomination ; ANR, « ANR_01 Projets ANR DOS et DGDS : détail des projets et des partenaires », fichiers 2005-2009 : projets, partenaires et aide allouée par partenaire (https://www.data.gouv.fr/datasets/60ca2086030c7b7e52e2c02e)"
+   ]
+  },
+  {
+   "name": "education-recherche-anr-projets",
+   "title": "projets de l'ANR par année, action ou programme et région publiée (pipeline/education_recherche.py)",
+   "description": "site/data/education_recherche/anr_projets.json : projets de l'ANR par année, action ou programme et région publiée (pipeline/education_recherche.py). Fichier site/data/education_recherche/anr_projets.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/anr_projets.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/education_recherche_anr_projets.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "ANR, « ANR_02 Projets ANR DGPIE : détail des projets et des partenaires » : projets des programmes d'investissements d'avenir et de France 2030 opérés par l'ANR, partenaires et aide allouée par projet (https://www.data.gouv.fr/datasets/60ca244980d5c4f0aecd07d1) ; Insee, base SIRENE des unités légales (stock, Licence Ouverte 2.0) : catégorie juridique et dénomination ; ANR, « ANR_01 Projets ANR DOS et DGDS : détail des projets et des partenaires », fichiers 2005-2009 : projets, partenaires et aide allouée par partenaire (https://www.data.gouv.fr/datasets/60ca2086030c7b7e52e2c02e)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/education_recherche/anr_projets.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "education_recherche",
+   "millesimes": [
+    "ANR : programmes d'investissements d'avenir et France 2030, éditions 2006 à 2026 ; projets financés, éditions 2005 à 2009"
+   ],
+   "sources_declarees": [
+    "ANR, « ANR_02 Projets ANR DGPIE : détail des projets et des partenaires » : projets des programmes d'investissements d'avenir et de France 2030 opérés par l'ANR, partenaires et aide allouée par projet (https://www.data.gouv.fr/datasets/60ca244980d5c4f0aecd07d1) ; Insee, base SIRENE des unités légales (stock, Licence Ouverte 2.0) : catégorie juridique et dénomination ; ANR, « ANR_01 Projets ANR DOS et DGDS : détail des projets et des partenaires », fichiers 2005-2009 : projets, partenaires et aide allouée par partenaire (https://www.data.gouv.fr/datasets/60ca2086030c7b7e52e2c02e)"
+   ]
+  },
+  {
+   "name": "education-recherche-lycees-n",
+   "title": "subventions et dotations d'une région aux lycées, par établissement (UAI, SIREN), commune, département, année et dispositif (pipeline/education_recherche.py)",
+   "description": "site/data/education_recherche/lycees/<région>.json : subventions et dotations d'une région aux lycées, par établissement (UAI, SIREN), commune, département, année et dispositif (pipeline/education_recherche.py). Famille de 3 fichiers (motif site/data/education_recherche/lycees/[0-9]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/lycees/11.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/education_recherche_lycees.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Région Centre-Val de Loire, « Dotations de fonctionnement versées aux lycées » (un jeu par année) (https://data.centrevaldeloire.fr/explore/dataset/dotations-de-fonctionnement-versees-aux-lycees-de-la-region-centre-val-de-loire-en-2025/) ; Annuaire de l'éducation : table UAI vers SIRET, commune, département, académie (établissements ouverts ; export sans adresse, téléphone, courriel ni site web) (https://data.education.gouv.fr/explore/dataset/fr-en-annuaire-education/) ; Insee, base SIRENE des unités légales (stock, Licence Ouverte 2.0) : catégorie juridique et dénomination",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    },
+    {
+     "title": "Région des Pays de la Loire, « Actions éducatives conduites dans les lycées publics et privés » (export sans adresse ni géolocalisation) (https://data.paysdelaloire.fr/explore/dataset/234400034_012-001_actions-educatives-lycees-publics-et-prives-rpdl/) ; Annuaire de l'éducation : table UAI vers SIRET, commune, département, académie (établissements ouverts ; export sans adresse, téléphone, courriel ni site web) (https://data.education.gouv.fr/explore/dataset/fr-en-annuaire-education/) ; Insee, base SIRENE des unités légales (stock, Licence Ouverte 2.0) : catégorie juridique et dénomination",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    },
+    {
+     "title": "Région Île-de-France, « Données budgétaires des lycées : subventions votées » (https://data.iledefrance.fr/explore/dataset/subventions-votees-pour-les-lycees/) ; Annuaire de l'éducation : table UAI vers SIRET, commune, département, académie (établissements ouverts ; export sans adresse, téléphone, courriel ni site web) (https://data.education.gouv.fr/explore/dataset/fr-en-annuaire-education/) ; Insee, base SIRENE des unités légales (stock, Licence Ouverte 2.0) : catégorie juridique et dénomination",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/education_recherche/lycees/[0-9]*.json",
+   "nombre_fichiers": 3,
+   "etape_pipeline": "education_recherche",
+   "millesimes": [
+    "Centre-Val de Loire : 2017 à 2025",
+    "Pays de la Loire : campagnes 2017-2018 à 2020-2021",
+    "Île-de-France : décisions de 2021 à 2023"
+   ],
+   "sources_declarees": [
+    "Région Centre-Val de Loire, « Dotations de fonctionnement versées aux lycées » (un jeu par année) (https://data.centrevaldeloire.fr/explore/dataset/dotations-de-fonctionnement-versees-aux-lycees-de-la-region-centre-val-de-loire-en-2025/) ; Annuaire de l'éducation : table UAI vers SIRET, commune, département, académie (établissements ouverts ; export sans adresse, téléphone, courriel ni site web) (https://data.education.gouv.fr/explore/dataset/fr-en-annuaire-education/) ; Insee, base SIRENE des unités légales (stock, Licence Ouverte 2.0) : catégorie juridique et dénomination",
+    "Région des Pays de la Loire, « Actions éducatives conduites dans les lycées publics et privés » (export sans adresse ni géolocalisation) (https://data.paysdelaloire.fr/explore/dataset/234400034_012-001_actions-educatives-lycees-publics-et-prives-rpdl/) ; Annuaire de l'éducation : table UAI vers SIRET, commune, département, académie (établissements ouverts ; export sans adresse, téléphone, courriel ni site web) (https://data.education.gouv.fr/explore/dataset/fr-en-annuaire-education/) ; Insee, base SIRENE des unités légales (stock, Licence Ouverte 2.0) : catégorie juridique et dénomination",
+    "Région Île-de-France, « Données budgétaires des lycées : subventions votées » (https://data.iledefrance.fr/explore/dataset/subventions-votees-pour-les-lycees/) ; Annuaire de l'éducation : table UAI vers SIRET, commune, département, académie (établissements ouverts ; export sans adresse, téléphone, courriel ni site web) (https://data.education.gouv.fr/explore/dataset/fr-en-annuaire-education/) ; Insee, base SIRENE des unités légales (stock, Licence Ouverte 2.0) : catégorie juridique et dénomination"
+   ]
+  },
+  {
+   "name": "education-recherche-collectivites-esr",
+   "title": "budgets des collectivités pour la recherche et l'enseignement supérieur, par année, région, type de collectivité et nature (pipeline/education_recherche.py)",
+   "description": "site/data/education_recherche/collectivites_esr.json : budgets des collectivités pour la recherche et l'enseignement supérieur, par année, région, type de collectivité et nature (pipeline/education_recherche.py). Fichier site/data/education_recherche/collectivites_esr.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/collectivites_esr.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/education_recherche_collectivites_esr.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "SIES, « Budgets des collectivités territoriales en faveur de la recherche et du transfert de technologie, de l'enseignement supérieur et de la vie étudiante » (enquête auprès des collectivités) (https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-budget-collectivites-recherche-technologie-enseignement-superieur/)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/education_recherche/collectivites_esr.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "education_recherche",
+   "millesimes": [
+    "Budgets des collectivités 2006 à 2025 (2024 semi-définitif, 2025 prévisionnel)"
+   ],
+   "sources_declarees": [
+    "SIES, « Budgets des collectivités territoriales en faveur de la recherche et du transfert de technologie, de l'enseignement supérieur et de la vie étudiante » (enquête auprès des collectivités) (https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-budget-collectivites-recherche-technologie-enseignement-superieur/)"
+   ]
+  },
+  {
+   "name": "education-recherche-etudiants",
+   "title": "effectifs étudiants par établissement, commune, département et région ; coût par étudiant calculé, avec sa formule (pipeline/education_recherche.py)",
+   "description": "site/data/education_recherche/etudiants.json : effectifs étudiants par établissement, commune, département et région ; coût par étudiant calculé, avec sa formule (pipeline/education_recherche.py). Fichier site/data/education_recherche/etudiants.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/etudiants.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/education_recherche_etudiants.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "« Statistiques sur les effectifs d'étudiants inscrits par établissement public sous tutelle du ministère en charge de l'Enseignement supérieur » : inscriptions principales (https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-statistiques-sur-les-effectifs-d-etudiants-inscrits-par-etablissement/) ; SIES, « Budgets des collectivités territoriales en faveur de la recherche et du transfert de technologie, de l'enseignement supérieur et de la vie étudiante » (enquête auprès des collectivités) (https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-budget-collectivites-recherche-technologie-enseignement-superieur/)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/education_recherche/etudiants.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "education_recherche",
+   "millesimes": [
+    "Effectifs étudiants années universitaires 2006-07 à 2024-25 ; coût par étudiant calculé, 2007 à 2025"
+   ],
+   "sources_declarees": [
+    "« Statistiques sur les effectifs d'étudiants inscrits par établissement public sous tutelle du ministère en charge de l'Enseignement supérieur » : inscriptions principales (https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-statistiques-sur-les-effectifs-d-etudiants-inscrits-par-etablissement/) ; SIES, « Budgets des collectivités territoriales en faveur de la recherche et du transfert de technologie, de l'enseignement supérieur et de la vie étudiante » (enquête auprès des collectivités) (https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-budget-collectivites-recherche-technologie-enseignement-superieur/)"
+   ]
+  },
+  {
+   "name": "etat-actionnaire-index",
+   "title": "définitions, fichiers, chiffres clés, liens avec recettes.json et l'arbre, sources, sources inaccessibles, recherche publique",
+   "description": "site/data/etat_actionnaire/index.json : définitions, fichiers, chiffres clés, liens avec recettes.json et l'arbre, sources, sources inaccessibles, recherche publique. Fichier site/data/etat_actionnaire/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/etat_actionnaire_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr (recettes du budget général et des comptes spéciaux, PLF 2024 et 2025, LFI 2023 ; dépenses selon destination, PLF 2025 ; annexes des PLRG 2023, 2024 et 2025) ; projet annuel de performances 2026 du compte ; Sénat, rapport n° 736 (2025-2026), tome II, annexe 21 ; Insee, sociétés contrôlées majoritairement par l'État fin 2022",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/etat_actionnaire/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "etat_actionnaire",
+   "millesimes": [
+    "Prévisions 2023 à 2026 (PLF, LFI), exécution 2023 à 2025 (PLRG) ; dividendes de l'État actionnaire 2014 à 2025"
+   ],
+   "sources_declarees": [
+    "data.economie.gouv.fr (recettes du budget général et des comptes spéciaux, PLF 2024 et 2025, LFI 2023 ; dépenses selon destination, PLF 2025 ; annexes des PLRG 2023, 2024 et 2025) ; projet annuel de performances 2026 du compte ; Sénat, rapport n° 736 (2025-2026), tome II, annexe 21 ; Insee, sociétés contrôlées majoritairement par l'État fin 2022"
+   ]
+  },
+  {
+   "name": "etat-actionnaire-flux",
+   "title": "dividendes (lignes 2110, 2116, 2199), recettes, dépenses et solde du compte « Participations financières de l'État », par année, en prévision et en exécution",
+   "description": "site/data/etat_actionnaire/flux.json : dividendes (lignes 2110, 2116, 2199), recettes, dépenses et solde du compte « Participations financières de l'État », par année, en prévision et en exécution. Fichier site/data/etat_actionnaire/flux.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/flux.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/etat_actionnaire_flux.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr (recettes du budget général et des comptes spéciaux, PLF 2024 et 2025, LFI 2023 ; dépenses selon destination, PLF 2025 ; annexes des PLRG 2023, 2024 et 2025) ; projet annuel de performances 2026 du compte ; Sénat, rapport n° 736 (2025-2026), tome II, annexe 21",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/etat_actionnaire/flux.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "etat_actionnaire",
+   "millesimes": [
+    "Prévisions 2023 à 2026 (PLF, LFI), exécution 2023 à 2025 (PLRG) ; dividendes de l'État actionnaire 2014 à 2025"
+   ],
+   "sources_declarees": [
+    "data.economie.gouv.fr (recettes du budget général et des comptes spéciaux, PLF 2024 et 2025, LFI 2023 ; dépenses selon destination, PLF 2025 ; annexes des PLRG 2023, 2024 et 2025) ; projet annuel de performances 2026 du compte ; Sénat, rapport n° 736 (2025-2026), tome II, annexe 21"
+   ]
+  },
+  {
+   "name": "etat-actionnaire-entites",
+   "title": "dividendes par ligne d'exécution et par entité (personnes morales seulement), opérations de 2025 citées par le Sénat",
+   "description": "site/data/etat_actionnaire/entites.json : dividendes par ligne d'exécution et par entité (personnes morales seulement), opérations de 2025 citées par le Sénat. Fichier site/data/etat_actionnaire/entites.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/entites.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/etat_actionnaire_entites.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr, annexes des PLRG 2023, 2024 et 2025 (recettes du budget général par ligne d'exécution) ; Sénat, rapport n° 736 (2025-2026), tome II, annexe 21 ; API Recherche d'entreprises (catégorie juridique)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/etat_actionnaire/entites.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "etat_actionnaire",
+   "millesimes": [
+    "Exécution 2023 à 2025 (dividendes par ligne d'exécution) ; opérations de 2025 citées par le Sénat"
+   ],
+   "sources_declarees": [
+    "data.economie.gouv.fr, annexes des PLRG 2023, 2024 et 2025 (recettes du budget général par ligne d'exécution) ; Sénat, rapport n° 736 (2025-2026), tome II, annexe 21 ; API Recherche d'entreprises (catégorie juridique)"
+   ]
+  },
+  {
+   "name": "etat-actionnaire-societes-controlees",
+   "title": "sociétés contrôlées majoritairement par l'État, nombre, effectifs et activités (Insee)",
+   "description": "site/data/etat_actionnaire/societes_controlees.json : sociétés contrôlées majoritairement par l'État, nombre, effectifs et activités (Insee). Fichier site/data/etat_actionnaire/societes_controlees.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/societes_controlees.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/etat_actionnaire_societes_controlees.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Insee, sociétés contrôlées majoritairement par l'État fin 2022 (répertoire des entreprises contrôlées majoritairement par l'État) (https://www.insee.fr/fr/statistiques/8252208)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/etat_actionnaire/societes_controlees.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "etat_actionnaire",
+   "millesimes": [
+    "Fin 1995 à fin 2022 (activités : fin 2021 et fin 2022)"
+   ],
+   "sources_declarees": [
+    "Insee, sociétés contrôlées majoritairement par l'État fin 2022 (répertoire des entreprises contrôlées majoritairement par l'État) (https://www.insee.fr/fr/statistiques/8252208)"
    ]
   },
   {

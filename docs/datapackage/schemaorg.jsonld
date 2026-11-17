@@ -34,7 +34,7 @@
   "name": "Projet citoyen Où vont mes impôts",
   "url": "https://github.com/MoonEyes/Ou-vont-mes-impots"
  },
- "version": "1.6.0",
+ "version": "1.5.0",
  "dateModified": "2026-11-17T19:02:10Z",
  "temporalCoverage": "1991/2027",
  "spatialCoverage": {
@@ -492,6 +492,42 @@
   },
   {
    "@type": "DataDownload",
+   "name": "sources de subventions, totaux, part nommée et agrégée, recouvrements, recherche préalable (pipeline/subventions.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "une source de subventions (pipeline/subventions.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/attribuants/subv_ademe_aides.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "subventions par année et par source (pipeline/subventions.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/annees.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "subventions par département et par source (pipeline/subventions.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/departements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "bénéficiaires nommés, sources additionnées (pipeline/subventions.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/beneficiaires.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "rattachement des subventions aux programmes LOLF (pipeline/subventions.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/subventions/programmes.json"
+  },
+  {
+   "@type": "DataDownload",
    "name": "synthèse, dette sociale, vérifications, recherche publique",
    "encodingFormat": "application/json",
    "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/dette/index.json"
@@ -795,6 +831,216 @@
    "name": "subventions votees, personnes morales seulement",
    "encodingFormat": "application/json",
    "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local/decisions/200053726/inconnue.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "couverture, totaux, écarts entre sources, sources et recherche préalable (pipeline/territoires.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/territoires/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "projets DETR/DSIL/DPV/DSID, inventaire SRU, aide sociale départementale d'un département (pipeline/territoires.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/territoires/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "sources, synthèse du panorama des grands projets numériques, fonds de transformation numérique, liens vers l'arbre État, recherche publique",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "par année, chaque source dans sa colonne (éditions du panorama, décisions France Relance et FITN8, appels FAST), sans addition entre sources",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/annees.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "évolution du coût estimé publié et de la durée publiée de chaque grand projet numérique, édition par édition ; rapprochements de noms documentés",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/panorama/projets.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "chaque édition du panorama (projets, coûts estimés publiés, entrants, sortants, par ministère) et éditions par année",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/panorama/editions.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "projets et coûts estimés publiés par ministère porteur tel que publié, édition par édition",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/panorama/ministeres.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "programmes LOLF cités par les projets du panorama, reliés aux noeuds de l'arbre État",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/panorama/programmes.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "lauréats France Relance du volet mise à niveau numérique de l'État et des territoires, par dispositif, ministère, année et département",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/france_relance.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "projets lauréats France Relance (numérique) d'un département",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/france_relance/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "France Relance, guichets de la DITP (appels FITN8, fonds déconcentré ITN7 par département)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/ditp.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "projets de collectivités financés par le fonds déconcentré ITN7 (DITP) dans un département",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/ditp_itn7/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "lauréats des guichets numériques du Fonds pour la transformation de l'action publique",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/ftap.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "projets lauréats du Fonds d'accélération des startups d'État et de territoires, par appel et par année",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/numerique_etat/fonds/fast.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "marchés publics de tous les acheteurs (DECP consolidées), règles de qualité et lignes écartées, totaux, repère du recensement OECP, centrales d'achat, doublons entre sources, limites (pipeline/marches.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "marchés retenus par année, par nature et par type, part nommée et part agrégée, lignes écartées de l'année (pipeline/marches.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/annees.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "marchés retenus par catégorie d'acheteur et par année (pipeline/marches.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/categories.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "marchés retenus par département de l'acheteur et par année, liens vers les fichiers par département (pipeline/marches.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/departements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "acheteurs (SIREN) d'un département, montants par année et premiers titulaires nommés (personnes morales seulement) (pipeline/marches.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/departements/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "grandeurs de l'aide au développement (jamais additionnées), lien avec la mission budgétaire, totaux par grandeur, écarts entre sources, sources et licences",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "aide publique au développement déclarée par la France au CAD de l'OCDE (DG Trésor), dons et prêts séparés",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/apd_declaree.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "concours de l'AFD (standard IATI), dons et prêts séparés, engagements et versements par année, pays et secteur",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/afd.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "statistiques du CAD de l'OCDE pour la France, versements par pays (DAC2A) et engagements par secteur (DAC5), millions de dollars courants",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/ocde.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "contrats d'Expertise France de plus de 15 000 euros, agrégés par pays, bailleur, année et type d'acte ; aucun attributaire nommé",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/expertise_france.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "financements signés par Proparco, agrégés par année, pays et instrument ; aucun client nommé",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/aide_developpement/proparco.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "sources, licences, totaux par source, écarts, liens, limites et recherche préalable de l'axe éducation et recherche (pipeline/education_recherche.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "projets de l'ANR par établissement (SIREN), organismes non appariés agrégés par catégorie (pipeline/education_recherche.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/anr_etablissements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "projets de l'ANR par année, action ou programme et région publiée (pipeline/education_recherche.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/anr_projets.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "subventions et dotations d'une région aux lycées, par établissement (UAI, SIREN), commune, département, année et dispositif (pipeline/education_recherche.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/lycees/11.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "budgets des collectivités pour la recherche et l'enseignement supérieur, par année, région, type de collectivité et nature (pipeline/education_recherche.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/collectivites_esr.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "effectifs étudiants par établissement, commune, département et région ; coût par étudiant calculé, avec sa formule (pipeline/education_recherche.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/education_recherche/etudiants.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "définitions, fichiers, chiffres clés, liens avec recettes.json et l'arbre, sources, sources inaccessibles, recherche publique",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "dividendes (lignes 2110, 2116, 2199), recettes, dépenses et solde du compte « Participations financières de l'État », par année, en prévision et en exécution",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/flux.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "dividendes par ligne d'exécution et par entité (personnes morales seulement), opérations de 2025 citées par le Sénat",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/entites.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "sociétés contrôlées majoritairement par l'État, nombre, effectifs et activités (Insee)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/etat_actionnaire/societes_controlees.json"
   },
   {
    "@type": "DataDownload",

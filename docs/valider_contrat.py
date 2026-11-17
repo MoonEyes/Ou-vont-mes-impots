@@ -186,6 +186,15 @@ FICHIERS = [
     ("education_recherche_lycees.schema.json", "education_recherche/lycees/[0-9]*.json", "existant"),
     ("education_recherche_collectivites_esr.schema.json", "education_recherche/collectivites_esr.json", "existant"),
     ("education_recherche_etudiants.schema.json", "education_recherche/etudiants.json", "existant"),
+    # fonction publique : effectifs Insee, cabinets, conseils extérieurs, barème des élus (pipeline/fonction_publique.py)
+    ("fonction_publique_index.schema.json", "fonction_publique/index.json", "existant"),
+    ("fonction_publique_effectifs_series.schema.json", "fonction_publique/effectifs_series.json", "existant"),
+    ("fonction_publique_emploi.schema.json", "fonction_publique/emploi.json", "existant"),
+    ("fonction_publique_territoires.schema.json", "fonction_publique/territoires.json", "existant"),
+    ("fonction_publique_ministeres.schema.json", "fonction_publique/ministeres.json", "existant"),
+    ("fonction_publique_cabinets.schema.json", "fonction_publique/cabinets.json", "existant"),
+    ("fonction_publique_conseils.schema.json", "fonction_publique/conseils.json", "existant"),
+    ("fonction_publique_indemnites_elus.schema.json", "fonction_publique/indemnites_elus.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

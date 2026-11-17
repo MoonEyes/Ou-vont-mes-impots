@@ -1,0 +1,1570 @@
+{
+ "note": "Fichiers de data/lake lus par la production de chaque étape (python pipeline/tout.py inventorier, sous strace). `sources` : identifiants du catalogue (collecte/collecte.py) et chemins ; `caches` : dossiers remplis par les commandes de collecte des modules ; `hors_catalogue` : fichiers déposés par la collecte d'un module ; `urls` : URL publique de chaque fichier (manifeste), lue par `tout.py entrepot`.",
+ "releve_le": "2026-11-17",
+ "etapes": {
+  "base": {
+   "sources": {},
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 0
+  },
+  "beneficiaires": {
+   "sources": {
+    "benef_decp": [
+     "data/lake/_restreint/beneficiaires/benef_decp/decp_11cea8e8.parquet"
+    ],
+    "aides_france2030_projets": [
+     "data/lake/aides_entreprises/aides_france2030_projets.csv"
+    ],
+    "benef_associations_plf25": [
+     "data/lake/beneficiaires/benef_associations_plf25.parquet"
+    ],
+    "datagouv__projet-de-loi-de-finances-pour-2025-plf-2025-jaune-operateurs-de-letat-liste-des-operateurs-et-categories": [
+     "data/lake/etat/datagouv__projet-de-loi-de-finances-pour-2025-plf-2025-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/plf2025-jauneoperateurs_c6839cf6.csv"
+    ],
+    "etat_etpt_lfi_2023": [
+     "data/lake/etat/etat_etpt_lfi_2023.parquet"
+    ]
+   },
+   "caches": [
+    "data/lake/_cache/beneficiaires_stats.json",
+    "data/lake/_cache/recherche_entreprises.json"
+   ],
+   "hors_catalogue": [
+    "data/lake/etat/plrg_2024"
+   ],
+   "octets_sources": 287726013
+  },
+  "operateurs": {
+   "sources": {
+    "datagouv__projet-de-loi-de-finances-pour-2024-plf-2024-jaune-operateurs-de-letat-liste-des-operateurs-et-categories": [
+     "data/lake/etat/datagouv__projet-de-loi-de-finances-pour-2024-plf-2024-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/plf2024-jauneoperateurs_b1571906.csv"
+    ],
+    "datagouv__projet-de-loi-de-finances-pour-2025-plf-2025-jaune-operateurs-de-letat-liste-des-operateurs-et-categories": [
+     "data/lake/etat/datagouv__projet-de-loi-de-finances-pour-2025-plf-2025-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/plf2025-jauneoperateurs_c6839cf6.csv"
+    ],
+    "datagouv__projet-de-loi-de-finances-pour-2026-plf-2026-jaune-operateurs-de-letat-liste-des-operateurs-et-categories": [
+     "data/lake/etat/datagouv__projet-de-loi-de-finances-pour-2026-plf-2026-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/plf2026-jauneoperateurs_314b8900.csv"
+    ]
+   },
+   "caches": [
+    "data/lake/_cache/operateurs",
+    "data/lake/_cache/operateurs_siren.json"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": 214873
+  },
+  "vie_politique": {
+   "sources": {
+    "economie__budgetvert_plf2024_opendata_vf": [
+     "data/lake/etat/economie__budgetvert_plf2024_opendata_vf.parquet"
+    ],
+    "economie__plf25-budget-vert": [
+     "data/lake/etat/economie__plf25-budget-vert.parquet"
+    ],
+    "etat_budget_vert_2026": [
+     "data/lake/etat/etat_budget_vert_2026.parquet"
+    ],
+    "etat_plr_2018": [
+     "data/lake/etat/etat_plr_2018.parquet"
+    ],
+    "etat_plr_2019": [
+     "data/lake/etat/etat_plr_2019/PLR2019-Credits_Destination_Nature.xls"
+    ],
+    "etat_plr_2020": [
+     "data/lake/etat/etat_plr_2020/PLR2020-Credits_Destination_Nature.xls"
+    ],
+    "etat_plrg_2025": [
+     "data/lake/etat/etat_plrg_2025/Annexe1-Etat_CP-2025.csv"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/_restreint/politique",
+    "data/lake/politique/cnccfp_partis",
+    "data/lake/politique/p232"
+   ],
+   "octets_sources": 1922155
+  },
+  "realisations": {
+   "sources": {
+    "economie__budgetvert_plf2024_opendata_vf": [
+     "data/lake/etat/economie__budgetvert_plf2024_opendata_vf.parquet"
+    ],
+    "economie__execution-2010-du-budget-general-en-cp": [
+     "data/lake/etat/economie__execution-2010-du-budget-general-en-cp.parquet"
+    ],
+    "economie__execution-2011-du-budget-general-en-cp": [
+     "data/lake/etat/economie__execution-2011-du-budget-general-en-cp.parquet"
+    ],
+    "economie__execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm": [
+     "data/lake/etat/economie__execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm.parquet"
+    ],
+    "economie__execution-2013-du-budget-de-letat-en-cp-et-ae-": [
+     "data/lake/etat/economie__execution-2013-du-budget-de-letat-en-cp-et-ae-/Ex_cution_2013_du_budget_de_l_Etat_en_CP_suivant_la_nomenclature_Mission_Program.bin"
+    ],
+    "economie__lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre": [
+     "data/lake/etat/economie__lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre.parquet"
+    ],
+    "economie__lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie": [
+     "data/lake/etat/economie__lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie.parquet"
+    ],
+    "economie__lfi-2014-dotation-bg-en-ae-cp-par-action-titre": [
+     "data/lake/etat/economie__lfi-2014-dotation-bg-en-ae-cp-par-action-titre.parquet"
+    ],
+    "economie__pap-2023-objectifs-et-indicateurs-de-performance": [
+     "data/lake/etat/economie__pap-2023-objectifs-et-indicateurs-de-performance.parquet"
+    ],
+    "economie__performance-de-la-depense": [
+     "data/lake/etat/economie__performance-de-la-depense.parquet"
+    ],
+    "economie__performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur": [
+     "data/lake/etat/economie__performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur.parquet"
+    ],
+    "economie__plf-2015-donnees-du-volet-performance": [
+     "data/lake/etat/economie__plf-2015-donnees-du-volet-performance.parquet"
+    ],
+    "economie__plf-2016-donnees-du-volet-performance": [
+     "data/lake/etat/economie__plf-2016-donnees-du-volet-performance.parquet"
+    ],
+    "economie__plf-2025-performance": [
+     "data/lake/etat/economie__plf-2025-performance.parquet"
+    ],
+    "economie__plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l": [
+     "data/lake/etat/economie__plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l/PLR2014-Exec-Msn_CP.csv"
+    ],
+    "economie__plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese": [
+     "data/lake/etat/economie__plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese.parquet"
+    ],
+    "economie__plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese": [
+     "data/lake/etat/economie__plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese.parquet"
+    ],
+    "economie__projet-de-loi-de-finances-pour-2017-plf-2017-donnees-du-volet-performance": [
+     "data/lake/etat/economie__projet-de-loi-de-finances-pour-2017-plf-2017-donnees-du-volet-performance.parquet"
+    ],
+    "economie__projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des": [
+     "data/lake/etat/economie__projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des.parquet"
+    ],
+    "economie__projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance": [
+     "data/lake/etat/economie__projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance.parquet"
+    ],
+    "etat_performance_rap_2025": [
+     "data/lake/etat/etat_performance_rap_2025.parquet"
+    ],
+    "etat_plr_2019": [
+     "data/lake/etat/etat_plr_2019/RAP_synthese_2019.xls"
+    ],
+    "etat_plr_2020": [
+     "data/lake/etat/etat_plr_2020/RAP2020_synthese.xls"
+    ],
+    "etat_plrg_2025": [
+     "data/lake/etat/etat_plrg_2025/Annexe1-Etat_CP-2025.csv"
+    ]
+   },
+   "caches": [
+    "data/lake/_cache/ccomptes"
+   ],
+   "hors_catalogue": [
+    "data/lake/etat/realisations"
+   ],
+   "octets_sources": 6306766
+  },
+  "decisions": {
+   "sources": {
+    "decisions_an_l17_amendements": [
+     "data/lake/decisions/decisions_an_l17_amendements.zip"
+    ],
+    "decisions_an_l17_deputes": [
+     "data/lake/decisions/decisions_an_l17_deputes.zip"
+    ],
+    "decisions_an_l17_dossiers": [
+     "data/lake/decisions/decisions_an_l17_dossiers.zip"
+    ],
+    "decisions_an_l17_scrutins": [
+     "data/lake/decisions/decisions_an_l17_scrutins.zip"
+    ],
+    "decisions_senat_ameli": [
+     "data/lake/decisions/decisions_senat_ameli.zip"
+    ],
+    "economie__budgetvert_plf2024_opendata_vf": [
+     "data/lake/etat/economie__budgetvert_plf2024_opendata_vf.parquet"
+    ],
+    "economie__plf25-budget-vert-justification-des-credits-budgetaires-et-des-taxes-affectees": [
+     "data/lake/etat/economie__plf25-budget-vert-justification-des-credits-budgetaires-et-des-taxes-affectees.parquet"
+    ],
+    "economie__plf25-budget-vert": [
+     "data/lake/etat/economie__plf25-budget-vert.parquet"
+    ],
+    "etat_budget_vert_2026": [
+     "data/lake/etat/etat_budget_vert_2026.parquet"
+    ],
+    "etat_plrg_2025": [
+     "data/lake/etat/etat_plrg_2025/Annexe1-Etat_CP-2025.csv"
+    ]
+   },
+   "caches": [
+    "data/lake/_cache/decisions_jorf"
+   ],
+   "hors_catalogue": [
+    "data/lake/etat/realisations"
+   ],
+   "octets_sources": 567252596
+  },
+  "prelevements": {
+   "sources": {
+    "insee_ds_erfs_non_retropole": [
+     "data/lake/comptes_nationaux/insee_ds_erfs_non_retropole.zip"
+    ],
+    "economie__impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir": [
+     "data/lake/fiscalite/economie__impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/REI-2025-fichier-notice-trace.zip"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/prelevements/PLF2026_voies_et_moyens_tome1.pdf.txt",
+    "data/lake/prelevements/PLFSS2026_annexe3.pdf.txt",
+    "data/lake/prelevements/insee_IA88.xlsx",
+    "data/lake/prelevements/insee_bdf2017_TF106.csv",
+    "data/lake/prelevements/insee_bdf2017_TF306.csv"
+   ],
+   "octets_sources": 18562451
+  },
+  "secu": {
+   "sources": {
+    "datagouv__depenses-et-recettes-de-lassurance-chomage": [
+     "data/lake/secu/datagouv__depenses-et-recettes-de-lassurance-chomage/financement-de-l-assurance-chomage_47a22bbe.csv"
+    ],
+    "secu_protection_sociale": [
+     "data/lake/secu/secu_protection_sociale.parquet"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/secu/_ocr_secu"
+   ],
+   "octets_sources": 156394
+  },
+  "niches": {
+   "sources": {
+    "aides_urssaf_exos_secteur_prive_france_entiere_par_me": [
+     "data/lake/aides_entreprises/aides_urssaf_exos_secteur_prive_france_entiere_par_me.parquet"
+    ],
+    "economie__projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje": [
+     "data/lake/etat/economie__projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/PLF_2021_Liste_des_depenses_fiscales.xlsx"
+    ],
+    "economie__projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje": [
+     "data/lake/etat/economie__projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/PLF_2022_Liste_depenses_fiscales.xlsx"
+    ],
+    "economie__plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales": [
+     "data/lake/fiscalite/economie__plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales/PLF2023_voies_et_moyens_t2_liste_des_depenses_fiscales.xlsx"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/fiscalite/niches_vm"
+   ],
+   "octets_sources": 728879
+  },
+  "ue": {
+   "sources": {
+    "esr__fr-esr-horizon-projects-entities": [
+     "data/lake/europe/esr__fr-esr-horizon-projects-entities.parquet"
+    ]
+   },
+   "caches": [
+    "data/lake/_cache/recherche_entreprises.json",
+    "data/lake/_cache/ue"
+   ],
+   "hors_catalogue": [
+    "data/lake/_restreint/europe"
+   ],
+   "octets_sources": 96860017
+  },
+  "dette": {
+   "sources": {
+    "insee_dd_cna_apu": [
+     "data/lake/comptes_nationaux/insee_dd_cna_apu.zip"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/dette/_api",
+    "data/lake/secu/secu_placss2024_texte.html",
+    "data/lake/secu/secu_placss2025_texte.html"
+   ],
+   "octets_sources": 4335733
+  },
+  "tracabilite": {
+   "sources": {
+    "etat_plrg_2025": [
+     "data/lake/etat/etat_plrg_2025/Annexe1-Etat_CP-2025.csv"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/etat/realisations"
+   ],
+   "octets_sources": 34516
+  },
+  "local": {
+   "sources": {
+    "datagouv__subventions-de-bourges-plus-en-2018-et-2019": [
+     "data/lake/_restreint/beneficiaires/datagouv__subventions-de-bourges-plus-en-2018-et-2019/subventions-de-bourges-plus-en-2018-et-2019_85c2c379.parquet"
+    ],
+    "ods_laregion__subventions-du-conseil-regional": [
+     "data/lake/_restreint/beneficiaires/ods_laregion__subventions-du-conseil-regional.parquet"
+    ],
+    "ods_iledefrance__subventions-versees-par-la-region-ile-de-france-aux-associations": [
+     "data/lake/_restreint/collectivites/ods_iledefrance__subventions-versees-par-la-region-ile-de-france-aux-associations.parquet"
+    ],
+    "datagouv__donnees-essentielles-des-conventions-de-subvention-de-la-region-bourgogne-franche-comte": [
+     "data/lake/_restreint/decisions/datagouv__donnees-essentielles-des-conventions-de-subvention-de-la-region-bourgogne-franche-comte/donnes-convention-subventions_2e4d9204.csv"
+    ],
+    "decisions_d44_deliberations": [
+     "data/lake/_restreint/decisions/decisions_d44_deliberations.parquet"
+    ],
+    "decisions_megalis_deliberations": [
+     "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2021_e60c6e93.csv",
+     "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2022_8a564bff.csv",
+     "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2023_7b1b1516.csv",
+     "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2024_fe235414.csv",
+     "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2025_6ecf0df9.csv",
+     "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2026_5e30e87e.csv"
+    ],
+    "decisions_nantes_metropole_deliberations": [
+     "data/lake/_restreint/decisions/decisions_nantes_metropole_deliberations.parquet"
+    ],
+    "decisions_pdl_deliberations": [
+     "data/lake/_restreint/decisions/decisions_pdl_deliberations.csv"
+    ],
+    "benef_subventions_cdc": [
+     "data/lake/beneficiaires/benef_subventions_cdc.parquet"
+    ],
+    "beneficiaires_d44_subventions_associations": [
+     "data/lake/beneficiaires/beneficiaires_d44_subventions_associations.parquet"
+    ],
+    "datagouv__conventions-de-subvention-2017": [
+     "data/lake/beneficiaires/datagouv__conventions-de-subvention-2017/opendataconventionsubventions2017_7b921660.csv"
+    ],
+    "datagouv__conventions-de-subvention-signees": [
+     "data/lake/beneficiaires/datagouv__conventions-de-subvention-signees/aidesAttribueesAEAP_10_11_PRG_06f0f6e2.csv",
+     "data/lake/beneficiaires/datagouv__conventions-de-subvention-signees/aidesAttribueesAEAP_12_PRG_3dc1e530.csv"
+    ],
+    "datagouv__donnees-essentielles-conventions-subventions-2018-du-departement-de-la-loire": [
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-conventions-subventions-2018-du-departement-de-la-loire/2018-donnees-essentielles_9bbfc539.csv"
+    ],
+    "datagouv__donnees-essentielles-des-conventions-de-subvention-2": [
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-2/20181026-215403957-donnees-convention-subvention-nancy-2018_b82fc58c.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-2/jeux-donnees-convention-subvention-vdn-2019_44f9a0e3.csv"
+    ],
+    "datagouv__donnees-essentielles-des-conventions-de-subvention-7": [
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-7/donnees-essentielles-2022_63cbe939.csv"
+    ],
+    "datagouv__donnees-essentielles-des-conventions-de-subvention-8": [
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-8/TABLEAU_DONNEES_ESSENTIELLES_DE_SUBVENTION_SUP_A_23_K_DECEMB_3aa29534.csv"
+    ],
+    "datagouv__donnees-essentielles-des-conventions-de-subvention-attribuees-par-la-ville-dantibes": [
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-attribuees-par-la-ville-dantibes/antibes-subventions_9d65d9fd.csv"
+    ],
+    "datagouv__donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vil": [
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vil/fichiercsv-diffusionconventions_2fffcbc2.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vil/fichiercsv-diffusionconventions_4f92700c.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vil/subvention-convention-022023_26e10ef7.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vil/subvention-convention-20210204_c10ade6a.csv"
+    ],
+    "datagouv__donnees-essentielles-des-conventions-de-subvention": [
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/DONNEES_2022_cc8bea61.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/DONNEES_2023_c09bb704.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/DONNEES_2024_6627842c.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/DONNEES_2025_d8f351fa.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/DONNEES_2026_5e12f056.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/Donn_es_2017_a6082d22.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/Donn_es_2018_6a7ea843.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/Donn_es_2019_3c80c540.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/Donn_es_2020_5c751bcf.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/Donn_es_2021_ee6d5a03.csv"
+    ],
+    "datagouv__donnees-essentielles-des-conventions-de-subventions": [
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subventions/jeux-donnees-convention-subventions-etincelle-2023_8b22df0b.csv",
+     "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subventions/jeux-donnees-convention-subventions-etincelle-2024_6adf5837.csv"
+    ],
+    "datagouv__les-aides-financieres-de-lademe-1": [
+     "data/lake/beneficiaires/datagouv__les-aides-financieres-de-lademe-1/Fichier_csv_a514049e.csv"
+    ],
+    "datagouv__liste-des-subventions-de-fonctionnement-superieures-a-23-000-eur-attribuees-aux-associations-de-la-commune-de-": [
+     "data/lake/beneficiaires/datagouv__liste-des-subventions-de-fonctionnement-superieures-a-23-000-eur-attribuees-aux-associations-de-la-commune-de-/donnees-subventions-2025-ville-de-sarcelles_1ddb9735.csv"
+    ],
+    "datagouv__montant-des-subventions-de-lannee-2025": [
+     "data/lake/beneficiaires/datagouv__montant-des-subventions-de-lannee-2025/DATA_SUBVENTION_276ea8bc.csv"
+    ],
+    "datagouv__publication-de-declarations-des-subventions-sup-a-23keur": [
+     "data/lake/beneficiaires/datagouv__publication-de-declarations-des-subventions-sup-a-23keur/Publication_declarations_subventions_sup._a_23k_5a549b7b.csv"
+    ],
+    "datagouv__subvention-aux-associations-2019": [
+     "data/lake/beneficiaires/datagouv__subvention-aux-associations-2019/stloubes-2019-declarations-subventions-sup.-a-23k_4df2b859.csv"
+    ],
+    "datagouv__subventions-2017-du-departement-de-la-dordogne": [
+     "data/lake/beneficiaires/datagouv__subventions-2017-du-departement-de-la-dordogne/cd24-subventions-2017_74273342.csv"
+    ],
+    "datagouv__subventions-2017-ville-dautun": [
+     "data/lake/beneficiaires/datagouv__subventions-2017-ville-dautun/subvention-autun-2017_de96ee88.csv"
+    ],
+    "datagouv__subventions-2018-2": [
+     "data/lake/beneficiaires/datagouv__subventions-2018-2/od-vm-subventions-2018_63768f33.csv"
+    ],
+    "datagouv__subventions-2018-du-departement-de-la-dordogne": [
+     "data/lake/beneficiaires/datagouv__subventions-2018-du-departement-de-la-dordogne/cd24-subventions-2018_2ae5c8ac.csv"
+    ],
+    "datagouv__subventions-2019-du-departement-de-la-dordogne": [
+     "data/lake/beneficiaires/datagouv__subventions-2019-du-departement-de-la-dordogne/cd24-subventions-2019_17273ac9.csv"
+    ],
+    "datagouv__subventions-2019": [
+     "data/lake/beneficiaires/datagouv__subventions-2019/od-vm-subventions-2019_8e25407f.csv"
+    ],
+    "datagouv__subventions-2020": [
+     "data/lake/beneficiaires/datagouv__subventions-2020/od-vm-subventions-2020_6b659ffc.csv"
+    ],
+    "datagouv__subventions-2021": [
+     "data/lake/beneficiaires/datagouv__subventions-2021/Subventions_2021_b3dd27ab.csv"
+    ],
+    "datagouv__subventions-23000-eur-versees-en-2018-par-la-ville-de-meze": [
+     "data/lake/beneficiaires/datagouv__subventions-23000-eur-versees-en-2018-par-la-ville-de-meze/publication-declarations-subventions-sup.-a-23k_aa59cf31.csv"
+    ],
+    "datagouv__subventions-23000-euros-2017": [
+     "data/lake/beneficiaires/datagouv__subventions-23000-euros-2017/SUBV23k_2017_4d3f291f.csv"
+    ],
+    "datagouv__subventions-4": [
+     "data/lake/beneficiaires/datagouv__subventions-4/subventions_quimper_2024_2bf387ea.csv",
+     "data/lake/beneficiaires/datagouv__subventions-4/subventions_quimper_2025_90fd68ff.csv"
+    ],
+    "datagouv__subventions-5": [
+     "data/lake/beneficiaires/datagouv__subventions-5/subventions_qbo_2024_daa6b770.csv",
+     "data/lake/beneficiaires/datagouv__subventions-5/subventions_qbo_2025_0a1ad890.csv"
+    ],
+    "datagouv__subventions-associations-2025": [
+     "data/lake/beneficiaires/datagouv__subventions-associations-2025/Fichier_subv_2025_au_format_data_gouv_6b3f2841.csv"
+    ],
+    "datagouv__subventions-associatives-de-la-commune-de-lys-saint-georges-de-2017-a-2022": [
+     "data/lake/beneficiaires/datagouv__subventions-associatives-de-la-commune-de-lys-saint-georges-de-2017-a-2022/Subventions-associatives-lys-saint-georges_fa59b038.csv"
+    ],
+    "datagouv__subventions-attribuees-aux-associations-par-la-ville-de-la-possession": [
+     "data/lake/beneficiaires/datagouv__subventions-attribuees-aux-associations-par-la-ville-de-la-possession/Subventions_attribu_es_aux_associations_par_la_ville_de_La_P_580dec6c.csv"
+    ],
+    "datagouv__subventions-attribuees-par-esterel-cote-d-azur-agglomeration": [
+     "data/lake/beneficiaires/datagouv__subventions-attribuees-par-esterel-cote-d-azur-agglomeration/Subventions_attribu_es_par_la_CAVEM_en_2020_bbeb2491.csv"
+    ],
+    "datagouv__subventions-attribuees-par-saintes-grandes-rives-lagglo": [
+     "data/lake/beneficiaires/datagouv__subventions-attribuees-par-saintes-grandes-rives-lagglo/Fichier_csv_996ec654.csv"
+    ],
+    "datagouv__subventions-attribuees": [
+     "data/lake/beneficiaires/datagouv__subventions-attribuees/77468-subventions_65369e7a.csv"
+    ],
+    "datagouv__subventions-aux-associations-5": [
+     "data/lake/beneficiaires/datagouv__subventions-aux-associations-5/Publication_declarations_subventions_sup_641175c2.csv",
+     "data/lake/beneficiaires/datagouv__subventions-aux-associations-5/publication-declarations-subventions-sup.-a-23k-2023_ba73be8e.csv"
+    ],
+    "datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94": [
+     "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2020_b48a2fc5.csv",
+     "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2021_6c2ebe90.csv",
+     "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2022_2572d462.csv",
+     "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2023_9386c4f3.csv",
+     "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2024_1fffcdd8.csv",
+     "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2025_a335a7b9.csv"
+    ],
+    "datagouv__subventions-aux-associations-en-2017": [
+     "data/lake/beneficiaires/datagouv__subventions-aux-associations-en-2017/Subvention_Nevers_Agglomeration_2017_9e76a5f9.csv"
+    ],
+    "datagouv__subventions-aux-associations-sailly-lez-lannoy": [
+     "data/lake/beneficiaires/datagouv__subventions-aux-associations-sailly-lez-lannoy/subventions-aux-associations-feuille-1_5c733baa.csv"
+    ],
+    "datagouv__subventions-aux-associations-votees-2": [
+     "data/lake/beneficiaires/datagouv__subventions-aux-associations-votees-2/subventions-votees-aux-associations-de-de-23000-euro-depuis-_7b007385.csv"
+    ],
+    "datagouv__subventions-aux-personnes-morales": [
+     "data/lake/beneficiaires/datagouv__subventions-aux-personnes-morales/cd56-subventions_03a0e91c.csv"
+    ],
+    "datagouv__subventions-communales-aux-associations": [
+     "data/lake/beneficiaires/datagouv__subventions-communales-aux-associations/subventions_31387b2a.csv"
+    ],
+    "datagouv__subventions-commune-de-plouezec": [
+     "data/lake/beneficiaires/datagouv__subventions-commune-de-plouezec/Associations-Subventions_UTF8_2c0a0a56.csv"
+    ],
+    "datagouv__subventions-de-23000-euros-2020": [
+     "data/lake/beneficiaires/datagouv__subventions-de-23000-euros-2020/subv-23keur-2020_422626e2.csv"
+    ],
+    "datagouv__subventions-de-23000-euros-2021": [
+     "data/lake/beneficiaires/datagouv__subventions-de-23000-euros-2021/subv-23keur-2021_4fcced5c.csv"
+    ],
+    "datagouv__subventions-de-23000-euros-2022": [
+     "data/lake/beneficiaires/datagouv__subventions-de-23000-euros-2022/subv-23keur-2022_835fbea6.csv"
+    ],
+    "datagouv__subventions-de-23000-euros": [
+     "data/lake/beneficiaires/datagouv__subventions-de-23000-euros/subv-23keur-2019_ce231a65.csv"
+    ],
+    "datagouv__subventions-de-bordeaux-metropole-1": [
+     "data/lake/beneficiaires/datagouv__subventions-de-bordeaux-metropole-1/subventions-metropole-de-bordeaux_cdad1046.csv"
+    ],
+    "datagouv__subventions-de-bourges-plus-de-2020-a-2023": [
+     "data/lake/beneficiaires/datagouv__subventions-de-bourges-plus-de-2020-a-2023/opendata_subventionbourgesplus_a_partir_2020_269ec886.csv",
+     "data/lake/beneficiaires/datagouv__subventions-de-bourges-plus-de-2020-a-2023/opendata_subventionbourgesplus_a_partir_2020_d52d67bd.parquet"
+    ],
+    "datagouv__subventions-de-la-saison-1-de-laccelerateur-dinitiatives-citoyennes": [
+     "data/lake/beneficiaires/datagouv__subventions-de-la-saison-1-de-laccelerateur-dinitiatives-citoyennes/aic-saison1-subventions_b6227c78.csv"
+    ],
+    "datagouv__subventions-de-la-ville-de-bourges-de-2018-a-2020": [
+     "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-de-2018-a-2020/subventions-2018-2020-vdb_4c7f1a1c.parquet",
+     "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-de-2018-a-2020/subventions-2018-2020-vdb_e73d5922.csv"
+    ],
+    "datagouv__subventions-de-la-ville-de-bourges-de-2021-a-2024": [
+     "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-de-2021-a-2024/opendata_villebourges_subventions_a_partir_2021_872fbfe2.csv",
+     "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-de-2021-a-2024/opendata_villebourges_subventions_a_partir_2021_8b62a1d4.parquet"
+    ],
+    "datagouv__subventions-de-la-ville-de-bourges-en-2025": [
+     "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-en-2025/18033-bourges-subventions-2025_8a2a60aa.csv",
+     "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-en-2025/18033-bourges-subventions-2025_e0330a0d.parquet"
+    ],
+    "datagouv__subventions-de-neuville-saint-remy": [
+     "data/lake/beneficiaires/datagouv__subventions-de-neuville-saint-remy/Subventions_accord_es_aux_associations_de_Neuvilles_Saint-R__e993f12a.csv"
+    ],
+    "datagouv__subventions-et-avantages-en-nature-accordees-aux-associations-v1": [
+     "data/lake/beneficiaires/datagouv__subventions-et-avantages-en-nature-accordees-aux-associations-v1/Subventions-et-avantages-en-nature-accordees-aux-association_840195d3.csv",
+     "data/lake/beneficiaires/datagouv__subventions-et-avantages-en-nature-accordees-aux-associations-v1/subventions_et_avantages_en_nature_2025_45ead041.csv"
+    ],
+    "datagouv__subventions-liees-au-confinement-covid-19-pays-de-mormal-2020-1": [
+     "data/lake/beneficiaires/datagouv__subventions-liees-au-confinement-covid-19-pays-de-mormal-2020-1/subventions_6c635db7.csv"
+    ],
+    "datagouv__subventions-organisation-ecole-des-beaux-arts-de-nantes-saint-nazaire": [
+     "data/lake/beneficiaires/datagouv__subventions-organisation-ecole-des-beaux-arts-de-nantes-saint-nazaire/Subventions_2024-2025_dc656e29.csv",
+     "data/lake/beneficiaires/datagouv__subventions-organisation-ecole-des-beaux-arts-de-nantes-saint-nazaire/donnees-subventions-ecole-des-beaux-arts-de-nantes-saint-naz_f76e45fe.csv"
+    ],
+    "datagouv__subventions-organisation-gip-les-entreprises-sengagent": [
+     "data/lake/beneficiaires/datagouv__subventions-organisation-gip-les-entreprises-sengagent/DATA.SUB.VDEF05022025_SCDL_-_mod_le_type_-_DATA.SUB_-_Subven_940dba6e.csv"
+    ],
+    "datagouv__subventions-organisation-premier-ministre-1": [
+     "data/lake/beneficiaires/datagouv__subventions-organisation-premier-ministre-1/Subventions_accord_es_par_le_Cabinet_PM_en_2017_afeefa75.csv",
+     "data/lake/beneficiaires/datagouv__subventions-organisation-premier-ministre-1/Subventions_accord_es_par_le_cabinet_PM_en_2018_3d0ef8ba.csv",
+     "data/lake/beneficiaires/datagouv__subventions-organisation-premier-ministre-1/Subventions_accord_es_par_le_cabinet_PM_en_2019_366a3369.csv",
+     "data/lake/beneficiaires/datagouv__subventions-organisation-premier-ministre-1/Subventions_accord_es_par_le_cabinet_PM_en_2020_8eccd276.csv",
+     "data/lake/beneficiaires/datagouv__subventions-organisation-premier-ministre-1/Subventions_vers_es_par_le_cabinet_PM_en_2021_6e4b6f42.csv"
+    ],
+    "datagouv__subventions-organisation-ville-de-fougeres-2": [
+     "data/lake/beneficiaires/datagouv__subventions-organisation-ville-de-fougeres-2/Ville_de_Fougeres-subventions_-_2025_f8e9887f.csv"
+    ],
+    "datagouv__subventions-publiques": [
+     "data/lake/beneficiaires/datagouv__subventions-publiques/Liste_des_subventions_publiques_attribu_es_par_la_commune_de_26f1e41d.csv"
+    ],
+    "datagouv__subventions-sup-a-23k-annee-2025": [
+     "data/lake/beneficiaires/datagouv__subventions-sup-a-23k-annee-2025/Subventions_sup._a_23k_CA_2025_ffb80c46.csv"
+    ],
+    "datagouv__subventions-superieures-a-23000eur-ca-2023": [
+     "data/lake/beneficiaires/datagouv__subventions-superieures-a-23000eur-ca-2023/subventions-sup.-a-23k-ca-2023_a82a5be5.csv"
+    ],
+    "datagouv__subventions-versees-par-le-conseil-departemental-des-cotes-darmor-aux-associations-depuis-2015-decret": [
+     "data/lake/beneficiaires/datagouv__subventions-versees-par-le-conseil-departemental-des-cotes-darmor-aux-associations-depuis-2015-decret/Fichier_csv_ef626487.csv"
+    ],
+    "datagouv__subventions-versees-par-le-departement-de-la-savoie-cd73-en-2021": [
+     "data/lake/beneficiaires/datagouv__subventions-versees-par-le-departement-de-la-savoie-cd73-en-2021/opendata-subventions-versees-2021_3fc3fc90.csv"
+    ],
+    "datagouv__subventions-versees-par-ville-martigues-aux-associations-conventionnees": [
+     "data/lake/beneficiaires/datagouv__subventions-versees-par-ville-martigues-aux-associations-conventionnees/Subventions_municipales_aux_associations_mart_gales_da70fb60.csv"
+    ],
+    "datagouv__test-de-publication-de-donnees-de-subventions": [
+     "data/lake/beneficiaires/datagouv__test-de-publication-de-donnees-de-subventions/Subventions_attribu_es_par_la_ville_de_Poitiers_9ad79fa7.csv"
+    ],
+    "datagouv__vdg-subventions-et-avantages-en-nature-accordees-aux-associati": [
+     "data/lake/beneficiaires/datagouv__vdg-subventions-et-avantages-en-nature-accordees-aux-associati/subventions_et_avantages_en_nature2020_0eccbebe.csv",
+     "data/lake/beneficiaires/datagouv__vdg-subventions-et-avantages-en-nature-accordees-aux-associati/subventions_et_avantages_en_nature2025_8212b4b2.csv"
+    ],
+    "decisions_pdl_subventions": [
+     "data/lake/beneficiaires/decisions_pdl_subventions.parquet"
+    ],
+    "ods_agglo_carene__214401846_subventions_numeraire_liste": [
+     "data/lake/beneficiaires/ods_agglo_carene__214401846_subventions_numeraire_liste.parquet"
+    ],
+    "ods_agglo_montargoise__ame-subventions-2024": [
+     "data/lake/beneficiaires/ods_agglo_montargoise__ame-subventions-2024.parquet"
+    ],
+    "ods_agglo_montargoise__ame_subvention_2020": [
+     "data/lake/beneficiaires/ods_agglo_montargoise__ame_subvention_2020.parquet"
+    ],
+    "ods_agglo_montargoise__ame_subvention_2021": [
+     "data/lake/beneficiaires/ods_agglo_montargoise__ame_subvention_2021.parquet"
+    ],
+    "ods_agglo_montargoise__ame_subvention_2022": [
+     "data/lake/beneficiaires/ods_agglo_montargoise__ame_subvention_2022.parquet"
+    ],
+    "ods_agglo_montargoise__ame_subvention_depuis_2017": [
+     "data/lake/beneficiaires/ods_agglo_montargoise__ame_subvention_depuis_2017.parquet"
+    ],
+    "ods_agglo_montargoise__ame_subventions_2017": [
+     "data/lake/beneficiaires/ods_agglo_montargoise__ame_subventions_2017.parquet"
+    ],
+    "ods_agglo_montargoise__ame_subventions_2018": [
+     "data/lake/beneficiaires/ods_agglo_montargoise__ame_subventions_2018.parquet"
+    ],
+    "ods_agglo_montargoise__ame_subventions_2019": [
+     "data/lake/beneficiaires/ods_agglo_montargoise__ame_subventions_2019.parquet"
+    ],
+    "ods_agglo_montargoise__ame_subventions_2023": [
+     "data/lake/beneficiaires/ods_agglo_montargoise__ame_subventions_2023.parquet"
+    ],
+    "ods_ampmetropole__fr-subventions-2019": [
+     "data/lake/beneficiaires/ods_ampmetropole__fr-subventions-2019.parquet"
+    ],
+    "ods_ampmetropole__fr-subventions-attribuees-en-2020-par-la-metropole": [
+     "data/lake/beneficiaires/ods_ampmetropole__fr-subventions-attribuees-en-2020-par-la-metropole.parquet"
+    ],
+    "ods_ampmetropole__subventions-attribuees-depuis-2022": [
+     "data/lake/beneficiaires/ods_ampmetropole__subventions-attribuees-depuis-2022.parquet"
+    ],
+    "ods_ampmetropole__subventions-attribuees-en-2021-par-la-metropole": [
+     "data/lake/beneficiaires/ods_ampmetropole__subventions-attribuees-en-2021-par-la-metropole.parquet"
+    ],
+    "ods_ampmetropole__subventions-attribuees-en-2022-par-la-metropole": [
+     "data/lake/beneficiaires/ods_ampmetropole__subventions-attribuees-en-2022-par-la-metropole.parquet"
+    ],
+    "ods_ampmetropole__subventions-attribuees": [
+     "data/lake/beneficiaires/ods_ampmetropole__subventions-attribuees.parquet"
+    ],
+    "ods_bordeaux_metropole__bor_subventions": [
+     "data/lake/beneficiaires/ods_bordeaux_metropole__bor_subventions.parquet"
+    ],
+    "ods_bordeaux_metropole__leh_subventions_associations": [
+     "data/lake/beneficiaires/ods_bordeaux_metropole__leh_subventions_associations.parquet"
+    ],
+    "ods_bordeaux_metropole__subventions-metropole-de-bordeaux": [
+     "data/lake/beneficiaires/ods_bordeaux_metropole__subventions-metropole-de-bordeaux.parquet"
+    ],
+    "ods_bretagne__subventions_attribuees_scdl0": [
+     "data/lake/beneficiaires/ods_bretagne__subventions_attribuees_scdl0.parquet"
+    ],
+    "ods_cannes__subventions-aux-associations": [
+     "data/lake/beneficiaires/ods_cannes__subventions-aux-associations.parquet"
+    ],
+    "ods_capatlantique__244400610_subventions_liste": [
+     "data/lake/beneficiaires/ods_capatlantique__244400610_subventions_liste.parquet"
+    ],
+    "ods_clermontmetropole__2021_subventions-versees-org-prives-sup-a-23-000": [
+     "data/lake/beneficiaires/ods_clermontmetropole__2021_subventions-versees-org-prives-sup-a-23-000.parquet"
+    ],
+    "ods_clermontmetropole__2022_subventions-versees-org-prives-sup-a-23-000": [
+     "data/lake/beneficiaires/ods_clermontmetropole__2022_subventions-versees-org-prives-sup-a-23-000.parquet"
+    ],
+    "ods_clermontmetropole__2023_subventions-versees-org-prives-sup-a-23-000": [
+     "data/lake/beneficiaires/ods_clermontmetropole__2023_subventions-versees-org-prives-sup-a-23-000.parquet"
+    ],
+    "ods_clermontmetropole__liste-des-subventions-versees-de-plus-de-23-000-euros-en-2024-par-clermont-auvergne-metropole-cop": [
+     "data/lake/beneficiaires/ods_clermontmetropole__liste-des-subventions-versees-de-plus-de-23-000-euros-en-2024-par-clermont-auvergne-metropole-cop.parquet"
+    ],
+    "ods_clermontmetropole__liste-des-subventions-versees-de-plus-de-23-000-euros-en-2025-par-clermont-auvergne-metropole-cop": [
+     "data/lake/beneficiaires/ods_clermontmetropole__liste-des-subventions-versees-de-plus-de-23-000-euros-en-2025-par-clermont-auvergne-metropole-cop.parquet"
+    ],
+    "ods_clermontmetropole__liste-subventions-plus-23-000-euros-en-2020": [
+     "data/lake/beneficiaires/ods_clermontmetropole__liste-subventions-plus-23-000-euros-en-2020.parquet"
+    ],
+    "ods_doubs__conventions-de-subvention": [
+     "data/lake/beneficiaires/ods_doubs__conventions-de-subvention.parquet"
+    ],
+    "ods_grandparissud__subventions-gps-2020": [
+     "data/lake/beneficiaires/ods_grandparissud__subventions-gps-2020.parquet"
+    ],
+    "ods_grandparissud__subventions-gps-2021": [
+     "data/lake/beneficiaires/ods_grandparissud__subventions-gps-2021.parquet"
+    ],
+    "ods_ha_py__subventions-2020-cchb-de-plus-de-23keur": [
+     "data/lake/beneficiaires/ods_ha_py__subventions-2020-cchb-de-plus-de-23keur.parquet"
+    ],
+    "ods_ha_py__subventions-2020-ville-de-bagneres-de-bigorre-de-plus-de-23keur": [
+     "data/lake/beneficiaires/ods_ha_py__subventions-2020-ville-de-bagneres-de-bigorre-de-plus-de-23keur.parquet"
+    ],
+    "ods_ha_py__subventions-de-la-communaute-d-agglomeration-tarbes-lourdes-pyrenees": [
+     "data/lake/beneficiaires/ods_ha_py__subventions-de-la-communaute-d-agglomeration-tarbes-lourdes-pyrenees.parquet"
+    ],
+    "ods_ha_py__subventions-versees-mairie-de-tarbes": [
+     "data/lake/beneficiaires/ods_ha_py__subventions-versees-mairie-de-tarbes.parquet"
+    ],
+    "ods_hauts_de_seine__fr-229200506-donnees-essentielles-des-conventions-de-subvention": [
+     "data/lake/beneficiaires/ods_hauts_de_seine__fr-229200506-donnees-essentielles-des-conventions-de-subvention.parquet"
+    ],
+    "ods_iledefrance__subventions-ile-de-france-mobilites": [
+     "data/lake/beneficiaires/ods_iledefrance__subventions-ile-de-france-mobilites.parquet"
+    ],
+    "ods_iledefrance_mobilites__subventions-2017": [
+     "data/lake/beneficiaires/ods_iledefrance_mobilites__subventions-2017.parquet"
+    ],
+    "ods_issy__subventions-asso": [
+     "data/lake/beneficiaires/ods_issy__subventions-asso.parquet"
+    ],
+    "ods_loire_atlantique__244400552_subvention-compa-2018": [
+     "data/lake/beneficiaires/ods_loire_atlantique__244400552_subvention-compa-2018.parquet"
+    ],
+    "ods_loire_atlantique__244400552_subvention-compa-2019": [
+     "data/lake/beneficiaires/ods_loire_atlantique__244400552_subvention-compa-2019.parquet"
+    ],
+    "ods_meudon__bp-2026-subventions-aux-associations": [
+     "data/lake/beneficiaires/ods_meudon__bp-2026-subventions-aux-associations.parquet"
+    ],
+    "ods_nantesmetropole__214401143_subventions-orvault": [
+     "data/lake/beneficiaires/ods_nantesmetropole__214401143_subventions-orvault.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2017-nantes-metropole": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2017-nantes-metropole.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2017-nantes": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2017-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2018-nantes-metropole": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2018-nantes-metropole.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2018-nantes": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2018-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2019-nantes-metropole": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2019-nantes-metropole.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2019-nantes": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2019-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2020-nantes-metropole": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2020-nantes-metropole.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2020-nantes": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2020-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2021-nantes-metropole": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2021-nantes-metropole.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2021-nantes": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2021-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2023-nantes-metropole": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2023-nantes-metropole.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2024-nantes-metropole": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2024-nantes-metropole.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-associations-2025-nantes-metropole": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2025-nantes-metropole.parquet"
+    ],
+    "ods_nantesmetropole__244400404_subventions-versees-aux-associations-2022-nantes-metropole": [
+     "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-versees-aux-associations-2022-nantes-metropole.parquet"
+    ],
+    "ods_opendata56__subventions-ville-de-lorient": [
+     "data/lake/beneficiaires/ods_opendata56__subventions-ville-de-lorient.parquet"
+    ],
+    "ods_orleans_metropole__subventions-versees-aux-associations-par-la-ville-de-fleury-les-aubrais-en-2019": [
+     "data/lake/beneficiaires/ods_orleans_metropole__subventions-versees-aux-associations-par-la-ville-de-fleury-les-aubrais-en-2019.parquet"
+    ],
+    "ods_saintnazaireagglo__214401846_subventions_numeraire_liste": [
+     "data/lake/beneficiaires/ods_saintnazaireagglo__214401846_subventions_numeraire_liste.parquet"
+    ],
+    "ods_seineouest__subventions-aux-associations": [
+     "data/lake/beneficiaires/ods_seineouest__subventions-aux-associations.parquet"
+    ],
+    "ods_sicoval__subventions-versees-aux-associations": [
+     "data/lake/beneficiaires/ods_sicoval__subventions-versees-aux-associations.parquet"
+    ],
+    "ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-tm-2023": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-tm-2023.parquet"
+    ],
+    "ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-tm": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-tm.parquet"
+    ],
+    "ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-vt-2024": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-vt-2024.parquet"
+    ],
+    "ods_toulouse_metropole__subv-versees-a-des-organismes-2022-tm": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subv-versees-a-des-organismes-2022-tm.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2012-toulouse-metropole": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2012-toulouse-metropole.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2013-toulouse-metropole": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2013-toulouse-metropole.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2014-toulouse-metropole": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2014-toulouse-metropole.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2015-toulouse-metropole": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2015-toulouse-metropole.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2015-toulouse-metropole1": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2015-toulouse-metropole1.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2016-toulouse-metropole": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2016-toulouse-metropole.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2017-toulouse-metropole": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2017-toulouse-metropole.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2017-ville-de-toulouse": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2017-ville-de-toulouse.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2018-toulouse-metropole": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2018-toulouse-metropole.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2018-ville-de-toulouse": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2018-ville-de-toulouse.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2019-toulouse-metropole": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2019-toulouse-metropole.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2019-ville-de-toulouse": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2019-ville-de-toulouse.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2020-toulouse-metropole": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2020-toulouse-metropole.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2020-ville-de-toulouse": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2020-ville-de-toulouse.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2021-toulouse-metropole": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2021-toulouse-metropole.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2021-ville-de-toulouse": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2021-ville-de-toulouse.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-2022-ville-de-toulouse": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2022-ville-de-toulouse.parquet"
+    ],
+    "ods_toulouse_metropole__subventions-versees-a-des-organismes-ville-de-toulouse-2023": [
+     "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-ville-de-toulouse-2023.parquet"
+    ],
+    "datagouv__departement-de-la-nievre-subventions": [
+     "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2018_dc5625e5.csv",
+     "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2019_9a7366d1.csv",
+     "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2020_7ddd6eca.csv",
+     "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2021_a6f77f64.csv",
+     "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2022_01f2c160.csv",
+     "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2023_584ad9a8.csv",
+     "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2024_974ef74b.csv",
+     "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2025_325c7c4e.csv"
+    ],
+    "datagouv__donnees-essentielles-des-conventions-de-subvention-2017-departement-du-lot": [
+     "data/lake/collectivites/datagouv__donnees-essentielles-des-conventions-de-subvention-2017-departement-du-lot/Donn_es_essentielles_des_conventions_de_subvention_DEPARTEME_f1526606.csv"
+    ],
+    "datagouv__donnees-essentielles-des-conventions-de-subvention-region-grand-est-2": [
+     "data/lake/collectivites/datagouv__donnees-essentielles-des-conventions-de-subvention-region-grand-est-2/subvention_region_grandest_3bee6dfa.csv"
+    ],
+    "datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales": [
+     "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/DGCL-liste-projets-dotations-investissement-local-2025_e621419d.csv",
+     "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2018_04980dee.csv",
+     "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2019_f17ae4d4.csv",
+     "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2020_64de3c69.csv",
+     "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2021_e117e1a6.csv",
+     "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2022_2432d03a.csv",
+     "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2023_d9e762ae.csv",
+     "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2024_ba15fc37.csv"
+    ],
+    "datagouv__subventions-aux-associations-2": [
+     "data/lake/collectivites/datagouv__subventions-aux-associations-2/Subventions_aux_associations_2025_734526a4.csv"
+    ],
+    "datagouv__subventions-commune-de-labarthe-sur-leze": [
+     "data/lake/collectivites/datagouv__subventions-commune-de-labarthe-sur-leze/subventions-commune-de-labarthe-sur-leze_d994577e.csv"
+    ],
+    "datagouv__subventions-de-la-region-normandie-2016-a-2025": [
+     "data/lake/collectivites/datagouv__subventions-de-la-region-normandie-2016-a-2025/subventions_2016_2025_2093a159.csv"
+    ],
+    "datagouv__subventions-versees-aux-associations-par-le-departement-dille-et-vilaine": [
+     "data/lake/collectivites/datagouv__subventions-versees-aux-associations-par-le-departement-dille-et-vilaine/publications-subventions-associations-2021_30bf1dc0.csv",
+     "data/lake/collectivites/datagouv__subventions-versees-aux-associations-par-le-departement-dille-et-vilaine/publications-subventions-associations-2022_0cec7fcc.csv",
+     "data/lake/collectivites/datagouv__subventions-versees-aux-associations-par-le-departement-dille-et-vilaine/publications-subventions-associations-2022_d7a5ca36.csv"
+    ],
+    "datagouv__subventions-versees-par-le-departement-de-la-savoie-cd73-en-2022": [
+     "data/lake/collectivites/datagouv__subventions-versees-par-le-departement-de-la-savoie-cd73-en-2022/opendata-subventions-versees-2022_3095c69b.csv"
+    ],
+    "datagouv__subventions-versees-par-le-departement-de-la-savoie-cd73-en-2023": [
+     "data/lake/collectivites/datagouv__subventions-versees-par-le-departement-de-la-savoie-cd73-en-2023/opendata-subventions-versees-2023_efef91d0.csv"
+    ],
+    "local_departements": [
+     "data/lake/collectivites/local_departements.parquet"
+    ],
+    "local_departements_fonction": [
+     "data/lake/collectivites/local_departements_fonction.parquet"
+    ],
+    "local_dotations_departements": [
+     "data/lake/collectivites/local_dotations_departements.parquet"
+    ],
+    "local_ensembles_intercommunaux": [
+     "data/lake/collectivites/local_ensembles_intercommunaux.parquet"
+    ],
+    "local_fiscalite_particuliers": [
+     "data/lake/collectivites/local_fiscalite_particuliers.parquet"
+    ],
+    "local_intercos": [
+     "data/lake/collectivites/local_intercos.parquet"
+    ],
+    "local_regions": [
+     "data/lake/collectivites/local_regions.parquet"
+    ],
+    "ods_agglo_carene__214400301_subventions_liste": [
+     "data/lake/collectivites/ods_agglo_carene__214400301_subventions_liste.parquet"
+    ],
+    "ods_agglo_carene__214400525_subventions-liste": [
+     "data/lake/collectivites/ods_agglo_carene__214400525_subventions-liste.parquet"
+    ],
+    "ods_agglo_carene__214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre": [
+     "data/lake/collectivites/ods_agglo_carene__214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre.parquet"
+    ],
+    "ods_agglo_carene__214401515_subventions_liste": [
+     "data/lake/collectivites/ods_agglo_carene__214401515_subventions_liste.parquet"
+    ],
+    "ods_agglo_carene__214401689_subventions_liste": [
+     "data/lake/collectivites/ods_agglo_carene__214401689_subventions_liste.parquet"
+    ],
+    "ods_agglo_carene__214401762_subventions-liste": [
+     "data/lake/collectivites/ods_agglo_carene__214401762_subventions-liste.parquet"
+    ],
+    "ods_aude__cd11_donneesessentiellessubventions23k": [
+     "data/lake/collectivites/ods_aude__cd11_donneesessentiellessubventions23k.parquet"
+    ],
+    "ods_capatlantique__214400558_subventions-liste": [
+     "data/lake/collectivites/ods_capatlantique__214400558_subventions-liste.parquet"
+    ],
+    "ods_capatlantique__214400699-subventions-liste": [
+     "data/lake/collectivites/ods_capatlantique__214400699-subventions-liste.parquet"
+    ],
+    "ods_capatlantique__215600586_subventions_liste": [
+     "data/lake/collectivites/ods_capatlantique__215600586_subventions_liste.parquet"
+    ],
+    "ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2018": [
+     "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2018.parquet"
+    ],
+    "ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2019": [
+     "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2019.parquet"
+    ],
+    "ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2020": [
+     "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2020.parquet"
+    ],
+    "ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2021": [
+     "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2021.parquet"
+    ],
+    "ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2022": [
+     "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2022.parquet"
+    ],
+    "ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2023": [
+     "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2023.parquet"
+    ],
+    "ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2024": [
+     "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2024.parquet"
+    ],
+    "ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2025": [
+     "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2025.parquet"
+    ],
+    "ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2026": [
+     "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2026.parquet"
+    ],
+    "ods_eurelien__datasubventions2024": [
+     "data/lake/collectivites/ods_eurelien__datasubventions2024.parquet"
+    ],
+    "ods_eurelien__datasubventions2025": [
+     "data/lake/collectivites/ods_eurelien__datasubventions2025.parquet"
+    ],
+    "ods_ha_py__departementdeshautespyrenees_subventions_cd65": [
+     "data/lake/collectivites/ods_ha_py__departementdeshautespyrenees_subventions_cd65.parquet"
+    ],
+    "ods_haute_garonne__subventions-accordees-par-la-dtip-du-departement-de-la-haute-garonne": [
+     "data/lake/collectivites/ods_haute_garonne__subventions-accordees-par-la-dtip-du-departement-de-la-haute-garonne.parquet"
+    ],
+    "ods_haute_garonne__subventions-direction-prevention-lutte-contre-precarites-departement-haute-garonne": [
+     "data/lake/collectivites/ods_haute_garonne__subventions-direction-prevention-lutte-contre-precarites-departement-haute-garonne.parquet"
+    ],
+    "ods_haute_garonne__subventions-education-departement-haute-garonne": [
+     "data/lake/collectivites/ods_haute_garonne__subventions-education-departement-haute-garonne.parquet"
+    ],
+    "ods_isere__subventions-accordees-par-le-departement-de-lisere-old-copie": [
+     "data/lake/collectivites/ods_isere__subventions-accordees-par-le-departement-de-lisere-old-copie.parquet"
+    ],
+    "ods_lamayenne__225300011_cd53_scdl_subventions": [
+     "data/lake/collectivites/ods_lamayenne__225300011_cd53_scdl_subventions.parquet"
+    ],
+    "ods_loire_atlantique__224400028_subventions-aux-associations-du-departement-de-loire-atlantique": [
+     "data/lake/collectivites/ods_loire_atlantique__224400028_subventions-aux-associations-du-departement-de-loire-atlantique.parquet"
+    ],
+    "ods_maine_et_loire__224900019_conventions-de-subventions-du-departement-de-maine-et-loire": [
+     "data/lake/collectivites/ods_maine_et_loire__224900019_conventions-de-subventions-du-departement-de-maine-et-loire.parquet"
+    ],
+    "ods_nantesmetropole__214401507_subventions_attribuees_sagl": [
+     "data/lake/collectivites/ods_nantesmetropole__214401507_subventions_attribuees_sagl.parquet"
+    ],
+    "ods_saintnazaireagglo__214400301_subventions_liste": [
+     "data/lake/collectivites/ods_saintnazaireagglo__214400301_subventions_liste.parquet"
+    ],
+    "ods_saintnazaireagglo__214400525_subventions-liste": [
+     "data/lake/collectivites/ods_saintnazaireagglo__214400525_subventions-liste.parquet"
+    ],
+    "ods_saintnazaireagglo__214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre": [
+     "data/lake/collectivites/ods_saintnazaireagglo__214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre.parquet"
+    ],
+    "ods_saintnazaireagglo__214401515_subventions_liste": [
+     "data/lake/collectivites/ods_saintnazaireagglo__214401515_subventions_liste.parquet"
+    ],
+    "ods_saintnazaireagglo__214401689_subventions_liste": [
+     "data/lake/collectivites/ods_saintnazaireagglo__214401689_subventions_liste.parquet"
+    ],
+    "ods_saintnazaireagglo__214401762_subventions-liste": [
+     "data/lake/collectivites/ods_saintnazaireagglo__214401762_subventions-liste.parquet"
+    ],
+    "ods_sarthe__227200029_subv-votees_opendata": [
+     "data/lake/collectivites/ods_sarthe__227200029_subv-votees_opendata.parquet"
+    ],
+    "ods_seinesaintdenis__subventions-versees-associations-seine-saint-denis": [
+     "data/lake/collectivites/ods_seinesaintdenis__subventions-versees-associations-seine-saint-denis.parquet"
+    ],
+    "datagouv__compte-administratif-ca-2011-de-nantes-metropole-1": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2011-de-nantes-metropole-1/244400404_compte-administratif-ca-2011-nantes-metropole_e2214325.csv"
+    ],
+    "datagouv__compte-administratif-ca-2012-de-nantes-metropole-1": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2012-de-nantes-metropole-1/244400404_compte-administratif-ca-2012-nantes-metropole_7afe1c2f.csv"
+    ],
+    "datagouv__compte-administratif-ca-2013-de-nantes-metropole": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2013-de-nantes-metropole/244400404_compte-administratif-ca-2013-nantes-metropole_984684e7.csv"
+    ],
+    "datagouv__compte-administratif-ca-2014-de-nantes-metropole-1": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2014-de-nantes-metropole-1/244400404_compte-administratif-ca-2014-nantes-metropole_73e4339f.csv"
+    ],
+    "datagouv__compte-administratif-ca-2016-de-nantes-metropole-1": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2016-de-nantes-metropole-1/244400404_compte-administratif-ca-2016-nantes-metropole_6ddb3706.csv"
+    ],
+    "datagouv__compte-administratif-ca-2017-de-nantes-metropole": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2017-de-nantes-metropole/244400404_compte-administratif-ca-2017-nantes-metropole_ee855a4f.csv"
+    ],
+    "datagouv__compte-administratif-ca-2018-de-nantes-metropole": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2018-de-nantes-metropole/244400404_compte-administratif-ca-2018-nantes-metropole_ea390759.csv"
+    ],
+    "datagouv__compte-administratif-ca-2019-de-nantes-metropole": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2019-de-nantes-metropole/244400404_compte-administratif-ca-2019-nantes-metropole_69e8a927.csv"
+    ],
+    "datagouv__compte-administratif-ca-2020-de-nantes-metropole": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2020-de-nantes-metropole/244400404_compte-administratif-ca-2020-nantes-metropole_74ba7446.csv"
+    ],
+    "datagouv__compte-administratif-ca-2021-de-nantes-metropole": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2021-de-nantes-metropole/244400404_compte-administratif-ca-2021-nantes-metropole_17646595.csv"
+    ],
+    "datagouv__compte-administratif-ca-2023-de-nantes-metropole-2": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2023-de-nantes-metropole-2/244400404_compte-administratif-ca-2023-nantes-metropole_0c4083e3.csv"
+    ],
+    "datagouv__compte-administratif-ca-2024-de-nantes-metropole-1": [
+     "data/lake/dette/datagouv__compte-administratif-ca-2024-de-nantes-metropole-1/244400404_compte-administratif-ca-2024-nantes-metropole_a37b82ed.csv"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2010-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2010-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2010-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2010-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2011-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2011-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2011-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2011-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2012-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2012-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2012-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2012-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2013-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2013-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2013-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2013-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2014-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2014-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2014-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2014-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2015-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2015-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2015-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2015-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2016-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2016-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2016-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2016-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2017-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2017-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2017-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2017-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2018-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2018-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2018-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2018-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2019-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2019-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2019-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2019-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2020-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2020-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2020-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2020-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2021-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2021-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2021-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2021-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2022-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2022-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2022-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2022-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2023-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2023-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2023-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2023-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2024-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2024-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2024-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2024-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2025-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2025-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2025-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2025-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2026-ccas-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2026-ccas-nantes.parquet"
+    ],
+    "ods_nantesmetropole__244400404_budget-primitif-bp-2026-nantes": [
+     "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2026-nantes.parquet"
+    ],
+    "datagouv__subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante": [
+     "data/lake/secu/datagouv__subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/DGS_subventions-associations_2025_fd970d88.csv"
+    ]
+   },
+   "caches": [
+    "data/lake/_cache/local"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": 452383269
+  },
+  "controle": {
+   "sources": {
+    "aides_urssaf_exos_champ_large_par_grandes_categories": [
+     "data/lake/aides_entreprises/aides_urssaf_exos_champ_large_par_grandes_categories.parquet"
+    ],
+    "controle_ccomptes_publications_2011_2016": [
+     "data/lake/controle/controle_ccomptes_publications_2011_2016.csv"
+    ],
+    "controle_crc_rod_metadonnees": [
+     "data/lake/controle/controle_crc_rod_metadonnees.xlsx"
+    ],
+    "controle_hcsp_2026_aides_entreprises": [
+     "data/lake/controle/controle_hcsp_2026_aides_entreprises.pdf"
+    ],
+    "politique_hatvp_lobbying_csv": [
+     "data/lake/_restreint/politique/politique_hatvp_lobbying_csv.zip"
+    ],
+    "politique_hatvp_lobbying_json": [
+     "data/lake/_restreint/politique/politique_hatvp_lobbying_json.json"
+    ]
+   },
+   "caches": [
+    "data/lake/_cache/ccomptes",
+    "data/lake/_cache/recherche_entreprises_controle.json"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "relevé à la main d'après les constantes de pipeline/controle.py (entrepôt purgé avant le relevé sous strace)"
+  }
+ },
+ "urls": {
+  "data/lake/_restreint/beneficiaires/benef_decp/decp_11cea8e8.parquet": "https://static.data.gouv.fr/resources/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire/20261117-051110/decp.parquet",
+  "data/lake/_restreint/beneficiaires/datagouv__subventions-de-bourges-plus-en-2018-et-2019/subventions-de-bourges-plus-en-2018-et-2019_85c2c379.parquet": "https://data.bourgesplus.fr/api/v2/catalog/datasets/subventions-de-bourges-plus-en-2018-et-2019/exports/parquet",
+  "data/lake/_restreint/beneficiaires/ods_laregion__subventions-du-conseil-regional.parquet": "https://data.laregion.fr/api/explore/v2.1/catalog/datasets/subventions-du-conseil-regional/exports/parquet",
+  "data/lake/_restreint/collectivites/ods_iledefrance__subventions-versees-par-la-region-ile-de-france-aux-associations.parquet": "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/subventions-versees-par-la-region-ile-de-france-aux-associations/exports/parquet",
+  "data/lake/_restreint/decisions/datagouv__donnees-essentielles-des-conventions-de-subvention-de-la-region-bourgogne-franche-comte/donnes-convention-subventions_2e4d9204.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention-de-la-region-bourgogne-franche-comte/20250114-154030/donnes-convention-subventions-2025.csv",
+  "data/lake/_restreint/decisions/decisions_d44_deliberations.parquet": "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/224400028_rapports-deliberations-proces-verbaux-conseil-departemental/exports/parquet",
+  "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2021_e60c6e93.csv": "https://static.data.gouv.fr/resources/deliberations-des-organismes-adherents-de-megalis-bretagne/20261101-020209/deliberation-2021.csv",
+  "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2022_8a564bff.csv": "https://static.data.gouv.fr/resources/deliberations-des-organismes-adherents-de-megalis-bretagne/20261102-011405/deliberation-2022.csv",
+  "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2023_7b1b1516.csv": "https://static.data.gouv.fr/resources/deliberations-des-organismes-adherents-de-megalis-bretagne/20261103-012444/deliberation-2023.csv",
+  "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2024_fe235414.csv": "https://static.data.gouv.fr/resources/deliberations-des-organismes-adherents-de-megalis-bretagne/20261104-001421/deliberation-2024.csv",
+  "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2025_6ecf0df9.csv": "https://static.data.gouv.fr/resources/deliberations-des-organismes-adherents-de-megalis-bretagne/20261109-091534/deliberation-2025.csv",
+  "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2026_5e30e87e.csv": "https://static.data.gouv.fr/resources/deliberations-des-organismes-adherents-de-megalis-bretagne/20261117-001405/deliberation-2026.csv",
+  "data/lake/_restreint/decisions/decisions_nantes_metropole_deliberations.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_deliberations-instances-metropole-nantes/exports/parquet",
+  "data/lake/_restreint/decisions/decisions_pdl_deliberations.csv": "https://data.paysdelaloire.fr/api/explore/v2.1/catalog/datasets/234400034_001-001_rapports-deliberations-et-proces-verbaux-rpdl-2019/exports/csv",
+  "data/lake/_restreint/politique/politique_hatvp_lobbying_csv.zip": "https://www.hatvp.fr/agora/opendata/csv/Vues_Separees_CSV.zip",
+  "data/lake/_restreint/politique/politique_hatvp_lobbying_json.json": "https://www.hatvp.fr/agora/opendata/agora_repertoire_opendata.json",
+  "data/lake/aides_entreprises/aides_france2030_projets.csv": "https://geobretagne.fr/geonetwork/srv/api/records/f09eb03a-b447-4281-bc58-402c953b0014/attachments/france2030_projets.csv",
+  "data/lake/aides_entreprises/aides_urssaf_exos_champ_large_par_grandes_categories.parquet": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/exos-champ-large-par-grandes-categories/exports/parquet",
+  "data/lake/aides_entreprises/aides_urssaf_exos_secteur_prive_france_entiere_par_me.parquet": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/exos-secteur-prive-france-entiere-par-mesures/exports/parquet",
+  "data/lake/beneficiaires/benef_associations_plf25.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf25-donnees-de-l-annexe-jaune-effort-financier-de-l-etat-en-faveur-des-associations/exports/parquet",
+  "data/lake/beneficiaires/benef_subventions_cdc.parquet": "https://opendata.caissedesdepots.fr/api/explore/v2.1/catalog/datasets/subventions-attribuees-par-la-caisse-des-depots-depuis-01012018/exports/parquet",
+  "data/lake/beneficiaires/beneficiaires_d44_subventions_associations.parquet": "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/224400028_subventions-aux-associations-du-departement-de-loire-atlantique/exports/parquet",
+  "data/lake/beneficiaires/datagouv__conventions-de-subvention-2017/opendataconventionsubventions2017_7b921660.csv": "https://static.data.gouv.fr/resources/conventions-de-subvention-2017/20220708-080243/opendataconventionsubventions2017.csv",
+  "data/lake/beneficiaires/datagouv__conventions-de-subvention-signees/aidesAttribueesAEAP_10_11_PRG_06f0f6e2.csv": "https://static.data.gouv.fr/resources/conventions-de-subvention-signees/20260513-062710/aidesattribueesaeap-10-11-prg.csv",
+  "data/lake/beneficiaires/datagouv__conventions-de-subvention-signees/aidesAttribueesAEAP_12_PRG_3dc1e530.csv": "https://static.data.gouv.fr/resources/conventions-de-subvention-signees/20261108-073123/aidesattribueesaeap-12-prg-08112026.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-conventions-subventions-2018-du-departement-de-la-loire/2018-donnees-essentielles_9bbfc539.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-conventions-subventions-2018/20210330-112300/2018-donnees-essentielles.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-2/20181026-215403957-donnees-convention-subvention-nancy-2018_b82fc58c.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention-2/20200106-145556/20181026-215403957-donnees-convention-subvention-nancy-2018.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-2/jeux-donnees-convention-subvention-vdn-2019_44f9a0e3.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention-2/20190520-111434/jeux-donnees-convention-subvention-vdn-2019.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-7/donnees-essentielles-2022_63cbe939.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention-7/20220503-112112/donnees-essentielles-2022.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-8/TABLEAU_DONNEES_ESSENTIELLES_DE_SUBVENTION_SUP_A_23_K_DECEMB_3aa29534.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention-8/20260114-154849/tableau-donnees-essentielles-de-subvention-sup-a-23-keur-decembre-2025.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-attribuees-par-la-ville-dantibes/antibes-subventions_9d65d9fd.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention-attribuees-par-la-ville-dantibes/20260831-150140/antibes-subventions.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vil/fichiercsv-diffusionconventions_2fffcbc2.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vilaine/20230921-091751/subvention-convention2020.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vil/fichiercsv-diffusionconventions_4f92700c.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vilaine/20230921-091751/fichiercsv-diffusionconventions.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vil/subvention-convention-022023_26e10ef7.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vilaine/20230921-091751/subvention-convention-022023.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vil/subvention-convention-20210204_c10ade6a.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention-sup-a-23000-euros-accordees-par-le-departement-dille-et-vilaine/20230921-091751/subvention-convention-20210204.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/DONNEES_2022_cc8bea61.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention/20221028-144800/tb-20221028-donnees-conventions.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/DONNEES_2023_c09bb704.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention/20240112-160201/tb-20231231-donnees-conventions.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/DONNEES_2024_6627842c.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention/20241128-135704/tb-20241128-donnees-conventions.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/DONNEES_2025_d8f351fa.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention/20260211-105659/tb-20260211-donnees-conventions.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/DONNEES_2026_5e12f056.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention/20261009-123438/tb-20261009-donnees-conventions.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/Donn_es_2017_a6082d22.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention/20180302-103420/TB_20180302_DONNEES_CONVENTIONS.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/Donn_es_2018_6a7ea843.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention/20181127-111930/tb-20181127-donnees-conventions.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/Donn_es_2019_3c80c540.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention/20191119-175247/tb-20191119.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/Donn_es_2020_5c751bcf.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention/20201208-104553/tb-20201207.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subvention/Donn_es_2021_ee6d5a03.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention/20211130-163818/tb-20211130-donnees-conventions.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subventions/jeux-donnees-convention-subventions-etincelle-2023_8b22df0b.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subventions/20231213-135229/jeux-donnees-convention-subventions-etincelle-2023.csv",
+  "data/lake/beneficiaires/datagouv__donnees-essentielles-des-conventions-de-subventions/jeux-donnees-convention-subventions-etincelle-2024_6adf5837.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subventions/20240417-074520/jeux-donnees-convention-subventions-etincelle-2024.csv",
+  "data/lake/beneficiaires/datagouv__les-aides-financieres-de-lademe-1/Fichier_csv_a514049e.csv": "https://data.ademe.fr/data-fair/api/v1/datasets/les-aides-financieres-de-l'ademe/convert",
+  "data/lake/beneficiaires/datagouv__liste-des-subventions-de-fonctionnement-superieures-a-23-000-eur-attribuees-aux-associations-de-la-commune-de-/donnees-subventions-2025-ville-de-sarcelles_1ddb9735.csv": "https://static.data.gouv.fr/resources/liste-des-subventions-de-fonctionnement-superieures-a-23-000-eur-attribuees-aux-associations-de-la-commune-de-sarcelles/20251010-105031/data.csv",
+  "data/lake/beneficiaires/datagouv__montant-des-subventions-de-lannee-2025/DATA_SUBVENTION_276ea8bc.csv": "https://static.data.gouv.fr/resources/montant-des-subventions-de-lannee-2025/20260120-145400/data-subvention.csv",
+  "data/lake/beneficiaires/datagouv__publication-de-declarations-des-subventions-sup-a-23keur/Publication_declarations_subventions_sup._a_23k_5a549b7b.csv": "https://static.data.gouv.fr/resources/publication-de-declarations-des-subventions-sup-a-23keur/20180611-153726/Publication_declarations_subventions_sup._a_23k.csv",
+  "data/lake/beneficiaires/datagouv__subvention-aux-associations-2019/stloubes-2019-declarations-subventions-sup.-a-23k_4df2b859.csv": "https://static.data.gouv.fr/resources/subvention-aux-associations-2019/20190403-112919/stloubes-2019-declarations-subventions-sup.-a-23k.csv",
+  "data/lake/beneficiaires/datagouv__subventions-2017-du-departement-de-la-dordogne/cd24-subventions-2017_74273342.csv": "https://static.data.gouv.fr/resources/subventions-2017-du-departement-de-la-dordogne/20210519-104558/cd24-subventions-2017.csv",
+  "data/lake/beneficiaires/datagouv__subventions-2017-ville-dautun/subvention-autun-2017_de96ee88.csv": "https://static.data.gouv.fr/resources/subventions-2017-ville-dautun/20181003-155714/subvention-autun-2017.csv",
+  "data/lake/beneficiaires/datagouv__subventions-2018-2/od-vm-subventions-2018_63768f33.csv": "https://static.data.gouv.fr/resources/subventions-2/20190114-144100/od-vm-subventions-2018.csv",
+  "data/lake/beneficiaires/datagouv__subventions-2018-du-departement-de-la-dordogne/cd24-subventions-2018_2ae5c8ac.csv": "https://static.data.gouv.fr/resources/subventions-2018-du-departement-de-la-dordogne/20210519-104207/cd24-subventions-2018.csv",
+  "data/lake/beneficiaires/datagouv__subventions-2019-du-departement-de-la-dordogne/cd24-subventions-2019_17273ac9.csv": "https://static.data.gouv.fr/resources/subventions-2019-du-departement-de-la-dordogne/20210519-103850/cd24-subventions-2019.csv",
+  "data/lake/beneficiaires/datagouv__subventions-2019/od-vm-subventions-2019_8e25407f.csv": "https://static.data.gouv.fr/resources/subventions-2019/20190409-150529/od-vm-subventions-2019.csv",
+  "data/lake/beneficiaires/datagouv__subventions-2020/od-vm-subventions-2020_6b659ffc.csv": "https://static.data.gouv.fr/resources/subventions-2020/20200225-135245/od-vm-subventions-2020.csv",
+  "data/lake/beneficiaires/datagouv__subventions-2021/Subventions_2021_b3dd27ab.csv": "https://static.data.gouv.fr/resources/subventions-2021/20210505-105319/od-vm-subventions-2021.csv",
+  "data/lake/beneficiaires/datagouv__subventions-23000-eur-versees-en-2018-par-la-ville-de-meze/publication-declarations-subventions-sup.-a-23k_aa59cf31.csv": "https://static.data.gouv.fr/resources/subventions-23000-eur-versees-en-2018-par-la-ville-de-meze/20181109-155304/publication-declarations-subventions-sup.-a-23k.csv",
+  "data/lake/beneficiaires/datagouv__subventions-23000-euros-2017/SUBV23k_2017_4d3f291f.csv": "https://static.data.gouv.fr/resources/subventions-23000-euros-2017/20180810-100853/SUBV23k_2017.csv",
+  "data/lake/beneficiaires/datagouv__subventions-4/subventions_quimper_2024_2bf387ea.csv": "https://static.data.gouv.fr/resources/subventions-4/20260304-093955/vq.csv",
+  "data/lake/beneficiaires/datagouv__subventions-4/subventions_quimper_2025_90fd68ff.csv": "https://static.data.gouv.fr/resources/subventions-4/20260318-084653/subventions-2025-vq.csv",
+  "data/lake/beneficiaires/datagouv__subventions-5/subventions_qbo_2024_daa6b770.csv": "https://static.data.gouv.fr/resources/subventions-5/20260304-094034/qbo.csv",
+  "data/lake/beneficiaires/datagouv__subventions-5/subventions_qbo_2025_0a1ad890.csv": "https://static.data.gouv.fr/resources/subventions-5/20260304-094214/qbo.csv",
+  "data/lake/beneficiaires/datagouv__subventions-associations-2025/Fichier_subv_2025_au_format_data_gouv_6b3f2841.csv": "https://static.data.gouv.fr/resources/subventions-associations-2025/20260325-092626/fichier-subvdeg-2025-au-format-data-gouv.csv",
+  "data/lake/beneficiaires/datagouv__subventions-associatives-de-la-commune-de-lys-saint-georges-de-2017-a-2022/Subventions-associatives-lys-saint-georges_fa59b038.csv": "https://static.data.gouv.fr/resources/subventions-associatives-de-la-commune-de-lys-saint-georges-de-2017-a-2022/20221124-155306/fichier-subventions-lys-saint-georges.csv",
+  "data/lake/beneficiaires/datagouv__subventions-attribuees-aux-associations-par-la-ville-de-la-possession/Subventions_attribu_es_aux_associations_par_la_ville_de_La_P_580dec6c.csv": "https://static.data.gouv.fr/resources/subventions-attribuees-aux-associations-par-la-ville-de-la-possession/20230208-063233/subventions-attribuees-2022.csv",
+  "data/lake/beneficiaires/datagouv__subventions-attribuees-par-esterel-cote-d-azur-agglomeration/Subventions_attribu_es_par_la_CAVEM_en_2020_bbeb2491.csv": "https://www.datasud.fr/fr/dataset/datasets/2383/resource/2907/download/",
+  "data/lake/beneficiaires/datagouv__subventions-attribuees-par-saintes-grandes-rives-lagglo/Fichier_csv_996ec654.csv": "https://opendata.agglo-saintes.fr/data-fair/api/v1/datasets/subventions-attribuees-epci/convert",
+  "data/lake/beneficiaires/datagouv__subventions-attribuees/77468-subventions_65369e7a.csv": "https://static.data.gouv.fr/resources/subventions-attribuees/20220727-175715/77468-subventions.csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-associations-5/Publication_declarations_subventions_sup_641175c2.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-5/20251013-144659/publication-declarations-subventions-sup.-a-23k-2024-a-essayer.csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-associations-5/publication-declarations-subventions-sup.-a-23k-2023_ba73be8e.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-votees-3/20241104-140403/csv-publication-declarations-subventions-sup.-a-23k-3-.csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2020_b48a2fc5.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/20260424-123620/subvention-2020.csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2021_6c2ebe90.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/20260424-122621/subvention-2021.csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2022_2572d462.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/20260424-123951/subvention-2022.csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2023_9386c4f3.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/20260424-124129/subvention-2023..csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2024_1fffcdd8.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/20260424-124247/subvention-2024.csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/SUBVENTION_2025_a335a7b9.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-accordees-par-la-mairie-de-villejuif-94/20260424-124348/subvention-2025.csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-associations-en-2017/Subvention_Nevers_Agglomeration_2017_9e76a5f9.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-en-2017/20180711-115743/Subvention_Nevers_Agglomeration_2017.csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-associations-sailly-lez-lannoy/subventions-aux-associations-feuille-1_5c733baa.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-sailly-lez-lannoy/20221124-161901/subventions-aux-associations-feuille-1.csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-associations-votees-2/subventions-votees-aux-associations-de-de-23000-euro-depuis-_7b007385.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-votees-2/20260122-083124/subventions-votees-aux-associations-de-de-23000-euro-depuis-2017.csv",
+  "data/lake/beneficiaires/datagouv__subventions-aux-personnes-morales/cd56-subventions_03a0e91c.csv": "https://static.data.gouv.fr/resources/subventions-aux-personnes-morales/20240220-143932/cd56-subventions.csv",
+  "data/lake/beneficiaires/datagouv__subventions-communales-aux-associations/subventions_31387b2a.csv": "https://static.data.gouv.fr/resources/subventions-communales-aux-associations/20180720-092535/subventions.csv",
+  "data/lake/beneficiaires/datagouv__subventions-commune-de-plouezec/Associations-Subventions_UTF8_2c0a0a56.csv": "https://static.data.gouv.fr/resources/subventions-organisation-commune-de-plouezec/20250626-131501/data.csv",
+  "data/lake/beneficiaires/datagouv__subventions-de-23000-euros-2020/subv-23keur-2020_422626e2.csv": "https://static.data.gouv.fr/resources/subventions-de-23000-euros-2020/20210225-145452/subv-23keur-2020.csv",
+  "data/lake/beneficiaires/datagouv__subventions-de-23000-euros-2021/subv-23keur-2021_4fcced5c.csv": "https://static.data.gouv.fr/resources/subventions-de-23000-euros-2021/20220215-153940/subv-23keur-2021.csv",
+  "data/lake/beneficiaires/datagouv__subventions-de-23000-euros-2022/subv-23keur-2022_835fbea6.csv": "https://static.data.gouv.fr/resources/subventions-de-23000-euros-2022/20230303-102546/subv-23keur-2022.csv",
+  "data/lake/beneficiaires/datagouv__subventions-de-23000-euros/subv-23keur-2019_ce231a65.csv": "https://static.data.gouv.fr/resources/subventions-de-23000-euros/20200623-153422/subv-23keur-2019.csv",
+  "data/lake/beneficiaires/datagouv__subventions-de-bordeaux-metropole-1/subventions-metropole-de-bordeaux_cdad1046.csv": "https://datahub.bordeaux-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-metropole-de-bordeaux/exports/csv?use_labels=true",
+  "data/lake/beneficiaires/datagouv__subventions-de-bourges-plus-de-2020-a-2023/opendata_subventionbourgesplus_a_partir_2020_269ec886.csv": "https://data.bourgesplus.fr/api/v2/catalog/datasets/opendata_subventionbourgesplus_a_partir_2020/exports/csv?use_labels=true",
+  "data/lake/beneficiaires/datagouv__subventions-de-bourges-plus-de-2020-a-2023/opendata_subventionbourgesplus_a_partir_2020_d52d67bd.parquet": "https://data.bourgesplus.fr/api/v2/catalog/datasets/opendata_subventionbourgesplus_a_partir_2020/exports/parquet",
+  "data/lake/beneficiaires/datagouv__subventions-de-la-saison-1-de-laccelerateur-dinitiatives-citoyennes/aic-saison1-subventions_b6227c78.csv": "https://static.data.gouv.fr/resources/subventions-organisation-etalab/20221221-153003/data.csv",
+  "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-de-2018-a-2020/subventions-2018-2020-vdb_4c7f1a1c.parquet": "https://data.bourgesplus.fr/api/v2/catalog/datasets/subventions-2018-2020-vdb/exports/parquet",
+  "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-de-2018-a-2020/subventions-2018-2020-vdb_e73d5922.csv": "https://data.bourgesplus.fr/api/v2/catalog/datasets/subventions-2018-2020-vdb/exports/csv?use_labels=true",
+  "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-de-2021-a-2024/opendata_villebourges_subventions_a_partir_2021_872fbfe2.csv": "https://data.bourgesplus.fr/api/v2/catalog/datasets/opendata_villebourges_subventions_a_partir_2021/exports/csv?use_labels=true",
+  "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-de-2021-a-2024/opendata_villebourges_subventions_a_partir_2021_8b62a1d4.parquet": "https://data.bourgesplus.fr/api/v2/catalog/datasets/opendata_villebourges_subventions_a_partir_2021/exports/parquet",
+  "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-en-2025/18033-bourges-subventions-2025_8a2a60aa.csv": "https://data.bourgesplus.fr/api/v2/catalog/datasets/18033-bourges-subventions-2025/exports/csv?use_labels=true",
+  "data/lake/beneficiaires/datagouv__subventions-de-la-ville-de-bourges-en-2025/18033-bourges-subventions-2025_e0330a0d.parquet": "https://data.bourgesplus.fr/api/v2/catalog/datasets/18033-bourges-subventions-2025/exports/parquet",
+  "data/lake/beneficiaires/datagouv__subventions-de-neuville-saint-remy/Subventions_accord_es_aux_associations_de_Neuvilles_Saint-R__e993f12a.csv": "https://static.data.gouv.fr/resources/subventions-de-neuville-saint-remy/20210219-160256/workflow-132641-editcells-582860.csv",
+  "data/lake/beneficiaires/datagouv__subventions-et-avantages-en-nature-accordees-aux-associations-v1/Subventions-et-avantages-en-nature-accordees-aux-association_840195d3.csv": "https://data.metropolegrenoble.fr/sites/default/files/dataset/2023/02/22/48462830-e983-4137-a682-7d1e6e013ab7/subventions_associations_par_la_ville_de_grenoble_en_2020.csv",
+  "data/lake/beneficiaires/datagouv__subventions-et-avantages-en-nature-accordees-aux-associations-v1/subventions_et_avantages_en_nature_2025_45ead041.csv": "https://data.metropolegrenoble.fr/sites/default/files/dataset/484/62830-e983-4137-a682-7d1e6e013ab7/subventions_et_avantages_en_nature_2025.csv",
+  "data/lake/beneficiaires/datagouv__subventions-liees-au-confinement-covid-19-pays-de-mormal-2020-1/subventions_6c635db7.csv": "https://static.data.gouv.fr/resources/subventions-liees-au-confinement-covid-19-pays-de-mormal-2020-1/20210218-174125/subventions.csv",
+  "data/lake/beneficiaires/datagouv__subventions-organisation-ecole-des-beaux-arts-de-nantes-saint-nazaire/Subventions_2024-2025_dc656e29.csv": "https://static.data.gouv.fr/resources/subventions-organisation-ecole-des-beaux-arts-de-nantes-saint-nazaire/20260330-132945/data.csv",
+  "data/lake/beneficiaires/datagouv__subventions-organisation-ecole-des-beaux-arts-de-nantes-saint-nazaire/donnees-subventions-ecole-des-beaux-arts-de-nantes-saint-naz_f76e45fe.csv": "https://static.data.gouv.fr/resources/subventions-organisation-ecole-des-beaux-arts-de-nantes-saint-nazaire/20240310-205714/data.csv",
+  "data/lake/beneficiaires/datagouv__subventions-organisation-gip-les-entreprises-sengagent/DATA.SUB.VDEF05022025_SCDL_-_mod_le_type_-_DATA.SUB_-_Subven_940dba6e.csv": "https://static.data.gouv.fr/resources/subventions-organisation-gip-les-entreprises-sengagent/20250319-105221/data.csv",
+  "data/lake/beneficiaires/datagouv__subventions-organisation-premier-ministre-1/Subventions_accord_es_par_le_Cabinet_PM_en_2017_afeefa75.csv": "https://static.data.gouv.fr/resources/subventions-organisation-premier-ministre-1/20220110-123108/data.csv",
+  "data/lake/beneficiaires/datagouv__subventions-organisation-premier-ministre-1/Subventions_accord_es_par_le_cabinet_PM_en_2018_3d0ef8ba.csv": "https://static.data.gouv.fr/resources/subventions-organisation-premier-ministre-1/20220124-145357/data.csv",
+  "data/lake/beneficiaires/datagouv__subventions-organisation-premier-ministre-1/Subventions_accord_es_par_le_cabinet_PM_en_2019_366a3369.csv": "https://static.data.gouv.fr/resources/subventions-organisation-premier-ministre-1/20220211-093307/data.csv",
+  "data/lake/beneficiaires/datagouv__subventions-organisation-premier-ministre-1/Subventions_accord_es_par_le_cabinet_PM_en_2020_8eccd276.csv": "https://static.data.gouv.fr/resources/subventions-organisation-premier-ministre-1/20220216-150613/data.csv",
+  "data/lake/beneficiaires/datagouv__subventions-organisation-premier-ministre-1/Subventions_vers_es_par_le_cabinet_PM_en_2021_6e4b6f42.csv": "https://static.data.gouv.fr/resources/subventions-organisation-premier-ministre-1/20220217-165515/data.csv",
+  "data/lake/beneficiaires/datagouv__subventions-organisation-ville-de-fougeres-2/Ville_de_Fougeres-subventions_-_2025_f8e9887f.csv": "https://static.data.gouv.fr/resources/subventions-organisation-ville-de-fougeres-2/20260223-143701/data.csv",
+  "data/lake/beneficiaires/datagouv__subventions-publiques/Liste_des_subventions_publiques_attribu_es_par_la_commune_de_26f1e41d.csv": "https://static.data.gouv.fr/resources/subventions-publiques/20190401-215800/subventions-publiques-saint-paul-les-dax.csv",
+  "data/lake/beneficiaires/datagouv__subventions-sup-a-23k-annee-2025/Subventions_sup._a_23k_CA_2025_ffb80c46.csv": "https://static.data.gouv.fr/resources/subventions-sup-a-23k-annee-2025/20260828-134803/subventions-sup.-a-23k-ca-2025.csv",
+  "data/lake/beneficiaires/datagouv__subventions-superieures-a-23000eur-ca-2023/subventions-sup.-a-23k-ca-2023_a82a5be5.csv": "https://static.data.gouv.fr/resources/subventions-superieures-a-23000eur-ca-2023/20240828-075103/subventions-sup.-a-23k-ca-2023.csv",
+  "data/lake/beneficiaires/datagouv__subventions-versees-par-le-conseil-departemental-des-cotes-darmor-aux-associations-depuis-2015-decret/Fichier_csv_ef626487.csv": "https://datarmor.cotesdarmor.fr/data-fair/api/v1/datasets/subventions-versees-par-le-conseil-departemental-des-cotes-darmor-aux-associations-depuis-2016-decret/raw",
+  "data/lake/beneficiaires/datagouv__subventions-versees-par-le-departement-de-la-savoie-cd73-en-2021/opendata-subventions-versees-2021_3fc3fc90.csv": "https://static.data.gouv.fr/resources/subventions-versees-par-le-departement-de-la-savoie-cd73-en-2021/20250430-091539/opendata-subventions-versees-2021.csv",
+  "data/lake/beneficiaires/datagouv__subventions-versees-par-ville-martigues-aux-associations-conventionnees/Subventions_municipales_aux_associations_mart_gales_da70fb60.csv": "https://www.datasud.fr/fr/dataset/datasets/2066/resource/6764/download/",
+  "data/lake/beneficiaires/datagouv__test-de-publication-de-donnees-de-subventions/Subventions_attribu_es_par_la_ville_de_Poitiers_9ad79fa7.csv": "https://static.data.gouv.fr/resources/test-de-publication-de-donnees-de-subventions/20180515-202226/sub_a_publier.csv",
+  "data/lake/beneficiaires/datagouv__vdg-subventions-et-avantages-en-nature-accordees-aux-associati/subventions_et_avantages_en_nature2020_0eccbebe.csv": "https://data.metropolegrenoble.fr/sites/default/files/dataset/b32/1b6fe-77e9-43a6-9e4a-e0afb5a441e6/subventions_et_avantages_en_nature2020.csv",
+  "data/lake/beneficiaires/datagouv__vdg-subventions-et-avantages-en-nature-accordees-aux-associati/subventions_et_avantages_en_nature2025_8212b4b2.csv": "https://data.metropolegrenoble.fr/sites/default/files/dataset/b32/1b6fe-77e9-43a6-9e4a-e0afb5a441e6/subventions_et_avantages_en_nature2025.csv",
+  "data/lake/beneficiaires/decisions_pdl_subventions.parquet": "https://data.paysdelaloire.fr/api/explore/v2.1/catalog/datasets/subventions-de-la-region-des-pays-de-la-loire/exports/parquet",
+  "data/lake/beneficiaires/ods_agglo_carene__214401846_subventions_numeraire_liste.parquet": "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401846_subventions_numeraire_liste/exports/parquet",
+  "data/lake/beneficiaires/ods_agglo_montargoise__ame-subventions-2024.parquet": "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame-subventions-2024/exports/parquet",
+  "data/lake/beneficiaires/ods_agglo_montargoise__ame_subvention_2020.parquet": "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subvention_2020/exports/parquet",
+  "data/lake/beneficiaires/ods_agglo_montargoise__ame_subvention_2021.parquet": "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subvention_2021/exports/parquet",
+  "data/lake/beneficiaires/ods_agglo_montargoise__ame_subvention_2022.parquet": "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subvention_2022/exports/parquet",
+  "data/lake/beneficiaires/ods_agglo_montargoise__ame_subvention_depuis_2017.parquet": "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subvention_depuis_2017/exports/parquet",
+  "data/lake/beneficiaires/ods_agglo_montargoise__ame_subventions_2017.parquet": "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subventions_2017/exports/parquet",
+  "data/lake/beneficiaires/ods_agglo_montargoise__ame_subventions_2018.parquet": "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subventions_2018/exports/parquet",
+  "data/lake/beneficiaires/ods_agglo_montargoise__ame_subventions_2019.parquet": "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subventions_2019/exports/parquet",
+  "data/lake/beneficiaires/ods_agglo_montargoise__ame_subventions_2023.parquet": "https://data.agglo-montargoise.fr/api/explore/v2.1/catalog/datasets/ame_subventions_2023/exports/parquet",
+  "data/lake/beneficiaires/ods_ampmetropole__fr-subventions-2019.parquet": "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/fr-subventions-2019/exports/parquet",
+  "data/lake/beneficiaires/ods_ampmetropole__fr-subventions-attribuees-en-2020-par-la-metropole.parquet": "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/fr-subventions-attribuees-en-2020-par-la-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_ampmetropole__subventions-attribuees-depuis-2022.parquet": "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/subventions-attribuees-depuis-2022/exports/parquet",
+  "data/lake/beneficiaires/ods_ampmetropole__subventions-attribuees-en-2021-par-la-metropole.parquet": "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/subventions-attribuees-en-2021-par-la-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_ampmetropole__subventions-attribuees-en-2022-par-la-metropole.parquet": "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/subventions-attribuees-en-2022-par-la-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_ampmetropole__subventions-attribuees.parquet": "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/subventions-attribuees/exports/parquet",
+  "data/lake/beneficiaires/ods_bordeaux_metropole__bor_subventions.parquet": "https://opendata.bordeaux-metropole.fr/api/explore/v2.1/catalog/datasets/bor_subventions/exports/parquet",
+  "data/lake/beneficiaires/ods_bordeaux_metropole__leh_subventions_associations.parquet": "https://opendata.bordeaux-metropole.fr/api/explore/v2.1/catalog/datasets/leh_subventions_associations/exports/parquet",
+  "data/lake/beneficiaires/ods_bordeaux_metropole__subventions-metropole-de-bordeaux.parquet": "https://opendata.bordeaux-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-metropole-de-bordeaux/exports/parquet",
+  "data/lake/beneficiaires/ods_bretagne__subventions_attribuees_scdl0.parquet": "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/subventions_attribuees_scdl0/exports/parquet",
+  "data/lake/beneficiaires/ods_cannes__subventions-aux-associations.parquet": "https://data.cannes.fr/api/explore/v2.1/catalog/datasets/subventions-aux-associations/exports/parquet",
+  "data/lake/beneficiaires/ods_capatlantique__244400610_subventions_liste.parquet": "https://data.capatlantique.fr/api/explore/v2.1/catalog/datasets/244400610_subventions_liste/exports/parquet",
+  "data/lake/beneficiaires/ods_clermontmetropole__2021_subventions-versees-org-prives-sup-a-23-000.parquet": "https://opendata.clermontmetropole.eu/api/explore/v2.1/catalog/datasets/2021_subventions-versees-org-prives-sup-a-23-000/exports/parquet",
+  "data/lake/beneficiaires/ods_clermontmetropole__2022_subventions-versees-org-prives-sup-a-23-000.parquet": "https://opendata.clermontmetropole.eu/api/explore/v2.1/catalog/datasets/2022_subventions-versees-org-prives-sup-a-23-000/exports/parquet",
+  "data/lake/beneficiaires/ods_clermontmetropole__2023_subventions-versees-org-prives-sup-a-23-000.parquet": "https://opendata.clermontmetropole.eu/api/explore/v2.1/catalog/datasets/2023_subventions-versees-org-prives-sup-a-23-000/exports/parquet",
+  "data/lake/beneficiaires/ods_clermontmetropole__liste-des-subventions-versees-de-plus-de-23-000-euros-en-2024-par-clermont-auvergne-metropole-cop.parquet": "https://opendata.clermontmetropole.eu/api/explore/v2.1/catalog/datasets/liste-des-subventions-versees-de-plus-de-23-000-euros-en-2024-par-clermont-auvergne-metropole-copie/exports/parquet",
+  "data/lake/beneficiaires/ods_clermontmetropole__liste-des-subventions-versees-de-plus-de-23-000-euros-en-2025-par-clermont-auvergne-metropole-cop.parquet": "https://opendata.clermontmetropole.eu/api/explore/v2.1/catalog/datasets/liste-des-subventions-versees-de-plus-de-23-000-euros-en-2025-par-clermont-auvergne-metropole-copie0/exports/parquet",
+  "data/lake/beneficiaires/ods_clermontmetropole__liste-subventions-plus-23-000-euros-en-2020.parquet": "https://opendata.clermontmetropole.eu/api/explore/v2.1/catalog/datasets/liste-subventions-plus-23-000-euros-en-2020/exports/parquet",
+  "data/lake/beneficiaires/ods_doubs__conventions-de-subvention.parquet": "https://opendata.doubs.fr/api/explore/v2.1/catalog/datasets/conventions-de-subvention/exports/parquet",
+  "data/lake/beneficiaires/ods_grandparissud__subventions-gps-2020.parquet": "https://data.grandparissud.fr/api/explore/v2.1/catalog/datasets/subventions-gps-2020/exports/parquet",
+  "data/lake/beneficiaires/ods_grandparissud__subventions-gps-2021.parquet": "https://data.grandparissud.fr/api/explore/v2.1/catalog/datasets/subventions-gps-2021/exports/parquet",
+  "data/lake/beneficiaires/ods_ha_py__subventions-2020-cchb-de-plus-de-23keur.parquet": "https://opendata.ha-py.fr/api/explore/v2.1/catalog/datasets/subventions-2020-cchb-de-plus-de-23keur/exports/parquet",
+  "data/lake/beneficiaires/ods_ha_py__subventions-2020-ville-de-bagneres-de-bigorre-de-plus-de-23keur.parquet": "https://opendata.ha-py.fr/api/explore/v2.1/catalog/datasets/subventions-2020-ville-de-bagneres-de-bigorre-de-plus-de-23keur/exports/parquet",
+  "data/lake/beneficiaires/ods_ha_py__subventions-de-la-communaute-d-agglomeration-tarbes-lourdes-pyrenees.parquet": "https://opendata.ha-py.fr/api/explore/v2.1/catalog/datasets/subventions-de-la-communaute-d-agglomeration-tarbes-lourdes-pyrenees/exports/parquet",
+  "data/lake/beneficiaires/ods_ha_py__subventions-versees-mairie-de-tarbes.parquet": "https://opendata.ha-py.fr/api/explore/v2.1/catalog/datasets/subventions-versees-mairie-de-tarbes/exports/parquet",
+  "data/lake/beneficiaires/ods_hauts_de_seine__fr-229200506-donnees-essentielles-des-conventions-de-subvention.parquet": "https://opendata.hauts-de-seine.fr/api/explore/v2.1/catalog/datasets/fr-229200506-donnees-essentielles-des-conventions-de-subvention/exports/parquet",
+  "data/lake/beneficiaires/ods_iledefrance__subventions-ile-de-france-mobilites.parquet": "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/subventions-ile-de-france-mobilites/exports/parquet",
+  "data/lake/beneficiaires/ods_iledefrance_mobilites__subventions-2017.parquet": "https://data.iledefrance-mobilites.fr/api/explore/v2.1/catalog/datasets/subventions-2017/exports/parquet",
+  "data/lake/beneficiaires/ods_issy__subventions-asso.parquet": "https://data.issy.com/api/explore/v2.1/catalog/datasets/subventions-asso/exports/parquet",
+  "data/lake/beneficiaires/ods_loire_atlantique__244400552_subvention-compa-2018.parquet": "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/244400552_subvention-compa-2018/exports/parquet",
+  "data/lake/beneficiaires/ods_loire_atlantique__244400552_subvention-compa-2019.parquet": "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/244400552_subvention-compa-2019/exports/parquet",
+  "data/lake/beneficiaires/ods_meudon__bp-2026-subventions-aux-associations.parquet": "https://data.meudon.fr/api/explore/v2.1/catalog/datasets/bp-2026-subventions-aux-associations/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__214401143_subventions-orvault.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/214401143_subventions-orvault/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2017-nantes-metropole.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2017-nantes-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2017-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2017-nantes/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2018-nantes-metropole.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2018-nantes-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2018-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2018-nantes/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2019-nantes-metropole.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2019-nantes-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2019-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2019-nantes/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2020-nantes-metropole.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2020-nantes-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2020-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2020-nantes/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2021-nantes-metropole.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2021-nantes-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2021-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2021-nantes/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2023-nantes-metropole.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2023-nantes-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2024-nantes-metropole.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2024-nantes-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-associations-2025-nantes-metropole.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-associations-2025-nantes-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_nantesmetropole__244400404_subventions-versees-aux-associations-2022-nantes-metropole.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_subventions-versees-aux-associations-2022-nantes-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_opendata56__subventions-ville-de-lorient.parquet": "https://www.opendata56.fr/api/explore/v2.1/catalog/datasets/subventions-ville-de-lorient/exports/parquet",
+  "data/lake/beneficiaires/ods_orleans_metropole__subventions-versees-aux-associations-par-la-ville-de-fleury-les-aubrais-en-2019.parquet": "https://data.orleans-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-aux-associations-par-la-ville-de-fleury-les-aubrais-en-2019/exports/parquet",
+  "data/lake/beneficiaires/ods_saintnazaireagglo__214401846_subventions_numeraire_liste.parquet": "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214401846_subventions_numeraire_liste/exports/parquet",
+  "data/lake/beneficiaires/ods_seineouest__subventions-aux-associations.parquet": "https://data.seineouest.fr/api/explore/v2.1/catalog/datasets/subventions-aux-associations/exports/parquet",
+  "data/lake/beneficiaires/ods_sicoval__subventions-versees-aux-associations.parquet": "https://data.sicoval.fr/api/explore/v2.1/catalog/datasets/subventions-versees-aux-associations/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-tm-2023.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/open-data-subv-versees-a-des-organismes-tm-2023/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-tm.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/open-data-subv-versees-a-des-organismes-tm/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__open-data-subv-versees-a-des-organismes-vt-2024.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/open-data-subv-versees-a-des-organismes-vt-2024/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subv-versees-a-des-organismes-2022-tm.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subv-versees-a-des-organismes-2022-tm/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2012-toulouse-metropole.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2012-toulouse-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2013-toulouse-metropole.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2013-toulouse-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2014-toulouse-metropole.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2014-toulouse-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2015-toulouse-metropole.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2015-toulouse-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2015-toulouse-metropole1.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2015-toulouse-metropole1/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2016-toulouse-metropole.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2016-toulouse-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2017-toulouse-metropole.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2017-toulouse-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2017-ville-de-toulouse.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2017-ville-de-toulouse/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2018-toulouse-metropole.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2018-toulouse-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2018-ville-de-toulouse.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2018-ville-de-toulouse/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2019-toulouse-metropole.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2019-toulouse-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2019-ville-de-toulouse.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2019-ville-de-toulouse/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2020-toulouse-metropole.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2020-toulouse-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2020-ville-de-toulouse.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2020-ville-de-toulouse/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2021-toulouse-metropole.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2021-toulouse-metropole/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2021-ville-de-toulouse.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2021-ville-de-toulouse/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-2022-ville-de-toulouse.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2022-ville-de-toulouse/exports/parquet",
+  "data/lake/beneficiaires/ods_toulouse_metropole__subventions-versees-a-des-organismes-ville-de-toulouse-2023.parquet": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-ville-de-toulouse-2023/exports/parquet",
+  "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2018_dc5625e5.csv": "https://static.data.gouv.fr/resources/departement-de-la-nievre-subventions/20230404-170829/cd58-subventions-2018.csv",
+  "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2019_9a7366d1.csv": "https://static.data.gouv.fr/resources/departement-de-la-nievre-subventions/20230404-170606/cd58-subventions-2019.csv",
+  "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2020_7ddd6eca.csv": "https://static.data.gouv.fr/resources/departement-de-la-nievre-subventions/20230404-170635/cd58-subventions-2020.csv",
+  "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2021_a6f77f64.csv": "https://static.data.gouv.fr/resources/departement-de-la-nievre-subventions/20230404-170941/cd58-subventions-2021.csv",
+  "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2022_01f2c160.csv": "https://static.data.gouv.fr/resources/departement-de-la-nievre-subventions/20230404-171049/cd58-subventions-2022.csv",
+  "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2023_584ad9a8.csv": "https://static.data.gouv.fr/resources/departement-de-la-nievre-subventions/20240131-081625/cd58-subventions-2023.csv",
+  "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2024_974ef74b.csv": "https://static.data.gouv.fr/resources/departement-de-la-nievre-subventions/20250101-070006/cd58-subventions-2024.csv",
+  "data/lake/collectivites/datagouv__departement-de-la-nievre-subventions/cd58-subventions-2025_325c7c4e.csv": "https://static.data.gouv.fr/resources/departement-de-la-nievre-subventions/20260101-070006/cd58-subventions-2025.csv",
+  "data/lake/collectivites/datagouv__donnees-essentielles-des-conventions-de-subvention-2017-departement-du-lot/Donn_es_essentielles_des_conventions_de_subvention_DEPARTEME_f1526606.csv": "https://static.data.gouv.fr/resources/donnees-essentielles-des-conventions-de-subvention-departement-du-lot/20180413-082320/Subventions_2017_DONNEES.csv",
+  "data/lake/collectivites/datagouv__donnees-essentielles-des-conventions-de-subvention-region-grand-est-2/subvention_region_grandest_3bee6dfa.csv": "https://www.datagrandest.fr/geonetwork/srv/api/records/f9f20850-ab92-42ee-b188-e4eb76bd0b26/attachments/subvention_region_grandest.csv",
+  "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/DGCL-liste-projets-dotations-investissement-local-2025_e621419d.csv": "https://static.data.gouv.fr/resources/projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/20260724-142021/dgcl-liste-projets-dotations-investissement-local-2025.csv",
+  "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2018_04980dee.csv": "https://static.data.gouv.fr/resources/projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/20240625-091104/dgcl-liste-projets-dotations-investissement-local-2018.csv",
+  "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2019_f17ae4d4.csv": "https://static.data.gouv.fr/resources/projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/20240625-090948/dgcl-liste-projets-dotations-investissement-local-2019.csv",
+  "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2020_64de3c69.csv": "https://static.data.gouv.fr/resources/projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/20240625-091129/dgcl-liste-projets-dotations-investissement-local-2020.csv",
+  "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2021_e117e1a6.csv": "https://static.data.gouv.fr/resources/projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/20240625-091143/dgcl-liste-projets-dotations-investissement-local-2021.csv",
+  "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2022_2432d03a.csv": "https://static.data.gouv.fr/resources/projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/20240625-091205/dgcl-liste-projets-dotations-investissement-local-2022.csv",
+  "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2023_d9e762ae.csv": "https://static.data.gouv.fr/resources/projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/20240625-090908/dgcl-liste-projets-dotations-investissement-local-2023.csv",
+  "data/lake/collectivites/datagouv__projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/dgcl-liste-projets-dotations-investissement-local-2024_ba15fc37.csv": "https://static.data.gouv.fr/resources/projets-finances-par-les-dotations-de-soutien-a-linvestissement-des-collectivites-territoriales/20250721-173636/dgcl-liste-projets-dotations-investissement-local-2024.csv",
+  "data/lake/collectivites/datagouv__subventions-aux-associations-2/Subventions_aux_associations_2025_734526a4.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-2/20261021-114611/subventions-assos-2025.csv",
+  "data/lake/collectivites/datagouv__subventions-commune-de-labarthe-sur-leze/subventions-commune-de-labarthe-sur-leze_d994577e.csv": "https://data.haute-garonne.fr/api/explore/v2.1/catalog/datasets/subventions-commune-de-labarthe-sur-leze/exports/csv?use_labels=true",
+  "data/lake/collectivites/datagouv__subventions-de-la-region-normandie-2016-a-2025/subventions_2016_2025_2093a159.csv": "https://www.datanormandie.fr/sites/default/files/dataset/ed4/a76f5-ca24-4be5-ac95-5c51cc6fe5cf/subventions_2016_2025.csv",
+  "data/lake/collectivites/datagouv__subventions-versees-aux-associations-par-le-departement-dille-et-vilaine/publications-subventions-associations-2021_30bf1dc0.csv": "https://static.data.gouv.fr/resources/subventions-versees-aux-associations-par-le-departement-dille-et-vilaine/20230921-084751/publications-subventions-associations-2021.csv",
+  "data/lake/collectivites/datagouv__subventions-versees-aux-associations-par-le-departement-dille-et-vilaine/publications-subventions-associations-2022_0cec7fcc.csv": "https://static.data.gouv.fr/resources/subventions-versees-aux-associations-par-le-departement-dille-et-vilaine/20230921-084750/publications-subventions-associations-2022.csv",
+  "data/lake/collectivites/datagouv__subventions-versees-aux-associations-par-le-departement-dille-et-vilaine/publications-subventions-associations-2022_d7a5ca36.csv": "https://static.data.gouv.fr/resources/subventions-versees-aux-associations-par-le-departement-dille-et-vilaine/20230921-084751/fichieropendatasubasso.csv",
+  "data/lake/collectivites/datagouv__subventions-versees-par-le-departement-de-la-savoie-cd73-en-2022/opendata-subventions-versees-2022_3095c69b.csv": "https://static.data.gouv.fr/resources/subventions-versees-par-le-departement-de-la-savoie-cd73-en-2022/20250430-092055/opendata-subventions-versees-2022.csv",
+  "data/lake/collectivites/datagouv__subventions-versees-par-le-departement-de-la-savoie-cd73-en-2023/opendata-subventions-versees-2023_efef91d0.csv": "https://static.data.gouv.fr/resources/subventions-versees-par-le-departement-de-la-savoie-cd73-en-2023/20250430-092513/opendata-subventions-versees-2023.csv",
+  "data/lake/collectivites/local_departements.parquet": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/ofgl-base-departements-consolidee/exports/parquet",
+  "data/lake/collectivites/local_departements_fonction.parquet": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/ofgl-base-departements-fonctionnelle/exports/parquet",
+  "data/lake/collectivites/local_dotations_departements.parquet": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/dotations-departements/exports/parquet",
+  "data/lake/collectivites/local_ensembles_intercommunaux.parquet": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/ofgl-base-ei/exports/parquet",
+  "data/lake/collectivites/local_fiscalite_particuliers.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/fiscalite-locale-des-particuliers/exports/parquet",
+  "data/lake/collectivites/local_intercos.parquet": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/ofgl-base-gfp-consolidee/exports/parquet",
+  "data/lake/collectivites/local_regions.parquet": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/ofgl-base-regions-consolidee/exports/parquet",
+  "data/lake/collectivites/ods_agglo_carene__214400301_subventions_liste.parquet": "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214400301_subventions_liste/exports/parquet",
+  "data/lake/collectivites/ods_agglo_carene__214400525_subventions-liste.parquet": "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214400525_subventions-liste/exports/parquet",
+  "data/lake/collectivites/ods_agglo_carene__214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre.parquet": "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre/exports/parquet",
+  "data/lake/collectivites/ods_agglo_carene__214401515_subventions_liste.parquet": "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401515_subventions_liste/exports/parquet",
+  "data/lake/collectivites/ods_agglo_carene__214401689_subventions_liste.parquet": "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401689_subventions_liste/exports/parquet",
+  "data/lake/collectivites/ods_agglo_carene__214401762_subventions-liste.parquet": "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401762_subventions-liste/exports/parquet",
+  "data/lake/collectivites/ods_aude__cd11_donneesessentiellessubventions23k.parquet": "https://opendata.aude.fr/api/explore/v2.1/catalog/datasets/cd11_donneesessentiellessubventions23k/exports/parquet",
+  "data/lake/collectivites/ods_capatlantique__214400558_subventions-liste.parquet": "https://data.capatlantique.fr/api/explore/v2.1/catalog/datasets/214400558_subventions-liste/exports/parquet",
+  "data/lake/collectivites/ods_capatlantique__214400699-subventions-liste.parquet": "https://data.capatlantique.fr/api/explore/v2.1/catalog/datasets/214400699-subventions-liste/exports/parquet",
+  "data/lake/collectivites/ods_capatlantique__215600586_subventions_liste.parquet": "https://data.capatlantique.fr/api/explore/v2.1/catalog/datasets/215600586_subventions_liste/exports/parquet",
+  "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2018.parquet": "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2018/exports/parquet",
+  "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2019.parquet": "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2019/exports/parquet",
+  "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2020.parquet": "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2020/exports/parquet",
+  "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2021.parquet": "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2021/exports/parquet",
+  "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2022.parquet": "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2022/exports/parquet",
+  "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2023.parquet": "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2023/exports/parquet",
+  "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2024.parquet": "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2024/exports/parquet",
+  "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2025.parquet": "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2025/exports/parquet",
+  "data/lake/collectivites/ods_centrevaldeloire__conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2026.parquet": "https://data.centrevaldeloire.fr/api/explore/v2.1/catalog/datasets/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2026/exports/parquet",
+  "data/lake/collectivites/ods_eurelien__datasubventions2024.parquet": "https://data.eurelien.fr/api/explore/v2.1/catalog/datasets/datasubventions2024/exports/parquet",
+  "data/lake/collectivites/ods_eurelien__datasubventions2025.parquet": "https://data.eurelien.fr/api/explore/v2.1/catalog/datasets/datasubventions2025/exports/parquet",
+  "data/lake/collectivites/ods_ha_py__departementdeshautespyrenees_subventions_cd65.parquet": "https://opendata.ha-py.fr/api/explore/v2.1/catalog/datasets/departementdeshautespyrenees_subventions_cd65/exports/parquet",
+  "data/lake/collectivites/ods_haute_garonne__subventions-accordees-par-la-dtip-du-departement-de-la-haute-garonne.parquet": "https://data.haute-garonne.fr/api/explore/v2.1/catalog/datasets/subventions-accordees-par-la-dtip-du-departement-de-la-haute-garonne/exports/parquet",
+  "data/lake/collectivites/ods_haute_garonne__subventions-direction-prevention-lutte-contre-precarites-departement-haute-garonne.parquet": "https://data.haute-garonne.fr/api/explore/v2.1/catalog/datasets/subventions-direction-prevention-lutte-contre-precarites-departement-haute-garonne/exports/parquet",
+  "data/lake/collectivites/ods_haute_garonne__subventions-education-departement-haute-garonne.parquet": "https://data.haute-garonne.fr/api/explore/v2.1/catalog/datasets/subventions-education-departement-haute-garonne/exports/parquet",
+  "data/lake/collectivites/ods_isere__subventions-accordees-par-le-departement-de-lisere-old-copie.parquet": "https://opendata.isere.fr/api/explore/v2.1/catalog/datasets/subventions-accordees-par-le-departement-de-lisere-old-copie/exports/parquet",
+  "data/lake/collectivites/ods_lamayenne__225300011_cd53_scdl_subventions.parquet": "https://data.lamayenne.fr/api/explore/v2.1/catalog/datasets/225300011_cd53_scdl_subventions/exports/parquet",
+  "data/lake/collectivites/ods_loire_atlantique__224400028_subventions-aux-associations-du-departement-de-loire-atlantique.parquet": "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/224400028_subventions-aux-associations-du-departement-de-loire-atlantique/exports/parquet",
+  "data/lake/collectivites/ods_maine_et_loire__224900019_conventions-de-subventions-du-departement-de-maine-et-loire.parquet": "https://data.maine-et-loire.fr/api/explore/v2.1/catalog/datasets/224900019_conventions-de-subventions-du-departement-de-maine-et-loire/exports/parquet",
+  "data/lake/collectivites/ods_nantesmetropole__214401507_subventions_attribuees_sagl.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/214401507_subventions_attribuees_sagl/exports/parquet",
+  "data/lake/collectivites/ods_saintnazaireagglo__214400301_subventions_liste.parquet": "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214400301_subventions_liste/exports/parquet",
+  "data/lake/collectivites/ods_saintnazaireagglo__214400525_subventions-liste.parquet": "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214400525_subventions-liste/exports/parquet",
+  "data/lake/collectivites/ods_saintnazaireagglo__214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre.parquet": "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre/exports/parquet",
+  "data/lake/collectivites/ods_saintnazaireagglo__214401515_subventions_liste.parquet": "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214401515_subventions_liste/exports/parquet",
+  "data/lake/collectivites/ods_saintnazaireagglo__214401689_subventions_liste.parquet": "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214401689_subventions_liste/exports/parquet",
+  "data/lake/collectivites/ods_saintnazaireagglo__214401762_subventions-liste.parquet": "https://data.saintnazaireagglo.fr/api/explore/v2.1/catalog/datasets/214401762_subventions-liste/exports/parquet",
+  "data/lake/collectivites/ods_sarthe__227200029_subv-votees_opendata.parquet": "https://data.sarthe.fr/api/explore/v2.1/catalog/datasets/227200029_subv-votees_opendata/exports/parquet",
+  "data/lake/collectivites/ods_seinesaintdenis__subventions-versees-associations-seine-saint-denis.parquet": "https://data.seinesaintdenis.fr/api/explore/v2.1/catalog/datasets/subventions-versees-associations-seine-saint-denis/exports/parquet",
+  "data/lake/comptes_nationaux/insee_dd_cna_apu.zip": "https://api.insee.fr/melodi/file/DD_CNA_APU/DD_CNA_APU_CSV_FR",
+  "data/lake/comptes_nationaux/insee_ds_erfs_non_retropole.zip": "https://api.insee.fr/melodi/file/DS_ERFS_NON_RETROPOLE/DS_ERFS_NON_RETROPOLE_CSV_FR",
+  "data/lake/controle/controle_ccomptes_publications_2011_2016.csv": "https://static.data.gouv.fr/resources/publications-de-la-cour-des-comptes-par-type-et-date-de-publication-2011-2016/20180507-120722/Publications_CDC_type_date__ISBN_v_04mai16.csv",
+  "data/lake/controle/controle_crc_rod_metadonnees.xlsx": "https://static.data.gouv.fr/resources/rapports-dobservations-definitives-des-chambres-regionales-des-comptes-crc-et-reponses-associees-1/20200122-192454/meta-rod-datasession.xlsx",
+  "data/lake/controle/controle_hcsp_2026_aides_entreprises.pdf": "https://www.strategie-plan.gouv.fr/files/files/Publications/2026/2026-07-16%20-%20Rapport%20Aides%20aux%20entreprises/HCSP-2026-RAPPORT-AIDES-ENTREPRISES.pdf",
+  "data/lake/decisions/decisions_an_l17_amendements.zip": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip",
+  "data/lake/decisions/decisions_an_l17_deputes.zip": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/deputes_actifs_mandats_actifs_organes/AMO10_deputes_actifs_mandats_actifs_organes.json.zip",
+  "data/lake/decisions/decisions_an_l17_dossiers.zip": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip",
+  "data/lake/decisions/decisions_an_l17_scrutins.zip": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip",
+  "data/lake/decisions/decisions_senat_ameli.zip": "https://data.senat.fr/data/ameli/ameli.zip",
+  "data/lake/dette/datagouv__compte-administratif-ca-2011-de-nantes-metropole-1/244400404_compte-administratif-ca-2011-nantes-metropole_e2214325.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2011-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/dette/datagouv__compte-administratif-ca-2012-de-nantes-metropole-1/244400404_compte-administratif-ca-2012-nantes-metropole_7afe1c2f.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2012-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/dette/datagouv__compte-administratif-ca-2013-de-nantes-metropole/244400404_compte-administratif-ca-2013-nantes-metropole_984684e7.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2013-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/dette/datagouv__compte-administratif-ca-2014-de-nantes-metropole-1/244400404_compte-administratif-ca-2014-nantes-metropole_73e4339f.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2014-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/dette/datagouv__compte-administratif-ca-2016-de-nantes-metropole-1/244400404_compte-administratif-ca-2016-nantes-metropole_6ddb3706.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2016-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/dette/datagouv__compte-administratif-ca-2017-de-nantes-metropole/244400404_compte-administratif-ca-2017-nantes-metropole_ee855a4f.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2017-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/dette/datagouv__compte-administratif-ca-2018-de-nantes-metropole/244400404_compte-administratif-ca-2018-nantes-metropole_ea390759.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2018-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/dette/datagouv__compte-administratif-ca-2019-de-nantes-metropole/244400404_compte-administratif-ca-2019-nantes-metropole_69e8a927.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2019-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/dette/datagouv__compte-administratif-ca-2020-de-nantes-metropole/244400404_compte-administratif-ca-2020-nantes-metropole_74ba7446.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2020-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/dette/datagouv__compte-administratif-ca-2021-de-nantes-metropole/244400404_compte-administratif-ca-2021-nantes-metropole_17646595.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2021-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/dette/datagouv__compte-administratif-ca-2023-de-nantes-metropole-2/244400404_compte-administratif-ca-2023-nantes-metropole_0c4083e3.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2023-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/dette/datagouv__compte-administratif-ca-2024-de-nantes-metropole-1/244400404_compte-administratif-ca-2024-nantes-metropole_a37b82ed.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2024-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/etat/datagouv__projet-de-loi-de-finances-pour-2024-plf-2024-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/plf2024-jauneoperateurs_b1571906.csv": "https://static.data.gouv.fr/resources/projet-de-loi-de-finances-pour-2024-plf-2024-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/20240709-095128/plf2024-jauneoperateurs.csv",
+  "data/lake/etat/datagouv__projet-de-loi-de-finances-pour-2025-plf-2025-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/plf2025-jauneoperateurs_c6839cf6.csv": "https://static.data.gouv.fr/resources/projet-de-loi-de-finances-pour-2025-plf-2025-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/20250203-100832/plf2025-jauneoperateurs.csv",
+  "data/lake/etat/datagouv__projet-de-loi-de-finances-pour-2026-plf-2026-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/plf2026-jauneoperateurs_314b8900.csv": "https://static.data.gouv.fr/resources/projet-de-loi-de-finances-pour-2026-plf-2026-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/20260113-145343/plf2026-jauneoperateurs.csv",
+  "data/lake/etat/economie__budgetvert_plf2024_opendata_vf.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/budgetvert_plf2024_opendata_vf/exports/parquet",
+  "data/lake/etat/economie__execution-2010-du-budget-general-en-cp.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/execution-2010-du-budget-general-en-cp/exports/parquet",
+  "data/lake/etat/economie__execution-2011-du-budget-general-en-cp.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/execution-2011-du-budget-general-en-cp/exports/parquet",
+  "data/lake/etat/economie__execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm/exports/parquet",
+  "data/lake/etat/economie__execution-2013-du-budget-de-letat-en-cp-et-ae-/Ex_cution_2013_du_budget_de_l_Etat_en_CP_suivant_la_nomenclature_Mission_Program.bin": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/execution-2013-du-budget-de-letat-en-cp-et-ae-/attachments/execution_2013_du_budget_de_l_etat_en_cp_suivant_la_nomenclature_mission_programme_action_et_titre_c",
+  "data/lake/etat/economie__lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre/exports/parquet",
+  "data/lake/etat/economie__lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie/exports/parquet",
+  "data/lake/etat/economie__lfi-2014-dotation-bg-en-ae-cp-par-action-titre.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/lfi-2014-dotation-bg-en-ae-cp-par-action-titre/exports/parquet",
+  "data/lake/etat/economie__pap-2023-objectifs-et-indicateurs-de-performance.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/pap-2023-objectifs-et-indicateurs-de-performance/exports/parquet",
+  "data/lake/etat/economie__performance-de-la-depense.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/performance-de-la-depense/exports/parquet",
+  "data/lake/etat/economie__performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/exports/parquet",
+  "data/lake/etat/economie__plf-2015-donnees-du-volet-performance.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf-2015-donnees-du-volet-performance/exports/parquet",
+  "data/lake/etat/economie__plf-2016-donnees-du-volet-performance.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf-2016-donnees-du-volet-performance/exports/parquet",
+  "data/lake/etat/economie__plf-2025-performance.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf-2025-performance/exports/parquet",
+  "data/lake/etat/economie__plf25-budget-vert-justification-des-credits-budgetaires-et-des-taxes-affectees.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf25-budget-vert-justification-des-credits-budgetaires-et-des-taxes-affectees/exports/parquet",
+  "data/lake/etat/economie__plf25-budget-vert.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf25-budget-vert/exports/parquet",
+  "data/lake/etat/economie__plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l/PLR2014-Exec-Msn_CP.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l/attachments/plr2014_exec_msn_cp_csv",
+  "data/lake/etat/economie__plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese/exports/parquet",
+  "data/lake/etat/economie__plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese/exports/parquet",
+  "data/lake/etat/economie__projet-de-loi-de-finances-pour-2017-plf-2017-donnees-du-volet-performance.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2017-plf-2017-donnees-du-volet-performance/exports/parquet",
+  "data/lake/etat/economie__projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des/exports/parquet",
+  "data/lake/etat/economie__projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance/exports/parquet",
+  "data/lake/etat/economie__projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/PLF_2021_Liste_des_depenses_fiscales.xlsx": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/attachments/plf_2021_liste_des_depenses_fiscales_xlsx",
+  "data/lake/etat/economie__projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/PLF_2022_Liste_depenses_fiscales.xlsx": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/attachments/plf_2022_liste_depenses_fiscales_xlsx",
+  "data/lake/etat/etat_budget_vert_2026.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf-2026-budget-vert/exports/parquet",
+  "data/lake/etat/etat_etpt_lfi_2023.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/etpt-par-ministere-mission-programme-pour-le-bg-et-les-ba-lfi-2023/exports/parquet",
+  "data/lake/etat/etat_performance_rap_2025.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/performance-de-la-depense-rap-2025/exports/parquet",
+  "data/lake/etat/etat_plr_2018.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-reglement-2019-plr-20190/exports/parquet",
+  "data/lake/etat/etat_plr_2019/PLR2019-Credits_Destination_Nature.xls": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-reglement-2019-plr-20192/attachments/plr2019_credits_destination_nature_xls",
+  "data/lake/etat/etat_plr_2019/RAP_synthese_2019.xls": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-reglement-2019-plr-20192/attachments/rap_synthese_2019_xls",
+  "data/lake/etat/etat_plr_2020/PLR2020-Credits_Destination_Nature.xls": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-reglement-2020-plr-2020/attachments/plr2020_credits_destination_nature_xls",
+  "data/lake/etat/etat_plr_2020/RAP2020_synthese.xls": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-reglement-2020-plr-2020/attachments/rap2020_synthese_xls",
+  "data/lake/etat/etat_plrg_2025/Annexe1-Etat_CP-2025.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe1_etat_cp_2025csv",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2010-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2010-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2010-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2010-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2011-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2011-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2011-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2011-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2012-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2012-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2012-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2012-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2013-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2013-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2013-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2013-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2014-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2014-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2014-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2014-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2015-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2015-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2015-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2015-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2016-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2016-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2016-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2016-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2017-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2017-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2017-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2017-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2018-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2018-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2018-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2018-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2019-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2019-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2019-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2019-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2020-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2020-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2020-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2020-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2021-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2021-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2021-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2021-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2022-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2022-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2022-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2022-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2023-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2023-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2023-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2023-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2024-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2024-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2024-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2024-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2025-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2025-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2025-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2025-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2026-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2026-ccas-nantes/exports/parquet",
+  "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2026-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2026-nantes/exports/parquet",
+  "data/lake/europe/esr__fr-esr-horizon-projects-entities.parquet": "https://data.enseignementsup-recherche.gouv.fr/api/explore/v2.1/catalog/datasets/fr-esr-horizon-projects-entities/exports/parquet",
+  "data/lake/fiscalite/economie__impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/REI-2025-fichier-notice-trace.zip": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/attachments/rei_2025_fichier_notice_tracezip",
+  "data/lake/fiscalite/economie__plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales/PLF2023_voies_et_moyens_t2_liste_des_depenses_fiscales.xlsx": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales/attachments/plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales_xlsx",
+  "data/lake/secu/datagouv__depenses-et-recettes-de-lassurance-chomage/financement-de-l-assurance-chomage_47a22bbe.csv": "https://data.unedic.org/api/explore/v2.1/catalog/datasets/financement-de-l-assurance-chomage/exports/csv?use_labels=true",
+  "data/lake/secu/datagouv__subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/DGS_subventions-associations_2025_fd970d88.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/20261110-101421/dgs-subventions-associations-2025.csv",
+  "data/lake/secu/secu_protection_sociale.parquet": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/305_les-comptes-de-la-protection-sociale/exports/parquet"
+ }
+}
