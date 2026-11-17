@@ -191,7 +191,7 @@ RESEAU = re.compile(
 # Entrée absente de l'entrepôt (runner sans data/lake ou source non collectée).
 ENTREE_ABSENTE = re.compile(r"FileNotFoundError|No such file or directory|sources? absentes? de data/lake"
                             r"|aucun jaune dans data/lake|No files found that match|data/lake/\S+ (?:absent|introuvable)"
-                            r"|lancer .?collecter", re.I)
+                            r"|lancer .?collecter|absente? : lancer|cache \S+ absent|lancer la collecte", re.I)
 
 
 def maintenant() -> str:
@@ -496,18 +496,22 @@ def entrepot(a: argparse.Namespace) -> int:
     print(f"entrepôt : {len(fichiers)} fichiers lus par les étapes, "
           f"{sum(1 for c in fichiers if not (ROOT / c).exists())} absents, {len(cibles)} à télécharger", flush=True)
     debut, faits, refus = time.monotonic(), {}, []
-    taille = sum(f.stat().st_size for f in LAKE.rglob("*") if f.is_file()) if LAKE.exists() else 0
-    for n, c in enumerate(cibles, 1):
+    taille = [sum(f.stat().st_size for f in LAKE.rglob("*") if f.is_file()) if LAKE.exists() else 0]
+    import threading
+    from concurrent.futures import ThreadPoolExecutor
+    verrou = threading.Lock()
+
+    def telecharger(n: int, c: str) -> None:
         url = urls.get(c)
         if not url:
             refus.append(f"{c} : aucune URL relevée")
-            continue
+            return
         if time.monotonic() - debut > a.budget:
             refus.append(f"{c} : budget de temps épuisé")
-            continue
-        if taille > a.plafond_go * 1e9:
-            refus.append(f"{c} : entrepôt à {taille / 1e9:.1f} Go, plafond {a.plafond_go} Go")
-            continue
+            return
+        if taille[0] > a.plafond_go * 1e9:
+            refus.append(f"{c} : entrepôt à {taille[0] / 1e9:.1f} Go, plafond {a.plafond_go} Go")
+            return
         cible = ROOT / c
         part = cible.with_name(cible.name + ".part")
         cible.parent.mkdir(parents=True, exist_ok=True)
@@ -519,12 +523,15 @@ def entrepot(a: argparse.Namespace) -> int:
                         erreur = f"HTTP {r.status_code} (accès refusé, non contourné)"
                         break
                     r.raise_for_status()
+                    attendu = int(r.headers.get("Content-Length") or 0) if not r.headers.get("Content-Encoding") else 0
                     h, octets = hashlib.sha256(), 0
                     with part.open("wb") as f:
                         for bloc in r.iter_content(1 << 20):
                             f.write(bloc)
                             h.update(bloc)
                             octets += len(bloc)
+                if attendu and octets != attendu:   # transfert tronqué : on recommence, rien n'est publié
+                    raise requests.ConnectionError(f"transfert tronqué ({octets} octets sur {attendu})")
                 erreur = None
                 break
             except requests.RequestException as exc:
@@ -534,16 +541,26 @@ def entrepot(a: argparse.Namespace) -> int:
             part.unlink(missing_ok=True)
             refus.append(f"{c} : {url} : {erreur}")
             print(f"[entrepot] REFUS {c} : {erreur}", flush=True)
-            continue
+            return
         sha = h.hexdigest()
         if cible.exists() and hashlib.sha256(cible.read_bytes()).hexdigest() == sha:
             part.unlink()
             print(f"[entrepot] {n}/{len(cibles)} inchangé {c}", flush=True)
-            continue
-        taille += octets - (cible.stat().st_size if cible.exists() else 0)
+            return
+        with verrou:
+            taille[0] += octets - (cible.stat().st_size if cible.exists() else 0)
+            faits[c] = {"url": url, "sha256": sha, "octets": octets}
         os.replace(part, cible)
-        faits[c] = {"url": url, "sha256": sha, "octets": octets}
         print(f"[entrepot] {n}/{len(cibles)} {octets / 1e6:8.1f} Mo {c}", flush=True)
+
+    # Quatre téléchargements en parallèle, au plus un par serveur à la fois (les exports ODS sont lents à générer
+    # et un portail public ne doit pas recevoir de rafale) : un fil par hôte, quatre hôtes en même temps.
+    from urllib.parse import urlsplit
+    par_hote: dict[str, list[tuple[int, str]]] = {}
+    for n, c in enumerate(cibles, 1):
+        par_hote.setdefault(urlsplit(urls.get(c) or "").netloc, []).append((n, c))
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        list(pool.map(lambda lot: [telecharger(n, c) for n, c in lot], par_hote.values()))
     # Manifeste : date de collecte des seules sources dont un fichier a changé (pipeline/reproductible.py la lit).
     if faits:
         LAKE.mkdir(parents=True, exist_ok=True)

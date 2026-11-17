@@ -40,11 +40,10 @@ pip install -r requirements.txt
 # budget, Eurostat, communes (réseau, quelques minutes)
 python pipeline/fetch.py && python pipeline/check_schema.py && python pipeline/transform.py
 
-# modules de précision (entrepôt brut data/lake requis)
-python pipeline/beneficiaires.py tout
-python pipeline/realisations.py produire
-python pipeline/vie_politique.py produire
-python pipeline/prelevements.py produire
+# tout le site, dans l'ordre des dépendances (entrepôt brut data/lake requis pour les modules de précision)
+python pipeline/tout.py --plan             # graphe et durées estimées
+python pipeline/tout.py                    # collecte + production de chaque étape ; --sans-reseau : cache seul
+python pipeline/tout.py --etapes secu,dette --reprendre
 
 # contrôles
 frictionless validate datapackage.json
@@ -57,7 +56,7 @@ cd web && npm ci && npm run dev
 
 Changement de schéma attendu à la source : `python pipeline/check_schema.py --accept`. Nouvelle mission au budget : la rattacher dans `pipeline/grands_postes.json` (le pipeline échoue tant qu'elle ne l'est pas). Collecte de l'entrepôt : `python collecte/collecte.py --help` et `docs/STOCKAGE.md`.
 
-**Mise à jour automatique** (`.github/workflows/data.yml`, chaque lundi) : fetch, contrôle de schéma, transform, modules de précision (sautés avec un avis sur le runner GitHub, qui n'a pas `data/lake` : leurs fichiers publiés restent tels quels), Frictionless, contrat, tests, puis commit **seulement si une donnée a changé** (l'horodatage `genere_le` de `meta.json` seul ne déclenche rien). En cas d'échec, une issue `pipeline-donnees` est ouverte ou commentée.
+**Mise à jour automatique** (`.github/workflows/data.yml`, chaque lundi) : `pipeline/tout.py` régénère tout `site/data` dans l'ordre des dépendances (`python pipeline/tout.py --plan`), étape par étape : collecte reprenable puis production, avec reprise (`--reprendre`) et budget de temps. L'entrepôt du runner est le sous-ensemble de `data/lake` lu par les étapes (`pipeline/entrees_lac.json`, environ 1,5 Go plus les caches des modules), gardé d'une semaine à l'autre par `actions/cache` (sans la zone `_restreint`, recollectée à chaque passage) et complété par `python pipeline/tout.py entrepot` (sources manquantes ; relecture de l'amont le premier lundi du mois). Une source inaccessible (403, 429, 5xx) ne fait pas échouer la semaine : l'étape garde sa dernière version publiée et `site/data/mise_a_jour.json` le dit. Puis Frictionless, contrat `--strict`, `pytest` complet, et commit **seulement si une donnée a changé** (`genere_le` et le rapport de passage seuls ne déclenchent rien), par un job séparé qui ne fait que vérifier et pousser le correctif. Une étape en erreur rend le passage rouge (issue `pipeline-donnees`) mais les étapes réussies et validées sont publiées.
 
 ## Données couvertes
 

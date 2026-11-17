@@ -9,6 +9,12 @@ Controles : JSON Schema (docs/schemas/, references croisees via commun.schema.js
 liens `fichier` des arbres et des index, conservation des groupes de beneficiaires (a 1 euro pres),
 sommes de parts des prelevements (= 1).
 
+Performance : chaque schema est compile une fois par processus ; les fichiers sont valides en parallele
+(`--processus`, defaut : coeurs disponibles, 8 au plus), par lots tries du plus lourd au plus leger. Un fichier
+deja conforme, de meme contenu, avec les memes schemas et la meme version de jsonschema, n'est pas revalide
+contre son schema (cache hors depot, `OVMI_CACHE_CONTRAT` ou dossier temporaire ; `--sans-cache` pour tout
+rejouer) ; les controles hors schema sont toujours rejoues. Le resultat est identique dans tous les cas.
+
 Code de sortie : 0 si tout fichier present est conforme ; 1 si un fichier present est
 non conforme ou si un fichier marque "existant" manque. Un fichier "prevu" absent est
 signale (PREVU) sans faire echouer la validation ; un fichier orphelin (aucun schema) est
@@ -19,7 +25,9 @@ from __future__ import annotations
 import argparse
 import glob
 import importlib
+import importlib.metadata
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -33,6 +41,7 @@ EXEMPLES = Path(__file__).resolve().parent / "exemples"
 # moins un motif : un fichier orphelin fait echouer la validation (contrat a completer).
 FICHIERS = [
     ("meta.schema.json", "meta.json", "existant"),
+    ("mise_a_jour.schema.json", "mise_a_jour.json", "existant"),   # pipeline/tout.py (contrat 2.22)
     ("sankey_etat.schema.json", "sankey_etat*.json", "existant"),
     ("nature_etat.schema.json", "nature_etat.json", "existant"),
     ("arbre_etat.schema.json", "arbre/*.json", "existant"),
@@ -226,16 +235,6 @@ FICHIERS = [
     ("local_satellites_ccas.schema.json", "local_satellites/ccas/*.json", "existant"),
     ("local_satellites_mobilite.schema.json", "local_satellites/mobilite/*.json", "existant"),
     ("local_satellites_eau.schema.json", "local_satellites/eau/*.json", "existant"),
-    # retraites par régime : retraités, pensions moyennes, cotisants publiés, CAS Pensions (pipeline/retraites.py)
-    ("retraites_index.schema.json", "retraites/index.json", "existant"),
-    ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
-    ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
-    # justice et défense : établissements pénitentiaires, budget de la justice, ressorts, armement (pipeline/justice_defense.py)
-    ("justice_defense_index.schema.json", "justice_defense/index.json", "existant"),
-    ("justice_defense_prisons.schema.json", "justice_defense/prisons.json", "existant"),
-    ("justice_defense_budget_justice.schema.json", "justice_defense/budget_justice.json", "existant"),
-    ("justice_defense_ressorts.schema.json", "justice_defense/ressorts.json", "existant"),
-    ("justice_defense_armement.schema.json", "justice_defense/armement.json", "existant"),
     # contrôle et recouvrement : notifié, encaissé, estimations (pipeline/recouvrement.py)
     ("recouvrement_index.schema.json", "recouvrement/index.json", "existant"),
     ("recouvrement_controle_fiscal.schema.json", "recouvrement/controle_fiscal.json", "existant"),
@@ -243,6 +242,16 @@ FICHIERS = [
     ("recouvrement_impayes.schema.json", "recouvrement/impayes.json", "existant"),
     ("recouvrement_apurements_etat.schema.json", "recouvrement/apurements_etat.json", "existant"),
     ("recouvrement_estimations.schema.json", "recouvrement/estimations.json", "existant"),
+    # justice et défense : établissements pénitentiaires, budget de la justice, ressorts, armement (pipeline/justice_defense.py)
+    ("justice_defense_index.schema.json", "justice_defense/index.json", "existant"),
+    ("justice_defense_prisons.schema.json", "justice_defense/prisons.json", "existant"),
+    ("justice_defense_budget_justice.schema.json", "justice_defense/budget_justice.json", "existant"),
+    ("justice_defense_ressorts.schema.json", "justice_defense/ressorts.json", "existant"),
+    ("justice_defense_armement.schema.json", "justice_defense/armement.json", "existant"),
+    # retraites par régime : retraités, pensions moyennes, cotisants publiés, CAS Pensions (pipeline/retraites.py)
+    ("retraites_index.schema.json", "retraites/index.json", "existant"),
+    ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
+    ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
@@ -284,11 +293,72 @@ def registre():
     return _REGISTRE
 
 
+_VALIDATEURS: dict = {}
+
+
 def validateur(js, nom_schema: str):
-    schema = json.loads((SCHEMAS / nom_schema).read_text(encoding="utf-8"))
-    cls = js.validators.validator_for(schema)
-    cls.check_schema(schema)
-    return cls(schema, registry=registre(), format_checker=cls.FORMAT_CHECKER)
+    """Validateur compile une seule fois par schema et par processus (cache)."""
+    v = _VALIDATEURS.get(nom_schema)
+    if v is None:
+        schema = json.loads((SCHEMAS / nom_schema).read_text(encoding="utf-8"))
+        cls = js.validators.validator_for(schema)
+        cls.check_schema(schema)
+        v = _VALIDATEURS[nom_schema] = cls(schema, registry=registre(), format_checker=cls.FORMAT_CHECKER)
+    return v
+
+
+_CACHE_OK: set = set()        # empreintes (schemas + fichier) deja conformes au schema
+_EMPREINTE_SCHEMAS = None
+
+
+def chemin_cache() -> Path:
+    """Cache hors depot des fichiers deja conformes : meme contenu et memes schemas => schema non rejoue.
+    Les controles hors schema (liens, conservation, sommes de parts) sont toujours rejoues."""
+    import hashlib
+    import tempfile
+    base = os.environ.get("OVMI_CACHE_CONTRAT") or tempfile.gettempdir()
+    return Path(base) / f"ovmi_valider_contrat_{hashlib.sha256(str(ROOT).encode()).hexdigest()[:12]}.txt"
+
+
+def empreinte(nom_schema: str, contenu: bytes) -> str:
+    import hashlib
+    global _EMPREINTE_SCHEMAS
+    if _EMPREINTE_SCHEMAS is None:
+        h = hashlib.sha256(importlib.metadata.version("jsonschema").encode())   # meme moteur de validation
+        for p in sorted(SCHEMAS.glob("*.schema.json")):
+            h.update(p.name.encode() + p.read_bytes())
+        _EMPREINTE_SCHEMAS = h.hexdigest()
+    return hashlib.sha256((_EMPREINTE_SCHEMAS + nom_schema).encode() + contenu).hexdigest()
+
+
+def _init_processus(cache: set) -> None:
+    global _CACHE_OK
+    _CACHE_OK = cache
+
+
+def _valider_lot(lot: tuple[str, list[str]]) -> list[tuple[str, list[str], str | None]]:
+    """Valide un lot de fichiers d'un meme schema (execute dans un processus de travail) :
+    (chemin, erreurs, empreinte si conforme au schema, pour le cache)."""
+    nom_schema, chemins = lot
+    v = validateur(charger_jsonschema(), nom_schema)
+    sortie = []
+    for c in chemins:
+        p = Path(c)
+        contenu = p.read_bytes()
+        try:
+            doc = json.loads(contenu.decode("utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            sortie.append((c, [f"JSON illisible ({exc})"], None))
+            continue
+        cle = empreinte(nom_schema, contenu)
+        errs = [] if cle in _CACHE_OK else erreurs(v, doc)
+        cle = cle if not errs else None
+        if nom_schema in SCHEMAS_ARBRE:
+            errs += liens_arbre(p, doc)
+        elif not errs:
+            errs += liens_fichiers(p, doc) + conservation_groupes(doc) + sommes_de_parts(nom_schema, doc)
+        sortie.append((c, errs, cle))
+    return sortie
 
 
 def erreurs(v, doc, limite: int = 5) -> list[str]:
@@ -385,15 +455,53 @@ def main() -> int:
     ap.add_argument("--quiet", action="store_true")
     ap.add_argument("--strict", action="store_true",
                     help="un fichier de site/data couvert par aucun schema fait echouer la validation")
+    ap.add_argument("--sans-cache", action="store_true",
+                    help="rejouer le schema meme pour un fichier inchange deja conforme")
+    ap.add_argument("--processus", type=int, default=0,
+                    help="processus de validation en parallele (defaut : coeurs disponibles, 8 au plus ; 1 = en serie)")
     args = ap.parse_args()
     js = charger_jsonschema()
 
     n_ok = n_ko = n_prevus = n_manquants = 0
     couverts: set[Path] = set()
+    # Lots de 40 fichiers par schema, valides en parallele par processus ; l'affichage garde l'ordre de FICHIERS.
+    par_motif, lots = [], []
     for nom_schema, motif, etat in FICHIERS:
-        v = validateur(js, nom_schema)
         chemins = sorted(Path(p) for p in glob.glob(str(SITE / motif)))
         couverts.update(chemins)
+        par_motif.append((nom_schema, motif, etat, chemins))
+        lot, octets = [], 0
+        for p in chemins:   # lots d'au plus 40 fichiers ou 4 Mo : le cout de validation suit la taille
+            lot.append(str(p))
+            octets += p.stat().st_size
+            if len(lot) >= 40 or octets >= 4_000_000:
+                lots.append((octets, nom_schema, lot))
+                lot, octets = [], 0
+        if lot:
+            lots.append((octets, nom_schema, lot))
+    # Les plus gros lots d'abord, un lot par tache : aucun processus ne recoit seul tous les fichiers lourds.
+    lots = [(nom, lot) for _, nom, lot in sorted(lots, key=lambda x: -x[0])]
+    nb = args.processus or min(8, os.cpu_count() or 1)
+    fichier_cache = chemin_cache()
+    cache = set()
+    if not args.sans_cache and fichier_cache.exists():
+        cache = set(fichier_cache.read_text(encoding="ascii", errors="ignore").split())
+    _init_processus(cache)
+    if nb > 1 and len(lots) > 1:
+        from concurrent.futures import ProcessPoolExecutor
+        with ProcessPoolExecutor(max_workers=nb, initializer=_init_processus, initargs=(cache,)) as pool:
+            resultats = list(pool.map(_valider_lot, lots, chunksize=1))
+    else:
+        resultats = [_valider_lot(lot) for lot in lots]
+    erreurs_par_fichier = {c: errs for lot in resultats for c, errs, _ in lot}
+    try:   # seules les empreintes des fichiers presents sont gardees (le cache ne grossit pas)
+        tmp = fichier_cache.with_name(fichier_cache.name + f".{os.getpid()}.tmp")
+        tmp.write_text("\n".join(sorted(cle for lot in resultats for _, _, cle in lot if cle)) + "\n",
+                       encoding="ascii")
+        os.replace(tmp, fichier_cache)
+    except OSError:
+        pass
+    for nom_schema, motif, etat, chemins in par_motif:
         if not chemins:
             if etat == "prevu":
                 n_prevus += 1
@@ -404,17 +512,7 @@ def main() -> int:
             continue
         ko_motif = 0
         for p in chemins:
-            try:
-                doc = json.loads(p.read_text(encoding="utf-8"))
-            except json.JSONDecodeError as exc:
-                print(f"KO       {p.relative_to(ROOT)} : JSON illisible ({exc})")
-                ko_motif += 1
-                continue
-            errs = erreurs(v, doc)
-            if nom_schema in SCHEMAS_ARBRE:
-                errs += liens_arbre(p, doc)
-            elif not errs:
-                errs += liens_fichiers(p, doc) + conservation_groupes(doc) + sommes_de_parts(nom_schema, doc)
+            errs = erreurs_par_fichier[str(p)]
             if errs:
                 ko_motif += 1
                 print(f"KO       {p.relative_to(ROOT)}")

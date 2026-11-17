@@ -37,6 +37,18 @@ pytestmark = pytest.mark.skipif(not (LAKE / "manifest.json").exists(),
                                 reason="entrepôt data/lake absent : reproductibilité non vérifiable ici")
 
 
+def _entrees_presentes(commande: list[str]) -> bool:
+    """Toutes les sources de l'entrepôt lues par l'étape sont présentes (pipeline/entrees_lac.json, relevé par
+    `python pipeline/tout.py inventorier`). Sur le runner GitHub, l'entrepôt est partiel (cache, sans la zone
+    _restreint) : une étape dont une entrée manque y est « conservée » par pipeline/tout.py et n'est pas rejouée ici."""
+    import json
+    entrees = ROOT / "pipeline" / "entrees_lac.json"
+    if not entrees.exists():
+        return True
+    etape = json.loads(entrees.read_text(encoding="utf-8"))["etapes"].get(Path(commande[0]).stem, {})
+    return all((ROOT / c).exists() for chemins in etape.get("sources", {}).values() for c in chemins)
+
+
 def _bac(tmp: Path) -> Path:
     for x in ROOT.iterdir():
         if x.name not in ("site", "pipeline", "data", "web", ".git"):
@@ -63,9 +75,12 @@ def _empreintes(bac: Path) -> dict[str, str]:
 def test_produire_deux_fois_donne_les_memes_octets(tmp_path):
     bac = _bac(tmp_path)
     env = {k: v for k, v in os.environ.items() if k != "SOURCE_DATE_EPOCH"}
+    commandes = [c for c in COMMANDES if _entrees_presentes(c)]
+    if not commandes:
+        pytest.skip("aucune étape dont toutes les entrées sont dans l'entrepôt")
     passages = []
     for graine in ("1", "2"):
-        for c in COMMANDES:
+        for c in commandes:
             r = subprocess.run([sys.executable, *c], cwd=bac, env={**env, "PYTHONHASHSEED": graine},
                                capture_output=True, text=True, timeout=1800)
             assert r.returncode == 0, f"{' '.join(c)} :\n{r.stderr[-2000:]}"

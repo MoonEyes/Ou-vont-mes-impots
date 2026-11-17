@@ -1,13 +1,28 @@
 name: Mise a jour des donnees
 
-# Pattern "git scraping" : telecharger, verifier, transformer, valider, committer seulement si une donnee a change.
-# L'horodatage seul (site/data/meta.json : genere_le) ne declenche jamais de commit.
+# Regenere tout site/data chaque semaine, sans intervention (pipeline/tout.py : ordre des dependances, reprise,
+# sources inaccessibles notees dans site/data/mise_a_jour.json sans faire echouer la semaine).
+# Pattern "git scraping" en deux jobs (docs/AUDIT_SECURITE.md, constat I2) :
+#   produire : lecture seule, sans jeton d'ecriture ; execute le code sur les donnees externes, valide
+#              (Frictionless, contrat --strict, pytest complet) puis livre un correctif de donnees en artifact ;
+#   publier  : seul a pouvoir ecrire ; n'execute aucun code du pipeline, verifie que le correctif ne touche que
+#              data/raw, data/processed, site/data et docs/datapackage, puis committe et pousse.
+# Pas de commit si seuls genere_le (meta.json) ou le rapport de passage (mise_a_jour.json) changent.
+# Le workflow "Site (GitHub Pages)" (pages.yml) se declenche apres celui-ci (workflow_run).
 on:
   schedule:
     - cron: "17 4 * * 1"   # chaque lundi 04:17 UTC
   workflow_dispatch:
+    inputs:
+      etapes:
+        description: "Etapes (ex. secu,dette) ; vide = toutes"
+        required: false
+        default: ""
+      rafraichir:
+        description: "Relire l'amont de toutes les sources de l'entrepot (sinon : sources manquantes seulement)"
+        type: boolean
+        default: false
 
-# Aucun droit par defaut ; le job declare seulement ce dont il a besoin.
 permissions: {}
 
 concurrency:
@@ -16,115 +31,184 @@ concurrency:
 
 env:
   PYTHONUNBUFFERED: "1"
-  # Modules de precision, dans l'ordre de leurs dependances (chacun lit les sorties des precedents dans site/data).
-  # Colonnes : module (pipeline/<module>.py), besoin de l'entrepot brut data/lake (oui/non), arguments.
-  # data/lake (20 Go, OVH Object Storage, docs/STOCKAGE.md) n'existe pas sur le runner : un module "oui" y est saute
-  # avec un avis, et ses fichiers deja publies dans site/data restent tels quels. Un module absent du depot est saute.
-  MODULES: |
-    beneficiaires   oui  tout
-    realisations    oui  produire
-    vie_politique   oui  produire
-    decisions       oui  produire
-    tracabilite     oui
-    prelevements    oui  produire
-    local           oui  tout --tous
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
 
 jobs:
-  update:
+  produire:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 345   # limite GitHub : 360 min par job ; pipeline/tout.py s'arrete a 270 min (--budget)
     permissions:
-      contents: write   # git push des donnees mises a jour
-      issues: write     # issue en cas d'echec
+      contents: read
+    outputs:
+      tests: ${{ steps.tests.outputs.resultat }}
+      publiable: ${{ steps.correctif.outputs.publiable }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false   # aucun jeton dans .git/config pendant l'execution du pipeline
 
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
-          python-version: "3.12"
+          python-version: "3.13"
           cache: pip
+          cache-dependency-path: requirements.lock
 
-      - name: Installer les dependances
-        run: pip install -r requirements.txt
+      - name: Outils systeme (PDF, OCR)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends poppler-utils tesseract-ocr tesseract-ocr-fra
 
-      - name: Telecharger les donnees brutes
-        run: python pipeline/fetch.py
+      - name: Dependances figees (empreintes verifiees)
+        run: pip install --require-hashes --no-deps -r requirements.lock
 
-      - name: Detecter un changement de schema a la source
-        run: python pipeline/check_schema.py
+      # Entrepot data/lake : sous-ensemble lu par les etapes (pipeline/entrees_lac.json) et caches des modules
+      # (resolutions SIREN, pages ccomptes.fr, extraits OFGL, OCR...). La zone _restreint (personnes physiques)
+      # n'entre jamais dans le cache GitHub : un cache de depot public est lisible par un workflow de fork.
+      - name: Restaurer l'entrepot (cache)
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            data/lake
+            !data/lake/_restreint
+          key: lac-v1-${{ github.run_id }}
+          restore-keys: lac-v1-
 
-      - name: Transformer pour le site
-        run: python pipeline/transform.py
+      - name: Completer l'entrepot (sources du catalogue lues par les etapes)
+        env:
+          RAFRAICHIR: ${{ inputs.rafraichir }}
+          ETAPES: ${{ inputs.etapes }}
+        run: |
+          # premier lundi du mois ou demande explicite : relecture de l'amont (requetes conditionnelles) ;
+          # sinon seulement les sources absentes du cache.
+          opt=""
+          if [ "${RAFRAICHIR:-false}" = "true" ] || [ "$(date -u +%d)" -le 7 ]; then opt="--rafraichir"; fi
+          python pipeline/tout.py entrepot $opt ${ETAPES:+--etapes "$ETAPES"} --budget 3600
 
-      - name: Modules de precision (entrepot brut requis, sinon sautes)
+      - name: Regenerer site/data (pipeline/tout.py)
+        id: orchestrateur
+        env:
+          ETAPES: ${{ inputs.etapes }}
+        run: |
+          set +e
+          python pipeline/tout.py ${ETAPES:+--etapes "$ETAPES"} --budget 16200
+          echo "code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Sauver l'entrepot (cache, meme si une etape a echoue)
+        if: always() && steps.orchestrateur.outcome != 'skipped'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            data/lake
+            !data/lake/_restreint
+          key: lac-v1-${{ github.run_id }}
+
+      - name: Journal du passage (durees par etape)
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: journal
+          path: |
+            data/lake/_cache/tout/journal.json
+            site/data/mise_a_jour.json
+            schema_drift.md
+          if-no-files-found: ignore
+          retention-days: 30
+
+      # Avant tout commit : tables, contrat strict, suite de tests complete. Une etape en echec a deja ete
+      # ramenee a sa derniere version publiee par pipeline/tout.py : seules les etapes reussies changent.
+      - name: Valider (Frictionless, contrat --strict, pytest)
+        id: tests
         run: |
           set -euo pipefail
-          if [ -f data/lake/manifest.json ]; then lac=1; else lac=0; fi
-          while read -r module besoin_lac args; do
-            [ -z "${module:-}" ] && continue
-            if [ ! -f "pipeline/${module}.py" ]; then
-              echo "::notice title=${module}::pipeline/${module}.py absent du depot : saute"
-              continue
-            fi
-            if [ "$besoin_lac" = "oui" ] && [ "$lac" = 0 ]; then
-              echo "::notice title=${module} saute::entrepot brut data/lake absent sur le runner ; site/data/ garde la derniere production committee"
-              continue
-            fi
-            echo "::group::python pipeline/${module}.py ${args:-}"
-            # shellcheck disable=SC2086
-            python "pipeline/${module}.py" ${args:-}
-            echo "::endgroup::"
-          done <<< "$MODULES"
+          frictionless validate datapackage.json
+          python docs/valider_contrat.py --quiet --strict
+          pytest -q
+          echo "resultat=ok" >> "$GITHUB_OUTPUT"
 
-      - name: Valider les tables (Frictionless)
-        run: frictionless validate datapackage.json
-
-      - name: Valider le contrat d'interface (JSON Schema)
-        run: python docs/valider_contrat.py --quiet
-
-      - name: Tests
-        run: pytest -q
-
-      - name: Committer si les donnees ont change
+      - name: Correctif de donnees (si une donnee a change hors genere_le)
+        id: correctif
         run: |
           set -euo pipefail
+          if python pipeline/tout.py changements > changements.txt; then
+            printf 'Fichiers modifies :\n'; cat changements.txt
+            git add -- data/raw data/processed site/data docs/datapackage
+            git diff --cached --binary -- data/raw data/processed site/data docs/datapackage > donnees.patch
+            echo "publiable=oui" >> "$GITHUB_OUTPUT"
+          else
+            echo "Aucune donnee modifiee (seuls genere_le ou le rapport de passage ont change) : pas de commit."
+            echo "publiable=non" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: steps.correctif.outputs.publiable == 'oui'
+        with:
+          name: donnees
+          path: donnees.patch
+          retention-days: 7
+
+      - name: Sortie en erreur si une etape a echoue (apres publication des etapes reussies)
+        if: steps.orchestrateur.outputs.code != '0'
+        run: |
+          echo "::error::pipeline/tout.py : au moins une etape en echec (voir le resume et site/data/mise_a_jour.json)"
+          exit 1
+
+  publier:
+    needs: produire
+    # publie les etapes reussies meme si une autre a echoue, a condition que les validations soient passees
+    if: always() && needs.produire.outputs.tests == 'ok' && needs.produire.outputs.publiable == 'oui'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write   # git push des donnees ; rien d'autre
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: donnees
+
+      - name: Verifier le correctif (chemins de donnees seulement, aucun lien symbolique)
+        run: |
+          set -euo pipefail
+          git apply --numstat donnees.patch | cut -f3- > chemins.txt
+          if grep -vE '^(data/raw/|data/processed/|site/data/|docs/datapackage/)' chemins.txt; then
+            echo "::error::le correctif touche un chemin hors donnees : refuse"; exit 1
+          fi
+          if git apply --summary donnees.patch | grep -E 'mode 120000|=>'; then
+            echo "::error::lien symbolique ou renommage dans le correctif : refuse"; exit 1
+          fi
+          wc -l < chemins.txt
+
+      - name: Committer et pousser
+        run: |
+          set -euo pipefail
+          git apply --index donnees.patch
+          rm -f donnees.patch chemins.txt
           git config user.name "data-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data site/data
-          changes=$(git diff --cached --name-only)
-          if [ -z "$changes" ]; then
-            echo "Aucun changement dans les donnees."
-            exit 0
-          fi
-          if [ "$changes" = "site/data/meta.json" ]; then
-            # meta.json seul : ne compte que s'il change hors horodatage (sources, millesimes, controles)
-            if python - <<'PY'
-          import json, subprocess, sys
-          def lire(rev):
-              d = json.loads(subprocess.run(["git", "show", f"{rev}:site/data/meta.json"], capture_output=True,
-                                            text=True, check=True).stdout)
-              d.pop("genere_le", None)
-              return d
-          sys.exit(0 if lire("HEAD") == lire("") else 1)
-          PY
-            then
-              git restore --staged site/data/meta.json
-              git checkout -- site/data/meta.json
-              echo "Seul l'horodatage genere_le de site/data/meta.json a change : pas de commit."
-              exit 0
-            fi
-          fi
-          printf 'Fichiers modifies :\n%s\n' "$changes"
-          git commit -m "data: mise a jour automatique $(date -u +%Y-%m-%d)"
-          git push
+          git commit -q -m "data: mise a jour automatique $(date -u +%Y-%m-%d)"
+          # main a pu avancer pendant le passage (commits de code) : rebase sur la tete, les donnees ne
+          # sont touchees que par ce workflow (concurrency: data).
+          git pull --rebase --quiet origin main
+          git push origin HEAD:main
 
-      - name: Ouvrir une issue en cas d'echec
-        if: failure()
+  signaler:
+    needs: [produire, publier]
+    if: failure()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      - name: Ouvrir ou commenter l'issue pipeline-donnees
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           body="Le pipeline de donnees a echoue : ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          if [ -f schema_drift.md ]; then body="$body"$'\n\n'"$(cat schema_drift.md)"; fi
+          body="$body"$'\n\n'"Detail par etape : resume du job produire et artifact journal (mise_a_jour.json, journal.json, schema_drift.md si la source a change de schema)."
           existing=$(gh issue list --label pipeline-donnees --state open --json number --jq '.[0].number')
           if [ -n "$existing" ]; then
             gh issue comment "$existing" --body "$body"

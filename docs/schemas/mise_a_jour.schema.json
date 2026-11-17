@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/mise_a_jour.schema.json",
+  "title": "site/data/mise_a_jour.json : rapport du dernier passage de la mise a jour automatique",
+  "description": "Ecrit par pipeline/tout.py. Deterministe hors `genere_le` : ni duree ni code de sortie. Une etape `conserve`, `echec` ou `reporte` a garde la derniere version publiee de ses sorties.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "properties": {
+    "genere_le": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "mode": {
+      "enum": [
+        "complet",
+        "sans réseau"
+      ]
+    },
+    "statuts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "etapes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "etape": {
+            "type": "string",
+            "pattern": "^[a-z_]+$"
+          },
+          "titre": {
+            "type": "string"
+          },
+          "dependances": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sorties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "statut": {
+            "enum": [
+              "produit",
+              "partiel",
+              "conserve",
+              "echec",
+              "reporte"
+            ]
+          },
+          "motif": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sources_inaccessibles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "commande": {
+                  "type": "string"
+                },
+                "constat": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "commande",
+                "constat"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "etape",
+          "titre",
+          "dependances",
+          "sorties",
+          "statut",
+          "motif",
+          "sources_inaccessibles"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "genere_le",
+    "mode",
+    "statuts",
+    "etapes"
+  ]
+}

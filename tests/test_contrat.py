@@ -18,7 +18,7 @@ SITE = vc.SITE
 
 def test_validateur_passe_sur_les_donnees_du_depot():
     r = subprocess.run([sys.executable, str(ROOT / "docs" / "valider_contrat.py"), "--quiet"],
-                       capture_output=True, text=True, timeout=600)
+                       capture_output=True, text=True, timeout=1800)  # en parallele : 4 min sur 2 coeurs charges
     assert r.returncode == 0, r.stdout[-4000:] + r.stderr[-2000:]
     assert " 0 non conformes" in r.stdout
 
@@ -91,3 +91,21 @@ def test_parts_d_un_prelevement_source_somment_a_un():
     pid = next(k for k, v in doc["prelevements"].items() if v["statut"] == "sourcee")
     doc["prelevements"][pid]["ventilation"][0]["part"] += 0.01
     assert vc.sommes_de_parts("prelevements_affectation.schema.json", doc)
+
+
+def test_lot_parallele_et_cache_donnent_le_meme_resultat(tmp_path):
+    """Un fichier non conforme est signale avec ou sans cache ; un fichier conforme ne l'est jamais ; l'empreinte
+    (cache) n'est donnee qu'a un fichier conforme et ne masque pas un contenu modifie."""
+    bon, mauvais = tmp_path / "bon.json", tmp_path / "mauvais.json"
+    bon.write_bytes((SITE / "meta.json").read_bytes())
+    mauvais.write_text('{"genere_le": 3}', encoding="utf-8")
+    vc._init_processus(set())
+    r1 = {c: (e, k) for c, e, k in vc._valider_lot(("meta.schema.json", [str(bon), str(mauvais)]))}
+    assert r1[str(bon)][0] == [] and r1[str(bon)][1]
+    assert r1[str(mauvais)][0] and r1[str(mauvais)][1] is None
+    vc._init_processus({r1[str(bon)][1]})
+    r2 = {c: (e, k) for c, e, k in vc._valider_lot(("meta.schema.json", [str(bon), str(mauvais)]))}
+    assert r2 == r1
+    bon.write_text('{"genere_le": 3}', encoding="utf-8")   # meme chemin, contenu devenu non conforme
+    assert vc._valider_lot(("meta.schema.json", [str(bon)]))[0][1]
+    vc._init_processus(set())

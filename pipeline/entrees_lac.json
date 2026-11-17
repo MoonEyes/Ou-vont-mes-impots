@@ -1188,39 +1188,174 @@
    "octets_sources": null,
    "note": "relevé à la main d'après les constantes de pipeline/controle.py (entrepôt purgé avant le relevé sous strace)"
   },
-  "outremer": {
+  "local_fonctions": {
+   "sources": {},
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "entrées collectées par le module lui-même ; non relevées sous strace (entrepôt purgé)"
+  },
+  "subventions": {
    "sources": {
-    "outremer": [
-     "data/lake/outremer/outremer/ccomptes_financement_etat_outremer.zip",
-     "data/lake/outremer/outremer/dotations_collectivites.csv",
-     "data/lake/outremer/outremer/dotations_communes_975.csv",
-     "data/lake/outremer/outremer/dotations_communes_977.csv",
-     "data/lake/outremer/outremer/dotations_communes_978.csv",
-     "data/lake/outremer/outremer/dotations_communes_986.csv",
-     "data/lake/outremer/outremer/dotations_communes_987.csv",
-     "data/lake/outremer/outremer/dotations_communes_988.csv",
-     "data/lake/outremer/outremer/dotations_intercommunalites.csv",
-     "data/lake/outremer/outremer/dpt2026_outremer.pdf",
-     "data/lake/outremer/outremer/geo_975.json",
-     "data/lake/outremer/outremer/geo_977.json",
-     "data/lake/outremer/outremer/geo_978.json",
-     "data/lake/outremer/outremer/geo_986.json",
-     "data/lake/outremer/outremer/geo_987.json",
-     "data/lake/outremer/outremer/geo_988.json",
-     "data/lake/outremer/outremer/nc_budget.csv",
-     "data/lake/outremer/outremer/nc_budget.meta.json",
-     "data/lake/outremer/outremer/nc_epa.csv",
-     "data/lake/outremer/outremer/nc_epa.meta.json",
-     "data/lake/outremer/outremer/nc_epic.csv",
-     "data/lake/outremer/outremer/nc_epic.meta.json",
-     "data/lake/outremer/outremer/nc_impots.csv",
-     "data/lake/outremer/outremer/nc_impots.meta.json"
-    ]
+    "subv_ademe_aides": [],
+    "subv_aeap": [],
+    "subv_ars_pdl_fir": [],
+    "subv_culture_adsv": [],
+    "subv_culture_festivals_p131": [],
+    "subv_culture_scdl": [],
+    "subv_fonds_vert": [],
+    "subv_politique_ville_p147": [],
+    "subv_presse_dispositifs": [],
+    "subv_presse_titres": []
    },
    "caches": [],
    "hors_catalogue": [],
    "octets_sources": null,
-   "note": "relevé à la main d'après les constantes de pipeline/outremer.py (entrée « outremer » du catalogue)"
+   "note": "sources du domaine « subventions » de collecte/catalogue.json, collectées par `python pipeline/subventions.py collecter` ; chemins non relevés (entrepôt purgé avant le relevé sous strace)"
+  },
+  "territoires": {
+   "sources": {},
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "entrées collectées par le module lui-même ; non relevées sous strace (entrepôt purgé)"
+  },
+  "prestations": {
+   "sources": {},
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "entrées collectées par le module lui-même ; non relevées sous strace (entrepôt purgé)"
+  },
+  "europe_comparaison": {
+   "sources": {},
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "entrées collectées par le module lui-même ; non relevées sous strace (entrepôt purgé)"
+  },
+  "aide_developpement": {
+   "sources": {
+    "apd_afd_iati": [],
+    "apd_expertise_france_contrats": [],
+    "apd_ocde_dac2a": [],
+    "apd_ocde_dac5": [],
+    "apd_proparco": []
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "sources du domaine « aide_developpement » de collecte/catalogue.json, collectées par `python pipeline/aide_developpement.py collecter` ; chemins non relevés (entrepôt purgé avant le relevé sous strace)"
+  },
+  "associations": {
+   "sources": {
+    "assoc_banatic_siren_insee": [],
+    "assoc_departements": [],
+    "assoc_jaune_plf2012": [],
+    "assoc_jaune_plf2013": [],
+    "assoc_jaune_plf2014": [],
+    "assoc_jaune_plf2015": [],
+    "assoc_jaune_plf2016": [],
+    "assoc_jaune_plf2017": [],
+    "assoc_jaune_plf2018": [],
+    "assoc_jaune_plf2019": [],
+    "assoc_jaune_plf2020": [],
+    "assoc_jaune_plf2021": [],
+    "assoc_jaune_plf2022": [],
+    "assoc_jaune_plf2023": [],
+    "assoc_jaune_plf2024": [],
+    "assoc_reserve_an": [],
+    "assoc_reserve_senat": [],
+    "assoc_rnf_fonds_fondations": []
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "sources du domaine « associations » de collecte/catalogue.json, collectées par `python pipeline/associations.py collecter` ; chemins non relevés (entrepôt purgé avant le relevé sous strace)"
+  },
+  "education_recherche": {
+   "sources": {
+    "edrech_annuaire_education": [],
+    "edrech_anr_2005_2009": [],
+    "edrech_anr_pia": [],
+    "edrech_budget_collectivites_esr": [],
+    "edrech_effectifs_etudiants": [],
+    "edrech_lycees_cvl_2017": [],
+    "edrech_lycees_cvl_2018": [],
+    "edrech_lycees_cvl_2019": [],
+    "edrech_lycees_cvl_2020": [],
+    "edrech_lycees_cvl_2021": [],
+    "edrech_lycees_cvl_2022": [],
+    "edrech_lycees_cvl_2023": [],
+    "edrech_lycees_cvl_2024": [],
+    "edrech_lycees_cvl_2025": [],
+    "edrech_lycees_idf": [],
+    "edrech_lycees_pdl": []
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "sources du domaine « education_recherche » de collecte/catalogue.json, collectées par `python pipeline/education_recherche.py collecter` ; chemins non relevés (entrepôt purgé avant le relevé sous strace)"
+  },
+  "etat_actionnaire": {
+   "sources": {
+    "etat_actionnaire_documents": [],
+    "etat_actionnaire_lfi23_recettes_cas": [],
+    "etat_actionnaire_plf24_recettes_bg": [],
+    "etat_actionnaire_plf24_recettes_cas": [],
+    "etat_actionnaire_plf25_depenses_destination": [],
+    "etat_actionnaire_plf25_recettes_bg": [],
+    "etat_actionnaire_plf25_recettes_cas": [],
+    "etat_actionnaire_plrg_annexes": []
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "sources du domaine « etat_actionnaire » de collecte/catalogue.json, collectées par `python pipeline/etat_actionnaire.py collecter` ; chemins non relevés (entrepôt purgé avant le relevé sous strace)"
+  },
+  "fonction_publique": {
+   "sources": {
+    "fp_dgcl_indemnites_elus": [],
+    "fp_insee_effectifs_versants": [],
+    "fp_insee_ip2094": [],
+    "fp_insee_tcrd052": [],
+    "fp_jaune_cabinets_plf2025": [],
+    "fp_jaune_cabinets_plf2026": [],
+    "fp_jaune_conseils_plf2024": [],
+    "fp_jaune_conseils_plf2025": [],
+    "fp_jaune_conseils_plf2026": []
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "sources du domaine « fonction_publique » de collecte/catalogue.json, collectées par `python pipeline/fonction_publique.py collecter` ; chemins non relevés (entrepôt purgé avant le relevé sous strace)"
+  },
+  "formation": {
+   "sources": {
+    "formation_cpf_engagees": [],
+    "formation_cpf_entrees_sorties": [],
+    "formation_cpf_usagers": [],
+    "formation_fiphfp_aides": [],
+    "formation_fiphfp_conventions": []
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "sources du domaine « formation » de collecte/catalogue.json, collectées par `python pipeline/formation.py collecter` ; chemins non relevés (entrepôt purgé avant le relevé sous strace)"
+  },
+  "justice_defense": {
+   "sources": {
+    "justice_defense_chiffres_cles_justice_2026": [],
+    "justice_defense_effectifs_defense_2025": [],
+    "justice_defense_juridictions": [],
+    "justice_defense_population_ecrouee": [],
+    "justice_defense_rapport_exportations_armement_2025": [],
+    "justice_defense_structures_justice": []
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "sources du domaine « justice_defense » de collecte/catalogue.json, collectées par `python pipeline/justice_defense.py collecter` ; chemins non relevés (entrepôt purgé avant le relevé sous strace)"
   },
   "local_satellites": {
    "sources": {
@@ -1269,6 +1404,109 @@
    ],
    "octets_sources": 128556092
   },
+  "marches": {
+   "sources": {
+    "marches_decp_doublons_sources": []
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "sources du domaine « marches » de collecte/catalogue.json, collectées par `python pipeline/marches.py collecter` ; chemins non relevés (entrepôt purgé avant le relevé sous strace)"
+  },
+  "numerique_etat": {
+   "sources": {
+    "numerique_ditp_guichets": [],
+    "numerique_fast": [],
+    "numerique_france_relance_mtfp": [],
+    "numerique_ftap_guichets": [],
+    "numerique_panorama_projets": []
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "sources du domaine « numerique_etat » de collecte/catalogue.json, collectées par `python pipeline/numerique_etat.py collecter` ; chemins non relevés (entrepôt purgé avant le relevé sous strace)"
+  },
+  "outremer": {
+   "sources": {
+    "outremer": [
+     "data/lake/outremer/outremer/ccomptes_financement_etat_outremer.zip",
+     "data/lake/outremer/outremer/dotations_collectivites.csv",
+     "data/lake/outremer/outremer/dotations_communes_975.csv",
+     "data/lake/outremer/outremer/dotations_communes_977.csv",
+     "data/lake/outremer/outremer/dotations_communes_978.csv",
+     "data/lake/outremer/outremer/dotations_communes_986.csv",
+     "data/lake/outremer/outremer/dotations_communes_987.csv",
+     "data/lake/outremer/outremer/dotations_communes_988.csv",
+     "data/lake/outremer/outremer/dotations_intercommunalites.csv",
+     "data/lake/outremer/outremer/dpt2026_outremer.pdf",
+     "data/lake/outremer/outremer/geo_975.json",
+     "data/lake/outremer/outremer/geo_977.json",
+     "data/lake/outremer/outremer/geo_978.json",
+     "data/lake/outremer/outremer/geo_986.json",
+     "data/lake/outremer/outremer/geo_987.json",
+     "data/lake/outremer/outremer/geo_988.json",
+     "data/lake/outremer/outremer/nc_budget.csv",
+     "data/lake/outremer/outremer/nc_budget.meta.json",
+     "data/lake/outremer/outremer/nc_epa.csv",
+     "data/lake/outremer/outremer/nc_epa.meta.json",
+     "data/lake/outremer/outremer/nc_epic.csv",
+     "data/lake/outremer/outremer/nc_epic.meta.json",
+     "data/lake/outremer/outremer/nc_impots.csv",
+     "data/lake/outremer/outremer/nc_impots.meta.json"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "relevé à la main d'après les constantes de pipeline/outremer.py (entrée « outremer » du catalogue)"
+  },
+  "recouvrement": {
+   "sources": {
+    "recouvrement_urssaf_controle": [
+     "data/lake/recouvrement/recouvrement_urssaf_controle.csv"
+    ],
+    "recouvrement_urssaf_travail_dissimule": [
+     "data/lake/recouvrement/recouvrement_urssaf_travail_dissimule.csv"
+    ],
+    "recouvrement_urssaf_impayes_national": [
+     "data/lake/recouvrement/recouvrement_urssaf_impayes_national.csv"
+    ],
+    "recouvrement_urssaf_impayes_regions": [
+     "data/lake/recouvrement/recouvrement_urssaf_impayes_regions.csv"
+    ],
+    "recouvrement_urssaf_lexique": [
+     "data/lake/recouvrement/recouvrement_urssaf_lexique.csv"
+    ],
+    "recouvrement_etat_apurements": [
+     "data/lake/recouvrement/recouvrement_etat_apurements.csv"
+    ],
+    "recouvrement_etat_plan_comptable": [
+     "data/lake/recouvrement/recouvrement_etat_plan_comptable/plan_comptable_de_l_etat.xlsx"
+    ],
+    "recouvrement_dgfip_annuaires": [
+     "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2010.zip",
+     "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2019.zip"
+    ],
+    "recouvrement_documents": [
+     "data/lake/recouvrement/recouvrement_documents/cour_des_comptes_lutte_fraude_fiscale_2025.pdf",
+     "data/lake/recouvrement/recouvrement_documents/dpt2026_fraude_fiscale.pdf",
+     "data/lake/recouvrement/recouvrement_documents/hcfips_synthese_fraude_sociale_2025.pdf"
+    ],
+    "recouvrement_ce_ecart_tva": [
+     "data/lake/recouvrement/recouvrement_ce_ecart_tva/vat_gap_en.html"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 24826525
+  },
+  "retraites": {
+   "sources": {},
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "entrées collectées par le module lui-même ; non relevées sous strace (entrepôt purgé)"
+  },
   "sante_etablissements": {
    "sources": {
     "sante_finess_structures": [
@@ -1310,46 +1548,6 @@
     "data/lake/sante/sirene_categories_juridiques.json"
    ],
    "octets_sources": 218186285
-  },
-  "recouvrement": {
-   "sources": {
-    "recouvrement_urssaf_controle": [
-     "data/lake/recouvrement/recouvrement_urssaf_controle.csv"
-    ],
-    "recouvrement_urssaf_travail_dissimule": [
-     "data/lake/recouvrement/recouvrement_urssaf_travail_dissimule.csv"
-    ],
-    "recouvrement_urssaf_impayes_national": [
-     "data/lake/recouvrement/recouvrement_urssaf_impayes_national.csv"
-    ],
-    "recouvrement_urssaf_impayes_regions": [
-     "data/lake/recouvrement/recouvrement_urssaf_impayes_regions.csv"
-    ],
-    "recouvrement_urssaf_lexique": [
-     "data/lake/recouvrement/recouvrement_urssaf_lexique.csv"
-    ],
-    "recouvrement_etat_apurements": [
-     "data/lake/recouvrement/recouvrement_etat_apurements.csv"
-    ],
-    "recouvrement_etat_plan_comptable": [
-     "data/lake/recouvrement/recouvrement_etat_plan_comptable/plan_comptable_de_l_etat.xlsx"
-    ],
-    "recouvrement_dgfip_annuaires": [
-     "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2010.zip",
-     "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2019.zip"
-    ],
-    "recouvrement_documents": [
-     "data/lake/recouvrement/recouvrement_documents/cour_des_comptes_lutte_fraude_fiscale_2025.pdf",
-     "data/lake/recouvrement/recouvrement_documents/dpt2026_fraude_fiscale.pdf",
-     "data/lake/recouvrement/recouvrement_documents/hcfips_synthese_fraude_sociale_2025.pdf"
-    ],
-    "recouvrement_ce_ecart_tva": [
-     "data/lake/recouvrement/recouvrement_ce_ecart_tva/vat_gap_en.html"
-    ]
-   },
-   "caches": [],
-   "hors_catalogue": [],
-   "octets_sources": 24826525
   }
  },
  "urls": {
@@ -1756,6 +1954,19 @@
   "data/lake/outremer/outremer/nc_epic.meta.json": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-epic-depuis-2012",
   "data/lake/outremer/outremer/nc_impots.csv": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/rendement-des-impots-depuis-2010/exports/csv?delimiter=%3B",
   "data/lake/outremer/outremer/nc_impots.meta.json": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/rendement-des-impots-depuis-2010",
+  "data/lake/recouvrement/recouvrement_ce_ecart_tva/vat_gap_en.html": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en",
+  "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2010.zip": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip",
+  "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2019.zip": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-152555/annuaire-statistique-2019.zip",
+  "data/lake/recouvrement/recouvrement_documents/cour_des_comptes_lutte_fraude_fiscale_2025.pdf": "https://www.ccomptes.fr/sites/default/files/2025-12/20251216-Lutte-contre-la-fraude-fiscale.pdf",
+  "data/lake/recouvrement/recouvrement_documents/dpt2026_fraude_fiscale.pdf": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf",
+  "data/lake/recouvrement/recouvrement_documents/hcfips_synthese_fraude_sociale_2025.pdf": "https://www.strategie-plan.gouv.fr/files/files/Publications/2026/2026-01-13%20-%20HCFiPS%20-%20note%20annuelle%20fraude%20sociale/HCFIPS%20-%20Synth%C3%A8se%20Fraude%20sociale%202025%20-%20Version%20finalis%C3%A9e_0.pdf",
+  "data/lake/recouvrement/recouvrement_etat_apurements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/balances_des_comptes_etat/exports/csv?where=compte+in+%28%226251400000%22%2C%226251800000%22%2C%226252400000%22%2C%226252800000%22%2C%226537100000%22%29&select=annee%2Ccompte%2Cmission%2Cprogramme%2Cbalance_sortie",
+  "data/lake/recouvrement/recouvrement_etat_plan_comptable/plan_comptable_de_l_etat.xlsx": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/balances_des_comptes_etat/attachments/plan_comptable_de_letatxlsx",
+  "data/lake/recouvrement/recouvrement_urssaf_controle.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/resultats-du-controle-par-les-urssaf/exports/csv",
+  "data/lake/recouvrement/recouvrement_urssaf_impayes_national.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/taux-rar-horsto-mensuels-entreprises-de-10-salaries-ou-plus/exports/csv",
+  "data/lake/recouvrement/recouvrement_urssaf_impayes_regions.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/taux-rar-horsto-mensuels-entreprises-de-10-salaries-ou-plus-par-region/exports/csv",
+  "data/lake/recouvrement/recouvrement_urssaf_lexique.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/lexique-des-activites-et-des-services-de-lurssaf/exports/csv",
+  "data/lake/recouvrement/recouvrement_urssaf_travail_dissimule.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/resultats-de-la-lutte-contre-le-travail-illegal/exports/csv",
   "data/lake/secu/datagouv__depenses-et-recettes-de-lassurance-chomage/financement-de-l-assurance-chomage_47a22bbe.csv": "https://data.unedic.org/api/explore/v2.1/catalog/datasets/financement-de-l-assurance-chomage/exports/csv?use_labels=true",
   "data/lake/secu/datagouv__subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/DGS_subventions-associations_2025_fd970d88.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/20261110-101421/dgs-subventions-associations-2025.csv",
   "data/lake/secu/secu_protection_sociale.parquet": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/305_les-comptes-de-la-protection-sociale/exports/parquet",
@@ -1775,19 +1986,6 @@
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2013_81e6d11b.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151646/hospidiag_opendata_2013.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2014_a2ad446d.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151545/hospidiag_opendata_2014.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2015_289b8533.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151239/hospidiag_opendata_2015.xlsx",
-  "data/lake/secu/secu_atih_finances_ebnl.parquet": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/isf-finance-ebnl-public/exports/parquet",
-  "data/lake/recouvrement/recouvrement_urssaf_controle.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/resultats-du-controle-par-les-urssaf/exports/csv",
-  "data/lake/recouvrement/recouvrement_urssaf_travail_dissimule.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/resultats-de-la-lutte-contre-le-travail-illegal/exports/csv",
-  "data/lake/recouvrement/recouvrement_urssaf_impayes_national.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/taux-rar-horsto-mensuels-entreprises-de-10-salaries-ou-plus/exports/csv",
-  "data/lake/recouvrement/recouvrement_urssaf_impayes_regions.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/taux-rar-horsto-mensuels-entreprises-de-10-salaries-ou-plus-par-region/exports/csv",
-  "data/lake/recouvrement/recouvrement_urssaf_lexique.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/lexique-des-activites-et-des-services-de-lurssaf/exports/csv",
-  "data/lake/recouvrement/recouvrement_etat_apurements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/balances_des_comptes_etat/exports/csv?where=compte+in+%28%226251400000%22%2C%226251800000%22%2C%226252400000%22%2C%226252800000%22%2C%226537100000%22%29&select=annee%2Ccompte%2Cmission%2Cprogramme%2Cbalance_sortie",
-  "data/lake/recouvrement/recouvrement_etat_plan_comptable/plan_comptable_de_l_etat.xlsx": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/balances_des_comptes_etat/attachments/plan_comptable_de_letatxlsx",
-  "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2010.zip": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip",
-  "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2019.zip": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-152555/annuaire-statistique-2019.zip",
-  "data/lake/recouvrement/recouvrement_documents/dpt2026_fraude_fiscale.pdf": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf",
-  "data/lake/recouvrement/recouvrement_documents/hcfips_synthese_fraude_sociale_2025.pdf": "https://www.strategie-plan.gouv.fr/files/files/Publications/2026/2026-01-13%20-%20HCFiPS%20-%20note%20annuelle%20fraude%20sociale/HCFIPS%20-%20Synth%C3%A8se%20Fraude%20sociale%202025%20-%20Version%20finalis%C3%A9e_0.pdf",
-  "data/lake/recouvrement/recouvrement_documents/cour_des_comptes_lutte_fraude_fiscale_2025.pdf": "https://www.ccomptes.fr/sites/default/files/2025-12/20251216-Lutte-contre-la-fraude-fiscale.pdf",
-  "data/lake/recouvrement/recouvrement_ce_ecart_tva/vat_gap_en.html": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
+  "data/lake/secu/secu_atih_finances_ebnl.parquet": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/isf-finance-ebnl-public/exports/parquet"
  }
 }

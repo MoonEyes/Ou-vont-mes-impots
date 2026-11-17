@@ -1,0 +1,210 @@
+{
+ "millesime": "Dernier passage de la mise à jour automatique",
+ "source": "pipeline/tout.py (workflow .github/workflows/data.yml)",
+ "genere_le": "2026-11-17T18:10:07Z",
+ "mode": "complet",
+ "statuts": {
+  "produit": "sorties régénérées ce passage",
+  "partiel": "passage reprenable non terminé ; sorties déjà produites gardées",
+  "conserve": "source inaccessible ou entrée absente : dernière version publiée gardée",
+  "echec": "erreur : dernière version publiée gardée, le passage sort en erreur",
+  "reporte": "budget de temps épuisé : dernière version publiée gardée"
+ },
+ "etapes": [
+  {
+   "etape": "base",
+   "titre": "Budget de l'État, Eurostat, communes (data/raw)",
+   "dependances": [],
+   "sorties": [
+    "meta.json",
+    "arbre",
+    "arbre_lfi2025",
+    "arbre_plf2025_nature",
+    "arbre_administrations",
+    "sankey_etat.json",
+    "sankey_etat_lfi2025.json",
+    "nature_etat.json",
+    "programmes",
+    "communes",
+    "cofog.json",
+    "administrations.json",
+    "recettes.json",
+    "deficit.json"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": [
+    {
+     "commande": "pipeline/fetch.py",
+     "constat": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025 injoignable apres 6 tentatives : ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
+    }
+   ]
+  },
+  {
+   "etape": "beneficiaires",
+   "titre": "Nature, effectifs, bénéficiaires par programme",
+   "dependances": [
+    "base"
+   ],
+   "sorties": [
+    "nature",
+    "effectifs",
+    "beneficiaires"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  },
+  {
+   "etape": "operateurs",
+   "titre": "Opérateurs de l'État (jaunes PLF)",
+   "dependances": [
+    "base"
+   ],
+   "sorties": [
+    "operateurs"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  },
+  {
+   "etape": "vie_politique",
+   "titre": "Vie politique (CNCCFP, programme 232)",
+   "dependances": [
+    "base"
+   ],
+   "sorties": [
+    "vie_politique"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  },
+  {
+   "etape": "realisations",
+   "titre": "Prévu / dépensé, performance, évaluations",
+   "dependances": [
+    "base",
+    "beneficiaires"
+   ],
+   "sorties": [
+    "realisations"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  },
+  {
+   "etape": "decisions",
+   "titre": "Décisions sur les crédits (AN, Sénat, JORF)",
+   "dependances": [
+    "base",
+    "vie_politique"
+   ],
+   "sorties": [
+    "decisions"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  },
+  {
+   "etape": "prelevements",
+   "titre": "Prélèvements et affectation",
+   "dependances": [
+    "base"
+   ],
+   "sorties": [
+    "prelevements"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  },
+  {
+   "etape": "secu",
+   "titre": "Sécurité sociale (OCR des tableaux en image, en cache)",
+   "dependances": [
+    "prelevements"
+   ],
+   "sorties": [
+    "secu"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  },
+  {
+   "etape": "niches",
+   "titre": "Dépenses fiscales et niches sociales (PDF tome II)",
+   "dependances": [
+    "base"
+   ],
+   "sorties": [
+    "niches"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  },
+  {
+   "etape": "ue",
+   "titre": "Union européenne (Kohesio, FTS, Horizon)",
+   "dependances": [
+    "base"
+   ],
+   "sorties": [
+    "ue"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  },
+  {
+   "etape": "dette",
+   "titre": "Dette publique",
+   "dependances": [
+    "base",
+    "realisations",
+    "secu"
+   ],
+   "sorties": [
+    "dette"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  },
+  {
+   "etape": "tracabilite",
+   "titre": "Traçabilité de chaque euro",
+   "dependances": [
+    "base",
+    "beneficiaires",
+    "vie_politique",
+    "operateurs",
+    "realisations"
+   ],
+   "sorties": [
+    "tracabilite"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  },
+  {
+   "etape": "local",
+   "titre": "Près de chez moi (OFGL, API géo ; reprenable par passages de 480 s)",
+   "dependances": [
+    "base"
+   ],
+   "sorties": [
+    "local"
+   ],
+   "statut": "produit",
+   "motif": null,
+   "sources_inaccessibles": []
+  }
+ ]
+}

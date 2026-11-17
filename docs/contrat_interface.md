@@ -1,6 +1,6 @@
 # Contrat d'interface pipeline / site
 
-Version du contrat : **1.5** (17/11/2026).
+Version du contrat : **1.6** (17/11/2026).
 
 | Version | Date | Changement |
 |---|---|---|
@@ -10,6 +10,7 @@ Version du contrat : **1.5** (17/11/2026).
 | 1.3 | 17/11/2026 | `vie_politique/` ; schémas 1.0 alignés sur les fichiers réellement produits (en-tête `millesime`/`source`, enveloppe `communes`, `deficit.json` État et APU, nœuds `psr:` du sankey, montants d'exécution négatifs, arbres LFI 2025 et nature PLF 2025) |
 | 1.4 | 17/11/2026 | `prelevements/` : affectation sourcée de chaque prélèvement, taxes sur la consommation par décile, taxe foncière estimée par commune |
 | 1.5 | 17/11/2026 | `secu/` : arbres Sécurité sociale et protection sociale (comptes des organismes, exécution 2024 et 2025 ; prestations DREES 2024), source, millésime et taux de traçabilité par nœud, écarts entre sources |
+| 1.6 | 17/11/2026 | `mise_a_jour.json` : rapport du dernier passage de la mise à jour automatique (`pipeline/tout.py`), statut de chaque étape et sources inaccessibles |
 
 Ce document fixe ce que le pipeline (`pipeline/`) écrit dans `site/data/` et ce que le site lit, ainsi que le format d'entrée et de sortie du module de calcul personnel (exécuté dans le navigateur). Chaque format a son JSON Schema dans `docs/schemas/` ; les définitions partagées (en-tête, SIREN, groupe de bénéficiaires) sont dans `commun.schema.json`. Le schéma fait foi en cas de doute ; ce document en donne le sens.
 
@@ -48,6 +49,7 @@ Vérification : `python docs/valider_contrat.py` (installe `jsonschema` si absen
 | Fichier | Schéma | Contenu | Unité | Millésime actuel | Producteur | État |
 |---|---|---|---|---|---|---|
 | `meta.json` | `meta.schema.json` | provenance, date de génération, totaux de contrôle | divers | généré à chaque passage | `transform.py` | existant |
+| `mise_a_jour.json` | `mise_a_jour.schema.json` | statut de chaque étape du dernier passage, sources inaccessibles | | généré à chaque passage | `tout.py` | existant |
 | `arbre/racine.json` + `arbre/<chemin>.json` | `arbre_etat.schema.json` | arbre du budget de l'État (vue par défaut) | Md€ (CP) | Exécution 2024 | `transform.py` (budget vert PLF 2026 + PLRG 2024) | existant |
 | `arbre_lfi2025/` | `arbre_etat.schema.json` | même arbre, crédits votés | Md€ (CP) | LFI 2025 | `transform.py` | existant |
 | `arbre_plf2025_nature/` | `arbre_etat.schema.json` | vue séparée par nature (sous-action, titre, catégorie) | Md€ (CP) | PLF 2025 | `transform.py` | existant |
@@ -590,6 +592,22 @@ data/lake/etat/an__jaune_operateurs_plf<2024|2025|2026>/ (PDF) + listes data.gou
 
 `remunerations_non_rattachees[]` : entités de la table des rémunérations dont la dénomination ne correspond à aucune ligne (publiées telles quelles, sans rapprochement approximatif). `index.json` : `totaux.<AAAA>` (sommes des lignes), `couverture` (lignes, catégories, opérateurs de la liste 2026, SIREN résolus, années), `sources`, `recherche_prealable[]` (verdict, licence, date), `limites[]`, `unites_source`. Contrôle de lecture : chaque tableau du jaune doté d'une ligne « Total » est retrouvé à 5 k€ ou 0 ETPT près. 2019 : non couvert (jaunes PLF 2021 à 2023 absents des miroirs officiels).
 
+### 2.22 Rapport de mise à jour : `mise_a_jour.json` (pipeline/tout.py)
+
+Producteur : `pipeline/tout.py` (orchestrateur du workflow hebdomadaire `.github/workflows/data.yml`), à la fin de chaque passage. Déterministe hors `genere_le` : ni durée ni code de sortie (le journal détaillé, avec les durées, est `data/lake/_cache/tout/journal.json`, non versionné, et le résumé du job GitHub). Comme `genere_le` de `meta.json`, ce fichier **ne déclenche jamais de commit à lui seul** ; il est committé avec les données quand une donnée change.
+
+| Champ | Type | Sens |
+|---|---|---|
+| `millesime`, `source` | chaînes | en-tête commun |
+| `genere_le` | date-heure ISO 8601 | fin du passage |
+| `mode` | `complet` ou `sans réseau` | `sans réseau` : commandes de collecte non lancées |
+| `statuts` | objet statut → définition | lexique des statuts ci-dessous |
+| `etapes[]` | `{etape, titre, dependances[], sorties[], statut, motif, sources_inaccessibles[]}` | une entrée par étape, dans l'ordre des dépendances ; `sorties` relatives à `site/data/` |
+| `etapes[].statut` | `produit`, `partiel`, `conserve`, `echec`, `reporte` | `produit` : sorties régénérées ; `partiel` : passage reprenable non terminé (`local.py`), sorties déjà produites gardées ; `conserve` : entrée absente de l'entrepôt ou source inaccessible pendant la production, **dernière version publiée gardée** ; `echec` : erreur de code ou de donnée, dernière version publiée gardée et passage en erreur ; `reporte` : budget de temps épuisé |
+| `etapes[].sources_inaccessibles[]` | `{commande, constat}` | refus ou indisponibilité (401, 403, 429, 5xx, délai, coupure) constatés pendant la collecte : la production a tourné sur le cache, rien n'a été contourné |
+
+Une étape absente du passage (`--etapes`) garde sa ligne du passage précédent.
+
 ### 2.23 La France et ses voisins : `comparaison/` (pipeline/europe_comparaison.py)
 
 Producteur : `pipeline/europe_comparaison.py`. Sources déclarées dans `collecte/catalogue.json` (`eu_comparaison_*`, domaine `europe`) et collectées par `python collecte/collecte.py eu_comparaison_cofog_pib eu_comparaison_cofog_part eu_comparaison_cofog_meur eu_comparaison_taxag eu_comparaison_population eu_comparaison_pib eu_comparaison_documents` (réseau ; un refus 401/403 n'est jamais contourné) ; `python pipeline/europe_comparaison.py produire [--sortie DOSSIER]` (sans réseau ; échoue si une citation Eurostat n'est plus dans le document collecté). Tests : `pytest tests/test_europe_comparaison.py`. Fichiers compacts, avec `millesime`, `source`, `unite`, `avertissement`.
@@ -1086,33 +1104,6 @@ data/lake/secu/retraites_* (DREES EACR table A-Cadrage ; DREES emploi intérieur
 | `etat.json`, `credits_regimes_speciaux` | programmes 195, 197, 198 par action : `execution_2024_eur` (nœud de `arbre/`, avec `fichier` et `id`), `plf_2025_cp_eur`, `regime` quand l'action nomme un régime de l'EACR (SNCF, RATP, marins, mines) ; deux millésimes côte à côte, pas un écart |
 
 Règles propres : les effectifs des régimes ne s'additionnent pas (une personne qui perçoit des pensions de plusieurs régimes est comptée dans chacun ; seule la série `tous_regimes`, estimée par la DREES, compte chaque personne une fois) ; aucune masse de pensions n'est recalculée à partir d'un effectif et d'une moyenne ; une valeur absente à la source est null, jamais 0. Non couverts, faute de jeu ouvert (`sources_inaccessibles`) : cotisants des autres régimes, ressources par origine des régimes hors CAS Pensions, exécution du CAS Pensions ; les fichiers du Conseil d'orientation des retraites ne sont pas repris (réutilisation soumise à accord).
-
-### 2.39 Justice et défense : `justice_defense/` (pipeline/justice_defense.py)
-
-Établissements pénitentiaires (capacité, personnes détenues, densité : agrégats publiés, aucun individu), budget de la justice, juridictions et ressorts, exportations d'armement. Uniquement des documents publiés, déclarés dans `collecte/catalogue.json` (entrées `justice_defense_*`) ; rien de classifié. Commandes : `python pipeline/justice_defense.py collecter` (réseau, par `collecte/collecte.py` ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/justice_defense.py produire [--sortie DOSSIER]` (sans réseau, environ 2 min 30 ; lit `site/data/realisations/` en lecture seule). Tests : `pytest tests/test_justice_defense.py`.
-
-```
-data/lake/justice_defense/ (106 classeurs mensuels xlsx de la population écrouée ; table des ressorts et liste des
-                            juridictions ; chiffres clés de la Justice 2026 ; rapport au Parlement 2025 sur les exportations
-                            d'armement ; classeur des effectifs de la défense, sans donnée)
-site/data/realisations/107.json (dépense constatée du programme 107) et <programme>.json (libellés)
-     └─> pipeline/justice_defense.py ─> site/data/justice_defense/index.json, prisons.json, budget_justice.json,
-                                        ressorts.json, armement.json (chacun < 5 Mo)
-```
-
-| Fichier | Schéma | Contenu |
-|---|---|---|
-| `justice_defense/index.json` | `justice_defense_index` | `fichiers[]`, `reperes` (dernier état de chaque fichier), `effectifs_defense` (statut `donnee_absente_a_la_source`, constat daté, empreinte du fichier, `a_relire` si l'empreinte change), `limites`, `sources[]` (page, licence, date de collecte), `sources_inaccessibles[]`, `recherche_publique` (verdict, licence, date) |
-| `justice_defense/prisons.json` | `justice_defense_prisons` | `date_reference`, `national`, `etablissements[]` (une ligne par établissement et type de quartier : `disp`, `capacite_norme`, `capacite_operationnelle`, `detenus`, `densite_pct`, `historique_1er_janvier[]`, `montant_calcule_eur`), `montant_calcule` (formule, périmètre, limites), `serie_nationale[]` (mensuelle, avec `metropole` et `outre_mer`), `controles`, `couverture` (mois absents, doublons, classeurs non reconnus, URL de chaque classeur) |
-| `justice_defense/budget_justice.json` | `justice_defense_budget_justice` | `budget` (crédits de paiement, dépenses de personnel, autorisations d'engagement, `programmes[]` 166, 107, 182, 101, 310, 335 en M€ et en part), `frais_de_justice` (total, civile et commerciale, pénale), `aide_juridictionnelle` (dépenses effectives, montants versés aux avocats), `ecarts[]` avec `realisations/107.json` |
-| `justice_defense/ressorts.json` | `justice_defense_ressorts` | `juridictions[]` (`type`, `numero`, `nom`, `commune_insee`, `departement`), `types[]`, `par_departement`, `communes` (lignes alignées sur `colonnes` : code Insee puis identifiant de juridiction compétente), tables d'identifiants (`tribunaux_proximite`, `conseils_prudhommes`, et `cours_appel`, `tribunaux_judiciaires` quand ils sont repris), `coherence_source` |
-| `justice_defense/armement.json` | `justice_defense_armement` | `prises_de_commandes`, `livraisons` (M€ courants) et `licences` (nombre) : `annees`, `pays[]` (`pays`, `region`, `valeurs[]`, `total`), `regions[]`, `hors_region[]` (« Multi-pays », « Divers »), `total_general`, `controles` ; `licences_par_categorie` (ML1 à ML22, AMA1 à AMA4 : `licences`, `montant_eur`, total) |
-
-**Montant par établissement : calculé, pas publié.** `realisations/107.json` ne contient aucun indicateur de montant par journée de détention. Le site calcule donc : montant par journée = dépense constatée du programme 107 de l'année / (moyenne des personnes détenues au 1er de chaque mois publié × nombre de jours de l'année) ; `montant_calcule_eur` d'une ligne = montant par journée × moyenne de ses personnes détenues aux mêmes dates × nombre de jours. `montant_calcule.statut` vaut toujours `calculé` ; formule, périmètre (toute la dépense du programme, y compris milieu ouvert et immobilier), méthode (prorata uniforme) et limites sont dans le fichier. Le site doit afficher ce montant avec la mention « calculé » et sa formule, jamais comme une valeur de l'administration.
-
-**Ressorts : colonnes reprises seulement si cohérentes.** À chaque production, le siège de la juridiction indiquée pour une commune est comparé au département de la commune (`coherence_source.colonnes`). Une colonne dont plus de 5 % des communes renvoient à un autre département n'est pas reprise (`colonnes_non_reprises`, `constat`) : c'est le cas, dans le fichier publié en mai 2026, du tribunal judiciaire et de la cour d'appel (publiés ensemble). `colonnes` donne donc la liste réelle des colonnes de `communes` ; les tables `cours_appel` et `tribunaux_judiciaires` sont absentes tant que ces colonnes ne sont pas reprises. Colonnes de voie, code postal, coordonnées, téléphone et courriel : jamais lues. Aucune commune n'est attribuée aux établissements pénitentiaires (absents du jeu ; un rapprochement par le nom a été écarté après essai).
-
-**Règles propres.** Un tiret ou une cellule vide à la source reste `null`, jamais 0 ; « 0,0 » du rapport sur l'armement (moins de 50 000 €) reste 0. Un total publié qui ne retombe pas sur la somme de ses lignes est publié avec son écart (`controles.ecarts_totaux_directions`, `controles.ecarts_regions`, `ecarts[]` : `source`/`montant` contre `autre_source`/`autre_montant`), jamais corrigé ; en revanche la production s'arrête si un tableau relu dans un PDF ne retombe plus sur son total général (somme des programmes = crédits de paiement, régions + hors région = total général, catégories = total des licences). Prises de commandes, livraisons et licences ne s'additionnent pas. Seuls les classeurs xlsx de la population écrouée sont lus (juillet 2014 à mars 2019, puis depuis janvier 2023) ; le détail par établissement vaut pour le format publié depuis 2023. Ordres écrits dans `ordre`. Dates par `pipeline/reproductible.py` ; deux productions sur le même entrepôt sont identiques octet pour octet.
 
 ## 3. Module de calcul personnel
 

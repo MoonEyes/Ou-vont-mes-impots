@@ -106,6 +106,8 @@ Correction proposée :
 
 ### I2. Le job qui détient `contents: write` exécute des dépendances non figées sur des données externes
 
+**Statut : corrigé le 17/11/2026.** `data.yml` a désormais deux jobs : `produire` (`contents: read`, `persist-credentials: false`, dépendances installées par `pip install --require-hashes -r requirements.lock`) exécute le pipeline, valide puis livre un correctif de données en artifact ; `publier` (`contents: write`) n'exécute aucun code du pipeline, refuse un correctif qui touche autre chose que `data/raw/`, `data/processed/`, `site/data/`, `docs/datapackage/` (ou contient un lien symbolique), puis committe et pousse. L'issue d'échec est ouverte par un troisième job (`issues: write` seul). Actions épinglées par SHA.
+
 `data.yml` installe `requirements.txt` (bornes larges, sans empreintes : `requirements.txt:1-9`, `pytest>=8`, `pandas>=2`…), télécharge et parse des fichiers publics, puis pousse sur `main` avec le jeton conservé par `actions/checkout` dans `.git/config` (`.github/workflows/data.yml:40`, `:48`, `:93-118`). Une dépendance compromise ou une faille d'analyse de fichier suffit à pousser du code sur `main`, donc sur le site (le workflow Pages republie après lui).
 
 Correction proposée : séparer production et publication.

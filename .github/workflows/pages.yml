@@ -22,7 +22,11 @@ concurrency:
 
 jobs:
   construire:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    # Apres data.yml : aussi quand une etape a echoue (conclusion failure), car data.yml publie alors les etapes
+    # reussies et validees ; main ne contient que des donnees passees par pytest et le contrat --strict.
+    if: >-
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
