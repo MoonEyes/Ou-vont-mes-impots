@@ -148,6 +148,19 @@ FICHIERS = [
     ("local_decisions_annee.schema.json", "local/decisions/*/inconnue*.json", "existant"),
     ("territoires_index.schema.json", "territoires/index.json", "existant"),   # territoires.py (contrat 2.25)
     ("territoires_departement.schema.json", "territoires/[0-9]*.json", "existant"),
+    # numérique de l'État : panorama des grands projets (DINUM), France Relance, DITP, FTAP, FAST (numerique_etat.py)
+    ("numerique_etat_index.schema.json", "numerique_etat/index.json", "existant"),
+    ("numerique_etat_annees.schema.json", "numerique_etat/annees.json", "existant"),
+    ("numerique_etat_panorama_projets.schema.json", "numerique_etat/panorama/projets.json", "existant"),
+    ("numerique_etat_panorama_editions.schema.json", "numerique_etat/panorama/editions.json", "existant"),
+    ("numerique_etat_panorama_ministeres.schema.json", "numerique_etat/panorama/ministeres.json", "existant"),
+    ("numerique_etat_panorama_programmes.schema.json", "numerique_etat/panorama/programmes.json", "existant"),
+    ("numerique_etat_france_relance.schema.json", "numerique_etat/fonds/france_relance.json", "existant"),
+    ("numerique_etat_france_relance_dep.schema.json", "numerique_etat/fonds/france_relance/*.json", "existant"),
+    ("numerique_etat_ditp.schema.json", "numerique_etat/fonds/ditp.json", "existant"),
+    ("numerique_etat_ditp_itn7_dep.schema.json", "numerique_etat/fonds/ditp_itn7/*.json", "existant"),
+    ("numerique_etat_ftap.schema.json", "numerique_etat/fonds/ftap.json", "existant"),
+    ("numerique_etat_fast.schema.json", "numerique_etat/fonds/fast.json", "existant"),
     # aide au développement : APD déclarée, AFD, OCDE, Expertise France, Proparco (pipeline/aide_developpement.py)
     ("aide_developpement_index.schema.json", "aide_developpement/index.json", "existant"),
     ("aide_developpement_apd_declaree.schema.json", "aide_developpement/apd_declaree.json", "existant"),

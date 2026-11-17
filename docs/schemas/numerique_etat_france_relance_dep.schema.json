@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/numerique_etat_france_relance_dep.schema.json",
+  "title": "site/data/numerique_etat/fonds/france_relance/<dep>.json : projets lauréats France Relance (numérique) d'un département",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 4
+    },
+    "source": {
+      "type": "string",
+      "minLength": 10
+    },
+    "unite": {
+      "type": "string",
+      "minLength": 4
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "departement": {
+      "type": "object",
+      "required": [
+        "code",
+        "nom"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^([0-9]{2,3}|2A|2B)$"
+        },
+        "nom": {
+          "type": "string"
+        }
+      }
+    },
+    "total": {
+      "type": "object",
+      "required": [
+        "projets",
+        "montant_publie_eur",
+        "projets_sans_montant_publie"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "projets": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "montant_publie_eur": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "projets_sans_montant_publie": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "par_dispositif": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "dispositif",
+          "libelle_dispositif",
+          "projets",
+          "montant_publie_eur",
+          "projets_sans_montant_publie"
+        ]
+      }
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "regle",
+        "cles"
+      ],
+      "properties": {
+        "regle": {
+          "type": "string"
+        },
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "projets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "propertyNames": {
+          "not": {
+            "pattern": "(?i)pr[eé]nom|courriel|e-?mail|t[eé]l[eé]phone|adresse|contact|dirigeant|responsable"
+          }
+        },
+        "required": [
+          "dispositif",
+          "libelle_dispositif",
+          "ministere",
+          "porteur",
+          "titre",
+          "montant_eur",
+          "date_decision"
+        ],
+        "properties": {
+          "dispositif": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "libelle_dispositif": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ministere": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "porteur": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160
+          },
+          "titre": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 200
+          },
+          "montant_eur": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "date_decision": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "collecte_le",
+    "departement",
+    "total",
+    "par_dispositif",
+    "ordre",
+    "projets"
+  ]
+}

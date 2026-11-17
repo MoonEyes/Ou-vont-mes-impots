@@ -1,0 +1,551 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/numerique_etat_panorama_projets.schema.json",
+  "title": "site/data/numerique_etat/panorama/projets.json : évolution du coût estimé publié et de la durée publiée de chaque grand projet numérique, édition par édition ; rapprochements de noms documentés",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 4
+    },
+    "source": {
+      "type": "string",
+      "minLength": 10
+    },
+    "unite": {
+      "type": "string",
+      "minLength": 4
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "definitions": {
+      "type": "object",
+      "required": [
+        "cout_meur",
+        "duree_ans",
+        "evolution_cout_meur"
+      ]
+    },
+    "methode": {
+      "type": "object",
+      "required": [
+        "regles",
+        "limites"
+      ],
+      "properties": {
+        "regles": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "regle"
+            ]
+          }
+        }
+      }
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "regle",
+        "cles"
+      ],
+      "properties": {
+        "regle": {
+          "type": "string"
+        },
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "editions": {
+      "type": "array",
+      "minItems": 20,
+      "items": {
+        "type": "string",
+        "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])$"
+      },
+      "uniqueItems": true
+    },
+    "projets": {
+      "type": "array",
+      "minItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "nom",
+          "noms_publies",
+          "ministere",
+          "ministere_nom",
+          "interministeriel",
+          "description",
+          "editions",
+          "debuts_publies",
+          "evolution_cout_meur",
+          "evolution_duree_ans",
+          "programmes",
+          "releves"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "nom": {
+            "type": "string",
+            "minLength": 1
+          },
+          "noms_publies": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "ministere": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ministere_nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "interministeriel": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 280
+          },
+          "editions": {
+            "type": "object",
+            "required": [
+              "nombre",
+              "premiere",
+              "derniere",
+              "dans_la_derniere_edition"
+            ],
+            "properties": {
+              "nombre": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "premiere": {
+                "type": "string",
+                "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])$"
+              },
+              "derniere": {
+                "type": "string",
+                "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])$"
+              },
+              "dans_la_derniere_edition": {
+                "type": "boolean"
+              }
+            }
+          },
+          "debuts_publies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evolution_cout_meur": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "premiere",
+              "derniere",
+              "ecart",
+              "ecart_pct",
+              "minimum",
+              "maximum",
+              "valeurs_publiees"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "premiere": {
+                "type": "object",
+                "required": [
+                  "edition",
+                  "valeur"
+                ],
+                "properties": {
+                  "edition": {
+                    "type": "string",
+                    "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])$"
+                  },
+                  "valeur": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                }
+              },
+              "derniere": {
+                "type": "object",
+                "required": [
+                  "edition",
+                  "valeur"
+                ],
+                "properties": {
+                  "edition": {
+                    "type": "string",
+                    "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])$"
+                  },
+                  "valeur": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                }
+              },
+              "ecart": {
+                "type": "number"
+              },
+              "ecart_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "valeurs_publiees": {
+                "type": "integer",
+                "minimum": 2
+              }
+            }
+          },
+          "evolution_duree_ans": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "premiere",
+              "derniere",
+              "ecart",
+              "ecart_pct",
+              "minimum",
+              "maximum",
+              "valeurs_publiees"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "premiere": {
+                "type": "object",
+                "required": [
+                  "edition",
+                  "valeur"
+                ],
+                "properties": {
+                  "edition": {
+                    "type": "string",
+                    "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])$"
+                  },
+                  "valeur": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                }
+              },
+              "derniere": {
+                "type": "object",
+                "required": [
+                  "edition",
+                  "valeur"
+                ],
+                "properties": {
+                  "edition": {
+                    "type": "string",
+                    "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])$"
+                  },
+                  "valeur": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                }
+              },
+              "ecart": {
+                "type": "number"
+              },
+              "ecart_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "valeurs_publiees": {
+                "type": "integer",
+                "minimum": 2
+              }
+            }
+          },
+          "programmes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "programme",
+                "rattachement",
+                "dans_arbre"
+              ],
+              "properties": {
+                "programme": {
+                  "type": "string",
+                  "pattern": "^[0-9]{3}$"
+                },
+                "rattachement": {
+                  "enum": [
+                    "numéro publié",
+                    "intitulé identique à un programme de l'arbre État"
+                  ]
+                },
+                "dans_arbre": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "releves": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "edition",
+                "nom",
+                "ministere",
+                "debut",
+                "duree_ans",
+                "duree_mention",
+                "cout_meur",
+                "cout_mention",
+                "tranche",
+                "phase",
+                "programmes"
+              ],
+              "properties": {
+                "edition": {
+                  "type": "string",
+                  "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])$"
+                },
+                "nom": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "ministere": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "debut": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^(19|20)[0-9]{2}-(0[1-9]|1[0-2])$"
+                },
+                "duree_ans": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "exclusiveMinimum": 0
+                },
+                "duree_mention": {
+                  "enum": [
+                    null,
+                    "en cadrage",
+                    "non communiqué",
+                    "non publié"
+                  ]
+                },
+                "cout_meur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "exclusiveMinimum": 0
+                },
+                "cout_mention": {
+                  "enum": [
+                    null,
+                    "en cadrage",
+                    "non communiqué",
+                    "non publié"
+                  ]
+                },
+                "tranche": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "phase": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "programmes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[0-9]{3}$"
+                  }
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "cout_meur": {
+                        "type": "null"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "cout_mention": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "else": {
+                    "properties": {
+                      "cout_mention": {
+                        "type": "null"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "rapprochements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "regle"
+        ],
+        "properties": {
+          "regle": {
+            "enum": [
+              "R1",
+              "R2"
+            ]
+          },
+          "type": {
+            "enum": [
+              "sigle",
+              "version"
+            ]
+          }
+        },
+        "if": {
+          "properties": {
+            "regle": {
+              "const": "R2"
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "ancien_nom",
+            "nouveau_nom",
+            "type",
+            "jonction"
+          ]
+        },
+        "else": {
+          "required": [
+            "noms",
+            "critere"
+          ]
+        }
+      }
+    },
+    "non_rapproches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "regle",
+          "ancien_nom",
+          "nouveau_nom",
+          "type",
+          "raisons"
+        ],
+        "properties": {
+          "raisons": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "collecte_le",
+    "avertissement",
+    "definitions",
+    "methode",
+    "ordre",
+    "editions",
+    "projets",
+    "rapprochements",
+    "non_rapproches"
+  ]
+}

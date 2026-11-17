@@ -3062,6 +3062,66 @@
   "licence": "Licence Ouverte 2.0"
  },
   {
+   "id": "numerique_panorama_projets",
+   "domaine": "numerique_etat",
+   "type": "datagouv",
+   "dataset": "582e1e2888ee386b7ac65bb4",
+   "format": "xlsx",
+   "toutes": true,
+   "titre": "Panorama des grands projets numeriques de l'Etat (DINUM), toutes les editions (classeurs xlsx) ; lu par pipeline/numerique_etat.py",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Direction interministerielle du numerique"
+  },
+  {
+   "id": "numerique_france_relance_mtfp",
+   "domaine": "numerique_etat",
+   "type": "datagouv_ressources",
+   "ressources": [
+    "6679887d-f970-4050-94b1-a0ada4a3bcff"
+   ],
+   "dataset": "604b41376268c26e7f983c50",
+   "titre": "France Relance, mise a niveau numerique de l'Etat et des territoires (enveloppe MTFP), laureats, derniere edition (octobre 2022)",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "France Relance"
+  },
+  {
+   "id": "numerique_ftap_guichets",
+   "domaine": "numerique_etat",
+   "type": "datagouv_ressources",
+   "ressources": [
+    "e62c2b37-df9c-4c32-9804-3ad6b24089c9"
+   ],
+   "dataset": "67190c3a47790f31885a4486",
+   "titre": "Laureats des guichets numeriques du Fonds pour la transformation de l'action publique (FTAP), au 23/10/2024",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Direction interministerielle du numerique"
+  },
+  {
+   "id": "numerique_fast",
+   "domaine": "numerique_etat",
+   "type": "datagouv_ressources",
+   "ressources": [
+    "1f341729-7c9b-49c7-9cc9-9d1fee5e84be"
+   ],
+   "dataset": "67051ed2df66a794ed0f016a",
+   "titre": "Fonds d'acceleration des startups d'Etat et de territoires (FAST), tableau recapitulatif",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "beta.gouv.fr (DINUM)"
+  },
+  {
+   "id": "numerique_ditp_guichets",
+   "domaine": "numerique_etat",
+   "type": "datagouv_ressources",
+   "ressources": [
+    "f7bf4dd6-99bb-4b1d-b8da-7d7c247f92e3",
+    "17a78b35-94c2-45d4-9faa-b93894d1daa9"
+   ],
+   "dataset": "63ca4ba359801bcd8e64bd98",
+   "titre": "France Relance, laureats des guichets de la DITP (ITN7 deconcentre, FITN8)",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Direction interministerielle de la transformation publique"
+  },
+  {
    "id": "apd_afd_iati",
    "domaine": "aide_developpement",
    "type": "datagouv",

@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/numerique_etat_panorama_programmes.schema.json",
+  "title": "site/data/numerique_etat/panorama/programmes.json : programmes LOLF cités par les projets du panorama, reliés aux noeuds de l'arbre État",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 4
+    },
+    "source": {
+      "type": "string",
+      "minLength": 10
+    },
+    "unite": {
+      "type": "string",
+      "minLength": 4
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 40
+    },
+    "programmes": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "dans_arbre",
+          "noeud",
+          "nom",
+          "fichier",
+          "projets"
+        ],
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "dans_arbre": {
+            "type": "boolean"
+          },
+          "noeud": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "nom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fichier": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^arbre/.+\\.json$"
+          },
+          "projets": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "nom",
+                "rattachement",
+                "derniere_edition_citant_le_programme",
+                "dernier_cout_publie_meur",
+                "programmes_cites_ensemble"
+              ],
+              "properties": {
+                "derniere_edition_citant_le_programme": {
+                  "type": "string",
+                  "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])$"
+                },
+                "dernier_cout_publie_meur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "exclusiveMinimum": 0
+                },
+                "programmes_cites_ensemble": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "if": {
+          "properties": {
+            "dans_arbre": {
+              "const": true
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "noeud": {
+              "type": "string"
+            },
+            "fichier": {
+              "type": "string"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "noeud": {
+              "type": "null"
+            },
+            "fichier": {
+              "type": "null"
+            }
+          }
+        }
+      }
+    },
+    "projets_sans_programme_relie": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "collecte_le",
+    "avertissement",
+    "methode",
+    "programmes",
+    "projets_sans_programme_relie"
+  ]
+}
