@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/sante_etablissements_hospi_diag.schema.json",
+  "title": "site/data/sante_etablissements/hospi_diag.json : historique 2011-2015 des comptes par établissement (Hospi Diag, ANAP) (pipeline/sante_etablissements.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "annees": {
+      "const": [
+        2011,
+        2012,
+        2013,
+        2014,
+        2015
+      ]
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "note": {
+      "type": "string"
+    },
+    "colonnes": {
+      "const": [
+        "finess",
+        "annee",
+        "nom",
+        "siren",
+        "departement",
+        "commune",
+        "categorie",
+        "champ",
+        "referentiel",
+        "produits_eur",
+        "recettes_t2a_eur",
+        "recettes_migac_eur",
+        "charges_eur",
+        "resultat_eur",
+        "encours_dette_eur"
+      ]
+    },
+    "ordre": {
+      "type": "string"
+    },
+    "lignes": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string",
+            "pattern": "^[0-9AB]{9}$"
+          },
+          {
+            "type": "integer",
+            "minimum": 2011,
+            "maximum": 2015
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          },
+          {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "enum": [
+              "D",
+              "O",
+              null
+            ]
+          },
+          {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        ],
+        "minItems": 15,
+        "maxItems": 15
+      }
+    },
+    "non_nommes": {
+      "type": "object",
+      "properties": {
+        "regle": {
+          "type": "string"
+        },
+        "par_annee": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "propertyNames": {
+              "enum": [
+                "absent_de_finess",
+                "personne_physique",
+                "siren_absent",
+                "siren_inconnu_de_sirene",
+                "categorie_juridique_non_verifiee",
+                "titre_de_personne_dans_la_denomination"
+              ]
+            },
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      },
+      "required": [
+        "regle",
+        "par_annee"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "collecte_le",
+    "unite",
+    "annees",
+    "avertissement",
+    "definitions",
+    "note",
+    "colonnes",
+    "ordre",
+    "lignes",
+    "non_nommes"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,576 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/sante_etablissements_index.schema.json",
+  "title": "site/data/sante_etablissements/index.json : périmètre, sources, totaux, nomenclature, liens et écarts (pipeline/sante_etablissements.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "perimetre": {
+      "type": "string"
+    },
+    "regle_personnes": {
+      "type": "string"
+    },
+    "note_prix": {
+      "type": "string"
+    },
+    "domaines": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "hospitalier",
+              "soins_prevention",
+              "autres_sanitaires",
+              "social_medico_social",
+              "formation",
+              "non_classe"
+            ]
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "regle": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "libelle",
+          "regle"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "secteurs": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "public",
+              "prive_non_lucratif",
+              "prive_commercial"
+            ]
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "statuts_juridiques_finess": {
+            "type": "string"
+          },
+          "regle": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "libelle",
+          "statuts_juridiques_finess",
+          "regle"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "libelle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "categorie_agregee": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "libelle_categorie_agregee": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "domaine": {
+            "enum": [
+              "hospitalier",
+              "soins_prevention",
+              "autres_sanitaires",
+              "social_medico_social",
+              "formation",
+              "non_classe"
+            ]
+          },
+          "etablissements": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "code",
+          "libelle",
+          "categorie_agregee",
+          "libelle_categorie_agregee",
+          "domaine",
+          "etablissements"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "statuts_juridiques": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "not": {
+              "const": "70"
+            },
+            "description": "le statut 70 (personne physique) est hors périmètre"
+          },
+          "libelle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "secteur": {
+            "enum": [
+              "public",
+              "prive_non_lucratif",
+              "prive_commercial",
+              null
+            ]
+          },
+          "etablissements": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "code",
+          "libelle",
+          "secteur",
+          "etablissements"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "colonnes": {
+      "const": [
+        "etablissements",
+        "hospitalier",
+        "soins_prevention",
+        "autres_sanitaires",
+        "social_medico_social",
+        "formation",
+        "non_classe",
+        "public",
+        "prive_non_lucratif",
+        "prive_commercial",
+        "ehpad"
+      ]
+    },
+    "colonnes_prix": {
+      "const": [
+        "ehpad_avec_prix",
+        "prix_hebergement_chambre_seule_median_eur",
+        "prix_hebergement_chambre_seule_aide_sociale_median_eur",
+        "tarif_dependance_gir_1_2_median_eur",
+        "tarif_dependance_gir_3_4_median_eur",
+        "tarif_dependance_gir_5_6_median_eur"
+      ]
+    },
+    "annees_ccam": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "annees_prix": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "totaux": {
+      "type": "object",
+      "properties": {
+        "comptes": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 11,
+          "maxItems": 11
+        },
+        "communes_avec_etablissement": {
+          "type": "integer"
+        },
+        "departements": {
+          "type": "integer"
+        },
+        "actes_ccam": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "etablissements_avec_actes_ccam": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "prix_ehpad": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "integer",
+                "minimum": 0
+              }
+            ],
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "minItems": 6,
+            "maxItems": 6
+          }
+        },
+        "etablissements_nommes": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "comptes",
+        "communes_avec_etablissement",
+        "departements",
+        "actes_ccam",
+        "etablissements_avec_actes_ccam",
+        "prix_ehpad",
+        "etablissements_nommes"
+      ],
+      "additionalProperties": false
+    },
+    "confidentialite": {
+      "type": "object",
+      "properties": {
+        "motifs": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "absent_de_finess",
+              "personne_physique",
+              "siren_absent",
+              "siren_inconnu_de_sirene",
+              "categorie_juridique_non_verifiee",
+              "titre_de_personne_dans_la_denomination"
+            ]
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "non_nommes": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "absent_de_finess",
+              "personne_physique",
+              "siren_absent",
+              "siren_inconnu_de_sirene",
+              "categorie_juridique_non_verifiee",
+              "titre_de_personne_dans_la_denomination"
+            ]
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "hors_perimetre": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "required": [
+        "motifs",
+        "non_nommes",
+        "hors_perimetre"
+      ],
+      "additionalProperties": false
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "objet": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "nombre": {
+            "type": "integer"
+          },
+          "autre_source": {
+            "type": "string"
+          },
+          "autre_date": {
+            "type": "string"
+          },
+          "autre_nombre": {
+            "type": "integer"
+          },
+          "ecart": {
+            "type": "integer"
+          },
+          "lecture_ecart": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "objet",
+          "source",
+          "nombre",
+          "autre_source",
+          "autre_nombre",
+          "ecart",
+          "lecture_ecart"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "vue": {
+            "enum": [
+              "secu_arbre",
+              "subventions"
+            ]
+          },
+          "fichier": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "libelle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "md": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "millesime": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "domaine": {
+            "enum": [
+              "hospitalier",
+              "soins_prevention",
+              "autres_sanitaires",
+              "social_medico_social",
+              "formation",
+              "non_classe"
+            ]
+          }
+        },
+        "required": [
+          "vue",
+          "fichier",
+          "libelle",
+          "domaine"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "regle_liens": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "titre": {
+            "type": "string"
+          },
+          "producteur": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string"
+          },
+          "millesime": {
+            "type": "string"
+          },
+          "mention_obligatoire": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "titre",
+          "producteur",
+          "url",
+          "licence",
+          "verdict",
+          "millesime"
+        ],
+        "additionalProperties": false
+      },
+      "minProperties": 6
+    },
+    "fichiers": {
+      "type": "object",
+      "properties": {
+        "limites": {
+          "type": "string"
+        },
+        "departements": {
+          "type": "string"
+        },
+        "departement": {
+          "type": "string"
+        },
+        "hospi_diag": {
+          "type": "string"
+        },
+        "finances_agregees": {
+          "type": "string"
+        },
+        "plus_gros_fichier_octets": {
+          "type": "integer",
+          "maximum": 5000000
+        }
+      },
+      "required": [
+        "limites",
+        "departements",
+        "departement",
+        "hospi_diag",
+        "finances_agregees",
+        "plus_gros_fichier_octets"
+      ],
+      "additionalProperties": false
+    },
+    "recherche_publique": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "verdict": {
+          "type": "string"
+        },
+        "fichier": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "date",
+        "verdict",
+        "fichier"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "collecte_le",
+    "unite",
+    "avertissement",
+    "perimetre",
+    "regle_personnes",
+    "note_prix",
+    "domaines",
+    "secteurs",
+    "categories",
+    "statuts_juridiques",
+    "colonnes",
+    "colonnes_prix",
+    "annees_ccam",
+    "annees_prix",
+    "totaux",
+    "confidentialite",
+    "ecarts",
+    "liens",
+    "regle_liens",
+    "sources",
+    "fichiers",
+    "recherche_publique"
+  ],
+  "additionalProperties": false
+}

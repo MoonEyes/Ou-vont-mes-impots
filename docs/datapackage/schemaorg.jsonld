@@ -34,7 +34,7 @@
   "name": "Projet citoyen Où vont mes impôts",
   "url": "https://github.com/MoonEyes/Ou-vont-mes-impots"
  },
- "version": "1.5.0",
+ "version": "1.6.0",
  "dateModified": "2026-11-17T20:44:01Z",
  "temporalCoverage": "1991/2027",
  "spatialCoverage": {
@@ -44,6 +44,8 @@
  "isBasedOn": [
   "https://api.insee.fr/melodi/file/DD_CNA_APU/DD_CNA_APU_CSV_FR",
   "https://api.insee.fr/melodi/file/DS_ERFS_NON_RETROPOLE/DS_ERFS_NON_RETROPOLE_CSV_FR",
+  "https://data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public/",
+  "https://data-essentiel.atih.sante.fr/explore/dataset/open-ccam-etablissements/",
   "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214400301_subventions_liste/exports/parquet",
   "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214400525_subventions-liste/exports/parquet",
   "https://data.agglo-carene.fr/api/explore/v2.1/catalog/datasets/214401036_subventions-attribuees-aux-associations-par-la-ville-de-montoir-de-bre/exports/parquet",
@@ -86,6 +88,8 @@
   "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2025/",
   "https://data.centrevaldeloire.fr/explore/dataset/conventions-de-subventions-attribuees-par-la-region-centre-val-de-loire-2026/",
   "https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/",
+  "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/balances_des_comptes_etat/attachments/plan_comptable_de_letatxlsx",
+  "https://data.economie.gouv.fr/explore/dataset/balances_des_comptes_etat/",
   "https://data.economie.gouv.fr/explore/dataset/budgetvert_plf2024_opendata_vf/",
   "https://data.economie.gouv.fr/explore/dataset/etpt-par-ministere-mission-programme-pour-le-bg-et-les-ba-lfi-2023/",
   "https://data.economie.gouv.fr/explore/dataset/execution-2010-du-budget-general-en-cp/",
@@ -197,11 +201,13 @@
   "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-associations-2025-nantes-metropole/",
   "https://data.nantesmetropole.fr/explore/dataset/244400404_subventions-versees-aux-associations-2022-nantes-metropole/",
   "https://data.ofgl.fr/explore/dataset/dotations-departements/",
+  "https://data.ofgl.fr/explore/dataset/ofgl-base-ccas-cias/",
   "https://data.ofgl.fr/explore/dataset/ofgl-base-departements-consolidee/",
   "https://data.ofgl.fr/explore/dataset/ofgl-base-departements-fonctionnelle/",
   "https://data.ofgl.fr/explore/dataset/ofgl-base-ei/",
   "https://data.ofgl.fr/explore/dataset/ofgl-base-gfp-consolidee/",
   "https://data.ofgl.fr/explore/dataset/ofgl-base-regions-consolidee/",
+  "https://data.ofgl.fr/explore/dataset/ofgl-base-syndicats/",
   "https://data.orleans-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-aux-associations-par-la-ville-de-fleury-les-aubrais-en-2019/exports/parquet",
   "https://data.paysdelaloire.fr/explore/dataset/234400034_001-001_rapports-deliberations-et-proces-verbaux-rpdl-2019/",
   "https://data.paysdelaloire.fr/explore/dataset/subventions-de-la-region-des-pays-de-la-loire/",
@@ -235,13 +241,7 @@
   "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2019-ville-de-toulouse/exports/parquet",
   "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2020-toulouse-metropole/exports/parquet",
   "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2020-ville-de-toulouse/exports/parquet",
-  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2021-toulouse-metropole/exports/parquet",
-  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2021-ville-de-toulouse/exports/parquet",
-  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2022-ville-de-toulouse/exports/parquet",
-  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-ville-de-toulouse-2023/exports/parquet",
-  "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_exp/default/table",
-  "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_main/default/table",
-  "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_taxag/default/table"
+  "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/subventions-versees-a-des-organismes-2021-toulouse-metropole/exports/parquet"
  ],
  "distribution": [
   {
@@ -942,6 +942,42 @@
   },
   {
    "@type": "DataDownload",
+   "name": "périmètre, sources, totaux, nomenclature, liens et écarts (pipeline/sante_etablissements.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "ce qui n'est pas ouvert, ce qui existe à la place, recherches faites (pipeline/sante_etablissements.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/limites.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "établissements, actes CCAM publiés et prix médians des EHPAD par département (pipeline/sante_etablissements.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/departements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "comptes par commune et établissements nommés (personnes morales seulement) d'un département (pipeline/sante_etablissements.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/departements/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "historique 2011-2015 des comptes par établissement (Hospi Diag, ANAP) (pipeline/sante_etablissements.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/hospi_diag.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "comptes agrégés par secteur, catégorie et activité des établissements publics et privés à but non lucratif (ATIH) (pipeline/sante_etablissements.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/finances_agregees.json"
+  },
+  {
+   "@type": "DataDownload",
    "name": "marchés publics de tous les acheteurs (DECP consolidées), règles de qualité et lignes écartées, totaux, repère du recensement OECP, centrales d'achat, doublons entre sources, limites (pipeline/marches.py)",
    "encodingFormat": "application/json",
    "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/index.json"
@@ -1161,6 +1197,138 @@
    "name": "plafonds légaux des indemnités de fonction brutes mensuelles des élus locaux, par fonction et strate de population (DGCL), aucun élu nommé",
    "encodingFormat": "application/json",
    "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonction_publique/indemnites_elus.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "collectivités d'outre-mer couvertes, statut de publication de chaque bloc, parité du franc CFP, écarts entre sources, sources (pipeline/outremer.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/outremer/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "une collectivité d'outre-mer (975, 977, 978, 986, 987, 988) : communes, dotations, crédits de l'État, statut de chaque bloc (pipeline/outremer.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/outremer/975.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "Nouvelle-Calédonie, budgets de la collectivité par chapitre, établissements publics, rendement des impôts, en francs CFP et en euros (pipeline/outremer.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/outremer/988_budget.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "blocs par commune, totaux, flux croisés, sources (pipeline/local_satellites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local_satellites/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "syndicats concernant chaque commune (pipeline/local_satellites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local_satellites/syndicats/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "CCAS de chaque commune et CIAS de son intercommunalité (pipeline/local_satellites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local_satellites/ccas/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "AOM et taux de versement mobilité par commune, base sous ODbL (pipeline/local_satellites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local_satellites/mobilite/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "services d'eau et d'assainissement par collectivité organisatrice (pipeline/local_satellites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local_satellites/eau/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "notions, règles, vues par producteur, fichiers, sources, recherche publique",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "contrôle fiscal de la DGFiP, montants notifiés et encaissés",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_fiscal.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "contrôles des Urssaf, redressements et restitutions, travail dissimulé",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_urssaf.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "taux d'impayés mensuels des cotisations (Urssaf), métropole et régions",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/impayes.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "admissions en non-valeur et décisions gracieuses dans les comptes de l'État",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/apurements_etat.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "estimations publiées, constats sur l'absence d'estimation, montants détectés et recouvrés par la sécurité sociale",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/estimations.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "fichiers, repères, sources, sources inaccessibles, limites, recherche publique",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/justice_defense/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "capacité, personnes détenues et densité par établissement ou quartier (agrégats, aucun individu), série nationale mensuelle, montant calculé par le site",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/justice_defense/prisons.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "budget de la justice par programme, frais de justice, aide juridictionnelle (Les chiffres clés de la Justice, édition 2026)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/justice_defense/budget_justice.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "juridictions (type, nom, commune d'implantation) et juridiction compétente par commune ; colonnes reprises seulement si cohérentes à la source ; aucune adresse",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/justice_defense/ressorts.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "prises de commandes, livraisons et licences d'exportation d'armement par pays, licences par catégorie (Rapport au Parlement 2025, annexes 5, 6, 8 et 9)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/justice_defense/armement.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/regimes.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/etat.json"
   },
   {
    "@type": "DataDownload",

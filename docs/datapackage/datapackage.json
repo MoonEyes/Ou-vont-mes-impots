@@ -5,7 +5,7 @@
  "title": "Où vont mes impôts : données publiques retraitées sur les dépenses et recettes publiques",
  "description": "Budget de l'État, Sécurité sociale, collectivités, prélèvements, dette, bénéficiaires nommés (personnes morales), décisions et contrôle, retraités à partir de jeux publics ouverts (data.economie.gouv.fr, data.gouv.fr, Eurostat, Insee, DGFiP, OFGL, Assemblée nationale, Sénat, DILA, CNCCFP, HATVP, Cour des comptes). Site citoyen, non officiel. Chaque fichier JSON porte son millésime et sa source ; un montant écarté est publié avec sa raison. Précautions de lecture et exemples : docs/REUTILISER.md.",
  "homepage": "https://mooneyes.github.io/Ou-vont-mes-impots/",
- "version": "1.5.0",
+ "version": "1.6.0",
  "created": "2026-11-17T20:44:01Z",
  "keywords": [
   "budget de l'État",
@@ -57,7 +57,19 @@
    "licence": "Licence Ouverte 2.0"
   },
   {
+   "title": "ANAP",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "title": "ATIH",
+   "licence": "ODbL 1.0 (partage à l'identique)"
+  },
+  {
    "title": "Agence de l'eau Artois-Picardie",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "title": "Agence du numerique en sante",
    "licence": "Licence Ouverte 2.0"
   },
   {
@@ -75,6 +87,10 @@
   {
    "title": "CD28",
    "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "title": "CNSA",
+   "licence": "licence non précisée par l'éditeur"
   },
   {
    "title": "COMMUNE DE COMMUNAY",
@@ -325,6 +341,10 @@
    "licence": "Licence Ouverte 2.0"
   },
   {
+   "title": "Ministere charge de la sante",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
    "title": "Ministère des Solidarités et de la Santé",
    "licence": "Licence Ouverte 2.0"
   },
@@ -505,7 +525,15 @@
    "licence": "Licence Ouverte 2.0"
   },
   {
+   "title": "atih",
+   "licence": "ODbL 1.0 (partage à l'identique)"
+  },
+  {
    "title": "cdc",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "title": "collectivites",
    "licence": "Licence Ouverte 2.0"
   },
   {
@@ -535,6 +563,10 @@
   {
    "title": "drees",
    "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "title": "geo.api.gouv.fr",
+   "licence": "ODbL 1.0 (partage à l'identique)"
   },
   {
    "title": "geobretagne.fr",
@@ -569,12 +601,24 @@
    "licence": "ODbL 1.0 (partage à l'identique) ; Licence Ouverte 2.0 ; licence non précisée par l'éditeur"
   },
   {
+   "title": "taxation-customs.ec.europa.eu",
+   "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)"
+  },
+  {
    "title": "toulouse_metropole",
    "licence": "Licence Ouverte 2.0"
   },
   {
    "title": "urssaf",
    "licence": "ODbL 1.0 (partage à l'identique)"
+  },
+  {
+   "title": "www.assemblee-nationale.fr",
+   "licence": "licence non précisée par l'éditeur"
+  },
+  {
+   "title": "www.banatic.interieur.gouv.fr",
+   "licence": "Licence Ouverte 2.0"
   },
   {
    "title": "www.hatvp.fr",
@@ -5571,6 +5615,390 @@
    ]
   },
   {
+   "name": "sante-etablissements-index",
+   "title": "périmètre, sources, totaux, nomenclature, liens et écarts (pipeline/sante_etablissements.py)",
+   "description": "site/data/sante_etablissements/index.json : périmètre, sources, totaux, nomenclature, liens et écarts (pipeline/sante_etablissements.py). Fichier site/data/sante_etablissements/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/sante_etablissements_index.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (ATIH, atih) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "ANAP : ANAP, Hospi Diag, donnees 2011 a 2015 et fiches techniques (historique, jeu non mis a jour depuis 2017)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151835/hospidiag_opendata_2011.xlsx"
+    },
+    {
+     "title": "ATIH : ATIH, Open CCAM par etablissement (pieces jointes csv par annee et documentation)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/open-ccam-etablissements/"
+    },
+    {
+     "title": "Agence du numerique en sante : FINESS - Structures, flux de nouvelle generation (Agence du numerique en sante), extraction mensuelle d'octobre 2026, json.gz 51 Mo",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/finess-structures-1/20261101-032138/finess-structures-mensuel-202610.json.gz"
+    },
+    {
+     "title": "CNSA : CNSA, prix hebergement et tarifs dependance des EHPAD, donnees brutes annuelles 2023 a 2025 et notice",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20260213-111733/cnsa-documentation-donnees-ehpad-brutes-v26.pdf"
+    },
+    {
+     "title": "Ministere charge de la sante (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "atih : Finances des etablissements de sante publics et EBNL (ATIH)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public/"
+    }
+   ],
+   "motif": "site/data/sante_etablissements/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "sante_etablissements",
+   "millesimes": [
+    "FINESS au 2026-11-01 ; Open CCAM 2021-2025 ; prix des EHPAD au 31 décembre 2023 à 2025"
+   ],
+   "sources_declarees": [
+    "Agence du numérique en santé (FINESS - Structures) ; ATIH (source OpenCCAM, https://www.scansante.fr/) ; CNSA (prix des EHPAD, données brutes)"
+   ]
+  },
+  {
+   "name": "sante-etablissements-limites",
+   "title": "ce qui n'est pas ouvert, ce qui existe à la place, recherches faites (pipeline/sante_etablissements.py)",
+   "description": "site/data/sante_etablissements/limites.json : ce qui n'est pas ouvert, ce qui existe à la place, recherches faites (pipeline/sante_etablissements.py). Fichier site/data/sante_etablissements/limites.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/limites.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/sante_etablissements_limites.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (ATIH, atih) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "ANAP : ANAP, Hospi Diag, donnees 2011 a 2015 et fiches techniques (historique, jeu non mis a jour depuis 2017)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151835/hospidiag_opendata_2011.xlsx"
+    },
+    {
+     "title": "ATIH : ATIH, Open CCAM par etablissement (pieces jointes csv par annee et documentation)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/open-ccam-etablissements/"
+    },
+    {
+     "title": "Agence du numerique en sante : FINESS - Structures, flux de nouvelle generation (Agence du numerique en sante), extraction mensuelle d'octobre 2026, json.gz 51 Mo",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/finess-structures-1/20261101-032138/finess-structures-mensuel-202610.json.gz"
+    },
+    {
+     "title": "CNSA : CNSA, prix hebergement et tarifs dependance des EHPAD, donnees brutes annuelles 2023 a 2025 et notice",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20260213-111733/cnsa-documentation-donnees-ehpad-brutes-v26.pdf"
+    },
+    {
+     "title": "Ministere charge de la sante (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "atih : Finances des etablissements de sante publics et EBNL (ATIH)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public/"
+    }
+   ],
+   "motif": "site/data/sante_etablissements/limites.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "sante_etablissements",
+   "millesimes": [
+    "État des publications au 17/11/2026"
+   ],
+   "sources_declarees": [
+    "Recherche du projet sur data.gouv.fr, data-essentiel.atih.sante.fr et GitHub (détail dans `recherche_publique`)"
+   ]
+  },
+  {
+   "name": "sante-etablissements-departements",
+   "title": "établissements, actes CCAM publiés et prix médians des EHPAD par département (pipeline/sante_etablissements.py)",
+   "description": "site/data/sante_etablissements/departements.json : établissements, actes CCAM publiés et prix médians des EHPAD par département (pipeline/sante_etablissements.py). Fichier site/data/sante_etablissements/departements.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/departements.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/sante_etablissements_departements.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (ATIH, atih) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "ANAP : ANAP, Hospi Diag, donnees 2011 a 2015 et fiches techniques (historique, jeu non mis a jour depuis 2017)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151835/hospidiag_opendata_2011.xlsx"
+    },
+    {
+     "title": "ATIH : ATIH, Open CCAM par etablissement (pieces jointes csv par annee et documentation)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/open-ccam-etablissements/"
+    },
+    {
+     "title": "Agence du numerique en sante : FINESS - Structures, flux de nouvelle generation (Agence du numerique en sante), extraction mensuelle d'octobre 2026, json.gz 51 Mo",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/finess-structures-1/20261101-032138/finess-structures-mensuel-202610.json.gz"
+    },
+    {
+     "title": "CNSA : CNSA, prix hebergement et tarifs dependance des EHPAD, donnees brutes annuelles 2023 a 2025 et notice",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20260213-111733/cnsa-documentation-donnees-ehpad-brutes-v26.pdf"
+    },
+    {
+     "title": "Ministere charge de la sante (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "atih : Finances des etablissements de sante publics et EBNL (ATIH)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public/"
+    }
+   ],
+   "motif": "site/data/sante_etablissements/departements.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "sante_etablissements",
+   "millesimes": [
+    "FINESS au 2026-11-01 ; Open CCAM 2021-2025 ; prix des EHPAD au 31 décembre 2023 à 2025"
+   ],
+   "sources_declarees": [
+    "Agence du numérique en santé (FINESS - Structures) ; ATIH (source OpenCCAM, https://www.scansante.fr/) ; CNSA (prix des EHPAD, données brutes)"
+   ]
+  },
+  {
+   "name": "sante-etablissements-departements-x",
+   "title": "comptes par commune et établissements nommés (personnes morales seulement) d'un département (pipeline/sante_etablissements.py)",
+   "description": "site/data/sante_etablissements/departements/<dep>.json : comptes par commune et établissements nommés (personnes morales seulement) d'un département (pipeline/sante_etablissements.py). Famille de 103 fichiers (motif site/data/sante_etablissements/departements/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/departements/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/sante_etablissements_departement.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (ATIH, atih) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "ANAP : ANAP, Hospi Diag, donnees 2011 a 2015 et fiches techniques (historique, jeu non mis a jour depuis 2017)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151835/hospidiag_opendata_2011.xlsx"
+    },
+    {
+     "title": "ATIH : ATIH, Open CCAM par etablissement (pieces jointes csv par annee et documentation)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/open-ccam-etablissements/"
+    },
+    {
+     "title": "Agence du numerique en sante : FINESS - Structures, flux de nouvelle generation (Agence du numerique en sante), extraction mensuelle d'octobre 2026, json.gz 51 Mo",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/finess-structures-1/20261101-032138/finess-structures-mensuel-202610.json.gz"
+    },
+    {
+     "title": "CNSA : CNSA, prix hebergement et tarifs dependance des EHPAD, donnees brutes annuelles 2023 a 2025 et notice",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20260213-111733/cnsa-documentation-donnees-ehpad-brutes-v26.pdf"
+    },
+    {
+     "title": "Ministere charge de la sante (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "atih : Finances des etablissements de sante publics et EBNL (ATIH)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public/"
+    }
+   ],
+   "motif": "site/data/sante_etablissements/departements/*.json",
+   "nombre_fichiers": 103,
+   "etape_pipeline": "sante_etablissements",
+   "millesimes": [
+    "FINESS au 2026-11-01 ; Open CCAM 2021-2025 ; prix des EHPAD au 31 décembre 2023 à 2025"
+   ],
+   "sources_declarees": [
+    "Agence du numérique en santé (FINESS - Structures) ; ATIH (source OpenCCAM, https://www.scansante.fr/) ; CNSA (prix des EHPAD, données brutes)"
+   ]
+  },
+  {
+   "name": "sante-etablissements-hospi-diag",
+   "title": "historique 2011-2015 des comptes par établissement (Hospi Diag, ANAP) (pipeline/sante_etablissements.py)",
+   "description": "site/data/sante_etablissements/hospi_diag.json : historique 2011-2015 des comptes par établissement (Hospi Diag, ANAP) (pipeline/sante_etablissements.py). Fichier site/data/sante_etablissements/hospi_diag.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/hospi_diag.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/sante_etablissements_hospi_diag.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (ATIH, atih) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "ANAP : ANAP, Hospi Diag, donnees 2011 a 2015 et fiches techniques (historique, jeu non mis a jour depuis 2017)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151835/hospidiag_opendata_2011.xlsx"
+    },
+    {
+     "title": "ATIH : ATIH, Open CCAM par etablissement (pieces jointes csv par annee et documentation)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/open-ccam-etablissements/"
+    },
+    {
+     "title": "Agence du numerique en sante : FINESS - Structures, flux de nouvelle generation (Agence du numerique en sante), extraction mensuelle d'octobre 2026, json.gz 51 Mo",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/finess-structures-1/20261101-032138/finess-structures-mensuel-202610.json.gz"
+    },
+    {
+     "title": "CNSA : CNSA, prix hebergement et tarifs dependance des EHPAD, donnees brutes annuelles 2023 a 2025 et notice",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20260213-111733/cnsa-documentation-donnees-ehpad-brutes-v26.pdf"
+    },
+    {
+     "title": "Ministere charge de la sante (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "atih : Finances des etablissements de sante publics et EBNL (ATIH)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public/"
+    }
+   ],
+   "motif": "site/data/sante_etablissements/hospi_diag.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "sante_etablissements",
+   "millesimes": [
+    "Exercices 2011 à 2015 (historique, jeu non mis à jour depuis 2017)"
+   ],
+   "sources_declarees": [
+    "ANAP, Hospi Diag (data.gouv.fr/datasets/hospi-diag), comptes financiers et liasses fiscales"
+   ]
+  },
+  {
+   "name": "sante-etablissements-finances-agregees",
+   "title": "comptes agrégés par secteur, catégorie et activité des établissements publics et privés à but non lucratif (ATIH) (pipeline/sante_etablissements.py)",
+   "description": "site/data/sante_etablissements/finances_agregees.json : comptes agrégés par secteur, catégorie et activité des établissements publics et privés à but non lucratif (ATIH) (pipeline/sante_etablissements.py). Fichier site/data/sante_etablissements/finances_agregees.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/finances_agregees.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/sante_etablissements_finances.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (ATIH, atih) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "ANAP : ANAP, Hospi Diag, donnees 2011 a 2015 et fiches techniques (historique, jeu non mis a jour depuis 2017)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151835/hospidiag_opendata_2011.xlsx"
+    },
+    {
+     "title": "ATIH : ATIH, Open CCAM par etablissement (pieces jointes csv par annee et documentation)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/open-ccam-etablissements/"
+    },
+    {
+     "title": "Agence du numerique en sante : FINESS - Structures, flux de nouvelle generation (Agence du numerique en sante), extraction mensuelle d'octobre 2026, json.gz 51 Mo",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/finess-structures-1/20261101-032138/finess-structures-mensuel-202610.json.gz"
+    },
+    {
+     "title": "CNSA : CNSA, prix hebergement et tarifs dependance des EHPAD, donnees brutes annuelles 2023 a 2025 et notice",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20260213-111733/cnsa-documentation-donnees-ehpad-brutes-v26.pdf"
+    },
+    {
+     "title": "Ministere charge de la sante (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "atih : Finances des etablissements de sante publics et EBNL (ATIH)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public/"
+    }
+   ],
+   "motif": "site/data/sante_etablissements/finances_agregees.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "sante_etablissements",
+   "millesimes": [
+    "Exercices 2020 à 2024"
+   ],
+   "sources_declarees": [
+    "ATIH, ISF - Données financières des établissements publics ou à but non lucratif (data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public), ODbL 1.0"
+   ]
+  },
+  {
    "name": "marches-index",
    "title": "marchés publics de tous les acheteurs (DECP consolidées), règles de qualité et lignes écartées, totaux, repère du recensement OECP, centrales d'achat, doublons entre sources, limites (pipeline/marches.py)",
    "description": "site/data/marches/index.json : marchés publics de tous les acheteurs (DECP consolidées), règles de qualité et lignes écartées, totaux, repère du recensement OECP, centrales d'achat, doublons entre sources, limites (pipeline/marches.py). Fichier site/data/marches/index.json.",
@@ -6840,6 +7268,1019 @@
    ],
    "sources_declarees": [
     "DGCL, « Indemnités de fonction brutes mensuelles des élus locaux » (plafonds légaux), collectivites-locales.gouv.fr : https://www.collectivites-locales.gouv.fr/files/files/1.%20Connaitre%20les%20acteurs%20et%20les%20institutions/3.%20Elus%20locaux/Montants%20plafonds%20indemnit%C3%A9s%20%C3%A9lus%20locaux%20Autom%200723-1-2.pdf"
+   ]
+  },
+  {
+   "name": "outremer-index",
+   "title": "collectivités d'outre-mer couvertes, statut de publication de chaque bloc, parité du franc CFP, écarts entre sources, sources (pipeline/outremer.py)",
+   "description": "site/data/outremer/index.json : collectivités d'outre-mer couvertes, statut de publication de chaque bloc, parité du franc CFP, écarts entre sources, sources (pipeline/outremer.py). Fichier site/data/outremer/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/outremer/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/outremer_index.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (geo.api.gouv.fr) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "geo.api.gouv.fr : Collectivités d'outre-mer (975, 977, 978, 986, 987, 988) : communes (geo.api.gouv.fr), dotations de l'État (OFGL, DGCL), budget de la Nouvelle-Calédonie, de ses établissements publics et rendement des impôts (data.gouv.nc, DBAF, en francs CFP), financement de l'État outre-mer 2018-2020 (Cour des comptes), document de politique transversale Outre-mer du PLF 2026 (lu par pipeline/outremer.py)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://geo.api.gouv.fr/communes?codeDepartement=975&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion"
+    }
+   ],
+   "motif": "site/data/outremer/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "outremer",
+   "millesimes": [
+    "sources collectées le 2026-11-17 ; dotations 2018 à 2026 ; crédits de l'État 2018 à 2020 et 2024 à 2026 ; budget de la Nouvelle-Calédonie 2012 à 2026"
+   ],
+   "sources_declarees": [
+    "pipeline/outremer.py (voir `sources` et chaque fichier)"
+   ]
+  },
+  {
+   "name": "outremer-9-78-0-9",
+   "title": "une collectivité d'outre-mer (975, 977, 978, 986, 987, 988) : communes, dotations, crédits de l'État, statut de chaque bloc (pipeline/outremer.py)",
+   "description": "site/data/outremer/<code>.json : une collectivité d'outre-mer (975, 977, 978, 986, 987, 988) : communes, dotations, crédits de l'État, statut de chaque bloc (pipeline/outremer.py). Famille de 6 fichiers (motif site/data/outremer/9[78][0-9].json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/outremer/975.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/outremer_territoire.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (geo.api.gouv.fr) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "geo.api.gouv.fr : Collectivités d'outre-mer (975, 977, 978, 986, 987, 988) : communes (geo.api.gouv.fr), dotations de l'État (OFGL, DGCL), budget de la Nouvelle-Calédonie, de ses établissements publics et rendement des impôts (data.gouv.nc, DBAF, en francs CFP), financement de l'État outre-mer 2018-2020 (Cour des comptes), document de politique transversale Outre-mer du PLF 2026 (lu par pipeline/outremer.py)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://geo.api.gouv.fr/communes?codeDepartement=975&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion"
+    }
+   ],
+   "motif": "site/data/outremer/9[78][0-9].json",
+   "nombre_fichiers": 6,
+   "etape_pipeline": "outremer",
+   "millesimes": [
+    "communes : code officiel géographique en vigueur, sources collectées le 2026-11-17 ; crédits de l'État 2018 à 2020 (Cour des comptes) ; exécution 2024, LFI 2025 et PLF 2026 (document de politique transversale)",
+    "communes : code officiel géographique en vigueur, sources collectées le 2026-11-17 ; dotations notifiées 2018 à 2026 (collectivité) ; crédits de l'État 2018 à 2020 (Cour des comptes) ; exécution 2024, LFI 2025 et PLF 2026 (document de politique transversale)",
+    "communes : code officiel géographique en vigueur, sources collectées le 2026-11-17 ; dotations notifiées 2018 à 2026 (communes) ; crédits de l'État 2018 à 2020 (Cour des comptes) ; exécution 2024, LFI 2025 et PLF 2026 (document de politique transversale)",
+    "communes : code officiel géographique en vigueur, sources collectées le 2026-11-17 ; dotations notifiées 2018 à 2026 (communes) ; crédits de l'État 2018 à 2020 (Cour des comptes) ; exécution 2024, LFI 2025 et PLF 2026 (document de politique transversale) ; budget de la Nouvelle-Calédonie 2012 à 2026",
+    "communes : code officiel géographique en vigueur, sources collectées le 2026-11-17 ; dotations notifiées 2018 à 2026 (communes) ; dotations notifiées 2018 à 2026 (collectivité) ; crédits de l'État 2018 à 2020 (Cour des comptes) ; exécution 2024, LFI 2025 et PLF 2026 (document de politique transversale)"
+   ],
+   "sources_declarees": [
+    "Cour des comptes, « Les financements de l'État en outre-mer » (mai 2022), données du rapport : tableau « Territoires » (lois de finances initiales et exécution 2018 à 2020, par territoire) ; Annexe au projet de loi de finances pour 2026, document de politique transversale « Outre-mer » : tableaux « Effort budgétaire et financier de l'État » par territoire, mission et programme ; API Découpage administratif (geo.api.gouv.fr) : communes des six territoires, population municipale",
+    "Cour des comptes, « Les financements de l'État en outre-mer » (mai 2022), données du rapport : tableau « Territoires » (lois de finances initiales et exécution 2018 à 2020, par territoire) ; Annexe au projet de loi de finances pour 2026, document de politique transversale « Outre-mer » : tableaux « Effort budgétaire et financier de l'État » par territoire, mission et programme ; API Découpage administratif (geo.api.gouv.fr) : communes des six territoires, population municipale ; Gouvernement de la Nouvelle-Calédonie, « Situation budgétaire de la Nouvelle-Calédonie depuis 2012 » : budget total et réalisé par budget, sens, section, chapitre et article, en francs CFP ; Gouvernement de la Nouvelle-Calédonie, « Rendement des impôts depuis 2010 » : montant des titres émis par impôt et par année, en francs CFP ; OFGL, « Dotations des communes » (dotations-communes) : montants notifiés par la DGCL, par commune",
+    "Cour des comptes, « Les financements de l'État en outre-mer » (mai 2022), données du rapport : tableau « Territoires » (lois de finances initiales et exécution 2018 à 2020, par territoire) ; Annexe au projet de loi de finances pour 2026, document de politique transversale « Outre-mer » : tableaux « Effort budgétaire et financier de l'État » par territoire, mission et programme ; API Découpage administratif (geo.api.gouv.fr) : communes des six territoires, population municipale ; OFGL, « Dotations des communes » (dotations-communes) : montants notifiés par la DGCL, par commune",
+    "Cour des comptes, « Les financements de l'État en outre-mer » (mai 2022), données du rapport : tableau « Territoires » (lois de finances initiales et exécution 2018 à 2020, par territoire) ; Annexe au projet de loi de finances pour 2026, document de politique transversale « Outre-mer » : tableaux « Effort budgétaire et financier de l'État » par territoire, mission et programme ; API Découpage administratif (geo.api.gouv.fr) : communes des six territoires, population municipale ; OFGL, « Dotations des communes » (dotations-communes) : montants notifiés par la DGCL, par commune ; OFGL, « Dotations des groupements à fiscalité propre » (dotations-gfp) : montants notifiés par la DGCL aux communautés de communes de la Polynésie française",
+    "Cour des comptes, « Les financements de l'État en outre-mer » (mai 2022), données du rapport : tableau « Territoires » (lois de finances initiales et exécution 2018 à 2020, par territoire) ; Annexe au projet de loi de finances pour 2026, document de politique transversale « Outre-mer » : tableaux « Effort budgétaire et financier de l'État » par territoire, mission et programme ; API Découpage administratif (geo.api.gouv.fr) : communes des six territoires, population municipale ; OFGL, « Dotations des départements » (dotations-departements) : montants notifiés par la DGCL aux collectivités de Saint-Pierre-et-Miquelon et de Saint-Martin",
+    "Cour des comptes, « Les financements de l'État en outre-mer » (mai 2022), données du rapport : tableau « Territoires » (lois de finances initiales et exécution 2018 à 2020, par territoire) ; Annexe au projet de loi de finances pour 2026, document de politique transversale « Outre-mer » : tableaux « Effort budgétaire et financier de l'État » par territoire, mission et programme ; API Découpage administratif (geo.api.gouv.fr) : communes des six territoires, population municipale ; OFGL, « Dotations des départements » (dotations-departements) : montants notifiés par la DGCL aux collectivités de Saint-Pierre-et-Miquelon et de Saint-Martin ; OFGL, « Dotations des communes » (dotations-communes) : montants notifiés par la DGCL, par commune"
+   ]
+  },
+  {
+   "name": "outremer-988-budget",
+   "title": "Nouvelle-Calédonie, budgets de la collectivité par chapitre, établissements publics, rendement des impôts, en francs CFP et en euros (pipeline/outremer.py)",
+   "description": "site/data/outremer/988_budget.json : Nouvelle-Calédonie, budgets de la collectivité par chapitre, établissements publics, rendement des impôts, en francs CFP et en euros (pipeline/outremer.py). Fichier site/data/outremer/988_budget.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/outremer/988_budget.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/outremer_budget_nc.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (geo.api.gouv.fr) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "geo.api.gouv.fr : Collectivités d'outre-mer (975, 977, 978, 986, 987, 988) : communes (geo.api.gouv.fr), dotations de l'État (OFGL, DGCL), budget de la Nouvelle-Calédonie, de ses établissements publics et rendement des impôts (data.gouv.nc, DBAF, en francs CFP), financement de l'État outre-mer 2018-2020 (Cour des comptes), document de politique transversale Outre-mer du PLF 2026 (lu par pipeline/outremer.py)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://geo.api.gouv.fr/communes?codeDepartement=975&fields=nom,code,population,siren,codeEpci,codeDepartement,codeRegion"
+    }
+   ],
+   "motif": "site/data/outremer/988_budget.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "outremer",
+   "millesimes": [
+    "exercices 2012 à 2026 ; 2026 : exercice en cours, situation au 2026-10-31 ; rendement des impôts 2010 à 2025"
+   ],
+   "sources_declarees": [
+    "Gouvernement de la Nouvelle-Calédonie, « Situation budgétaire de la Nouvelle-Calédonie depuis 2012 » : budget total et réalisé par budget, sens, section, chapitre et article, en francs CFP ; Gouvernement de la Nouvelle-Calédonie, « Situation budgétaire des établissements publics administratifs (EPA) de la Nouvelle-Calédonie depuis 2012 », en francs CFP ; Gouvernement de la Nouvelle-Calédonie, « Situation budgétaire des établissements publics à caractère industriel et commercial (EPIC) de la Nouvelle-Calédonie depuis 2012 », en francs CFP ; Gouvernement de la Nouvelle-Calédonie, « Rendement des impôts depuis 2010 » : montant des titres émis par impôt et par année, en francs CFP"
+   ]
+  },
+  {
+   "name": "local-satellites-index",
+   "title": "blocs par commune, totaux, flux croisés, sources (pipeline/local_satellites.py)",
+   "description": "site/data/local_satellites/index.json : blocs par commune, totaux, flux croisés, sources (pipeline/local_satellites.py). Fichier site/data/local_satellites/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local_satellites/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_satellites_index.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (static.data.gouv.fr, urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "collectivites : OFB, SISPEA, prix et performance des services d'eau potable, d'assainissement collectif et non collectif, exercice 2024 (courriels et nom de l'operateur jamais lus)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "data.ofgl.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "static.data.gouv.fr : Cerema, liste et composition des autorites organisatrices de la mobilite au 1er janvier 2026 (colonne de courriel jamais lue)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://static.data.gouv.fr/resources/liste-et-composition-des-autorites-organisatrices-de-la-mobilite-aom/20260716-092939/base-rt-2026.ods"
+    },
+    {
+     "title": "urssaf : Urssaf, taux de versement mobilite, additionnel, regional et rural par commune et periode",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://open.urssaf.fr/explore/dataset/table_taux_vmrr/"
+    },
+    {
+     "title": "www.banatic.interieur.gouv.fr : BANATIC, export complet des groupements de collectivites (competences, perimetres, financement)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://www.banatic.interieur.gouv.fr/consultation/api/export/pregenere/telecharger/France"
+    }
+   ],
+   "motif": "site/data/local_satellites/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "local_satellites",
+   "millesimes": [
+    "Comptes 2018 à 2025 ; AOM et taux au 1er janvier 2026 ; services d'eau 2024 ; sources collectées au 2026-11-17"
+   ],
+   "sources_declarees": [
+    "pipeline/local_satellites.py (voir `sources` et chaque fichier)"
+   ]
+  },
+  {
+   "name": "local-satellites-syndicats",
+   "title": "syndicats concernant chaque commune (pipeline/local_satellites.py)",
+   "description": "site/data/local_satellites/syndicats/<dep>.json : syndicats concernant chaque commune (pipeline/local_satellites.py). Famille de 101 fichiers (motif site/data/local_satellites/syndicats/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local_satellites/syndicats/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_satellites_syndicats.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (static.data.gouv.fr, urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "collectivites : OFB, SISPEA, prix et performance des services d'eau potable, d'assainissement collectif et non collectif, exercice 2024 (courriels et nom de l'operateur jamais lus)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "data.ofgl.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "static.data.gouv.fr : Cerema, liste et composition des autorites organisatrices de la mobilite au 1er janvier 2026 (colonne de courriel jamais lue)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://static.data.gouv.fr/resources/liste-et-composition-des-autorites-organisatrices-de-la-mobilite-aom/20260716-092939/base-rt-2026.ods"
+    },
+    {
+     "title": "urssaf : Urssaf, taux de versement mobilite, additionnel, regional et rural par commune et periode",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://open.urssaf.fr/explore/dataset/table_taux_vmrr/"
+    },
+    {
+     "title": "www.banatic.interieur.gouv.fr : BANATIC, export complet des groupements de collectivites (competences, perimetres, financement)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://www.banatic.interieur.gouv.fr/consultation/api/export/pregenere/telecharger/France"
+    }
+   ],
+   "motif": "site/data/local_satellites/syndicats/*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "local_satellites",
+   "millesimes": [
+    "Comptes 2018 à 2025, périmètres BANATIC ; sources collectées au 2026-11-17"
+   ],
+   "sources_declarees": [
+    "https://data.ofgl.fr/explore/dataset/ofgl-base-syndicats/ ; https://www.banatic.interieur.gouv.fr/"
+   ]
+  },
+  {
+   "name": "local-satellites-ccas",
+   "title": "CCAS de chaque commune et CIAS de son intercommunalité (pipeline/local_satellites.py)",
+   "description": "site/data/local_satellites/ccas/<dep>.json : CCAS de chaque commune et CIAS de son intercommunalité (pipeline/local_satellites.py). Famille de 101 fichiers (motif site/data/local_satellites/ccas/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local_satellites/ccas/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_satellites_ccas.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (static.data.gouv.fr, urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "collectivites : OFB, SISPEA, prix et performance des services d'eau potable, d'assainissement collectif et non collectif, exercice 2024 (courriels et nom de l'operateur jamais lus)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "data.ofgl.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "static.data.gouv.fr : Cerema, liste et composition des autorites organisatrices de la mobilite au 1er janvier 2026 (colonne de courriel jamais lue)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://static.data.gouv.fr/resources/liste-et-composition-des-autorites-organisatrices-de-la-mobilite-aom/20260716-092939/base-rt-2026.ods"
+    },
+    {
+     "title": "urssaf : Urssaf, taux de versement mobilite, additionnel, regional et rural par commune et periode",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://open.urssaf.fr/explore/dataset/table_taux_vmrr/"
+    },
+    {
+     "title": "www.banatic.interieur.gouv.fr : BANATIC, export complet des groupements de collectivites (competences, perimetres, financement)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://www.banatic.interieur.gouv.fr/consultation/api/export/pregenere/telecharger/France"
+    }
+   ],
+   "motif": "site/data/local_satellites/ccas/*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "local_satellites",
+   "millesimes": [
+    "Comptes 2018 à 2025 ; sources collectées au 2026-11-17"
+   ],
+   "sources_declarees": [
+    "https://data.ofgl.fr/explore/dataset/ofgl-base-ccas-cias/ ; https://www.data.gouv.fr/datasets/5b7ffc618b4c4169d30727e0/"
+   ]
+  },
+  {
+   "name": "local-satellites-mobilite",
+   "title": "AOM et taux de versement mobilité par commune, base sous ODbL (pipeline/local_satellites.py)",
+   "description": "site/data/local_satellites/mobilite/<dep>.json : AOM et taux de versement mobilité par commune, base sous ODbL (pipeline/local_satellites.py). Famille de 101 fichiers (motif site/data/local_satellites/mobilite/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local_satellites/mobilite/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_satellites_mobilite.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (static.data.gouv.fr, urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "collectivites : OFB, SISPEA, prix et performance des services d'eau potable, d'assainissement collectif et non collectif, exercice 2024 (courriels et nom de l'operateur jamais lus)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "data.ofgl.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "static.data.gouv.fr : Cerema, liste et composition des autorites organisatrices de la mobilite au 1er janvier 2026 (colonne de courriel jamais lue)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://static.data.gouv.fr/resources/liste-et-composition-des-autorites-organisatrices-de-la-mobilite-aom/20260716-092939/base-rt-2026.ods"
+    },
+    {
+     "title": "urssaf : Urssaf, taux de versement mobilite, additionnel, regional et rural par commune et periode",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://open.urssaf.fr/explore/dataset/table_taux_vmrr/"
+    },
+    {
+     "title": "www.banatic.interieur.gouv.fr : BANATIC, export complet des groupements de collectivites (competences, perimetres, financement)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://www.banatic.interieur.gouv.fr/consultation/api/export/pregenere/telecharger/France"
+    }
+   ],
+   "motif": "site/data/local_satellites/mobilite/*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "local_satellites",
+   "millesimes": [
+    "AOM au 1er janvier 2026, taux en vigueur au 1er janvier 2026 ; sources collectées au 2026-11-17"
+   ],
+   "sources_declarees": [
+    "https://www.data.gouv.fr/datasets/5b90e9338b4c413448c4b22a/ ; https://open.urssaf.fr/explore/dataset/table_taux_vmrr/"
+   ]
+  },
+  {
+   "name": "local-satellites-eau",
+   "title": "services d'eau et d'assainissement par collectivité organisatrice (pipeline/local_satellites.py)",
+   "description": "site/data/local_satellites/eau/<dep>.json : services d'eau et d'assainissement par collectivité organisatrice (pipeline/local_satellites.py). Famille de 101 fichiers (motif site/data/local_satellites/eau/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/local_satellites/eau/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/local_satellites_eau.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (static.data.gouv.fr, urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "collectivites : OFB, SISPEA, prix et performance des services d'eau potable, d'assainissement collectif et non collectif, exercice 2024 (courriels et nom de l'operateur jamais lus)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "data.ofgl.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "static.data.gouv.fr : Cerema, liste et composition des autorites organisatrices de la mobilite au 1er janvier 2026 (colonne de courriel jamais lue)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://static.data.gouv.fr/resources/liste-et-composition-des-autorites-organisatrices-de-la-mobilite-aom/20260716-092939/base-rt-2026.ods"
+    },
+    {
+     "title": "urssaf : Urssaf, taux de versement mobilite, additionnel, regional et rural par commune et periode",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0",
+     "path": "https://open.urssaf.fr/explore/dataset/table_taux_vmrr/"
+    },
+    {
+     "title": "www.banatic.interieur.gouv.fr : BANATIC, export complet des groupements de collectivites (competences, perimetres, financement)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://www.banatic.interieur.gouv.fr/consultation/api/export/pregenere/telecharger/France"
+    }
+   ],
+   "motif": "site/data/local_satellites/eau/*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "local_satellites",
+   "millesimes": [
+    "Exercice 2024 ; sources collectées au 2026-11-17"
+   ],
+   "sources_declarees": [
+    "https://www.services.eaufrance.fr/ ; https://www.banatic.interieur.gouv.fr/"
+   ]
+  },
+  {
+   "name": "recouvrement-index",
+   "title": "notions, règles, vues par producteur, fichiers, sources, recherche publique",
+   "description": "site/data/recouvrement/index.json : notions, règles, vues par producteur, fichiers, sources, recherche publique. Fichier site/data/recouvrement/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_index.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
+    },
+    {
+     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
+     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
+     "licence_normalisee": "ue-2011-833",
+     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
+    },
+    {
+     "title": "urssaf (5 jeux)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0"
+    },
+    {
+     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
+    }
+   ],
+   "motif": "site/data/recouvrement/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "recouvrement",
+   "millesimes": [
+    "Contrôle fiscal 1996 à 2024 ; contrôles des Urssaf 2018 à 2024 ; taux d'impayés 2004-01 à 2026-08 ; comptes de l'État 2016 à 2025 ; estimations publiées en 2024 et 2025"
+   ],
+   "sources_declarees": [
+    "DGFiP (annuaires statistiques, document de politique transversale du PLF 2026, comptabilité générale de l'État) ; Urssaf (open.urssaf.fr) ; HCFiPS ; Cour des comptes ; Commission européenne"
+   ]
+  },
+  {
+   "name": "recouvrement-controle-fiscal",
+   "title": "contrôle fiscal de la DGFiP, montants notifiés et encaissés",
+   "description": "site/data/recouvrement/controle_fiscal.json : contrôle fiscal de la DGFiP, montants notifiés et encaissés. Fichier site/data/recouvrement/controle_fiscal.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_fiscal.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_controle_fiscal.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
+    },
+    {
+     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
+     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
+     "licence_normalisee": "ue-2011-833",
+     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
+    },
+    {
+     "title": "urssaf (5 jeux)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0"
+    },
+    {
+     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
+    }
+   ],
+   "motif": "site/data/recouvrement/controle_fiscal.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "recouvrement",
+   "millesimes": [
+    "Contrôle fiscal 1996 à 2019 (annuaires statistiques de la DGFiP) et 2016 à 2024 (document de politique transversale annexé au PLF 2026)"
+   ],
+   "sources_declarees": [
+    "DGFiP, annuaire statistique 2010 (tableau 601) et 2019 (tableaux CFC_001 à CFC_004), data.gouv.fr ; document de politique transversale « Lutte contre l'évasion et la fraude fiscale », PLF 2026, pages 63, 73, 74 et 84"
+   ]
+  },
+  {
+   "name": "recouvrement-controle-urssaf",
+   "title": "contrôles des Urssaf, redressements et restitutions, travail dissimulé",
+   "description": "site/data/recouvrement/controle_urssaf.json : contrôles des Urssaf, redressements et restitutions, travail dissimulé. Fichier site/data/recouvrement/controle_urssaf.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/controle_urssaf.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_controle_urssaf.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
+    },
+    {
+     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
+     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
+     "licence_normalisee": "ue-2011-833",
+     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
+    },
+    {
+     "title": "urssaf (5 jeux)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0"
+    },
+    {
+     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
+    }
+   ],
+   "motif": "site/data/recouvrement/controle_urssaf.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "recouvrement",
+   "millesimes": [
+    "Contrôles des Urssaf 2018 à 2024"
+   ],
+   "sources_declarees": [
+    "Urssaf, open.urssaf.fr : « Résultats de l'activité du contrôle et de prévention par les Urssaf » et « Résultats de la lutte contre le travail dissimulé par les Urssaf » (ODbL)"
+   ]
+  },
+  {
+   "name": "recouvrement-impayes",
+   "title": "taux d'impayés mensuels des cotisations (Urssaf), métropole et régions",
+   "description": "site/data/recouvrement/impayes.json : taux d'impayés mensuels des cotisations (Urssaf), métropole et régions. Fichier site/data/recouvrement/impayes.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/impayes.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_impayes.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
+    },
+    {
+     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
+     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
+     "licence_normalisee": "ue-2011-833",
+     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
+    },
+    {
+     "title": "urssaf (5 jeux)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0"
+    },
+    {
+     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
+    }
+   ],
+   "motif": "site/data/recouvrement/impayes.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "recouvrement",
+   "millesimes": [
+    "Taux d'impayés mensuels, 2004-01 à 2026-08"
+   ],
+   "sources_declarees": [
+    "Urssaf, open.urssaf.fr : « Taux d'impayés mensuels, entreprises de 10 salariés ou plus », métropole et par région (ODbL)"
+   ]
+  },
+  {
+   "name": "recouvrement-apurements-etat",
+   "title": "admissions en non-valeur et décisions gracieuses dans les comptes de l'État",
+   "description": "site/data/recouvrement/apurements_etat.json : admissions en non-valeur et décisions gracieuses dans les comptes de l'État. Fichier site/data/recouvrement/apurements_etat.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/apurements_etat.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_apurements_etat.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
+    },
+    {
+     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
+     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
+     "licence_normalisee": "ue-2011-833",
+     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
+    },
+    {
+     "title": "urssaf (5 jeux)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0"
+    },
+    {
+     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
+    }
+   ],
+   "motif": "site/data/recouvrement/apurements_etat.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "recouvrement",
+   "millesimes": [
+    "Comptes de l'État 2016 à 2025"
+   ],
+   "sources_declarees": [
+    "DGFiP, « Données de comptabilité générale de l'État sur dix ans » (balances des comptes ayant servi au Compte général de l'État), data.economie.gouv.fr, comptes 62514, 62518, 62524, 62528 et 65371 ; libellés du plan comptable de l'État"
+   ]
+  },
+  {
+   "name": "recouvrement-estimations",
+   "title": "estimations publiées, constats sur l'absence d'estimation, montants détectés et recouvrés par la sécurité sociale",
+   "description": "site/data/recouvrement/estimations.json : estimations publiées, constats sur l'absence d'estimation, montants détectés et recouvrés par la sécurité sociale. Fichier site/data/recouvrement/estimations.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/recouvrement/estimations.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/recouvrement_estimations.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (urssaf) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "static.data.gouv.fr : Annuaire statistique de la DGFiP, editions 2010 (tableaux 601 a 604, controle fiscal 1996-2010) et 2019 (tableaux CFC_001 a CFC_004, 2010-2019)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip"
+    },
+    {
+     "title": "taxation-customs.ec.europa.eu : Commission europeenne, ecart de TVA (VAT gap in Europe, rapport 2025) : page de resultats par Etat membre ; le classeur de tableaux repond 429 (non insiste)",
+     "licence": "Union européenne, réutilisation autorisée (décision 2011/833/UE)",
+     "licence_normalisee": "ue-2011-833",
+     "path": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en"
+    },
+    {
+     "title": "urssaf (5 jeux)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0"
+    },
+    {
+     "title": "www.assemblee-nationale.fr : Recouvrement, documents : document de politique transversale Lutte contre l'evasion et la fraude fiscale (PLF 2026), synthese HCFiPS de la note annuelle sur les fraudes sociales (2025), rapport de la Cour des comptes La lutte contre la fraude fiscale (16/12/2025)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1090106/file/14-DPT2026_Fraude_Fiscale.pdf"
+    }
+   ],
+   "motif": "site/data/recouvrement/estimations.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "recouvrement",
+   "millesimes": [
+    "Estimations publiées de 2024 à 2025 (données 2023 et 2024 quand l'année est donnée)"
+   ],
+   "sources_declarees": [
+    "Document de politique transversale « Lutte contre l'évasion et la fraude fiscale » (PLF 2026) ; HCFiPS, synthèse de la note annuelle sur les fraudes sociales (décembre 2025) ; Cour des comptes, « La lutte contre la fraude fiscale » (16 décembre 2025) ; Commission européenne, « VAT gap in Europe, report 2025 »"
+   ]
+  },
+  {
+   "name": "justice-defense-index",
+   "title": "fichiers, repères, sources, sources inaccessibles, limites, recherche publique",
+   "description": "site/data/justice_defense/index.json : fichiers, repères, sources, sources inaccessibles, limites, recherche publique. Fichier site/data/justice_defense/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/justice_defense/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/justice_defense_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "https://www.data.gouv.fr/datasets/5369a048a3a729239d206322 ; https://www.data.gouv.fr/datasets/5369932fa3a729239d20410c ; https://www.data.gouv.fr/datasets/5369932fa3a729239d20410c ; https://www.data.gouv.fr/datasets/53699ef2a3a729239d205fea ; https://www.justice.gouv.fr/sites/default/files/2026-10/Chiffres_cles_Justice_2026.pdf ; https://www.vie-publique.fr/files/rapport/pdf/300296.pdf",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/justice_defense/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "justice_defense",
+   "millesimes": [
+    "Établissements pénitentiaires au 2026-09-01 ; budget de la justice 2025 ; exportations d'armement 2015-2024"
+   ],
+   "sources_declarees": [
+    "https://www.data.gouv.fr/datasets/5369a048a3a729239d206322 ; https://www.data.gouv.fr/datasets/5369932fa3a729239d20410c ; https://www.data.gouv.fr/datasets/5369932fa3a729239d20410c ; https://www.data.gouv.fr/datasets/53699ef2a3a729239d205fea ; https://www.justice.gouv.fr/sites/default/files/2026-10/Chiffres_cles_Justice_2026.pdf ; https://www.vie-publique.fr/files/rapport/pdf/300296.pdf"
+   ]
+  },
+  {
+   "name": "justice-defense-prisons",
+   "title": "capacité, personnes détenues et densité par établissement ou quartier (agrégats, aucun individu), série nationale mensuelle, montant calculé par le site",
+   "description": "site/data/justice_defense/prisons.json : capacité, personnes détenues et densité par établissement ou quartier (agrégats, aucun individu), série nationale mensuelle, montant calculé par le site. Fichier site/data/justice_defense/prisons.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/justice_defense/prisons.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/justice_defense_prisons.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Statistique mensuelle de la population écrouée et détenue en France (ministère de la Justice, direction de l'administration pénitentiaire), https://www.data.gouv.fr/datasets/5369a048a3a729239d206322 ; dépense du programme 107 : realisations/107.json",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/justice_defense/prisons.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "justice_defense",
+   "millesimes": [
+    "Situation au 2026-09-01 ; série nationale mensuelle de 2014-07-01 à 2026-09-01 ; montant calculé sur 2025"
+   ],
+   "sources_declarees": [
+    "Statistique mensuelle de la population écrouée et détenue en France (ministère de la Justice, direction de l'administration pénitentiaire), https://www.data.gouv.fr/datasets/5369a048a3a729239d206322 ; dépense du programme 107 : realisations/107.json"
+   ]
+  },
+  {
+   "name": "justice-defense-budget-justice",
+   "title": "budget de la justice par programme, frais de justice, aide juridictionnelle (Les chiffres clés de la Justice, édition 2026)",
+   "description": "site/data/justice_defense/budget_justice.json : budget de la justice par programme, frais de justice, aide juridictionnelle (Les chiffres clés de la Justice, édition 2026). Fichier site/data/justice_defense/budget_justice.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/justice_defense/budget_justice.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/justice_defense_budget_justice.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Les chiffres clés de la Justice, édition 2026 (ministère de la Justice), https://www.justice.gouv.fr/sites/default/files/2026-10/Chiffres_cles_Justice_2026.pdf, pages 7, 8 et 10 du PDF",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/justice_defense/budget_justice.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "justice_defense",
+   "millesimes": [
+    "Les chiffres clés de la Justice, édition 2026 : budget 2024-2025, frais de justice et aide juridictionnelle 2023-2025"
+   ],
+   "sources_declarees": [
+    "Les chiffres clés de la Justice, édition 2026 (ministère de la Justice), https://www.justice.gouv.fr/sites/default/files/2026-10/Chiffres_cles_Justice_2026.pdf, pages 7, 8 et 10 du PDF"
+   ]
+  },
+  {
+   "name": "justice-defense-ressorts",
+   "title": "juridictions (type, nom, commune d'implantation) et juridiction compétente par commune ; colonnes reprises seulement si cohérentes à la source ; aucune adresse",
+   "description": "site/data/justice_defense/ressorts.json : juridictions (type, nom, commune d'implantation) et juridiction compétente par commune ; colonnes reprises seulement si cohérentes à la source ; aucune adresse. Fichier site/data/justice_defense/ressorts.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/justice_defense/ressorts.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/justice_defense_ressorts.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Données géocodées des structures de la Justice : juridictions compétentes par commune (ministère de la Justice), https://www.data.gouv.fr/datasets/5369932fa3a729239d20410c (fichiers donnees-geocodees-des-structures-de-la-justice-mai2026_e2a1941b.csv et 2026-domaine-juridique-adresse_9204b2e2.csv)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/justice_defense/ressorts.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "justice_defense",
+   "millesimes": [
+    "Structures de la Justice : ressorts publiés en mai 2026, liste des juridictions publiée en avril 2026"
+   ],
+   "sources_declarees": [
+    "Données géocodées des structures de la Justice : juridictions compétentes par commune (ministère de la Justice), https://www.data.gouv.fr/datasets/5369932fa3a729239d20410c (fichiers donnees-geocodees-des-structures-de-la-justice-mai2026_e2a1941b.csv et 2026-domaine-juridique-adresse_9204b2e2.csv)"
+   ]
+  },
+  {
+   "name": "justice-defense-armement",
+   "title": "prises de commandes, livraisons et licences d'exportation d'armement par pays, licences par catégorie (Rapport au Parlement 2025, annexes 5, 6, 8 et 9)",
+   "description": "site/data/justice_defense/armement.json : prises de commandes, livraisons et licences d'exportation d'armement par pays, licences par catégorie (Rapport au Parlement 2025, annexes 5, 6, 8 et 9). Fichier site/data/justice_defense/armement.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/justice_defense/armement.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/justice_defense_armement.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Rapport au Parlement 2025 sur les exportations d'armement de la France (ministère des Armées), https://www.vie-publique.fr/files/rapport/pdf/300296.pdf, annexes 5, 6, 8 et 9",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/justice_defense/armement.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "justice_defense",
+   "millesimes": [
+    "Rapport au Parlement 2025 : prises de commandes, livraisons et licences 2015-2024 ; licences par catégorie 2024"
+   ],
+   "sources_declarees": [
+    "Rapport au Parlement 2025 sur les exportations d'armement de la France (ministère des Armées), https://www.vie-publique.fr/files/rapport/pdf/300296.pdf, annexes 5, 6, 8 et 9"
+   ]
+  },
+  {
+   "name": "retraites-index",
+   "title": "régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py)",
+   "description": "site/data/retraites/index.json : régimes de retraite, liens vers les financeurs, écarts entre sources, sources (pipeline/retraites.py). Fichier site/data/retraites/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DREES (enquête annuelle auprès des caisses de retraite) ; Service des retraites de l'État ; direction du budget (PLF 2025) ; Caisse des dépôts (CNRACL, Ircantec) ; MSA ; liens vers les prestations, la Sécurité sociale et le budget de l'État déjà publiés",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/retraites/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "retraites",
+   "millesimes": [
+    "2004 à 2024 (DREES, EACR) ; PLF 2025 et exécution 2024 (État)"
+   ],
+   "sources_declarees": [
+    "DREES (enquête annuelle auprès des caisses de retraite) ; Service des retraites de l'État ; direction du budget (PLF 2025) ; Caisse des dépôts (CNRACL, Ircantec) ; MSA ; liens vers les prestations, la Sécurité sociale et le budget de l'État déjà publiés"
+   ]
+  },
+  {
+   "name": "retraites-regimes",
+   "title": "retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py)",
+   "description": "site/data/retraites/regimes.json : retraités, nouveaux retraités, pensions moyennes et cotisants publiés, par régime et par année (pipeline/retraites.py). Fichier site/data/retraites/regimes.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/regimes.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_regimes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DREES, « Données de l'enquête annuelle auprès des caisses de retraite » (EACR), classeur partie 1 (version du 26 mai 2026), table A-Cadrage : effectifs de retraités au 31 décembre et pensions moyennes de décembre, par caisse ; lignes « tous régimes » estimées par la DREES (modèle Ancêtre, échantillon interrégimes de retraités) ; cotisants : Caisse des dépôts (CNRACL, Ircantec) et DREES (emploi intérieur)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/retraites/regimes.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "retraites",
+   "millesimes": [
+    "2004 à 2024"
+   ],
+   "sources_declarees": [
+    "DREES, « Données de l'enquête annuelle auprès des caisses de retraite » (EACR), classeur partie 1 (version du 26 mai 2026), table A-Cadrage : effectifs de retraités au 31 décembre et pensions moyennes de décembre, par caisse ; lignes « tous régimes » estimées par la DREES (modèle Ancêtre, échantillon interrégimes de retraités) ; cotisants : Caisse des dépôts (CNRACL, Ircantec) et DREES (emploi intérieur)"
+   ]
+  },
+  {
+   "name": "retraites-etat",
+   "title": "compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py)",
+   "description": "site/data/retraites/etat.json : compte d'affectation spéciale Pensions (dépenses, recettes par origine), retraités de l'État, crédits de l'État aux régimes spéciaux (pipeline/retraites.py). Fichier site/data/retraites/etat.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/retraites/etat.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/retraites_etat.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Direction du budget (PLF 2025 : recettes des CAS et des CCF, dépenses selon destination) ; Service des retraites de l'État (DGFiP), cubes de pensions en paiement ; budget de l'État, exécution 2024 (site/data/arbre)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/retraites/etat.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "retraites",
+   "millesimes": [
+    "PLF 2025 (compte d'affectation spéciale Pensions, crédits aux régimes spéciaux) ; exécution 2024 (crédits aux régimes spéciaux) ; 2015 à 2025 (retraités de l'État)"
+   ],
+   "sources_declarees": [
+    "Direction du budget (PLF 2025 : recettes des CAS et des CCF, dépenses selon destination) ; Service des retraites de l'État (DGFiP), cubes de pensions en paiement ; budget de l'État, exécution 2024 (site/data/arbre)"
    ]
   },
   {

@@ -3818,7 +3818,91 @@
   {"id": "retraites_cdc_cnracl_actifs", "domaine": "secu", "type": "url", "format": "json", "url": "https://opendata.caissedesdepots.fr/api/explore/v2.1/catalog/datasets/actifs-cotisant-a-la-cnracl-selon-les-employeurs/exports/json", "titre": "Caisse des depots, actifs a la CNRACL selon les employeurs (pipeline/retraites.py)", "licence": "Licence Ouverte 2.0", "module": "pipeline/retraites.py"},
   {"id": "retraites_cdc_cnracl_retraites", "domaine": "secu", "type": "url", "format": "json", "url": "https://opendata.caissedesdepots.fr/api/explore/v2.1/catalog/datasets/retraitescnracl_droitrisk_sexe_effectifs_agemoy_pensionmoy/exports/json", "titre": "Caisse des depots, retraites de la CNRACL par type de droit et risque (pipeline/retraites.py)", "licence": "Licence Ouverte 2.0", "module": "pipeline/retraites.py"},
   {"id": "retraites_cdc_ircantec_cotisants", "domaine": "secu", "type": "url", "format": "json", "url": "https://opendata.caissedesdepots.fr/api/explore/v2.1/catalog/datasets/cotisantsircantec_typecoll_nbagents/exports/json", "titre": "Caisse des depots, cotisants a l'Ircantec par employeurs (pipeline/retraites.py)", "licence": "Licence Ouverte 2.0", "module": "pipeline/retraites.py"},
-  {"id": "retraites_msa_stock", "domaine": "secu", "type": "urls", "urls": [{"url": "https://www.data.gouv.fr/fr/datasets/r/7ee63af4-9efa-4bbf-af0b-46c7f14b4f83", "nom": "ret_stock_2016.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/46ebb1fe-81be-462f-8b72-eaa4d68ed869", "nom": "ret_stock_2017.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/8497327d-84e3-40da-ad1f-fd450ec23df0", "nom": "ret_stock_2018.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/11bff7f3-526c-4620-a677-dc7259770bf4", "nom": "ret_stock_2019.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/0f8c041e-76c3-49a2-b49b-fb3127717d04", "nom": "ret_stock_2020.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/9cc74b33-c871-44e9-b1f6-c1623e4fee1d", "nom": "ret_stock_2021.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/94d5ca80-7973-4caf-833b-2c82b68727b0", "nom": "ret_stock_2022.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/4a631cbe-e1ff-4dd9-8889-d68524b3813f", "nom": "ret_stock_2023.csv"}], "titre": "MSA, retraites au regime agricole par intercommunalite, 2016-2023 (pipeline/retraites.py)", "licence": "Licence Ouverte 2.0", "module": "pipeline/retraites.py"}
+  {"id": "retraites_msa_stock", "domaine": "secu", "type": "urls", "urls": [{"url": "https://www.data.gouv.fr/fr/datasets/r/7ee63af4-9efa-4bbf-af0b-46c7f14b4f83", "nom": "ret_stock_2016.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/46ebb1fe-81be-462f-8b72-eaa4d68ed869", "nom": "ret_stock_2017.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/8497327d-84e3-40da-ad1f-fd450ec23df0", "nom": "ret_stock_2018.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/11bff7f3-526c-4620-a677-dc7259770bf4", "nom": "ret_stock_2019.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/0f8c041e-76c3-49a2-b49b-fb3127717d04", "nom": "ret_stock_2020.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/9cc74b33-c871-44e9-b1f6-c1623e4fee1d", "nom": "ret_stock_2021.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/94d5ca80-7973-4caf-833b-2c82b68727b0", "nom": "ret_stock_2022.csv"}, {"url": "https://www.data.gouv.fr/fr/datasets/r/4a631cbe-e1ff-4dd9-8889-d68524b3813f", "nom": "ret_stock_2023.csv"}], "titre": "MSA, retraites au regime agricole par intercommunalite, 2016-2023 (pipeline/retraites.py)", "licence": "Licence Ouverte 2.0", "module": "pipeline/retraites.py"},
+  {
+   "id": "sante_finess_structures",
+   "domaine": "sante",
+   "type": "datagouv_ressources",
+   "ressources": [
+    "9f714ec9-3f0b-4ad5-a08c-4a7c6fa4f111"
+   ],
+   "dataset": "finess-structures-1",
+   "titre": "FINESS - Structures, flux de nouvelle generation (Agence du numerique en sante), extraction mensuelle d'octobre 2026, json.gz 51 Mo",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Agence du numerique en sante",
+   "module": "pipeline/sante_etablissements.py"
+  },
+  {
+   "id": "sante_finess_ej_gel",
+   "domaine": "sante",
+   "type": "datagouv_ressources",
+   "ressources": [
+    "2cba77b2-f1de-4ef8-8428-bfe660e86844"
+   ],
+   "dataset": "finess-extraction-des-entites-juridiques",
+   "titre": "FINESS, extraction des entites juridiques au 04/05/2026 (flux historique gele en mai 2026)",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Ministere charge de la sante",
+   "module": "pipeline/sante_etablissements.py"
+  },
+  {
+   "id": "sante_finess_et_gel",
+   "domaine": "sante",
+   "type": "datagouv_ressources",
+   "ressources": [
+    "2ce43ade-8d2c-4d1d-81da-ca06c82abc68"
+   ],
+   "dataset": "finess-extraction-du-fichier-des-etablissements",
+   "titre": "FINESS, extraction des etablissements au 04/05/2026 (flux historique gele en mai 2026)",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Ministere charge de la sante",
+   "module": "pipeline/sante_etablissements.py"
+  },
+  {
+   "id": "sante_open_ccam_etablissements",
+   "domaine": "sante",
+   "type": "ods_pieces_jointes",
+   "portail": "atih",
+   "dataset": "open-ccam-etablissements",
+   "titre": "ATIH, Open CCAM par etablissement (pieces jointes csv par annee et documentation)",
+   "licence": "ODbL",
+   "producteur": "ATIH",
+   "module": "pipeline/sante_etablissements.py"
+  },
+  {
+   "id": "sante_cnsa_prix_ehpad",
+   "domaine": "sante",
+   "type": "datagouv_ressources",
+   "ressources": [
+    "3492d226-cfaa-46a3-b8a8-0b8b3bf2e54f",
+    "909d509b-cb05-40ee-b596-32cea668cd84",
+    "ef251bbf-44d6-48ef-a4ab-92f93e296f57",
+    "cd04df7c-f78e-461b-aa9d-1df1e5b2d5cf"
+   ],
+   "dataset": "prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes",
+   "titre": "CNSA, prix hebergement et tarifs dependance des EHPAD, donnees brutes annuelles 2023 a 2025 et notice",
+   "licence": "non precisee sur data.gouv.fr (voir la notice)",
+   "producteur": "CNSA",
+   "module": "pipeline/sante_etablissements.py"
+  },
+  {
+   "id": "sante_hospi_diag",
+   "domaine": "sante",
+   "type": "datagouv_ressources",
+   "ressources": [
+    "aded33bf-72c1-4868-b1ed-9e38352b3b9e",
+    "da9a5f34-5e5f-48b1-99ab-36a696bb5bfd",
+    "81e6d11b-b7ef-4ca0-b540-708c569ce9f7",
+    "a2ad446d-059c-41e0-81a5-317cc9a279b6",
+    "289b8533-ad0e-40fd-8bad-5689e6722f53",
+    "9b6c24e2-49cb-4c36-a1c5-2c147e30f923"
+   ],
+   "dataset": "hospi-diag",
+   "titre": "ANAP, Hospi Diag, donnees 2011 a 2015 et fiches techniques (historique, jeu non mis a jour depuis 2017)",
+   "licence": "Licence Ouverte",
+   "producteur": "ANAP",
+   "module": "pipeline/sante_etablissements.py"
+  }
  ],
  "non_collectables": [
   {

@@ -1268,6 +1268,48 @@
     "data/lake/collectivites/local_satellites/extraits/sispea.json"
    ],
    "octets_sources": 128556092
+  },
+  "sante_etablissements": {
+   "sources": {
+    "sante_finess_structures": [
+     "data/lake/sante/sante_finess_structures/finess-structures-mensuel-202610.json_9f714ec9.json.gz"
+    ],
+    "sante_finess_ej_gel": [
+     "data/lake/sante/sante_finess_ej_gel/2026_2cba77b2.csv"
+    ],
+    "sante_finess_et_gel": [
+     "data/lake/sante/sante_finess_et_gel/2026_2ce43ade.csv"
+    ],
+    "sante_open_ccam_etablissements": [
+     "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_21.csv",
+     "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_22.csv",
+     "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_23.csv",
+     "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_24.csv",
+     "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_25.csv"
+    ],
+    "sante_cnsa_prix_ehpad": [
+     "data/lake/sante/sante_cnsa_prix_ehpad/cnsa-export-prix-ehpad-2023-brute_909d509b.csv",
+     "data/lake/sante/sante_cnsa_prix_ehpad/cnsa_export_prix_ehpad_2024_brute_ef251bbf.csv",
+     "data/lake/sante/sante_cnsa_prix_ehpad/cnsa_export_prix_ehpad_2025_brute_cd04df7c.csv"
+    ],
+    "sante_hospi_diag": [
+     "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2011_aded33bf.xlsx",
+     "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2012_da9a5f34.xlsx",
+     "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2013_81e6d11b.xlsx",
+     "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2014_a2ad446d.xlsx",
+     "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2015_289b8533.xlsx"
+    ],
+    "secu_atih_finances_ebnl": [
+     "data/lake/secu/secu_atih_finances_ebnl.parquet"
+    ]
+   },
+   "caches": [
+    "data/lake/_cache"
+   ],
+   "hors_catalogue": [
+    "data/lake/sante/sirene_categories_juridiques.json"
+   ],
+   "octets_sources": 218186285
   }
  },
  "urls": {
@@ -1676,6 +1718,23 @@
   "data/lake/outremer/outremer/nc_impots.meta.json": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/rendement-des-impots-depuis-2010",
   "data/lake/secu/datagouv__depenses-et-recettes-de-lassurance-chomage/financement-de-l-assurance-chomage_47a22bbe.csv": "https://data.unedic.org/api/explore/v2.1/catalog/datasets/financement-de-l-assurance-chomage/exports/csv?use_labels=true",
   "data/lake/secu/datagouv__subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/DGS_subventions-associations_2025_fd970d88.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/20261110-101421/dgs-subventions-associations-2025.csv",
-  "data/lake/secu/secu_protection_sociale.parquet": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/305_les-comptes-de-la-protection-sociale/exports/parquet"
+  "data/lake/secu/secu_protection_sociale.parquet": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/305_les-comptes-de-la-protection-sociale/exports/parquet",
+  "data/lake/sante/sante_finess_structures/finess-structures-mensuel-202610.json_9f714ec9.json.gz": "https://static.data.gouv.fr/resources/finess-structures-1/20261101-032138/finess-structures-mensuel-202610.json.gz",
+  "data/lake/sante/sante_finess_ej_gel/2026_2cba77b2.csv": "https://static.data.gouv.fr/resources/finess-extraction-des-entites-juridiques/20260512-091427/etalab-cs1100501-stock-20260512-0339.csv",
+  "data/lake/sante/sante_finess_et_gel/2026_2ce43ade.csv": "https://static.data.gouv.fr/resources/finess-extraction-du-fichier-des-etablissements/20260512-091308/etalab-cs1100502-stock-20260512-0339.csv",
+  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_21.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_21csv",
+  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_22.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_22csv",
+  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_23.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_23csv",
+  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_24.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_24csv",
+  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_25.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_25csv",
+  "data/lake/sante/sante_cnsa_prix_ehpad/cnsa-export-prix-ehpad-2023-brute_909d509b.csv": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20240315-081549/cnsa-export-prix-ehpad-2023-brute.csv",
+  "data/lake/sante/sante_cnsa_prix_ehpad/cnsa_export_prix_ehpad_2024_brute_ef251bbf.csv": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20250328-043751/cnsa-export-prix-ehpad-2024-brute.csv",
+  "data/lake/sante/sante_cnsa_prix_ehpad/cnsa_export_prix_ehpad_2025_brute_cd04df7c.csv": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20260212-054051/cnsa-export-prix-ehpad-2025-brute.csv",
+  "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2011_aded33bf.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151835/hospidiag_opendata_2011.xlsx",
+  "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2012_da9a5f34.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151742/hospidiag_opendata_2012.xlsx",
+  "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2013_81e6d11b.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151646/hospidiag_opendata_2013.xlsx",
+  "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2014_a2ad446d.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151545/hospidiag_opendata_2014.xlsx",
+  "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2015_289b8533.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151239/hospidiag_opendata_2015.xlsx",
+  "data/lake/secu/secu_atih_finances_ebnl.parquet": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/isf-finance-ebnl-public/exports/parquet"
  }
 }

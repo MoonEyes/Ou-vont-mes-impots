@@ -166,6 +166,13 @@ FICHIERS = [
     ("numerique_etat_ditp_itn7_dep.schema.json", "numerique_etat/fonds/ditp_itn7/*.json", "existant"),
     ("numerique_etat_ftap.schema.json", "numerique_etat/fonds/ftap.json", "existant"),
     ("numerique_etat_fast.schema.json", "numerique_etat/fonds/fast.json", "existant"),
+    # etablissements de sante et medico-sociaux : FINESS, Open CCAM, prix des EHPAD (pipeline/sante_etablissements.py)
+    ("sante_etablissements_index.schema.json", "sante_etablissements/index.json", "existant"),
+    ("sante_etablissements_limites.schema.json", "sante_etablissements/limites.json", "existant"),
+    ("sante_etablissements_departements.schema.json", "sante_etablissements/departements.json", "existant"),
+    ("sante_etablissements_departement.schema.json", "sante_etablissements/departements/*.json", "existant"),
+    ("sante_etablissements_hospi_diag.schema.json", "sante_etablissements/hospi_diag.json", "existant"),
+    ("sante_etablissements_finances.schema.json", "sante_etablissements/finances_agregees.json", "existant"),
     # marchés publics de tous les acheteurs, DECP consolidées 2019-2025 (pipeline/marches.py)
     ("marches_index.schema.json", "marches/index.json", "existant"),
     ("marches_annees.schema.json", "marches/annees.json", "existant"),
