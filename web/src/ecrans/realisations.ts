@@ -96,13 +96,13 @@ function carteIndicateur(i: Indicateur, cache: boolean): string {
 export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const p = params.get('p')
   if (!p || !/^\d{3}$/.test(p)) {
-    cible.innerHTML = await choixProgramme('/realisations', 'Ce qui a été fait', 'Choisis un programme pour comparer le prévu et le dépensé année par année, suivre les indicateurs de résultat et lire les notes de la Cour des comptes.')
+    cible.innerHTML = await choixProgramme('/decisions/realisations', 'Ce qui a été fait', 'Choisis un programme pour comparer le prévu et le dépensé année par année, suivre les indicateurs de résultat et lire les notes de la Cour des comptes.')
     brancherFiltre(cible)
     return
   }
   const r = await chargerSiPresent<Realisations>(`realisations/${p}.json`)
   if (!r) {
-    cible.innerHTML = `<h1>Ce qui a été fait</h1>${absent(`Pas de données de réalisation pour le programme ${p}.`)}<p><a href="${lien('/realisations')}">Choisir un autre programme</a></p>`
+    cible.innerHTML = `<h1>Ce qui a été fait</h1>${absent(`Pas de données de réalisation pour le programme ${p}.`)}<p><a href="${lien('/decisions/realisations')}">Choisir un autre programme</a></p>`
     return
   }
   const annees = r.prevu_depense.annees
@@ -132,7 +132,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   cible.innerHTML = `
 <h1>${h(r.libelle)}</h1>
 <p class="chapeau">Programme ${h(r.programme)} · mission ${h(r.mission)}. Ce qui était prévu, ce qui a été dépensé, et ce que disent les indicateurs.</p>
-<p><a href="${lien('/realisations')}">Choisir un autre programme</a></p>
+<p><a href="${lien('/decisions/realisations')}">Choisir un autre programme</a></p>
 <h2>Prévu et dépensé</h2>
 ${
   cle

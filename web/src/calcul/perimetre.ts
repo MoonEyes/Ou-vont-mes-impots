@@ -1,7 +1,7 @@
 // Contrôles de saisie et de périmètre V1 (contrat, sections 3.2 et 4).
 import type { MotifHorsV1, Profil, ResultatErreur } from './types'
 
-const REDIRECTION = { libelle: "Explorer le budget sans calcul personnel", url: './#/etat' }
+const REDIRECTION = { libelle: "Explorer le budget sans calcul personnel", url: './#/explorer' }
 
 export const MESSAGES_HORS_V1: Record<MotifHorsV1, string> = {
   dom: "Les taux et abattements propres aux départements d'outre-mer ne sont pas encore couverts. Tu peux explorer le budget sans calcul personnel.",

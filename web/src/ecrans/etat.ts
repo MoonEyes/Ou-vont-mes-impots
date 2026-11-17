@@ -37,7 +37,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 <h1>Sur 100 € dépensés par l’État</h1>
 <p class="chapeau">Le budget de l’État (${h(md(total))}, ${h(racine.millesime ?? v.millesime)}) découpé en grands postes, ramené à 100 €. Les remboursements et dégrèvements d’impôts ne sont pas comptés : c’est de l’argent rendu, pas dépensé.</p>
 <div class="bascule" role="group" aria-label="Millésime">
-  ${vues.map((x) => `<a class="bouton" href="${lien('/etat', { m: x.cle })}"${x === v ? ' aria-current="true"' : ''}>${h(x.libelle)}</a>`).join('')}
+  ${vues.map((x) => `<a class="bouton" href="${lien('/explorer/etat', { m: x.cle })}"${x === v ? ' aria-current="true"' : ''}>${h(x.libelle)}</a>`).join('')}
 </div>
 ${
   emprunt
@@ -53,7 +53,7 @@ ${
       nom: libelle(p.nom),
       valeur: p.md,
       texte: sur100((p.md / total) * 100),
-      lien: lien('/detail', { m: v.cle, id: p.id }),
+      lien: lien('/explorer/etat/detail', { m: v.cle, id: p.id }),
       detail: `${md(p.md)}${ir > 0 ? ` · sur ce que tu verses à l’État : ${eur((ir * p.md) / total)} par an` : ''}`,
     })),
     undefined,
@@ -87,7 +87,7 @@ ${
     : ''
 }
 <div id="trac"></div>
-<div class="actions"><a class="bouton bouton-principal" href="${lien('/detail', { m: v.cle })}">Voir le détail, aussi loin que tu veux</a><a class="bouton" href="#/recettes">D’où vient l’argent ?</a></div>`
+<div class="actions"><a class="bouton bouton-principal" href="${lien('/explorer/etat/detail', { m: v.cle })}">Voir le détail, aussi loin que tu veux</a><a class="bouton" href="#/explorer/recettes">D’où vient l’argent ?</a></div>`
   const t = await blocTracabilite('racine', 'racine', racine.millesime ?? v.millesime)
   ;(cible.querySelector('#trac') as HTMLElement).innerHTML = t
 }

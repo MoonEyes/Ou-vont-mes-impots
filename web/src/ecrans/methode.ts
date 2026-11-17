@@ -1,3 +1,4 @@
+import { cartesRayons } from '../composants/hub'
 // Écran 10 : méthode et sources (conventions, exclusions, doubles comptes, limites, licences).
 import { charger, chargerSiPresent } from '../donnees'
 import { h, libelle, md, pct, source } from '../util'
@@ -42,6 +43,7 @@ export async function rendre(cible: HTMLElement) {
 
   cible.innerHTML = `
 <h1>Méthode et sources</h1>
+${cartesRayons('/methode')}
 <p class="chapeau">Comment les chiffres sont obtenus, ce qui est exclu, ce qui pourrait être compté deux fois, et les limites. Chaque chiffre du site indique sa source et son millésime.</p>
 
 <h2>Ton calcul personnel</h2>

@@ -12,7 +12,49 @@
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#121614" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
-    <title>Où vont mes impôts</title>
+    <title>Où vont mes impôts : vois où va l’argent que tu paies</title>
+    <link rel="canonical" href="https://mooneyes.github.io/Ou-vont-mes-impots/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Où vont mes impôts" />
+    <meta property="og:title" content="Où vont mes impôts : vois où va l’argent que tu paies" />
+    <meta property="og:description" content="Indique ton salaire. Tu vois ce que tu verses chaque année, à qui, et à quoi cet argent sert. Calcul sur ton téléphone, données publiques ouvertes." />
+    <meta property="og:url" content="https://mooneyes.github.io/Ou-vont-mes-impots/" />
+    <meta property="og:image" content="https://mooneyes.github.io/Ou-vont-mes-impots/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Où vont mes impôts : sur 100 € que tu verses, à qui va l’argent. Site citoyen non officiel." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Où vont mes impôts : vois où va l’argent que tu paies" />
+    <meta name="twitter:description" content="Ce que tu verses chaque année, à qui, et à quoi cet argent sert. Calcul sur ton téléphone, données publiques ouvertes." />
+    <meta name="twitter:image" content="https://mooneyes.github.io/Ou-vont-mes-impots/og.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/#site",
+            "name": "Où vont mes impôts",
+            "url": "https://mooneyes.github.io/Ou-vont-mes-impots/",
+            "inLanguage": "fr",
+            "description": "Site citoyen non officiel : à partir de ton salaire, ce que tu verses chaque année, à qui, et à quoi cet argent sert, d’après les données publiques ouvertes.",
+            "creator": { "@type": "Organization", "name": "Projet citoyen Où vont mes impôts" }
+          },
+          {
+            "@type": "Dataset",
+            "name": "Où vont mes impôts : données publiques retraitées sur les dépenses et recettes publiques",
+            "description": "Budget de l’État, Sécurité sociale, collectivités, recettes, dette, bénéficiaires et décisions, retraités à partir de sources publiques ouvertes (data.economie.gouv.fr, Eurostat, Insee, DGFiP, Assemblée nationale, CNCCFP).",
+            "url": "https://github.com/MoonEyes/Ou-vont-mes-impots",
+            "license": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+            "isAccessibleForFree": true,
+            "inLanguage": "fr",
+            "creator": { "@type": "Organization", "name": "Projet citoyen Où vont mes impôts" },
+            "isPartOf": { "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/#site" }
+          }
+        ]
+      }
+    </script>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   </head>
   <body>
@@ -20,21 +62,24 @@
     <header class="entete">
       <div class="entete-ligne">
         <a class="marque" href="#/">Où vont mes impôts</a>
-        <button class="menu-bouton" type="button" aria-expanded="false" aria-controls="navigation">Menu</button>
+        <span class="non-officiel">Site citoyen, non officiel</span>
       </div>
-      <nav id="navigation" class="navigation" aria-label="Rubriques">
+      <nav id="navigation" class="navigation" aria-label="Navigation principale">
         <ul>
-          <li><a href="#/">1. Ton salaire</a></li>
-          <li><a href="#/paie">2. Ce que tu finances</a></li>
-          <li><a href="#/etat">3. Sur 100 € de l'État</a></li>
-          <li><a href="#/detail">4. Le détail</a></li>
-          <li><a href="#/concret">5. Concrètement</a></li>
-          <li><a href="#/beneficiaires">6. Qui reçoit l'argent</a></li>
-          <li><a href="#/realisations">7. Ce qui a été fait</a></li>
-          <li><a href="#/vie-politique">8. Vie politique</a></li>
-          <li><a href="#/recettes">9. Les recettes</a></li>
-          <li><a href="#/methode">10. Méthode et sources</a></li>
+          <li><a href="#/" data-rubrique="/"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/></svg><span>Accueil</span></a></li>
+          <li><a href="#/calcul" data-rubrique="/calcul"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M5 3h14v18H5zM8 7h8M8 11h2M12 11h2M8 15h2M12 15h2"/></svg><span>Mon calcul</span></a></li>
+          <li><a href="#/explorer" data-rubrique="/explorer"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Explorer</span></a></li>
+          <li><a href="#/local" data-rubrique="/local"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 0114 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span>Chez moi</span></a></li>
+          <li><button type="button" id="bouton-plus" data-rubrique="/plus" aria-expanded="false" aria-controls="feuille-plus"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Plus</span></button></li>
         </ul>
+        <div id="feuille-plus" class="feuille" hidden>
+          <ul>
+            <li><a href="#/beneficiaires">Qui reçoit l’argent</a></li>
+            <li><a href="#/decisions">Décisions et contrôle</a></li>
+            <li><a href="#/methode">Méthode et sources</a></li>
+            <li><a href="#/mentions">Mentions légales et confidentialité</a></li>
+          </ul>
+        </div>
       </nav>
     </header>
     <main id="contenu" tabindex="-1">
@@ -43,7 +88,7 @@
     <div id="annonce" class="visuellement-cache" aria-live="polite"></div>
     <footer class="pied">
       <p>Données publiques ouvertes (Licence Ouverte 2.0, Eurostat). Code sous licence MIT.</p>
-      <p><a href="#/methode">Méthode et sources</a> · <a href="#/mentions">Mentions légales et confidentialité</a></p>
+      <p>Site citoyen non officiel, réalisé à partir de données publiques ouvertes. <a href="#/methode">Méthode et sources</a> · <a href="#/mentions">Mentions légales et confidentialité</a></p>
       <p>Aucun cookie, aucune mesure d'audience, aucune donnée saisie envoyée.</p>
     </footer>
     <script type="module" src="./src/main.ts"></script>

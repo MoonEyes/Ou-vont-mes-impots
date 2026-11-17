@@ -145,7 +145,7 @@ ${
 ${source(vp.source, vp.millesime)}`
 
   cible.querySelector<HTMLSelectElement>('#annee-vp')?.addEventListener('change', (e) => {
-    location.hash = lien('/vie-politique', { a: (e.target as HTMLSelectElement).value })
+    location.hash = lien('/decisions/vie-politique', { a: (e.target as HTMLSelectElement).value })
   })
   const zone = cible.querySelector('#candidats') as HTMLElement
   cible.querySelectorAll<HTMLButtonElement>('[data-fichier]').forEach((b) =>

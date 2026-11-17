@@ -125,7 +125,9 @@ function blocTaxeFonciere(): string {
 export async function rendre(cible: HTMLElement) {
   const r = session.resultat
   if (!r) {
-    cible.innerHTML = `<h1>Ce que tu finances</h1><p>Indique d’abord ton salaire pour voir ce que tu finances et à qui va l’argent.</p><p><a class="bouton bouton-principal" href="#/">Saisir mon salaire</a></p><p><a href="#/etat">Ou explorer le budget de l’État</a></p>`
+    // Pas de saisie : retour au formulaire, avec un message.
+    location.hash = '#/calcul?retour=resultat'
+    cible.innerHTML = `<h1>Ce que tu finances</h1><p>Indique d’abord ton salaire.</p><p><a href="#/calcul">Saisir mon salaire</a></p>`
     return
   }
   const c = session.complet
@@ -161,7 +163,7 @@ export async function rendre(cible: HTMLElement) {
   }
 
   cible.innerHTML = `
-<p><a href="#/">Modifier mon salaire</a></p>
+<p><a href="#/calcul">Modifier mon salaire</a></p>
 <h1>Ce que tu finances chaque année</h1>
 <p class="chapeau">${h(profilTexte())}</p>
 ${blocTotal(r, c)}
@@ -187,9 +189,16 @@ ${blocTaxeFonciere()}
 </section>
 <p class="source">Calcul sur ton appareil avec modele-social ${h(r.moteur.version)} (règles de l’Urssaf, licence MIT) et publicodes ${h(r.moteur.publicodes ?? '')}, législation ${h(r.annee_legislation)}. Vérifié sur 20 cas types face à OpenFisca : écart inférieur à 1 % sur le brut, les cotisations salariales, la CSG, la CRDS et l’impôt (voir <a href="#/methode">méthode</a>).</p>
 <div class="actions">
-  <a class="bouton" href="#/">Modifier ma saisie</a>
-  <a class="bouton bouton-principal" href="#/etat">Où va l’argent de l’État ?</a>
-</div>`
+  <button type="button" id="partager-carte">Partager ma carte</button>
+  <a class="bouton" href="#/calcul">Modifier ma saisie</a>
+</div>
+<p class="aide" id="partage-info">La carte est une image créée sur ton téléphone. Aucun montant n’est mis dans une adresse ni envoyé au site.</p>
+<h2>Et maintenant ?</h2>
+<ul class="cartes">
+  <li><a href="#/explorer/etat"><strong>Où va l’argent de l’État</strong><span>Les grands postes du budget, jusqu’à la ligne votée.</span></a></li>
+  <li><a href="${session.profil?.residence.commune_insee ? `#/local/commune?insee=${encodeURIComponent(session.profil.residence.commune_insee)}` : '#/local'}"><strong>Ta commune</strong><span>Son budget, ses impôts locaux, ce que l’État lui verse.</span></a></li>
+  <li><a href="#/beneficiaires"><strong>Qui le reçoit</strong><span>Associations, entreprises, organismes : les bénéficiaires nommés.</span></a></li>
+</ul>`
 
   const zone = cible.querySelector('#par-destinataire') as HTMLElement
   const montrer = async (avec: boolean) => {
@@ -201,4 +210,13 @@ ${blocTaxeFonciere()}
   cible.querySelector('#sans-patronal')?.addEventListener('click', () => montrer(false))
   cible.querySelector('#avec-patronal')?.addEventListener('click', () => montrer(true))
   await montrer(false)
+  cible.querySelector('#partager-carte')?.addEventListener('click', async () => {
+    const info = cible.querySelector('#partage-info') as HTMLElement
+    try {
+      const { partagerCarte } = await import('../composants/carte-partage')
+      info.textContent = await partagerCarte(r, c)
+    } catch {
+      info.textContent = 'Impossible de créer l’image sur cet appareil.'
+    }
+  })
 }

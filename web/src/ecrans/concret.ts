@@ -33,7 +33,7 @@ interface Effectifs {
 export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const p = params.get('p')
   if (!p || !/^\d{3}$/.test(p)) {
-    cible.innerHTML = await choixProgramme('/concret', 'Concrètement', 'Choisis un programme du budget de l’État pour voir à quoi sert son argent : salaires, fonctionnement, aides, investissements, et combien de personnes y travaillent.')
+    cible.innerHTML = await choixProgramme('/beneficiaires/programme', 'Un programme en détail', 'Choisis un programme du budget de l’État pour voir à quoi sert son argent : salaires, fonctionnement, aides, investissements, et combien de personnes y travaillent.')
     brancherFiltre(cible)
     return
   }
@@ -85,11 +85,11 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   cible.innerHTML = `
 <h1>${h(titre)}</h1>
 <p class="chapeau">Programme ${h(p)}${nat ? ` · mission ${h(nat.mission)}` : ''}. À quoi sert concrètement l’argent : la nature réelle de la dépense en 2024.</p>
-<p><a href="${lien('/concret')}">Choisir un autre programme</a></p>
+<p><a href="${lien('/beneficiaires/programme')}">Choisir un autre programme</a></p>
 <h2>Où part l’argent</h2>
 ${blocNature}
 ${blocEff}
 <div id="trac"></div>
-<div class="actions"><a class="bouton" href="${lien('/beneficiaires', { p })}">Qui reçoit l’argent</a><a class="bouton" href="${lien('/realisations', { p })}">Ce qui a été fait</a></div>`
+<div class="actions"><a class="bouton" href="${lien('/beneficiaires', { p })}">Qui reçoit l’argent du programme ${h(p)}</a><a class="bouton" href="${lien('/decisions/realisations', { p })}">Ce qui a été fait (programme ${h(p)})</a><a class="bouton" href="${lien('/decisions/votes', { p })}">Votes et mouvements (programme ${h(p)})</a></div>`
   ;(cible.querySelector('#trac') as HTMLElement).innerHTML = await blocTracabilite('programme', p, 'Exécution 2024')
 }

@@ -207,8 +207,6 @@ td.nombre,
 .entete {
   border-bottom: 1px solid var(--filet);
   background: var(--fond);
-  position: sticky;
-  top: 0;
   z-index: 5;
 }
 .entete-ligne {
@@ -230,56 +228,134 @@ td.nombre,
   display: inline-flex;
   align-items: center;
 }
-.menu-bouton {
-  min-height: 44px;
-  min-width: 44px;
+.non-officiel {
+  font-size: 0.85rem;
+  color: var(--secondaire);
 }
+
+/* Navigation : barre fixe en bas sur mobile (5 entrées, cibles de 48 px), en haut sur ordinateur. */
 .navigation {
-  display: none;
-  max-width: 64rem;
-  margin: 0 auto;
-  padding: 0 1rem 0.75rem;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  background: var(--fond);
+  border-top: 1px solid var(--trait);
+  padding-bottom: env(safe-area-inset-bottom);
 }
-.navigation.ouverte {
-  display: block;
-}
-.navigation ul {
+.navigation > ul {
   list-style: none;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   display: grid;
-  gap: 0.25rem;
+  grid-template-columns: repeat(5, 1fr);
+  max-width: 64rem;
 }
-.navigation a {
+.navigation > ul a,
+.navigation > ul button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 56px;
+  min-width: 48px;
+  width: 100%;
+  padding: 4px 2px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--secondaire);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.navigation svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.navigation > ul [aria-current='page'] {
+  color: var(--accent);
+  border-top: 3px solid var(--accent);
+}
+.feuille {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  left: 0;
+  background: var(--fond);
+  border-top: 1px solid var(--trait);
+  padding: 0.5rem 1rem;
+}
+.feuille ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 64rem;
+}
+.feuille a {
   display: flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0 0.75rem;
-  border-radius: var(--rayon);
-  text-decoration: none;
+  min-height: 48px;
   color: var(--texte);
+  font-weight: 700;
 }
-.navigation a:hover {
-  background: var(--surface);
-}
-.navigation a[aria-current='page'] {
-  background: var(--accent);
-  color: var(--sur-accent);
+body {
+  padding-bottom: 64px;
 }
 
 @media (min-width: 60rem) {
-  .menu-bouton {
-    display: none;
+  body {
+    padding-bottom: 0;
   }
   .navigation {
-    display: block;
+    position: static;
+    border-top: 0;
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0 1rem;
   }
-  .navigation ul {
+  .navigation > ul {
     display: flex;
-    flex-wrap: wrap;
+    gap: 0.25rem;
   }
-  .navigation a {
-    font-size: 0.95rem;
+  .navigation > ul a,
+  .navigation > ul button {
+    flex-direction: row;
+    gap: 0.4rem;
+    min-height: 48px;
+    width: auto;
+    padding: 0 0.85rem;
+    font-size: 0.98rem;
+    border-radius: var(--rayon);
+  }
+  .navigation > ul [aria-current='page'] {
+    border-top: 0;
+    background: var(--accent);
+    color: var(--sur-accent);
+  }
+  .feuille {
+    top: 100%;
+    bottom: auto;
+    left: auto;
+    right: 1rem;
+    min-width: 18rem;
+    border: 1px solid var(--trait);
+    border-radius: var(--rayon);
+  }
+  .entete {
+    position: relative;
+  }
+  .navigation {
+    position: relative;
   }
 }
 
@@ -801,4 +877,108 @@ th.nombre {
     animation: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Hubs : cartes vers les rayons */
+.cartes {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  display: grid;
+  gap: 0.75rem;
+}
+@media (min-width: 40rem) {
+  .cartes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.cartes a {
+  display: block;
+  min-height: 48px;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+  background: var(--fond);
+  color: var(--texte);
+  text-decoration: none;
+}
+.cartes a:hover {
+  border-color: var(--accent);
+}
+.cartes strong {
+  display: block;
+  font-family: var(--titre);
+  font-size: 1.12rem;
+  color: var(--accent);
+}
+.cartes span {
+  display: block;
+  color: var(--secondaire);
+  font-size: 0.95rem;
+}
+.voir-aussi {
+  border-top: 1px solid var(--filet);
+  margin-top: 2rem;
+}
+.voir-aussi h2 {
+  font-size: 1.05rem;
+}
+.voir-aussi ul,
+.liens-sortie {
+  list-style: none;
+  padding: 0;
+}
+.voir-aussi a,
+.liens-sortie a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 700;
+}
+
+/* Accueil */
+.accueil-tete {
+  max-width: 40rem;
+  padding: 1rem 0;
+}
+.accueil-tete .chapeau {
+  font-size: 1.2rem;
+  color: var(--texte);
+}
+.bouton-grand {
+  min-height: 56px;
+  font-size: 1.1rem;
+  width: 100%;
+  max-width: 24rem;
+}
+.etapes {
+  counter-reset: etape;
+  list-style: none;
+  padding: 0;
+  max-width: 40rem;
+}
+.etapes li {
+  counter-increment: etape;
+  display: grid;
+  grid-template-columns: 2.4rem 1fr;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px dotted var(--trait);
+}
+.etapes li::before {
+  content: counter(etape);
+  font-family: var(--chiffres);
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1.4rem;
+}
+.garantie {
+  border-left: 4px solid var(--accent);
+  padding: 0.5rem 0 0.5rem 1rem;
+  max-width: 40rem;
+}
+.en-cours {
+  border: 1px dashed var(--trait);
+  border-radius: var(--rayon);
+  padding: 1rem;
 }

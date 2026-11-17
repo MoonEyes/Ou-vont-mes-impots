@@ -1,7 +1,7 @@
 // Écran 4 : détail à profondeur libre (arbre chargé à la demande, fil d'Ariane, barres, Sankey).
 import { dessinerSankey, ecranLarge } from '../composants/sankey'
 import { blocTracabilite } from '../composants/tracabilite'
-import { charger, deplier, type Noeud, trouverNoeud, VUES_ARBRE, vueArbre } from '../donnees'
+import { charger, deplier, type Noeud, trouverNoeud, type VueArbre, VUES_ARBRE } from '../donnees'
 import { lien } from '../routeur'
 import { appliquerLargeurs, barres, h, surligne, libelle, md, numeroProgramme, pct, source, sur100 } from '../util'
 
@@ -18,11 +18,34 @@ const NIVEAUX: Record<string, string> = {
 
 let nettoyer: (() => void) | null = null
 
-export async function rendre(cible: HTMLElement, params: URLSearchParams) {
+/** Paramètres d'une visionneuse d'arbre (budget de l'État, Sécurité sociale...). */
+export interface ConfigArbre {
+  page: string
+  vues: VueArbre[]
+  /** « du budget de l'État », « des dépenses sociales »... */
+  ensemble: string
+  /** compléments propres au nœud (traçabilité, liens) */
+  complement?: (n: Noeud, racine: Noeud, vue: VueArbre) => Promise<string>
+  niveaux?: Record<string, string>
+}
+
+const CONFIG_ETAT: ConfigArbre = {
+  page: '/explorer/etat/detail',
+  vues: VUES_ARBRE,
+  ensemble: 'du budget de l’État',
+  complement: async (n, _r, vue) => (vue.cle === 'execution2024' ? blocTracabilite(n.niveau, n.id, vue.millesime) : ''),
+}
+
+export function rendre(cible: HTMLElement, params: URLSearchParams) {
+  return rendreArbre(cible, params, CONFIG_ETAT)
+}
+
+export async function rendreArbre(cible: HTMLElement, params: URLSearchParams, cfg: ConfigArbre) {
   nettoyer?.()
   nettoyer = null
-  const vue = vueArbre(params.get('m'))
-  const id = params.get('id') ?? 'racine'
+  const vue = cfg.vues.find((v) => v.cle === params.get('m')) ?? cfg.vues[0]
+  const id = params.get('id') ?? params.get('n') ?? 'racine'
+  const NIV = { ...NIVEAUX, ...(cfg.niveaux ?? {}) }
   const { noeud, chemin, racine } = await trouverNoeud(vue.dossier, id)
   const enfants = await Promise.all((noeud.enfants ?? []).map((e) => deplier(e)))
   const complet: Noeud = { ...noeud, enfants }
@@ -30,11 +53,11 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const prog = noeud.niveau === 'programme' ? numeroProgramme(noeud.id) : null
   const tete = await charger<Noeud & { avertissement?: string; millesime?: string; source?: string }>(`${vue.dossier}/racine.json`)
 
-  const ariane = `<nav class="fil-ariane" aria-label="Fil d’Ariane"><ol>${chemin
+  const ariane = `<nav class="fil-ariane" aria-label="Position dans l’arbre"><ol>${chemin
     .map((n, i) =>
       i === chemin.length - 1
         ? `<li aria-current="page">${h(libelle(n.nom))}</li>`
-        : `<li><a href="${lien('/detail', { m: vue.cle, id: n.id === 'racine' ? undefined : n.id })}">${h(libelle(n.nom))}</a></li>`,
+        : `<li><a href="${lien(cfg.page, { m: vue.cle, id: n.id === 'racine' ? undefined : n.id })}">${h(libelle(n.nom))}</a></li>`,
     )
     .join('')}</ol></nav>`
 
@@ -44,8 +67,8 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
           nom: libelle(e.nom),
           valeur: e.md,
           texte: md(e.md),
-          lien: e.enfants || e.fichier ? lien('/detail', { m: vue.cle, id: e.id }) : undefined,
-          detail: `${sur100((e.md / racine.md) * 100)} sur 100 € du budget · ${pct(noeud.md > 0 ? (e.md / noeud.md) * 100 : 0)} de ce bloc${
+          lien: e.enfants || e.fichier ? lien(cfg.page, { m: vue.cle, id: e.id }) : undefined,
+          detail: `${sur100((e.md / racine.md) * 100)} sur 100 € ${cfg.ensemble} · ${pct(noeud.md > 0 ? (e.md / noeud.md) * 100 : 0)} de ce bloc${
             e.niveau === 'programme' && numeroProgramme(e.id) ? ` · programme ${numeroProgramme(e.id)}` : ''
           }`,
         })),
@@ -73,12 +96,12 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   cible.innerHTML = `
 <h1>${h(libelle(noeud.nom))}</h1>
 <div class="bascule" role="group" aria-label="Vue du budget">
-  ${VUES_ARBRE.map((x) => `<a class="bouton" href="${lien('/detail', { m: x.cle })}"${x === vue ? ' aria-current="true"' : ''}>${h(x.libelle)}</a>`).join('')}
+  ${cfg.vues.map((x) => `<a class="bouton" href="${lien(cfg.page, { m: x.cle })}"${x === vue ? ' aria-current="true"' : ''}>${h(x.libelle)}</a>`).join('')}
 </div>
 ${ariane}
 <div class="carte" data-cle>
   <p class="grand-chiffre">${surligne(md(noeud.md))}</p>
-  <p class="sous-chiffre">${h(NIVEAUX[noeud.niveau] ?? noeud.niveau)}${prog ? ` ${h(prog)}` : ''} · ${h(sur100((noeud.md / racine.md) * 100))} sur 100 € du budget de l’État${
+  <p class="sous-chiffre">${h(NIV[noeud.niveau] ?? noeud.niveau)}${prog ? ` ${h(prog)}` : ''} · ${h(sur100((noeud.md / racine.md) * 100))} sur 100 € ${h(cfg.ensemble)}${
     parent ? ` · ${h(pct(parent.md > 0 ? (noeud.md / parent.md) * 100 : 0))} de « ${h(libelle(parent.nom))} »` : ''
   }</p>
   ${tete.avertissement ? `<p class="avertissement">${h(tete.avertissement)}</p>` : ''}
@@ -86,7 +109,7 @@ ${ariane}
 </div>
 ${
   prog
-    ? `<div class="actions"><a class="bouton" href="${lien('/concret', { p: prog })}">Concrètement</a><a class="bouton" href="${lien('/beneficiaires', { p: prog })}">Qui reçoit l’argent</a><a class="bouton" href="${lien('/realisations', { p: prog })}">Ce qui a été fait</a></div>`
+    ? `<div class="actions"><a class="bouton" href="${lien('/beneficiaires/programme', { p: prog })}">Le programme ${h(prog)} en détail</a><a class="bouton" href="${lien('/beneficiaires', { p: prog })}">Qui reçoit l’argent du programme ${h(prog)}</a><a class="bouton" href="${lien('/decisions/realisations', { p: prog })}">Ce qui a été fait (programme ${h(prog)})</a><a class="bouton" href="${lien('/decisions/votes', { p: prog })}">Votes et mouvements (programme ${h(prog)})</a></div>`
     : ''
 }
 <h2>Ce que contient ce bloc</h2>
@@ -109,10 +132,9 @@ ${alternative}
     }
     window.setTimeout(() => tenter(20), 0)
   }
-  if (vue.cle === 'execution2024') {
-    const t = await blocTracabilite(noeud.niveau, noeud.id, tete.millesime ?? vue.millesime)
+  if (cfg.complement) {
     const z = cible.querySelector('#trac') as HTMLElement
-    z.innerHTML = t
+    z.innerHTML = await cfg.complement(noeud, tete, vue)
     appliquerLargeurs(z)
   }
 }

@@ -83,6 +83,6 @@ ${
     : ''
 }`
   cible.querySelector<HTMLSelectElement>('#impot')?.addEventListener('change', (e) => {
-    location.hash = lien('/recettes', { i: (e.target as HTMLSelectElement).value })
+    location.hash = lien('/explorer/recettes', { i: (e.target as HTMLSelectElement).value })
   })
 }
