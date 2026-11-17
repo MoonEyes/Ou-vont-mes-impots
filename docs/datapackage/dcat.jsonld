@@ -268,6 +268,25 @@
   },
   {
    "@type": "dcat:Distribution",
+   "dct:title": "rapport du dernier passage de la mise a jour automatique",
+   "dct:description": "site/data/mise_a_jour.json : rapport du dernier passage de la mise a jour automatique. Fichier site/data/mise_a_jour.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/mise_a_jour.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/mise_a_jour.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/mise_a_jour.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
    "dct:title": "flux Etat > grand poste > mission > programme",
    "dct:description": "site/data/sankey_etat*.json : flux Etat > grand poste > mission > programme. Famille de 2 fichiers (motif site/data/sankey_etat*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "dcat:accessURL": {

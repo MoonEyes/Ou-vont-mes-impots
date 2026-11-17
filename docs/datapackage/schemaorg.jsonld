@@ -252,6 +252,12 @@
   },
   {
    "@type": "DataDownload",
+   "name": "rapport du dernier passage de la mise a jour automatique",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/mise_a_jour.json"
+  },
+  {
+   "@type": "DataDownload",
    "name": "flux Etat > grand poste > mission > programme",
    "encodingFormat": "application/json",
    "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/sankey_etat.json"

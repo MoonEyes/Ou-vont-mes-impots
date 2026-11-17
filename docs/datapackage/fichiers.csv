@@ -4188,6 +4188,7 @@ marches/departements/987.json,marches-departements-x,marches_departement.schema.
 marches/departements/988.json,marches-departements-x,marches_departement.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/departements/988.json
 marches/index.json,marches-index,marches_index.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/marches/index.json
 meta.json,meta,meta.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/meta.json
+mise_a_jour.json,mise-a-jour,mise_a_jour.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/mise_a_jour.json
 nature/101.json,nature-n,nature_programme.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/nature/101.json
 nature/102.json,nature-n,nature_programme.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/nature/102.json
 nature/103.json,nature-n,nature_programme.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/nature/103.json

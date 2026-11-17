@@ -769,6 +769,40 @@
    ]
   },
   {
+   "name": "mise-a-jour",
+   "title": "rapport du dernier passage de la mise a jour automatique",
+   "description": "site/data/mise_a_jour.json : rapport du dernier passage de la mise a jour automatique. Fichier site/data/mise_a_jour.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/mise_a_jour.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/mise_a_jour.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "pipeline/tout.py (workflow .github/workflows/data.yml)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/mise_a_jour.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "non rattachée",
+   "millesimes": [
+    "Dernier passage de la mise à jour automatique"
+   ],
+   "sources_declarees": [
+    "pipeline/tout.py (workflow .github/workflows/data.yml)"
+   ]
+  },
+  {
    "name": "sankey-etat",
    "title": "flux Etat > grand poste > mission > programme",
    "description": "site/data/sankey_etat*.json : flux Etat > grand poste > mission > programme. Famille de 2 fichiers (motif site/data/sankey_etat*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
