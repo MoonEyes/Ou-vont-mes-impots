@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/vie_politique_candidats.schema.json",
+  "title": "site/data/vie_politique/candidats/<scrutin>_<annee>.json : comptes de campagne par candidat (exception personnes physiques)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "scrutin": {
+      "type": "string",
+      "pattern": "^[a-z_]+$"
+    },
+    "annee": {
+      "type": "integer",
+      "minimum": 1990,
+      "maximum": 2100
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 20
+    },
+    "champs": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "candidat",
+          "nuance",
+          "parti",
+          "circonscription",
+          "tour",
+          "elu",
+          "depenses_eur",
+          "recettes_eur",
+          "apport_personnel_eur",
+          "dons_eur",
+          "remboursement_eur",
+          "decision",
+          "reference"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "candidats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "candidat": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nuance": {
+            "type": "string"
+          },
+          "parti": {
+            "type": "string"
+          },
+          "circonscription": {
+            "type": "string"
+          },
+          "tour": {
+            "type": [
+              "integer",
+              "string"
+            ]
+          },
+          "elu": {
+            "type": "boolean"
+          },
+          "depenses_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "recettes_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "apport_personnel_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "dons_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "remboursement_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "decision": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reference": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "candidat"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "unite",
+    "scrutin",
+    "annee",
+    "regle",
+    "champs",
+    "candidats"
+  ],
+  "description": "Liste blanche de champs (pipeline/vie_politique.py CHAMPS_CANDIDAT) : ni adresse, ni date de naissance, ni donateur, ni mandataire."
+}

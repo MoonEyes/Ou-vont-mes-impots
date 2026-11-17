@@ -1,31 +1,32 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://ou-vont-mes-impots.fr/contrat/v1/programme.schema.json",
-  "title": "site/data/programmes/<numero>.json : detail d'un programme (actions, sous-actions, nature)",
-  "type": "object",
-  "required": [
-    "programme",
-    "actions",
-    "nature"
+  "title": "site/data/programmes/<n>.json : actions, sous-actions et nature d'un programme (PLF 2025)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
   ],
-  "additionalProperties": false,
+  "type": "object",
   "properties": {
     "programme": {
       "type": "integer",
       "minimum": 100,
       "maximum": 999
     },
+    "unite": {
+      "$ref": "commun.schema.json#/$defs/unite_md_cp"
+    },
+    "libelle": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string"
+    },
     "actions": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "code",
-          "nom",
-          "md",
-          "sous_actions"
-        ],
-        "additionalProperties": false,
         "properties": {
           "code": {
             "type": "string"
@@ -37,19 +38,12 @@
             ]
           },
           "md": {
-            "type": "number",
-            "description": "Montant en milliards d'euros"
+            "type": "number"
           },
           "sous_actions": {
             "type": "array",
             "items": {
               "type": "object",
-              "required": [
-                "code",
-                "nom",
-                "md"
-              ],
-              "additionalProperties": false,
               "properties": {
                 "code": {
                   "type": [
@@ -64,21 +58,38 @@
                   ]
                 },
                 "md": {
-                  "type": "number",
-                  "description": "Montant en milliards d'euros"
+                  "type": "number"
                 }
-              }
+              },
+              "required": [
+                "code",
+                "nom",
+                "md"
+              ],
+              "additionalProperties": false
             }
           }
-        }
+        },
+        "required": [
+          "code",
+          "nom",
+          "md",
+          "sous_actions"
+        ],
+        "additionalProperties": false
       }
     },
     "nature": {
       "type": "object",
       "additionalProperties": {
-        "type": "number",
-        "description": "Montant en milliards d'euros"
+        "type": "number"
       }
     }
-  }
+  },
+  "required": [
+    "programme",
+    "unite",
+    "actions",
+    "nature"
+  ]
 }

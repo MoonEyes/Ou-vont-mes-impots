@@ -2,8 +2,36 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://ou-vont-mes-impots.fr/contrat/v1/arbre_administrations_methode.schema.json",
   "title": "site/data/arbre_administrations/methode.json : note de consolidation",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
   "type": "object",
-  "additionalProperties": false,
+  "properties": {
+    "annee": {
+      "$ref": "commun.schema.json#/$defs/annee"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "lecture": {
+      "type": "string",
+      "minLength": 20
+    },
+    "somme_administrations_md": {
+      "type": "number"
+    },
+    "total_consolide_md": {
+      "type": "number"
+    },
+    "transferts_courants_entre_administrations_md": {
+      "type": "number"
+    },
+    "ecart_consolidation_md": {
+      "type": "number"
+    }
+  },
   "required": [
     "annee",
     "lecture",
@@ -11,31 +39,5 @@
     "total_consolide_md",
     "transferts_courants_entre_administrations_md",
     "ecart_consolidation_md"
-  ],
-  "properties": {
-    "annee": {
-      "type": "string",
-      "pattern": "^(19|20)[0-9]{2}$"
-    },
-    "lecture": {
-      "type": "string",
-      "minLength": 10
-    },
-    "somme_administrations_md": {
-      "type": "number",
-      "description": "Montant en milliards d'euros"
-    },
-    "total_consolide_md": {
-      "type": "number",
-      "description": "Montant en milliards d'euros"
-    },
-    "transferts_courants_entre_administrations_md": {
-      "type": "number",
-      "description": "Montant en milliards d'euros"
-    },
-    "ecart_consolidation_md": {
-      "type": "number",
-      "description": "Montant en milliards d'euros"
-    }
-  }
+  ]
 }

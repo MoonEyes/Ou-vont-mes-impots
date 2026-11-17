@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/commun.schema.json",
+  "title": "Definitions communes du contrat d'interface",
+  "description": "Definitions partagees par les schemas du contrat (docs/contrat_interface.md).",
+  "$defs": {
+    "entete": {
+      "type": "object",
+      "properties": {
+        "millesime": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 3
+        }
+      },
+      "required": [
+        "millesime",
+        "source"
+      ],
+      "description": "Regle commune : tout fichier JSON de site/data porte `millesime` et `source`."
+    },
+    "annee": {
+      "type": "string",
+      "pattern": "^(19|20)[0-9]{2}$"
+    },
+    "annee_entier": {
+      "type": "integer",
+      "minimum": 1990,
+      "maximum": 2100
+    },
+    "unite_md_cp": {
+      "type": "string",
+      "pattern": "^milliards d'euros"
+    },
+    "siren": {
+      "type": "string",
+      "pattern": "^[0-9]{9}$"
+    },
+    "categorie_personne_morale": {
+      "type": "string",
+      "pattern": "^[2-9][0-9]{3}$",
+      "description": "Categorie juridique INSEE d'une personne morale (2xxx a 9xxx). 1000 = entrepreneur individuel, jamais nomme."
+    },
+    "groupe_beneficiaires": {
+      "type": "object",
+      "properties": {
+        "top": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "siren": {
+                "$ref": "commun.schema.json#/$defs/siren"
+              },
+              "denomination": {
+                "type": "string",
+                "minLength": 1
+              },
+              "categorie_juridique": {
+                "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+              },
+              "montant_eur": {
+                "type": "number"
+              },
+              "eur_sur_100": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "siren",
+              "denomination",
+              "categorie_juridique",
+              "montant_eur"
+            ],
+            "propertyNames": {
+              "not": {
+                "pattern": "(?i)pr[eé]nom"
+              }
+            }
+          },
+          "maxItems": 50
+        },
+        "autres_personnes_morales": {
+          "type": "object",
+          "properties": {
+            "nombre": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "montant_eur": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "nombre",
+            "montant_eur"
+          ]
+        },
+        "autres_non_verifies": {
+          "type": "object",
+          "properties": {
+            "nombre": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "montant_eur": {
+              "type": "number"
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "nombre",
+            "montant_eur"
+          ]
+        },
+        "exclus_personnes_physiques_ou_non_identifies": {
+          "type": "object",
+          "properties": {
+            "montant_eur": {
+              "type": "number"
+            },
+            "lignes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "dont_personnes_physiques_eur": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "montant_eur",
+            "lignes"
+          ],
+          "propertyNames": {
+            "pattern": "^(montant_eur|lignes|dont_[a-z0-9_]+_eur)$"
+          }
+        }
+      },
+      "required": [
+        "top",
+        "autres_personnes_morales",
+        "autres_non_verifies",
+        "exclus_personnes_physiques_ou_non_identifies"
+      ]
+    }
+  }
+}

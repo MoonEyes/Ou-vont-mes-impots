@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/vie_politique_annees.schema.json",
+  "title": "site/data/vie_politique/annees.json : argent public et vie politique par annee",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "perimetre": {
+      "type": "string"
+    },
+    "collecte_le": {
+      "type": "string",
+      "format": "date"
+    },
+    "trous": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 1990,
+            "maximum": 2100
+          },
+          "programme_232": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "millesime",
+              "source",
+              "actions_eur"
+            ],
+            "properties": {
+              "actions_eur": {
+                "type": "object",
+                "properties": {
+                  "financement_des_partis": {
+                    "type": "number"
+                  },
+                  "organisation_des_elections": {
+                    "type": "number"
+                  },
+                  "cnccfp": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "programme_232_manquant": {
+            "type": "string"
+          },
+          "aide_publique_partis": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "total_eur",
+              "fichier"
+            ],
+            "properties": {
+              "fichier": {
+                "type": "string",
+                "pattern": "^partis/[0-9]{4}\\.json$"
+              },
+              "total_eur": {
+                "type": "number"
+              },
+              "premiere_fraction_eur": {
+                "type": "number"
+              },
+              "seconde_fraction_eur": {
+                "type": "number"
+              },
+              "nombre_partis": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "remboursements_campagne": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "scrutin": {
+                  "type": "string",
+                  "pattern": "^[a-z_]+$"
+                },
+                "libelle": {
+                  "type": "string"
+                },
+                "remboursement_etat_total_eur": {
+                  "type": "number"
+                },
+                "fichier": {
+                  "type": "string",
+                  "pattern": "^scrutins/[a-z_]+_[0-9]{4}\\.json$"
+                }
+              },
+              "required": [
+                "scrutin",
+                "remboursement_etat_total_eur",
+                "fichier"
+              ]
+            }
+          },
+          "remboursements_campagne_total_eur": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "annee",
+          "programme_232",
+          "aide_publique_partis",
+          "remboursements_campagne"
+        ]
+      },
+      "minItems": 1
+    },
+    "scrutins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scrutin": {
+            "type": "string",
+            "pattern": "^[a-z_]+$"
+          },
+          "annee": {
+            "type": "integer",
+            "minimum": 1990,
+            "maximum": 2100
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "fichier": {
+            "type": "string",
+            "pattern": "^scrutins/[a-z_]+_[0-9]{4}\\.json$"
+          },
+          "nombre_candidats": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "depenses_totales_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "remboursement_etat_total_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "scrutin",
+          "annee",
+          "fichier"
+        ]
+      }
+    }
+  },
+  "required": [
+    "unite",
+    "annees",
+    "scrutins"
+  ]
+}

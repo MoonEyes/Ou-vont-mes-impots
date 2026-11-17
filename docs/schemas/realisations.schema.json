@@ -1,0 +1,569 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/realisations.schema.json",
+  "title": "site/data/realisations/<programme>.json : bloc « Ce qui a ete fait »",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite_montants": {
+      "type": "string"
+    },
+    "programme": {
+      "type": "string",
+      "pattern": "^[0-9]{3}$"
+    },
+    "libelle": {
+      "type": "string"
+    },
+    "mission": {
+      "type": "string"
+    },
+    "prevu_depense": {
+      "type": "object",
+      "properties": {
+        "annees": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer",
+                "minimum": 1990,
+                "maximum": 2100
+              },
+              "source": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "vote_lfi_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "depense_constatee_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "ecart_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "ecart_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "ecart_ouvert_eur": {
+                "type": "number"
+              },
+              "eur_sur_100": {
+                "type": "number"
+              },
+              "trou": {
+                "type": "string"
+              },
+              "ouvert_en_gestion": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "required": [
+                  "total_eur"
+                ],
+                "properties": {
+                  "total_eur": {
+                    "type": "number"
+                  },
+                  "lfr_eur": {
+                    "type": "number"
+                  },
+                  "reports_entrants_eur": {
+                    "type": "number"
+                  },
+                  "mouvements_reglementaires_eur": {
+                    "type": "number"
+                  },
+                  "fonds_de_concours_et_attributions_de_produits_eur": {
+                    "type": "number"
+                  },
+                  "fongibilite_asymetrique_eur": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "required": [
+              "annee",
+              "source"
+            ]
+          }
+        },
+        "lecture": {
+          "type": "string"
+        },
+        "note_perimetre": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "annees"
+      ]
+    },
+    "resultats_mesures": {
+      "type": "object",
+      "properties": {
+        "indicateurs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[0-9]{3}-[0-9]+$"
+              },
+              "code_indicateur": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^P[0-9]{3}-"
+              },
+              "objectif": {
+                "type": "string"
+              },
+              "indicateur": {
+                "type": "string"
+              },
+              "sous_indicateur": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "unite": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "libelles_anterieurs": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "indicateur_de_contexte": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "valeurs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "annee": {
+                      "type": "integer",
+                      "minimum": 1990,
+                      "maximum": 2100
+                    },
+                    "valeur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "brut": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "note": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "annee",
+                    "valeur",
+                    "brut",
+                    "source"
+                  ]
+                }
+              },
+              "cibles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "annee": {
+                      "type": "integer",
+                      "minimum": 1990,
+                      "maximum": 2100
+                    },
+                    "valeur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "brut": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "note": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "annee",
+                    "valeur",
+                    "brut",
+                    "source"
+                  ]
+                }
+              },
+              "ecarts_a_la_cible": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "annee": {
+                      "type": "integer",
+                      "minimum": 1990,
+                      "maximum": 2100
+                    },
+                    "realise": {
+                      "type": "number"
+                    },
+                    "cible": {
+                      "type": "number"
+                    },
+                    "ecart": {
+                      "type": "number"
+                    },
+                    "atteinte_publiee": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "annee",
+                    "realise",
+                    "cible",
+                    "ecart"
+                  ]
+                }
+              },
+              "sens_souhaite": {
+                "type": "object",
+                "properties": {
+                  "valeur": {
+                    "enum": [
+                      "hausse",
+                      "baisse",
+                      "stabilité",
+                      "inconnu"
+                    ]
+                  },
+                  "methode": {
+                    "enum": [
+                      "colonne evolution",
+                      "position des cibles",
+                      null
+                    ]
+                  },
+                  "source": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "justification": {
+                    "type": "string"
+                  },
+                  "comparaisons": {
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "valeur",
+                  "methode"
+                ]
+              },
+              "tendance": {
+                "type": "object",
+                "properties": {
+                  "valeur": {
+                    "enum": [
+                      "en progrès",
+                      "en recul",
+                      "stable",
+                      "sens inconnu"
+                    ]
+                  },
+                  "de_annee": {
+                    "type": "integer",
+                    "minimum": 1990,
+                    "maximum": 2100
+                  },
+                  "a_annee": {
+                    "type": "integer",
+                    "minimum": 1990,
+                    "maximum": 2100
+                  },
+                  "de": {
+                    "type": "number"
+                  },
+                  "a": {
+                    "type": "number"
+                  },
+                  "variation": {
+                    "type": "number"
+                  },
+                  "variation_relative_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "justification": {
+                    "type": "object"
+                  },
+                  "raison": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "valeur"
+                ]
+              },
+              "rapprochement": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            },
+            "required": [
+              "id",
+              "code_indicateur",
+              "objectif",
+              "indicateur",
+              "valeurs",
+              "cibles",
+              "sens_souhaite",
+              "tendance"
+            ]
+          }
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lecture": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "indicateurs"
+      ]
+    },
+    "realisations_concretes": {
+      "type": "object",
+      "properties": {
+        "liste": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objet": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "beneficiaire": {
+                "type": "string"
+              },
+              "siren": {
+                "$ref": "commun.schema.json#/$defs/siren"
+              },
+              "montant_eur": {
+                "type": "number"
+              },
+              "eur_sur_100": {
+                "type": "number"
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "beneficiaire",
+              "siren",
+              "montant_eur",
+              "type"
+            ],
+            "propertyNames": {
+              "not": {
+                "pattern": "(?i)pr[eé]nom"
+              }
+            }
+          },
+          "maxItems": 10
+        },
+        "fichier_beneficiaires": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^beneficiaires/[a-z0-9_]+\\.json$"
+        },
+        "france2030": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": [
+            "total_eur",
+            "projets"
+          ]
+        },
+        "millesime": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "liste",
+        "fichier_beneficiaires",
+        "france2030"
+      ]
+    },
+    "evaluations": {
+      "type": "object",
+      "properties": {
+        "liens": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "annee_execution": {
+                "type": "integer",
+                "minimum": 1990,
+                "maximum": 2100
+              },
+              "titre": {
+                "type": "string"
+              },
+              "titre_publie": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string",
+                "pattern": "^https://"
+              },
+              "page": {
+                "type": "string"
+              },
+              "rattachement": {
+                "type": "string"
+              },
+              "verifie": {
+                "const": true
+              },
+              "verifie_le": {
+                "type": "string",
+                "format": "date"
+              },
+              "statut_http": {
+                "const": 200
+              }
+            },
+            "required": [
+              "type",
+              "titre",
+              "url",
+              "verifie",
+              "verifie_le",
+              "statut_http"
+            ]
+          }
+        },
+        "liens_ecartes_non_verifies": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "liens",
+        "liens_ecartes_non_verifies",
+        "note"
+      ]
+    }
+  },
+  "required": [
+    "avertissement",
+    "programme",
+    "libelle",
+    "mission",
+    "prevu_depense",
+    "resultats_mesures",
+    "realisations_concretes",
+    "evaluations"
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/marches_etat.schema.json",
+  "title": "site/data/beneficiaires/marches_etat.json : marches publics des services de l'Etat",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "perimetre": {
+      "type": "string"
+    },
+    "methode": {
+      "type": "string"
+    },
+    "ensemble": {
+      "allOf": [
+        {
+          "$ref": "commun.schema.json#/$defs/groupe_beneficiaires"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "total_eur": {
+          "type": "number"
+        },
+        "nombre_marches": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "top": {
+          "items": {
+            "properties": {
+              "nombre_marches": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "total_eur",
+        "nombre_marches"
+      ]
+    },
+    "par_ministere": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "allOf": [
+          {
+            "$ref": "commun.schema.json#/$defs/groupe_beneficiaires"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "total_eur": {
+            "type": "number"
+          },
+          "nombre_marches": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "top": {
+            "items": {
+              "properties": {
+                "nombre_marches": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "total_eur",
+          "nombre_marches"
+        ]
+      }
+    },
+    "ecartes_montants_aberrants": {
+      "type": "object",
+      "properties": {
+        "montant_eur": {
+          "type": "number"
+        },
+        "lignes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "montant_eur",
+        "lignes"
+      ]
+    }
+  },
+  "required": [
+    "ensemble",
+    "par_ministere"
+  ]
+}

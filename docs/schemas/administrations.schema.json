@@ -1,45 +1,151 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://ou-vont-mes-impots.fr/contrat/v1/administrations.schema.json",
-  "title": "site/data/administrations.json : recettes, depenses et solde de chaque administration publique",
-  "type": "object",
-  "required": [
-    "unite",
-    "TR",
-    "TE",
-    "B9",
-    "annees"
+  "title": "site/data/administrations.json : recettes, depenses, solde par administration",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
   ],
-  "additionalProperties": false,
+  "type": "object",
   "properties": {
     "unite": {
-      "const": "milliards d'euros"
+      "type": "string"
     },
     "TR": {
-      "const": "recettes"
+      "type": "string"
     },
     "TE": {
-      "const": "depenses"
+      "type": "string"
     },
     "B9": {
-      "const": "solde (negatif = deficit)"
+      "type": "string"
     },
     "annees": {
       "type": "object",
       "minProperties": 1,
       "propertyNames": {
-        "type": "string",
-        "pattern": "^(19|20)[0-9]{2}$"
+        "$ref": "commun.schema.json#/$defs/annee"
       },
       "additionalProperties": {
         "type": "object",
-        "propertyNames": {
-          "enum": [
-            "Ensemble",
-            "Etat",
-            "Collectivites locales",
-            "Securite sociale"
-          ]
+        "properties": {
+          "Ensemble": {
+            "type": "object",
+            "properties": {
+              "TR": {
+                "type": "number"
+              },
+              "TE": {
+                "type": "number"
+              },
+              "B9": {
+                "type": "number"
+              },
+              "D73PAY": {
+                "type": "number"
+              },
+              "D92PAY": {
+                "type": "number"
+              },
+              "D99PAY": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "TR",
+              "TE",
+              "B9"
+            ],
+            "additionalProperties": false
+          },
+          "Etat": {
+            "type": "object",
+            "properties": {
+              "TR": {
+                "type": "number"
+              },
+              "TE": {
+                "type": "number"
+              },
+              "B9": {
+                "type": "number"
+              },
+              "D73PAY": {
+                "type": "number"
+              },
+              "D92PAY": {
+                "type": "number"
+              },
+              "D99PAY": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "TR",
+              "TE",
+              "B9"
+            ],
+            "additionalProperties": false
+          },
+          "Collectivites locales": {
+            "type": "object",
+            "properties": {
+              "TR": {
+                "type": "number"
+              },
+              "TE": {
+                "type": "number"
+              },
+              "B9": {
+                "type": "number"
+              },
+              "D73PAY": {
+                "type": "number"
+              },
+              "D92PAY": {
+                "type": "number"
+              },
+              "D99PAY": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "TR",
+              "TE",
+              "B9"
+            ],
+            "additionalProperties": false
+          },
+          "Securite sociale": {
+            "type": "object",
+            "properties": {
+              "TR": {
+                "type": "number"
+              },
+              "TE": {
+                "type": "number"
+              },
+              "B9": {
+                "type": "number"
+              },
+              "D73PAY": {
+                "type": "number"
+              },
+              "D92PAY": {
+                "type": "number"
+              },
+              "D99PAY": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "TR",
+              "TE",
+              "B9"
+            ],
+            "additionalProperties": false
+          }
         },
         "required": [
           "Ensemble",
@@ -47,28 +153,15 @@
           "Collectivites locales",
           "Securite sociale"
         ],
-        "additionalProperties": {
-          "type": "object",
-          "required": [
-            "TR",
-            "TE",
-            "B9"
-          ],
-          "propertyNames": {
-            "enum": [
-              "TR",
-              "TE",
-              "B9",
-              "D73PAY",
-              "D92PAY",
-              "D99PAY"
-            ]
-          },
-          "additionalProperties": {
-            "type": "number"
-          }
-        }
+        "additionalProperties": false
       }
     }
-  }
+  },
+  "required": [
+    "unite",
+    "TR",
+    "TE",
+    "B9",
+    "annees"
+  ]
 }

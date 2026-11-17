@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/france2030.schema.json",
+  "title": "site/data/beneficiaires/france2030.json : France 2030 par operateur et beneficiaire",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "lignes_source": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "doublons_exacts_retires": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ensemble": {
+      "allOf": [
+        {
+          "$ref": "commun.schema.json#/$defs/groupe_beneficiaires"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "total_eur": {
+          "type": "number"
+        },
+        "projets": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "beneficiaires_personnes_morales": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "top": {
+          "items": {
+            "properties": {
+              "typologie": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "operateurs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "projets": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "total_eur",
+        "projets"
+      ]
+    },
+    "par_operateur": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "allOf": [
+          {
+            "$ref": "commun.schema.json#/$defs/groupe_beneficiaires"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "total_eur": {
+            "type": "number"
+          },
+          "projets": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "beneficiaires_personnes_morales": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "top": {
+            "items": {
+              "properties": {
+                "typologie": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "operateurs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "projets": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "total_eur",
+          "projets"
+        ]
+      }
+    },
+    "par_programme": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[0-9]{3}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "total_eur": {
+            "type": "number"
+          },
+          "projets": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "libelle": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "total_eur",
+          "projets"
+        ]
+      }
+    }
+  },
+  "required": [
+    "ensemble",
+    "par_operateur",
+    "par_programme"
+  ]
+}

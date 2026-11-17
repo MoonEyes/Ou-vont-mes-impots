@@ -3,10 +3,15 @@
 Usage :
     python docs/valider_contrat.py            # tous les fichiers
     python docs/valider_contrat.py --quiet    # n'affiche que les erreurs et le bilan
+    python docs/valider_contrat.py --strict   # un fichier JSON couvert par aucun schema est une erreur
+
+Controles : JSON Schema (docs/schemas/, references croisees via commun.schema.json), puis hors schema :
+liens `fichier` des arbres et des index, conservation des groupes de beneficiaires (a 1 euro pres).
 
 Code de sortie : 0 si tout fichier present est conforme ; 1 si un fichier present est
 non conforme ou si un fichier marque "existant" manque. Un fichier "prevu" absent est
-signale (PREVU) sans faire echouer la validation.
+signale (PREVU) sans faire echouer la validation ; un fichier orphelin (aucun schema) est
+signale (ORPHELIN), bloquant seulement avec --strict.
 """
 from __future__ import annotations
 
@@ -23,12 +28,15 @@ SITE = ROOT / "site" / "data"
 SCHEMAS = Path(__file__).resolve().parent / "schemas"
 EXEMPLES = Path(__file__).resolve().parent / "exemples"
 
-# (schema, motif relatif a site/data, etat attendu)
+# (schema, motif relatif a site/data, etat attendu). Tout fichier JSON de site/data doit etre couvert par au
+# moins un motif : un fichier orphelin fait echouer la validation (contrat a completer).
 FICHIERS = [
     ("meta.schema.json", "meta.json", "existant"),
-    ("sankey_etat.schema.json", "sankey_etat.json", "existant"),
+    ("sankey_etat.schema.json", "sankey_etat*.json", "existant"),
     ("nature_etat.schema.json", "nature_etat.json", "existant"),
     ("arbre_etat.schema.json", "arbre/*.json", "existant"),
+    ("arbre_etat.schema.json", "arbre_lfi2025/*.json", "existant"),
+    ("arbre_etat.schema.json", "arbre_plf2025_nature/*.json", "existant"),
     ("programme.schema.json", "programmes/*.json", "existant"),
     ("arbre_administrations.schema.json", "arbre_administrations/racine.json", "existant"),
     ("arbre_administrations_methode.schema.json", "arbre_administrations/methode.json", "existant"),
@@ -37,8 +45,26 @@ FICHIERS = [
     ("cofog.schema.json", "cofog.json", "existant"),
     ("deficit.schema.json", "deficit.json", "existant"),
     ("communes.schema.json", "communes/*.json", "existant"),
+    # contrat 1.1 : precision par programme (pipeline/beneficiaires.py)
+    ("nature_programme.schema.json", "nature/[0-9]*.json", "existant"),
+    ("effectifs.schema.json", "effectifs/[0-9]*.json", "existant"),
+    ("beneficiaires_programme.schema.json", "beneficiaires/programme_*.json", "existant"),
+    ("france2030.schema.json", "beneficiaires/france2030.json", "existant"),
+    ("marches_etat.schema.json", "beneficiaires/marches_etat.json", "existant"),
+    ("beneficiaires_index.schema.json", "beneficiaires/index.json", "existant"),
+    # contrat 1.2 : realisations (pipeline/realisations.py)
+    ("realisations.schema.json", "realisations/[0-9]*.json", "existant"),
+    ("realisations_index.schema.json", "realisations/index.json", "existant"),
+    # contrat 1.3 : vie politique (pipeline/vie_politique.py)
+    ("vie_politique_annees.schema.json", "vie_politique/annees.json", "existant"),
+    ("vie_politique_partis.schema.json", "vie_politique/partis/*.json", "existant"),
+    ("vie_politique_scrutin.schema.json", "vie_politique/scrutins/*.json", "existant"),
+    ("vie_politique_candidats.schema.json", "vie_politique/candidats/*.json", "existant"),
     ("affectation_prelevements.schema.json", "affectation_prelevements.json", "prevu"),
 ]
+
+# Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
+SCHEMAS_ARBRE = {"arbre_etat.schema.json", "arbre_administrations.schema.json"}
 
 # Exemples du contrat du module de calcul (docs/exemples/<prefixe>*.json)
 EXEMPLES_SCHEMAS = [("profil.schema.json", "profil_*.json"), ("resultat.schema.json", "resultat_*.json")]
@@ -46,6 +72,7 @@ EXEMPLES_SCHEMAS = [("profil.schema.json", "profil_*.json"), ("resultat.schema.j
 
 def charger_jsonschema():
     try:
+        importlib.import_module("referencing")
         return importlib.import_module("jsonschema")
     except ImportError:
         print("jsonschema absent : installation (pip install jsonschema)...")
@@ -59,11 +86,27 @@ def best_match(erreurs_):
     return bm(erreurs_)
 
 
+_REGISTRE = None
+
+
+def registre():
+    """Tous les schemas de docs/schemas, indexes par $id (references croisees, ex. commun.schema.json)."""
+    global _REGISTRE
+    if _REGISTRE is None:
+        from referencing import Registry, Resource
+        ressources = []
+        for p in sorted(SCHEMAS.glob("*.schema.json")):
+            doc = json.loads(p.read_text(encoding="utf-8"))
+            ressources.append((doc["$id"], Resource.from_contents(doc)))
+        _REGISTRE = Registry().with_resources(ressources)
+    return _REGISTRE
+
+
 def validateur(js, nom_schema: str):
     schema = json.loads((SCHEMAS / nom_schema).read_text(encoding="utf-8"))
     cls = js.validators.validator_for(schema)
     cls.check_schema(schema)
-    return cls(schema, format_checker=cls.FORMAT_CHECKER)
+    return cls(schema, registry=registre(), format_checker=cls.FORMAT_CHECKER)
 
 
 def erreurs(v, doc, limite: int = 5) -> list[str]:
@@ -93,16 +136,64 @@ def liens_arbre(chemin: Path, doc: dict) -> list[str]:
     return manquants
 
 
+def liens_fichiers(chemin: Path, doc) -> list[str]:
+    """Controle hors schema : toute cle `fichier*` qui designe un .json pointe vers un fichier present.
+
+    Regle commune : chemin relatif a site/data/. Exception tolere (signalee au contrat) : vie_politique/annees.json
+    ecrit ses liens relatifs a son propre dossier.
+    """
+    manquants = []
+
+    def parcourir(v):
+        if isinstance(v, dict):
+            for k, x in v.items():
+                if (k.startswith("fichier") and isinstance(x, str) and x.endswith(".json") and "<" not in x):
+                    if not ((SITE / x).exists() or (chemin.parent / x).exists()):
+                        manquants.append(f"lien {k} -> {x} introuvable")
+                else:
+                    parcourir(x)
+        elif isinstance(v, list):
+            for x in v:
+                parcourir(x)
+
+    parcourir(doc)
+    return manquants[:5]
+
+
+def conservation_groupes(doc) -> list[str]:
+    """Controle hors schema : dans un groupe de beneficiaires, top + autres + exclus = total (a 1 euro pres)."""
+    ecarts = []
+
+    def parcourir(v, chemin):
+        if isinstance(v, dict):
+            if "top" in v and "exclus_personnes_physiques_ou_non_identifies" in v:
+                total = v.get("total_eur", v.get("total_source_eur"))
+                somme = (sum(t["montant_eur"] for t in v["top"]) + v["autres_personnes_morales"]["montant_eur"]
+                         + v["autres_non_verifies"]["montant_eur"]
+                         + v["exclus_personnes_physiques_ou_non_identifies"]["montant_eur"])
+                if total is None or abs(somme - total) > 1:
+                    ecarts.append(f"{chemin or '/'} : conservation rompue (somme {somme:.2f} != total {total})")
+            for k, x in v.items():
+                parcourir(x, f"{chemin}/{k}")
+
+    parcourir(doc, "")
+    return ecarts
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--quiet", action="store_true")
+    ap.add_argument("--strict", action="store_true",
+                    help="un fichier de site/data couvert par aucun schema fait echouer la validation")
     args = ap.parse_args()
     js = charger_jsonschema()
 
     n_ok = n_ko = n_prevus = n_manquants = 0
+    couverts: set[Path] = set()
     for nom_schema, motif, etat in FICHIERS:
         v = validateur(js, nom_schema)
         chemins = sorted(Path(p) for p in glob.glob(str(SITE / motif)))
+        couverts.update(chemins)
         if not chemins:
             if etat == "prevu":
                 n_prevus += 1
@@ -120,8 +211,10 @@ def main() -> int:
                 ko_motif += 1
                 continue
             errs = erreurs(v, doc)
-            if nom_schema == "arbre_etat.schema.json":
+            if nom_schema in SCHEMAS_ARBRE:
                 errs += liens_arbre(p, doc)
+            elif not errs:
+                errs += liens_fichiers(p, doc) + conservation_groupes(doc)
             if errs:
                 ko_motif += 1
                 print(f"KO       {p.relative_to(ROOT)}")
@@ -131,6 +224,12 @@ def main() -> int:
         n_ok += len(chemins) - ko_motif
         if not args.quiet and not ko_motif:
             print(f"OK       {motif} ({len(chemins)} fichier{'s' if len(chemins) > 1 else ''})")
+
+    orphelins = sorted(set(SITE.rglob("*.json")) - couverts)
+    for p in orphelins[:10]:
+        print(f"ORPHELIN {p.relative_to(ROOT)} : aucun schema ne couvre ce fichier (completer FICHIERS)")
+    if len(orphelins) > 10:
+        print(f"ORPHELIN ... et {len(orphelins) - 10} autres")
 
     for nom_schema, motif in EXEMPLES_SCHEMAS:
         v = validateur(js, nom_schema)
@@ -146,8 +245,9 @@ def main() -> int:
                 if not args.quiet:
                     print(f"OK       {p.relative_to(ROOT)}")
 
-    print(f"\nBilan : {n_ok} conformes, {n_ko} non conformes, {n_manquants} manquants, {n_prevus} prevus absents")
-    return 1 if (n_ko or n_manquants) else 0
+    print(f"\nBilan : {n_ok} conformes, {n_ko} non conformes, {n_manquants} manquants, {n_prevus} prevus absents, "
+          f"{len(orphelins)} orphelins{' (bloquants : --strict)' if args.strict else ''}")
+    return 1 if (n_ko or n_manquants or (args.strict and orphelins)) else 0
 
 
 if __name__ == "__main__":

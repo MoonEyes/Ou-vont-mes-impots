@@ -1,29 +1,27 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://ou-vont-mes-impots.fr/contrat/v1/nature_etat.schema.json",
-  "title": "site/data/nature_etat.json : budget de l'Etat par nature (titres et categories LOLF)",
-  "type": "object",
-  "required": [
-    "unite",
-    "titres"
+  "title": "site/data/nature_etat.json : budget de l'Etat par titre et categorie LOLF",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
   ],
-  "additionalProperties": false,
+  "type": "object",
   "properties": {
     "unite": {
-      "const": "milliards d'euros (credits de paiement)"
+      "$ref": "commun.schema.json#/$defs/unite_md_cp"
+    },
+    "libelle": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string"
     },
     "titres": {
       "type": "array",
-      "minItems": 1,
       "items": {
         "type": "object",
-        "required": [
-          "titre",
-          "nom",
-          "md",
-          "categories"
-        ],
-        "additionalProperties": false,
         "properties": {
           "titre": {
             "enum": [
@@ -40,19 +38,12 @@
             "type": "string"
           },
           "md": {
-            "type": "number",
-            "description": "Montant en milliards d'euros"
+            "type": "number"
           },
           "categories": {
             "type": "array",
             "items": {
               "type": "object",
-              "required": [
-                "code",
-                "nom",
-                "md"
-              ],
-              "additionalProperties": false,
               "properties": {
                 "code": {
                   "type": "string",
@@ -62,14 +53,31 @@
                   "type": "string"
                 },
                 "md": {
-                  "type": "number",
-                  "description": "Montant en milliards d'euros"
+                  "type": "number"
                 }
-              }
+              },
+              "required": [
+                "code",
+                "nom",
+                "md"
+              ],
+              "additionalProperties": false
             }
           }
-        }
-      }
+        },
+        "required": [
+          "titre",
+          "nom",
+          "md",
+          "categories"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
     }
-  }
+  },
+  "required": [
+    "unite",
+    "titres"
+  ]
 }

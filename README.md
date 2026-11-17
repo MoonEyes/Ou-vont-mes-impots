@@ -1,63 +1,86 @@
 # Où vont mes impôts
 
-Site citoyen gratuit : à partir de ton salaire net, voir où va ton argent (État, Sécurité sociale), à partir des données publiques ouvertes.
+Site citoyen gratuit : à partir de ton salaire net, voir où va ton argent (État, Sécurité sociale, collectivités), et pour chaque euro du budget de l'État, ce qui a été prévu, dépensé, à qui et avec quels résultats. Uniquement des données publiques ouvertes, chaque montant renvoie à sa source.
 
-Ce dépôt contient pour l'instant le **pipeline de données**.
-
-## Récupération des données
-
-Méthode « git scraping » : un workflow planifié télécharge les sources, vérifie leur schéma, transforme, valide, puis committe uniquement s'il y a un changement. L'historique git sert de versionnage des données.
+## Architecture
 
 ```
-fetch.py  ->  check_schema.py  ->  transform.py  ->  frictionless validate  ->  pytest  ->  commit si diff
+collecte/ ──> data/lake (entrepôt brut, OVH)  ──┐
+fetch.py  ──> data/raw (versionné)  ────────────┼──> pipeline/ ──> site/data/*.json ──> web/ (site)
+                                                │                       │
+                                                │       docs/valider_contrat.py (JSON Schema)
 ```
 
-| Source | Contenu | Accès |
+| Étape | Dossier | Rôle |
 |---|---|---|
-| data.economie.gouv.fr `plf-2026-budget-vert` | Budget de l'État : exécution 2024 (vue par défaut) et LFI 2025, par action | API Opendatasoft v2.1 |
-| data.economie.gouv.fr `situations-mensuelles-budgetaires-series-longues` | Prélèvements sur recettes (UE, collectivités), solde de l'État | idem |
-| data.economie.gouv.fr `plf25-depenses-...` | Répartition par nature (personnel, fonctionnement...), vue séparée d'après le PLF 2025 | idem |
-| data.economie.gouv.fr `fiscalite-locale-des-particuliers` | Taux de taxe foncière et TEOM par commune (dernier exercice) | idem |
-| Eurostat `gov_10a_exp` | Dépenses publiques par fonction (COFOG) | API JSON-stat |
-| Eurostat `gov_10dd_edpt1` | Solde public (déficit) | API JSON-stat |
+| Collecte | `collecte/`, `deploy/` | collecte large et brute (6 000 sources), tracée dans `data/lake/manifest.json` ; tourne chaque semaine sur un VPS et range tout dans OVH Object Storage (`docs/STOCKAGE.md`) |
+| Entrepôt | `data/lake/` (non versionné), `data/raw/` (versionné) | `data/raw` : petites sources téléchargées par `pipeline/fetch.py` à chaque passage ; `data/lake` : tout le reste |
+| Pipeline | `pipeline/` | transforme en fichiers compacts pour le site, avec `millesime` et `source` dans chaque fichier |
+| Données du site | `site/data/` (versionné) | format fixé par le contrat d'interface `docs/contrat_interface.md` et ses schémas `docs/schemas/` |
+| Site | `web/` | Vite + TypeScript ; calcul personnel dans le navigateur (`modele-social`, `publicodes`) |
+
+Modules du pipeline, dans l'ordre (chacun lit les sorties des précédents) :
+
+| Module | Entrées | Sorties |
+|---|---|---|
+| `fetch.py`, `check_schema.py`, `transform.py` | `data/raw` (réseau) | arbres État, sankey, programmes, Eurostat, communes, `meta.json` |
+| `beneficiaires.py` | `data/lake` + API Recherche d'entreprises | `nature/`, `effectifs/`, `beneficiaires/` |
+| `realisations.py` | `data/lake` + ccomptes.fr | `realisations/` |
+| `vie_politique.py` | `data/lake` (CNCCFP, JO, programme 232) | `vie_politique/` |
+| `decisions.py` | `data/lake` (AN, Sénat, JORF, PLRG) | `decisions/` (en cours) |
+| `tracabilite.py` | `site/data` + `data/lake` | `tracabilite/` (en cours) |
+| `local.py` | `data/lake` + API géo et OFGL | `local/` (en cours) |
 
 ## Commandes
 
 ```bash
 pip install -r requirements.txt
-python pipeline/fetch.py            # télécharge data/raw/
-python pipeline/check_schema.py     # échoue si la source a changé de schéma
-python pipeline/transform.py        # produit site/data/
+
+# budget, Eurostat, communes (réseau, quelques minutes)
+python pipeline/fetch.py && python pipeline/check_schema.py && python pipeline/transform.py
+
+# modules de précision (entrepôt brut data/lake requis)
+python pipeline/beneficiaires.py tout
+python pipeline/realisations.py produire
+python pipeline/vie_politique.py produire
+
+# contrôles
 frictionless validate datapackage.json
+python docs/valider_contrat.py --quiet
 pytest -q
+
+# site
+cd web && npm ci && npm run dev
 ```
 
-Changement de schéma attendu : `python pipeline/check_schema.py --accept`.
-Nouvelle mission au budget : l'ajouter dans `pipeline/grands_postes.json` (le pipeline échoue tant qu'elle n'est pas rattachée).
+Changement de schéma attendu à la source : `python pipeline/check_schema.py --accept`. Nouvelle mission au budget : la rattacher dans `pipeline/grands_postes.json` (le pipeline échoue tant qu'elle ne l'est pas). Collecte de l'entrepôt : `python collecte/collecte.py --help` et `docs/STOCKAGE.md`.
 
-## Entrepôt brut (collecte/)
+**Mise à jour automatique** (`.github/workflows/data.yml`, chaque lundi) : fetch, contrôle de schéma, transform, modules de précision (sautés avec un avis sur le runner GitHub, qui n'a pas `data/lake` : leurs fichiers publiés restent tels quels), Frictionless, contrat, tests, puis commit **seulement si une donnée a changé** (l'horodatage `genere_le` de `meta.json` seul ne déclenche rien). En cas d'échec, une issue `pipeline-donnees` est ouverte ou commentée.
 
-Collecte large et brute de tout ce qui touche à l'argent public, tracée dans `data/lake/manifest.json` (non versionné).
+## Données couvertes
 
-```bash
-python collecte/decouverte.py                         # recense les jeux des portails (collecte/decouvertes.json)
-python collecte/collecte.py --domaine etat            # catalogue manuel (collecte/catalogue.json), par domaine
-python collecte/collecte.py --decouvertes --score-min 4 --portail economie
-python collecte/collecte.py --lourd                   # sources > 100 Mo (garde --reserve-go libres)
-python collecte/rapport.py                            # collecte/RAPPORT_COLLECTE.md
-pytest -q collecte/tests                              # tests sans réseau
-```
+| Donnée | Millésime | Source |
+|---|---|---|
+| Budget de l'État par grand poste, mission, programme, action | exécution 2024 (vue par défaut), LFI 2025 | data.economie.gouv.fr, budget vert PLF 2026, PLRG 2024 |
+| Répartition par nature (vue séparée) | PLF 2025 | data.economie.gouv.fr |
+| Nature réelle, effectifs par programme | exécution 2024 ; ETPT LFI 2023 | PLRG 2024, jaune ETPT |
+| Bénéficiaires nommés (personnes morales) | associations 2023, France 2030 (2021-2025), marchés de l'État 2024 | jaunes PLF 2025, France 2030, DECP |
+| Prévu / dépensé, indicateurs de performance, évaluations | exécution 2010-2025 (trous 2015-2017, 2021), performance 2012-2025 | PLR, RAP, PAP, Cour des comptes |
+| Vie politique : programme 232, aide aux partis, comptes de campagne | 2012 à 2025 | CNCCFP, Journal officiel |
+| Dépenses publiques par fonction, par administration, recettes par impôt | 2005 à 2025 | Eurostat `gov_10a_exp`, `gov_10a_main`, `gov_10a_taxag` |
+| Solde public, part empruntée | État 2024-2025 ; APU 2015-2025 | DGFiP, Eurostat |
+| Taux de taxe foncière et TEOM par commune | exercice 2025 | DGFiP (REI) |
 
-Une source déjà collectée et inchangée en amont n'est pas retéléchargée. Les données de personnes physiques (publiées en open data officiel) vont dans `data/lake/_restreint/` et ne doivent pas être affichées nominativement.
+Le détail (champs, unités, contrôles) est dans `docs/contrat_interface.md`.
 
-## Choix de méthode
+## Règles
 
-- Les remboursements et dégrèvements d'impôts (147 Md€) sont exclus : ce sont des restitutions, pas des dépenses.
-- Arbre État : dépense exécutée 2024 par défaut, LFI 2025 en option, budget général, avec la branche « prélèvements sur recettes ». Les règles de périmètre (mission Pensions, fonds de concours, mesures de périmètre) sont dans `pipeline/grands_postes.json` et chaque montant écarté est publié dans `site/data/meta.json`.
-- Part empruntée : comptabilité budgétaire pour l'État, comptabilité nationale (Eurostat B9) pour l'ensemble des administrations, jamais mélangées (`site/data/deficit.json`).
-- Calcul personnel : dans le navigateur uniquement ; OpenFisca sert seulement de référence dans les tests (`tests/cas_types/`). Contrat des fichiers : `docs/contrat_interface.md`.
-- En cas d'échec, le workflow ouvre (ou commente) une issue `pipeline-donnees`.
+- **Personnes physiques** : seules les personnes morales sont nommées (catégorie juridique 2xxx à 9xxx). Entrepreneurs individuels, SIREN absents ou invalides : agrégés, jamais nommés. Les sources qui en contiennent vont dans `data/lake/_restreint/` et le bucket privé, jamais dans `site/data`.
+- **Candidats nommés** : seule exception, les candidats des comptes de campagne publiés par la CNCCFP ou au Journal officiel, avec une liste blanche de champs (ni adresse, ni date de naissance, ni donateur).
+- **Traçabilité** : chaque fichier porte `millesime` et `source` ; un montant écarté (remboursements et dégrèvements, hors périmètre, aberrant) est publié avec sa raison dans `meta.json` ou le fichier concerné, jamais supprimé en silence. Comptabilité budgétaire (État) et nationale (APU) ne sont jamais mélangées.
+- **Contrat** : tout nouveau fichier de `site/data` a son schéma dans `docs/schemas/` et sa section dans `docs/contrat_interface.md` ; `pytest` échoue sinon.
+- **Calcul personnel** : dans le navigateur uniquement ; OpenFisca sert seulement de référence dans les tests (`tests/cas_types/`).
 
 ## Licences
 
-Code : MIT. Données : Licence Ouverte 2.0 (Etalab) et conditions Eurostat (réutilisation libre avec mention de la source).
+Code : MIT (`LICENSE`). Données : Licence Ouverte 2.0 (Etalab) pour les sources françaises, conditions Eurostat (réutilisation libre avec mention de la source). Contribuer : `CONTRIBUTING.md` ; code de conduite : `CODE_OF_CONDUCT.md`.

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/beneficiaires_index.schema.json",
+  "title": "site/data/beneficiaires/index.json : index et totaux de controle",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "programmes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9]{3}$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "fichiers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "array"
+        ]
+      }
+    },
+    "regle_personnes_physiques": {
+      "type": "string",
+      "minLength": 20
+    },
+    "controle": {
+      "type": "object",
+      "properties": {
+        "nature": {
+          "type": "object",
+          "properties": {
+            "tolerance_pct": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "tolerance_pct"
+          ]
+        }
+      },
+      "required": [
+        "nature"
+      ]
+    }
+  },
+  "required": [
+    "programmes",
+    "fichiers",
+    "regle_personnes_physiques",
+    "controle"
+  ]
+}

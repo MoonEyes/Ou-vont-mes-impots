@@ -1,18 +1,24 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://ou-vont-mes-impots.fr/contrat/v1/arbre_administrations.schema.json",
-  "title": "site/data/arbre_administrations/racine.json : depenses par administration > fonction COFOG > sous-fonction",
+  "title": "site/data/arbre_administrations/racine.json : administration > fonction COFOG > sous-fonction",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
   "$ref": "#/$defs/noeud",
+  "properties": {
+    "unite": {
+      "$ref": "commun.schema.json#/$defs/unite_md_cp"
+    }
+  },
+  "required": [
+    "unite"
+  ],
   "$defs": {
     "noeud": {
       "type": "object",
-      "required": [
-        "id",
-        "nom",
-        "niveau",
-        "md"
-      ],
-      "additionalProperties": false,
       "properties": {
         "id": {
           "type": "string",
@@ -31,26 +37,47 @@
         },
         "md": {
           "type": "number",
-          "minimum": 0,
-          "description": "Milliards d'euros, 6 decimales"
+          "description": "Milliards d'euros, 6 decimales ; somme des enfants",
+          "minimum": 0
         },
         "enfants": {
           "type": "array",
-          "minItems": 1,
           "items": {
             "$ref": "#/$defs/noeud"
-          }
+          },
+          "minItems": 1
         },
         "fichier": {
           "type": "string",
-          "pattern": "^arbre/[0-9A-Za-z_-]+\\.json$",
-          "description": "Sous-arbre a charger a la demande (chemin relatif a site/data/)"
+          "pattern": "^(arbre_administrations)/[0-9A-Za-z_-]+\\.json$"
         },
         "nb_enfants": {
           "type": "integer",
           "minimum": 1
+        },
+        "millesime": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "unite": {
+          "type": "string"
+        },
+        "libelle": {
+          "type": "string"
+        },
+        "avertissement": {
+          "type": "string"
         }
       },
+      "required": [
+        "id",
+        "nom",
+        "niveau",
+        "md"
+      ],
+      "additionalProperties": false,
       "dependentRequired": {
         "fichier": [
           "nb_enfants"

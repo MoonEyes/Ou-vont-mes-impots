@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/effectifs.schema.json",
+  "title": "site/data/effectifs/<programme>.json : ETPT et cout moyen par ETPT",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "programme": {
+      "type": "string",
+      "pattern": "^[0-9]{3}$"
+    },
+    "libelle": {
+      "type": "string"
+    },
+    "nature_etpt": {
+      "type": "string"
+    },
+    "etpt": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "millesime_etpt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "categories_emploi": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "categorie_emploi": {
+            "type": "string"
+          },
+          "etpt": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "categorie_emploi",
+          "etpt"
+        ]
+      }
+    },
+    "titre2_eur": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "millesime_titre2": {
+      "type": "string"
+    },
+    "eur_sur_100_titre2": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "cout_moyen_par_etpt_eur": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "avertissement": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "programme",
+    "libelle",
+    "etpt",
+    "millesime_etpt",
+    "categories_emploi",
+    "titre2_eur",
+    "millesime_titre2",
+    "eur_sur_100_titre2",
+    "cout_moyen_par_etpt_eur",
+    "avertissement"
+  ]
+}

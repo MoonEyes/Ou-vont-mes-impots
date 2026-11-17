@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/nature_programme.schema.json",
+  "title": "site/data/nature/<programme>.json : nature reelle de la depense (PLRG 2024)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "programme": {
+      "type": "string",
+      "pattern": "^[0-9]{3}$"
+    },
+    "libelle": {
+      "type": "string"
+    },
+    "mission": {
+      "type": "string"
+    },
+    "total_eur": {
+      "type": "number"
+    },
+    "eur_sur_100": {
+      "type": "number"
+    },
+    "postes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "salaires",
+              "cotisations",
+              "prestations_employeur",
+              "fonctionnement",
+              "subventions_operateurs",
+              "interventions_menages",
+              "interventions_entreprises",
+              "interventions_collectivites",
+              "interventions_autres",
+              "appels_garantie",
+              "investissement",
+              "dette",
+              "pouvoirs_publics",
+              "operations_financieres"
+            ]
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9]{2}$"
+            },
+            "minItems": 1
+          },
+          "eur": {
+            "type": "number"
+          },
+          "part_programme_pct": {
+            "type": "number"
+          },
+          "eur_sur_100": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "libelle",
+          "categories",
+          "eur",
+          "part_programme_pct",
+          "eur_sur_100"
+        ]
+      },
+      "minItems": 1
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[0-9]{2}$"
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "eur": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code",
+          "libelle",
+          "eur"
+        ]
+      },
+      "minItems": 1
+    },
+    "controle_arbre": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "millesime_arbre": {
+          "type": "string"
+        },
+        "total_arbre_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "ecart_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "ecart_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "explication": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "millesime_arbre",
+        "total_arbre_eur",
+        "ecart_eur",
+        "ecart_pct"
+      ]
+    }
+  },
+  "required": [
+    "programme",
+    "libelle",
+    "mission",
+    "total_eur",
+    "eur_sur_100",
+    "postes",
+    "categories",
+    "controle_arbre"
+  ]
+}

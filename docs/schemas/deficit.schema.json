@@ -1,27 +1,136 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://ou-vont-mes-impots.fr/contrat/v1/deficit.schema.json",
-  "title": "site/data/deficit.json : solde public (B9) toutes administrations",
-  "type": "object",
-  "required": [
-    "unite",
-    "solde_public"
+  "title": "site/data/deficit.json : solde et part empruntee (Etat budgetaire, APU Eurostat)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
   ],
-  "additionalProperties": false,
+  "type": "object",
   "properties": {
     "unite": {
-      "const": "milliards d'euros (negatif = deficit)"
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string"
     },
     "solde_public": {
       "type": "object",
       "minProperties": 1,
       "propertyNames": {
-        "type": "string",
-        "pattern": "^(19|20)[0-9]{2}$"
+        "$ref": "commun.schema.json#/$defs/annee"
       },
       "additionalProperties": {
         "type": "number"
       }
+    },
+    "etat": {
+      "type": "object",
+      "properties": {
+        "comptabilite": {
+          "type": "string"
+        },
+        "formule_solde": {
+          "type": "string"
+        },
+        "formule_part_empruntee": {
+          "type": "string"
+        },
+        "lecture": {
+          "type": "string"
+        },
+        "perimetre": {
+          "type": "string"
+        },
+        "annees": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "recettes_nettes_bg_md": {
+                "type": "number"
+              },
+              "depenses_nettes_bg_md": {
+                "type": "number"
+              },
+              "fonds_de_concours_md": {
+                "type": "number"
+              },
+              "prelevements_sur_recettes_md": {
+                "type": "number"
+              },
+              "solde_comptes_speciaux_md": {
+                "type": "number"
+              },
+              "solde_budgets_annexes_md": {
+                "type": "number"
+              },
+              "solde_budgetaire_md": {
+                "type": "number"
+              },
+              "part_empruntee": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "solde_budgetaire_md",
+              "part_empruntee"
+            ]
+          }
+        }
+      },
+      "required": [
+        "comptabilite",
+        "annees"
+      ]
+    },
+    "administrations_publiques": {
+      "type": "object",
+      "properties": {
+        "comptabilite": {
+          "type": "string"
+        },
+        "formule_part_empruntee": {
+          "type": "string"
+        },
+        "annees": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "B9_md": {
+                "type": "number"
+              },
+              "TE_md": {
+                "type": "number"
+              },
+              "part_empruntee": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "B9_md",
+              "TE_md",
+              "part_empruntee"
+            ]
+          }
+        }
+      },
+      "required": [
+        "comptabilite",
+        "annees"
+      ]
     }
-  }
+  },
+  "required": [
+    "unite",
+    "solde_public",
+    "etat",
+    "administrations_publiques"
+  ]
 }

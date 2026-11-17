@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/vie_politique_scrutin.schema.json",
+  "title": "site/data/vie_politique/scrutins/<scrutin>_<annee>.json : agregats d'un scrutin",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "scrutin": {
+      "type": "string",
+      "pattern": "^[a-z_]+$"
+    },
+    "annee": {
+      "type": "integer",
+      "minimum": 1990,
+      "maximum": 2100
+    },
+    "libelle": {
+      "type": "string"
+    },
+    "nombre_candidats": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "depenses_totales_eur": {
+      "type": "number"
+    },
+    "recettes_totales_eur": {
+      "type": "number"
+    },
+    "remboursement_etat_total_eur": {
+      "type": "number"
+    },
+    "apport_personnel_total_eur": {
+      "type": "number"
+    },
+    "dons_totaux_eur": {
+      "type": "number"
+    },
+    "decisions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": "string"
+          },
+          "nombre": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "libelle",
+          "nombre"
+        ]
+      }
+    },
+    "par_nuance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nuance": {
+            "type": "string"
+          },
+          "nombre_candidats": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "nuance",
+          "nombre_candidats"
+        ]
+      }
+    },
+    "avertissements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "unite",
+    "scrutin",
+    "annee",
+    "nombre_candidats",
+    "remboursement_etat_total_eur"
+  ],
+  "description": "Agregats seulement : aucun candidat nomme (le detail est dans candidats/). Les cles candidat/candidats sont interdites.",
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "candidats"
+        ]
+      },
+      {
+        "required": [
+          "candidat"
+        ]
+      }
+    ]
+  }
+}

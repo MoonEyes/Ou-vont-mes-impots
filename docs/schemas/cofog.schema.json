@@ -1,39 +1,28 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://ou-vont-mes-impots.fr/contrat/v1/cofog.schema.json",
-  "title": "site/data/cofog.json : depenses publiques consolidees par fonction (COFOG niveau 1)",
-  "type": "object",
-  "required": [
-    "annee",
-    "unite",
-    "fonctions",
-    "total"
+  "title": "site/data/cofog.json : depenses publiques consolidees par fonction",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
   ],
-  "additionalProperties": false,
+  "type": "object",
   "properties": {
     "annee": {
-      "type": "string",
-      "pattern": "^(19|20)[0-9]{2}$"
+      "$ref": "commun.schema.json#/$defs/annee"
     },
     "unite": {
-      "const": "milliards d'euros"
+      "type": "string"
     },
     "total": {
       "type": "number",
-      "description": "Montant en milliards d'euros"
+      "exclusiveMinimum": 0
     },
     "fonctions": {
       "type": "array",
-      "minItems": 10,
-      "maxItems": 10,
       "items": {
         "type": "object",
-        "required": [
-          "code",
-          "nom",
-          "md"
-        ],
-        "additionalProperties": false,
         "properties": {
           "code": {
             "type": "string",
@@ -43,11 +32,24 @@
             "type": "string"
           },
           "md": {
-            "type": "number",
-            "description": "Montant en milliards d'euros"
+            "type": "number"
           }
-        }
-      }
+        },
+        "required": [
+          "code",
+          "nom",
+          "md"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 10,
+      "maxItems": 10
     }
-  }
+  },
+  "required": [
+    "annee",
+    "unite",
+    "fonctions",
+    "total"
+  ]
 }

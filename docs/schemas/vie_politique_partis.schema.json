@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/vie_politique_partis.schema.json",
+  "title": "site/data/vie_politique/partis/<annee>.json : aide publique par parti",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "exercice": {
+      "type": "integer",
+      "minimum": 1990,
+      "maximum": 2100
+    },
+    "definition": {
+      "type": "string"
+    },
+    "avertissements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "nombre_partis_beneficiaires": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_eur": {
+      "type": "number"
+    },
+    "total_premiere_fraction_eur": {
+      "type": "number"
+    },
+    "total_seconde_fraction_eur": {
+      "type": "number"
+    },
+    "partis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code_cnccfp": {
+            "type": "string"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "premiere_fraction_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "seconde_fraction_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "total_eur": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "nom",
+          "total_eur"
+        ]
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "unite",
+    "exercice",
+    "total_eur",
+    "partis"
+  ]
+}

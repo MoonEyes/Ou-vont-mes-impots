@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/beneficiaires_programme.schema.json",
+  "title": "site/data/beneficiaires/programme_<n>.json : associations subventionnees et operateurs d'un programme",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "programme": {
+      "type": "string",
+      "pattern": "^[0-9]{3}$"
+    },
+    "libelle": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mission": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dans_arbre": {
+      "type": "boolean"
+    },
+    "programme_arbre_eur": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "programme_eur_sur_100": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "associations": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "commun.schema.json#/$defs/groupe_beneficiaires"
+            }
+          ],
+          "type": "object",
+          "properties": {
+            "millesime": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            },
+            "total_source_eur": {
+              "type": "number"
+            },
+            "lignes_source": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "personnes_morales": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "eur_sur_100": {
+              "type": "number"
+            },
+            "top": {
+              "items": {
+                "properties": {
+                  "objet": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "lignes": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
+          },
+          "required": [
+            "millesime",
+            "source",
+            "total_source_eur",
+            "lignes_source",
+            "personnes_morales"
+          ]
+        }
+      ]
+    },
+    "operateurs": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "millesime": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            },
+            "nombre": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "liste": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "operateur": {
+                    "type": "string"
+                  },
+                  "categorie": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "statut": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "operateur"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "millesime",
+            "source",
+            "nombre",
+            "liste"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "programme",
+    "dans_arbre",
+    "associations",
+    "operateurs"
+  ]
+}

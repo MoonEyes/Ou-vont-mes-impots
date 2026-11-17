@@ -1,6 +1,7 @@
 name: Mise a jour des donnees
 
-# Pattern "git scraping" : telecharger, verifier, transformer, committer seulement s'il y a un diff.
+# Pattern "git scraping" : telecharger, verifier, transformer, valider, committer seulement si une donnee a change.
+# L'horodatage seul (site/data/meta.json : genere_le) ne declenche jamais de commit.
 on:
   schedule:
     - cron: "17 4 * * 1"   # chaque lundi 04:17 UTC
@@ -14,10 +15,25 @@ concurrency:
   group: data
   cancel-in-progress: false
 
+env:
+  PYTHONUNBUFFERED: "1"
+  # Modules de precision, dans l'ordre de leurs dependances (chacun lit les sorties des precedents dans site/data).
+  # Colonnes : module (pipeline/<module>.py), besoin de l'entrepot brut data/lake (oui/non), arguments.
+  # data/lake (20 Go, OVH Object Storage, docs/STOCKAGE.md) n'existe pas sur le runner : un module "oui" y est saute
+  # avec un avis, et ses fichiers deja publies dans site/data restent tels quels. Un module absent du depot est saute.
+  MODULES: |
+    beneficiaires   oui  tout
+    realisations    oui  produire
+    vie_politique   oui  produire
+    decisions       oui  produire
+    tracabilite     oui
+    prelevements    oui  produire
+    local           oui  tout --tous
+
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -38,23 +54,67 @@ jobs:
       - name: Transformer pour le site
         run: python pipeline/transform.py
 
+      - name: Modules de precision (entrepot brut requis, sinon sautes)
+        run: |
+          set -euo pipefail
+          if [ -f data/lake/manifest.json ]; then lac=1; else lac=0; fi
+          while read -r module besoin_lac args; do
+            [ -z "${module:-}" ] && continue
+            if [ ! -f "pipeline/${module}.py" ]; then
+              echo "::notice title=${module}::pipeline/${module}.py absent du depot : saute"
+              continue
+            fi
+            if [ "$besoin_lac" = "oui" ] && [ "$lac" = 0 ]; then
+              echo "::notice title=${module} saute::entrepot brut data/lake absent sur le runner ; site/data/ garde la derniere production committee"
+              continue
+            fi
+            echo "::group::python pipeline/${module}.py ${args:-}"
+            # shellcheck disable=SC2086
+            python "pipeline/${module}.py" ${args:-}
+            echo "::endgroup::"
+          done <<< "$MODULES"
+
       - name: Valider les tables (Frictionless)
         run: frictionless validate datapackage.json
+
+      - name: Valider le contrat d'interface (JSON Schema)
+        run: python docs/valider_contrat.py --quiet
 
       - name: Tests
         run: pytest -q
 
       - name: Committer si les donnees ont change
         run: |
+          set -euo pipefail
           git config user.name "data-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data site/data
-          if git diff --cached --quiet; then
+          changes=$(git diff --cached --name-only)
+          if [ -z "$changes" ]; then
             echo "Aucun changement dans les donnees."
-          else
-            git commit -m "data: mise a jour automatique $(date -u +%Y-%m-%d)"
-            git push
+            exit 0
           fi
+          if [ "$changes" = "site/data/meta.json" ]; then
+            # meta.json seul : ne compte que s'il change hors horodatage (sources, millesimes, controles)
+            if python - <<'PY'
+          import json, subprocess, sys
+          def lire(rev):
+              d = json.loads(subprocess.run(["git", "show", f"{rev}:site/data/meta.json"], capture_output=True,
+                                            text=True, check=True).stdout)
+              d.pop("genere_le", None)
+              return d
+          sys.exit(0 if lire("HEAD") == lire("") else 1)
+          PY
+            then
+              git restore --staged site/data/meta.json
+              git checkout -- site/data/meta.json
+              echo "Seul l'horodatage genere_le de site/data/meta.json a change : pas de commit."
+              exit 0
+            fi
+          fi
+          printf 'Fichiers modifies :\n%s\n' "$changes"
+          git commit -m "data: mise a jour automatique $(date -u +%Y-%m-%d)"
+          git push
 
       - name: Ouvrir une issue en cas d'echec
         if: failure()
