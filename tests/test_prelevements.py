@@ -196,3 +196,65 @@ def test_taxe_fonciere_parts_nationales(affectation):
     parts = {v["destinataire"]: v["part"] for v in tf["ventilation"]}
     assert parts["commune"] > 0.8  # la part départementale a été transférée aux communes en 2021
     assert "departement" not in parts
+
+
+# --- Profils étendus (retraités, fonction publique, indépendants, Alsace-Moselle) -----------------------------------
+
+CLES_ETENDUES = {
+    "csg_remplacement_taux_normal": 8.3, "csg_remplacement_taux_median": 6.6, "csg_remplacement_taux_reduit": 3.8,
+}
+
+
+def test_csg_pensions_points_2025(affectation):
+    pr = affectation["prelevements"]
+    assert pr["csg_remplacement_taux_normal"]["points"] == {"cnam": 1.88, "cnaf": 0.95, "cades": 0.45, "fsv": 2.94,
+                                                             "cnsa": 2.08}
+    assert pr["csg_remplacement_taux_median"]["points"] == {"cnam": 0.18, "cnaf": 0.95, "cades": 0.45, "fsv": 2.94,
+                                                             "cnsa": 2.08}
+    assert pr["csg_remplacement_taux_reduit"]["points"] == {"cnam": 1.27, "cades": 0.45, "cnsa": 2.08}
+    for cle, total in CLES_ETENDUES.items():
+        p = pr[cle]
+        assert abs(sum(p["points"].values()) - total) < 1e-9, cle
+        for v in p["ventilation"]:
+            assert v["part"] == pytest.approx(v["points"] / total, abs=1e-6), (cle, v)
+            assert "annexe 3" in v["source"], cle
+
+
+def test_cles_etendues_sourcees_avec_qualite(affectation):
+    pr = affectation["prelevements"]
+    unique = {"casa": "cnsa", "pension_civile_etat": "cas_pensions", "allocation_temporaire_invalidite": "cas_pensions",
+              "cnracl": "cnracl", "ircantec": "ircantec", "rafp": "erafp", "regime_local_alsace_moselle": "regime_local_am",
+              "independants_retraite_base": "cnav", "independants_retraite_complementaire": "rci_independants"}
+    for cle, dest in unique.items():
+        p = pr[cle]
+        assert p["statut"] == "sourcee" and p["qualite"] in ("trace", "approche"), cle
+        assert [(v["destinataire"], v["part"]) for v in p["ventilation"]] == [(dest, 1.0)], cle
+    assert pr["independants_retraite_base"]["qualite"] == "approche"  # Cipav non distinguée
+    for cle in CLES_ETENDUES:
+        assert pr[cle]["qualite"] == "trace"
+
+
+def test_cles_sans_source_primaire_non_publiees(affectation):
+    pr = affectation["prelevements"]
+    for cle in ("independants_maladie_maternite", "independants_invalidite_deces",
+                "independants_formation_professionnelle", "taxe_frais_chambre_consulaire"):
+        assert pr[cle]["statut"] == "non sourcee" and pr[cle]["ventilation"] == [], cle
+        assert pr[cle]["note"], cle
+
+
+def test_correspondance_profils_etendus(affectation):
+    c = affectation["correspondance_calcul"]
+    assert c["retenue_pension_civile"] == c["contribution_cas_pensions"] == "pension_civile_etat"
+    assert c["ircantec_salarie"] == c["ircantec_employeur"] == "ircantec"
+    assert c["maladie_regime_local"] == "regime_local_alsace_moselle"
+    assert "csg_pension_deductible" not in c  # dépend du taux : correspondance_calcul_selon_taux
+    for ligne, par_taux in affectation["correspondance_calcul_selon_taux"].items():
+        for taux, cle in par_taux.items():
+            assert cle in affectation["prelevements"], (ligne, taux)
+    assert "reduit" not in affectation["correspondance_calcul_selon_taux"]["csg_pension_non_deductible"]
+
+
+def test_nouveaux_documents_verifies(affectation):
+    v = affectation["verification_documents"]
+    for cle in ("pap2026_cas_pensions", "jaune2026_pensions", "cnav_circulaire_2024_23", "cnav_circulaire_2025_14"):
+        assert cle in v and cle in affectation["sources"], cle

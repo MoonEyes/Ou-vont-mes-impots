@@ -91,6 +91,44 @@ SOURCES = {
         "producteur": "Direction du budget / DGFiP", "licence": "document administratif public (CRPA L. 321-1)",
         "verdict": "réutilisable tel quel (montants 2025 révisés, vérifiés contre le texte du PDF)",
     },
+    "pap2026_cas_pensions": {
+        "fichier": "PAP2026_CAS_Pensions.pdf",
+        "url": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1088071/file/"
+               "PAP2026_CS_CAS_Pensions_YD.pdf",
+        "titre": "PLF 2026, projet annuel de performances du compte d'affectation spéciale « Pensions » : objet du "
+                 "compte (recettes au titre de l'article L. 61 du code des pensions civiles et militaires) et lignes de "
+                 "recettes 01, 21 et 33 (LFI 2025), octobre 2025",
+        "producteur": "Direction du budget / Service des retraites de l'État",
+        "licence": "document administratif public (CRPA L. 321-1)",
+        "verdict": "réutilisable tel quel (destinataire et montants LFI 2025 lus dans le document, vérifiés contre le PDF)",
+    },
+    "jaune2026_pensions": {
+        "fichier": "Jaune2026_Pensions.pdf",
+        "url": "https://questions.assemblee-nationale.fr/dyn/contenu/visualisation/1090002/file/12-Jaune2026_Pensions.pdf",
+        "titre": "PLF 2026, annexe « Rapport sur les pensions de retraite de la fonction publique » (jaune) : fiches "
+                 "CNRACL, ERAFP (RAFP) et Ircantec, tableau des régimes des agents publics, octobre 2025",
+        "producteur": "Direction du budget, DGAFP, DSS, Caisse des dépôts",
+        "licence": "document administratif public (CRPA L. 321-1)",
+        "verdict": "réutilisable tel quel (gestionnaire, textes de référence, taux et montants 2024 lus dans les fiches)",
+    },
+    "cnav_circulaire_2024_23": {
+        "fichier": "cnav_circulaire_2024_23.pdf",
+        "url": "https://legislation.lassuranceretraite.fr/Pdf/circulaire_cnav_2024_23_16072024.pdf",
+        "titre": "Cnav, circulaire n° 2024-23 du 16 juillet 2024 : droits à la retraite des micro-entrepreneurs, "
+                 "répartition du forfait par risques (CSS art. L. 613-7 et D. 613-6)",
+        "producteur": "Caisse nationale d'assurance vieillesse (Assurance retraite)",
+        "licence": "document administratif public (CRPA L. 321-1)",
+        "verdict": "réutilisable tel quel (clés de répartition par risque et régime gestionnaire de la retraite)",
+    },
+    "cnav_circulaire_2025_14": {
+        "fichier": "cnav_circulaire_2025_14.pdf",
+        "url": "https://legislation.lassuranceretraite.fr/Pdf/circulaire_cnav_2025_14_04042025.pdf",
+        "titre": "Cnav, circulaire n° 2025-14 du 4 avril 2025 : assiette des cotisations des travailleurs "
+                 "indépendants (retraite de base : CSS art. L. 241-3 et D. 633-3 ; RCI : art. D. 635-7)",
+        "producteur": "Caisse nationale d'assurance vieillesse (Assurance retraite)",
+        "licence": "document administratif public (CRPA L. 321-1)",
+        "verdict": "réutilisable tel quel (rattachement de la retraite de base au régime général et du RCI)",
+    },
 }
 
 SOURCES_LAC = {
@@ -129,6 +167,19 @@ ECARTEES = [
     {"nom": "Légifrance (articles L. 131-8 et L. 136-8 CSS)", "verdict": "accès refusé (HTTP 403)",
      "raison": "aucun contournement : les parts de CSG sont lues dans l'annexe 3 du PLFSS 2026 (tableau 31), "
                "qui reproduit l'état du droit 2025 ; les articles restent cités comme base légale."},
+    {"nom": "Circulaires de l'Assurance maladie (circulaires.ameli.fr), intégration des indépendants",
+     "url": "https://circulaires.ameli.fr/", "verdict": "inaccessible (connexion interrompue, 4 essais, 18/11/2026)",
+     "raison": "seule source primaire repérée pour le destinataire des cotisations maladie-maternité et "
+               "invalidité-décès des indépendants : ces deux clés restent non publiées."},
+    {"nom": "Assurance retraite, « La protection sociale des travailleurs indépendants » (statistiques-recherche)",
+     "url": "https://www.statistiques-recherche.lassuranceretraite.fr/", "verdict": "inaccessible (HTTP 503, 3 essais)",
+     "raison": "aucun contournement ; les circulaires Cnav 2024-23 et 2025-14 suffisent pour la retraite."},
+    {"nom": "Instance de gestion du régime local d'assurance maladie d'Alsace-Moselle (regime-local.fr)",
+     "url": "https://www.regime-local.fr/", "verdict": "inaccessible (certificat TLS non valide)",
+     "raison": "la vérification TLS n'est jamais désactivée ; le destinataire est lu dans l'annexe 3 du PLFSS 2026."},
+    {"nom": "Service-public.fr Entreprendre, fiche F36238 (cotisations d'un entrepreneur individuel)",
+     "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F36238", "verdict": "non retenu",
+     "raison": "liste les cotisations payées à l'Urssaf sans nommer le destinataire de chaque risque."},
 ]
 
 # --- Paramètres d'affectation saisis depuis les documents (vérifiés contre le PDF par `verifier_documents`) --------
@@ -150,6 +201,43 @@ MOTIFS_VM = [
     "210,7 210,0 215,4", "-57,9 -56,4 -54,8", "-52,1 -52,7 -47,5", "-4,0 -4,0 -3,9", "96,8 96,9 109,1",
     "31,6 31,4 31,5", "-11,9 -12,0 -11,7", "-1,7 -1,2 -1,6", "-0,1 -0,1", "-2,0 -1,6 -1,5", "18,1 18,1 16,8",
     "(5 172 M€)",
+]
+# Revenus de remplacement (pensions), Casa, régime local : même tableau 31 et partie 3 de l'annexe 3.
+MOTIFS_A3_REMPLACEMENT = [
+    "AM : 1,88 pt CNAF : 0,95 pt CADES : 0,45 pt FSV : 2,94 pt CNSA : 2,08 pt",
+    "AM : 0,18 pt CNAF : 0,95 pt CADES : 0,45 pt FSV : 2,94 pt CNSA : 2,08 pt",
+    "AM : 1,27 pt CADES : 0,45 pt CNSA : 2,08 pt",
+    "29 013 27 828", "977 950", "CNSA CNSA CNSA",
+    "spécifiques au régime local d’Alsace-Moselle",
+]
+MOTIFS_PAP_PENSIONS = [
+    "la cotisation à la charge des agents prévue au 2° de l’article L. 61",
+    "Pensions civiles et militaires de retraite et allocations temporaires d’invalidité",
+    "4 870 568 312", "35 077 620 585", "177 174 917",
+]
+MOTIFS_JAUNE = [
+    "gestion : SRE", "décret n° 2007-173 du 7 février 2007, la CNRACL", "au taux de 11,10 % en 2024",
+    "31,65 % en 2024", "2,25 Md€ de cotisations collectées", "Taux : 5 % salarial et 5 % patronal",
+    "Décret n°2004-569 du 18 juin 2004", "Décret n° 70-1277 du 23 décembre 1970",
+    "Gestion confiée à la Caisse des dépôts (CDC)", "5 201 M€ de produits",
+    "Depuis le 01/01/2017 2,80% 4,20% 6,95% 12,55%",
+]
+MOTIFS_CNAV_2024 = [
+    "Articles L.613-7 (II alinéa 2) et D.613-6 du CSS", "retraite de base 41,80%", "retraite complémentaire 16,50%",
+    "maladie-maternité 8,90%", "invalidité-décès 3,10%",
+]
+MOTIFS_CNAV_2025 = [
+    "Articles L.241-3, D.242-4 et D.633-3 du CSS", "Articles L.241-3 du CSS et D.635-7 du CSS",
+    "régime complémentaire des indépendants (RCI)",
+]
+# Documents vérifiés : (clé de SOURCES, motifs, pages lues ; None = tout le document).
+DOCUMENTS_VERIFIES = [
+    ("plfss2026_annexe3", MOTIFS_A3 + MOTIFS_A3_REMPLACEMENT, range(20, 60)),
+    ("plf2026_vm1", MOTIFS_VM, None),
+    ("pap2026_cas_pensions", MOTIFS_PAP_PENSIONS, None),
+    ("jaune2026_pensions", MOTIFS_JAUNE, (33, 56, 73, 83, 92, 93)),
+    ("cnav_circulaire_2024_23", MOTIFS_CNAV_2024, None),
+    ("cnav_circulaire_2025_14", MOTIFS_CNAV_2025, None),
 ]
 
 DESTINATAIRES = {
@@ -181,6 +269,18 @@ DESTINATAIRES = {
     "region_idf": {"nom": "Région Île-de-France (taxe additionnelle spéciale annuelle)", "administration": "Collectivites locales"},
     "bloc_communal_dechets": {"nom": "Commune ou groupement compétent pour les déchets (commune, EPCI, syndicat)",
                               "administration": "Collectivites locales"},
+    # Profils étendus (fonctionnaires, contractuels du public, retraités, indépendants, Alsace-Moselle).
+    "fsv": {"nom": "Fonds de solidarité vieillesse (FSV)", "administration": "Securite sociale"},
+    "cas_pensions": {"nom": "État, compte d'affectation spéciale « Pensions » (géré par le Service des retraites de "
+                            "l'État)", "administration": "Etat"},
+    "cnracl": {"nom": "Caisse nationale de retraites des agents des collectivités locales (CNRACL, gérée par la Caisse "
+                      "des dépôts)", "administration": "Securite sociale"},
+    "ircantec": {"nom": "Ircantec (retraite complémentaire des agents publics contractuels, gérée par la Caisse des "
+                        "dépôts)", "administration": "Securite sociale"},
+    "erafp": {"nom": "Retraite additionnelle de la fonction publique (ERAFP)", "administration": "Securite sociale"},
+    "rci_independants": {"nom": "Retraite complémentaire des indépendants (RCI, gérée par l'Assurance retraite)",
+                         "administration": "Securite sociale"},
+    "regime_local_am": {"nom": "Régime local d'assurance maladie d'Alsace-Moselle", "administration": "Securite sociale"},
 }
 
 
@@ -349,6 +449,171 @@ def affectation_parametres(rei_tf: dict | None) -> dict:
         "note": "Le REI ne dit pas, commune par commune, si la TEOM revient à la commune, à l'EPCI ou à un syndicat : "
                 "ventilation interne au bloc communal non sourcée.",
     }
+    p.update(affectation_etendue())
+    return p
+
+
+PAP = "PLF 2026, projet annuel de performances du compte d'affectation spéciale « Pensions »"
+JAUNE = "PLF 2026, rapport sur les pensions de retraite de la fonction publique (jaune)"
+CNAV24 = "Cnav, circulaire n° 2024-23 du 16 juillet 2024"
+CNAV25 = "Cnav, circulaire n° 2025-14 du 4 avril 2025"
+QUALITE = ("« trace » : le document désigne un seul destinataire, ou publie les points de chaque destinataire, et la "
+           "part est lue telle quelle ; « approche » : le destinataire publié vaut pour le cas le plus courant, mais "
+           "dépend d'une situation que le calcul ne connaît pas (précisée dans la note).")
+
+
+def affectation_etendue() -> dict:
+    """Profils étendus du calcul personnel : retraités, fonctionnaires, contractuels du public, indépendants,
+    Alsace-Moselle. Chaque entrée sourcée cite un document primaire vérifié contre son PDF (DOCUMENTS_VERIFIES) ;
+    une entrée sans destinataire publié reste « non sourcee », sans ventilation."""
+    p = {}
+
+    # CSG sur les pensions : une clé par taux, les points diffèrent (tableau 31, colonne 2025).
+    taux_csg = {
+        "csg_remplacement_taux_normal": ("taux normal de 8,3 % (5,9 % déductible et 2,4 % non déductible)",
+                                         "retraites / invalidité, taux normal",
+                                         [("cnam", 1.88), ("cnaf", 0.95), ("cades", 0.45), ("fsv", 2.94), ("cnsa", 2.08)],
+                                         8.3),
+        "csg_remplacement_taux_median": ("taux médian de 6,6 % (4,2 % déductible et 2,4 % non déductible)",
+                                         "taux intermédiaire / pensions",
+                                         [("cnam", 0.18), ("cnaf", 0.95), ("cades", 0.45), ("fsv", 2.94), ("cnsa", 2.08)],
+                                         6.6),
+        "csg_remplacement_taux_reduit": ("taux réduit de 3,8 % (entièrement déductible)", "taux réduit",
+                                         [("cnam", 1.27), ("cades", 0.45), ("cnsa", 2.08)], 3.8),
+    }
+    for cle, (lib, ligne, pts, total) in taux_csg.items():
+        assert abs(sum(v for _, v in pts) - total) < 1e-9, cle
+        p[cle] = {
+            "libelle": f"CSG sur les pensions de retraite et d'invalidité, {lib}",
+            "statut": "sourcee", "qualite": "trace", "points": dict(pts),
+            "ventilation": [_part(d, v / total, f"{A3}, CSG sur les revenus de remplacement, ligne « {ligne} » : "
+                                                f"« {'AM' if d == 'cnam' else d.upper()} : {str(v).replace('.', ',')} pt »",
+                                  points=v) for d, v in pts],
+            "reference_juridique": "CSS art. L. 136-8 (taux) et L. 131-8 (affectation), rédaction applicable en 2025 ; "
+                                   "répartition reproduite par " + A3 + " (CSG sur les revenus de remplacement : "
+                                   "27 828 M€ prévus en 2025, tous taux et toutes natures de revenus confondus)",
+            "note": "« AM » désigne les régimes d'assurance maladie, rattachés ici à l'assurance maladie (CNAM) comme "
+                    "pour la CSG sur les revenus d'activité. Même clé pour la part déductible et la part non "
+                    "déductible : la loi affecte des points de CSG. Le calcul choisit la clé selon le taux de la "
+                    "personne (correspondance_calcul_selon_taux).",
+        }
+
+    p["casa"] = {
+        "libelle": "Contribution additionnelle de solidarité pour l'autonomie (Casa, 0,3 % des pensions)",
+        "statut": "sourcee", "qualite": "trace",
+        "ventilation": [_part("cnsa", 1.0, A3 + " : contribution additionnelle de solidarité autonomie, affectataire "
+                                            "« CNSA » (950 M€ prévus en 2025)")],
+        "reference_juridique": "CASF art. L. 14-10-4 ; " + A3,
+    }
+
+    p["pension_civile_etat"] = {
+        "libelle": "Retenue pour pension civile des fonctionnaires de l'État et contribution employeur de l'État",
+        "statut": "sourcee", "qualite": "trace",
+        "ventilation": [_part("cas_pensions", 1.0, PAP + " : recettes de la section 1 (« cotisation à la charge des "
+                              "agents prévue au 2° de l'article L. 61 » et contribution employeur du 1°) ; LFI 2025 : "
+                              "ligne 01 retenues pour pensions 4 870,6 M€, ligne 21 contributions des employeurs "
+                              "35 077,6 M€ ; gestion par le Service des retraites de l'État (" + JAUNE + ")")],
+        "reference_juridique": "Code des pensions civiles et militaires de retraite, art. L. 61 ; loi n° 2005-1719 du "
+                               "30 décembre 2005, art. 51 (compte d'affectation spéciale « Pensions »)",
+        "note": "La contribution employeur de l'État est une dépense du budget de l'État versée à ce compte de "
+                "l'État : flux interne à l'État. Les montants cités couvrent les agents propres de l'État (ligne 01) "
+                "et les agents civils de l'État (ligne 21), hors autres lignes de recettes du compte.",
+    }
+    p["allocation_temporaire_invalidite"] = {
+        "libelle": "Contribution employeur au titre de l'allocation temporaire d'invalidité (fonctionnaires de l'État)",
+        "statut": "sourcee", "qualite": "trace",
+        "ventilation": [_part("cas_pensions", 1.0, PAP + " : « une contribution employeur versée au titre du "
+                              "financement des allocations temporaires d'invalidité » ; LFI 2025 : ligne 33, "
+                              "177,2 M€")],
+        "reference_juridique": "Code général de la fonction publique, art. L. 824-1 ; " + PAP,
+    }
+    p["cnracl"] = {
+        "libelle": "Retenue pour pension et contribution employeur des fonctionnaires territoriaux et hospitaliers",
+        "statut": "sourcee", "qualite": "trace",
+        "ventilation": [_part("cnracl", 1.0, JAUNE + ", partie CNRACL : régime « régi par le décret n° 2007-173 du "
+                              "7 février 2007 », gestion confiée à la Caisse des dépôts ; cotisations des actifs "
+                              "« au taux de 11,10 % en 2024 » et des employeurs « 31,65 % en 2024 »")],
+        "reference_juridique": "Ordonnance n° 45-993 du 17 mai 1945 ; décret n° 2007-173 du 7 février 2007 ; décret "
+                               "n° 2003-1306 du 26 décembre 2003",
+        "note": "La CNRACL est un régime spécial de sécurité sociale (CSS art. L. 711-1, cité par le rapport). Une "
+                "part plafonnée des cotisations finance son fonds d'action sociale et son fonds de prévention : elle "
+                "reste à la CNRACL.",
+    }
+    p["ircantec"] = {
+        "libelle": "Cotisations Ircantec des agents contractuels du public (salarié et employeur)",
+        "statut": "sourcee", "qualite": "trace",
+        "ventilation": [_part("ircantec", 1.0, JAUNE + ", fiche Ircantec : « Décret n° 70-1277 du 23 décembre "
+                              "1970 », « Gestion confiée à la Caisse des dépôts (CDC) » ; taux depuis le 01/01/2017 : "
+                              "2,80 % et 4,20 % (tranche A), 6,95 % et 12,55 % (tranche B) ; 5 201 M€ de produits "
+                              "techniques en 2024")],
+        "reference_juridique": "Décret n° 70-1277 du 23 décembre 1970 ; arrêté du 30 décembre 1970",
+    }
+    p["rafp"] = {
+        "libelle": "Retraite additionnelle de la fonction publique (RAFP, sur les primes ; salarié et employeur)",
+        "statut": "sourcee", "qualite": "trace",
+        "ventilation": [_part("erafp", 1.0, JAUNE + ", fiche ERAFP : « Décret n°2004-569 du 18 juin 2004 », « Taux : 5 % "
+                              "salarial et 5 % patronal », « 2,25 Md€ de cotisations collectées » en 2024")],
+        "reference_juridique": "Loi n° 2003-775 du 21 août 2003, art. 76 ; décret n° 2004-569 du 18 juin 2004",
+        "note": "L'ERAFP est un établissement public administratif ; rattachement à la sécurité sociale en "
+                "comptabilité nationale à confirmer (même convention que pour Agirc-Arrco et l'Ircantec).",
+    }
+    p["regime_local_alsace_moselle"] = {
+        "libelle": "Cotisation salariale d'assurance maladie du régime local d'Alsace-Moselle",
+        "statut": "sourcee", "qualite": "trace",
+        "ventilation": [_part("regime_local_am", 1.0, A3 + ", partie 3 : les Urssaf recouvrent, au titre des régimes "
+                              "obligatoires de base, « des cotisations d'assurance maladie spécifiques au régime local "
+                              "d'Alsace-Moselle »")],
+        "reference_juridique": "CSS art. L. 325-1 (régime local), cité comme base légale ; " + A3,
+        "note": "Montant national de la cotisation non publié dans ce document.",
+    }
+
+    note_affiliation = ("Vaut pour les artisans, commerçants et professions libérales non réglementées, affiliés à "
+                        "l'Assurance retraite. Une profession libérale réglementée cotise à la Cipav ou à une autre "
+                        "section de la CNAVPL : cas non distingué par le calcul, d'où le statut « approche ».")
+    p["independants_retraite_base"] = {
+        "libelle": "Cotisation de retraite de base des travailleurs indépendants (y compris la part du forfait "
+                   "micro-social)",
+        "statut": "sourcee", "qualite": "approche",
+        "ventilation": [_part("cnav", 1.0, CNAV25 + " (« Articles L.241-3, D.242-4 et D.633-3 du CSS » : cotisation "
+                              "de retraite de base des indépendants au taux du régime général) et " + CNAV24 +
+                              " (part « retraite de base » du forfait micro-social, 41,80 % en vente et en "
+                              "prestations de services commerciales)")],
+        "reference_juridique": "CSS art. L. 241-3, D. 633-3, L. 613-7 et D. 613-6, cités par les circulaires",
+        "note": note_affiliation,
+    }
+    p["independants_retraite_complementaire"] = {
+        "libelle": "Cotisation de retraite complémentaire des travailleurs indépendants (RCI, y compris la part du "
+                   "forfait micro-social)",
+        "statut": "sourcee", "qualite": "approche",
+        "ventilation": [_part("rci_independants", 1.0, CNAV25 + " (« Articles L.241-3 du CSS et D.635-7 du CSS », "
+                              "« régime complémentaire des indépendants (RCI) ») et " + CNAV24 +
+                              " (part « retraite complémentaire » du forfait micro-social, 16,50 % en vente et en "
+                              "prestations de services commerciales)")],
+        "reference_juridique": "CSS art. D. 635-7 et D. 613-6, cités par les circulaires",
+        "note": note_affiliation,
+    }
+    sans_source = {
+        "independants_maladie_maternite": (
+            "Cotisation maladie-maternité des travailleurs indépendants (y compris indemnités journalières et part du "
+            "forfait micro-social)",
+            "La part du forfait est publiée (" + CNAV24 + ", 8,90 % en vente) mais pas son destinataire : la source "
+            "primaire repérée (circulaires de l'Assurance maladie) était inaccessible. Non publiée, jamais supposée."),
+        "independants_invalidite_deces": (
+            "Cotisation invalidité-décès des travailleurs indépendants (y compris la part du forfait micro-social)",
+            "La part du forfait est publiée (" + CNAV24 + ", 3,10 % en vente) mais pas son destinataire dans une "
+            "source primaire accessible. Non publiée, jamais supposée."),
+        "independants_formation_professionnelle": (
+            "Contribution à la formation professionnelle des travailleurs indépendants",
+            A3 + ", partie 3, indique que les Urssaf la recouvrent (0,29 Md€ en 2024) sans nommer l'organisme "
+            "bénéficiaire, qui dépend de l'activité (commerçant, artisan, profession libérale). Non publiée."),
+        "taxe_frais_chambre_consulaire": (
+            "Taxe pour frais de chambre consulaire des micro-entrepreneurs",
+            "Le bénéficiaire dépend de l'activité (chambre de commerce et d'industrie ou chambre de métiers et de "
+            "l'artisanat) et aucun document primaire consulté ne donne sa répartition ni son rattachement en "
+            "comptabilité nationale. Non publiée."),
+    }
+    for cle, (lib, note) in sans_source.items():
+        p[cle] = {"libelle": lib, "statut": "non sourcee", "ventilation": [], "note": note}
     return p
 
 
@@ -361,6 +626,33 @@ CORRESPONDANCE_CALCUL = {
     "ceg_salarie": "ceg", "chomage_employeur": "chomage", "fnal": "fnal", "csa": "csa",
     "csg_deductible": "csg_activite", "csg_non_deductible": "csg_activite", "crds": "crds",
     "impot_revenu": "impot_revenu",
+    # Profils étendus (web/src/calcul/moteur-etendu.ts) : identifiant de ligne -> clé de prelevements.
+    "retenue_pension_civile": "pension_civile_etat", "contribution_cas_pensions": "pension_civile_etat",
+    "ati": "allocation_temporaire_invalidite",
+    "retenue_cnracl": "cnracl", "contribution_cnracl": "cnracl",
+    "rafp_salarie": "rafp", "rafp_employeur": "rafp",
+    "ircantec_salarie": "ircantec", "ircantec_employeur": "ircantec",
+    "casa": "casa",
+    "maladie_regime_local": "regime_local_alsace_moselle",
+    "micro_retraite_base": "independants_retraite_base", "independant_retraite_base": "independants_retraite_base",
+    "micro_retraite_complementaire": "independants_retraite_complementaire",
+    "independant_retraite_complementaire": "independants_retraite_complementaire",
+    "micro_maladie_maternite": "independants_maladie_maternite",
+    "independant_maladie": "independants_maladie_maternite",
+    "independant_indemnites_journalieres": "independants_maladie_maternite",
+    "micro_invalidite_deces": "independants_invalidite_deces",
+    "independant_invalidite_deces": "independants_invalidite_deces",
+    "micro_formation_professionnelle": "independants_formation_professionnelle",
+    "independant_formation_professionnelle": "independants_formation_professionnelle",
+    "micro_taxe_chambre_consulaire": "taxe_frais_chambre_consulaire",
+}
+
+# CSG sur les pensions : la clé dépend du taux de la personne (exonéré : aucune ligne).
+CORRESPONDANCE_CALCUL_SELON_TAUX = {
+    "csg_pension_deductible": {"normal": "csg_remplacement_taux_normal", "median": "csg_remplacement_taux_median",
+                               "reduit": "csg_remplacement_taux_reduit"},
+    "csg_pension_non_deductible": {"normal": "csg_remplacement_taux_normal",
+                                   "median": "csg_remplacement_taux_median"},
 }
 
 # --- Utilitaires ---------------------------------------------------------------------------------------------------
@@ -438,9 +730,10 @@ def collecter() -> dict:
 # --- Vérification des paramètres saisis ----------------------------------------------------------------------------
 
 
-def texte_pdf(nom: str, pages: range | None = None) -> str | None:
+def texte_pdf(nom: str, pages=None) -> str | None:
     pdf = BRUT / nom
-    cache = BRUT / (nom + ".txt")
+    signature = "" if pages is None else f".p{min(pages)}-{max(pages)}-{len(pages)}"
+    cache = BRUT / (nom + signature + ".txt")
     if cache.exists() and pdf.exists() and cache.stat().st_mtime >= pdf.stat().st_mtime:
         return cache.read_text(encoding="utf-8")
     if not pdf.exists():
@@ -458,9 +751,8 @@ def texte_pdf(nom: str, pages: range | None = None) -> str | None:
 
 def verifier_documents() -> dict:
     out = {}
-    for cle, nom, motifs, pages in (("plfss2026_annexe3", SOURCES["plfss2026_annexe3"]["fichier"], MOTIFS_A3,
-                                     range(40, 60)),
-                                    ("plf2026_vm1", SOURCES["plf2026_vm1"]["fichier"], MOTIFS_VM, None)):
+    for cle, motifs, pages in DOCUMENTS_VERIFIES:
+        nom = SOURCES[cle]["fichier"]
         t = texte_pdf(nom, pages)
         if t is None:
             out[cle] = {"statut": "document absent de l'entrepôt : valeurs saisies non revérifiées"}
@@ -862,15 +1154,19 @@ def produire() -> None:
     prelev = affectation_parametres(agregats)
     dump(SORTIE / "affectation.json", {
         "millesime": ANNEE, "annee": ANNEE,
-        "source": "PLFSS 2026 annexe 3 (tableau 31) ; PLF 2026 Voies et moyens tome I ; DGFiP REI 2025 ; codes et "
-                  "lois cités pour chaque part",
+        "source": "PLFSS 2026 annexe 3 (tableau 31) ; PLF 2026 Voies et moyens tome I ; PLF 2026 projet annuel de "
+                  "performances du compte « Pensions » et rapport sur les pensions de retraite de la fonction "
+                  "publique ; circulaires Cnav 2024-23 et 2025-14 ; DGFiP REI 2025 ; codes et lois cités pour chaque "
+                  "part",
         "methode": "Une ventilation par prélèvement : part = fraction du produit 2025 attribuée au destinataire. "
                    "Les parts d'un prélèvement « sourcee » somment à 1. Un prélèvement ou une part introuvable est "
-                   "marqué « non sourcee » et n'est jamais complété par une estimation.",
+                   "marqué « non sourcee » et n'est jamais complété par une estimation. Champ « qualite » (profils "
+                   "étendus) : " + QUALITE,
         "verification_documents": verif,
         "destinataires": DESTINATAIRES,
         "prelevements": prelev,
         "correspondance_calcul": CORRESPONDANCE_CALCUL,
+        "correspondance_calcul_selon_taux": CORRESPONDANCE_CALCUL_SELON_TAUX,
         "sources": {**SOURCES, **SOURCES_LAC},
         "sources_ecartees": ECARTEES,
     }, indent=1)

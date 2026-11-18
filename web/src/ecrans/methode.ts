@@ -95,6 +95,20 @@ ${
     : ''
 }
 
+<h2 id="methode-non-salaries">Retraités, agents publics et indépendants : qui reçoit ce que tu verses</h2>
+<p>Cette partie explique comment le site répartit les prélèvements propres aux retraités, aux fonctionnaires, aux contractuels du public, aux indépendants et à l’Alsace-Moselle. Elle ne dit pas comment ces montants sont dépensés ensuite. Chaque répartition vient d’un document officiel cité dans prelevements/affectation.json ; sans document, le montant reste « sans destinataire publié ».</p>
+<ul>
+<li><strong>Retraité·e</strong> : la contribution sociale généralisée (CSG) sur ta pension n’a pas la même répartition selon son taux (réduit 3,8 %, médian 6,6 %, normal 8,3 %). Les points de chaque destinataire pour 2025 sont lus dans l’annexe 3 du projet de loi de financement de la sécurité sociale pour 2026${(() => {
+    const pts = aff?.prelevements?.csg_remplacement_taux_normal?.points
+    return pts ? ` (au taux normal : ${Object.entries(pts).map(([k, v]) => `${nf(v)} point${v >= 2 ? 's' : ''} pour ${h(aff?.destinataires?.[k]?.nom ?? k)}`).join(', ')})` : ''
+  })()}. La contribution additionnelle de solidarité pour l’autonomie (Casa, 0,3 %) va en totalité à la branche autonomie.</li>
+<li><strong>Fonctionnaire de l’État</strong> : la retenue pour pension civile et la contribution de ton employeur sont des recettes du compte d’affectation spéciale « Pensions », géré par le Service des retraites de l’État (projet annuel de performances 2026 de ce compte). La contribution employeur est payée par l’État à un compte de l’État : c’est un flux interne à l’État.</li>
+<li><strong>Fonctionnaire territorial ou hospitalier, contractuel·le du public, primes</strong> : retenue et contribution employeur vont à la Caisse nationale de retraites des agents des collectivités locales (CNRACL) ; les cotisations des contractuels à l’Institution de retraite complémentaire des agents non titulaires de l’État et des collectivités publiques (Ircantec) ; celles sur les primes à la retraite additionnelle de la fonction publique. Source : rapport sur les pensions de retraite de la fonction publique annexé au projet de loi de finances pour 2026.</li>
+<li><strong>Micro-entrepreneur·e et indépendant·e</strong> : le forfait est d’abord découpé par risque selon les clés publiées par l’Assurance retraite (circulaire de la Caisse nationale d’assurance vieillesse n° 2024-23). La part retraite de base va au régime général, la part retraite complémentaire au régime complémentaire des indépendants. Les parts maladie-maternité et invalidité-décès, la contribution à la formation professionnelle et la taxe pour frais de chambre consulaire n’ont pas de destinataire dans une source primaire que le site a pu consulter : elles restent « sans destinataire publié ».</li>
+<li><strong>Alsace-Moselle</strong> : la cotisation salariale de 1,3 % va au régime local d’assurance maladie (annexe 3 du projet de loi de financement de la sécurité sociale pour 2026).</li>
+<li><strong>Tracé ou approché</strong> : une répartition est « tracée » quand le document désigne un seul destinataire ou publie les points de chacun ; « approchée » quand le destinataire publié vaut pour le cas le plus courant mais dépend d’une situation que le calcul ne connaît pas. Exemple : une profession libérale réglementée cotise pour sa retraite à une caisse propre (Cipav ou autre section des professions libérales), pas au régime général.</li>
+</ul>
+
 <h2>Le budget de l’État</h2>
 <ul>
 <li>Vue par défaut : <strong>${h(meta.millesime?.etat_defaut ?? 'Exécution 2024')}</strong> (dépenses réellement payées, crédits de paiement), autre vue : ${h((meta.millesime?.etat_disponibles ?? []).join(', '))}. Source : budget vert du projet de loi de finances 2026 (PLF, data.economie.gouv.fr), complété par la loi qui arrête les comptes de l’année (PLRG, projet de loi relatif aux résultats de la gestion).</li>

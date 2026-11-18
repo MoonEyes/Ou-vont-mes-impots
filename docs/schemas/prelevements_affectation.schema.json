@@ -127,6 +127,13 @@
                 "source"
               ]
             }
+          },
+          "qualite": {
+            "enum": [
+              "trace",
+              "approche"
+            ],
+            "description": "profils etendus : trace = destinataire ou points lus tels quels ; approche = destinataire publie pour le cas le plus courant (voir note)"
           }
         },
         "required": [
@@ -211,6 +218,21 @@
           "nom",
           "raison"
         ]
+      }
+    },
+    "correspondance_calcul_selon_taux": {
+      "type": "object",
+      "description": "ligne du calcul -> (taux de CSG de la personne -> cle de prelevements)",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9_]+$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        }
       }
     }
   },
