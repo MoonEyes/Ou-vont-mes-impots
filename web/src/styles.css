@@ -2936,3 +2936,10 @@ fieldset.saisie-groupe {
   tr {
     break-inside: avoid;
     page-break-inside: avoid;
+/* comparer */
+.comparer-paires {
+  margin: 1rem 0;
+.comparer-indicateur {
+@media (min-width: 900px) {
+  .comparer-paires {
+    grid-template-columns: 1fr 1fr;
