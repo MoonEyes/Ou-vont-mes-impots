@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/logement_ptz.schema.json",
+  "title": "site/data/logement/ptz.json : prêts à taux zéro et éco-prêts à taux zéro émis, par année et par département (pipeline/logement.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "$defs": {
+    "serie_nombre": {"type": "array", "items": {"type": ["integer", "null"], "minimum": 1},
+                     "description": "nombre de prêts par année (aligné sur annees_ptz ou annees_eco_ptz) ; null = aucune ligne de la source, jamais 0"},
+    "serie_eur": {"type": "array", "items": {"type": ["integer", "null"], "minimum": 0}},
+    "bloc_ptz": {
+      "type": "object", "additionalProperties": false,
+      "required": ["nombre", "montant_ptz_eur", "montant_prets_operation_eur"],
+      "properties": {"nombre": {"$ref": "#/$defs/serie_nombre"}, "montant_ptz_eur": {"$ref": "#/$defs/serie_eur"},
+                     "montant_prets_operation_eur": {"$ref": "#/$defs/serie_eur"}}
+    },
+    "territoire_ptz": {
+      "type": "object", "additionalProperties": false, "required": ["nom", "nombre", "montant_ptz_eur"],
+      "properties": {"nom": {"type": "string"}, "nombre": {"$ref": "#/$defs/serie_nombre"},
+                     "montant_ptz_eur": {"$ref": "#/$defs/serie_eur"}}
+    },
+    "bloc_eco": {
+      "type": "object", "additionalProperties": false, "required": ["nombre", "montant_pret_eur", "montant_travaux_eur"],
+      "properties": {"nombre": {"$ref": "#/$defs/serie_nombre"}, "montant_pret_eur": {"$ref": "#/$defs/serie_eur"},
+                     "montant_travaux_eur": {"$ref": "#/$defs/serie_eur"}}
+    },
+    "territoire_eco": {
+      "type": "object", "additionalProperties": false, "required": ["nom", "nombre", "montant_pret_eur"],
+      "properties": {"nom": {"type": "string"}, "nombre": {"$ref": "#/$defs/serie_nombre"},
+                     "montant_pret_eur": {"$ref": "#/$defs/serie_eur"}}
+    },
+    "code_departement": {"pattern": "^([0-9]{2}|2A|2B|97[1-6])$"}
+  },
+  "required": ["millesime", "source", "urls_sources", "unite", "avertissement", "definitions", "annees_ptz", "ptz",
+               "annees_eco_ptz", "eco_ptz", "renvois", "limites"],
+  "additionalProperties": false,
+  "properties": {
+    "millesime": {"type": "string", "minLength": 4},
+    "source": {"type": "string", "minLength": 10},
+    "urls_sources": {"type": "array", "minItems": 2, "items": {"type": "string", "pattern": "^https://"}},
+    "unite": {"type": "string"},
+    "avertissement": {"type": "string", "minLength": 20},
+    "definitions": {"type": "object", "additionalProperties": {"type": "string"}},
+    "annees_ptz": {"type": "array", "minItems": 1, "items": {"$ref": "commun.schema.json#/$defs/annee_entier"}},
+    "annees_eco_ptz": {"type": "array", "minItems": 1, "items": {"$ref": "commun.schema.json#/$defs/annee_entier"}},
+    "ptz": {
+      "type": "object", "additionalProperties": false,
+      "required": ["types", "france", "par_type", "departements", "autres_territoires", "departement_non_renseigne"],
+      "properties": {
+        "types": {"type": "object", "additionalProperties": {"type": "string"}},
+        "france": {"$ref": "#/$defs/bloc_ptz"},
+        "par_type": {"type": "object", "propertyNames": {"enum": ["ancien", "neuf"]},
+                     "additionalProperties": {"$ref": "#/$defs/bloc_ptz"}},
+        "departements": {"type": "object", "minProperties": 96, "propertyNames": {"$ref": "#/$defs/code_departement"},
+                         "additionalProperties": {"$ref": "#/$defs/territoire_ptz"}},
+        "autres_territoires": {"type": "object", "propertyNames": {"enum": ["20", "978"]},
+                               "additionalProperties": {"$ref": "#/$defs/territoire_ptz"}},
+        "departement_non_renseigne": {"$ref": "#/$defs/bloc_ptz"}
+      }
+    },
+    "eco_ptz": {
+      "type": "object", "additionalProperties": false,
+      "required": ["types", "france", "par_type", "departements", "autres_territoires", "departement_non_renseigne"],
+      "properties": {
+        "types": {"type": "object", "additionalProperties": {"type": "string"}},
+        "france": {"$ref": "#/$defs/bloc_eco"},
+        "par_type": {"type": "object", "propertyNames": {"pattern": "^type_[1-9]$"},
+                     "additionalProperties": {"$ref": "#/$defs/bloc_eco"}},
+        "departements": {"type": "object", "minProperties": 96, "propertyNames": {"$ref": "#/$defs/code_departement"},
+                         "additionalProperties": {"$ref": "#/$defs/territoire_eco"}},
+        "autres_territoires": {"type": "object", "propertyNames": {"enum": ["20", "978"]},
+                               "additionalProperties": {"$ref": "#/$defs/territoire_eco"}},
+        "departement_non_renseigne": {"$ref": "#/$defs/bloc_eco"}
+      }
+    },
+    "renvois": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["vue", "fichier", "id", "libelle", "pour", "lecture"],
+        "properties": {
+          "vue": {"const": "depenses_fiscales_mesures"},
+          "fichier": {"const": "niches/mesures.json"},
+          "id": {"type": "string", "pattern": "^[0-9]{6}$"},
+          "libelle": {"type": ["string", "null"]},
+          "pour": {"enum": ["ptz", "eco_ptz"]},
+          "lecture": {"type": "string", "minLength": 10}
+        }
+      }
+    },
+    "limites": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10}}
+  }
+}

@@ -280,6 +280,11 @@ FICHIERS = [
     ("aides_entreprises_france2030.schema.json", "aides_entreprises/france2030.json", "existant"),
     ("aides_entreprises_france_relance.schema.json", "aides_entreprises/france_relance.json", "existant"),
     ("aides_entreprises_pge.schema.json", "aides_entreprises/pge.json", "existant"),
+    # logement : aides personnelles par aide et département, MaPrimeRénov', PTZ, renvois (pipeline/logement.py)
+    ("logement_index.schema.json", "logement/index.json", "existant"),
+    ("logement_aides_personnelles.schema.json", "logement/aides_personnelles/*.json", "existant"),
+    ("logement_maprimerenov.schema.json", "logement/maprimerenov.json", "existant"),
+    ("logement_ptz.schema.json", "logement/ptz.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/logement_maprimerenov.schema.json",
+  "title": "site/data/logement/maprimerenov.json : dossiers MaPrimeRénov' validés par département (cumul), repères nationaux, exécution budgétaire (pipeline/logement.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "$defs": {
+    "entier_ou_null": {"type": ["integer", "null"]},
+    "serie_cumul": {"type": "array", "items": {"type": ["integer", "null"], "minimum": 0}},
+    "serie_annee": {"type": "array", "items": {"type": ["integer", "null"]}},
+    "lien_arbre": {
+      "type": "object", "additionalProperties": false,
+      "required": ["vue", "programme", "fichier", "id", "nom", "md", "millesime", "lecture"],
+      "properties": {
+        "vue": {"const": "arbre_etat"}, "programme": {"type": "string", "pattern": "^[0-9]{3}$"},
+        "fichier": {"type": "string", "pattern": "^arbre/.+\\.json$"}, "id": {"type": "string"},
+        "nom": {"type": "string"}, "md": {"type": "number"}, "millesime": {"type": ["string", "null"]},
+        "lecture": {"type": "string", "minLength": 10}
+      }
+    }
+  },
+  "required": ["millesime", "source", "urls_sources", "unite", "avertissement", "definitions", "dates_cumul",
+               "annees_calculees", "departements", "france", "controle_somme_departements", "national_sdes", "budget_etat",
+               "limites"],
+  "additionalProperties": false,
+  "properties": {
+    "millesime": {"type": "string", "minLength": 4},
+    "source": {"type": "string", "minLength": 10},
+    "urls_sources": {"type": "array", "minItems": 3, "items": {"type": "string", "pattern": "^https://"}},
+    "unite": {"type": "string"},
+    "avertissement": {"type": "string", "minLength": 20},
+    "definitions": {"type": "object", "required": ["cumul", "annee"], "additionalProperties": {"type": "string"}},
+    "dates_cumul": {"type": "array", "minItems": 2,
+                    "items": {"type": "string", "pattern": "^(19|20)[0-9]{2}-[01][0-9]-[0-3][0-9]$"}},
+    "annees_calculees": {"type": "array", "items": {"$ref": "commun.schema.json#/$defs/annee_entier"}},
+    "departements": {
+      "type": "object", "minProperties": 96,
+      "propertyNames": {"pattern": "^([0-9]{2}|2A|2B|97[1-6])$"},
+      "additionalProperties": {
+        "type": "object", "additionalProperties": false, "required": ["nom", "cumul", "annee"],
+        "properties": {"nom": {"type": "string"}, "cumul": {"$ref": "#/$defs/serie_cumul"},
+                       "annee": {"$ref": "#/$defs/serie_annee"}}
+      }
+    },
+    "france": {
+      "type": "object", "additionalProperties": false, "required": ["cumul", "annee"],
+      "properties": {"cumul": {"$ref": "#/$defs/serie_cumul"}, "annee": {"$ref": "#/$defs/serie_annee"}}
+    },
+    "controle_somme_departements": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["date", "somme_departements", "france", "ecart"],
+        "properties": {"date": {"type": "string"}, "somme_departements": {"$ref": "#/$defs/entier_ou_null"},
+                       "france": {"$ref": "#/$defs/entier_ou_null"}, "ecart": {"$ref": "#/$defs/entier_ou_null"}}
+      }
+    },
+    "national_sdes": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source", "champ", "champ_montants", "annees", "etapes", "soldes", "annees_soldes"],
+      "properties": {
+        "source": {"type": "string", "pattern": "^https://"},
+        "champ": {"type": "string"}, "champ_montants": {"type": "string"},
+        "annees": {"type": "array", "items": {"$ref": "commun.schema.json#/$defs/annee_entier"}},
+        "annees_soldes": {"type": "array", "items": {"$ref": "commun.schema.json#/$defs/annee_entier"}},
+        "etapes": {
+          "type": "object", "additionalProperties": false, "required": ["depots", "engages", "demandes_de_solde", "soldes"],
+          "properties": {
+            "depots": {"$ref": "#/$defs/serie_cumul"}, "engages": {"$ref": "#/$defs/serie_cumul"},
+            "demandes_de_solde": {"$ref": "#/$defs/serie_cumul"}, "soldes": {"$ref": "#/$defs/serie_cumul"}
+          }
+        },
+        "soldes": {
+          "type": "object", "additionalProperties": false,
+          "required": ["nombre_dossiers", "montant_travaux_eur", "subvention_maprimerenov_eur", "montant_moyen_maprimerenov_eur"],
+          "properties": {
+            "nombre_dossiers": {"$ref": "#/$defs/serie_cumul"}, "montant_travaux_eur": {"$ref": "#/$defs/serie_cumul"},
+            "subvention_maprimerenov_eur": {"$ref": "#/$defs/serie_cumul"},
+            "montant_moyen_maprimerenov_eur": {"$ref": "#/$defs/serie_cumul"}
+          }
+        }
+      }
+    },
+    "budget_etat": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source", "tableau", "mention", "unite", "colonnes", "lignes", "controle_total", "note", "liens"],
+      "properties": {
+        "source": {"type": "string", "pattern": "^https://"},
+        "tableau": {"type": "string"}, "mention": {"type": "string"}, "unite": {"type": "string"},
+        "colonnes": {"const": ["execution_2022", "prevision_2023", "execution_2023", "prevision_2024", "execution_2024"]},
+        "lignes": {
+          "type": "array", "minItems": 4,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["programme", "execution_2022", "prevision_2023", "execution_2023", "prevision_2024", "execution_2024"],
+            "properties": {
+              "programme": {"enum": ["174", "362", "135", "total"]},
+              "execution_2022": {"type": "integer"}, "prevision_2023": {"type": "integer"},
+              "execution_2023": {"type": "integer"}, "prevision_2024": {"type": "integer"},
+              "execution_2024": {"type": "integer"}
+            }
+          }
+        },
+        "controle_total": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["colonne", "somme_des_programmes", "total_publie", "ecart"],
+            "properties": {"colonne": {"type": "string"}, "somme_des_programmes": {"type": "integer"},
+                           "total_publie": {"type": "integer"}, "ecart": {"type": "integer"}}
+          }
+        },
+        "note": {"type": "string"},
+        "liens": {"type": "array", "items": {"$ref": "#/$defs/lien_arbre"}}
+      }
+    },
+    "limites": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10}}
+  }
+}

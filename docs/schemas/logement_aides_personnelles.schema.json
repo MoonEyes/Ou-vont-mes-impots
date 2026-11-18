@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/logement_aides_personnelles.schema.json",
+  "title": "site/data/logement/aides_personnelles/<annee>.json : APL, ALF, ALS par département, type de logement et type de parc, une année (pipeline/logement.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "$defs": {
+    "triplet": {
+      "description": "[foyers_decembre, montant_annuel_eur, montant_moyen_eur] ; null = absent ou année incomplète à la source, jamais 0",
+      "type": "array", "minItems": 3, "maxItems": 3,
+      "prefixItems": [
+        {"type": ["integer", "null"], "minimum": 0},
+        {"type": ["integer", "null"], "minimum": 0},
+        {"type": ["number", "null"], "minimum": 0}
+      ]
+    },
+    "aides": {
+      "type": "object", "additionalProperties": false, "required": ["ensemble", "apl", "alf", "als"],
+      "properties": {
+        "ensemble": {"$ref": "#/$defs/triplet"}, "apl": {"$ref": "#/$defs/triplet"},
+        "alf": {"$ref": "#/$defs/triplet"}, "als": {"$ref": "#/$defs/triplet"}
+      }
+    },
+    "ligne": {
+      "type": "object", "additionalProperties": false, "required": ["nom", "aides", "type_logement", "type_parc"],
+      "properties": {
+        "nom": {"type": "string", "minLength": 2},
+        "aides": {"$ref": "#/$defs/aides"},
+        "type_logement": {
+          "type": "object", "additionalProperties": false, "required": ["location", "accession", "foyer", "inconnu"],
+          "properties": {
+            "location": {"$ref": "#/$defs/aides"}, "accession": {"$ref": "#/$defs/aides"},
+            "foyer": {"$ref": "#/$defs/aides"}, "inconnu": {"$ref": "#/$defs/aides"}
+          }
+        },
+        "type_parc": {
+          "type": "object", "additionalProperties": false, "required": ["public", "prive"],
+          "properties": {"public": {"$ref": "#/$defs/aides"}, "prive": {"$ref": "#/$defs/aides"}}
+        }
+      }
+    },
+    "ecart_somme": {
+      "type": "object", "additionalProperties": false, "required": ["foyers", "montant_eur"],
+      "properties": {"foyers": {"type": ["integer", "null"]}, "montant_eur": {"type": ["integer", "null"]}}
+    }
+  },
+  "required": ["millesime", "source", "urls_sources", "unite", "annee", "colonnes", "definitions", "aides", "types_logement",
+               "types_parc", "departements", "hors_departements", "france", "mois_absents_a_la_source", "controles",
+               "renvoi_total", "note_perimetre"],
+  "additionalProperties": false,
+  "properties": {
+    "millesime": {"type": "string", "pattern": "^Année (19|20)[0-9]{2}$"},
+    "source": {"type": "string", "minLength": 10},
+    "urls_sources": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^https://"}},
+    "unite": {"type": "string"},
+    "annee": {"$ref": "commun.schema.json#/$defs/annee_entier"},
+    "colonnes": {"const": ["foyers_decembre", "montant_annuel_eur", "montant_moyen_eur"]},
+    "definitions": {"type": "object", "additionalProperties": {"type": "string"}},
+    "aides": {"type": "object", "required": ["ensemble", "apl", "alf", "als"], "additionalProperties": {"type": "string"}},
+    "types_logement": {"type": "object", "required": ["location", "accession", "foyer", "inconnu"],
+                       "additionalProperties": {"type": "string"}},
+    "types_parc": {"type": "object", "required": ["public", "prive"], "additionalProperties": {"type": "string"}},
+    "departements": {
+      "type": "object", "minProperties": 96,
+      "propertyNames": {"pattern": "^([0-9]{2}|2A|2B|97[1-6])$"},
+      "additionalProperties": {"$ref": "#/$defs/ligne"}
+    },
+    "hors_departements": {
+      "type": "object", "propertyNames": {"pattern": "^(978|99|XX)$"},
+      "additionalProperties": {"$ref": "#/$defs/ligne"}
+    },
+    "france": {
+      "type": "object", "additionalProperties": false, "required": ["aides", "type_logement", "type_parc"],
+      "properties": {
+        "aides": {"$ref": "#/$defs/aides"},
+        "type_logement": {"$ref": "#/$defs/ligne/properties/type_logement"},
+        "type_parc": {"$ref": "#/$defs/ligne/properties/type_parc"}
+      }
+    },
+    "mois_absents_a_la_source": {
+      "type": "object", "additionalProperties": {"type": "array", "items": {"type": "string", "pattern": "^(19|20)[0-9]{2}-[01][0-9]$"}}
+    },
+    "controles": {
+      "type": "object", "additionalProperties": false,
+      "required": ["aides_moins_ensemble", "types_logement_moins_ensemble", "types_parc_moins_ensemble", "non_calculables",
+                   "france_moins_somme_des_lignes"],
+      "properties": {
+        "aides_moins_ensemble": {"$ref": "#/$defs/ecart_somme"},
+        "types_logement_moins_ensemble": {"$ref": "#/$defs/ecart_somme"},
+        "types_parc_moins_ensemble": {"$ref": "#/$defs/ecart_somme"},
+        "non_calculables": {"type": "integer", "minimum": 0},
+        "france_moins_somme_des_lignes": {
+          "type": "object", "required": ["ensemble", "apl", "alf", "als"],
+          "additionalProperties": {
+            "type": "object", "additionalProperties": false,
+            "required": ["foyers_decembre", "montant_annuel_eur", "lignes_sans_montant_annuel"],
+            "properties": {
+              "foyers_decembre": {"type": ["integer", "null"]},
+              "montant_annuel_eur": {"type": ["integer", "null"]},
+              "lignes_sans_montant_annuel": {"type": "integer", "minimum": 0}
+            }
+          }
+        }
+      }
+    },
+    "renvoi_total": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "object", "additionalProperties": false, "required": ["fichier", "cle", "lecture"],
+         "properties": {
+           "fichier": {"type": "string", "pattern": "^prestations/departements/(19|20)[0-9]{2}\\.json$"},
+           "cle": {"const": "aides_logement"},
+           "lecture": {"type": "string", "minLength": 10}
+         }}
+      ]
+    },
+    "note_perimetre": {"type": "string", "minLength": 10}
+  }
+}

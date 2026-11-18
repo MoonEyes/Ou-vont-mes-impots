@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/logement_index.schema.json",
+  "title": "site/data/logement/index.json : aides du logement, repères, renvois vers les autres vues, écarts entre sources, sources, recherche préalable (pipeline/logement.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "$defs": {
+    "triplet": {"$ref": "logement_aides_personnelles.schema.json#/$defs/triplet"},
+    "aides": {"$ref": "logement_aides_personnelles.schema.json#/$defs/aides"},
+    "lecture": {"type": "string", "minLength": 10},
+    "lien": {
+      "type": "object", "required": ["vue", "fichier"],
+      "properties": {
+        "vue": {"enum": ["arbre_etat", "realisations", "depenses_fiscales_programmes", "depenses_fiscales_mesures",
+                         "operateurs", "prestations", "comparaison"]},
+        "fichier": {"type": "string", "pattern": "^(arbre|realisations|niches|operateurs|prestations|comparaison)/.+\\.json$"},
+        "id": {"type": "string"}, "nom": {"type": ["string", "null"]}, "md": {"type": "number"},
+        "millesime": {"type": ["string", "null"]}, "programme": {"type": "string", "pattern": "^[0-9]{3}$"},
+        "programme_chef_de_file": {"type": ["string", "null"]},
+        "mesures": {"type": "array", "items": {"type": "string", "pattern": "^[0-9]{6}$"}},
+        "actions": {"type": "array", "items": {"type": "object", "required": ["id", "nom", "md"],
+                                               "properties": {"id": {"type": "string"}, "nom": {"type": "string"},
+                                                              "md": {"type": "number"}}}},
+        "libelle": {"type": ["string", "null"]}, "pour": {"type": "string"},
+        "lecture": {"$ref": "#/$defs/lecture"}
+      },
+      "additionalProperties": false
+    },
+    "ecart": {
+      "type": "object", "additionalProperties": false,
+      "required": ["objet", "annee", "unite", "source", "montant", "autre_source", "autre_montant", "ecart", "ecart_pct",
+                   "lecture_ecart"],
+      "properties": {
+        "objet": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "annee": {"$ref": "commun.schema.json#/$defs/annee_entier"},
+        "unite": {"enum": ["euros", "dossiers"]},
+        "source": {"type": "string"}, "montant": {"type": "integer"},
+        "autre_source": {"type": "string"}, "autre_montant": {"type": "integer"},
+        "ecart": {"type": "integer"}, "ecart_pct": {"type": ["number", "null"]},
+        "lecture_ecart": {"$ref": "#/$defs/lecture"}
+      }
+    }
+  },
+  "required": ["millesime", "source", "urls_sources", "unite", "avertissement", "fichiers", "aides_personnelles",
+               "maprimerenov", "ptz", "aides_a_la_pierre", "programmes", "operateurs", "renvois", "ecarts", "sources",
+               "sources_inaccessibles", "recherche_publique", "limites", "regles", "confidentialite", "collecte_le"],
+  "additionalProperties": false,
+  "properties": {
+    "millesime": {"type": "string", "minLength": 4},
+    "source": {"type": "string", "minLength": 10},
+    "urls_sources": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^https://"}},
+    "unite": {"type": "string"},
+    "avertissement": {"type": "string", "minLength": 20},
+    "fichiers": {
+      "type": "array", "minItems": 3,
+      "items": {"type": "object", "additionalProperties": false, "required": ["fichier", "contenu"],
+                "properties": {"fichier": {"type": "string", "pattern": "^logement/.+\\.json$"},
+                               "contenu": {"type": "string"}}}
+    },
+    "aides_personnelles": {
+      "type": "object", "additionalProperties": false,
+      "required": ["annees", "dernier_mois_publie", "fichiers", "colonnes", "aides", "france", "controles",
+                   "mois_absents_a_la_source"],
+      "properties": {
+        "annees": {"type": "array", "minItems": 1, "items": {"$ref": "commun.schema.json#/$defs/annee_entier"}},
+        "dernier_mois_publie": {"type": "string", "pattern": "^(19|20)[0-9]{2}-[01][0-9]$"},
+        "fichiers": {"type": "object", "propertyNames": {"$ref": "commun.schema.json#/$defs/annee"},
+                     "additionalProperties": {"type": "string", "pattern": "^logement/aides_personnelles/(19|20)[0-9]{2}\\.json$"}},
+        "colonnes": {"const": ["foyers_decembre", "montant_annuel_eur", "montant_moyen_eur"]},
+        "aides": {"type": "object", "additionalProperties": {"type": "string"}},
+        "france": {
+          "type": "object", "propertyNames": {"$ref": "commun.schema.json#/$defs/annee"},
+          "additionalProperties": {
+            "type": "object", "additionalProperties": false, "required": ["aides", "type_parc", "type_logement"],
+            "properties": {
+              "aides": {"$ref": "#/$defs/aides"},
+              "type_parc": {"type": "object", "required": ["public", "prive"], "additionalProperties": {"$ref": "#/$defs/triplet"}},
+              "type_logement": {"type": "object", "required": ["location", "accession", "foyer", "inconnu"],
+                                "additionalProperties": {"$ref": "#/$defs/triplet"}}
+            }
+          }
+        },
+        "controles": {"type": "object", "propertyNames": {"$ref": "commun.schema.json#/$defs/annee"},
+                      "additionalProperties": {"$ref": "logement_aides_personnelles.schema.json#/properties/controles"}},
+        "mois_absents_a_la_source": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}}
+      }
+    },
+    "maprimerenov": {
+      "type": "object", "additionalProperties": false,
+      "required": ["fichier", "dates_cumul", "france_cumul", "france_annee", "execution_cp_total_meur"],
+      "properties": {
+        "fichier": {"const": "logement/maprimerenov.json"},
+        "dates_cumul": {"type": "array", "items": {"type": "string"}},
+        "france_cumul": {"type": "array", "items": {"type": ["integer", "null"]}},
+        "france_annee": {"type": "object", "propertyNames": {"$ref": "commun.schema.json#/$defs/annee"},
+                         "additionalProperties": {"type": ["integer", "null"]}},
+        "execution_cp_total_meur": {"type": "object", "propertyNames": {"$ref": "commun.schema.json#/$defs/annee"},
+                                    "additionalProperties": {"type": "integer"}}
+      }
+    },
+    "ptz": {
+      "type": "object", "additionalProperties": false,
+      "required": ["fichier", "dernier_annee_ptz", "ptz_derniere_annee", "eco_ptz_derniere_annee", "renvois"],
+      "properties": {
+        "fichier": {"const": "logement/ptz.json"},
+        "dernier_annee_ptz": {"$ref": "commun.schema.json#/$defs/annee_entier"},
+        "ptz_derniere_annee": {"type": "object", "required": ["nombre", "montant_ptz_eur"],
+                               "properties": {"nombre": {"type": "integer"}, "montant_ptz_eur": {"type": "integer"}}},
+        "eco_ptz_derniere_annee": {"type": "object", "required": ["nombre", "montant_pret_eur"],
+                                   "properties": {"nombre": {"type": "integer"}, "montant_pret_eur": {"type": "integer"}}},
+        "renvois": {"type": "array", "items": {"$ref": "#/$defs/lien"}}
+      }
+    },
+    "aides_a_la_pierre": {
+      "type": "object", "additionalProperties": false, "required": ["definition", "liens", "non_publie"],
+      "properties": {"definition": {"type": "string"}, "liens": {"type": "array", "items": {"$ref": "#/$defs/lien"}},
+                     "non_publie": {"type": "string"}}
+    },
+    "programmes": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["code", "role", "nom", "liens"],
+        "properties": {"code": {"type": "string", "pattern": "^[0-9]{3}$"}, "role": {"type": "string"},
+                       "nom": {"type": ["string", "null"]}, "liens": {"type": "array", "items": {"$ref": "#/$defs/lien"}}}
+      }
+    },
+    "operateurs": {"type": "array", "items": {"$ref": "#/$defs/lien"}},
+    "renvois": {"type": "array", "items": {"$ref": "#/$defs/lien"}},
+    "ecarts": {"type": "array", "items": {"$ref": "#/$defs/ecart"}},
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id_catalogue", "titre", "producteur", "millesime", "licence", "url", "page", "verdict"],
+        "properties": {
+          "id_catalogue": {"type": "string", "pattern": "^logement_[a-z0-9_]+$"},
+          "titre": {"type": "string"}, "producteur": {"type": "string"}, "millesime": {"type": "string"},
+          "licence": {"type": "string"}, "url": {"type": "string", "pattern": "^https://"},
+          "page": {"type": "string", "pattern": "^https://"}, "verdict": {"type": "string"}
+        }
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array", "minItems": 1,
+      "items": {"type": "object", "additionalProperties": false, "required": ["source", "motif"],
+                "properties": {"source": {"type": "string"}, "motif": {"type": "string", "minLength": 10}}}
+    },
+    "recherche_publique": {
+      "type": "object", "additionalProperties": false, "required": ["date", "conclusion", "trouvailles"],
+      "properties": {
+        "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+        "conclusion": {"type": "string"},
+        "trouvailles": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["nom", "url", "licence", "verdict"],
+            "properties": {
+              "nom": {"type": "string"}, "url": {"type": "string", "pattern": "^https://"},
+              "licence": {"type": ["string", "null"]},
+              "mise_a_jour": {"type": "string"}, "dernier_commit": {"type": ["string", "null"]},
+              "verdict": {"type": "string", "pattern": "^(réutilisable tel quel|à adapter|inspiration seulement|aucun autre dépôt pertinent)"}
+            }
+          }
+        }
+      }
+    },
+    "limites": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10}},
+    "regles": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10}},
+    "confidentialite": {"type": "string", "minLength": 20},
+    "collecte_le": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"}
+  }
+}

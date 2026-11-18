@@ -1700,6 +1700,41 @@
    ],
    "octets_sources": 7164626,
    "note": "registre TAM collecté par le module lui-même (pages publiques, par mois) ; relevé à la main le 18/11/2026"
+  },
+  "logement": {
+   "sources": {
+    "logement_caf_type_logement_dep": [
+     "data/lake/logement/logement_caf_type_logement_dep.parquet"
+    ],
+    "logement_caf_type_logement_nat": [
+     "data/lake/logement/logement_caf_type_logement_nat.parquet"
+    ],
+    "logement_caf_type_parc_dep": [
+     "data/lake/logement/logement_caf_type_parc_dep.parquet"
+    ],
+    "logement_caf_type_parc_nat": [
+     "data/lake/logement/logement_caf_type_parc_nat.parquet"
+    ],
+    "logement_ditp_barometre": [
+     "data/lake/logement/logement_ditp_barometre/ind-292.csv",
+     "data/lake/logement/logement_ditp_barometre/meta_indicateurs.csv"
+    ],
+    "logement_sdes_maprimerenov_2024": [
+     "data/lake/logement/logement_sdes_maprimerenov_2024.xlsx"
+    ],
+    "logement_senat_rlrg2024_ecologie": [
+     "data/lake/logement/logement_senat_rlrg2024_ecologie.html"
+    ],
+    "logement_sgfgas_ecoptz": [
+     "data/lake/logement/logement_sgfgas_ecoptz.csv"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/logement/ptz"
+   ],
+   "octets_sources": 34042874,
+   "note": "base PTZ (source logement_sgfgas_ptz, 307 Mo) copiée compressée par `python pipeline/logement.py collecter` dans data/lake/logement/ptz/ ; autres sources par collecte/collecte.py"
   }
  },
  "urls": {
@@ -2182,6 +2217,15 @@
   "data/lake/aides_entreprises/aides_pge/pge-departemental-naf-covid19-csv_c6b7b64a.csv": "https://raw.githubusercontent.com/etalab/dashboard-aides-entreprises/master/published-data/pge-departemental-naf-latest.csv",
   "data/lake/aides_entreprises/aides_pge/pge-regional-naf-covid19-csv_084fa1f4.csv": "https://raw.githubusercontent.com/etalab/dashboard-aides-entreprises/master/published-data/pge-regional-naf-latest.csv",
   "data/lake/aides_entreprises/aides_pge_historique/pge-regional-naf-2021-01-01.csv": "https://raw.githubusercontent.com/etalab/dashboard-aides-entreprises/a62d6dad3159f926d3649950c30132310d379869/published-data/pge/pge-2021-01-01/pge-regional-naf-latest.csv",
-  "data/lake/aides_entreprises/aides_pge_historique/pge-departemental-naf-2021-01-01.csv": "https://raw.githubusercontent.com/etalab/dashboard-aides-entreprises/a62d6dad3159f926d3649950c30132310d379869/published-data/pge/pge-2021-01-01/pge-departemental-naf-latest.csv"
+  "data/lake/aides_entreprises/aides_pge_historique/pge-departemental-naf-2021-01-01.csv": "https://raw.githubusercontent.com/etalab/dashboard-aides-entreprises/a62d6dad3159f926d3649950c30132310d379869/published-data/pge/pge-2021-01-01/pge-departemental-naf-latest.csv",
+  "data/lake/logement/logement_caf_type_logement_dep.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/al_s_type_log_dep/exports/parquet",
+  "data/lake/logement/logement_caf_type_logement_nat.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/al_s_type_log_nat/exports/parquet",
+  "data/lake/logement/logement_caf_type_parc_dep.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/al_s_type_parc_dep/exports/parquet",
+  "data/lake/logement/logement_caf_type_parc_nat.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/al_s_type_parc_nat/exports/parquet",
+  "data/lake/logement/logement_ditp_barometre/ind-292.csv": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/data/ind-292.csv",
+  "data/lake/logement/logement_ditp_barometre/meta_indicateurs.csv": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/metadata/meta_indicateurs.csv",
+  "data/lake/logement/logement_sdes_maprimerenov_2024.xlsx": "https://www.statistiques.developpement-durable.gouv.fr/media/9634/download?inline",
+  "data/lake/logement/logement_senat_rlrg2024_ecologie.html": "https://www.senat.fr/rap/l24-743-211-1/l24-743-211-11.html",
+  "data/lake/logement/logement_sgfgas_ecoptz.csv": "https://static.data.gouv.fr/resources/base-de-donnees-eco-ptz-eco-pret-a-taux-zero/20220412-141925/opendataecoptz2022.csv"
  }
 }
