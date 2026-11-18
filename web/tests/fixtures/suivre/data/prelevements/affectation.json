@@ -1,0 +1,611 @@
+{
+ "millesime": "2025",
+ "annee": "2025",
+ "source": "PLFSS 2026 annexe 3 (tableau 31) ; PLF 2026 Voies et moyens tome I ; DGFiP REI 2025 ; codes et lois cités pour chaque part",
+ "methode": "Une ventilation par prélèvement : part = fraction du produit 2025 attribuée au destinataire. Les parts d'un prélèvement « sourcee » somment à 1. Un prélèvement ou une part introuvable est marqué « non sourcee » et n'est jamais complété par une estimation.",
+ "verification_documents": {
+  "plfss2026_annexe3": {
+   "statut": "vérifié",
+   "motifs": 22,
+   "manquants": []
+  },
+  "plf2026_vm1": {
+   "statut": "vérifié",
+   "motifs": 12,
+   "manquants": []
+  }
+ },
+ "destinataires": {
+  "etat": {
+   "nom": "État (budget général)",
+   "administration": "Etat"
+  },
+  "cnam": {
+   "nom": "Assurance maladie (CNAM et régimes d'assurance maladie)",
+   "administration": "Securite sociale"
+  },
+  "cnav": {
+   "nom": "Assurance retraite (CNAV, branche vieillesse)",
+   "administration": "Securite sociale"
+  },
+  "cnaf": {
+   "nom": "Allocations familiales (CNAF)",
+   "administration": "Securite sociale"
+  },
+  "branche_atmp": {
+   "nom": "Branche accidents du travail et maladies professionnelles",
+   "administration": "Securite sociale"
+  },
+  "cnsa": {
+   "nom": "Branche autonomie (CNSA)",
+   "administration": "Securite sociale"
+  },
+  "cades": {
+   "nom": "Caisse d'amortissement de la dette sociale (CADES)",
+   "administration": "Securite sociale"
+  },
+  "unedic": {
+   "nom": "Assurance chômage (Unédic)",
+   "administration": "Securite sociale"
+  },
+  "agirc_arrco": {
+   "nom": "Retraite complémentaire (Agirc-Arrco)",
+   "administration": "Securite sociale"
+  },
+  "fnal": {
+   "nom": "Fonds national d'aide au logement (FNAL)",
+   "administration": "Etat"
+  },
+  "acoss": {
+   "nom": "Urssaf Caisse nationale (ACOSS), répartie ensuite entre branches",
+   "administration": "Securite sociale"
+  },
+  "msa_maladie": {
+   "nom": "MSA, non-salariés agricoles, maladie",
+   "administration": "Securite sociale"
+  },
+  "msa_vieillesse": {
+   "nom": "MSA, non-salariés agricoles, vieillesse",
+   "administration": "Securite sociale"
+  },
+  "msa_rco": {
+   "nom": "MSA, retraite complémentaire obligatoire des non-salariés agricoles",
+   "administration": "Securite sociale"
+  },
+  "collectivites_territoriales": {
+   "nom": "Collectivités territoriales (régions, départements, bloc communal)",
+   "administration": "Collectivites locales"
+  },
+  "audiovisuel_public": {
+   "nom": "Audiovisuel public (compte de concours financiers)",
+   "administration": "Etat"
+  },
+  "afitf": {
+   "nom": "Agence de financement des infrastructures de transport de France (AFITF)",
+   "administration": "Etat"
+  },
+  "idfm": {
+   "nom": "Île-de-France Mobilités",
+   "administration": "Collectivites locales"
+  },
+  "zni_cspe": {
+   "nom": "Fractions ZNI et CSPE (péréquation tarifaire, énergies renouvelables)",
+   "administration": "Etat"
+  },
+  "commune": {
+   "nom": "Commune",
+   "administration": "Collectivites locales"
+  },
+  "epci": {
+   "nom": "Intercommunalité (EPCI à fiscalité propre, y compris taxe GEMAPI)",
+   "administration": "Collectivites locales"
+  },
+  "syndicats": {
+   "nom": "Syndicats de communes fiscalisés",
+   "administration": "Collectivites locales"
+  },
+  "tse": {
+   "nom": "Établissements publics fonciers et Société des grands projets (taxes spéciales d'équipement)",
+   "administration": "Etat"
+  },
+  "region_idf": {
+   "nom": "Région Île-de-France (taxe additionnelle spéciale annuelle)",
+   "administration": "Collectivites locales"
+  },
+  "bloc_communal_dechets": {
+   "nom": "Commune ou groupement compétent pour les déchets (commune, EPCI, syndicat)",
+   "administration": "Collectivites locales"
+  }
+ },
+ "prelevements": {
+  "vieillesse_plafonnee": {
+   "libelle": "Cotisation d'assurance vieillesse plafonnée (salarié et employeur)",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "cnav",
+     "part": 1.0,
+     "source": "CSS art. L. 241-3 ; L. 222-1 (gestion par la CNAV)"
+    }
+   ],
+   "reference_juridique": "CSS art. L. 241-3 ; L. 222-1 (gestion par la CNAV)"
+  },
+  "vieillesse_deplafonnee": {
+   "libelle": "Cotisation d'assurance vieillesse déplafonnée (salarié et employeur)",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "cnav",
+     "part": 1.0,
+     "source": "CSS art. L. 241-3"
+    }
+   ],
+   "reference_juridique": "CSS art. L. 241-3"
+  },
+  "maladie": {
+   "libelle": "Cotisation patronale d'assurance maladie, maternité, invalidité, décès",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "cnam",
+     "part": 1.0,
+     "source": "CSS art. L. 241-2"
+    }
+   ],
+   "reference_juridique": "CSS art. L. 241-2"
+  },
+  "famille": {
+   "libelle": "Cotisation patronale d'allocations familiales",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "cnaf",
+     "part": 1.0,
+     "source": "CSS art. L. 241-6"
+    }
+   ],
+   "reference_juridique": "CSS art. L. 241-6"
+  },
+  "atmp": {
+   "libelle": "Cotisation accidents du travail et maladies professionnelles",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "branche_atmp",
+     "part": 1.0,
+     "source": "CSS art. L. 241-5"
+    }
+   ],
+   "reference_juridique": "CSS art. L. 241-5"
+  },
+  "agirc_arrco": {
+   "libelle": "Cotisations de retraite complémentaire Agirc-Arrco (tranches 1 et 2)",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "agirc_arrco",
+     "part": 1.0,
+     "source": "Accord national interprofessionnel du 17 novembre 2017 instituant le régime Agirc-Arrco"
+    }
+   ],
+   "reference_juridique": "Accord national interprofessionnel du 17 novembre 2017 instituant le régime Agirc-Arrco"
+  },
+  "ceg": {
+   "libelle": "Contribution d'équilibre général (CEG)",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "agirc_arrco",
+     "part": 1.0,
+     "source": "Accord national interprofessionnel du 17 novembre 2017 (Agirc-Arrco), contribution d'équilibre général"
+    }
+   ],
+   "reference_juridique": "Accord national interprofessionnel du 17 novembre 2017 (Agirc-Arrco), contribution d'équilibre général"
+  },
+  "chomage": {
+   "libelle": "Contribution patronale d'assurance chômage",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "unedic",
+     "part": 1.0,
+     "source": "Code du travail art. L. 5422-9 (contributions) et L. 5427-1 (gestion par l'Unédic)"
+    }
+   ],
+   "reference_juridique": "Code du travail art. L. 5422-9 (contributions) et L. 5427-1 (gestion par l'Unédic)",
+   "note": "L'Unédic reverse ensuite une part de ses ressources à France Travail (Code du travail art. L. 5422-24) : taux 2025 non sourcé ici, donc non déduit."
+  },
+  "fnal": {
+   "libelle": "Contribution au Fonds national d'aide au logement (0,1 % ou 0,5 %)",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "fnal",
+     "part": 1.0,
+     "source": "CSS art. L. 834-1 ; PLFSS 2026 annexe 3, partie 3 : « FNAL, affectataire des contributions patronales de 0,1 % ou de 0,5 % »"
+    }
+   ],
+   "reference_juridique": "CSS art. L. 834-1 ; PLFSS 2026 annexe 3, partie 3 : « FNAL, affectataire des contributions patronales de 0,1 % ou de 0,5 % »",
+   "note": "Administration de rattachement du FNAL à confirmer en comptabilité nationale (contrat d'interface, 3.5)."
+  },
+  "crds": {
+   "libelle": "Contribution au remboursement de la dette sociale (CRDS)",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "cades",
+     "part": 1.0,
+     "source": "Ordonnance n° 96-50 du 24 janvier 1996, art. 14 et 19 ; PLFSS 2026, annexe 3, tableau 31, colonne 2025 (8 256 M€ prévus en 2025)"
+    }
+   ],
+   "reference_juridique": "Ordonnance n° 96-50 du 24 janvier 1996, art. 14 et 19 ; PLFSS 2026, annexe 3, tableau 31, colonne 2025 (8 256 M€ prévus en 2025)"
+  },
+  "csa": {
+   "libelle": "Contribution solidarité autonomie (0,3 %)",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "cnsa",
+     "part": 1.0,
+     "source": "Loi n° 2004-626 du 30 juin 2004, art. 11 ; CASF art. L. 14-10-4 ; PLFSS 2026, annexe 3, tableau 31, colonne 2025 (2 518 M€ prévus en 2025)"
+    }
+   ],
+   "reference_juridique": "Loi n° 2004-626 du 30 juin 2004, art. 11 ; CASF art. L. 14-10-4 ; PLFSS 2026, annexe 3, tableau 31, colonne 2025 (2 518 M€ prévus en 2025)"
+  },
+  "impot_revenu": {
+   "libelle": "Impôt sur le revenu",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "etat",
+     "part": 1.0,
+     "source": "Recette du budget général de l'État (LFI 2025, état A, ligne 1101) ; aucune fraction affectée"
+    }
+   ],
+   "reference_juridique": "Recette du budget général de l'État (LFI 2025, état A, ligne 1101) ; aucune fraction affectée"
+  },
+  "tabac": {
+   "libelle": "Droit de consommation sur les tabacs",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "cnam",
+     "part": 1.0,
+     "source": "CGI art. 575 ; PLFSS 2026, annexe 3, tableau 31, colonne 2025 : « CNAM : 100 % » (12 086 M€ prévus en 2025)"
+    }
+   ],
+   "reference_juridique": "CGI art. 575 ; PLFSS 2026, annexe 3, tableau 31, colonne 2025 : « CNAM : 100 % » (12 086 M€ prévus en 2025)"
+  },
+  "csg_activite": {
+   "libelle": "CSG sur les revenus d'activité (9,2 % : 6,8 % déductible et 2,4 % non déductible)",
+   "statut": "sourcee",
+   "points": {
+    "cnam": 4.25,
+    "cnsa": 2.08,
+    "unedic": 1.47,
+    "cnaf": 0.95,
+    "cades": 0.45
+   },
+   "ventilation": [
+    {
+     "destinataire": "cnam",
+     "part": 0.461957,
+     "source": "PLFSS 2026, annexe 3, tableau 31, colonne 2025 : « AM : 4,25 pt »",
+     "points": 4.25
+    },
+    {
+     "destinataire": "cnsa",
+     "part": 0.226087,
+     "source": "PLFSS 2026, annexe 3, tableau 31, colonne 2025 : « CNSA : 2,08 pt »",
+     "points": 2.08
+    },
+    {
+     "destinataire": "unedic",
+     "part": 0.159783,
+     "source": "PLFSS 2026, annexe 3, tableau 31, colonne 2025 : « UNEDIC : 1,47 pt »",
+     "points": 1.47
+    },
+    {
+     "destinataire": "cnaf",
+     "part": 0.103261,
+     "source": "PLFSS 2026, annexe 3, tableau 31, colonne 2025 : « CNAF : 0,95 pt »",
+     "points": 0.95
+    },
+    {
+     "destinataire": "cades",
+     "part": 0.048913,
+     "source": "PLFSS 2026, annexe 3, tableau 31, colonne 2025 : « CADES : 0,45 pt »",
+     "points": 0.45
+    }
+   ],
+   "reference_juridique": "CSS art. L. 136-8 (taux) et L. 131-8 (affectation), dans leur rédaction applicable en 2025 ; répartition reproduite par PLFSS 2026, annexe 3, tableau 31, colonne 2025 (110 432 M€ prévus en 2025)",
+   "note": "« AM » désigne les régimes d'assurance maladie (CNAM pour un salarié du privé). La clé est la même pour la CSG déductible et la CSG non déductible : la loi affecte des points de CSG, pas la part déductible."
+  },
+  "tva": {
+   "libelle": "Taxe sur la valeur ajoutée (TVA nette)",
+   "statut": "sourcee",
+   "total_md": 210.0,
+   "ventilation": [
+    {
+     "destinataire": "etat",
+     "part": 0.461429,
+     "source": "PLF 2026, Évaluation des voies et moyens tome I, prévision révisée 2025 (tableau p. 34 : TVA nette totale 210,0 Md€) : TVA nette État 96,9 Md€",
+     "montant_md": 96.9
+    },
+    {
+     "destinataire": "cnam",
+     "part": 0.232681,
+     "source": "PLF 2026, Évaluation des voies et moyens tome I, prévision révisée 2025 (tableau p. 34 : TVA nette totale 210,0 Md€) : transferts à la sécurité sociale 56,4 Md€, répartis entre CNAM et ACOSS selon les fractions de PLFSS 2026, annexe 3, tableau 31, colonne 2025 (23,24 % à la CNAM ; 5,18 % à l'ACOSS minorés de 3,35 Md€)",
+     "montant_md": 48.863
+    },
+    {
+     "destinataire": "acoss",
+     "part": 0.035891,
+     "source": "idem",
+     "montant_md": 7.537
+    },
+    {
+     "destinataire": "collectivites_territoriales",
+     "part": 0.250952,
+     "source": "PLF 2026, Évaluation des voies et moyens tome I, prévision révisée 2025 (tableau p. 34 : TVA nette totale 210,0 Md€) : transferts aux collectivités territoriales 52,7 Md€",
+     "montant_md": 52.7,
+     "dont": [
+      {
+       "destinataire": "régions (fraction remplaçant la DGF depuis 2018)",
+       "montant_md": 5.172,
+       "source": "PLF 2026, Voies et moyens tome I, ligne 3101 (DGF) : « fractions de TVA aux régions (5 172 M€) »"
+      }
+     ],
+     "note": "Le reste (départements, Ville de Paris, EPCI, communes : compensations de la taxe d'habitation, de la part départementale de foncier bâti et de la CVAE) n'est pas ventilé par bénéficiaire dans ce document : non sourcé à ce niveau."
+    },
+    {
+     "destinataire": "audiovisuel_public",
+     "part": 0.019048,
+     "source": "PLF 2026, Évaluation des voies et moyens tome I, prévision révisée 2025 (tableau p. 34 : TVA nette totale 210,0 Md€) : compensation audiovisuel public 4,0 Md€",
+     "montant_md": 4.0
+    }
+   ],
+   "reference_juridique": "CGI art. 256 et suivants ; LFI 2018 art. 149 (régions) ; LFI 2020 art. 16 et LFI 2023 art. 55 (collectivités) ; CSS art. L. 131-8 (sécurité sociale) ; LFR 2022 (audiovisuel public)",
+   "note": "Comptabilité budgétaire. En comptabilité nationale (Eurostat D211, 2025) : État 98,70, collectivités 52,75, sécurité sociale 57,37 Md€, ensemble 208,82 Md€ (site/data/recettes.json), contre 210,0 Md€ ici : les deux sources n'ont ni la même comptabilité ni la même date, parts et montants diffèrent donc (moins d'un point sur la part de l'État)."
+  },
+  "ticpe": {
+   "libelle": "Accise sur les produits énergétiques (ex-TICPE)",
+   "statut": "sourcee",
+   "brute_totale_md": 31.4,
+   "ventilation": [
+    {
+     "destinataire": "etat",
+     "part": 0.574603,
+     "source": "PLF 2026, Évaluation des voies et moyens tome I, prévision révisée 2025 (tableau p. 28) : accise ex-TICPE brute État 18,1 Md€",
+     "montant_md": 18.1
+    },
+    {
+     "destinataire": "collectivites_territoriales",
+     "part": 0.380952,
+     "source": "PLF 2026, Évaluation des voies et moyens tome I, prévision révisée 2025 (tableau p. 28) : transfert aux collectivités territoriales 12,0 Md€",
+     "montant_md": 12.0
+    },
+    {
+     "destinataire": "afitf",
+     "part": 0.038095,
+     "source": "PLF 2026, Évaluation des voies et moyens tome I, prévision révisée 2025 (tableau p. 28) : transfert à l'AFITF 1,2 Md€",
+     "montant_md": 1.2
+    },
+    {
+     "destinataire": "idfm",
+     "part": 0.003175,
+     "source": "PLF 2026, Évaluation des voies et moyens tome I, prévision révisée 2025 (tableau p. 28) : transfert Île-de-France Mobilités 0,1 Md€",
+     "montant_md": 0.1
+    },
+    {
+     "destinataire": "zni_cspe",
+     "part": 0.003175,
+     "source": "PLF 2026, Évaluation des voies et moyens tome I, prévision révisée 2025 (tableau p. 28) : fraction ZNI et fraction CSPE 0,1 Md€",
+     "montant_md": 0.1
+    }
+   ],
+   "reference_juridique": "Code des impositions sur les biens et services (CIBS), accise sur les énergies ; LFI 2005 art. 52 et LFI 2014 (fractions régionales et départementales)",
+   "note": "Parts calculées sur la somme des destinataires (31,5 Md€) ; la ligne « Autres » (+0,2 Md€) et les arrondis du tableau (brute totale 31,4 Md€) ne sont pas ventilés. Les remboursements aux professionnels (1,6 Md€) sont imputés sur la part de l'État. Répartition entre régions et départements non sourcée dans ce document."
+  },
+  "alcool": {
+   "libelle": "Droits sur les alcools (droit de consommation, droits de circulation, cotisation > 18°)",
+   "statut": "sourcee",
+   "montants_2025_m": {
+    "droit_consommation": 2175,
+    "cotisation_18": 732,
+    "bieres": 1067,
+    "vins": 101,
+    "produits_intermediaires": 56
+   },
+   "ventilation": [
+    {
+     "destinataire": "msa_maladie",
+     "part": 0.245352,
+     "source": "PLFSS 2026, annexe 3, tableau 31, colonne 2025 : droit de consommation, « CCMSA non salariés - maladie : 46,60 % »",
+     "montant_md": 1.014
+    },
+    {
+     "destinataire": "msa_vieillesse",
+     "part": 0.60254,
+     "source": "PLFSS 2026, annexe 3, tableau 31, colonne 2025 : droit de consommation « vieillesse : 24,51 % » ; cotisation > 18°, droits sur bières, vins et produits intermédiaires : « CCMSA non salariés - vieillesse » (cellule fusionnée du tableau)",
+     "montant_md": 2.489
+    },
+    {
+     "destinataire": "msa_rco",
+     "part": 0.152108,
+     "source": "PLFSS 2026, annexe 3, tableau 31, colonne 2025 : droit de consommation, « RCO : 28,89 % »",
+     "montant_md": 0.628
+    }
+   ],
+   "reference_juridique": "CGI art. 403, 438, 520 A et 402 bis ; CSS art. L. 245-7 à L. 245-11",
+   "note": "L'attribution de la cotisation > 18° et des droits de circulation à la MSA vieillesse est lue dans une cellule fusionnée du tableau 31 (même ligne visuelle) : à confirmer si le document est republié."
+  },
+  "taxe_fonciere": {
+   "libelle": "Taxe foncière sur les propriétés bâties (et taxes annexes adossées)",
+   "statut": "sourcee",
+   "total_md": 45.739,
+   "ventilation": [
+    {
+     "destinataire": "commune",
+     "part": 0.877969,
+     "source": "DGFiP, REI 2025, somme nationale de E13 (part communale)",
+     "montant_md": 40.157
+    },
+    {
+     "destinataire": "epci",
+     "part": 0.065503,
+     "source": "DGFiP, REI 2025, somme nationale de E33 (part intercommunale) + E53gGEMAPI",
+     "montant_md": 2.996
+    },
+    {
+     "destinataire": "etat",
+     "part": 0.045219,
+     "source": "DGFiP, REI 2025, somme nationale de E00 (frais d'assiette, de dégrèvement et de non-valeurs)",
+     "montant_md": 2.068
+    },
+    {
+     "destinataire": "tse",
+     "part": 0.006014,
+     "source": "DGFiP, REI 2025, somme nationale de E53 + E53A (taxes spéciales d'équipement)",
+     "montant_md": 0.275
+    },
+    {
+     "destinataire": "syndicats",
+     "part": 0.00403,
+     "source": "DGFiP, REI 2025, somme nationale de E23 (syndicats)",
+     "montant_md": 0.184
+    },
+    {
+     "destinataire": "region_idf",
+     "part": 0.001266,
+     "source": "DGFiP, REI 2025, somme nationale de E53TASA (TASA)",
+     "montant_md": 0.058
+    }
+   ],
+   "reference_juridique": "CGI art. 1380 et 1388 (TFPB), 1636 B sexies (taux), 1607 bis à 1609 G (TSE, TASA), 1530 bis (GEMAPI), 1641 (frais de gestion perçus par l'État)",
+   "note": "Moyenne nationale ; la répartition propre à chaque commune est dans taxe_fonciere/<dep>.json. Depuis 2021 la part départementale est transférée aux communes : les départements ne la perçoivent plus."
+  },
+  "teom": {
+   "libelle": "Taxe d'enlèvement des ordures ménagères (payée par le locataire via les charges)",
+   "statut": "sourcee",
+   "ventilation": [
+    {
+     "destinataire": "bloc_communal_dechets",
+     "part": 1.0,
+     "source": "CGI art. 1520 et 1379-0 bis ; DGFiP REI 2025 (F13)"
+    }
+   ],
+   "reference_juridique": "CGI art. 1520 (commune), 1379-0 bis (EPCI) ; décret n° 87-713 du 26 août 1987 (charges récupérables sur le locataire)",
+   "note": "Le REI ne dit pas, commune par commune, si la TEOM revient à la commune, à l'EPCI ou à un syndicat : ventilation interne au bloc communal non sourcée."
+  }
+ },
+ "correspondance_calcul": {
+  "vieillesse_plafonnee_salarie": "vieillesse_plafonnee",
+  "vieillesse_plafonnee_employeur": "vieillesse_plafonnee",
+  "vieillesse_deplafonnee_salarie": "vieillesse_deplafonnee",
+  "vieillesse_deplafonnee_employeur": "vieillesse_deplafonnee",
+  "maladie_employeur": "maladie",
+  "famille_employeur": "famille",
+  "atmp": "atmp",
+  "retraite_complementaire_salarie": "agirc_arrco",
+  "retraite_complementaire_employeur": "agirc_arrco",
+  "ceg_salarie": "ceg",
+  "chomage_employeur": "chomage",
+  "fnal": "fnal",
+  "csa": "csa",
+  "csg_deductible": "csg_activite",
+  "csg_non_deductible": "csg_activite",
+  "crds": "crds",
+  "impot_revenu": "impot_revenu"
+ },
+ "sources": {
+  "insee_ia88": {
+   "fichier": "insee_IA88.xlsx",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/7669723/IA88.xlsx",
+   "page": "https://www.insee.fr/fr/statistiques/7669723",
+   "titre": "Insee Analyses n° 88 (sept. 2023, erratum 20/06/2025) : redistribution élargie, comptes nationaux distribués 2019, tableaux complémentaires par vingtième de niveau de vie",
+   "producteur": "Insee",
+   "licence": "Licence Ouverte 2.0 (réutilisation libre avec mention de l'Insee)",
+   "verdict": "réutilisable tel quel (montants par UC et par vingtième, recalés sur les comptes nationaux 2019)"
+  },
+  "insee_bdf_tf106": {
+   "fichier": "insee_bdf2017_TF106.csv",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/4648335/TF106.csv",
+   "page": "https://www.insee.fr/fr/statistiques/4648335",
+   "titre": "Enquête Budget de famille 2017, TF106 : dépenses annuelles moyennes par ménage selon le décile de niveau de vie (nomenclature COICOP 5 positions), publié le 15/09/2020",
+   "producteur": "Insee",
+   "licence": "Licence Ouverte 2.0",
+   "verdict": "à adapter (structure de consommation 2017 utilisée comme clé de ventilation, pas comme montant)"
+  },
+  "insee_bdf_tf306": {
+   "fichier": "insee_bdf2017_TF306.csv",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/4648335/TF306.csv",
+   "page": "https://www.insee.fr/fr/statistiques/4648335",
+   "titre": "Enquête Budget de famille 2017, TF306 : taux d'équipement selon le décile de niveau de vie (code 30 : au moins une voiture)",
+   "producteur": "Insee",
+   "licence": "Licence Ouverte 2.0",
+   "verdict": "réutilisable tel quel"
+  },
+  "plfss2026_annexe3": {
+   "fichier": "PLFSS2026_annexe3.pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1089896/file/PLFSS2026-Annexe3-20251015-103900-55-4.pdf",
+   "titre": "PLFSS 2026, annexe 3, tableau 31 « Répartition des impositions affectées à la sécurité sociale entre 2018 et 2025 » (p. 43 à 48), octobre 2025",
+   "producteur": "Direction de la sécurité sociale",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "verdict": "réutilisable tel quel (parts lues dans le tableau, vérifiées contre le texte du PDF)"
+  },
+  "plf2026_vm1": {
+   "fichier": "PLF2026_voies_et_moyens_tome1.pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1087930/file/PLF%202026%20-%20V%26M%20TI%20-%20Evaluations%20des%20recettes.pdf",
+   "titre": "PLF 2026, Évaluation des voies et moyens tome I (recettes) : TVA p. 34, accise ex-TICPE p. 28, prévision révisée 2025, octobre 2025",
+   "producteur": "Direction du budget / DGFiP",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "verdict": "réutilisable tel quel (montants 2025 révisés, vérifiés contre le texte du PDF)"
+  },
+  "rei_2025": {
+   "chemin": "data/lake/fiscalite/economie__impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/REI-2025-fichier-notice-trace.zip",
+   "titre": "DGFiP, fichier de recensement des éléments d'imposition à la fiscalité directe locale (REI) 2025",
+   "page": "https://data.economie.gouv.fr/explore/dataset/impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/",
+   "licence": "Licence Ouverte 2.0",
+   "verdict": "réutilisable tel quel (déjà dans l'entrepôt)"
+  },
+  "erfs_2024": {
+   "chemin": "data/lake/comptes_nationaux/insee_ds_erfs_non_retropole.zip",
+   "titre": "Insee, ERFS, indicateurs de niveau de vie (DS_ERFS_NON_RETROPOLE, API Melodi), déciles 2024",
+   "page": "https://api.insee.fr/melodi/catalog/all",
+   "licence": "Licence Ouverte 2.0",
+   "verdict": "réutilisable tel quel (déjà dans l'entrepôt)"
+  },
+  "eurostat_taxag": {
+   "chemin": "site/data/recettes.json",
+   "titre": "Eurostat gov_10a_taxag (impôts par administration bénéficiaire), produit par pipeline/transform.py",
+   "page": "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_taxag/default/table",
+   "licence": "réutilisation libre avec mention d'Eurostat",
+   "verdict": "réutilisable tel quel (déjà en place)"
+  }
+ },
+ "sources_ecartees": [
+  {
+   "nom": "openfisca-france-indirect-taxation",
+   "url": "https://github.com/openfisca/openfisca-france-indirect-taxation",
+   "licence": "AGPL-3.0",
+   "verdict": "inspiration seulement",
+   "raison": "calcule la fiscalité indirecte à partir des microdonnées Budget de famille, en accès restreint (CASD, Quetelet) : inutilisable ici sans ces données ; rien n'en est copié dans le dépôt (MIT)."
+  },
+  {
+   "nom": "Insee, comptes nationaux distribués (Insee Analyses n° 88)",
+   "verdict": "réutilisé",
+   "raison": "seule publication ouverte qui ventile toutes les taxes sur les produits par niveau de vie avec recalage sur les comptes nationaux."
+  },
+  {
+   "nom": "IPP, Conseil des prélèvements obligatoires",
+   "verdict": "non retenu",
+   "raison": "pas de tableau ouvert et récent de TVA ou d'accises par décile trouvé ; les barèmes IPP (fiscalité indirecte, dans l'entrepôt) ne servent qu'à vérifier les taux."
+  },
+  {
+   "nom": "Légifrance (articles L. 131-8 et L. 136-8 CSS)",
+   "verdict": "accès refusé (HTTP 403)",
+   "raison": "aucun contournement : les parts de CSG sont lues dans l'annexe 3 du PLFSS 2026 (tableau 31), qui reproduit l'état du droit 2025 ; les articles restent cités comme base légale."
+  }
+ ]
+}
