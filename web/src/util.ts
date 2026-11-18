@@ -72,6 +72,23 @@ export const STATUTS: Record<Statut, { libelle: string; lecture: string; motif: 
 export const traitStatut = (s: Statut) => `<span class="motif motif-${s}" aria-hidden="true"></span>`
 /** Motif et mot, côte à côte : « ▪ tracé ». */
 export const badgeStatut = (s: Statut) => `<span class="badge">${traitStatut(s)}${STATUTS[s].libelle}</span>`
+/**
+ * Règle « chiffre calculé par le site » (docs/NEUTRALITE.md, page Méthode) : un ratio, une différence, une somme, une
+ * moyenne ou une part calculés par le site ne sont affichés que si tous leurs montants portent sur la même année et le
+ * même périmètre, avec ce badge distinct et la méthode écrite à côté. Méthode vide : erreur (rien n'est affiché).
+ */
+export const LIBELLE_CALCULE = 'Calculé par le site'
+export function badgeCalcule(methode: string): string {
+  if (!methode || !methode.trim()) throw new Error('chiffre calculé par le site sans méthode écrite')
+  return `<span class="badge badge-calcule" data-calcule><span class="motif motif-calcule" aria-hidden="true"></span>${LIBELLE_CALCULE}</span> <span class="methode-calcul">Méthode : ${h(methode.trim())}</span>`
+}
+/** Ligne de légende du badge « Calculé par le site » (à poser dans une liste .legende-statuts). */
+export const LEGENDE_CALCULE = `<li><span class="motif motif-calcule" aria-hidden="true"></span><span><strong>${LIBELLE_CALCULE}</strong> : ratio, différence, somme ou part calculés par le site à partir de chiffres publiés de la même année et du même périmètre, méthode écrite à côté</span></li>`
+/** Vrai si deux millésimes (« LFI 2023 », « Exécution 2024 », 2024…) portent sur la même année. */
+export const memeAnnee = (a: string | number | null | undefined, b: string | number | null | undefined): boolean => {
+  const an = (x: string | number | null | undefined) => (x === null || x === undefined ? null : /(\d{4})/.exec(String(x))?.[1] ?? null)
+  return an(a) !== null && an(a) === an(b)
+}
 export function legendeStatuts(statuts: Statut[] = ['trace', 'approche', 'nonpub']): string {
   return `<ul class="legende-statuts" aria-label="Légende de la traçabilité">${statuts
     .map((s) => `<li>${traitStatut(s)}<span><strong>${STATUTS[s].libelle}</strong> : ${STATUTS[s].lecture}</span></li>`)

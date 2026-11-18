@@ -12,7 +12,7 @@ import { partPersonnelle } from '../composants/hub'
 import { TOUS_DEPARTEMENTS } from '../departements'
 import { chargerSiPresent, listeProgrammes, trouverNoeud, type Noeud } from '../donnees'
 import { lien } from '../routeur'
-import { absent, badgeStatut, entier, eur2, eurLisible, h, lireLesMotifs, md, nomVille, type Statut, sur100, surligne, traitStatut } from '../util'
+import { absent, badgeStatut, entier, eur2, eurLisible, h, lireLesMotifs, md, nomVille, type Statut, sur100, surligne, traitStatut, badgeCalcule } from '../util'
 import { enCours } from './dette'
 
 type Valeur = string | number | null
@@ -369,7 +369,7 @@ function blocResidents(idx: Index): string {
     `<p>${h(idx.note_prix)}</p>
 <p>Prix médians déclarés par ${h(entier(v[0] ?? 0))} EHPAD au 31 décembre ${h(an)}, toutes taxes comprises :</p>
 ${liste(lignes)}
-<p class="aide">Médiane calculée par le projet sur les prix déclarés ; les valeurs hors bornes restent publiées pour l’établissement mais n’entrent pas dans la médiane.</p>
+<p class="aide">Médiane ${badgeCalcule('médiane des prix déclarés par les établissements pour la même année ; les valeurs hors bornes restent publiées pour l’établissement mais n’entrent pas dans la médiane')}</p>
 ${s ? sourceLien(s.titre, s.url, s.millesime ? plage(s.millesime) : undefined) : ''}`,
   )
 }
@@ -441,7 +441,7 @@ ${billet(
   ],
   { etiquette: `Sur 100 € de charges du compte principal des hôpitaux publics et privés à but non lucratif en ${an} : personnel et autres charges`, legendes: true },
 )}
-<p>Sur 100 € de charges du compte principal, ${h(sur100(partPersonnel))} sont des charges de personnel (${h(eurLisible(t.charges_personnel_eur))}) ${badgeStatut('trace')} et ${h(sur100(100 - partPersonnel))} d’autres charges (${h(eurLisible(autres))}, différence calculée avec le total publié) ${badgeStatut('approche')}.</p>
+<p>Sur 100 € de charges du compte principal, ${h(sur100(partPersonnel))} sont des charges de personnel (${h(eurLisible(t.charges_personnel_eur))}) ${badgeStatut('trace')} et ${h(sur100(100 - partPersonnel))} d’autres charges (${h(eurLisible(autres))}) ${badgeCalcule('part = charges de personnel divisées par le total des charges du compte principal, autres charges = total moins charges de personnel, mêmes établissements et même année')}.</p>
 <h3>De ${h(annees[0])} à ${h(an)}</h3>
 <div class="tableau-defile"><table><caption>Comptes des hôpitaux publics et privés à but non lucratif, en euros</caption><thead><tr><th scope="col">Grandeur</th>${annees
     .map((a) => `<th scope="col" class="nombre">${h(a)}</th>`)

@@ -51,11 +51,11 @@
   {
    "fonction": "Sénateur",
    "element": "total brut mensuel (indemnités de base, de résidence et de fonction)",
-   "montant_brut_mensuel_eur": 7637.39,
-   "statut": "approché",
+   "montant_brut_mensuel_eur": null,
+   "statut": "non publié",
    "base_legale": "ordonnance n° 58-1210 du 13 décembre 1958 (même texte pour les deux assemblées)",
-   "methode": "montant de l'Assemblée nationale repris : l'ordonnance fixe la même indemnité pour tous les membres du Parlement ; le Sénat ne publie pas de barème chiffré dans les documents collectés.",
-   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 1 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf ; Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026) : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf"
+   "methode": "non publié : aucun document collecté du Sénat n'écrit ce montant ; le montant de l'Assemblée nationale n'est pas repris pour le Sénat.",
+   "source": "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026) : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf"
   }
  ],
  "indemnites_speciales": [
@@ -120,7 +120,7 @@
    "indemnite_fonction_eur": 3207.7,
    "total_brut_mensuel_eur": 16038.5,
    "base_legale": "décret n° 2012-983, articles 1er et 3 : double de la moyenne hors échelle, majoré de 5 %",
-   "statut": "approché",
+   "statut": "calculé par le site",
    "methode": "calculé par le site : moyenne hors échelle x coefficient ; résidence 3 % ; fonction 25 % de (traitement + résidence) ; majoration éventuelle sur les trois éléments ; arrondi au centime. Aucun barème chiffré officiel n'a été trouvé en données ouvertes."
   },
   {
@@ -132,7 +132,7 @@
    "indemnite_fonction_eur": 3207.7,
    "total_brut_mensuel_eur": 16038.5,
    "base_legale": "décret n° 2012-983, articles 1er et 3 : double de la moyenne hors échelle, majoré de 5 %",
-   "statut": "approché",
+   "statut": "calculé par le site",
    "methode": "calculé par le site : moyenne hors échelle x coefficient ; résidence 3 % ; fonction 25 % de (traitement + résidence) ; majoration éventuelle sur les trois éléments ; arrondi au centime. Aucun barème chiffré officiel n'a été trouvé en données ouvertes."
   },
   {
@@ -144,7 +144,7 @@
    "indemnite_fonction_eur": 2138.47,
    "total_brut_mensuel_eur": 10692.34,
    "base_legale": "décret n° 2012-983, article 2 : 1,4 fois la moyenne hors échelle",
-   "statut": "approché",
+   "statut": "calculé par le site",
    "methode": "calculé par le site : moyenne hors échelle x coefficient ; résidence 3 % ; fonction 25 % de (traitement + résidence) ; majoration éventuelle sur les trois éléments ; arrondi au centime. Aucun barème chiffré officiel n'a été trouvé en données ouvertes."
   },
   {
@@ -156,7 +156,7 @@
    "indemnite_fonction_eur": 2031.54,
    "total_brut_mensuel_eur": 10157.71,
    "base_legale": "décret n° 2014-425, article 2 : 1,33 fois la moyenne hors échelle",
-   "statut": "approché",
+   "statut": "calculé par le site",
    "methode": "calculé par le site : moyenne hors échelle x coefficient ; résidence 3 % ; fonction 25 % de (traitement + résidence) ; majoration éventuelle sur les trois éléments ; arrondi au centime. Aucun barème chiffré officiel n'a été trouvé en données ouvertes."
   }
  ],

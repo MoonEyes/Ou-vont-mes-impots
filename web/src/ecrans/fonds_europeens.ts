@@ -10,7 +10,7 @@
 import { partPersonnelle } from '../composants/hub'
 import { charger, chargerSiPresent, DonneeAbsente } from '../donnees'
 import type { Rendu } from '../routeur'
-import { absent, appliquerLargeurs, badgeStatut, barres, entier, eurLisible, h, legendeStatuts, pct, source, sur100, surligne } from '../util'
+import { absent, appliquerLargeurs, badgeStatut, barres, entier, eurLisible, h, legendeStatuts, pct, source, sur100, surligne, badgeCalcule } from '../util'
 
 // ---------- Formats des fichiers lus (seuls les champs utilisés) ----------
 export interface Bloc {
@@ -450,7 +450,7 @@ function blocCle(idx: Index): string {
   <p class="sous-chiffre">prévus par l’Union européenne pour ses programmes 2021-2027 en France (fonds régionaux, social, transition juste et pêche). ${badgeStatut('trace')}</p>
   ${
     part !== null
-      ? `<p>Sur 100 € prévus par ces programmes, ${h(sur100(part))} viennent de l’Union et ${h(sur100(100 - part))} des financeurs français, publics et privés (rapport calculé par le site sur les montants publiés). ${badgeStatut('approche')}</p>`
+      ? `<p>Sur 100 € prévus par ces programmes, ${h(sur100(part))} viennent de l’Union et ${h(sur100(100 - part))} des financeurs français, publics et privés. ${badgeCalcule('part de l’Union = montant prévu par l’Union divisé par le total prévu des mêmes programmes et de la même période de programmation, montants publiés par la Commission européenne')}</p>`
       : ''
   }
   ${source(idx.source, idx.millesime)}
@@ -502,7 +502,7 @@ function tablePeriode(idx: Index, t: TotalPeriode): string {
     })
     .join('')}</tbody><tfoot><tr><th scope="row">Ensemble des fonds</th>${GRANDEURS.map(([k]) => td(t.total[k] as number | null)).join('')}</tr></tfoot></table></div>
 <p>${badgeStatut('trace')} Montants publiés par la Commission européenne.${
-    calcule ? ` ${badgeStatut('approche')} Pour 2021-2027, le cofinancement national est calculé par le site : total prévu moins la part de l’Union.` : ' Pour 2014-2020, le cofinancement national prévu est publié.'
+    calcule ? ` Pour 2021-2027, le cofinancement national ${badgeCalcule('total prévu moins la part de l’Union, pour le même programme et la même période de programmation')}` : ' Pour 2014-2020, le cofinancement national prévu est publié.'
   } Chaque colonne a sa date : les colonnes se lisent côte à côte et ne s’additionnent pas.</p>
 ${decides.length ? `<ul class="fe-decide">${decides.map((d) => `<li>${h(d)}</li>`).join('')}</ul><p class="aide">Le décidé peut dépasser le prévu : la source le publie ainsi, sans en donner la raison. Les montants sont repris tels quels.</p>` : ''}`
 }
@@ -603,7 +603,7 @@ ${
     ? `<h3>Programmes 2021-2027, par objectif</h3><div class="tableau-defile"><table><caption>Programmes 2021-2027 en France, par objectif stratégique</caption><thead><tr><th scope="col">Objectif</th>${tete}</tr></thead><tbody>${t21.themes
         .map((x) => `<tr><th scope="row">${h(x.libelle)}</th>${cellules(x.total)}</tr>`)
         .join('')}</tbody></table></div>
-<p class="aide">${badgeStatut('approche')} Cofinancement national 2021-2027 calculé par le site (total prévu moins la part de l’Union).</p>
+<p class="aide">Cofinancement national 2021-2027 ${badgeCalcule('total prévu moins la part de l’Union, pour le même thème et la même période de programmation')}</p>
 ${t21.themes
   .filter((x) => x.objectifs_specifiques?.length)
   .map(
@@ -663,14 +663,15 @@ ${
       )
     : ''
 }
-<div class="tableau-defile"><table><caption>${h(titre)} : crédits prévus par l’Union, paiements et exécution, par année</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Crédits d’engagement prévus par l’Union</th><th scope="col" class="nombre">Payé par l’Union dans l’année (calcul du site)</th><th scope="col" class="nombre">Payé par l’Union (cumul)</th><th scope="col" class="nombre">Décidé (cumul)</th><th scope="col" class="nombre">Dépensé (cumul)</th></tr></thead><tbody>${ans
+<div class="tableau-defile"><table><caption>${h(titre)} : crédits prévus par l’Union, paiements et exécution, par année</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Crédits d’engagement prévus par l’Union</th><th scope="col" class="nombre">Payé par l’Union dans l’année</th><th scope="col" class="nombre">Payé par l’Union (cumul)</th><th scope="col" class="nombre">Décidé (cumul)</th><th scope="col" class="nombre">Dépensé (cumul)</th></tr></thead><tbody>${ans
         .map(
           (a) =>
             `<tr><th scope="row">${h(a)}${a === p.paiements_ue.annee_partielle ? ' (en cours)' : ''}</th>${c(de(p.engagements_ue.annees, p.engagements_ue.total_eur, a))}${c(de(p.paiements_ue.annees, p.paiements_ue.annuel_total_eur, a))}${c(
               de(p.paiements_ue.annees, p.paiements_ue.cumul_total_eur, a),
             )}${c(exec(p.execution.decide_cumule_par_fonds_eur, a))}${c(exec(p.execution.depense_cumulee_par_fonds_eur, a))}</tr>`,
         )
-        .join('')}</tbody></table></div>`
+        .join('')}</tbody></table></div>
+<p class="aide">Payé par l’Union dans l’année ${badgeCalcule('cumul payé à la fin de l’année moins cumul payé à la fin de l’année précédente, publiés par la Commission pour les mêmes programmes')}</p>`
     })
     .join('')
   return `<h2 id="fe-annees">Année par année</h2>
@@ -694,7 +695,7 @@ function blocFrr(frr: Frr | null): string {
     )
     .join('')}</tbody></table></div>
 <p>${badgeStatut('trace')} Montants publiés par Eurostat. ${
-    typeof frr.fonds_recus.cumul_eur === 'number' ? `${badgeStatut('approche')} De ${h(frr.annees[0])} à ${h(frr.annees[frr.annees.length - 1])}, ${h(eurLisible(frr.fonds_recus.cumul_eur))} reçus au total (somme des années calculée par le site).` : ''
+    typeof frr.fonds_recus.cumul_eur === 'number' ? `De ${h(frr.annees[0])} à ${h(frr.annees[frr.annees.length - 1])}, ${h(eurLisible(frr.fonds_recus.cumul_eur))} reçus au total ${badgeCalcule(`somme des montants reçus chaque année de ${frr.annees[0]} à ${frr.annees[frr.annees.length - 1]}, publiés par Eurostat pour la même facilité`)}.` : ''
   }</p>
 <p class="aide">${h(frr.emplois.lecture)}</p>
 <details><summary>Dépenses financées, par nature</summary><div class="tableau-defile"><table><caption>Dépenses publiques financées par la facilité pour la reprise et la résilience, par nature et par année</caption><thead><tr><th scope="col">Nature</th>${frr.annees
@@ -748,7 +749,6 @@ export function filtrer(l: Liste, q: string): Record<string, string | number | n
 
 export function rendreListe(l: Liste, r: ListeResume, q: string, page: number): string {
   const calcule = l.montant_ue_mode !== 'publié'
-  const statutUe = calcule ? 'approche' : 'trace'
   const trouvees = filtrer(l, q)
   const vues = trouvees.slice(0, page * PAR_PAGE)
   // Agrégats par période, fonds et motif (les années sont regroupées).
@@ -763,10 +763,10 @@ export function rendreListe(l: Liste, r: ListeResume, q: string, page: number): 
   }
   return `<h3>${h(l.autorite_de_gestion)}</h3>
 <p>${h(entier(r.operations))} opérations, dont ${h(entier(r.operations_nommees))} avec un bénéficiaire nommé. Liste collectée le ${h(dateFr(r.collecte_le))}, licence ${h(r.licence)}.</p>
-<p>${badgeStatut(statutUe)} ${
+<p>${
     calcule
-      ? 'La contribution de l’Union n’est pas publiée dans cette liste : elle est calculée par le site, coût total multiplié par le taux de cofinancement publié.'
-      : 'La contribution de l’Union est publiée dans cette liste.'
+      ? `La contribution de l’Union n’est pas publiée dans cette liste. ${badgeCalcule('coût total de l’opération multiplié par le taux de cofinancement publié pour la même opération')}`
+      : `${badgeStatut('trace')} La contribution de l’Union est publiée dans cette liste.`
   }</p>
 <div class="tableau-defile"><table><caption>${h(l.autorite_de_gestion)} : opérations par période et par fonds</caption><thead><tr><th scope="col">Période et fonds</th><th scope="col" class="nombre">Opérations</th><th scope="col" class="nombre">dont nommées</th><th scope="col" class="nombre">Coût total</th><th scope="col" class="nombre">Contribution de l’Union</th></tr></thead><tbody>${l.totaux
     .map((t) => `<tr><th scope="row">${h(t.periode)}, ${h(t.fonds)}</th><td class="nombre">${h(entier(t.operations))}</td><td class="nombre">${h(entier(t.operations_nommees))}</td>${td(t.cout_total_eur)}${td(t.montant_ue_eur)}</tr>`)

@@ -13,7 +13,7 @@ import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent, VUES_ARBRE } from '../donnees'
 import { session } from '../etat'
 import { lien } from '../routeur'
-import { absent, badgeStatut, eurLisible, h, pct, source, sur100, surligne } from '../util'
+import { absent, badgeStatut, eurLisible, h, pct, source, sur100, surligne, badgeCalcule } from '../util'
 
 const ROUTE = '/explorer/aide-developpement'
 
@@ -398,7 +398,7 @@ function blocComparaison(idx: Index, apd: ApdDeclaree, vues: VueCredits[], racin
 <thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Crédits de la mission (budget de l’État)</th><th scope="col" class="nombre">Aide déclarée à l’OCDE</th><th scope="col" class="nombre">Écart entre les deux</th></tr></thead>
 <tbody>${lignes}</tbody></table></div>
 <p class="avertissement">${h(idx.credits_budgetaires.lecture)}</p>
-<p class="aide">L’écart est la différence entre les deux montants affichés, calculée par le site, sans correction. Le site ne dit pas lequel des deux est le bon : ils ne mesurent pas la même chose.</p>
+<p class="aide">Écart ${badgeCalcule('crédits de la mission moins aide déclarée à l’OCDE, même année, sans correction')}. Le site ne dit pas lequel des deux est le bon : ils ne mesurent pas la même chose.</p>
 ${source(`${r?.source ?? 'budget de l’État'} ; ${apd.source}`)}
 </section>`
 }

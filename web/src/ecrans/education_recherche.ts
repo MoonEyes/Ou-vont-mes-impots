@@ -449,7 +449,7 @@ export function blocCompte(ce: CompteEducation | null): string {
 <p class="aide">${h(lecture(fi.lecture))}</p>
 <h3>Dépense moyenne par élève ou étudiant, selon le niveau</h3>
 <div class="tableau-defile"><table><caption>Dépense moyenne par élève ou étudiant en ${h(anneeP(nv.annee, nv.provisoire))}, tous financeurs, en euros</caption><thead><tr><th scope="col">Niveau</th><th scope="col" class="nombre">Dépense moyenne</th></tr></thead><tbody>${lignesNiveaux.join('')}</tbody></table></div>
-<p class="aide">${h(lecture(nv.lecture))} Ces montants couvrent toute la dépense d’éducation : ils ne se comparent pas au montant par étudiant calculé plus bas par le site, qui ne compte que les dépenses des collectivités, et ne s’y ajoutent pas.</p>
+<p class="aide">${h(lecture(nv.lecture))} Ces montants couvrent toute la dépense d’éducation, tous financeurs confondus.</p>
 <details><summary>Évolution depuis ${h(ev.annees[0])}, en euros constants de ${h(ev.prix_constants)}</summary>
 <div class="tableau-defile"><table><caption>Dépense intérieure d’éducation et dépense moyenne par élève ou étudiant, ${h(ev.annees[0])} à ${h(ev.annees[ev.annees.length - 1])}, en euros constants de ${h(ev.prix_constants)}</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Dépense intérieure d’éducation</th><th scope="col" class="nombre">Part du produit intérieur brut</th>${colonnesEv
     .map((c) => `<th scope="col" class="nombre">Par élève : ${h(c.nom.charAt(0).toLowerCase() + c.nom.slice(1))}</th>`)
@@ -510,29 +510,14 @@ ${barres(
 ${source(esr.source, esr.millesime)}`
 }
 
-// ---------- Montant par étudiant (calcul du site) et montants par élève publiés ----------
-function blocCout(idx: Index | null, debutEsve: number | null): string {
-  const c = idx?.cout_par_etudiant
-  if (!c?.national.length) return ''
-  const lignes = c.national.filter((p) => (debutEsve !== null ? p.annee >= debutEsve : typeof p.budget_esve_eur === 'number' && p.budget_esve_eur > 0))
-  const der = [...lignes].reverse().find((p) => typeof p.cout_par_etudiant_eur === 'number')
+// ---------- Montants par élève publiés (aucun montant par étudiant calculé par le site) ----------
+// Règle « chiffre calculé par le site » (docs/NEUTRALITE.md) : le montant par étudiant que le pipeline calcule
+// (dépenses des collectivités d'une année civile divisées par les inscrits d'une année universitaire) rapproche deux
+// années différentes ; il n'est pas affiché.
+function blocCout(idx: Index | null, _debutEsve: number | null): string {
+  if (!idx?.cout_par_etudiant?.national.length) return ''
   return `<h2>Combien par élève ou par étudiant</h2>
-<h3>Le montant par étudiant calculé par le site</h3>
-${
-  der
-    ? `<p>${badgeStatut('approche')} En ${h(der.annee)} (budgets ${h(der.qualite_budget)}s), les dépenses des collectivités pour l’enseignement supérieur et la vie étudiante (${h(eurLisible(der.budget_esve_eur ?? 0))}), divisées par les ${h(entier(der.etudiants ?? 0))} étudiants inscrits en ${h(universitaire(der.annee))}, donnent <strong>${h(eur(der.cout_par_etudiant_eur!))} par étudiant</strong>. Ce montant est un calcul du site, pas un chiffre publié : il ne compte ni les dépenses de l’État, ni celles des établissements, ni celles des familles. Ce n’est donc pas la dépense totale pour un étudiant.</p>`
-    : ''
-}
-<div class="tableau-defile"><table><caption>Montant par étudiant calculé par le site, à partir des dépenses des collectivités</caption><thead><tr><th scope="col">Année</th><th scope="col">Budgets</th><th scope="col" class="nombre">Dépenses des collectivités</th><th scope="col" class="nombre">Étudiants inscrits</th><th scope="col" class="nombre">Par étudiant (calcul du site)</th></tr></thead><tbody>${[...lignes]
-    .reverse()
-    .map(
-      (p) =>
-        `<tr><th scope="row">${h(p.annee)}</th><td>${h(p.qualite_budget)}</td><td class="nombre">${h(montantEur(p.budget_esve_eur))}</td><td class="nombre">${typeof p.etudiants === 'number' ? `${h(entier(p.etudiants))} <span class="aide">(${h(universitaire(p.annee))})</span>` : '–'}</td><td class="nombre">${typeof p.cout_par_etudiant_eur === 'number' ? h(eur(p.cout_par_etudiant_eur)) : nonPublie('non calculé')}</td></tr>`,
-    )
-    .join('')}</tbody></table></div>
-${debutEsve !== null ? `<p class="aide">Avant ${h(debutEsve)}, la dépense des collectivités pour l’enseignement supérieur n’est pas publiée : aucun montant par étudiant n’est calculé.</p>` : ''}
-<details><summary>Formule et limites du calcul</summary><p>Montant par étudiant d’une année = dépenses des collectivités pour l’enseignement supérieur et la vie étudiante cette année-là, divisées par le nombre d’étudiants inscrits pendant l’année universitaire qui se termine (inscriptions principales, sans compter deux fois les élèves de classes préparatoires aussi inscrits à l’université), dans les établissements publics sous tutelle du ministère.</p><p class="aide">Formule exacte, telle qu’écrite dans les données : ${h(lisible(c.formule))}</p><div id="er-cout-limites"></div></details>
-<div id="er-cout-regions"></div>
+<p class="aide">Le site ne calcule pas de montant par étudiant : les dépenses des collectivités sont publiées par année civile et les effectifs d’étudiants par année universitaire, deux périodes différentes.</p>
 <h3>Les montants par élève ou par étudiant publiés par l’État</h3>
 <div id="er-couts-publies"><p class="chargement">Chargement des rapports de performances…</p></div>`
 }
@@ -563,22 +548,6 @@ function blocCoutsPublies(rs: (Realisations | null)[], avecCompte: boolean): str
       ? `<p>Les rapports annuels de performances de l’État publient une dépense par élève ou par étudiant pour l’enseignement agricole :</p><ul class="lignes" aria-label="Montants par élève ou par étudiant publiés par l’État">${items.join('')}</ul>${jeux.size ? source(nomRapport(`Rapports annuels de performances de l’État : ${[...jeux].join(' ; ')}`)) : ''}`
       : ''
   }<p>${badgeStatut('nonpub')} Pour l’école, le collège, le lycée et l’université, les rapports de performances repris par le site ne publient pas de dépense de l’État par élève ou par étudiant.${avecCompte ? ' La dépense moyenne de tous les financeurs par élève ou étudiant est donnée plus haut (compte de l’éducation).' : ''}</p>`
-}
-
-function blocCoutRegions(etu: Etudiants | null): { limites: string; regions: string } {
-  const c = etu?.cout_par_etudiant
-  if (!c) return { limites: '', regions: '' }
-  const limites = `${c.perimetre ? `<p>${h(lisible(c.perimetre))}</p>` : ''}${c.limites?.length ? `<ul>${c.limites.map((l) => `<li>${h(lisible(l))}</li>`).join('')}</ul>` : ''}${c.producteur ? `<p class="aide">Producteur : ${h(c.producteur)}.</p>` : ''}`
-  const annees = [...new Set((c.regions ?? []).flatMap((r) => r.valeurs.filter((v) => typeof v.cout_par_etudiant_eur === 'number').map((v) => v.annee)))].sort()
-  const an = annees[annees.length - 1]
-  if (an === undefined) return { limites, regions: '' }
-  const regions = `<details><summary>Par région, en ${h(an)}</summary><div class="tableau-defile"><table><caption>Montant par étudiant calculé par le site, par région, ${h(an)}</caption><thead><tr><th scope="col">Région</th><th scope="col" class="nombre">Dépenses des collectivités</th><th scope="col" class="nombre">Étudiants inscrits</th><th scope="col" class="nombre">Par étudiant (calcul du site)</th></tr></thead><tbody>${(c.regions ?? [])
-    .map((r) => {
-      const v = r.valeurs.find((x) => x.annee === an)
-      return `<tr><th scope="row">${h(r.nom)}</th><td class="nombre">${h(montantEur(v?.budget_esve_eur))}</td><td class="nombre">${typeof v?.etudiants === 'number' ? h(entier(v.etudiants)) : '–'}</td><td class="nombre">${typeof v?.cout_par_etudiant_eur === 'number' ? h(eur(v.cout_par_etudiant_eur)) : nonPublie('non calculé')}</td></tr>`
-    })
-    .join('')}</tbody></table></div><p class="aide">Régions dans l’ordre de leur code officiel. Non calculé : budget ou effectif absent pour la région. Les étudiants sont comptés dans la région du siège de leur établissement.</p>${source(etu!.source)}</details>`
-  return { limites, regions }
 }
 
 // ---------- Lycées de trois régions ----------
@@ -792,9 +761,7 @@ async function completer(cible: HTMLElement, idx: Index | null, region: string |
     const z = cible.querySelector<HTMLElement>(sel)
     if (z) z.innerHTML = html
   }
-  const cout = blocCoutRegions(etu)
-  poser('#er-cout-limites', cout.limites)
-  poser('#er-cout-regions', cout.regions)
+  void etu // fichier des étudiants : montant par étudiant non affiché (règle « chiffre calculé par le site »)
   poser('#er-couts-publies', blocCoutsPublies(rs, !!cible.querySelector('#er-compte')))
   if (anrEtab?.pia_france2030) {
     poser('#er-anr-pia', blocAnrNoms(anrEtab.pia_france2030, 'er-anr-pia-noms', 'aide_projets_coordonnes_eur'))

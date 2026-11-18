@@ -85,6 +85,9 @@ def test_collecte_nulls_justifies_et_coherence(docs):
         assert abs(ligne["total_publie_m"] - ligne["somme_groupes_m"] - ligne["ecart_m"]) < 0.01
         assert abs(ligne["ecart_m"]) < 0.5 / 100 * ligne["total_publie_m"], ligne
     for d in c["destination"]:
+        if d["statut"] == "non_publie":  # attribution non écrite par la source : aucune part publiée
+            assert d["parts"] == []
+            continue
         assert abs(sum(x["pct"] for x in d["parts"]) - 100) < 0.2, d["annee"]
         assert {x["destinataire"] for x in d["parts"]} <= set(c["destinataires"])
 

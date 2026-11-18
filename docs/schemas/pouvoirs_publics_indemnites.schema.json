@@ -82,6 +82,7 @@
             "enum": [
               "tracé",
               "approché",
+              "calculé par le site",
               "non publié"
             ]
           },
@@ -180,6 +181,7 @@
             "enum": [
               "tracé",
               "approché",
+              "calculé par le site",
               "non publié"
             ]
           },

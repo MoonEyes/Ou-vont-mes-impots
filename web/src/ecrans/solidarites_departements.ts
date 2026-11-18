@@ -13,7 +13,7 @@ import { partPersonnelle } from '../composants/hub'
 import { TOUS_DEPARTEMENTS } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import type { Rendu } from '../routeur'
-import { absent, appliquerLargeurs, badgeStatut, entier, eurLisible, h, pct, traitStatut } from '../util'
+import { absent, appliquerLargeurs, badgeStatut, entier, eurLisible, h, pct, traitStatut, badgeCalcule, LEGENDE_CALCULE } from '../util'
 import { enCours } from './dette'
 
 type Nombre = number | null
@@ -267,7 +267,7 @@ ${[...parGrandeur.entries()]
       .join('')}</tbody></table></div>${lignes[0]?.lecture_ecart ? `<p class="aide">${h(majuscule(lignes[0].lecture_ecart))}.</p>` : ''}`
   })
   .join('\n')}
-<p class="aide">Écart = montant des comptes moins montant de la DREES, calculé par le site ${badgeStatut('approche')}. Un écart positif ou négatif ne dit pas laquelle des deux sources est juste.</p>`
+<p class="aide">Écart ${badgeCalcule('montant des comptes moins montant de la DREES, même année et même département')}. Un écart positif ou négatif ne dit pas laquelle des deux sources est juste.</p>`
 }
 
 function blocBeneficiairesNationaux(b: Beneficiaires | null, idx: IndexSolidarites): string {
@@ -397,7 +397,7 @@ function blocEcartsDep(codes: string[], e: Ecarts): string {
   )
   if (!blocs.length) return ''
   return `<details class="sol-ecarts"><summary>Écarts entre sources pour ce département</summary>
-<p>Les mêmes allocations et les mêmes bénéficiaires, vus par deux sources. Écart = première source moins seconde source, calculé par le site ${badgeStatut('approche')} ; le site ne choisit pas entre elles.</p>
+<p>Les mêmes allocations et les mêmes bénéficiaires, vus par deux sources. Écart ${badgeCalcule('première source moins seconde source, même année et même champ')} ; le site ne choisit pas entre elles.</p>
 ${blocs.join('\n')}</details>`
 }
 
@@ -491,7 +491,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
 <p class="chapeau">Elle ne montre pas ce que reçoit une personne, ni la part de ces allocations qui reste payée par les impôts du département : aucun chiffre officiel de cette part n’est publié par département. Elle ne contient que des totaux publiés, sans aucune personne nommée.</p>
 <ul class="legende-statuts" aria-label="Statuts des chiffres de cette page">
   <li>${traitStatut('trace')}<span><strong>Tracé</strong> : montant ou nombre lu tel quel dans une source publiée.</span></li>
-  <li>${traitStatut('approche')}<span><strong>Approché</strong> : calculé par le site à partir de chiffres publiés (écart entre deux sources), méthode écrite à côté.</span></li>
+  ${LEGENDE_CALCULE}
   <li>${traitStatut('nonpub')}<span><strong>Non publié</strong> : la source ne publie pas cette case ; elle n’est jamais remplacée par 0.</span></li>
 </ul>
 ${blocCles(idx)}

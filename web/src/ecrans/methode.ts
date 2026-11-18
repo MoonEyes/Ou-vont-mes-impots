@@ -128,6 +128,10 @@ ${ex.rapprochement_plrg ? `<li>Contrôle : écart de ${h(md(ex.rapprochement_plr
 <li>Vue « par nature » : projet de loi de finances 2025, vue séparée, aucun prorata appliqué aux montants exécutés.</li>
 </ul>
 
+<h2 id="methode-calcule">Chiffres calculés par le site</h2>
+<p>Quand le site fait lui-même un calcul à partir de montants publiés (un rapport, une différence, une somme, une moyenne ou une part), ce chiffre n’est affiché que si tous ses montants portent sur la même année et sur le même périmètre. Il porte alors la mention « Calculé par le site », avec un motif quadrillé distinct des autres statuts, et sa méthode est écrite juste à côté.</p>
+<p>Si les montants portent sur deux années ou deux périmètres différents, le chiffre n’est pas affiché : par exemple, aucun montant par étudiant (dépenses d’une année civile, étudiants d’une année universitaire) ni coût moyen par emploi de l’État (emplois votés et dépenses de personnel d’années différentes) n’est publié.</p>
+
 <h2>Doubles comptes</h2>
 <ul>
 ${adm ? `<li>Administrations publiques ${h(adm.annee)} : la somme des administrations (${h(md(adm.somme_md))}) dépasse le total consolidé (${h(md(adm.total_consolide_s13_md))}) de ${h(md(adm.ecart_consolidation_md))}, à cause des transferts entre administrations qui restent dans cette somme (dotations de l’État aux collectivités, à la Sécurité sociale).${adm.ecart_depenses_totales_md !== undefined ? ` Sur les dépenses totales de chaque administration, tous transferts compris, l’écart est de ${h(md(adm.ecart_depenses_totales_md))}.` : ''}</li>` : ''}

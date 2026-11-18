@@ -30,7 +30,7 @@
   },
   "depute_brut_mensuel_eur": 7637.39,
   "president_brut_mensuel_eur": 16038.5,
-  "president_statut": "approché"
+  "president_statut": "calculé par le site"
  },
  "regles": [
   "La dotation inscrite au budget de l'État et le budget propre d'une institution sont deux grandeurs différentes : jamais additionnées (la dotation est une ressource du budget propre).",

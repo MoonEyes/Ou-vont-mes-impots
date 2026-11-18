@@ -536,13 +536,12 @@ DESTINATION = {
     "douanes_bilan_2025": {
         "annee": 2025, "motifs": ["54,5 %", "37,9 %", "7,6 %", "37,92 Mds €", "Destination des recettes",
                                   "collectivités locales", "& organismes sociaux", "UE", "État"],
-        "parts": [("etat", 54.5), ("collectivites_et_organismes_sociaux", 37.9), ("union_europeenne", 7.6)],
-        "statut": "approche",
-        "lecture": "Les trois parts du graphique « Destination des recettes » sont publiées sans être écrites à côté "
-                   "de leur destinataire. Attribution retenue : la part de l'Union européenne est celle qui "
-                   "correspond aux droits de douane perçus (2 893 M€ sur 37 919,49 M€, soit 7,6 %), les deux autres "
-                   "suivent l'ordre de la légende et la répartition publiée pour 2024. À confirmer si la douane "
-                   "publie le détail.",
+        # Règle « chiffre calculé par le site » (docs/NEUTRALITE.md) : les trois parts publiées ne sont pas écrites à
+        # côté de leur destinataire ; leur attribution par déduction n'est pas publiée.
+        "parts": [], "statut": "non_publie",
+        "lecture": "Les trois parts du graphique « Destination des recettes » (54,5 %, 37,9 % et 7,6 %) sont publiées "
+                   "sans être écrites à côté de leur destinataire : le site ne les attribue pas par déduction. À "
+                   "reprendre si la douane publie le détail.",
     },
 }
 

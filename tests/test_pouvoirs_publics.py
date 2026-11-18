@@ -44,7 +44,7 @@ def test_bareme_gouvernement_selon_les_decrets():
     assert lignes["Premier ministre"]["total_brut_mensuel_eur"] == lignes["Président de la République"]["total_brut_mensuel_eur"]
     assert lignes["Ministre et ministre délégué"]["total_brut_mensuel_eur"] == pytest.approx(10692.34, abs=0.02)
     assert lignes["Secrétaire d'État"]["total_brut_mensuel_eur"] == pytest.approx(10157.71, abs=0.02)
-    assert all(l["statut"] == "approché" for l in lignes.values())
+    assert all(l["statut"] == "calculé par le site" and l["methode"] for l in lignes.values())
 
 
 def test_fusion_garde_les_ecarts_sans_trancher():
@@ -134,7 +134,7 @@ def test_index_recherche_prealable_et_reperes():
     d = _charger("index.json")
     assert {r["classement"] for r in d["recherche_prealable"]} <= {"réutilisable tel quel", "à adapter",
                                                                    "inspiration seulement"}
-    assert d["reperes"]["president_statut"] == "approché"
+    assert d["reperes"]["president_statut"] == "calculé par le site"
     assert [f["fichier"] for f in d["fichiers"]] == ["pouvoirs_publics/dotations.json",
                                                      "pouvoirs_publics/budgets_institutions.json",
                                                      "pouvoirs_publics/indemnites.json"]

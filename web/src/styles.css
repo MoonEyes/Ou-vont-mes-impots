@@ -1106,6 +1106,15 @@ details[open] > summary::before {
 .motif-vide {
   border-style: dashed;
 }
+/* Calculé par le site (règle docs/NEUTRALITE.md) : quadrillage, distinct des motifs tracé, approché et non publié. */
+.motif-calcule {
+  background:
+    repeating-linear-gradient(0deg, var(--contour) 0 1.5px, transparent 1.5px 6px),
+    repeating-linear-gradient(90deg, var(--contour) 0 1.5px, var(--papier) 1.5px 6px);
+}
+.methode-calcul {
+  font-size: 0.9em;
+}
 /* Sur un fond de famille (encre en clair comme en sombre), le motif suit le texte de la carte. */
 :where(.cle-famille, .carte-famille) .motif {
   --contour: var(--sur-famille);

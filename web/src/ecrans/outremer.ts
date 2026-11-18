@@ -79,7 +79,6 @@ export function parHabitant(montant: number | null, population: number | null | 
 }
 
 const montant = (x: number | null) => (x === null ? 'non publié' : eurLisible(x))
-const montantHab = (x: number | null) => (x === null ? 'non calculable' : eur(x))
 
 /** Missions des territoires choisis, montants additionnés colonne par colonne (même source, même colonne). */
 export function missionsCumulees(terrs: TerritoireOutremer[]): { colonnes: string[]; missions: Mission[] } {
@@ -113,7 +112,7 @@ export function trierMissions(missions: Mission[], colonnes: string[]): Mission[
 
 const nonNul = (colonnes: string[], v: Valeurs) => COLONNES_CP.some((c) => (valeurColonne(colonnes, v, c.cle) ?? 0) !== 0)
 
-function tableauTerritoires(idx: IndexOutremer, terrs: TerritoireOutremer[]): string {
+function tableauTerritoires(_idx: IndexOutremer, terrs: TerritoireOutremer[]): string {
   const lignes = terrs
     .map((t) => {
       const d = t.credits_etat.dpt_plf2026
@@ -122,13 +121,12 @@ function tableauTerritoires(idx: IndexOutremer, terrs: TerritoireOutremer[]): st
         const v = d.statut === 'publié' ? valeurColonne(d.colonnes, d.total_general, c.cle) : null
         return `<td class="nombre">${h(montant(v))}</td>`
       }).join('')
-      const hab = parHabitant(d.statut === 'publié' ? valeurColonne(d.colonnes, d.total_general, 'execution_2024_cp') : null, pop)
-      return `<tr><th scope="row"><a href="${lien('/explorer/outre-mer', { t: t.territoire.code })}">${h(t.territoire.nom)}</a></th><td class="nombre">${pop ? h(entier(pop)) : 'non publiée'}</td>${cellules}<td class="nombre">${h(montantHab(hab))}</td></tr>`
+      return `<tr><th scope="row"><a href="${lien('/explorer/outre-mer', { t: t.territoire.code })}">${h(t.territoire.nom)}</a></th><td class="nombre">${pop ? h(entier(pop)) : 'non publiée'}</td>${cellules}</tr>`
     })
     .join('')
-  return `<div class="tableau-defile"><table><caption>Crédits de paiement de l’État par territoire, tous ministères, d’après le document de politique transversale « Outre-mer » (projet de loi de finances pour 2026)</caption><thead><tr><th scope="col">Territoire</th><th scope="col" class="nombre">Habitants</th>${COLONNES_CP.map((c) => `<th scope="col" class="nombre">${h(c.libelle)}</th>`).join('')}<th scope="col" class="nombre">Dépensé en 2024, par habitant (calcul du site)</th></tr></thead><tbody>${lignes}</tbody></table></div>
+  return `<div class="tableau-defile"><table><caption>Crédits de paiement de l’État par territoire, tous ministères, d’après le document de politique transversale « Outre-mer » (projet de loi de finances pour 2026)</caption><thead><tr><th scope="col">Territoire</th><th scope="col" class="nombre">Habitants</th>${COLONNES_CP.map((c) => `<th scope="col" class="nombre">${h(c.libelle)}</th>`).join('')}</tr></thead><tbody>${lignes}</tbody></table></div>
 <p class="aide" data-regle-ordre>${h(REGLE_TERRITOIRES)}</p>
-<p class="aide">Les trois colonnes ne sont pas de même nature : la première est ce qui a été dépensé, la deuxième ce que le Parlement a voté, la troisième ce que le Gouvernement propose. Elles se lisent côte à côte, sans s’additionner. Le montant par habitant divise les crédits dépensés en 2024 par la population municipale publiée par l’Insee (API Découpage administratif, consultée le ${h(dateFr(idx.collecte_le))}) : c’est une division, pas une mesure d’un besoin ni d’un niveau de service.</p>`
+<p class="aide">Les trois colonnes ne sont pas de même nature : la première est ce qui a été dépensé, la deuxième ce que le Parlement a voté, la troisième ce que le Gouvernement propose. Elles se lisent côte à côte, sans s’additionner. Le site ne calcule pas de montant par habitant : la population publiée ne porte pas sur la même année que les crédits dépensés.</p>`
 }
 
 function tableauCour(terrs: TerritoireOutremer[]): string {

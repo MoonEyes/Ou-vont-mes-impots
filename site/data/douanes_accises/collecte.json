@@ -161,23 +161,10 @@
   {
    "annee": 2025,
    "document": "douanes_bilan_2025",
-   "lecture": "Les trois parts du graphique « Destination des recettes » sont publiées sans être écrites à côté de leur destinataire. Attribution retenue : la part de l'Union européenne est celle qui correspond aux droits de douane perçus (2 893 M€ sur 37 919,49 M€, soit 7,6 %), les deux autres suivent l'ordre de la légende et la répartition publiée pour 2024. À confirmer si la douane publie le détail.",
+   "lecture": "Les trois parts du graphique « Destination des recettes » (54,5 %, 37,9 % et 7,6 %) sont publiées sans être écrites à côté de leur destinataire : le site ne les attribue pas par déduction. À reprendre si la douane publie le détail.",
    "page_pdf": 4,
-   "parts": [
-    {
-     "destinataire": "etat",
-     "pct": 54.5
-    },
-    {
-     "destinataire": "collectivites_et_organismes_sociaux",
-     "pct": 37.9
-    },
-    {
-     "destinataire": "union_europeenne",
-     "pct": 7.6
-    }
-   ],
-   "statut": "approche"
+   "parts": [],
+   "statut": "non_publie"
   }
  ],
  "editions": [

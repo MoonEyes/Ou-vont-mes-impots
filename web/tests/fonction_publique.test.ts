@@ -7,7 +7,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import { ROUTES } from '../src/main'
 import { afficher, titreDocument } from '../src/routeur'
 import { viderCache } from '../src/donnees'
-import { eur, md, pct, sur100 } from '../src/util'
+import { md, pct, sur100 } from '../src/util'
 import { coutMoyen, evolution, lisible, personnes, type Programme, REGLE_MINISTERES } from '../src/ecrans/fonction_publique'
 import { monterPage, requetes } from './aide-dom'
 
@@ -143,15 +143,15 @@ describe('écran « La fonction publique »', () => {
     const tri = [...min.ministeres].sort((a, c) => c.titre2_eur - a.titre2_eur)
     expect(lignes.map((tr) => norm(tr.querySelector('th')?.textContent))).toEqual(tri.map((m) => m.ministere))
     expect(main.querySelector(`${dans('fp-ministeres')} [data-regle-ordre]`)?.textContent).toBe(REGLE_MINISTERES)
-    const tous = coutMoyen(min.ministeres.flatMap((m) => m.programmes))
-    expect(norm(table.querySelector('tfoot')?.textContent)).toContain(norm(eur(tous.moyen!)))
-    expect(norm(lignes[0].textContent)).toContain(norm(eur(coutMoyen(tri[0].programmes).moyen!)))
-    // Les programmes exclus du calcul sont nommés, et ce sont bien ceux sans dépenses ou sans emplois publiés.
-    for (const p of tous.exclus) {
-      expect((p.etpt ?? 0) > 0 && (p.titre2_eur ?? 0) > 0).toBe(false)
-      expect(texte()).toContain(`${p.programme} (${p.libelle})`)
-    }
-    expect(norm(main.querySelector(dans('fp-ministeres'))?.textContent)).toContain('Approché')
+    // Règle « chiffre calculé par le site » : emplois votés et dépenses de personnel d'années différentes, pas de
+    // coût moyen par emploi (ni colonne, ni total), la raison est écrite.
+    const caption = norm(table.querySelector('caption')?.textContent)
+    const [anE, anT] = [...caption.matchAll(/\d{4}/g)].map((m) => m[0])
+    expect(anE).not.toBe(anT)
+    expect(norm(table.textContent)).not.toContain('Coût complet moyen par emploi')
+    expect(table.querySelectorAll('thead th')).toHaveLength(4)
+    expect(norm(main.querySelector(dans('fp-ministeres'))?.textContent)).toContain('ne portent pas sur la même année')
+    expect(main.querySelector(`${dans('fp-ministeres')} [data-calcule]`)).toBeNull()
     expect(main.querySelector(`${dans('fp-ministeres')} a[href="#/beneficiaires/programme"]`)).not.toBeNull()
   })
 
@@ -170,10 +170,8 @@ describe('écran « La fonction publique »', () => {
   it('rémunérations : moyennes seulement, salaire par catégorie signalé comme absent, rien d’individuel', async () => {
     await ecran(CHEMIN)
     const zone = norm(main.querySelector(dans('fp-remunerations'))?.textContent)
-    const tous = coutMoyen(min.ministeres.flatMap((m) => m.programmes))
-    expect(zone).toContain(`Coût complet moyen d’un emploi de l’État : ${norm(eur(tous.moyen!))} par an`)
-    expect(zone).toContain('Approché')
-    expect(zone).toContain('Ce n’est pas un salaire')
+    expect(zone).not.toContain('Coût complet moyen d’un emploi de l’État :')
+    expect(zone).toContain('Pas de coût complet moyen d’un emploi de l’État')
     expect(norm(main.querySelector(`${dans('fp-remunerations')} .absent`)?.textContent)).toContain('Salaire moyen par catégorie (A, B, C)')
     expect(zone).toContain('Aucune rémunération individuelle n’est publiée ici.')
     // Ni prestataires nommés ni barème des élus : ces fichiers ne sont pas lus par cette page.

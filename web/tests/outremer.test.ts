@@ -64,9 +64,9 @@ describe('outre-mer', () => {
     expect(main.querySelectorAll('.surligne')).toHaveLength(1)
   })
 
-  it('tableau par territoire : ordre des codes, trois colonnes de nature distincte, montant par habitant calculé', async () => {
+  it('tableau par territoire : ordre des codes, trois colonnes de nature distincte, pas de montant par habitant (population d’une autre année)', async () => {
     const table = Array.from(main.querySelectorAll('table')).find((t) => t.caption?.textContent?.startsWith('Crédits de paiement de l’État par territoire'))!
-    expect(table.querySelectorAll('th[scope=col]').length).toBe(6)
+    expect(table.querySelectorAll('th[scope=col]').length).toBe(5)
     const lignes = Array.from(table.querySelectorAll('tbody tr'))
     expect(lignes.map((l) => l.querySelector('th')!.textContent)).toEqual([...terrs].sort((a, b) => a.territoire.code.localeCompare(b.territoire.code)).map((t) => t.territoire.nom))
     expect(main.querySelector('[data-regle-ordre]')?.textContent).toBe(REGLE_TERRITOIRES)
@@ -75,7 +75,8 @@ describe('outre-mer', () => {
     const d = t987.credits_etat.dpt_plf2026
     const cellules = Array.from(ligne.querySelectorAll('td')).map((c) => esp(c.textContent!))
     COLONNES_CP.forEach((c, i) => expect(cellules[i + 1]).toBe(esp(eurLisible(valeurColonne(d.colonnes, d.total_general, c.cle)!))))
-    expect(cellules[4]).toBe(esp(eur(valeurColonne(d.colonnes, d.total_general, 'execution_2024_cp')! / t987.territoire.population!)))
+    expect(cellules).toHaveLength(4)
+    expect(esp(main.textContent!)).toContain('Le site ne calcule pas de montant par habitant')
     expect(ligne.querySelector('a')?.getAttribute('href')).toBe('#/explorer/outre-mer?t=987')
   })
 

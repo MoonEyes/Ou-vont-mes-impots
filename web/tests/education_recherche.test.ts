@@ -200,7 +200,7 @@ describe('écran éducation et recherche', () => {
     expect(val('Sections de technicien supérieur')).toBe(n(eur(17220)))
     expect(n(niv.textContent)).not.toMatch(/STS|CPGE|²|³/)
     expect(niv.querySelectorAll('tbody tr')).toHaveLength(ce.depense_moyenne_par_niveau.niveaux.length)
-    expect(n(bloc.textContent)).toContain('ils ne se comparent pas au montant par étudiant calculé plus bas par le site')
+    expect(n(bloc.textContent)).toContain('Ces montants couvrent toute la dépense d’éducation, tous financeurs confondus.')
     // Série 1980-2024 en euros constants, année provisoire signalée.
     const evo = tableau('Dépense intérieure d’éducation et dépense moyenne par élève ou étudiant, 1980 à 2024')
     expect(evo.querySelectorAll('tbody tr')).toHaveLength(ce.depense_moyenne_evolution.annees.length)
@@ -213,35 +213,12 @@ describe('écran éducation et recherche', () => {
     expect(n(bloc.textContent)).not.toMatch(/(^|\s)0 €/)
   })
 
-  it('montant par étudiant : calcul du site signalé (statut approché), formule et limites publiées, rien avant la première année publiée', async () => {
+  it('montant par étudiant : calcul du site retiré (dépenses et effectifs de deux années différentes), raison écrite', async () => {
     await ecran()
-    const idx = lire('education_recherche/index.json')
-    const etu = lire('education_recherche/etudiants.json')
-    const nat = idx.cout_par_etudiant.national.filter((p: { annee: number }) => p.annee >= 2015)
-    const der = nat[nat.length - 1]
-    const para = Array.from(main.querySelectorAll('p')).find((p) => n(p.textContent).includes('Ce montant est un calcul du site, pas un chiffre publié'))!
-    expect(para.querySelector('.badge')?.textContent).toBe('Approché')
-    expect(n(para.textContent)).toContain(n(`donnent ${eur(der.cout_par_etudiant_eur)} par étudiant`))
-    expect(n(para.textContent)).toContain(`inscrits en ${universitaire(der.annee)}`)
-    expect(n(para.textContent)).toContain('Ce n’est donc pas la dépense totale pour un étudiant')
-    const t = tableau('Montant par étudiant calculé par le site, à partir')
-    const annees = Array.from(t.querySelectorAll('tbody th')).map((th) => Number(n(th.textContent)))
-    expect(Math.min(...annees)).toBe(2015)
-    expect(annees).toHaveLength(nat.length)
-    // Aucun montant nul affiché pour les années où la dépense n'est pas publiée.
-    expect(n(t.textContent)).not.toMatch(/(^|\s)0 €/)
-    const details = Array.from(main.querySelectorAll('details')).find((d) => n(d.querySelector('summary')?.textContent) === 'Formule et limites du calcul')!
-    expect(n(details.textContent)).toContain(n(lisible(idx.cout_par_etudiant.formule)))
-    expect(n(details.textContent)).toContain('cout_par_etudiant_eur = budget_esve_eur / etudiants')
-    expect(n(details.textContent)).toContain(n(etu.cout_par_etudiant.limites[0]))
-    // Textes de données sans terme technique : ni « null », ni nom de champ, ni chemin de fichier.
-    expect(n(details.textContent)).not.toMatch(/\bnull\b|correspondance_regions/)
+    expect(texte()).toContain('Le site ne calcule pas de montant par étudiant')
+    expect(texte()).not.toMatch(/par étudiant calculé par le site|calcul du site, pas un chiffre publié/)
+    expect(main.querySelector('#er-cout-regions')).toBeNull()
     expect(texte()).not.toMatch(/[a-z_]+\.json/)
-    // Par région : ordre du code officiel, « non calculé » quand le budget ou l'effectif manque.
-    const parRegion = tableau('Montant par étudiant calculé par le site, par région')
-    const noms = Array.from(parRegion.querySelectorAll('tbody th')).map((th) => n(th.textContent))
-    expect(noms).toEqual(etu.cout_par_etudiant.regions.map((r: { nom: string }) => r.nom))
-    expect(n(ligne(parRegion, 'Collectivités d').textContent)).toContain('non calculé')
   })
 
   it('montants par élève publiés par l’État : enseignement agricole, rapport en toutes lettres, lien vers les indicateurs ; rien pour l’école et l’université', async () => {

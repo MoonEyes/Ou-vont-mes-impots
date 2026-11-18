@@ -24,6 +24,7 @@ Le site ne soutient aucun parti, aucun candidat ni aucune position sur le niveau
 | 8 | Équilibre de la sélection : une page consacrée aux entreprises ou aux organismes renvoie aux sommes versées aux ménages (Sécurité sociale), avec le même format. | `ecrans.test.ts`, « partis et candidats » (bloc équilibre) |
 | 9 | La part « non publiée » est décrite comme un état de la publication, jamais comme un soupçon sur l'usage de l'argent. La représentation d'intérêts est nommée avec le terme de la HATVP, sans « influence » ni « visés ». | `ecrans.test.ts`, « la démarche » et « lexique neutre » |
 | 10 | Aucun code visuel institutionnel (Marianne, bleu et rouge de l'État, DSFR) ; mention « Site citoyen, non officiel » dans l'en-tête. | `regles.test.ts`, « aucun code visuel institutionnel » |
+| 11 | Chiffre calculé par le site (ratio, différence, somme, moyenne, part) : affiché seulement si tous ses montants portent sur la même année et le même périmètre, avec sa méthode écrite à côté et le badge distinct « Calculé par le site » (motif quadrillé, différent de tracé, approché, non publié). Sinon il est retiré de l'affichage et, côté données, mis à `null` avec son motif. Sommes et écarts entre chiffres publiés : gardés avec le badge. | `web/tests/calcule.test.ts` ; `fonction_publique.test.ts`, `education_recherche.test.ts`, `outremer.test.ts` ; `tests/test_pouvoirs_publics.py`, `tests/test_douanes_accises.py` |
 
 Le lexique (termes interdits, raisons, exceptions, définition admise de « niche ») est dans `docs/lexique_neutre.json`, partagé par le test du site (`web/tests/ecrans.test.ts`) et le test des données (`tests/test_neutralite.py`, sur les textes rédigés par le pipeline : avertissements, limites, lectures, définitions, règles, méthodes, périmètres, notes, tendances, règles d'ordre).
 
@@ -76,3 +77,27 @@ Exceptions admises (libellés officiels repris tels quels) : titres de publicati
 | Non publié | « 31 € n'ont pas de destinataire publié. » | « … publié en données ouvertes : cela décrit l'état de la publication, pas l'usage de l'argent. » | Règle 9. |
 | Non publié | Traçabilité : part non publiée sans précision | « elle ne dit rien de la régularité ni de l'utilité de la dépense » | Règle 9. |
 | Charte | (absent) | Démarche : « Le site ne soutient aucun parti, aucun candidat ni aucune position sur le niveau des impôts ou des dépenses. » ; règles « Chaque sujet est présenté avec les mêmes formats : montant, source, part tracée, écarts. » et « Partis et candidats : même tableau pour tous, dans un ordre neutre affiché sous chaque liste. » | Règles 1, 5, 6. |
+
+## Règle « chiffre calculé par le site » (décision du 18/11/2026)
+
+Un chiffre que le site calcule lui-même à partir de montants publiés n'est affiché que si :
+
+1. tous ses montants portent sur la même année ;
+2. ils portent sur le même périmètre ;
+3. la méthode est écrite à côté du chiffre ;
+4. il porte le badge « Calculé par le site » (`badgeCalcule(methode)` dans `web/src/util.ts`, qui refuse une méthode vide).
+
+Sinon le chiffre est retiré de l'affichage, et de préférence mis à `null` avec son motif dans les données. Application au 18/11/2026 :
+
+| Chiffre | Décision |
+|---------|----------|
+| Montant par étudiant (éducation et recherche, 457 €) | retiré : dépenses d'une année civile, étudiants d'une année universitaire |
+| Coût complet moyen par emploi (fonction publique, 78 358 € ; page programme) | affiché seulement si emplois et dépenses de personnel sont de la même année ; aujourd'hui emplois LFI 2023 et dépenses 2024 : retiré |
+| Montant par habitant outre-mer (crédits 2024 divisés par la population) | retiré : année de la population non publiée avec elle |
+| Montant par journée de détention (justice), reste à charge des départements (solidarités) | non affichés |
+| Indemnités des membres du Gouvernement calculées depuis les décrets | gardées : statut « calculé par le site » et formule |
+| Indemnité des sénateurs reprise de celle des députés | non publiée (`null`) tant qu'aucune source du Sénat ne l'écrit |
+| Destination 2025 des recettes douanières attribuée par déduction | non publiée (`parts` vide, `statut` = `non_publie`) |
+| Sommes et écarts entre chiffres publiés (facilité pour la reprise, cofinancement national, écarts entre sources, payé dans l'année par différence de cumuls, part des charges de personnel, médiane des prix) | gardés avec le badge et la méthode |
+
+Reste à arbitrer : les parts « sur 100 € » et la part personnelle du calcul (« ce que tu verses ») sont des calculs du site présents sur presque toutes les pages ; leur méthode est sur la page Méthode, elles n'ont pas encore le badge.

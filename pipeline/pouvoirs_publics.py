@@ -703,7 +703,7 @@ def bareme_gouvernement(moyenne_he: float, d: dict) -> list[dict]:
         t, r, f, total = calcul(coef, maj)
         lignes.append({"fonction": fonction, "coefficient_moyenne_hors_echelle": coef, "majoration_pct": maj,
                        "traitement_brut_mensuel_eur": t, "indemnite_residence_eur": r, "indemnite_fonction_eur": f,
-                       "total_brut_mensuel_eur": total, "base_legale": texte, "statut": "approché",
+                       "total_brut_mensuel_eur": total, "base_legale": texte, "statut": "calculé par le site",
                        "methode": "calculé par le site : moyenne hors échelle x coefficient ; résidence 3 % ; fonction "
                                   "25 % de (traitement + résidence) ; majoration éventuelle sur les trois éléments ; "
                                   "arrondi au centime. Aucun barème chiffré officiel n'a été trouvé en données ouvertes."})
@@ -735,13 +735,15 @@ def construire_indemnites(millesime: str, collecte_le: str) -> dict:
     parlementaires.append({"fonction": "Député", "element": "total net mensuel (après cotisations, CSG et CRDS)",
                            "montant_brut_mensuel_eur": None, "montant_net_mensuel_eur": base["net_mensuel"][0],
                            "statut": "tracé", "base_legale": None, "source": src7(base["net_mensuel"][1])})
+    # Règle « chiffre calculé par le site » (docs/NEUTRALITE.md) : l'indemnité des sénateurs n'est publiée que si une
+    # source du Sénat l'écrit ; le montant de l'Assemblée nationale n'est pas repris.
     parlementaires.append({
         "fonction": "Sénateur", "element": "total brut mensuel (indemnités de base, de résidence et de fonction)",
-        "montant_brut_mensuel_eur": brut, "statut": "approché",
+        "montant_brut_mensuel_eur": None, "statut": "non publié",
         "base_legale": "ordonnance n° 58-1210 du 13 décembre 1958 (même texte pour les deux assemblées)",
-        "methode": "montant de l'Assemblée nationale repris : l'ordonnance fixe la même indemnité pour tous les membres "
-                   "du Parlement ; le Sénat ne publie pas de barème chiffré dans les documents collectés.",
-        "source": f"{src7(base['brut_mensuel'][1])} ; {source_doc('pap2026')}"})
+        "methode": "non publié : aucun document collecté du Sénat n'écrit ce montant ; le montant de l'Assemblée "
+                   "nationale n'est pas repris pour le Sénat.",
+        "source": source_doc('pap2026')})
     speciales = [{"fonction": fct, "assemblee": "Assemblée nationale", "montant_brut_mensuel_eur": v,
                   "statut": "tracé", "source": src7(p)} for fct, v, p, _ in f7["speciales"]]
     moyens = [{"libelle": lib, "montant_mensuel_eur": v, "statut": "tracé", "source": src7(p)}

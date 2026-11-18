@@ -105,7 +105,8 @@ describe('écran fonds européens', () => {
     const cle = s[0].closest('[data-cle]')!
     const part = (t21.prevu_ue_eur! / t21.prevu_total_eur!) * 100
     expect(n(cle.textContent)).toContain(n(`Sur 100 € prévus par ces programmes, ${sur100(part)} viennent de l’Union et ${sur100(100 - part)} des financeurs français`))
-    expect(Array.from(cle.querySelectorAll('.badge')).map((b) => b.textContent)).toEqual(['Tracé', 'Approché'])
+    expect(Array.from(cle.querySelectorAll('.badge')).map((b) => b.textContent)).toEqual(['Tracé', 'Calculé par le site'])
+    expect(n(cle.querySelector('.methode-calcul')?.textContent)).toContain('divisé par le total prévu')
     expect(n(cle.querySelector('.source')?.textContent)).toContain(idx.source)
     expect(main.querySelectorAll('.legende-statuts li').length).toBeGreaterThanOrEqual(3)
   })
@@ -145,7 +146,7 @@ describe('écran fonds européens', () => {
     expect(texte()).toContain('Le décidé peut dépasser le prévu : la source le publie ainsi, sans en donner la raison')
     // 2021-2027 : cofinancement calculé, signalé « approché ».
     tableau('Programmes 2021-2027 en France, par fonds')
-    expect(texte()).toContain('Pour 2021-2027, le cofinancement national est calculé par le site : total prévu moins la part de l’Union')
+    expect(texte()).toContain('Pour 2021-2027, le cofinancement national Calculé par le site Méthode : total prévu moins la part de l’Union, pour le même programme et la même période de programmation')
     // Plan stratégique PAC : financements nationaux du plan à côté, sans addition.
     const pac = idx.feader_psp_2023_2027!
     expect(texte()).toContain(n(`Part de l’Union prévue : ${eurLisible(pac.prevu_ue_feader_eur!)}`))
@@ -216,7 +217,7 @@ describe('écran fonds européens', () => {
     const frr = lire('frr.json')
     const f = tableau('Facilité pour la reprise et la résilience : fonds reçus')
     expect(cellules(ligne(f, '2023'))[0]).toBe(n(eurLisible(frr.fonds_recus.total_eur[frr.annees.indexOf(2023)])))
-    expect(texte()).toContain(n(`${eurLisible(frr.fonds_recus.cumul_eur)} reçus au total (somme des années calculée par le site)`))
+    expect(texte()).toContain(n(`${eurLisible(frr.fonds_recus.cumul_eur)} reçus au total Calculé par le site Méthode : somme des montants reçus chaque année`))
     expect(texte()).toContain('pas par le prélèvement sur recettes')
   })
 
@@ -234,9 +235,9 @@ describe('écran fonds européens', () => {
     expect(requetes.filter((u) => u.includes('fonds_europeens/operations/'))).toEqual(['data/fonds_europeens/operations/iledefrance_2127.json'])
     const l = lire<Liste>('operations/iledefrance_2127.json')
     const zone = main.querySelector('#fe-ops-resultats')!
-    // Contribution de l'Union calculée : statut « approché ».
-    expect(n(zone.textContent)).toContain('elle est calculée par le site, coût total multiplié par le taux de cofinancement publié')
-    expect(Array.from(zone.querySelectorAll('.badge')).map((b) => b.textContent)).toContain('Approché')
+    // Contribution de l'Union calculée : badge « Calculé par le site » et méthode écrite.
+    expect(n(zone.textContent)).toContain('coût total de l’opération multiplié par le taux de cofinancement publié')
+    expect(Array.from(zone.querySelectorAll('.badge')).map((b) => b.textContent)).toContain('Calculé par le site')
     // Écarts avec la Commission.
     const cmp = tableau('Région Île-de-France : coût des opérations de la liste et décidé transmis', zone)
     expect(cmp.querySelectorAll('tbody tr')).toHaveLength(l.comparaison_commission.length)

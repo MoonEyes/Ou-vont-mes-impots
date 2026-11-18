@@ -10,7 +10,7 @@ import { TOUS_DEPARTEMENTS } from '../departements'
 import { chargerSiPresent, type Noeud } from '../donnees'
 import { lien } from '../routeur'
 import { ROUTES } from '../routes'
-import { absent, badgeStatut, entier, eur, eurLisible, h, md, pct, rendreDefilables, source, sur100, surligne, traitStatut } from '../util'
+import { absent, badgeStatut, entier, eur, eurLisible, h, md, pct, rendreDefilables, source, sur100, surligne, traitStatut, badgeCalcule, LEGENDE_CALCULE, memeAnnee } from '../util'
 import { enCours } from './dette'
 
 type Valeur = number | null
@@ -293,23 +293,31 @@ function blocMinisteres(min: Ministeres, total: number | null, b: BudgetEtat): s
   const s100 = (x: number) => (total ? sur100((x / total) * 100) : 'non disponible')
   const moyen = (x: number | null) => (x === null ? 'non disponible' : eur(x))
   const tous = coutMoyen(min.ministeres.flatMap((m) => m.programmes))
+  // Règle « chiffre calculé par le site » : coût moyen seulement si emplois et dépenses portent sur la même année.
+  const avecMoyen = memeAnnee(anE, anT)
+  const colMoyen = (x: string) => (avecMoyen ? x : '')
   const sans = min.programmes_sans_ministere
   const exclus = tous.exclus.map((p) => `${h(p.programme)} (${h(p.libelle)})`)
+  const exclusBruts = tous.exclus.map((p) => `${p.programme} (${p.libelle})`)
   return `<div class="tableau-defile"><table><caption>Emplois votés pour ${h(anE)} et dépenses de personnel ${h(anT)}, par ministère</caption>
-<thead><tr><th scope="col">Ministère</th>${colonne(`Emplois votés ${anE}`)}${colonne(`Dépenses de personnel ${anT}`)}${colonne('Sur 100 € du budget de l’État')}${colonne('Coût complet moyen par emploi')}</tr></thead>
+<thead><tr><th scope="col">Ministère</th>${colonne(`Emplois votés ${anE}`)}${colonne(`Dépenses de personnel ${anT}`)}${colonne('Sur 100 € du budget de l’État')}${colMoyen(colonne('Coût complet moyen par emploi'))}</tr></thead>
 <tbody>${tri
     .map(
       (m) =>
-        `<tr><th scope="row">${h(m.ministere)}</th><td class="nombre">${h(entier(Math.round(m.etpt)))}</td><td class="nombre">${h(eurLisible(m.titre2_eur))}</td><td class="nombre">${h(s100(m.titre2_eur))}</td><td class="nombre">${h(moyen(coutMoyen(m.programmes).moyen))}</td></tr>`,
+        `<tr><th scope="row">${h(m.ministere)}</th><td class="nombre">${h(entier(Math.round(m.etpt)))}</td><td class="nombre">${h(eurLisible(m.titre2_eur))}</td><td class="nombre">${h(s100(m.titre2_eur))}</td>${colMoyen(`<td class="nombre">${h(moyen(coutMoyen(m.programmes).moyen))}</td>`)}</tr>`,
     )
     .join('')}</tbody>
-<tfoot><tr><th scope="row">Ensemble (${tri.length} ministères)</th><td class="nombre">${h(entier(Math.round(min.totaux.etpt)))}</td><td class="nombre">${h(eurLisible(min.totaux.titre2_eur))}</td><td class="nombre">${h(s100(min.totaux.titre2_eur))}</td><td class="nombre">${h(moyen(tous.moyen))}</td></tr></tfoot>
+<tfoot><tr><th scope="row">Ensemble (${tri.length} ministères)</th><td class="nombre">${h(entier(Math.round(min.totaux.etpt)))}</td><td class="nombre">${h(eurLisible(min.totaux.titre2_eur))}</td><td class="nombre">${h(s100(min.totaux.titre2_eur))}</td>${colMoyen(`<td class="nombre">${h(moyen(tous.moyen))}</td>`)}</tr></tfoot>
 </table></div>
 <p class="aide" data-regle-ordre>${REGLE_MINISTERES}</p>
 <p class="aide">Emplois votés : plafond d’emplois voté pour ${h(anE)} par le Parlement (loi de finances initiale), en équivalent temps plein travaillé : une personne à temps partiel ou présente une partie de l’année compte pour moins de 1. Ce n’est pas le nombre de personnes en poste. Emplois et dépenses de personnel : ${badgeStatut('trace')}</p>
-<p class="aide">Coût complet moyen par emploi : dépenses de personnel ${h(anT)} divisées par les emplois votés pour ${h(anE)}, sur les programmes qui publient les deux${
-    exclus.length ? ` (sans ${exclus.length > 1 ? `les programmes ${exclus.slice(0, -1).join(', ')} et ${exclus[exclus.length - 1]}` : `le programme ${exclus[0]}`}, qui ne publient pas l’un des deux)` : ''
-  }. Rémunération brute, cotisations de l’employeur et contribution aux pensions y sont comprises : ce n’est pas un salaire. Les deux années diffèrent : un programme réorganisé entre-temps peut fausser le calcul. ${badgeStatut('approche')}</p>
+${
+  avecMoyen
+    ? `<p class="aide">Coût complet moyen par emploi ${badgeCalcule(`dépenses de personnel ${anT} divisées par les emplois votés pour la même année, sur les programmes qui publient les deux${
+        exclusBruts.length ? ` (sans ${exclusBruts.length > 1 ? `les programmes ${exclusBruts.slice(0, -1).join(', ')} et ${exclus[exclusBruts.length - 1]}` : `le programme ${exclusBruts[0]}`}, qui ne publient pas l’un des deux)` : ''
+      } ; rémunération brute, cotisations de l’employeur et contribution aux pensions comprises, ce n’est pas un salaire`)}</p>`
+    : `<p class="aide">Pas de coût moyen par emploi : les emplois votés (${h(anE)}) et les dépenses de personnel (${h(anT)}) ne portent pas sur la même année, et le site ne divise pas deux montants de deux années différentes.</p>`
+}
 ${
   sans.length
     ? `<p class="aide">Hors tableau : ${sans.length} programmes sans emplois votés publiés par programme (${h(eurLisible(min.totaux.titre2_programmes_sans_ministere_eur))} de dépenses de personnel en ${h(anT)}), rattachés à aucun ministère.</p>`
@@ -320,12 +328,11 @@ ${source(lisible(min.source), lisible(min.millesime))}`
 }
 
 function blocRemunerations(min: Ministeres | null, b: BudgetEtat): string {
-  const tous = min ? coutMoyen(min.ministeres.flatMap((m) => m.programmes)) : null
+  const tous = min && memeAnnee(b.millesime_titre2, b.millesime_etpt) ? coutMoyen(min.ministeres.flatMap((m) => m.programmes)) : null
   return `${
     tous?.moyen
-      ? `<p>Coût complet moyen d’un emploi de l’État : <strong>${h(eur(tous.moyen))} par an</strong> ${badgeStatut('approche')}</p>
-<p class="aide">Dépenses de personnel ${h(anneeDe(b.millesime_titre2))} divisées par les emplois votés pour ${h(anneeDe(b.millesime_etpt))}, tous ministères ; le tableau ci-dessus le donne ministère par ministère. Ce n’est pas un salaire : la rémunération brute, les cotisations de l’employeur et sa contribution aux pensions y sont comprises.</p>`
-      : ''
+      ? `<p>Coût complet moyen d’un emploi de l’État : <strong>${h(eur(tous.moyen))} par an</strong> ${badgeCalcule(`dépenses de personnel ${anneeDe(b.millesime_titre2)} divisées par les emplois votés de la même année, tous ministères ; ce n’est pas un salaire : la rémunération brute, les cotisations de l’employeur et sa contribution aux pensions y sont comprises`)}</p>`
+      : '<p class="aide">Pas de coût complet moyen d’un emploi de l’État : les emplois votés et les dépenses de personnel publiés ne portent pas sur la même année.</p>'
   }
 ${absent('Salaire moyen par catégorie (A, B, C) ou par versant : pas encore repris dans les données du site. La page donne la part des agents de chaque catégorie, pas leur salaire.')}
 <p>Aucune rémunération individuelle n’est publiée ici. Les indemnités des cabinets ministériels sont données plus bas en enveloppe globale, jamais par personne.</p>`
@@ -622,7 +629,8 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 <p>Ce que la page ne montre pas : aucun salaire ni aucun nom de personne, uniquement des totaux et des moyennes ; pas encore de salaire moyen par catégorie ; les dépenses de personnel des collectivités et des hôpitaux, qui figurent dans leurs propres comptes.</p>
 <ul class="legende-statuts" aria-label="Statut des chiffres de cette page">
   <li>${traitStatut('trace')}<span><strong>Tracé</strong> : chiffre lu tel quel dans une publication (Insee, budget de l’État, annexes du projet de loi de finances)</span></li>
-  <li>${traitStatut('approche')}<span><strong>Approché</strong> : calcul du site à partir de chiffres publiés, méthode écrite à côté</span></li>
+  <li>${traitStatut('approche')}<span><strong>Approché</strong> : rapprochement fait par le site entre deux nomenclatures publiées, méthode écrite à côté</span></li>
+  ${LEGENDE_CALCULE}
   <li>${traitStatut('nonpub')}<span><strong>Non publié</strong> : donnée absente des fichiers publiés par le site, la phrase dit ce qui manque</span></li>
 </ul>
 ${section('fp-combien', `Combien de personnes${anSer ? ` fin ${anSer}` : ''}`, blocPersonnes(ser, idx))}

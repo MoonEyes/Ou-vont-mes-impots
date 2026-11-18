@@ -3,7 +3,7 @@ import { brancherFiltre, choixProgramme } from '../composants/choix-programme'
 import { blocTracabilite } from '../composants/tracabilite'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
-import { absent, barres, entier, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
+import { absent, barres, entier, eur, eurLisible, h, pct, source, sur100, surligne, badgeCalcule, memeAnnee } from '../util'
 
 interface Nature {
   millesime: string
@@ -66,7 +66,10 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
       : absent('Pas d’effectif publié pour ce programme.')
   }
   <p>Dépenses de personnel : ${h(eurLisible(eff.titre2_eur))} (${h(eff.millesime_titre2)}), ${h(sur100(eff.eur_sur_100_titre2))} sur 100 € du budget.${
-    eff.cout_moyen_par_etpt_eur ? ` Coût complet moyen par emploi : ${h(eur(eff.cout_moyen_par_etpt_eur))} par an (salaire, cotisations et pensions, pas un salaire net).` : ''
+    // Règle « chiffre calculé par le site » : seulement si emplois et dépenses de personnel sont de la même année.
+    eff.cout_moyen_par_etpt_eur && memeAnnee(eff.millesime_etpt, eff.millesime_titre2)
+      ? ` Coût complet moyen par emploi : ${h(eur(eff.cout_moyen_par_etpt_eur))} par an ${badgeCalcule('dépenses de personnel divisées par les emplois de la même année ; salaire, cotisations et pensions compris, ce n’est pas un salaire net')}.`
+      : ''
   }</p>
   ${
     eff.categories_emploi?.length
