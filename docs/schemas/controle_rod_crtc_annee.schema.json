@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/controle_rod_crtc_annee.schema.json",
+  "title": "Rapports d'observations définitives des chambres régionales et territoriales des comptes, une année",
+  "description": "controle/rod_crtc/<année>.json : un rapport par entrée, publié sur ccomptes.fr l'année du fichier (2020 à 2026). Métadonnées seulement : ni texte, ni résumé, ni réponse, ni personne.",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "annee": {
+      "type": "integer",
+      "minimum": 2020,
+      "maximum": 2026
+    },
+    "comptes": {
+      "type": "object",
+      "properties": {
+        "rapports": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "par_chambre": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "par_niveau": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        }
+      },
+      "required": [
+        "rapports",
+        "par_chambre",
+        "par_niveau"
+      ]
+    },
+    "rapports": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/rapport"
+      }
+    }
+  },
+  "required": [
+    "annee",
+    "comptes",
+    "rapports"
+  ],
+  "$defs": {
+    "date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "rapport": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^cc-[0-9]+$"
+        },
+        "node": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "titre": {
+          "type": "string",
+          "minLength": 1
+        },
+        "organisme": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "organisme_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "personne_morale": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "personne_morale_preuve": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "siren": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]{9}$"
+        },
+        "siren_methode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "categorie_juridique": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[2-9][0-9]{3}$"
+        },
+        "niveau": {
+          "enum": [
+            "commune",
+            "epci",
+            "departement",
+            "region",
+            "autre_organisme"
+          ]
+        },
+        "codes": {
+          "$ref": "controle_commun.schema.json#/$defs/codes"
+        },
+        "rattachement": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^202[0-6]-[0-9]{2}-[0-9]{2}$"
+        },
+        "annee": {
+          "type": "integer",
+          "minimum": 2020,
+          "maximum": 2026
+        },
+        "date_communicabilite": {
+          "$ref": "#/$defs/date"
+        },
+        "date_envoi": {
+          "$ref": "#/$defs/date"
+        },
+        "juridiction": {
+          "type": "string",
+          "pattern": "^(CRC|CTC|CRTC) "
+        },
+        "chambre": {
+          "type": "string",
+          "pattern": "^Chambre (régionale|territoriale|régionale et territoriale) des comptes "
+        },
+        "themes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "type": {
+          "const": "Rapport d'observations définitives"
+        },
+        "type_document": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https://www\\.ccomptes\\.fr/"
+        },
+        "url_document": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^https://www\\.ccomptes\\.fr/"
+        },
+        "url_synthese": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^https://www\\.ccomptes\\.fr/"
+        },
+        "source": {
+          "type": "string",
+          "minLength": 3
+        }
+      },
+      "required": [
+        "id",
+        "titre",
+        "organisme",
+        "organisme_type",
+        "personne_morale",
+        "siren",
+        "niveau",
+        "codes",
+        "rattachement",
+        "date",
+        "annee",
+        "juridiction",
+        "chambre",
+        "themes",
+        "type",
+        "url",
+        "url_document",
+        "source"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

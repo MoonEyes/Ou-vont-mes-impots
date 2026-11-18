@@ -1182,7 +1182,8 @@
    },
    "caches": [
     "data/lake/_cache/ccomptes",
-    "data/lake/_cache/recherche_entreprises_controle.json"
+    "data/lake/_cache/recherche_entreprises_controle.json",
+    "data/lake/_cache/controle_rod_siren.json"
    ],
    "hors_catalogue": [],
    "octets_sources": null,

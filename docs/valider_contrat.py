@@ -121,6 +121,9 @@ FICHIERS = [
     ("controle_lobbying_organisations.schema.json", "controle/lobbying/organisations.json", "existant"),
     ("controle_lobbying_ministeres.schema.json", "controle/lobbying/ministeres.json", "existant"),
     ("controle_aides_entreprises.schema.json", "controle/aides_entreprises.json", "existant"),
+    # rapports d'observations définitives des chambres régionales et territoriales 2020-2026 (pipeline/controle.py)
+    ("controle_rod_crtc_index.schema.json", "controle/rod_crtc/index.json", "existant"),
+    ("controle_rod_crtc_annee.schema.json", "controle/rod_crtc/[0-9][0-9][0-9][0-9].json", "existant"),
     # opérateurs de l'État et agences (pipeline/operateurs.py)
     ("operateurs.schema.json", "operateurs/operateurs.json", "existant"),
     ("operateurs_index.schema.json", "operateurs/index.json", "existant"),

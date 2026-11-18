@@ -3,8 +3,14 @@ déclaré auprès de quel ministère, et combien représentent les aides publiqu
 
 Entrées :
   ccomptes.fr : plan du site des publications (sitemap_publication, ~38 500 pages) puis chaque page publique
-                (métadonnées JSON-LD schema.org, type et lien PDF du document principal) ; collecte reprenable, cache
-                data/lake/_cache/ccomptes/publications.jsonl (métadonnées seulement, jamais le texte des réponses)
+                (métadonnées JSON-LD schema.org, données de la page : chambre, catégorie, thèmes, documents typés) ;
+                pages modifiées depuis 2020 lues en premier, une requête par seconde au plus, collecte reprenable,
+                cache data/lake/_cache/ccomptes/publications.jsonl (métadonnées seulement, jamais le texte des
+                réponses) ; arrêt au premier 403 ou 429 (noté, jamais contourné)
+  API Recherche d'entreprises : SIREN et catégorie juridique des organismes contrôlés hors communes et EPCI
+                (cache data/lake/_cache/controle_rod_siren.json), une requête par seconde au plus
+  site/data/controle/rod_crtc/<année>.json, publications/programmes.json, autres.json : pages déjà publiées
+                (mémoire : un cache de collecte en retard, runner à froid ou cache purgé, ne les retire pas)
   data/lake/_cache/ccomptes/budget_etat_<annee>.html (pipeline/realisations.py) : notes d'exécution budgétaire (NEB)
   data/lake/_restreint/politique/politique_hatvp_lobbying_csv.zip : répertoire des représentants d'intérêts (HATVP,
                 vues séparées CSV) ; seules les vues sans personne physique sont lues (1, 7, 9, 10, 13, 15)
@@ -17,18 +23,25 @@ Entrées :
 Sorties (site/data/controle/, chaque fichier < 5 Mo) :
   index.json                     comptes, couverture, sources, sources inaccessibles, recherche publique
   publications/programmes.json   publications de la Cour reliées aux programmes LOLF (titre, mission, opérateur), NEB
-  publications/collectivites/<dep>.json  publications des CRC reliées aux communes, EPCI, département, région
+  publications/collectivites/<dep>.json  rapports d'observations définitives des CRC (2015-2019 data.gouv.fr,
+                                 2020-2026 pages lues) reliés aux communes, EPCI, département, région
   publications/autres.json       publications non rattachées (comptes par juridiction et par type)
+  rod_crtc/index.json, rod_crtc/<année>.json  rapports d'observations définitives des chambres régionales et
+                                 territoriales publiés de 2020 à 2026 : organisme, codes COG, SIREN, date, chambre,
+                                 thèmes, liens ccomptes.fr (métadonnées seulement)
   lobbying/organisations.json    organisations inscrites (personnes morales), dépenses déclarées, domaines, ministères
   lobbying/ministeres.json       actions déclarées par ministère ciblé et par domaine, missions LOLF rattachées
   aides_entreprises.json         estimations publiées (périmètre, année, type, source) et données du site reliées
 
 Commandes :
-  python pipeline/controle.py collecter --budget 1800   # réseau, reprenable (ccomptes.fr puis SIRENE HATVP)
+  python pipeline/controle.py collecter --budget 1800   # réseau, reprenable (ccomptes.fr, SIRENE HATVP, SIREN ROD)
+  python pipeline/controle.py collecter --budget 7000 --volets ccomptes --sans-anciennes   # pages depuis 2020
   python pipeline/controle.py produire                  # sans réseau
 
 Personnes : aucune personne physique n'est nommée. Pages ccomptes.fr : on ne garde ni les titres des réponses
-(« Réponse de M. ... »), ni un résumé contenant une civilité. HATVP : vues dirigeants, collaborateurs, clients,
+(« Réponse de M. ... »), ni un résumé contenant une civilité ; rapports des chambres : ni résumé ni texte, aucun
+ordonnateur, comptable ou responsable, intitulé non publié si un nom de personne y est possible (civilité, prénom
+courant suivi d'un nom en capitales). HATVP : vues dirigeants, collaborateurs, clients,
 affiliations et observations jamais lues ; responsables publics visés réduits au ministère ou à l'institution ;
 organisation nommée seulement si sa catégorie juridique est 2xxx à 9xxx (sirene.personne_morale), sinon agrégée.
 Déclarations de patrimoine et d'intérêts de la HATVP : exclues.
@@ -146,39 +159,88 @@ TYPES_CONNUS = re.compile(
     r"[ée]valuation|analyse|fascicule|annexe|tome|chapitre|d[ée]cision|rod|rapport d'observations)", re.I)
 
 
-def extraire_page(url: str, t: str) -> dict:
-    """Métadonnées d'une page publication : JSON-LD (titre, thèmes, juridiction, date, résumé), documents PDF typés."""
-    out = {"url": url, "statut": 200}
+def _article_json_ld(t: str) -> dict:
     m = re.search(r'application/ld\+json[^>]*>(.*?)</script>', t, re.S)
-    art = {}
-    if m:
-        try:
-            g = json.loads(m.group(1)).get("@graph", [])
-            art = next((x for x in g if x.get("@type") == "Article"), {})
-        except json.JSONDecodeError:
-            art = {}
-    out["titre"] = propre(art.get("headline")) or None
+    if not m:
+        return {}
+    try:
+        g = json.loads(m.group(1)).get("@graph", [])
+    except json.JSONDecodeError:
+        return {}
+    return next((x for x in g if isinstance(x, dict) and x.get("@type") == "Article"), {})
+
+
+def _couche_donnees(t: str) -> dict:
+    """Objet `dataLayer.push({...})` de la page : émetteur, institution, catégorie du document, thématique."""
+    m = re.search(r"dataLayer\.push\((\{.*?\})\);", t, re.S)
+    if not m:
+        return {}
+    try:
+        x = json.loads(m.group(1))
+    except json.JSONDecodeError:
+        return {}
+    return x if isinstance(x, dict) else {}
+
+
+def _date_point(s: str) -> str | None:
+    m = re.search(r"(\d{2})\.(\d{2})\.(\d{4})", s or "")
+    return f"{m.group(3)}-{m.group(2)}-{m.group(1)}" if m else None
+
+
+def extraire_page(url: str, t: str) -> dict:
+    """Métadonnées d'une page publication : JSON-LD (titre, juridiction, date, résumé), couche de données de la page
+    (institution, catégorie du document, thématique), thèmes complets du bloc principal (le JSON-LD coupe un libellé
+    à la virgule), documents typés avec leurs mentions (date de séance, fondement). Titres de réponses écartés."""
+    out = {"url": url, "statut": 200}
+    art, dl = _article_json_ld(t), _couche_donnees(t)
+    out["titre"] = propre(art.get("headline")) or propre(dl.get("titrePublication")) or None
     about = [propre(a) for a in art.get("about") or []]
     jur = [a for a in about if a.isupper() or re.match(r"^(CRC|CTC|CRTC|COUR )", a)]
-    out["juridiction"] = jur[-1] if jur else None
-    out["themes"] = [a for a in about if a not in jur]
+    out["juridiction"] = propre(dl.get("emetteurPublication")) or (jur[-1] if jur else None)
+    out["institution"] = propre(dl.get("institution")) or None
+    out["document_publication"] = propre(dl.get("documentPublication")) or None
+    i = t.find("left-side-elements")
+    bloc = t[i:t.find("</article>", i)] if i >= 0 else ""
+    themes = re.findall(r'thematic%3A(\d+)"[^>]*>.*?<div class="field__item">([^<]+)</div>', bloc, re.S)
+    out["themes"] = [propre(x) for _, x in themes] if themes else [a for a in about if a not in jur]
+    out["themes_id"] = [int(n) for n, _ in themes]
     out["date"] = (art.get("datePublished") or "")[:10] or None
+    d = re.search(r'<time class="date section" datetime="(\d{4}-\d{2}-\d{2})"', bloc)
+    out["date_affichee"] = d.group(1) if d else None
     out["resume"] = propre(art.get("description")) or None
     node = re.search(r'"currentPath":"node\\/(\d+)"', t)
-    out["node"] = int(node.group(1)) if node else None
+    out["node"] = int(node.group(1)) if node else (int(dl["idPublication"]) if str(dl.get("idPublication", ""))
+                                                    .isdigit() else None)
     docs = []
-    for href, titre in re.findall(r'class="doc-type-icon"><a href="([^"]+)" title="([^"]+)"', t):
-        titre = propre(titre)
-        if titre.lower().startswith("réponse") or titre.lower().startswith("reponse"):
+    for seg in t.split('class="links-with-buttons-inside"')[1:]:
+        a = re.search(r'class="doc-type-icon">\s*<a href="([^"]+)"\s+title="([^"]+)"', seg)
+        if not a:
             continue
-        docs.append({"type": titre, "url": href if href.startswith("http") else CC + href})
+        titre = propre(a.group(2))
+        if norm(titre).startswith("reponse"):
+            continue
+        h2 = re.search(r'<h2 class="title">(.*?)</h2>', seg, re.S)
+        infos = [propre(re.sub(r"<[^>]+>", " ", x)) for x in
+                 re.findall(r'<div class="list-item">(.*?)</div>', seg.split('class="list-links-wrapper"')[0], re.S)]
+        docs.append({"type": titre, "titre": propre(re.sub(r"<[^>]+>", " ", h2.group(1))) if h2 else None,
+                     "url": a.group(1) if a.group(1).startswith("http") else CC + a.group(1),
+                     "infos": [x for x in infos if x][:6]})
+    if not docs:  # gabarit ancien : icônes seules
+        for href, titre in re.findall(r'class="doc-type-icon">\s*<a href="([^"]+)"\s+title="([^"]+)"', t):
+            titre = propre(titre)
+            if not norm(titre).startswith("reponse"):
+                docs.append({"type": titre, "url": href if href.startswith("http") else CC + href})
     out["documents"] = docs[:60]
     d = re.search(r"Date de communicabilit[ée]\s*:\s*(\d{2})\.(\d{2})\.(\d{4})", re.sub(r"<[^>]+>", " ", t))
     out["date_communicabilite"] = f"{d.group(3)}-{d.group(2)}-{d.group(1)}" if d else None
     return out
 
 
-def urls_sitemap(rafraichir: bool = False) -> list[tuple[str, str]]:
+def urls_sitemap(rafraichir: bool = False, age_max_s: float = 0) -> list[tuple[str, str]]:
+    """(adresse, lastmod) des pages publications. `rafraichir` relit le plan du site, sauf si la copie locale a moins
+    de `age_max_s` secondes (une reprise dans la journée ne retélécharge pas 13 Mo)."""
+    if rafraichir and SITEMAP.exists() and age_max_s and time.time() - SITEMAP.stat().st_mtime < age_max_s:
+        rafraichir = False
     if rafraichir or not SITEMAP.exists():
         try:
             r = http_get(f"{CC}/sitemap_publication/sitemap.xml", tries=2, timeout=120)
@@ -207,55 +269,183 @@ def charger_pubs() -> dict:
     return out
 
 
-def collecter_ccomptes(budget_s: float, paralleles: int = 2, pause_s: float = 1.0, max_echecs: int = 5) -> None:
-    """Pages de publication, les plus récemment modifiées d'abord ; s'arrête au budget, au premier 403/429 ou après
-    `max_echecs` erreurs serveur (5xx, délai dépassé) consécutives : serveur indisponible, on n'insiste pas."""
-    import threading
-    from concurrent.futures import ThreadPoolExecutor
-    urls = urls_sitemap(rafraichir=True)
-    deja = charger_pubs()
-    a_faire = [u for u, _ in sorted(urls, key=lambda x: x[1], reverse=True)
-               if u not in deja or deja[u].get("statut") not in (200, 404)]
-    print(f"  ccomptes.fr : {len(urls)} pages au plan du site, {len(deja)} en cache, {len(a_faire)} à lire",
-          file=sys.stderr)
-    debut, verrou, prochain, arret = time.monotonic(), threading.Lock(), [time.monotonic()], [None]
-    echecs = [0]
-    f = PUBS.open("a", encoding="utf-8")
+PAUSE_S = 1.0               # une requête par seconde au plus vers ccomptes.fr, reprises comprises
+PLAN_DEPUIS = "2020-01-01"  # une page publiée en 2020 ou après a un `lastmod` postérieur à sa publication
+ETAT_COLLECTE = CACHE_CC / "collecte_etat.json"
+REFUS = CACHE_CC / "refus.json"
+STATUTS_DEFINITIFS = (200, 404, 410)
+# Début d'adresse d'une page au nom d'un organisme (rapports des chambres régionales) : lues en premier.
+SLUG_ORGANISME = re.compile(
+    r"^(commune|ville|communaute|metropole|syndicat|sivom|sivu|smi|departement|region|collectivite|centre|"
+    r"etablissement|ehpad|hopital|groupement|gip|office|opac|oph|regie|societe|sem|spl|association|lycee|college|"
+    r"ecole|universite|institut|caisse|chambre|maison|service|agence|conseil|comite|district|port|aeroport|parc|"
+    r"pole|theatre|opera|orchestre|musee|epf|epa|sdis|ccas|cias|fondation|territoire|sictom|smictom|smirt|"
+    r"pays|petr|eple|cfa)-")
 
-    def tache(u):
-        if arret[0] or time.monotonic() - debut > budget_s:
-            return
-        with verrou:
-            attente = prochain[0] - time.monotonic()
-            prochain[0] = max(prochain[0], time.monotonic()) + pause_s
+
+def _quand(lastmod: str | None) -> datetime:
+    try:
+        d = datetime.fromisoformat(str(lastmod))
+    except ValueError:
+        return datetime.min.replace(tzinfo=timezone.utc)
+    return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+
+
+def ordre_de_lecture(plan: list[tuple[str, str]], deja: dict, depuis: str | None = PLAN_DEPUIS,
+                     anciennes: bool = True, relire_memoire: bool = True) -> list[tuple[str, str]]:
+    """Pages à lire, par priorité : (1) jamais lues, modifiées depuis `depuis`, au nom d'un organisme ; (2) les autres
+    jamais lues depuis `depuis` ; (3) déjà lues mais modifiées depuis la lecture (`lastmod` du plan plus récent) ;
+    (4) si `anciennes`, les pages jamais lues modifiées avant `depuis` ; (5) si `relire_memoire`, les pages connues par
+    la seule mémoire publiée (déjà publiées, absentes du cache). Chaque groupe : la plus récente d'abord."""
+    seuil = _quand(depuis + "T00:00:00+00:00") if depuis else None
+    groupes = ([], [], [], [], [])
+    for u, lm in plan:
+        x = deja.get(u)
+        recent = seuil is None or _quand(lm) >= seuil
+        if x is None or x.get("statut") not in STATUTS_DEFINITIFS:
+            if recent:
+                groupes[0 if SLUG_ORGANISME.match(u.rsplit("/", 1)[-1]) else 1].append((u, lm))
+            elif anciennes:
+                groupes[3].append((u, lm))
+        elif x.get("memoire"):
+            if relire_memoire and (recent or anciennes):
+                groupes[4].append((u, lm))
+        elif recent and x.get("lastmod_plan") and _quand(lm) > _quand(x["lastmod_plan"]):
+            groupes[2].append((u, lm))
+    return [e for g in groupes for e in sorted(g, key=lambda e: _quand(e[1]), reverse=True)]
+
+
+class Cadence:
+    """Espacement global des requêtes (toutes tâches et toutes reprises confondues) ; `suspendre` décale la suivante."""
+
+    def __init__(self, pause_s: float):
+        import threading
+        self.pause_s, self.verrou, self.prochain = pause_s, threading.Lock(), time.monotonic()
+
+    def attendre(self) -> None:
+        with self.verrou:
+            maintenant = time.monotonic()
+            attente = self.prochain - maintenant
+            self.prochain = max(self.prochain, maintenant) + self.pause_s
         if attente > 0:
             time.sleep(attente)
-        try:
-            r = http_get(u, tries=2, timeout=30)
-        except RuntimeError as exc:
-            with verrou:
-                echecs[0] += 1
-                if echecs[0] >= max_echecs:
-                    arret[0] = f"{max_echecs} erreurs serveur consécutives ({exc}) : collecte arrêtée"
-            return
-        echecs[0] = 0
-        if r.status_code in (403, 429):
-            arret[0] = f"HTTP {r.status_code} sur {u} : collecte arrêtée, non contournée"
-            return
-        x = extraire_page(u, r.text) if r.status_code == 200 else {"url": u, "statut": r.status_code}
-        x["lu_le"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    def suspendre(self, secondes: float) -> None:
+        with self.verrou:
+            self.prochain = max(self.prochain, time.monotonic() + secondes)
+
+
+def collecter_ccomptes(budget_s: float, paralleles: int = 2, pause_s: float = PAUSE_S, depuis: str | None = None,
+                       anciennes: bool = True, max_echecs: int = 5, max_pauses: int = 3, essais: int = 3,
+                       pause_incident_s: float = 120, pause_essai_s: float = 5) -> dict:
+    """Lit les pages de publication de ccomptes.fr dans l'ordre de `ordre_de_lecture`, au plus une requête par
+    `pause_s` secondes. Reprenable : chaque page lue est ajoutée aussitôt au cache (une ligne JSON) ; une page déjà lue
+    n'est relue que si le plan du site la dit modifiée depuis. Arrêts : budget écoulé ; premier 403 ou 429 (refus noté,
+    jamais contourné) ; serveur indisponible (après `max_echecs` erreurs 5xx ou délais consécutifs, pause de 2, 4 puis
+    6 minutes ; au-delà de `max_pauses` pauses sans succès, arrêt noté). Un verrou empêche deux collectes simultanées.
+    Une page en erreur est retentée `essais` fois, chaque reprise passant par la même cadence."""
+    import fcntl
+    CACHE_CC.mkdir(parents=True, exist_ok=True)
+    verrou_f = (CACHE_CC / "collecte.lock").open("a")
+    try:
+        fcntl.flock(verrou_f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        verrou_f.close()
+        print("  ccomptes.fr : une autre collecte est en cours, rien à faire", file=sys.stderr)
+        return {"arret": "collecte déjà en cours"}
+    try:
+        return _collecter_ccomptes(budget_s, paralleles, pause_s, depuis, anciennes, max_echecs, max_pauses, essais,
+                                   pause_incident_s, pause_essai_s)
+    finally:
+        verrou_f.close()  # libère le verrou
+
+
+def _collecter_ccomptes(budget_s, paralleles, pause_s, depuis, anciennes, max_echecs, max_pauses, essais,
+                        pause_incident_s, pause_essai_s) -> dict:
+    import os
+    import threading
+    from concurrent.futures import ThreadPoolExecutor
+    import requests
+    plan = urls_sitemap(rafraichir=True, age_max_s=12 * 3600)
+    deja = pages_connues()
+    a_faire = ordre_de_lecture(plan, deja, depuis or PLAN_DEPUIS, anciennes=anciennes)
+    print(f"  ccomptes.fr : {len(plan)} pages au plan du site, {len(deja)} en cache, {len(a_faire)} à lire",
+          file=sys.stderr)
+    debut, verrou, cadence = time.monotonic(), threading.Lock(), Cadence(pause_s)
+    etat = {"arret": None, "echecs": 0, "pauses": 0, "lues": 0, "codes": Counter()}
+    f = PUBS.open("a", encoding="utf-8")
+
+    def ecrire(x: dict) -> None:
         with verrou:
             f.write(json.dumps(x, ensure_ascii=False) + "\n")
             f.flush()
+            etat["lues"] += 1
+            if etat["lues"] % 100 == 0:
+                os.fsync(f.fileno())
+                print(f"  ccomptes.fr : {etat['lues']} pages lues ({time.monotonic() - debut:.0f} s)", file=sys.stderr)
 
-    with ThreadPoolExecutor(paralleles) as ex:
-        list(ex.map(tache, a_faire))
-    f.close()
-    if arret[0]:
-        print(f"  {arret[0]}", file=sys.stderr)
-        (CACHE_CC / "refus.json").write_text(json.dumps({"motif": arret[0], "le": datetime.now(timezone.utc)
-                                                         .isoformat()}, ensure_ascii=False), encoding="utf-8")
-    print(f"  ccomptes.fr : {len(charger_pubs())} pages en cache", file=sys.stderr)
+    def tache(e):
+        u, lastmod = e
+        for essai in range(essais):
+            if etat["arret"] or time.monotonic() - debut > budget_s:
+                return
+            cadence.attendre()
+            if etat["arret"]:
+                return
+            try:
+                r = requests.get(u, timeout=40, headers=UA, allow_redirects=True)
+                code, err = r.status_code, None
+            except requests.RequestException as exc:
+                r, code, err = None, None, type(exc).__name__
+            with verrou:
+                etat["codes"][code or err] += 1
+            if code in (403, 429):
+                etat["arret"] = f"HTTP {code} sur {u} : collecte arrêtée, non contournée"
+                return
+            if code is not None and code < 500:
+                with verrou:
+                    etat["echecs"], etat["pauses"] = 0, 0
+                x = extraire_page(u, r.text) if code == 200 else {"url": u, "statut": code}
+                x["lastmod_plan"] = lastmod
+                x["lu_le"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+                ecrire(x)
+                return
+            with verrou:  # erreur serveur ou réseau
+                etat["echecs"] += 1
+                if etat["echecs"] >= max_echecs:
+                    etat["echecs"] = 0
+                    etat["pauses"] += 1
+                    if etat["pauses"] > max_pauses:
+                        etat["arret"] = (f"serveur indisponible : {max_echecs} erreurs consécutives après {max_pauses} "
+                                         f"pauses (dernière : {code or err} sur {u}) ; collecte arrêtée")
+                        return
+                    print(f"  ccomptes.fr : {max_echecs} erreurs consécutives ({code or err}), pause de "
+                          f"{pause_incident_s * etat['pauses']:.0f} s", file=sys.stderr)
+                    cadence.suspendre(pause_incident_s * etat["pauses"])
+            cadence.suspendre(pause_essai_s * (essai + 1))
+
+    try:
+        with ThreadPoolExecutor(paralleles) as ex:
+            list(ex.map(tache, a_faire))
+    finally:
+        f.close()
+    lues = charger_pubs()
+    restantes = len(ordre_de_lecture(plan, pages_connues(), depuis or PLAN_DEPUIS, anciennes=anciennes,
+                                     relire_memoire=False))
+    bilan = {"le": datetime.now(timezone.utc).isoformat(timespec="seconds"), "duree_s": round(time.monotonic() - debut),
+             "pause_s": pause_s, "paralleles": paralleles, "depuis": depuis or PLAN_DEPUIS, "anciennes": anciennes,
+             "a_lire_au_depart": len(a_faire), "lues": etat["lues"], "restantes": restantes,
+             "codes_http": {str(k): v for k, v in sorted(etat["codes"].items(), key=lambda kv: str(kv[0]))},
+             "arret": etat["arret"]}
+    ETAT_COLLECTE.write_text(json.dumps(bilan, ensure_ascii=False, indent=1), encoding="utf-8")
+    if etat["arret"]:
+        print(f"  {etat['arret']}", file=sys.stderr)
+        REFUS.write_text(json.dumps({"motif": etat["arret"], "le": bilan["le"]}, ensure_ascii=False),
+                         encoding="utf-8")
+    elif REFUS.exists():  # passage sans incident : le refus précédent n'est plus d'actualité
+        REFUS.unlink()
+    print(f"  ccomptes.fr : {len(lues)} pages en cache, {restantes} restent à lire", file=sys.stderr)
+    return bilan
 
 
 # --- 2. Influence : collecte (catégorie juridique des organisations HATVP) ----------------------------------------
@@ -277,14 +467,16 @@ def charger_hatvp() -> list[dict]:
     return json.loads(HATVP_JSON.read_text(encoding="utf-8"))["publications"]
 
 
-def resoudre_hatvp(budget_s: float) -> None:
+def resoudre_hatvp(budget_s: float, pause_s: float | None = None, paralleles: int = 10) -> None:
+    """Catégorie juridique des SIREN du répertoire (cache du module) ; `pause_s` entre deux requêtes (défaut : celui
+    de pipeline/sirene.py)."""
     sirens = [p["identifiantNational"] for p in charger_hatvp() if p.get("typeIdentifiantNational") == "SIREN"]
-    ancien = sirene.CACHE
-    sirene.CACHE = CACHE_SIRENE
+    ancien, ancienne_pause = sirene.CACHE, sirene.PAUSE_S
+    sirene.CACHE, sirene.PAUSE_S = CACHE_SIRENE, (pause_s if pause_s is not None else sirene.PAUSE_S)
     try:
-        cache, restants = sirene.resoudre(sirens, budget_s=budget_s, cache=charger_sirene())
+        cache, restants = sirene.resoudre(sirens, budget_s=budget_s, cache=charger_sirene(), paralleles=paralleles)
     finally:
-        sirene.CACHE = ancien
+        sirene.CACHE, sirene.PAUSE_S = ancien, ancienne_pause
     print(f"  HATVP : {len(set(sirens)) - restants}/{len(set(sirens))} SIREN résolus, {restants} restants",
           file=sys.stderr)
 
@@ -339,7 +531,7 @@ def cle_epci(nom: str) -> frozenset:
 
 def referentiel_geo() -> dict:
     """Départements, régions, communes et EPCI de site/data/local/geo (COG en vigueur)."""
-    deps, regions, communes, epcis, noms_region = {}, {}, defaultdict(dict), defaultdict(dict), {}
+    deps, regions, communes, epcis, noms_region, siege_epci = {}, {}, defaultdict(dict), defaultdict(dict), {}, {}
     for f in sorted((SITE / "local" / "geo").glob("*.json")):
         g = json.loads(f.read_text(encoding="utf-8"))
         d = g["departement"]
@@ -349,15 +541,16 @@ def referentiel_geo() -> dict:
             noms_region[g["region"]["code"]] = g["region"]["nom"]
         for insee, c in g["communes"].items():
             communes[d["code"]].setdefault(jeton(c["nom"]), []).append(
-                {"insee": insee, "epci": c.get("epci"), "region": c.get("region")})
+                {"insee": insee, "epci": c.get("epci"), "region": c.get("region"), "siren": c.get("siren")})
         for siren, e in g.get("epci", {}).items():
             epcis[d["code"]][cle_epci(e["nom"])] = siren
+            siege_epci[siren] = e.get("departement_siege")
     reg_dep = {}
     for f in sorted((SITE / "local" / "geo").glob("*.json")):
         g = json.loads(f.read_text(encoding="utf-8"))
         reg_dep[g["departement"]["code"]] = (g.get("region") or {}).get("code")
     return {"deps": deps, "regions": regions, "communes": communes, "epcis": epcis, "reg_dep": reg_dep,
-            "noms_dep": {v: k for k, v in deps.items()}, "noms_region": noms_region}
+            "noms_dep": {v: k for k, v in deps.items()}, "noms_region": noms_region, "siege_epci": siege_epci}
 
 
 TYPES_EPCI = ("communaute de communes", "communaute d agglomeration", "communaute urbaine", "metropole")
@@ -467,23 +660,67 @@ def constats_chiffres(texte: str | None) -> list[dict]:
     return out[:10]
 
 
+def memoire_pages_cour() -> dict:
+    """Publications de la Cour lues sur ccomptes.fr et déjà publiées (publications/programmes.json, autres.json),
+    remises sous la forme d'une page lue : même rôle que `memoire_rod` (un cache de collecte en retard ne les retire
+    pas ; une page relue les remplace ; une page en 404 les retire)."""
+    pages = {}
+    for nom in ("programmes.json", "autres.json"):
+        f = SORTIE / "publications" / nom
+        try:
+            d = json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            d = {}
+        for e in d.get("publications", []):
+            if e.get("source") != SRC_PAGES:
+                continue
+            m = re.match(r"^cc-(\d+)$", e["id"])
+            pages[e["url"]] = {"url": e["url"], "statut": 200, "titre": e["titre"], "juridiction": e.get("juridiction"),
+                               "date": e.get("date"), "node": int(m.group(1)) if m else None,
+                               "documents": [{"type": e["type"], "url": e["url_document"]}] if e.get("url_document")
+                               else [], "constats_memoire": e.get("constats_chiffres") or [], "memoire": True}
+    return pages
+
+
+def juridiction_lisible(j: str | None) -> str | None:
+    """'COUR DES COMPTES' -> 'Cour des comptes' (forme en capitales des pages ccomptes.fr)."""
+    j = propre(j)
+    return (j.capitalize() if j.isupper() else j) or None
+
+
 def lire_pages_ccomptes() -> list[dict]:
+    """Pages lues de la Cour et des autres institutions, mémoire publiée comprise (les pages des chambres régionales
+    et territoriales passent par `construire_rod`)."""
+    pages = memoire_pages_cour()
+    for u, x in charger_pubs().items():
+        if x.get("statut") in (404, 410):
+            pages.pop(u, None)
+        elif x.get("statut") == 200:
+            pages[u] = x
     out = []
-    for x in charger_pubs().values():
-        if x.get("statut") != 200 or not x.get("titre"):
+    for u in sorted(pages):
+        x = pages[u]
+        if not x.get("titre") or est_page_crtc(x):
             continue
         docs = x.get("documents") or []
-        principal = next((d for d in docs if TYPES_CONNUS.match(d["type"])), None)
-        resume = texte_sans_personne(x.get("resume"))
-        jur = x.get("juridiction") or ""
+        principal = next((d for d in docs if TYPES_CONNUS.match(d["type"] or "")), None)
+        constats = x["constats_memoire"] if "constats_memoire" in x else \
+            constats_chiffres(texte_sans_personne(x.get("resume")))
         out.append({"id": f"cc-{x.get('node') or id_stable(x['url'])}", "titre": x["titre"],
                     "date": x.get("date"), "annee": int(x["date"][:4]) if x.get("date") else None,
                     "type": principal["type"] if principal else None,
-                    "juridiction": jur.title() if jur.isupper() else jur or None,
+                    "juridiction": juridiction_lisible(x.get("juridiction")),
                     "themes": x.get("themes") or [], "url": x["url"],
                     "url_document": principal["url"] if principal else None,
-                    "constats_chiffres": constats_chiffres(resume), "lu_le": x.get("lu_le"), "source": SRC_PAGES})
+                    "constats_chiffres": constats, "lu_le": x.get("lu_le"), "source": SRC_PAGES})
     return out
+
+
+def pages_connues() -> dict:
+    """Pages lues (cache) et pages connues par la seule mémoire publiée (rapports des chambres, publications de la
+    Cour) : ces dernières ne sont relues qu'en dernier (voir `ordre_de_lecture`)."""
+    memoire = {**memoire_pages_cour(), **memoire_rod()[0]}
+    return {**{u: {"url": u, "statut": 200, "memoire": True} for u in memoire}, **charger_pubs()}
 
 
 def neb_par_mission() -> dict:
@@ -532,7 +769,7 @@ def rattacher_programmes(titre: str, progs: dict) -> tuple[list, list, list]:
     return sorted(set(ps) | {o["programme"] for o in ops}), ops, sorted(regles)
 
 
-def produire_controle(geo: dict) -> dict:
+def produire_controle(geo: dict, fiches_rod: list[dict]) -> dict:
     progs = programmes_ref()
     rod = lire_meta_rod()
     pubs = lire_pubs_2011_2016()
@@ -558,7 +795,7 @@ def produire_controle(geo: dict) -> dict:
                 rss.append({"id": f"rss-{id_stable(u)}", "titre": propre(re.sub(r"<!\[CDATA\[|\]\]>", "",
                             ti.group(1))), "date": date, "annee": int(date[:4]) if date else None, "type": None,
                             "juridiction": None, "url": u, "source": "ccomptes.fr, flux RSS des publications"})
-    # Collectivités : ROD des CRC (métadonnées data.gouv) + pages CRC lues sur ccomptes.fr
+    # Collectivités : ROD des CRC 2015-2019 (métadonnées data.gouv) + ROD 2020-2026 (pages ccomptes.fr)
     par_dep, comptes_niveau, non_localises = defaultdict(list), Counter(), []
     for r in rod:
         dep_nom = r["lieu_departement"]
@@ -577,33 +814,18 @@ def produire_controle(geo: dict) -> dict:
             comptes_niveau[rat["niveau"]] += 1
         else:
             non_localises.append(e)
-    pages_crc, pages_cour = [], []
-    for p in pages:
-        if p["juridiction"] and re.match(r"(?i)^(crc|ctc|crtc|chambre)", p["juridiction"]):
-            pages_crc.append(p)
-        else:
-            pages_cour.append(p)
-    for p in pages_crc:
-        m = re.match(r"^(.*?)\s*\(([^()]+)\)\s*$", p["titre"].split(" - ")[0])
-        nom, dep_nom = (m.group(1), m.group(2)) if m else (p["titre"].split(" - ")[0], None)
-        tt = jeton(nom)
-        type_org = next((x for x in ("commune", "region", "departement") + TYPES_EPCI if tt.startswith(x)), "")
-        nom_org = re.sub(r"(?i)^(commune|ville)\s+(de|d['’]|du|des)\s*", "", nom) if type_org == "commune" else nom
-        if type_org == "region":
-            dep_nom = None
-        rat = rattacher_collectivite(geo, type_org, nom_org, None, dep_nom)
-        if type_org == "region":
-            r = geo["regions"].get(jeton(re.sub(r"(?i)^r[ée]gion\s*", "", nom)))
-            rat["codes"]["region"] = r
-        e = {k: p.get(k) for k in ("id", "titre", "date", "annee", "type", "juridiction", "url", "url_document",
-                                     "constats_chiffres", "source")}
-        e.update(organisme=nom, niveau=rat["niveau"] if type_org else "autre_organisme", codes=rat["codes"],
-                 rattachement=rat["methode"] if type_org or dep_nom else "aucun département lisible dans le titre")
-        dep = rat["codes"]["departement"]
-        if dep:
-            par_dep[dep].append(e); comptes_niveau[e["niveau"]] += 1
-        elif rat["codes"]["region"]:
-            par_dep[f"region_{rat['codes']['region']}"].append(e); comptes_niveau["region"] += 1
+    pages_cour = pages
+    for f in fiches_rod:
+        e = {k: f[k] for k in ("id", "titre", "date", "annee", "type", "url", "url_document", "source",
+                                "organisme_type", "niveau", "codes", "rattachement", "themes", "siren")
+             if f.get(k) is not None}
+        e["juridiction"] = f["chambre"]
+        if f["organisme"]:
+            e["organisme"] = f["organisme"]
+        if f["codes"]["departement"]:
+            par_dep[f["codes"]["departement"]].append(e); comptes_niveau[e["niveau"]] += 1
+        elif f["codes"]["region"]:
+            par_dep[f"region_{f['codes']['region']}"].append(e); comptes_niveau[e["niveau"]] += 1
         else:
             non_localises.append(e)
     # Programmes : publications de la Cour (2011-2016, pages lues, flux RSS)
@@ -639,7 +861,7 @@ def produire_controle(geo: dict) -> dict:
     fichiers = {"publications/programmes.json": taille}
     index_deps = []
     for dep, lst in sorted(par_dep.items()):
-        lst.sort(key=lambda x: x.get("date") or "", reverse=True)
+        lst.sort(key=lambda x: (x.get("date") or "", x["id"]), reverse=True)
         nom = None
         f = SITE / "local" / "geo" / f"{dep}.json"
         if f.exists():
@@ -649,12 +871,15 @@ def produire_controle(geo: dict) -> dict:
         c = Counter(e["niveau"] for e in lst)
         chemin = f"publications/collectivites/{dep}.json"
         fichiers[chemin] = dump(SORTIE / chemin, {
-            "millesime": "Rapports d'observations définitives 2015 à 2019 (métadonnées data.gouv.fr) et pages "
-                         "ccomptes.fr lues", "source": f"{SRC_META_ROD} ; {SRC_PAGES} ; référentiel geo.api.gouv.fr "
-                         "(site/data/local/geo)", "departement": {"code": dep, "nom": nom},
+            "millesime": "Rapports d'observations définitives : 2015 à 2019 (métadonnées data.gouv.fr), 2020 à 2026 "
+                         "(pages ccomptes.fr lues)", "source": f"{SRC_META_ROD} ; {SRC_ROD} ; {SRC_GEO}",
+            "departement": {"code": dep, "nom": nom},
             "comptes_par_niveau": dict(c), "publications": lst})
         index_deps.append({"code": dep, "nom": nom, "fichier": f"controle/{chemin}", "publications": len(lst),
                            "par_niveau": dict(c)})
+    for f in sorted((SORTIE / "publications" / "collectivites").glob("*.json")):
+        if f"publications/collectivites/{f.name}" not in fichiers:
+            f.unlink()  # département sans rapport ce passage : fichier retiré
     autres_c = Counter((e.get("juridiction") or "inconnue", e.get("type") or "non précisé") for e in autres)
     fichiers["publications/autres.json"] = dump(SORTIE / "publications" / "autres.json", {
         **entete, "note": "Publications lues mais rattachées à aucun programme ni à aucune collectivité.",
@@ -662,7 +887,7 @@ def produire_controle(geo: dict) -> dict:
         "publications": sorted(autres, key=lambda x: x.get("date") or "", reverse=True),
         "non_localisees": non_localises})
     plan = urls_sitemap() if SITEMAP.exists() else []
-    lues = charger_pubs()
+    lues = pages_connues()
     return {"fichiers": fichiers, "departements": index_deps, "comptes": {
         "programmes": {"publications_rattachees": len(rattachees),
                        "programmes_avec_publication": sum(1 for v in par_programme.values() if v["publications"]),
@@ -676,7 +901,650 @@ def produire_controle(geo: dict) -> dict:
         "couverture_ccomptes": {"pages_au_plan_du_site": len(plan),
                                 "pages_lues": sum(1 for x in lues.values() if x.get("statut") == 200),
                                 "pages_en_erreur": sum(1 for x in lues.values() if x.get("statut") != 200),
-                                "lecture": "les pages non lues ne sont pas publiées (aucune métadonnée devinée)"}}
+                                "lecture": "les pages non lues ne sont pas publiées (aucune métadonnée devinée) ; "
+                                           "les pages déjà publiées comptent comme lues (mémoire publiée)"}}
+
+
+# --- 1 bis. Rapports d'observations définitives des chambres régionales et territoriales (2020 à 2026) -------------
+
+ROD_DEBUT, ROD_FIN = "2020-01-01", "2026-12-31"
+SORTIE_ROD = SORTIE / "rod_crtc"
+CACHE_ROD_SIREN = LAKE / "_cache" / "controle_rod_siren.json"
+API_ENTREPRISES = "https://recherche-entreprises.api.gouv.fr/search"
+SRC_ROD = ("ccomptes.fr, pages des publications des chambres régionales et territoriales des comptes listées par le plan "
+           "du site sitemap_publication (métadonnées schema.org et données de la page : chambre, catégorie, thèmes, "
+           "documents)")
+SRC_SIREN_ROD = ("API Recherche d'entreprises (recherche-entreprises.api.gouv.fr, répertoire SIRENE de l'Insee) : SIREN "
+                 "et catégorie juridique")
+SRC_GEO = "geo.api.gouv.fr, code officiel géographique en vigueur (site/data/local/geo)"
+TYPE_ROD = re.compile(r"rapports? d.observations? d[ée]finitives?", re.I)
+DOC_ANNEXE = re.compile(r"^(synth[eè]se|les [ée]l[ée]ments cl[ée]s|r[ée]ponses?|annexes?|fiche|communiqu)", re.I)
+INSTITUTIONS_CRTC = ("CRC", "CTC", "CRTC")
+TERRITOIRES_CTC = {"polynesie francaise": "Polynésie française", "nouvelle caledonie": "Nouvelle-Calédonie",
+                   "saint pierre et miquelon": "Saint-Pierre-et-Miquelon", "saint barthelemy": "Saint-Barthélemy",
+                   "saint martin": "Saint-Martin", "wallis et futuna": "Wallis-et-Futuna"}
+SEPARATEUR_TITRE = re.compile(r"\s+[-\u2013\u2014]\s+|\s+:\s+|\s:\s|\.\s+(?=[A-ZÉÈ«])")
+# Type d'organisme lu au début du nom (texte normalisé) : (motif, libellé, niveau de rattachement). Tous ces organismes
+# sont des personnes morales (collectivités, établissements publics, sociétés, associations, groupements).
+TYPES_ORGANISME = [
+    (r"(commune nouvelle|commune|ville|mairie)", "commune", "commune"),
+    (r"(communaute de communes|cc)", "communauté de communes", "epci"),
+    (r"(communaute d agglomeration|ca)", "communauté d'agglomération", "epci"),
+    (r"(communaute urbaine|cu)", "communauté urbaine", "epci"),
+    (r"metropole", "métropole", "epci"),
+    (r"(etablissement public territorial|ept)", "établissement public territorial", "autre_organisme"),
+    (r"(departement|conseil departemental|conseil general|collectivite europeenne d alsace)", "département",
+     "departement"),
+    (r"(region|conseil regional)", "région", "region"),
+    (r"collectivite (territoriale )?(de corse|de guyane|de martinique)", "collectivité territoriale unique", "region"),
+    (r"(collectivite (de la |d |de )?(polynesie|nouvelle caledonie|saint|wallis)|pays de la nouvelle caledonie|"
+     r"province|gouvernement de la polynesie|assemblee de la polynesie|polynesie francaise|nouvelle caledonie)",
+     "collectivité d'outre-mer", "autre_organisme"),
+    (r"(syndicat|sivom|sivu|sictom|smictom|smirtom|sitom|siaep|sdis?e|sde|sdee|siea|siaam|smi|sma|smb|sm|"
+     r"pole d equilibre territorial|petr|parc naturel regional|pole metropolitain)",
+     "syndicat ou groupement de collectivités",
+     "autre_organisme"),
+    (r"(centre communal d action sociale|centre intercommunal d action sociale|ccas|cias)",
+     "centre d'action sociale", "autre_organisme"),
+    (r"(centre hospitalier|groupe hospitalier|groupement hospitalier|hopital|hopitaux|assistance publique|chu|chr|"
+     r"chi|chs|ehpad|etablissement d hebergement|maison de retraite|centre de soins|institut medico|"
+     r"etablissement public de sante|etablissement public medico|centre departemental de l enfance)",
+     "établissement de santé ou médico-social", "autre_organisme"),
+    (r"(service departemental d incendie|service departemental et metropolitain d incendie|sdis|sdmis|"
+     r"service territorial d incendie)", "service d'incendie et de secours", "autre_organisme"),
+    (r"(office public de l habitat|office public d habitat|office public d hlm|oph|opac|office public d amenagement|"
+     r"office public departemental de l habitat|office public departemental d habitat|office public territorial de "
+     r"l habitat|office public intercommunal)",
+     "office public de l'habitat", "autre_organisme"),
+    (r"(societe d economie mixte|societe anonyme d economie mixte|sem|saem|semop|societe publique locale|spl|spla|"
+     r"societe d amenagement|societe)", "société (économie mixte, publique locale ou autre)", "autre_organisme"),
+    (r"(association|fondation)", "association ou fondation", "autre_organisme"),
+    (r"(lycee|college|cite scolaire|etablissement public local d enseignement|eple)",
+     "établissement public local d'enseignement", "autre_organisme"),
+    (r"(universite|ecole|institut|conservatoire|centre de formation|cfa|crous|centre regional des oeuvres|"
+     r"etablissement d enseignement superieur)",
+     "établissement d'enseignement ou de formation", "autre_organisme"),
+    (r"(groupement d interet public|gip|groupement de cooperation|groupement d interet economique|gie)",
+     "groupement d'intérêt public ou de coopération", "autre_organisme"),
+    (r"(office de tourisme|office du tourisme|office intercommunal de tourisme|office de tourisme intercommunal)",
+     "office de tourisme", "autre_organisme"),
+    (r"(chambre de commerce|chambre regionale de commerce|chambre d agriculture|chambre regionale d agriculture|"
+     r"chambre de l agriculture|chambre de metiers|chambre des metiers|chambre regionale de metiers|"
+     r"chambre regionale des metiers|cci|cma)", "chambre consulaire", "autre_organisme"),
+    (r"(caisse des ecoles|caisse de credit municipal|credit municipal|caisse)", "caisse ou établissement public local",
+     "autre_organisme"),
+    (r"(centre de gestion|centre interdepartemental de gestion|centre departemental de gestion)",
+     "centre de gestion de la fonction publique territoriale", "autre_organisme"),
+    (r"(maison departementale des personnes handicapees|maison departementale des adolescents|maison des adolescents|"
+     r"mdph)", "maison départementale (groupement d'intérêt public ou association)", "autre_organisme"),
+    (r"(comite des oeuvres sociales|comite d action sociale|amicale du personnel)", "association ou fondation",
+     "autre_organisme"),
+    (r"(agence|comite departemental|comite regional)", "agence ou comité (association ou établissement public)",
+     "autre_organisme"),
+    (r"(orchestre|theatre|opera|maison de la culture|maison de la danse|musee|scene nationale|bibliotheque|"
+     r"cite de la musique|centre dramatique|centre choregraphique|festival)", "établissement culturel (association, "
+     r"régie ou établissement public)", "autre_organisme"),
+    (r"(grand port maritime|port autonome|port|aeroport)", "établissement portuaire ou aéroportuaire",
+     "autre_organisme"),
+    (r"(regie|etablissement public|epic|epcc|epa|epf|epl|epcc)", "établissement public ou régie", "autre_organisme"),
+]
+TYPES_ORGANISME_RE = [(re.compile(rf"^{m}\b"), t, n) for m, t, n in TYPES_ORGANISME]
+INTERCOMMUNALITE = re.compile(r"\b(communaute|agglomeration|agglo|metropole)\b")
+# Département désigné autrement que par son nom (parenthèse ou titre).
+ALIAS_DEP = {"metropole de lyon": "69", "region de lyon": "69"}
+# Prénoms fréquents (majuscules sans accents) : « Prénom NOM » dans un intitulé = nom de personne possible.
+PRENOMS_COURANTS = {
+    "JEAN", "MARIE", "PIERRE", "MICHEL", "PHILIPPE", "ALAIN", "ANDRE", "BERNARD", "JACQUES", "NICOLAS", "CHRISTOPHE",
+    "FRANCOIS", "DANIEL", "PATRICK", "CATHERINE", "NATHALIE", "ISABELLE", "SYLVIE", "MARTINE", "CHRISTINE", "FRANCOISE",
+    "MONIQUE", "VALERIE", "SANDRINE", "STEPHANE", "PASCAL", "ERIC", "LAURENT", "FREDERIC", "OLIVIER", "THIERRY",
+    "DAVID", "JULIEN", "SEBASTIEN", "GERARD", "CLAUDE", "SERGE", "DOMINIQUE", "YVES", "ROGER", "LOUIS", "PAUL",
+    "HENRI", "GEORGES", "ROBERT", "RENE", "MARCEL", "JOSEPH", "ANNE", "SOPHIE", "CELINE", "AURELIE", "EMILIE",
+    "JULIE", "CAROLINE", "SANDRA", "STEPHANIE", "VIRGINIE", "VERONIQUE", "BRIGITTE", "JACQUELINE", "NICOLE",
+    "DENISE", "HELENE", "LAURENCE", "AGNES", "CORINNE", "PASCALE", "PATRICIA", "CHANTAL", "FLORENCE", "ELISABETH",
+    "GUY", "JEROME", "FABRICE", "CEDRIC", "VINCENT", "BRUNO", "DIDIER", "FRANCK", "GILLES", "HERVE", "JOEL", "LUC",
+    "MARC", "MATHIEU", "MAXIME", "REMI", "ROMAIN", "THOMAS", "XAVIER", "YANNICK", "ANTOINE", "ALEXANDRE", "ARNAUD"}
+
+
+def nom_de_personne_possible(s: str | None) -> bool:
+    """Civilité suivie d'une capitale, ou prénom fréquent suivi d'un nom en capitales (« Jean DUPONT »). Les sigles
+    d'organismes en capitales (« Association AIDAPHI ») ne sont pas des noms de personne."""
+    s = propre(s)
+    if CIVILITE.search(s):
+        return True
+    for m in PRENOM_NOM.finditer(s):
+        prenom = unicodedata.normalize("NFKD", m.group(0).split()[0]).encode("ascii", "ignore").decode().upper()
+        if prenom.split("-")[0] in PRENOMS_COURANTS:
+            return True
+    return False
+
+
+def _code_dep_alias(geo: dict, s: str | None) -> str | None:
+    return code_departement(geo, s) or ALIAS_DEP.get(jeton(s or ""))
+
+
+def chambre(geo: dict, juridiction: str | None) -> dict:
+    """'CRC ÎLE-DE-FRANCE' -> nom lisible, régions et départements du ressort (code officiel géographique)."""
+    j = propre(juridiction)
+    m = re.match(r"(?i)^(CRTC|CRC|CTC)\s+(.+)$", j)
+    if not m:
+        return {"juridiction": j or None, "nom": j or None, "regions": [], "departements": [], "hors_cog": False}
+    sigle, reste = m.group(1).upper(), m.group(2)
+    if jeton(reste) in geo["regions"]:
+        regions = [geo["regions"][jeton(reste)]]
+    else:
+        regions = list(dict.fromkeys(geo["regions"][jeton(x)] for x in re.split(r"\s*,\s*|\s+-\s+|\s+et\s+", reste)
+                                     if jeton(x) in geo["regions"]))
+    noms = [geo["noms_region"][r] for r in regions] or [TERRITOIRES_CTC.get(jeton(reste), reste.title())]
+    nature = {"CRC": "régionale", "CTC": "territoriale"}.get(sigle, "régionale et territoriale")
+    deps = sorted(d for d, r in geo["reg_dep"].items() if r in regions)
+    return {"juridiction": j, "nom": f"Chambre {nature} des comptes " + ", ".join(noms), "regions": regions,
+            "departements": deps, "hors_cog": not regions}
+
+
+def est_page_crtc(x: dict) -> bool:
+    return (x.get("institution") or "").upper() in INSTITUTIONS_CRTC or \
+        bool(re.match(r"(?i)^(CRC|CTC|CRTC)\b", x.get("juridiction") or ""))
+
+
+def est_rod(x: dict) -> bool:
+    """Page d'une chambre régionale ou territoriale dont un document est un rapport d'observations définitives, ou de
+    catégorie « Rapport » (gabarit des chambres territoriales : le document porte le titre du rapport)."""
+    if x.get("statut") != 200 or not x.get("titre") or not est_page_crtc(x):
+        return False
+    types = [d.get("type") or "" for d in x.get("documents") or []]
+    if any(TYPE_ROD.search(t) for t in types):
+        return True
+    return x.get("document_publication") == "Rapport" and any(t and not DOC_ANNEXE.match(t) for t in types)
+
+
+def type_organisme(nom: str) -> tuple[str | None, str]:
+    t = jeton(nom)
+    for motif, libelle, niveau in TYPES_ORGANISME_RE:
+        if motif.match(t):
+            return libelle, niveau
+    if INTERCOMMUNALITE.search(t):  # « Pays de Châteaugiron Communauté »
+        return "intercommunalité", "epci"
+    return None, "autre_organisme"
+
+
+def _parentheses(s: str) -> list[str]:
+    return re.findall(r"\(([^()]+)\)", s or "")
+
+
+def _sans_parenthese_finale(s: str) -> str:
+    return re.sub(r"\s*\([^()]*\)\s*$", "", s or "").strip()
+
+
+def _commune_unique(geo: dict, nom: str, deps: list[str]) -> tuple[str, dict] | None:
+    """(département, commune) si le nom désigne une seule commune des départements donnés (COG en vigueur)."""
+    trouve = [(d, c) for d in deps for c in geo["communes"].get(d, {}).get(jeton(nom), [])]
+    return trouve[0] if len(trouve) == 1 else None
+
+
+def _noms_de_commune(organisme: str) -> list[str]:
+    """'Commune de la Chapelle-sur-Erdre' -> ['la Chapelle-sur-Erdre', 'Chapelle-sur-Erdre'] : l'article du titre est
+    gardé (« de la », « du », « des », « de l' » deviennent « la », « le », « les », « l' »)."""
+    m = re.match(r"(?i)^(?:commune nouvelle|commune|ville|mairie)\s+(?:(de\s+la\b|de\s+l['’]|du\b|des\b)\s*|"
+                 r"de\s+|d['’]\s*)?(.+)$", organisme)
+    if not m:
+        return []
+    reste = m.group(2).strip()
+    art = {"de la": "la ", "du": "le ", "des": "les "}.get(re.sub(r"\s+", " ", (m.group(1) or "").lower()),
+                                                         "l'" if m.group(1) else "")
+    noms = [reste]
+    premier = re.split(r"\s+et\s+|\s*,\s*|\s+dans le cadre\b|\s*[-\u2013\u2014]\s+", reste, maxsplit=1)[0].strip()
+    if premier and premier != reste:  # « Commune de Vichy et Vichy Communauté »
+        noms.append(premier)
+    return list(dict.fromkeys(x for n in noms for x in ([art + n, n] if art else [n])))
+
+
+def analyser_rod(geo: dict, x: dict) -> dict:
+    """Organisme contrôlé, type, codes COG (commune, EPCI, département, région) et méthode de rattachement, lus dans le
+    titre et la chambre d'un rapport. Le département vient, dans l'ordre : d'une parenthèse du titre (nom ou numéro),
+    du nom de la commune (organisme « commune »), du nom d'un département du ressort cité dans le titre, du ressort
+    s'il ne compte qu'un département."""
+    titre = propre(x["titre"])
+    ch = chambre(geo, x.get("juridiction"))
+    ressort = ch["departements"]
+    tete = SEPARATEUR_TITRE.split(titre, maxsplit=1)[0].strip()
+    for par in _parentheses(tete):  # « Commune de Marseille (Bouches-du-Rhône) cahier n° 2 »
+        if _code_dep_alias(geo, par):
+            tete = tete[:tete.index(f"({par})")].strip() or tete
+            break
+    tete = re.sub(r"[\s\-\u2013\u2014,;:.]+$", "", tete)
+    base = tete
+    while True:  # parenthèses finales : département ou sigle
+        b = _sans_parenthese_finale(base)
+        if b == base or not b:
+            break
+        base = b
+    typ, niveau = type_organisme(base)
+    dep, methodes = None, []
+
+    def dans_ressort(code):  # chambre d'une collectivité d'outre-mer hors COG : aucun département
+        return bool(code) and not ch["hors_cog"] and (not ressort or code in ressort)
+
+    for par in _parentheses(titre):
+        c = _code_dep_alias(geo, par)
+        if dans_ressort(c):
+            dep = c
+            methodes.append("département entre parenthèses dans le titre")
+            break
+    commune = None
+    if niveau == "commune" and not ch["hors_cog"]:
+        trouve = None
+        for nom_c in _noms_de_commune(base):
+            trouve = _commune_unique(geo, nom_c, [dep] if dep else ressort)
+            if trouve:
+                break
+        if trouve:
+            if not dep:
+                methodes.append("commune unique de ce nom dans le ressort de la chambre")
+            dep, commune = trouve
+    if not dep:
+        for par in _parentheses(titre):
+            for n in re.findall(r"\b(\d{2,3}|2[AB])\b", par):
+                if n in geo["reg_dep"] and dans_ressort(n):
+                    dep = n
+                    methodes.append("numéro de département entre parenthèses dans le titre")
+                    break
+            if dep:
+                break
+    if not dep and ressort:
+        t = " " + jeton(tete) + " "
+        noms = [(n, d) for d in ressort for n in [geo["noms_dep"].get(d)] + [a for a, c in ALIAS_DEP.items() if c == d]
+                if n]
+        cands = [(len(n), d) for n, d in noms
+                 if re.search(rf" (de|du|des|d|de la|de l|en|la|le|les|l) {re.escape(n)} ", t) or t.endswith(f" {n} ")]
+        if not cands:  # « Association Sarthe tourisme » : nom seul, retenu s'il ne désigne qu'un département
+            vus = [(n, d) for n, d in noms if len(n) >= 4 and f" {n} " in t]
+            vus = [(n, d) for n, d in vus if not any(n != m and f" {n} " in f" {m} " for m, _ in vus)]
+            if len({d for _, d in vus}) == 1:
+                cands = [(len(vus[0][0]), vus[0][1])]
+        if cands:
+            dep = max(cands)[1]
+            methodes.append("nom d'un département du ressort cité dans le titre")
+    if not dep and len(ressort) == 1:
+        dep = ressort[0]
+        methodes.append("ressort de la chambre (un seul département)")
+    region = geo["reg_dep"].get(dep) if dep else None
+    if niveau == "region" or (typ == "collectivité territoriale unique"):
+        r = geo["regions"].get(jeton(re.sub(r"(?i)^(r[ée]gion|conseil r[ée]gional|collectivit[ée]( territoriale)?)"
+                                             r"\s+(de\s+la\s+|de\s+l['’]|de\s+|d['’]|du\s+|des\s+)?", "", base)))
+        if r:
+            region = r
+            methodes.append("nom de la région dans le titre")
+        elif len(ch["regions"]) == 1:
+            region = ch["regions"][0]
+            methodes.append("région du ressort de la chambre")
+        if niveau == "region" and typ == "région":
+            dep = None  # une région n'est pas rattachée à un département
+            methodes = [m for m in methodes if "département" not in m and "commune" not in m]
+    codes = {"commune": None, "epci": None, "departement": dep, "region": region}
+    siren, siren_methode = None, None
+    if commune:
+        codes.update(commune=commune["insee"], epci=commune["epci"])
+        siren, siren_methode = commune.get("siren"), "SIREN de la commune (code officiel géographique)"
+        methodes.append("nom de la commune (COG en vigueur)")
+    elif niveau == "commune":
+        methodes.append("commune absente du COG en vigueur ou homonyme : département seul")
+    elif niveau == "epci":
+        cle = cle_epci(base)
+        trouve = sorted({(s, d) for d in ([dep] if dep else []) + ressort for s in [geo["epcis"].get(d, {}).get(cle)]
+                         if s})
+        if len({s for s, _ in trouve}) == 1:
+            codes["epci"] = siren = trouve[0][0]
+            siren_methode = "SIREN de l'EPCI (code officiel géographique)"
+            methodes.append("nom de l'EPCI (COG en vigueur)")
+            if not dep:
+                siege = geo["siege_epci"].get(siren)
+                dep = siege if siege in geo["reg_dep"] else trouve[0][1] if len({d for _, d in trouve}) == 1 else None
+                if dep:
+                    codes.update(departement=dep, region=geo["reg_dep"].get(dep))
+                    methodes.append("département du siège de l'EPCI (COG en vigueur)")
+        else:
+            methodes.append("EPCI absent du COG en vigueur (fusion, dissolution, autre intitulé) : département seul")
+    elif niveau == "autre_organisme" and dep:
+        # commune du siège : dernier « de X » du nom, s'il désigne une seule commune du département
+        m = re.match(r"(?i)^.*(?:\s(de\s+la|de\s+l['’]|de|du|des|à)\s+|\s(d['’]|l['’]))\s*([^()]+)$", base)
+        trouve = None
+        if m and not re.search(r"\s(et|ou)\s", m.group(3)):
+            art = {"de la": "la ", "du": "le ", "des": "les "}.get(re.sub(r"\s+", " ", (m.group(1) or "").lower()),
+                                                                 "l'" if re.match(r"(?i)de\s+l", m.group(1) or "")
+                                                                 else "")
+            for nom_c in dict.fromkeys([art + m.group(3), m.group(3)] if art else [m.group(3)]):
+                trouve = _commune_unique(geo, nom_c, [dep])
+                if trouve:
+                    break
+            if trouve:
+                codes.update(commune=trouve[1]["insee"], epci=trouve[1]["epci"])
+                methodes.append("commune citée à la fin du nom de l'organisme (COG en vigueur)")
+    if not dep and not codes["region"] and len(ch["regions"]) == 1:
+        codes["region"] = ch["regions"][0]
+        methodes.append("région du ressort de la chambre")
+    if not dep and not codes["region"]:
+        methodes.append("aucun département ni région lisible")
+    region = codes["region"]
+    return {"organisme": base, "organisme_type": typ, "niveau": niveau if (dep or region) else "autre_organisme",
+            "codes": codes, "rattachement": methodes, "chambre": ch, "siren": siren, "siren_methode": siren_methode}
+
+
+def _requete_siren(a: dict) -> dict | None:
+    """Paramètres de recherche SIREN d'un organisme sans SIREN tiré du COG ; None si rien à chercher."""
+    if a["siren"] or a["niveau"] in ("commune", "epci") and a["codes"]["commune" if a["niveau"] == "commune" else
+                                                                         "epci"]:
+        return None
+    nom = re.sub(r"\s*\([^()]*\)", "", a["organisme"]).strip()
+    if len(mots_cle(nom)) < 2:
+        return None
+    dep = a["codes"]["departement"]
+    if a["organisme_type"] == "département" and dep:
+        return {"cle": f"departement|{dep}", "q": "departement", "departement": dep, "nature_juridique": "7220"}
+    if a["organisme_type"] == "région" and a["codes"]["region"]:
+        return {"cle": f"region|{a['codes']['region']}", "q": nom, "nature_juridique": "7230"}
+    if not dep:
+        return None
+    return {"cle": f"{jeton(nom)}|{dep}", "q": nom, "departement": dep}
+
+
+def _choisir_siren(req: dict, resultats: list[dict]) -> dict:
+    """Un seul résultat personne morale au nom identique (normalisé, sigle retiré), au siège dans le département ;
+    départements et régions : un seul résultat de la catégorie juridique demandée."""
+    def nom_r(x):
+        return jeton(re.sub(r"\s*\([^()]*\)", "", x.get("nom_raison_sociale") or x.get("nom_complet") or ""))
+    pm = [x for x in resultats if sirene.personne_morale(x.get("nature_juridique"))]
+    if "nature_juridique" in req:
+        ok = [x for x in pm if x.get("nature_juridique") == req["nature_juridique"]
+              and (req.get("departement") is None or (x.get("siege") or {}).get("departement") == req["departement"])]
+        if req["nature_juridique"] == "7230":
+            ok = [x for x in ok if jeton(req["q"]).replace("region ", "") in nom_r(x)]
+    else:
+        ok = [x for x in pm if nom_r(x) == jeton(req["q"])
+              and (x.get("siege") or {}).get("departement") == req["departement"]]
+    if len(ok) > 1:
+        actifs = [x for x in ok if x.get("etat_administratif") == "A"]
+        ok = actifs if len(actifs) == 1 else ok
+    if len(ok) != 1:
+        return {"siren": None, "candidats": len(ok)}
+    return {"siren": ok[0]["siren"], "cj": ok[0].get("nature_juridique"), "candidats": 1}
+
+
+def charger_cache_siren_rod() -> dict:
+    if CACHE_ROD_SIREN.exists():
+        try:
+            return json.loads(CACHE_ROD_SIREN.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return {}
+    return {}
+
+
+def resoudre_siren_rod(budget_s: float, pause_s: float = PAUSE_S) -> dict:
+    """SIREN des organismes contrôlés hors communes et EPCI (API Recherche d'entreprises), au plus une requête par
+    `pause_s` secondes, cache reprenable data/lake/_cache/controle_rod_siren.json ; arrêt sur 403 ou 429."""
+    import requests
+    geo = referentiel_geo()
+    cache = charger_cache_siren_rod()
+    reqs = {}
+    for x in rapports_lus().values():
+        if not ROD_DEBUT <= (x.get("date") or "") <= ROD_FIN or nom_de_personne_possible(x["titre"]):
+            continue
+        r = _requete_siren(analyser_rod(geo, x))
+        if r and r["cle"] not in cache:
+            reqs.setdefault(r["cle"], r)
+    print(f"  SIREN des organismes contrôlés : {len(reqs)} recherches à faire, {len(cache)} en cache", file=sys.stderr)
+    debut, cadence, arret, faites = time.monotonic(), Cadence(pause_s), None, 0
+    for cle, r in sorted(reqs.items()):
+        if time.monotonic() - debut > budget_s:
+            break
+        params = {k: v for k, v in r.items() if k in ("q", "departement", "nature_juridique")}
+        params.update(per_page=10, page=1)
+        res = None
+        for essai in range(3):
+            cadence.attendre()
+            try:
+                rep = requests.get(API_ENTREPRISES, params=params, headers=UA, timeout=30)
+            except requests.RequestException:
+                cadence.suspendre(5 * (essai + 1))
+                continue
+            if rep.status_code in (403, 429):
+                arret = f"HTTP {rep.status_code} sur l'API Recherche d'entreprises : arrêt, non contourné"
+                break
+            if rep.status_code >= 500:
+                cadence.suspendre(5 * (essai + 1))
+                continue
+            try:
+                res = rep.json().get("results", []) if rep.status_code == 200 else []
+            except ValueError:  # réponse illisible : recherche reprise au passage suivant
+                res = None
+            break
+        if arret:
+            break
+        if res is None:
+            continue
+        cache[cle] = {**_choisir_siren(r, res), "le": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
+        faites += 1
+        if faites % 50 == 0:
+            CACHE_ROD_SIREN.write_text(json.dumps(cache, ensure_ascii=False, sort_keys=True), encoding="utf-8")
+    CACHE_ROD_SIREN.parent.mkdir(parents=True, exist_ok=True)
+    CACHE_ROD_SIREN.write_text(json.dumps(cache, ensure_ascii=False, sort_keys=True), encoding="utf-8")
+    bilan = {"le": datetime.now(timezone.utc).isoformat(timespec="seconds"), "faites": faites,
+             "en_cache": len(cache), "restantes": len([c for c in reqs if c not in cache]), "arret": arret}
+    CACHE_ROD_SIREN.with_suffix(".etat.json").write_text(json.dumps(bilan, ensure_ascii=False), encoding="utf-8")
+    if arret:
+        print(f"  {arret}", file=sys.stderr)
+    print(f"  SIREN des organismes contrôlés : {faites} recherches faites, {len(cache)} en cache", file=sys.stderr)
+    return bilan
+
+
+def memoire_rod() -> tuple[dict, dict]:
+    """Rapports déjà publiés (site/data/controle/rod_crtc/<année>.json), remis sous la forme d'une page lue : un passage
+    dont le cache data/lake est en retard (runner à froid, cache purgé) les garde tels quels. Une page relue (cache) les
+    remplace ; une page disparue (404) les retire. Renvoie (pages, SIREN publiés par clé de recherche)."""
+    pages, sirens = {}, {}
+    for f in sorted(SORTIE_ROD.glob("[0-9][0-9][0-9][0-9].json")):
+        try:
+            d = json.loads(f.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            continue
+        for r in d.get("rapports", []):
+            infos = [f"Date de communicabilité : {r['date_communicabilite'][8:10]}.{r['date_communicabilite'][5:7]}."
+                     f"{r['date_communicabilite'][:4]}"] if r.get("date_communicabilite") else []
+            if r.get("date_envoi"):
+                infos.append(f"Date d'envoi : {r['date_envoi'][8:10]}.{r['date_envoi'][5:7]}.{r['date_envoi'][:4]}")
+            docs = [{"type": r.get("type_document") or "Rapport d'observations définitives", "url": r["url_document"],
+                     "infos": infos}] if r.get("url_document") else []
+            if r.get("url_synthese"):
+                docs.append({"type": "Synthèse", "url": r["url_synthese"], "infos": []})
+            pages[r["url"]] = {"url": r["url"], "statut": 200, "titre": r["titre"], "juridiction": r["juridiction"],
+                               "institution": r["juridiction"].split(" ")[0], "document_publication": "Rapport",
+                               "themes": r.get("themes") or [], "date": r["date"], "node": r.get("node"),
+                               "documents": docs, "memoire": True}
+            if r.get("organisme") is None:  # intitulé non publié : la fiche publiée est reprise telle quelle
+                pages[r["url"]]["fiche_publiee"] = r
+            if r.get("siren") and (r.get("siren_methode") or "").startswith("API"):
+                sirens[r["url"]] = {"siren": r["siren"], "cj": r.get("categorie_juridique"), "candidats": 1}
+    return pages, sirens
+
+
+def rapports_lus() -> dict:
+    """Pages de rapports d'observations définitives des chambres régionales et territoriales : mémoire publiée, puis
+    cache de collecte (le cache l'emporte ; une page en 404 dans le cache retire le rapport)."""
+    pages = dict(memoire_rod()[0])
+    for u, x in charger_pubs().items():
+        if x.get("statut") in (404, 410):
+            pages.pop(u, None)
+        elif x.get("statut") == 200:
+            if est_rod(x):
+                pages[u] = x
+            else:
+                pages.pop(u, None)
+    return {u: x for u, x in pages.items() if est_rod(x)}
+
+
+def _iso(s: str | None) -> str | None:
+    return _date_point(s) if s else None
+
+
+def fiche_rod(geo: dict, x: dict, cache_siren: dict, sirens_publies: dict) -> dict:
+    """Rapport publié : métadonnées seulement (aucun résumé, aucune réponse, aucune personne)."""
+    if x.get("fiche_publiee"):
+        return x["fiche_publiee"]
+    a = analyser_rod(geo, x)
+    docs = x.get("documents") or []
+    principal = next((d for d in docs if TYPE_ROD.search(d.get("type") or "")), None) or \
+        next((d for d in docs if not DOC_ANNEXE.match(d.get("type") or "")), None)
+    synthese = next((d for d in docs if re.match(r"(?i)^(synth[eè]se|les [ée]l[ée]ments cl[ée]s)", d.get("type") or "")),
+                    None)
+    infos = " ; ".join((principal or {}).get("infos") or [])
+    communic = re.search(r"(?i)communicabilit[ée]\s*:\s*(\d{2}\.\d{2}\.\d{4})", infos)
+    envoi = re.search(r"(?i)date d.envoi\s*:\s*(\d{2}\.\d{2}\.\d{4})", infos)
+    siren, cj, methode = a["siren"], None, a["siren_methode"]
+    req = _requete_siren(a)
+    if req:
+        c = cache_siren.get(req["cle"]) or sirens_publies.get(x["url"])
+        if c and c.get("siren"):
+            siren, cj, methode = c["siren"], c.get("cj"), "API Recherche d'entreprises : nom identique, siège dans le " \
+                                                         "département, personne morale"
+    titre = propre(x["titre"])
+    nomme = not nom_de_personne_possible(titre)
+    if siren and cj and not sirene.personne_morale(cj):
+        nomme = False
+    if siren and cj:
+        pm, preuve = True, f"catégorie juridique {cj} (répertoire SIRENE)"
+    elif a["niveau"] in ("commune", "epci") and (a["codes"]["commune"] or a["codes"]["epci"]):
+        pm, preuve = True, f"{a['organisme_type']} (code officiel géographique)"
+    elif a["organisme_type"]:
+        pm, preuve = True, f"type d'organisme lu dans le titre : {a['organisme_type']}"
+    else:
+        pm, preuve = None, None
+    date = x.get("date")
+    fiche = {"id": f"cc-{x.get('node') or id_stable(x['url'])}", "node": x.get("node"),
+             "titre": titre if nomme else "intitulé non publié (nom de personne possible)",
+             "organisme": a["organisme"] if nomme else None, "organisme_type": a["organisme_type"],
+             "personne_morale": pm, "personne_morale_preuve": preuve,
+             "siren": siren if nomme else None, "siren_methode": methode if (siren and nomme) else None,
+             "categorie_juridique": cj if nomme else None,
+             "niveau": a["niveau"], "codes": a["codes"], "rattachement": a["rattachement"],
+             "date": date, "annee": int(date[:4]), "date_communicabilite": _iso(communic.group(1)) if communic else None,
+             "date_envoi": _iso(envoi.group(1)) if envoi else None,
+             "juridiction": a["chambre"]["juridiction"], "chambre": a["chambre"]["nom"],
+             "themes": [t for t in x.get("themes") or [] if not nom_de_personne_possible(t)],
+             "type": "Rapport d'observations définitives",
+             "type_document": (principal or {}).get("type") if principal and not TYPE_ROD.search(principal["type"])
+             else None,
+             "url": x["url"], "url_document": (principal or {}).get("url"), "url_synthese": (synthese or {}).get("url"),
+             "source": SRC_ROD}
+    return fiche
+
+
+def construire_rod(geo: dict) -> tuple[list[dict], dict]:
+    """Fiches des rapports publiés du 1er janvier 2020 au 31 décembre 2026, triées (date décroissante, identifiant)."""
+    lus = rapports_lus()
+    _, sirens_publies = memoire_rod()
+    cache_siren = charger_cache_siren_rod()
+    fiches, hors = [], Counter()
+    for u in sorted(lus):
+        x = lus[u]
+        if not x.get("date"):
+            hors["date de publication absente"] += 1
+            continue
+        if not ROD_DEBUT <= x["date"] <= ROD_FIN:
+            hors[f"publié avant {ROD_DEBUT[:4]}" if x["date"] < ROD_DEBUT else f"publié après {ROD_FIN[:4]}"] += 1
+            continue
+        fiches.append(fiche_rod(geo, x, cache_siren, sirens_publies))
+    fiches.sort(key=lambda f: (f["date"], f["id"]), reverse=True)
+    return fiches, {"hors_periode": dict(hors), "depuis_memoire": sum(1 for x in lus.values() if x.get("memoire"))}
+
+
+def produire_rod(geo: dict, fiches: list[dict], hors: dict) -> dict:
+    """site/data/controle/rod_crtc/index.json et <année>.json (un fichier par année de publication)."""
+    plan = urls_sitemap() if SITEMAP.exists() else []
+    lues = pages_connues()
+    etat = json.loads(ETAT_COLLECTE.read_text(encoding="utf-8")) if ETAT_COLLECTE.exists() else None
+    if etat and "reponses" in etat:  # ancien nom (codes HTTP du passage)
+        etat["codes_http"] = etat.pop("reponses")
+    candidats = [u for u, lm in plan if _quand(lm) >= _quand(ROD_DEBUT + "T00:00:00+00:00")]
+    lues_candidats = sum(1 for u in candidats if (lues.get(u) or {}).get("statut") in STATUTS_DEFINITIFS)
+    crtc_hors_rod = Counter((x.get("document_publication") or "non précisée") for x in lues.values()
+                            if x.get("statut") == 200 and est_page_crtc(x) and not est_rod(x))
+    fichiers = {}
+    annees = sorted({f["annee"] for f in fiches})
+    for f in sorted(SORTIE_ROD.glob("[0-9][0-9][0-9][0-9].json")):
+        if int(f.stem) not in annees:
+            f.unlink()  # année sans rapport : fichier retiré (aucun fichier vide publié)
+    for an in annees:
+        lst = [f for f in fiches if f["annee"] == an]
+        chemin = f"rod_crtc/{an}.json"
+        fichiers[chemin] = dump(SORTIE / chemin, {
+            "millesime": f"Rapports d'observations définitives publiés en {an}",
+            "source": f"{SRC_ROD} ; {SRC_GEO} ; {SRC_SIREN_ROD}", "annee": an,
+            "comptes": {"rapports": len(lst), "par_chambre": dict(sorted(Counter(x["chambre"] for x in lst).items())),
+                        "par_niveau": dict(sorted(Counter(x["niveau"] for x in lst).items()))},
+            "rapports": lst})
+    par_annee = Counter(f["annee"] for f in fiches)
+    themes = Counter(t for f in fiches for t in f["themes"])
+    comptes = {
+        "rapports": len(fiches),
+        "par_annee": {str(a): par_annee[a] for a in sorted(par_annee)},
+        "par_chambre": dict(sorted(Counter(f["chambre"] for f in fiches).items())),
+        "par_niveau": dict(sorted(Counter(f["niveau"] for f in fiches).items())),
+        "par_type_organisme": dict(sorted(Counter(f["organisme_type"] or "non reconnu" for f in fiches).items())),
+        "avec_code_commune": sum(1 for f in fiches if f["codes"]["commune"]),
+        "avec_code_epci": sum(1 for f in fiches if f["codes"]["epci"]),
+        "avec_departement": sum(1 for f in fiches if f["codes"]["departement"]),
+        "avec_siren": sum(1 for f in fiches if f["siren"]),
+        "siren_par_methode": dict(sorted(Counter(f["siren_methode"] for f in fiches if f["siren"]).items())),
+        "personne_morale": {"etablie": sum(1 for f in fiches if f["personne_morale"]),
+                            "par_preuve": dict(sorted(Counter(
+                                "catégorie juridique (répertoire SIRENE)" if (f["personne_morale_preuve"] or "")
+                                .startswith("catégorie") else "code officiel géographique" if "(code officiel" in
+                                (f["personne_morale_preuve"] or "") else "type d'organisme lu dans le titre" if
+                                f["personne_morale_preuve"] else "non établie" for f in fiches).items()))},
+        "intitules_non_publies": sum(1 for f in fiches if f["organisme"] is None),
+        "avec_document": sum(1 for f in fiches if f["url_document"]),
+        "hors_periode": hors["hors_periode"], "repris_de_la_memoire_publiee": hors["depuis_memoire"]}
+    index = {
+        "millesime": f"Rapports d'observations définitives publiés du {ROD_DEBUT} au "
+                     f"{max((f['date'] for f in fiches), default=ROD_DEBUT)} (pages ccomptes.fr)",
+        "source": f"{SRC_ROD} ; {SRC_GEO} ; {SRC_SIREN_ROD}",
+        "perimetre": "Rapports d'observations définitives des chambres régionales et territoriales des comptes, "
+                     "publiés en ligne du 1er janvier 2020 au 31 décembre 2026 : métadonnées seulement (organisme "
+                     "contrôlé, codes géographiques, SIREN, date, chambre, thèmes, liens vers ccomptes.fr), ni texte "
+                     "du rapport, ni réponses des organismes.",
+        "regle_personnes": "Aucune personne physique : ni ordonnateurs, ni comptables, ni responsables, ni auteurs des "
+                           "réponses ; ni résumé ni texte des rapports. Un intitulé où un nom de personne est possible "
+                           "(civilité, prénom suivi d'un nom en capitales) n'est pas publié et compté dans "
+                           "`intitules_non_publies`. Organismes : personnes morales (catégorie juridique SIRENE 2xxx "
+                           "à 9xxx, collectivité du code officiel géographique ou type d'organisme lu dans le titre).",
+        "regles_rattachement": [
+            "département : parenthèse du titre (nom ou numéro), sinon commune unique de ce nom dans le ressort de la "
+            "chambre (organisme « commune »), sinon nom d'un département du ressort cité dans le titre, sinon ressort "
+            "de la chambre s'il ne compte qu'un département",
+            "commune : nom de la commune dans le département (code officiel géographique en vigueur) ; pour un autre "
+            "organisme, commune citée à la fin de son nom si elle est la seule de ce nom dans le département",
+            "EPCI : nom de l'EPCI (code officiel géographique en vigueur), abréviations CC, CA, CU développées",
+            "SIREN : commune et EPCI par le code officiel géographique ; autres organismes par l'API Recherche "
+            "d'entreprises, retenu seulement si un seul résultat personne morale porte le même nom (normalisé, sigle "
+            "entre parenthèses retiré) avec son siège dans le département",
+            "date : date de mise en ligne sur ccomptes.fr ; année du fichier = année de cette date"],
+        "fichiers": [f"controle/{c}" for c in sorted(fichiers)],
+        "comptes": comptes,
+        "themes": [{"theme": t, "rapports": n} for t, n in sorted(themes.items(), key=lambda kv: (-kv[1], kv[0]))],
+        "pages_crtc_hors_rapports": {"par_categorie": dict(sorted(crtc_hors_rod.items())),
+                                     "note": "Pages des chambres lues mais hors rapports d'observations définitives "
+                                             "(avis budgétaires, jugements...) : comptées, non listées."},
+        "couverture": {
+            "pages_au_plan_du_site": len(plan), "pages_modifiees_depuis_2020": len(candidats),
+            "pages_modifiees_depuis_2020_lues": lues_candidats,
+            "pages_modifiees_depuis_2020_restantes": len(candidats) - lues_candidats,
+            "derniere_collecte": etat,
+            "lecture": "Une page publiée en 2020 ou après a été modifiée au plus tôt le jour de sa publication : les "
+                       "pages du plan du site modifiées depuis le 1er janvier 2020 contiennent tous les rapports de la "
+                       "période. Les pages non lues ne sont pas publiées (aucune métadonnée devinée) ; la collecte "
+                       "hebdomadaire reprend où la précédente s'est arrêtée."}}
+    fichiers["rod_crtc/index.json"] = dump(SORTIE_ROD / "index.json", index)
+    return {"fichiers": fichiers, "comptes": comptes, "couverture": {k: v for k, v in index["couverture"].items()
+                                                                     if k not in ("lecture", "derniere_collecte")}}
 
 
 # --- 2. Influence : production -------------------------------------------------------------------------------------
@@ -1117,7 +1985,18 @@ RECHERCHE_PUBLIQUE = [
      "licence": "Licence Ouverte 2.0", "mise_a_jour": "2026-11-16", "usage": "source unique du volet influence"},
     {"nom": "data.gouv.fr, Cour des comptes : métadonnées des ROD des CRC 2015-2019",
      "url": URL_META_ROD, "verdict": "réutilisable tel quel", "licence": "non précisée sur data.gouv.fr",
-     "mise_a_jour": "2020-01-22", "usage": "rapports des CRC reliés aux collectivités"},
+     "mise_a_jour": "2020-01-22", "usage": "rapports des CRC 2015 à 2019 reliés aux collectivités ; aucun jeu plus "
+                                          "récent chez la Cour des comptes sur data.gouv.fr (237 jeux vérifiés le "
+                                          "18/11/2026)"},
+    {"nom": "data.ccomptes.fr (portail de données cité par api-ccomptes)", "url": "https://data.ccomptes.fr",
+     "verdict": "inspiration seulement", "licence": "inconnue (hôte injoignable)", "mise_a_jour": "injoignable le "
+     "2026-11-18", "usage": "aucun jeu lisible ; rapports 2020 à 2026 lus page par page sur ccomptes.fr"},
+    {"nom": "a455bcd9/DataSessionCComptes (GitHub)", "url": "https://github.com/a455bcd9/DataSessionCComptes",
+     "verdict": "inspiration seulement", "licence": "aucune déclarée", "mise_a_jour": "2016-05-28",
+     "usage": "métadonnées XML et texte des ROD 2013 à 2015 (data session Etalab de 2016), hors période"},
+    {"nom": "API Recherche d'entreprises (recherche-entreprises.api.gouv.fr)", "url": API_ENTREPRISES,
+     "verdict": "réutilisable tel quel", "licence": "Licence Ouverte 2.0", "mise_a_jour": "quotidienne",
+     "usage": "SIREN et catégorie juridique des organismes contrôlés (nom identique, siège dans le département)"},
     {"nom": "data.gouv.fr, Publications de la Cour des comptes par type et date (2011-2016)", "url": URL_PUBS_2011_2016,
      "verdict": "réutilisable tel quel", "licence": "ODbL", "mise_a_jour": "2018-05-07",
      "usage": "publications de la Cour reliées aux programmes"},
@@ -1127,7 +2006,9 @@ RECHERCHE_PUBLIQUE = [
      "usage": "texte intégral (centaines de Mo), métadonnées déjà couvertes par les deux jeux ci-dessus"},
     {"nom": "ccomptes.fr, plan du site des publications et métadonnées schema.org des pages",
      "url": f"{CC}/sitemap_publication/sitemap.xml", "verdict": "à adapter", "licence": "Licence Ouverte 2.0",
-     "mise_a_jour": "quotidienne", "usage": "collecte reprenable des pages (lecture lente, serveur souvent en 5xx)"},
+     "mise_a_jour": "quotidienne", "usage": "rapports d'observations définitives 2020 à 2026 et publications de la "
+                                            "Cour : collecte reprenable, une requête par seconde ; robots.txt exclut "
+                                            "les adresses à paramètres (recherche, listes filtrées), non utilisées"},
     {"nom": "entrepreneur-interet-general/api-ccomptes (GitHub)",
      "url": "https://github.com/entrepreneur-interet-general/api-ccomptes", "verdict": "inspiration seulement",
      "licence": "AGPL-3.0", "mise_a_jour": "2018-09-26", "usage": "ancien site ccomptes.fr, non transposable"},
@@ -1158,38 +2039,56 @@ RECHERCHE_PUBLIQUE = [
 
 
 def sources_inaccessibles() -> list[dict]:
-    out = [{"source": "ccomptes.fr, pages des publications", "url": f"{CC}/fr/publications/",
-            "constat": "réponses 502 et 504 et délais dépassés le 17/11/2026 ; collecte arrêtée après 5 erreurs "
-                       "consécutives, reprise à chaque `collecter`",
-            "effet": "seules les pages lues sont publiées ; ROD des CRC 2020-2026 et référés récents non couverts tant "
-                     "que les pages ne sont pas lues"},
-           {"source": "Légifrance", "url": "https://www.legifrance.gouv.fr", "constat": "non utilisé",
-            "effet": "aucun"},
-           {"source": "HATVP, déclarations de patrimoine et d'intérêts", "url": "https://www.hatvp.fr",
-            "constat": "exclues volontairement (données personnelles)", "effet": "hors périmètre"}]
-    refus = CACHE_CC / "refus.json"
-    if refus.exists():
-        out[0]["dernier_refus"] = json.loads(refus.read_text(encoding="utf-8"))
+    """Sources refusées ou injoignables. ccomptes.fr n'y figure que si le dernier passage de collecte s'est arrêté
+    (403, 429 ou serveur indisponible) : le refus est noté, jamais contourné, et le passage suivant reprend."""
+    out = []
+    if REFUS.exists():
+        refus = json.loads(REFUS.read_text(encoding="utf-8"))
+        out.append({"source": "ccomptes.fr, pages des publications", "url": f"{CC}/fr/publications/",
+                    "constat": f"{refus['motif']} (le {refus['le'][:10]})",
+                    "effet": "seules les pages déjà lues sont publiées ; la collecte hebdomadaire reprend où elle "
+                             "s'est arrêtée"})
+    etat_siren = CACHE_ROD_SIREN.with_suffix(".etat.json")
+    if etat_siren.exists() and (json.loads(etat_siren.read_text(encoding="utf-8")) or {}).get("arret"):
+        e = json.loads(etat_siren.read_text(encoding="utf-8"))
+        out.append({"source": "API Recherche d'entreprises (SIREN des organismes contrôlés)", "url": API_ENTREPRISES,
+                    "constat": f"{e['arret']} (le {e['le'][:10]})",
+                    "effet": "SIREN non recherchés publiés à null ; le passage suivant reprend"})
+    out += [{"source": "data.ccomptes.fr", "url": "https://data.ccomptes.fr",
+             "constat": "hôte injoignable le 18/11/2026 ; data.gouv.fr ne publie les métadonnées des rapports "
+                        "d'observations définitives des chambres que jusqu'aux rapports de 2019",
+             "effet": "rapports 2020 à 2026 lus page par page sur ccomptes.fr (plan du site)"},
+            {"source": "Légifrance", "url": "https://www.legifrance.gouv.fr", "constat": "non utilisé",
+             "effet": "aucun"},
+            {"source": "HATVP, déclarations de patrimoine et d'intérêts", "url": "https://www.hatvp.fr",
+             "constat": "exclues volontairement (données personnelles)", "effet": "hors périmètre"}]
     return out
 
 
 def produire() -> dict:
     geo = referentiel_geo()
-    c = produire_controle(geo)
+    fiches, hors = construire_rod(geo)
+    c = produire_controle(geo, fiches)
+    r = produire_rod(geo, fiches, hors)
     i = produire_influence()
     a = produire_aides()
     index = {
         "millesime": f"Sources collectées au {date_sources()}",
         "source": "pipeline/controle.py (voir chaque fichier)",
-        "fichiers": {"controle": sorted(c["fichiers"]), "influence": sorted(i["fichiers"]),
-                     "aides": ["aides_entreprises.json"]},
+        "fichiers": {"controle": sorted(c["fichiers"]), "rod_crtc": sorted(r["fichiers"]),
+                     "influence": sorted(i["fichiers"]), "aides": ["aides_entreprises.json"]},
         "controle": {**c["comptes"], "couverture_ccomptes": c["couverture_ccomptes"],
                      "departements": c["departements"]},
+        "rod_crtc": {"fichier": "controle/rod_crtc/index.json",
+                     **{k: r["comptes"][k] for k in ("rapports", "par_annee", "avec_code_commune", "avec_code_epci",
+                                                     "avec_siren", "intitules_non_publies")},
+                     "couverture": r["couverture"]},
         "influence": i["comptes"],
         "aides_entreprises": {"estimations": a["estimations"], "fourchette_md": a["fourchette_md"],
                               "verification": dict(a["verification"])},
         "regle_personnes": "Aucune personne physique nommée : ni dirigeants, ni collaborateurs, ni responsables "
-                           "publics (fonction et ministère seulement), ni auteurs des réponses aux rapports.",
+                           "publics (fonction et ministère seulement), ni auteurs des réponses aux rapports, ni "
+                           "ordonnateurs ou comptables des organismes contrôlés.",
         "sources_inaccessibles": sources_inaccessibles(),
         "recherche_publique": RECHERCHE_PUBLIQUE}
     dump(SORTIE / "index.json", index)
@@ -1201,11 +2100,28 @@ def main() -> None:
     sub = ap.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("collecter")
     c.add_argument("--budget", type=float, default=1800)
+    c.add_argument("--volets", default="ccomptes,hatvp,siren_rod",
+                   help="ccomptes (pages ccomptes.fr), hatvp (catégorie juridique des SIREN du répertoire), siren_rod "
+                        "(SIREN des organismes contrôlés par les chambres régionales et territoriales)")
+    c.add_argument("--depuis", default=PLAN_DEPUIS, help="pages modifiées depuis cette date lues en premier")
+    c.add_argument("--sans-anciennes", action="store_true", help="ne pas lire les pages modifiées avant --depuis")
+    c.add_argument("--paralleles", type=int, default=2)
+    c.add_argument("--pause", type=float, default=None,
+                   help="secondes entre deux requêtes (défaut : 1 pour ccomptes.fr et siren_rod, celui de sirene.py "
+                        "pour hatvp)")
     sub.add_parser("produire")
     a = ap.parse_args()
     if a.cmd == "collecter":
-        collecter_ccomptes(a.budget * 0.7)
-        resoudre_hatvp(a.budget * 0.3)
+        parts = {"ccomptes": 0.6, "hatvp": 0.2, "siren_rod": 0.2}
+        volets = [v for v in parts if v in a.volets.split(",")]
+        total = sum(parts[v] for v in volets) or 1
+        if "ccomptes" in volets:
+            collecter_ccomptes(a.budget * parts["ccomptes"] / total, paralleles=a.paralleles, depuis=a.depuis,
+                               anciennes=not a.sans_anciennes, pause_s=max(a.pause or PAUSE_S, PAUSE_S))
+        if "hatvp" in volets:
+            resoudre_hatvp(a.budget * parts["hatvp"] / total, pause_s=a.pause)
+        if "siren_rod" in volets:
+            resoudre_siren_rod(a.budget * parts["siren_rod"] / total, pause_s=max(a.pause or PAUSE_S, PAUSE_S))
     else:
         idx = produire()
         print(json.dumps({k: idx[k] for k in ("controle", "influence", "aides_entreprises")}, ensure_ascii=False,
