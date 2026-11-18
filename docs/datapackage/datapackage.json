@@ -14089,8 +14089,8 @@
   {
    "name": "typologies-croisements",
    "title": "un croisement prédéfini (même année, même périmètre), dispersion des communes par case de densité, de strate de l'OFGL et d'aire d'attraction (pipeline/typologies.py)",
-   "description": "site/data/typologies/croisements/<id>.json : un croisement prédéfini (même année, même périmètre), dispersion des communes par case de densité, de strate de l'OFGL et d'aire d'attraction (pipeline/typologies.py). Famille de 8 fichiers (motif site/data/typologies/croisements/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
-   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/typologies/croisements/depenses_niveau_vie_2023.json",
+   "description": "site/data/typologies/croisements/<id>.json : un croisement prédéfini (même année, même périmètre), dispersion des communes par case de densité, de strate de l'OFGL et d'aire d'attraction (pipeline/typologies.py). Famille de 13 fichiers (motif site/data/typologies/croisements/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/typologies/croisements/aide_sociale_prescriptions_2024.json",
    "format": "json",
    "mediatype": "application/json",
    "encoding": "utf-8",
@@ -14117,7 +14117,7 @@
     }
    ],
    "motif": "site/data/typologies/croisements/*.json",
-   "nombre_fichiers": 8,
+   "nombre_fichiers": 13,
    "etape_pipeline": "typologies",
    "millesimes": [
     "2023",
@@ -14125,10 +14125,14 @@
    ],
    "sources_declarees": [
     "Insee, Filosofi 2 2023 : niveau de vie médian par commune (géographie 2026) ; OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population",
-    "OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population ; OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population",
     "DGFiP, impôt sur le revenu par collectivité territoriale (IRCOM), revenus 2023, communes en vigueur en 2026 ; OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population",
+    "OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population ; OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population",
     "DGFiP, recensement des éléments d'imposition (REI) : taux votés de foncier bâti par commune, exercices 2023 et 2024 ; OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population",
-    "Insee, Filosofi 2 2023 : niveau de vie médian par commune (géographie 2026) ; DGFiP, recensement des éléments d'imposition (REI) : taux votés de foncier bâti par commune, exercices 2023 et 2024"
+    "DREES, enquête Aide sociale : dépenses nettes d'aide sociale des départements par habitant, 2024, site/data/territoires (aide_sociale) ; Cnam, prescriptions des médecins libéraux par département, 2024 ; OFGL, population totale 2024 des départements",
+    "Insee, Filosofi 2 2023 : niveau de vie médian par commune (géographie 2026) ; DGFiP, balances comptables des communes 2023 : dépenses d'équipement mandatées (budget principal), site/data/investissement_communes",
+    "Insee, Filosofi 2 2023 : niveau de vie médian par commune (géographie 2026) ; DGFiP, recensement des éléments d'imposition (REI) 2023 : montant de foncier bâti émis au profit de la commune, site/data/fiscalite_locale_series",
+    "Insee, Filosofi 2 2023 : niveau de vie médian par commune (géographie 2026) ; DGFiP, recensement des éléments d'imposition (REI) : taux votés de foncier bâti par commune, exercices 2023 et 2024",
+    "OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population ; DGCL, projets financés par les dotations de soutien à l'investissement (DETR, DSIL, DPV, DSID), exercice 2024, site/data/territoires (relié par site/data/projets_subventionnes)"
    ]
   },
   {
@@ -14208,7 +14212,7 @@
   {
    "name": "entites-fiches",
    "title": "fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py)",
-   "description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 608 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 752 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/005.json",
    "format": "json",
    "mediatype": "application/json",
@@ -14230,7 +14234,7 @@
     }
    ],
    "motif": "site/data/entites/fiches/*.json",
-   "nombre_fichiers": 608,
+   "nombre_fichiers": 752,
    "etape_pipeline": "entites",
    "millesimes": [
     "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
@@ -14242,7 +14246,7 @@
   {
    "name": "entites-recherche",
    "title": "organisations dont un mot du nom commence par la clé (pipeline/entites.py)",
-   "description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 651 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 724 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/00.json",
    "format": "json",
    "mediatype": "application/json",
@@ -14264,7 +14268,7 @@
     }
    ],
    "motif": "site/data/entites/recherche/*.json",
-   "nombre_fichiers": 651,
+   "nombre_fichiers": 724,
    "etape_pipeline": "entites",
    "millesimes": [
     "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"

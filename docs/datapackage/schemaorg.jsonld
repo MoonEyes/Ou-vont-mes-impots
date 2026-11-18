@@ -1928,7 +1928,7 @@
    "@type": "DataDownload",
    "name": "un croisement prédéfini (même année, même périmètre), dispersion des communes par case de densité, de strate de l'OFGL et d'aire d'attraction (pipeline/typologies.py)",
    "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/typologies/croisements/depenses_niveau_vie_2023.json"
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/typologies/croisements/aide_sociale_prescriptions_2024.json"
   },
   {
    "@type": "DataDownload",

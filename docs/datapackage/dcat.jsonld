@@ -5669,12 +5669,12 @@
   {
    "@type": "dcat:Distribution",
    "dct:title": "un croisement prédéfini (même année, même périmètre), dispersion des communes par case de densité, de strate de l'OFGL et d'aire d'attraction (pipeline/typologies.py)",
-   "dct:description": "site/data/typologies/croisements/<id>.json : un croisement prédéfini (même année, même périmètre), dispersion des communes par case de densité, de strate de l'OFGL et d'aire d'attraction (pipeline/typologies.py). Famille de 8 fichiers (motif site/data/typologies/croisements/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dct:description": "site/data/typologies/croisements/<id>.json : un croisement prédéfini (même année, même périmètre), dispersion des communes par case de densité, de strate de l'OFGL et d'aire d'attraction (pipeline/typologies.py). Famille de 13 fichiers (motif site/data/typologies/croisements/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "dcat:accessURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/typologies/croisements/depenses_niveau_vie_2023.json"
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/typologies/croisements/aide_sociale_prescriptions_2024.json"
    },
    "dcat:downloadURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/typologies/croisements/depenses_niveau_vie_2023.json"
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/typologies/croisements/aide_sociale_prescriptions_2024.json"
    },
    "dct:format": "JSON",
    "dcat:mediaType": "application/json",
@@ -5726,7 +5726,7 @@
   {
    "@type": "dcat:Distribution",
    "dct:title": "fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py)",
-   "dct:description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 608 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dct:description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 752 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "dcat:accessURL": {
     "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/005.json"
    },
@@ -5745,7 +5745,7 @@
   {
    "@type": "dcat:Distribution",
    "dct:title": "organisations dont un mot du nom commence par la clé (pipeline/entites.py)",
-   "dct:description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 651 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dct:description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 724 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "dcat:accessURL": {
     "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/00.json"
    },
