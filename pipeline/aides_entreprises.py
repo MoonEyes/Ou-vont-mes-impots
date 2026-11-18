@@ -11,10 +11,11 @@ France 2030 par année, région, secteur et stratégie, France Relance (lauréat
 mesure, filière, type d'entreprise et territoire), PGE par secteur, région et année.
 
 Entrées (entrepôt data/lake, non versionné) :
-  aides_entreprises/tam/fr_AAAA-MM.csv   registre TAM, France, une ligne par aide (collecte de ce module : pages
-        publiques de la recherche, 100 résultats par page, une requête à la fois ; le nom du bénéficiaire n'est jamais
-        enregistré, seul l'identifiant national l'est) ; tam/manifeste.json ; tam/secteurs_nace.json (nomenclature
-        NACE de la recherche publique)
+  aides_entreprises/export_officiel/Transparency_export_<numéro>_<AAAA-MM-JJ>*.csv[.gz]   registre TAM, France,
+        export officiel transmis par la Commission (une ligne par aide, 100 000 lignes au plus par fichier : un
+        fichier par période d'octroi). Lu en flux ; l'export le plus récent fait foi pour les dates d'octroi qu'il
+        couvre. « Nom du bénéficiaire » n'est lu que pour un SIREN de personne morale (sirene.personne_morale) ;
+        tam/secteurs_nace.json (nomenclature NACE de la recherche publique, une requête si absent)
   aides_entreprises/aides_france2030_projets.csv         France 2030 (catalogue : aides_france2030_projets)
   beneficiaires/benef_plan_de_relance.parquet            France Relance, projets industriels lauréats
   aides_entreprises/aides_relance_*.parquet              France Relance, montants agrégés (data.economie.gouv.fr)
@@ -27,7 +28,8 @@ Sorties (site/data/aides_entreprises/, chaque fichier < 5 Mo) :
   index.json, tam.json, france2030.json, france_relance.json, pge.json
 
 Commandes :
-  python pipeline/aides_entreprises.py collecter [--budget 1800] [--rafraichir]   # réseau : catalogue, TAM, SIRENE
+  python pipeline/aides_entreprises.py collecter [--budget 1800]   # réseau : catalogue, nomenclature NACE, SIRENE
+        (le registre TAM n'est plus lu page à page : renouveler l'export officiel, voir docs/contrat_interface.md)
   python pipeline/aides_entreprises.py produire [--sortie DOSSIER]                 # sans réseau
 
 Règles : une personne morale (catégorie juridique 2xxx à 9xxx, sirene.personne_morale) peut être nommée ; tout autre
@@ -44,7 +46,6 @@ import argparse
 import csv
 import hashlib
 import html
-import io
 import json
 import os
 import re
@@ -65,8 +66,8 @@ ROOT = Path(__file__).resolve().parent.parent
 LAKE = ROOT / "data" / "lake"
 BRUT = LAKE / "aides_entreprises"
 TAM_DIR = BRUT / "tam"
-TAM_MANIFESTE = TAM_DIR / "manifeste.json"
 TAM_SECTEURS = TAM_DIR / "secteurs_nace.json"
+EXPORT_DIR = BRUT / "export_officiel"   # exports CSV du registre transmis par la Commission (hors git)
 CACHE_SIRENE = LAKE / "_cache" / "aides_entreprises_sirene.json"
 STOCK_SIRENE = LAKE / "_cache" / "local" / "sirene_unite_legale.parquet"   # stock INSEE (pipeline/local.py)
 SITE = ROOT / "site" / "data"
@@ -78,19 +79,19 @@ API_ENTREPRISES = "https://recherche-entreprises.api.gouv.fr/search"
 PAUSE_API_S = 0.34             # environ 3 appels par seconde (limite de l'API : 7), plusieurs modules la partagent
 TAM_BASE = "https://webgate.ec.europa.eu/competition/transparency/public"
 TAM_PAGE = f"{TAM_BASE}?lang=fr"
-TAM_DEBUT = (2016, 1)          # le registre couvre les aides octroyées depuis le 1er juillet 2016
-TAM_PAR_PAGE = 100
-TAM_PAUSE_S = 1.0
 
 # --- Sources -------------------------------------------------------------------------------------------------------
 
 SOURCES = {
     "tam": {
-        "titre": "Commission européenne, State Aid Transparency (Transparency Award Module), recherche publique, "
-                 "France : aides individuelles octroyées publiées par les autorités françaises",
+        "titre": "Commission européenne, State Aid Transparency (Transparency Award Module), export officiel du "
+                 "registre (fichiers CSV transmis par la Commission sur demande), France : aides individuelles "
+                 "octroyées publiées par les autorités françaises",
         "producteur": "Commission européenne (DG Concurrence), données saisies par les autorités françaises",
         "url": TAM_PAGE, "licence": "réutilisation autorisée avec mention de la source (décision 2011/833/UE)",
-        "collecte": "pipeline/aides_entreprises.py collecter (pages publiques de 100 résultats, par mois d'octroi)",
+        "collecte": "export officiel demandé à la Commission depuis la recherche publique (pays : France ; 100 000 "
+                    "lignes au plus par export, demande découpée par période d'octroi), déposé dans "
+                    "data/lake/aides_entreprises/export_officiel/ puis lu par pipeline/aides_entreprises.py produire",
     },
     "france2030": {
         "titre": "France 2030, projets lauréats (outil de gestion financière « Budget »), data.gouv.fr (Préfecture de "
@@ -209,269 +210,154 @@ def eur(x) -> float | None:
     return None if x is None else round(float(x), 2)
 
 
-# --- Registre TAM : collecte (pages publiques de la recherche) ---------------------------------------------------------
+# --- Registre TAM : export officiel (fichiers CSV transmis par la Commission) ------------------------------------------
 
-# En-têtes français du tableau de résultats -> clés du fichier brut. « Nom du bénéficiaire » n'est jamais lu : un
-# exploitant agricole ou un entrepreneur individuel y figure sous son nom ; les personnes morales sont nommées à partir
-# du répertoire SIRENE (pipeline/sirene.py), jamais à partir de ce champ.
-TAM_COLONNES = {
-    "Pays": "pays", "Intitulé de la mesure d'aide": "mesure", "Numéro SA": "sa", "Numéro de référence": "ref",
+# En-têtes français de l'export -> clés internes. Les colonnes [EN] (traductions), la monnaie et le pays sont lus à part
+# ou ignorés. « Nom du bénéficiaire » n'est lu que pour un SIREN dont la catégorie juridique SIRENE est celle d'une
+# personne morale (sirene.personne_morale) ; « Nom du bénéficiaire [EN] » n'est jamais lu.
+EXPORT_COLONNES = {
+    "Pays": "pays", "Benéficiaire dans un autre État membre": "autre_etat_membre",
+    "Intitulé de la mesure d'aide": "mesure", "Numéro SA": "sa", "Numéro de référence": "ref",
     "ID national": "id_national", "Type de bénéficiaire": "type_beneficiaire", "Région": "region",
     "Secteur (NACE)": "secteur", "Instrument d'aide": "instrument", "Objectif de l’aide": "objectif",
     "Montant nominal, exprimé en montant total": "montant_nominal",
-    "Élément d'aide, exprimé en montant total": "element_aide", "Date d'octroi": "date_octroi",
-    "Nom de l'autorité chargée de l'octroi de l'aide": "autorite", "Entité en charge": "entite",
-    "Intermédiaires financiers": "intermediaires", "Date de publication": "date_publication",
-    "Benéficiaire dans un autre État membre": "autre_etat_membre", "Pays tiers hors UE": "pays_tiers",
+    "Élément d'aide, exprimé en montant total": "element_aide", "Monnaie": "monnaie", "Date d'octroi": "date_octroi",
+    "Nom de l'autorité chargée de l'octroi de l'aide": "autorite", "Date de publication": "date_publication",
+    "Entité en charge": "entite", "Intermédiaires financiers": "intermediaires", "Pays tiers hors UE": "pays_tiers",
 }
-TAM_CHAMPS = ["ref", "sa", "mesure", "type_id", "id_national", "type_beneficiaire", "region", "secteur", "instrument",
-              "objectif", "montant_nominal", "element_aide", "date_octroi", "autorite", "entite", "intermediaires",
-              "date_publication", "autre_etat_membre", "pays_tiers"]
-NON_LU = {"Nom du bénéficiaire"}
+EXPORT_NOM = "Nom du bénéficiaire"          # lu seulement pour une personne morale vérifiée dans SIRENE
+EXPORT_IGNORES = {"Nom du bénéficiaire [EN]", "Intitulé de la mesure d'aide [EN]", "Instrument d'aide [EN]",
+                  "Objectif de l’aide [EN]", "Nom de l'autorité chargée de l'octroi de l'aide [EN]"}
+EXPORT_MOTIF = re.compile(r"^Transparency_export_(\d+)_(\d{4}-\d{2}-\d{2})[^/]*\.csv(\.gz)?$")
+EXPORT_MAX_LIGNES = 100_000      # plafond d'un export de la Commission : découper la demande par période d'octroi
 
 
-class Refus(RuntimeError):
-    """Refus d'accès (401, 403, 429) : la collecte s'arrête, rien n'est contourné."""
+def _ouvrir_export(p: Path):
+    import gzip
+    if p.suffix == ".gz":
+        return gzip.open(p, "rt", encoding="utf-8-sig", newline="")
+    return p.open(encoding="utf-8-sig", newline="")
 
 
-def _texte_cellule(td) -> str:
-    for span in td.xpath(".//span[contains(@class,'translationTooltip')]"):
-        span.drop_tree()
-    return propre(td.text_content())
+def fichiers_export() -> list[dict]:
+    """Exports présents (nom, numéro, date d'export), du plus récent au plus ancien."""
+    out = []
+    for p in sorted(EXPORT_DIR.glob("Transparency_export_*")) if EXPORT_DIR.exists() else []:
+        m = EXPORT_MOTIF.match(p.name)
+        if m and p.is_file():
+            out.append({"chemin": p, "fichier": p.name, "numero": m.group(1), "date_export": m.group(2)})
+    return sorted(out, key=lambda e: (e["date_export"], e["fichier"]), reverse=True)
 
 
-def lire_page_tam(texte: str) -> tuple[list[dict], int | None]:
-    """Lignes du tableau de résultats (valeur complète lue dans l'attribut title quand la cellule est tronquée) et
-    dernier décalage annoncé par la pagination (None : une seule page)."""
-    from lxml.html import fromstring
-    arbre = fromstring(texte)
-    entetes = [propre(th.text_content()) for th in arbre.xpath("//table[@id='resultsTable']/thead/tr/th")]
-    inconnus = [e for e in entetes if e not in TAM_COLONNES and e not in NON_LU]
-    if inconnus:
-        raise RuntimeError(f"TAM : colonnes inattendues {inconnus}")
-    lignes = []
-    for tr in arbre.xpath("//table[@id='resultsTable']/tbody/tr"):
-        x = {}
-        for entete, td in zip(entetes, tr.xpath("./td")):
-            cle = TAM_COLONNES.get(entete)
-            if cle is None:
+def _entetes_export(entetes: list[str], fichier: str) -> dict:
+    inconnus = [e for e in entetes if e not in EXPORT_COLONNES and e != EXPORT_NOM and e not in EXPORT_IGNORES]
+    manquants = [e for e in ("Numéro de référence", "ID national", "Date d'octroi",
+                             "Élément d'aide, exprimé en montant total") if e not in entetes]
+    if inconnus or manquants:
+        raise SystemExit(f"export TAM {fichier} : colonnes inattendues {inconnus}, absentes {manquants} "
+                         "(format de l'export modifié : vérifier avant de lire)")
+    return {e: i for i, e in enumerate(entetes)}
+
+
+def _lignes_export(e: dict):
+    """Lignes d'un export, en flux : (dictionnaire des colonnes retenues, ligne brute, index du nom)."""
+    with _ouvrir_export(e["chemin"]) as fh:
+        r = csv.reader(fh)
+        idx = _entetes_export(next(r, []), e["fichier"])
+        cols = [(i, EXPORT_COLONNES[c]) for c, i in idx.items() if c in EXPORT_COLONNES]
+        i_nom = idx.get(EXPORT_NOM)
+        for ligne in r:
+            if len(ligne) != len(idx):
+                raise SystemExit(f"export TAM {e['fichier']} : ligne de {len(ligne)} colonnes au lieu de {len(idx)}")
+            yield {k: (ligne[i] or None) for i, k in cols}, ligne, i_nom
+
+
+def plan_exports() -> list[dict]:
+    """Exports retenus et période d'octroi couverte par chacun (première lecture, en flux). Pour une date d'octroi
+    couverte par plusieurs exports, l'export le plus récent fait foi ; un export plus ancien ne garde que les dates
+    d'octroi qu'aucun export plus récent ne couvre."""
+    plan = []
+    for e in fichiers_export():
+        dates, n = [], 0
+        for x, _, _ in _lignes_export(e):
+            n += 1
+            d = date_tam(x.get("date_octroi"))
+            if d:
+                dates.append(d)
+        plan.append({**e, "lignes": n, "octroi_du": min(dates) if dates else None,
+                     "octroi_au": max(dates) if dates else None,
+                     "sha256": hashlib.sha256(e["chemin"].read_bytes()).hexdigest()})
+    return plan
+
+
+def _couvert(d: str | None, intervalles: list[tuple[str, str]]) -> bool:
+    return d is not None and any(a <= d <= b for a, b in intervalles)
+
+
+def lire_tam(plan: list[dict] | None = None, bilan: dict | None = None):
+    """Aides publiées, en flux, d'après les exports retenus (plan_exports). Chaque aide porte `_nom`, fonction qui lit
+    « Nom du bénéficiaire » : à n'appeler que pour une personne morale vérifiée dans SIRENE. `bilan` (facultatif)
+    reçoit, par fichier, les lignes retenues et écartées."""
+    plan = plan_exports() if plan is None else plan
+    vues = set()
+    date_max = plan[0]["date_export"] if plan else None
+    for i, e in enumerate(plan):
+        recents = [(p["octroi_du"], p["octroi_au"]) for p in plan[:i]
+                   if p["date_export"] > e["date_export"] and p["octroi_du"]]
+        b = {"retenues": 0, "couvertes_par_un_export_plus_recent": 0, "doublons": 0, "hors_france": 0}
+        for x, ligne, i_nom in _lignes_export(e):
+            d = date_tam(x.get("date_octroi"))
+            if _couvert(d, recents) or (d is None and e["date_export"] != date_max):
+                b["couvertes_par_un_export_plus_recent"] += 1
                 continue
-            titre = propre(td.get("title"))
-            if cle == "id_national":
-                x["type_id"] = titre or None
-                x["id_national"] = _texte_cellule(td) or None
+            if sans_accents(x.get("pays")) not in ("", "france"):
+                b["hors_france"] += 1
                 continue
-            valeur = titre if titre else _texte_cellule(td)
-            if cle in ("montant_nominal", "element_aide"):
-                valeur = valeur or _texte_cellule(td)
-            x[cle] = valeur or None
-        if x.get("ref"):
-            lignes.append(x)
-    decalages = [int(d) for d in re.findall(r"offset=(\d+)&(?:amp;)?max=\d+", texte)]
-    return lignes, (max(decalages) if decalages else None)
-
-
-class SessionTam:
-    """Session de la recherche publique : cookie de répartition de charge, jeton CSRF du formulaire, pays France."""
-
-    def __init__(self, pause: float = TAM_PAUSE_S):
-        import requests
-        self.requests = requests
-        self.pause = pause
-        self.dernier = 0.0
-        self.s = None
-        self.jeton = None
-        self.requetes = 0
-
-    def _attendre(self):
-        reste = self.pause - (time.monotonic() - self.dernier)
-        if reste > 0:
-            time.sleep(reste)
-        self.dernier = time.monotonic()
-
-    def _cookie(self, r):
-        for c in r.raw.headers.getlist("Set-Cookie") if hasattr(r.raw.headers, "getlist") else []:
-            m = re.match(r"LB_TRANSPARENCY=([^;]+)", c)
-            if m:   # attribut domain vide refusé par requests : posé tel que le navigateur le garde
-                self.s.cookies.set("LB_TRANSPARENCY", m.group(1), domain="webgate.ec.europa.eu",
-                                   path="/competition/transparency")
-
-    def _requete(self, methode: str, url: str, **kw):
-        derniere = None
-        for essai in range(5):
-            self._attendre()
-            try:
-                r = self.s.request(methode, url, timeout=(30, 180), **kw)
-            except (self.requests.ConnectionError, self.requests.Timeout) as exc:
-                derniere = f"{type(exc).__name__}: {str(exc)[:160]}"
-                time.sleep(10 * (essai + 1))
+            if not x.get("ref") or x["ref"] in vues:
+                b["doublons"] += 1
                 continue
-            self.requetes += 1
-            self._cookie(r)
-            if r.status_code in (401, 403, 429, 451):
-                raise Refus(f"HTTP {r.status_code} sur {url} : accès refusé, non contourné")
-            if r.status_code >= 500:
-                derniere = f"HTTP {r.status_code}"
-                time.sleep(20 * (essai + 1))
-                continue
-            if r.status_code >= 400:
-                raise RuntimeError(f"HTTP {r.status_code} sur {url}")
-            if "currently unable to handle the request" in r.text:
-                derniere = "serveur indisponible (page d'attente)"
-                time.sleep(30 * (essai + 1))
-                continue
-            return r
-        raise RuntimeError(f"{url} injoignable après 5 essais : {derniere}")
-
-    def ouvrir(self):
-        self.s = self.requests.Session()
-        self.s.headers["User-Agent"] = UA
-        r = self._requete("GET", TAM_BASE, params={"lang": "fr"})
-        jeton = re.search(r'name="CSRFTOKEN" value="([^"]+)"', r.text)
-        if not jeton:
-            raise RuntimeError("TAM : formulaire de recherche sans jeton (page modifiée)")
-        r = self._requete("POST", f"{TAM_BASE}/search", data=[
-            ("CSRFTOKEN", jeton.group(1)), ("resetSearch", "true"), ("_countries", ""), ("countries", "CountryFRA")])
-        jeton = re.search(r'name="CSRFTOKEN" value="([^"]+)"', r.text)
-        if not jeton or "[CountryFRA]" not in r.text:
-            raise RuntimeError("TAM : critère pays non retenu par le formulaire (page modifiée)")
-        self.jeton = jeton.group(1)
-
-    def page(self, debut: date, fin: date, decalage: int) -> tuple[list[dict], int | None]:
-        if self.s is None:
-            self.ouvrir()
-        donnees = {"CSRFTOKEN": self.jeton, "resetSearch": "false", "currency": "EUR",
-                   "dateGrantedFrom": debut.strftime("%d/%m/%Y"), "dateGrantedTo": fin.strftime("%d/%m/%Y"),
-                   "offset": decalage, "max": TAM_PAR_PAGE}
-        for _ in range(3):
-            r = self._requete("POST", f"{TAM_BASE}/search/results?sort=serverReference&order=asc", data=donnees)
-            jeton = re.search(r'name="CSRFTOKEN" value="([^"]+)"', r.text)
-            if jeton:
-                self.jeton = jeton.group(1)
-            if 'id="resultsTable"' in r.text:
-                return lire_page_tam(r.text)
-            if "Aucun résultat trouvé" in r.text or "No results found" in r.text:
-                return [], None
-            self.ouvrir()          # session expirée (page d'accueil renvoyée) : nouvelle session, même critère
-            donnees["CSRFTOKEN"] = self.jeton
-        raise RuntimeError("TAM : session non rétablie après trois tentatives")
+            vues.add(x["ref"])
+            b["retenues"] += 1
+            x["_nom"] = (lambda l=ligne, k=i_nom: propre(l[k]) if k is not None else "")
+            yield x
+        if bilan is not None:
+            bilan[e["fichier"]] = b
 
 
-def _mois(debut: tuple[int, int], fin: tuple[int, int]):
-    a, m = debut
-    while (a, m) <= fin:
-        yield a, m
-        a, m = (a + 1, 1) if m == 12 else (a, m + 1)
+def siren_tam(x: dict) -> str:
+    """SIREN d'une aide de l'export : identifiant national de neuf chiffres (ou SIRET de quatorze, ou neuf chiffres
+    dont le zéro de tête a été perdu) d'un bénéficiaire établi en France ; chaîne vide sinon. L'export ne publie pas
+    le type d'identifiant : un identifiant étranger (TVA, registre d'un autre État) n'est jamais lu comme un SIREN."""
+    if sans_accents(x.get("autre_etat_membre")) not in ("", "france"):
+        return ""
+    v = re.sub(r"[\s\-.]", "", propre(x.get("id_national")))
+    if not re.fullmatch(r"\d{8,9}|\d{14}", v):
+        return ""
+    return siren_de(v)
 
 
-def _fin_mois(a: int, m: int) -> date:
-    from calendar import monthrange
-    return date(a, m, monthrange(a, m)[1])
-
-
-def lire_manifeste_tam() -> dict:
-    try:
-        return json.loads(TAM_MANIFESTE.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        return {"mois": {}}
-
-
-def collecter_mois(session: SessionTam, a: int, m: int) -> dict:
-    """Toutes les pages d'un mois d'octroi ; le fichier du mois n'est écrit qu'une fois complet."""
-    debut, fin = date(a, m, 1), _fin_mois(a, m)
-    lignes, vus, decalage, dernier = [], set(), 0, None
-    while True:
-        page, d = session.page(debut, fin, decalage)
-        if decalage == 0:
-            dernier = d if d is not None else 0
-        for x in page:
-            if x["ref"] in vus:
-                continue
-            octroi = x.get("date_octroi") or ""
-            if not re.fullmatch(rf"\d\d/{m:02d}/{a}", octroi):
-                raise RuntimeError(f"TAM {a}-{m:02d} : date d'octroi hors du mois demandé ({octroi})")
-            vus.add(x["ref"])
-            lignes.append(x)
-        if len(page) < TAM_PAR_PAGE or decalage >= (dernier or 0):
-            break
-        decalage += TAM_PAR_PAGE
-    if dernier and len(lignes) <= dernier:
-        raise RuntimeError(f"TAM {a}-{m:02d} : {len(lignes)} lignes lues, pagination annoncée jusqu'à {dernier}")
-    tampon = io.StringIO()
-    w = csv.DictWriter(tampon, fieldnames=TAM_CHAMPS, lineterminator="\n")
-    w.writeheader()
-    for x in sorted(lignes, key=lambda y: y["ref"]):
-        w.writerow({k: x.get(k) for k in TAM_CHAMPS})
-    texte = tampon.getvalue()
-    ecrire_atomique(TAM_DIR / f"fr_{a}-{m:02d}.csv", texte)
-    return {"lignes": len(lignes), "sha256": hashlib.sha256(texte.encode("utf-8")).hexdigest(),
-            "collecte_le": datetime.now(timezone.utc).isoformat(timespec="seconds")}
-
-
-def collecter_secteurs(session: SessionTam) -> None:
-    if session.s is None:
-        session.ouvrir()
-    r = session._requete("GET", f"{TAM_BASE}/sectors", params={"lang": "fr"})
-    d = r.json()
-    if not isinstance(d, dict) or len(d) < 500:
-        raise RuntimeError("TAM : nomenclature des secteurs inattendue")
-    ecrire_atomique(TAM_SECTEURS, json.dumps(d, ensure_ascii=False, sort_keys=True, indent=0) + "\n")
-
-
-def a_rafraichir(info: dict | None, a: int, m: int, aujourd_hui: date, rafraichir: bool) -> bool:
-    """Mois absent, ou (avec --rafraichir) mois récent collecté depuis longtemps : les autorités publient jusqu'à un an
-    après l'octroi. Six derniers mois : relus après 6 jours ; mois 7 à 18 : après 30 jours."""
-    if not info or not (TAM_DIR / f"fr_{a}-{m:02d}.csv").exists():
-        return True
-    if not rafraichir:
-        return False
-    age_mois = (aujourd_hui.year - a) * 12 + aujourd_hui.month - m
-    if age_mois > 18:
-        return False
-    collecte = datetime.fromisoformat(info["collecte_le"]).date()
-    return (aujourd_hui - collecte).days >= (6 if age_mois <= 6 else 30)
-
-
-def collecter_tam(budget_s: float, rafraichir: bool = False, pause: float = TAM_PAUSE_S) -> dict:
-    debut_chrono = time.monotonic()
-    man = lire_manifeste_tam()
-    man.setdefault("mois", {})
-    man["source"] = TAM_PAGE
-    aujourd_hui = datetime.now(timezone.utc).date()
-    session = SessionTam(pause)
-    bilan = {"mois_collectes": 0, "lignes": 0, "refus": None, "erreurs": []}
-    try:
-        if not TAM_SECTEURS.exists():
-            collecter_secteurs(session)
-        for a, m in _mois(TAM_DEBUT, (aujourd_hui.year, aujourd_hui.month)):
-            cle = f"{a}-{m:02d}"
-            if not a_rafraichir(man["mois"].get(cle), a, m, aujourd_hui, rafraichir):
-                continue
-            if time.monotonic() - debut_chrono > budget_s:
-                bilan["reporte"] = f"budget de {int(budget_s)} s épuisé avant {cle}"
-                break
-            try:
-                info = collecter_mois(session, a, m)
-            except Refus:
-                raise
-            except RuntimeError as exc:
-                bilan["erreurs"].append(f"{cle} : {exc}"[:300])
-                if len(bilan["erreurs"]) >= 5:
-                    bilan["arret"] = "cinq mois en erreur : collecte arrêtée, reprise au prochain passage"
-                    break
-                continue
-            man["mois"][cle] = info
-            bilan["mois_collectes"] += 1
-            bilan["lignes"] += info["lignes"]
-            ecrire_atomique(TAM_MANIFESTE, json.dumps(man, ensure_ascii=False, sort_keys=True, indent=1) + "\n")
-            print(f"TAM {cle} : {info['lignes']} aides ({session.requetes} requêtes)", flush=True)
-    except Refus as exc:
-        bilan["refus"] = str(exc)
-        man["dernier_refus"] = {"constat": str(exc), "le": datetime.now(timezone.utc).isoformat(timespec="seconds")}
-        ecrire_atomique(TAM_MANIFESTE, json.dumps(man, ensure_ascii=False, sort_keys=True, indent=1) + "\n")
-        print(f"TAM : {exc}", flush=True)
-    bilan["requetes"] = session.requetes
-    return bilan
+def collecter_secteurs() -> None:
+    """Nomenclature NACE de la recherche publique (une requête, seulement si le fichier est absent)."""
+    import requests
+    for essai in range(4):
+        try:
+            r = requests.get(f"{TAM_BASE}/sectors", params={"lang": "fr"}, headers={"User-Agent": UA},
+                             timeout=(30, 120))
+        except (requests.ConnectionError, requests.Timeout):
+            time.sleep(10 * (essai + 1))
+            continue
+        if r.status_code in (401, 403, 429, 451):
+            print(f"TAM : nomenclature des secteurs refusée (HTTP {r.status_code}), non contourné", flush=True)
+            return
+        if r.status_code >= 500:
+            time.sleep(20 * (essai + 1))
+            continue
+        d = r.json() if r.ok else None
+        if not isinstance(d, dict) or len(d) < 500:
+            raise RuntimeError("TAM : nomenclature des secteurs inattendue")
+        ecrire_atomique(TAM_SECTEURS, json.dumps(d, ensure_ascii=False, sort_keys=True, indent=0) + "\n")
+        return
+    print("TAM : nomenclature des secteurs injoignable (gardée absente : secteurs non rattachés)", flush=True)
 
 
 # --- Répertoire SIRENE : catégorie juridique et section NAF ------------------------------------------------------------
@@ -607,8 +493,8 @@ def sirens_a_resoudre(limite_tam: int | None = None) -> list[str]:
     sont des personnes morales), bénéficiaires de France 2030 par montant décroissant (section NAF)."""
     import duckdb
     totaux = defaultdict(float)
-    for x in lire_tam():
-        s = siren_de(x["id_national"]) if x.get("type_id") == "SIREN Number" else ""
+    for x in (lire_tam() if fichiers_export() else []):
+        s = siren_tam(x)
         if s:
             totaux[s] += montant_tam(x.get("element_aide"))[0] or 0
     sortie = [s for s, _ in sorted(totaux.items(), key=lambda kv: (-kv[1], kv[0]))[:limite_tam]]
@@ -624,12 +510,18 @@ def sirens_a_resoudre(limite_tam: int | None = None) -> list[str]:
 
 
 def collecter(budget_s: float = 1800, rafraichir: bool = False) -> int:
-    """Catalogue (collecte/collecte.py), puis registre TAM, puis SIRENE ; chaque étape a sa part du budget."""
+    """Catalogue (collecte/collecte.py), nomenclature NACE du registre si absente, puis SIRENE. Le registre TAM n'est
+    plus lu page à page : il vient de l'export officiel déposé dans data/lake/aides_entreprises/export_officiel/
+    (`rafraichir` est accepté et sans effet, pour la mise à jour hebdomadaire)."""
     debut = time.monotonic()
     code = subprocess.call([sys.executable, str(ROOT / "collecte" / "collecte.py"), *CATALOGUE_IDS,
                             "--timeout", "300"])
-    bilan = collecter_tam(max(60.0, budget_s * 0.75 - (time.monotonic() - debut)), rafraichir)
-    print(json.dumps({"tam": bilan}, ensure_ascii=False), flush=True)
+    if not TAM_SECTEURS.exists():
+        collecter_secteurs()
+    exports = fichiers_export()
+    print("TAM : " + (f"export officiel du {exports[0]['date_export']} ({len(exports)} fichier(s))" if exports else
+                      "aucun export officiel dans data/lake/aides_entreprises/export_officiel/ (tam.json publié "
+                      "gardé tel quel)"), flush=True)
     reste = max(30.0, budget_s - (time.monotonic() - debut))
     a_resoudre = sirens_a_resoudre()
     print(f"SIRENE : {extraire_stock_sirene(a_resoudre)} SIREN lus dans le stock", flush=True)
@@ -771,30 +663,32 @@ def referentiel_nace() -> dict[str, tuple[str, str | None]]:
 
 # --- Registre TAM : lecture et agrégats -------------------------------------------------------------------------------
 
-def lire_tam():
-    """Aides publiées (fichiers mensuels de l'entrepôt), dans l'ordre des mois puis des références."""
-    for f in sorted(TAM_DIR.glob("fr_*.csv")):
-        with f.open(encoding="utf-8", newline="") as fh:
-            yield from csv.DictReader(fh)
-
-
 def montant_tam(v) -> tuple[float | None, float | None, float | None]:
-    """(montant, borne basse, borne haute) en euros. Fourchette publiée (« 500,001 à 1,000,000 EUR ») : montant None,
-    bornes renseignées ; valeur absente ou illisible : (None, None, None)."""
+    """(montant, borne basse, borne haute) en euros. Montant exact (« 603748 », « 12500.5 », « 603,748 EUR ») : les
+    trois valeurs égales. Fourchette publiée (« > 100,000 - 500,000 », « 500,000 - 1,000,000 ») : montant None,
+    bornes renseignées ; « < 100,000 » : bornes 0 et 100 000 ; « > 30,000,000 » : borne haute ouverte (None). Valeur
+    absente ou illisible : (None, None, None)."""
     v = propre(v)
-    nombre = r"(\d{1,3}(?:,\d{3})*(?:\.\d+)?)"
-    m = re.fullmatch(nombre + r"\s*EUR", v)
+    nombre = r"(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)"
+    eur_ = r"(?:\s*EUR)?"
+
+    def f(s):
+        return float(s.replace(",", ""))
+    m = re.fullmatch(nombre + eur_, v)
     if m:
-        x = float(m.group(1).replace(",", ""))
+        x = f(m.group(1))
         return x, x, x
-    m = re.fullmatch(nombre + r"\s*(?:à|-|to)\s*" + nombre + r"\s*EUR", v)
+    m = re.fullmatch(r"(?:>\s*)?" + nombre + r"\s*(?:à|-|to)\s*" + nombre + eur_, v)
     if m:
-        return None, float(m.group(1).replace(",", "")), float(m.group(2).replace(",", ""))
-    m = re.fullmatch(r"(?:plus de|more than|>)\s*" + nombre + r"\s*EUR", v, re.I) or \
+        return None, f(m.group(1)), f(m.group(2))
+    m = re.fullmatch(r"<\s*" + nombre + eur_, v)
+    if m:
+        return None, 0.0, f(m.group(1))
+    m = re.fullmatch(r"(?:plus de|more than|>)\s*" + nombre + eur_, v, re.I) or \
         re.fullmatch(nombre + r"\s*EUR\s*(?:ou plus|et plus|or more)", v, re.I) or \
         re.fullmatch(nombre + r"\s*(?:à|-|to)\s*EUR", v)
     if m:
-        return None, float(m.group(1).replace(",", "")), None
+        return None, f(m.group(1)), None
     return None, None, None
 
 
@@ -926,12 +820,16 @@ class Groupe:
         self.exclus = {"montant_eur": 0.0, "lignes": 0, "dont_personnes_physiques_eur": 0.0,
                        "dont_sans_siren_eur": 0.0, "dont_categorie_inconnue_eur": 0.0}
 
-    def ajouter(self, siren: str, st: str, cj: str | None, montant: float, extra: dict | None = None):
+    def ajouter(self, siren: str, st: str, cj: str | None, montant: float, extra: dict | None = None,
+                nom: str | None = None):
         self.total += montant
         if st == "pm":
-            b = self.pm.setdefault(siren, {"categorie_juridique": cj, "montant": 0.0, "aides": 0, "annees": Counter()})
+            b = self.pm.setdefault(siren, {"categorie_juridique": cj, "montant": 0.0, "aides": 0, "annees": Counter(),
+                                           "noms": Counter()})
             b["montant"] += montant
             b["aides"] += 1
+            if nom:
+                b["noms"][nom] += 1
             for k, v in (extra or {}).items():
                 b["annees"][k] += v
         elif st == "nv":
@@ -950,7 +848,8 @@ class Groupe:
         tries = sorted(self.pm.items(), key=lambda kv: (-kv[1]["montant"], kv[0]))
         haut = []
         for s, b in tries[:top]:
-            haut.append({"siren": s, "denomination": ident.nom(s) or f"SIREN {s}",
+            nom_source = min(b["noms"].items(), key=lambda kv: (-kv[1], kv[0]))[0] if b.get("noms") else None
+            haut.append({"siren": s, "denomination": ident.nom(s) or nom_source or f"SIREN {s}",
                          "categorie_juridique": b["categorie_juridique"], "montant_eur": eur(b["montant"]),
                          "aides": b["aides"],
                          "par_annee_eur": {str(a): eur(v) for a, v in sorted(b["annees"].items())}})
@@ -976,19 +875,106 @@ class Groupe:
 
 # --- Registre TAM : production -----------------------------------------------------------------------------------------
 
-def manifeste_tam_lu() -> dict:
-    man = lire_manifeste_tam()
-    mois = man.get("mois", {})
-    dates = sorted(v["collecte_le"][:10] for v in mois.values() if v.get("collecte_le"))
-    return {"mois": len(mois), "premier_mois": min(mois) if mois else None, "dernier_mois": max(mois) if mois else None,
-            "collecte_du": dates[0] if dates else None, "collecte_au": dates[-1] if dates else None,
-            "dernier_refus": man.get("dernier_refus")}
+def description_exports(plan: list[dict], bilan: dict) -> list[dict]:
+    """Exports lus (nom de fichier sans chemin, date, période d'octroi, lignes, empreinte) : aucun renseignement sur
+    le demandeur."""
+    return [{"fichier": e["fichier"], "numero_export": e["numero"], "date_export": e["date_export"],
+             "octroi_du": e["octroi_du"], "octroi_au": e["octroi_au"], "lignes": e["lignes"],
+             **(bilan.get(e["fichier"]) or {}), "sha256": e["sha256"]} for e in plan]
 
 
-def produire_tam(terr: Territoires, ident: Identites) -> dict:
-    if not any(TAM_DIR.glob("fr_*.csv")):
-        raise SystemExit("data/lake/aides_entreprises/tam absent : lancer `python pipeline/aides_entreprises.py "
-                         "collecter`")
+# Ancienne lecture du registre (pages publiques de la recherche, mois par mois, 1 376 requêtes, le 2026-11-18) : chiffres
+# publiés dans site/data/aides_entreprises/tam.json jusqu'au commit 808f7e57, figés ici pour la comparaison avec
+# l'export officiel (les fichiers mensuels de cette lecture ne sont plus lus). Rapprochement par numéro de référence,
+# mesuré le 2026-11-18 sur les fichiers mensuels et les deux exports du même jour.
+LECTURE_PAGES = {
+    "date": "2026-11-18", "requetes": 1376, "url": TAM_PAGE,
+    "methode": "pages publiques de résultats de la recherche (100 aides par page), une recherche par mois d'octroi",
+    "total": {"aides": 130506, "element_aide_eur": 84468401976.69, "aides_avec_montant": 108969, "fourchettes": 21273,
+              "aides_sans_montant": 264},
+    "par_annee": {
+        "2016": {"aides": 985, "element_aide_eur": 2394694854.63, "aides_avec_montant": 984, "fourchettes": 0,
+                 "aides_sans_montant": 1},
+        "2017": {"aides": 2535, "element_aide_eur": 5389482483.92, "aides_avec_montant": 2218, "fourchettes": 317,
+                 "aides_sans_montant": 0},
+        "2018": {"aides": 2560, "element_aide_eur": 4165308940.52, "aides_avec_montant": 2191, "fourchettes": 369,
+                 "aides_sans_montant": 0},
+        "2019": {"aides": 2675, "element_aide_eur": 5202231166.59, "aides_avec_montant": 2201, "fourchettes": 474,
+                 "aides_sans_montant": 0},
+        "2020": {"aides": 4295, "element_aide_eur": 7838596550.24, "aides_avec_montant": 3848, "fourchettes": 372,
+                 "aides_sans_montant": 75},
+        "2021": {"aides": 22808, "element_aide_eur": 16507720570.19, "aides_avec_montant": 22219, "fourchettes": 452,
+                 "aides_sans_montant": 137},
+        "2022": {"aides": 20420, "element_aide_eur": 8392883622.6, "aides_avec_montant": 17151, "fourchettes": 3218,
+                 "aides_sans_montant": 51},
+        "2023": {"aides": 15165, "element_aide_eur": 12589639677.24, "aides_avec_montant": 14612, "fourchettes": 553,
+                 "aides_sans_montant": 0},
+        "2024": {"aides": 33591, "element_aide_eur": 13695758350.0, "aides_avec_montant": 25664, "fourchettes": 7927,
+                 "aides_sans_montant": 0},
+        "2025": {"aides": 22204, "element_aide_eur": 6698549808.28, "aides_avec_montant": 14613, "fourchettes": 7591,
+                 "aides_sans_montant": 0},
+        "2026": {"aides": 3268, "element_aide_eur": 1593535952.48, "aides_avec_montant": 3268, "fourchettes": 0,
+                 "aides_sans_montant": 0},
+    },
+    "references": {"export_du": "2026-11-18", "aides_pages": 130506, "aides_export": 137740, "communes": 130506,
+                   "seulement_dans_l_export": 7234, "seulement_dans_les_pages": 0,
+                   "date_octroi_differente": 0, "numero_sa_different": 0,
+                   "montant_exact_different": 0, "montant_publie_puis_absent": 1,
+                   "fourchette_notee_autrement": 20668,
+                   "note": "aides communes : mêmes dates d'octroi, mêmes mesures et mêmes montants exacts ; les "
+                           "fourchettes sont écrites autrement (« 500,001 à 1,000,000 EUR » dans les pages, "
+                           "« 500,000 - 1,000,000 » dans l'export) ; une aide affichée « 0 EUR » dans les pages "
+                           "est sans montant dans l'export"},
+}
+
+
+def _resume(a: Agregat | dict) -> dict:
+    if isinstance(a, dict):
+        return dict(a)
+    return {"aides": a.nombre, "element_aide_eur": eur(a.montant), "aides_avec_montant": a.avec_montant,
+            "fourchettes": a.fourchettes, "aides_sans_montant": a.sans_montant}
+
+
+def comparaison_lectures(par_annee: dict, annees: list, total: Agregat) -> dict:
+    """Ancienne lecture (pages publiques) et export officiel côte à côte, par année d'octroi : même registre, même
+    pays, même notion (élément d'aide publié, montant total). Écarts calculés par le site, jamais tranchés."""
+    lignes = {}
+    for an in sorted(set(LECTURE_PAGES["par_annee"]) | {str(a) for a in annees}):
+        avant = LECTURE_PAGES["par_annee"].get(an)
+        apres = _resume(par_annee[int(an)]) if int(an) in par_annee else None
+        lignes[an] = {"pages_publiques": avant, "export_officiel": apres,
+                      "ecart_aides": (apres["aides"] - avant["aides"]) if avant and apres else None,
+                      "ecart_element_aide_eur": eur(apres["element_aide_eur"] - avant["element_aide_eur"])
+                      if avant and apres else None}
+    t_apres = _resume(total)
+    return {
+        "objet": "registre européen de transparence des aides d'État, France : deux lectures du même registre",
+        "pages_publiques": {k: LECTURE_PAGES[k] for k in ("date", "requetes", "methode", "url")},
+        "export_officiel": {"methode": SOURCES["tam"]["collecte"]},
+        "total": {"pages_publiques": LECTURE_PAGES["total"], "export_officiel": t_apres,
+                  "ecart_aides": t_apres["aides"] - LECTURE_PAGES["total"]["aides"],
+                  "ecart_element_aide_eur": eur(t_apres["element_aide_eur"]
+                                                - LECTURE_PAGES["total"]["element_aide_eur"])},
+        "par_annee": lignes,
+        "references": LECTURE_PAGES["references"],
+        "statut": "calculé par le site",
+        "methode": "écart = export officiel moins pages publiques, pour la même année d'octroi, le même pays (France) "
+                   "et la même notion (élément d'aide publié, exprimé en montant total, aides à montant exact ; "
+                   "fourchettes comptées à part) ; total : toutes années",
+        "lecture": "les deux lectures sont publiées côte à côte sans être départagées ; le site affiche celle de "
+                   "l'export officiel. Les aides communes aux deux lectures ont les mêmes dates d'octroi et les mêmes "
+                   "montants exacts (voir `references`) : les écarts viennent des aides présentes dans l'export et "
+                   "absentes des pages lues ; la source ne publie pas la cause de cette absence.",
+    }
+
+
+def produire_tam(terr: Territoires, ident: Identites) -> dict | None:
+    """Agrégats du registre d'après l'export officiel le plus récent ; None si aucun export n'est présent."""
+    plan = plan_exports()
+    if not plan:
+        return None
+    bilan_exports = {}
+    autres_monnaies = Counter()
     nace = referentiel_nace()
     total = Agregat()
     par_annee, par_mesure, par_objectif, par_instrument = (defaultdict(Agregat) for _ in range(4))
@@ -998,11 +984,10 @@ def produire_tam(terr: Territoires, ident: Identites) -> dict:
     secteurs_non_rattaches, regions_non_rattachees, illisibles = Counter(), Counter(), Counter()
     publication_delai = []
     groupe = Groupe()
-    vues = set()
-    for x in lire_tam():
-        if x["ref"] in vues:
-            continue
-        vues.add(x["ref"])
+    for x in lire_tam(plan, bilan_exports):
+        if propre(x.get("monnaie")) not in ("", "EUR"):     # montants hors euros : non publiés, comptés à part
+            autres_monnaies[propre(x.get("monnaie"))] += 1
+            x["element_aide"] = x["montant_nominal"] = None
         octroi = date_tam(x.get("date_octroi"))
         annee = int(octroi[:4]) if octroi else None
         montant, basse, haute = montant_tam(x.get("element_aide"))
@@ -1046,10 +1031,12 @@ def produire_tam(terr: Territoires, ident: Identites) -> dict:
         publie = date_tam(x.get("date_publication"))
         if octroi and publie:
             publication_delai.append((date.fromisoformat(publie) - date.fromisoformat(octroi)).days)
-        siren = siren_de(x.get("id_national")) if x.get("type_id") == "SIREN Number" else ""
+        siren = siren_tam(x)
         st, cj = ident.statut(siren) if siren else ("ni", None)
         if montant is not None:
-            groupe.ajouter(siren, st, cj, montant, {annee: montant} if annee else None)
+            # « Nom du bénéficiaire » lu seulement pour une personne morale vérifiée dans le répertoire SIRENE
+            nom = x["_nom"]() if st == "pm" and sirene.personne_morale(cj) else None
+            groupe.ajouter(siren, st, cj, montant, {annee: montant} if annee else None, nom=nom)
 
     def liste(d: dict, cle: str, libelles=None, nominal=False) -> list:
         out = []
@@ -1093,10 +1080,10 @@ def produire_tam(terr: Territoires, ident: Identites) -> dict:
                 isoles.append({"ref": ref, "sa": sa, "annee": an, "element_aide_eur": eur(m),
                                "mediane_mesure_eur": eur(mediane), "aides_mesure": len(lst)})
     delais = sorted(publication_delai)
-    man = manifeste_tam_lu()
+    date_export = plan[0]["date_export"]
     obj = {
-        "millesime": f"Aides octroyées de {annees[0]} à {annees[-1]}, registre consulté du {man['collecte_du']} au "
-                     f"{man['collecte_au']}" if annees else "registre vide",
+        "millesime": (f"Aides octroyées de {annees[0]} à {annees[-1]}, export officiel du registre du {date_export}"
+                      if annees else f"registre vide (export officiel du {date_export})"),
         "source": f"{SOURCES['tam']['titre']} ({SOURCES['tam']['url']})",
         "unite": "euros (élément d'aide publié, exprimé en montant total)",
         "avertissement": "Le registre ne contient que les aides individuelles au-dessus des seuils de publication "
@@ -1150,9 +1137,17 @@ def produire_tam(terr: Territoires, ident: Identites) -> dict:
         "beneficiaires": groupe.sortie(ident),
         "ordre": {"regle": "listes par élément d'aide décroissant, puis identifiant ; années croissantes",
                   "cles": ["-element_aide_eur", "identifiant"]},
-        "collecte": {**man, "methode": SOURCES["tam"]["collecte"], "url": SOURCES["tam"]["url"],
-                     "champ_non_lu": "nom du bénéficiaire (jamais enregistré : les personnes morales sont nommées "
-                                     "d'après le répertoire SIRENE)"},
+        "collecte": {"date_export": date_export, "exports": description_exports(plan, bilan_exports),
+                     "methode": SOURCES["tam"]["collecte"], "url": SOURCES["tam"]["url"],
+                     "regle_exports": "pour une date d'octroi couverte par plusieurs exports, le plus récent fait foi",
+                     "montants_hors_euros": [{"monnaie": k, "aides": n} for k, n in sorted(autres_monnaies.items())],
+                     "identifiant": "l'export ne publie pas le type d'identifiant national : SIREN retenu pour un "
+                                    "bénéficiaire établi en France dont l'identifiant a 9 chiffres (8 si le zéro de "
+                                    "tête manque) ou 14 (SIRET), clé de contrôle valide",
+                     "champ_non_lu": "nom du bénéficiaire, sauf pour un SIREN dont la catégorie juridique SIRENE est "
+                                     "celle d'une personne morale (nom du répertoire SIRENE en priorité, sinon nom de "
+                                     "l'export) ; personnes physiques et entrepreneurs individuels jamais nommés"},
+        "comparaison_lectures": comparaison_lectures(par_annee, annees, total),
     }
     return obj
 
@@ -1616,13 +1611,15 @@ def produire_pge(terr: Territoires) -> dict:
 RECHERCHE_PUBLIQUE = {
     "date": "2026-11-18",
     "conclusion": "Aucun jeu ouvert ne publie le registre européen des aides d'État pour la France en fichier : la "
-                  "Commission envoie ses exports par courriel après saisie d'un nom, et le seul dépôt public qui le "
-                  "lit (pages de résultats) ne déclare pas de licence. Le module reprend la méthode des pages "
-                  "publiques sans reprendre de code. France 2030, France Relance et les PGE sont repris tels que "
+                  "Commission envoie ses exports par courriel, sur demande. Le module lit cet export officiel "
+                  "(fichiers CSV de 100 000 lignes au plus, découpés par période d'octroi) au lieu des pages de "
+                  "résultats lues jusqu'au 18 novembre 2026 ; le seul dépôt public qui lit le registre (pages de "
+                  "résultats) ne déclare pas de licence. France 2030, France Relance et les PGE sont repris tels que "
                   "publiés (data.gouv.fr, data.economie.gouv.fr, Etalab).",
     "trouvailles": [
         {"nom": "Commission européenne, State Aid Transparency, recherche publique", "url": TAM_PAGE,
-         "verdict": "réutilisable tel quel (pages publiques de résultats ; export par courriel non utilisé)",
+         "verdict": "réutilisable tel quel (export officiel transmis par courriel, lu depuis le 18 novembre 2026 ; "
+                    "pages publiques de résultats lues auparavant)",
          "licence": "réutilisation autorisée avec mention de la source (décision 2011/833/UE)",
          "mise_a_jour": "quotidienne (version 2.18.1 de l'application)"},
         {"nom": "DataFrosch/scraper-stateaid (lecture paginée du registre, Python et PostgreSQL)",
@@ -1663,9 +1660,11 @@ RECHERCHE_PUBLIQUE = {
 }
 
 INACCESSIBLES = [
-    {"source": "Registre TAM, export CSV ou XLSX", "url": TAM_PAGE,
-     "constat": "l'export demande un nom et une adresse de courriel et part par courriel (100 000 lignes au plus)",
-     "effet": "non utilisé : lecture des pages publiques de résultats, mois par mois"},
+    {"source": "Registre TAM, export officiel (CSV)", "url": TAM_PAGE,
+     "constat": "l'export n'est pas téléchargeable directement : la Commission l'envoie par courriel sur demande, "
+                "100 000 lignes au plus par fichier",
+     "effet": "pas de renouvellement automatique : la mise à jour hebdomadaire lit le dernier export déposé dans "
+              "l'entrepôt ; renouvellement à la main (docs/contrat_interface.md)"},
     {"source": "Registre TAM, mention Covid-19 de chaque aide", "url": TAM_PAGE,
      "constat": "critère de recherche sans colonne dans les résultats", "effet": "aides Covid-19 non isolées"},
     {"source": "PGE accordés en 2022", "url": SOURCES["pge"]["url"],
@@ -1790,7 +1789,7 @@ def construire_index(tam: dict, f30: dict, rel: dict, pge: dict, terr: Territoir
     liens = [l for l in liens if (SITE / l["fichier"]).exists()]
     top = tam["beneficiaires"]
     return {
-        "millesime": f"Registre TAM consulté au {tam['collecte']['collecte_au']} ; autres sources collectées au "
+        "millesime": f"Registre TAM : export officiel du {tam['collecte']['date_export']} ; autres sources collectées au "
                      f"{_date_collecte(CATALOGUE_IDS)}",
         "source": "pipeline/aides_entreprises.py : Commission européenne (registre TAM), SGPI (France 2030), "
                   "ministère de l'économie (France Relance), Etalab (PGE) ; voir `sources`",
@@ -1810,11 +1809,18 @@ def construire_index(tam: dict, f30: dict, rel: dict, pge: dict, terr: Territoir
                                 "du projet ; PGE : région du fichier ; un montant par source, jamais additionnés",
                        "regions": {c: {"nom": terr.nom(c), **regions[c]} for c in sorted(regions)}},
         "ecarts": ecarts,
+        "export_officiel_tam": {"date_export": tam["collecte"]["date_export"],
+                                "fichiers": [{k: e[k] for k in ("fichier", "date_export", "octroi_du", "octroi_au",
+                                                                "lignes", "retenues")}
+                                             for e in tam["collecte"]["exports"]],
+                                "renouvellement": "docs/contrat_interface.md, axe aides_entreprises"},
+        "comparaison_lectures_tam": tam["comparaison_lectures"],
         "liens": liens,
         "confidentialite": {
             "regle": "Seules les personnes morales (catégorie juridique 2xxx à 9xxx dans le répertoire SIRENE) sont "
                      "nommées. Entrepreneurs individuels, exploitants agricoles, identifiants absents ou non vérifiés : "
-                     "agrégés. Le nom du bénéficiaire publié dans le registre européen n'est jamais lu.",
+                     "agrégés. Le nom du bénéficiaire publié dans le registre européen n'est lu que pour un SIREN de "
+                     "personne morale vérifié dans le répertoire SIRENE.",
             "tam": {"beneficiaires_nommes": len(top["top"]),
                     "montant_nomme_eur": eur(sum(x["montant_eur"] for x in top["top"])),
                     "autres_personnes_morales_eur": top["autres_personnes_morales"]["montant_eur"],
@@ -1827,7 +1833,7 @@ def construire_index(tam: dict, f30: dict, rel: dict, pge: dict, terr: Territoir
             "petites aides, ni la plupart des avantages fiscaux généraux, ni les exonérations générales de "
             "cotisations.",
             "Les autorités publient jusqu'à un an après l'octroi : les années récentes du registre sont incomplètes "
-            "et changent d'une collecte à l'autre.",
+            "et changent d'un export à l'autre ; le registre est à jour à la date de l'export officiel lu.",
             "France 2030 compte des montants engagés à la décision, France Relance des participations annoncées, le "
             "registre européen des éléments d'aide, les PGE des prêts garantis : quatre notions différentes.",
             "Le secteur d'une aide du registre est celui que déclare l'autorité ; celui d'un bénéficiaire de France "
@@ -1835,10 +1841,7 @@ def construire_index(tam: dict, f30: dict, rel: dict, pge: dict, terr: Territoir
             "Les montants de France Relance ne sont pas ventilés par année ; ceux des PGE s'arrêtent à fin 2021.",
         ],
         "sources": [{"id": k, **{c: v for c, v in s.items() if c != "chemin"}} for k, s in SOURCES.items()],
-        "sources_inaccessibles": INACCESSIBLES + ([{"source": "Registre TAM", "url": TAM_PAGE,
-                                                    "constat": tam["collecte"]["dernier_refus"]["constat"],
-                                                    "effet": "mois non relus conservés tels quels"}]
-                                                  if tam["collecte"].get("dernier_refus") else []),
+        "sources_inaccessibles": INACCESSIBLES,
         "recherche_publique": RECHERCHE_PUBLIQUE,
         "fichiers": ["aides_entreprises/index.json", "aides_entreprises/tam.json", "aides_entreprises/france2030.json",
                      "aides_entreprises/france_relance.json", "aides_entreprises/pge.json"],
@@ -1848,6 +1851,14 @@ def construire_index(tam: dict, f30: dict, rel: dict, pge: dict, terr: Territoir
 def produire(sortie: Path = SORTIE) -> dict:
     terr, ident = Territoires(), Identites()
     tam = produire_tam(terr, ident)
+    if tam is None:
+        publie = next((f for f in (sortie / "tam.json", SORTIE / "tam.json") if f.exists()), None)
+        if publie is None or "date_export" not in json.loads(publie.read_text(encoding="utf-8")).get("collecte", {}):
+            raise SystemExit("aucun export officiel du registre TAM dans data/lake/aides_entreprises/export_officiel/ "
+                             "et aucun tam.json publié issu d'un export : déposer l'export (docs/contrat_interface.md)")
+        tam = json.loads(publie.read_text(encoding="utf-8"))
+        print(f"TAM : aucun export dans l'entrepôt, {publie.relative_to(ROOT) if publie.is_relative_to(ROOT) else publie}"
+              f" gardé tel quel (export du {tam['collecte']['date_export']})", flush=True)
     f30 = produire_france2030(terr, ident)
     rel = produire_france_relance(terr, ident)
     pge = produire_pge(terr)
@@ -1865,9 +1876,10 @@ def produire(sortie: Path = SORTIE) -> dict:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sp = ap.add_subparsers(dest="cmd", required=True)
-    c = sp.add_parser("collecter", help="réseau : catalogue, registre TAM, répertoire SIRENE")
+    c = sp.add_parser("collecter", help="réseau : catalogue, nomenclature NACE, répertoire SIRENE")
     c.add_argument("--budget", type=float, default=1800, help="secondes (reprenable)")
-    c.add_argument("--rafraichir", action="store_true", help="relire les mois récents du registre TAM")
+    c.add_argument("--rafraichir", action="store_true",
+                   help="sans effet (le registre TAM vient de l'export officiel, plus des pages publiques)")
     p = sp.add_parser("produire", help="sans réseau")
     p.add_argument("--sortie", type=Path, default=SORTIE)
     a = ap.parse_args(argv)

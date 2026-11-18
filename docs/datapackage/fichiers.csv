@@ -3436,6 +3436,7 @@ entites/fiches/355.json,entites-fiches,entites_fiches.schema.json,https://mooney
 entites/fiches/356.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/356.json
 entites/fiches/357.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/357.json
 entites/fiches/358.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/358.json
+entites/fiches/366.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/366.json
 entites/fiches/367.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/367.json
 entites/fiches/370.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/370.json
 entites/fiches/376.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/376.json
@@ -3639,6 +3640,7 @@ entites/fiches/645.json,entites-fiches,entites_fiches.schema.json,https://mooney
 entites/fiches/646.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/646.json
 entites/fiches/651.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/651.json
 entites/fiches/652.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/652.json
+entites/fiches/653.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/653.json
 entites/fiches/654.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/654.json
 entites/fiches/655.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/655.json
 entites/fiches/656.json,entites-fiches,entites_fiches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/656.json
@@ -4483,6 +4485,7 @@ entites/recherche/we.json,entites-recherche,entites_recherche.schema.json,https:
 entites/recherche/wh.json,entites-recherche,entites_recherche.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/wh.json
 entites/recherche/wi.json,entites-recherche,entites_recherche.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/wi.json
 entites/recherche/wo.json,entites-recherche,entites_recherche.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/wo.json
+entites/recherche/wr.json,entites-recherche,entites_recherche.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/wr.json
 entites/recherche/ws.json,entites-recherche,entites_recherche.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/ws.json
 entites/recherche/wu.json,entites-recherche,entites_recherche.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/wu.json
 entites/recherche/ww.json,entites-recherche,entites_recherche.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/ww.json

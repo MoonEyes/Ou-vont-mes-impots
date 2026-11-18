@@ -25,7 +25,9 @@
   "sources",
   "sources_inaccessibles",
   "recherche_publique",
-  "fichiers"
+  "fichiers",
+  "export_officiel_tam",
+  "comparaison_lectures_tam"
  ],
  "propertyNames": {
   "not": {
@@ -351,6 +353,38 @@
     "type": "string",
     "pattern": "^aides_entreprises/[a-z0-9_]+\\.json$"
    }
+  },
+  "export_officiel_tam": {
+   "type": "object",
+   "required": [
+    "date_export",
+    "fichiers",
+    "renouvellement"
+   ],
+   "properties": {
+    "date_export": {
+     "type": "string",
+     "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "fichiers": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "object",
+      "required": [
+       "fichier",
+       "date_export",
+       "octroi_du",
+       "octroi_au",
+       "lignes",
+       "retenues"
+      ]
+     }
+    }
+   }
+  },
+  "comparaison_lectures_tam": {
+   "$ref": "#/$defs/comparaison_lectures"
   }
  },
  "$defs": {
@@ -570,6 +604,131 @@
      "additionalProperties": {
       "$ref": "aides_entreprises_index.schema.json#/$defs/pge_valeur"
      }
+    }
+   }
+  },
+  "comparaison_lectures": {
+   "type": "object",
+   "required": [
+    "objet",
+    "pages_publiques",
+    "export_officiel",
+    "total",
+    "par_annee",
+    "references",
+    "statut",
+    "methode",
+    "lecture"
+   ],
+   "properties": {
+    "statut": {
+     "const": "calculé par le site"
+    },
+    "methode": {
+     "type": "string",
+     "minLength": 40
+    },
+    "lecture": {
+     "type": "string",
+     "minLength": 40
+    },
+    "total": {
+     "type": "object",
+     "required": [
+      "pages_publiques",
+      "export_officiel",
+      "ecart_aides",
+      "ecart_element_aide_eur"
+     ]
+    },
+    "par_annee": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^[0-9]{4}$"
+     },
+     "additionalProperties": {
+      "type": "object",
+      "required": [
+       "pages_publiques",
+       "export_officiel",
+       "ecart_aides",
+       "ecart_element_aide_eur"
+      ],
+      "properties": {
+       "pages_publiques": {
+        "type": [
+         "object",
+         "null"
+        ],
+        "required": [
+         "aides",
+         "element_aide_eur",
+         "aides_avec_montant",
+         "fourchettes",
+         "aides_sans_montant"
+        ],
+        "properties": {
+         "aides": {
+          "type": "integer",
+          "minimum": 0
+         },
+         "element_aide_eur": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        }
+       },
+       "export_officiel": {
+        "type": [
+         "object",
+         "null"
+        ],
+        "required": [
+         "aides",
+         "element_aide_eur",
+         "aides_avec_montant",
+         "fourchettes",
+         "aides_sans_montant"
+        ],
+        "properties": {
+         "aides": {
+          "type": "integer",
+          "minimum": 0
+         },
+         "element_aide_eur": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        }
+       },
+       "ecart_aides": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "ecart_element_aide_eur": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      }
+     }
+    },
+    "references": {
+     "type": "object",
+     "required": [
+      "aides_pages",
+      "aides_export",
+      "communes",
+      "seulement_dans_l_export",
+      "seulement_dans_les_pages"
+     ]
     }
    }
   }

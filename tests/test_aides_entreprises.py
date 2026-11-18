@@ -1,4 +1,5 @@
-"""Aides aux entreprises (pipeline/aides_entreprises.py) : lecture du registre européen de transparence (TAM),
+"""Aides aux entreprises (pipeline/aides_entreprises.py) : lecture de l'export officiel du registre européen de
+transparence (TAM),
 rattachements (secteur, région), confidentialité, écarts entre sources, cohérence des fichiers publiés.
 
 Les tests unitaires et les tests sur site/data/aides_entreprises tournent sans réseau ni entrepôt ; la
@@ -33,62 +34,114 @@ def charger(nom: str) -> dict:
     return json.loads((DOSSIER / nom).read_text(encoding="utf-8"))
 
 
-# --- Lecture des pages du registre ----------------------------------------------------------------------------------
+# --- Lecture de l'export officiel du registre ------------------------------------------------------------------------
 
-ENTETES = ["Pays", "Intitulé de la mesure d'aide", "Numéro SA", "Numéro de référence", "ID national",
-           "Nom du bénéficiaire", "Type de bénéficiaire", "Région", "Secteur (NACE)", "Instrument d'aide",
-           "Objectif de l’aide", "Montant nominal, exprimé en montant total",
-           "Élément d'aide, exprimé en montant total", "Date d'octroi",
-           "Nom de l'autorité chargée de l'octroi de l'aide", "Entité en charge", "Intermédiaires financiers",
-           "Date de publication", "Benéficiaire dans un autre État membre", "Pays tiers hors UE"]
-
-
-def page(lignes: list[list[str]], entetes=ENTETES, pagination: str = "") -> str:
-    th = "".join(f"<th><a href='#'>{e}</a></th>" for e in entetes)
-    corps = "".join("<tr>" + "".join(c for c in l) + "</tr>" for l in lignes)
-    return (f"<html><body><table id='resultsTable'><thead><tr>{th}</tr></thead><tbody>{corps}</tbody></table>"
-            f"{pagination}</body></html>")
+ENTETES = ["Pays", "Benéficiaire dans un autre État membre", "Intitulé de la mesure d'aide",
+           "Intitulé de la mesure d'aide [EN]", "Numéro SA", "Numéro de référence", "ID national",
+           "Nom du bénéficiaire", "Nom du bénéficiaire [EN]", "Type de bénéficiaire", "Région", "Secteur (NACE)",
+           "Instrument d'aide", "Instrument d'aide [EN]", "Objectif de l’aide", "Objectif de l’aide [EN]",
+           "Montant nominal, exprimé en montant total", "Élément d'aide, exprimé en montant total", "Monnaie",
+           "Date d'octroi", "Nom de l'autorité chargée de l'octroi de l'aide",
+           "Nom de l'autorité chargée de l'octroi de l'aide [EN]", "Date de publication", "Entité en charge",
+           "Intermédiaires financiers", "Pays tiers hors UE"]
 
 
-LIGNE = ["<td>France</td>",
-         "<td title=\"Régime cadre RDI 2014-2020 - plan d&#39;évaluation\" class='translatable'>Régime cadre RDI ..."
-         "<span class='translationTooltip' title='R&amp;D'>en</span></td>",
-         "<td class='small'><a href='x'>SA.40391</a></td>", "<td class='small'><a href='y'>TM-10000141</a></td>",
-         "<td title='SIREN Number'> 531860823 </td>", "<td class='translatable'>MARIE DUPONT</td>",
-         "<td>petites et moyennes entreprises</td>", "<td>Gironde</td>", "<td>Activités d&#39;ingénierie</td>",
-         "<td>Subvention/Bonification d’intérêts</td>",
-         "<td title='Recherche industrielle [art. 25, paragraphe 2, point b)]'>Recherche industrielle [art. ...</td>",
-         "<td></td>", "<td title='1,406,726 EUR'>1,406,726 EUR</td>", "<td>28/07/2016</td>",
-         "<td class='translatable'>Ministère de l&#39;économie et des finances "
-         "<span class='translationTooltip' title='Ministry'>en</span></td>",
-         "<td></td>", "<td></td>", "<td>15/09/2016</td>", "<td>France</td>", "<td></td>"]
+def ligne(ref, ident, nom, montant, octroi, pays_benef="France"):
+    v = {"Pays": "France", "Benéficiaire dans un autre État membre": pays_benef,
+         "Intitulé de la mesure d'aide": "Régime cadre RDI", "Numéro SA": "SA.40391", "Numéro de référence": ref,
+         "ID national": ident, "Nom du bénéficiaire": nom, "Nom du bénéficiaire [EN]": nom,
+         "Type de bénéficiaire": "petites et moyennes entreprises", "Région": "Gironde",
+         "Secteur (NACE)": "Activités d'ingénierie", "Instrument d'aide": "Subvention directe",
+         "Objectif de l’aide": "Recherche industrielle", "Élément d'aide, exprimé en montant total": montant,
+         "Monnaie": "EUR", "Date d'octroi": octroi, "Nom de l'autorité chargée de l'octroi de l'aide": "Bpifrance",
+         "Date de publication": "15/09/2022"}
+    return [v.get(e, "") for e in ENTETES]
 
 
-def test_page_tam_lue_sans_le_nom_du_beneficiaire():
-    lignes, dernier = ae.lire_page_tam(page([LIGNE], pagination="<a href='r?offset=200&amp;max=100'>3</a>"
-                                                                "<a href='r?offset=100&amp;max=100'>2</a>"))
-    assert dernier == 200
-    assert len(lignes) == 1
-    x = lignes[0]
-    assert x["ref"] == "TM-10000141" and x["sa"] == "SA.40391"
-    assert x["type_id"] == "SIREN Number" and x["id_national"] == "531860823"
-    assert x["mesure"] == "Régime cadre RDI 2014-2020 - plan d'évaluation"   # texte complet de l'attribut title
-    assert x["autorite"] == "Ministère de l'économie et des finances"      # infobulle de traduction retirée
-    assert x["element_aide"] == "1,406,726 EUR" and x["montant_nominal"] is None
-    assert "MARIE DUPONT" not in json.dumps(x, ensure_ascii=False)          # nom du bénéficiaire jamais lu
-    assert set(x) - {"pays"} <= set(ae.TAM_CHAMPS)
-    assert not set(ae.TAM_CHAMPS) & {"nom", "nom_beneficiaire", "beneficiaire", "denomination"}
+def ecrire_export(dossier: Path, nom: str, lignes, entetes=ENTETES) -> Path:
+    import csv as _csv
+    import gzip
+    dossier.mkdir(parents=True, exist_ok=True)
+    p = dossier / nom
+    with gzip.open(p, "wt", encoding="utf-8-sig", newline="") as f:
+        w = _csv.writer(f)
+        w.writerow(entetes)
+        w.writerows(lignes)
+    return p
 
 
-def test_page_tam_colonne_inconnue_refusee():
-    with pytest.raises(RuntimeError):
-        ae.lire_page_tam(page([LIGNE], entetes=ENTETES[:-1] + ["Colonne nouvelle"]))
+def test_export_nom_lu_seulement_pour_une_personne_morale(tmp_path, monkeypatch):
+    monkeypatch.setattr(ae, "EXPORT_DIR", tmp_path)
+    ecrire_export(tmp_path, "Transparency_export_1_2026-11-18_123.csv.gz", [
+        ligne("TM-1", "531860823", "SOCIETE EXEMPLE", "1406726", "28/07/2022"),           # personne morale
+        ligne("TM-2", "438810129 00025", "MARIE DUPONT", "> 100,000 - 500,000", "02/08/2022"),  # personne physique
+        ligne("TM-3", "842959249", "JEAN MARTIN", "250000", "03/08/2022"),                # personne physique
+        ligne("TM-4", "123456782", "HANDELS BV", "300000", "04/08/2022", pays_benef="Pays-Bas"),   # étranger
+    ])
+    ident = IdentitesFactices({"531860823": {"trouve": True, "cj": "5710"},
+                               "438810129": {"trouve": True, "cj": "1000"},
+                               "842959249": {"trouve": True, "cj": "1000"}})
+    lus, noms = [], []
+    g = ae.Groupe()
+    for x in ae.lire_tam():
+        assert "MARIE DUPONT" not in json.dumps({k: v for k, v in x.items() if k != "_nom"}, ensure_ascii=False)
+        s = ae.siren_tam(x)
+        st, cj = ident.statut(s) if s else ("ni", None)
+        nom = x["_nom"]() if st == "pm" and sirene.personne_morale(cj) else None
+        noms.append(nom)
+        m = ae.montant_tam(x["element_aide"])[0]
+        if m is not None:
+            g.ajouter(s, st, cj, m, {2022: m}, nom=nom)
+        lus.append((x["ref"], s, st))
+    assert lus == [("TM-1", "531860823", "pm"), ("TM-2", "438810129", "pp"), ("TM-3", "842959249", "pp"),
+                   ("TM-4", "", "ni")]
+    assert noms == ["SOCIETE EXEMPLE", None, None, None]
+    s = g.sortie(ident, top=5)
+    assert [x["denomination"] for x in s["top"]] == ["SOCIETE EXEMPLE"]   # absent du répertoire : nom de l'export
+    texte = json.dumps(s, ensure_ascii=False)
+    assert "MARIE DUPONT" not in texte and "JEAN MARTIN" not in texte and "HANDELS" not in texte
+    assert s["exclus_personnes_physiques_ou_non_identifies"]["dont_personnes_physiques_eur"] == 250000.0
+
+
+def test_export_le_plus_recent_fait_foi_pour_ses_dates(tmp_path, monkeypatch):
+    monkeypatch.setattr(ae, "EXPORT_DIR", tmp_path)
+    ecrire_export(tmp_path, "Transparency_export_1_2026-11-18.csv.gz", [
+        ligne("TM-1", "531860823", "A", "100", "10/06/2021"), ligne("TM-2", "531860823", "A", "200", "10/06/2023")])
+    ecrire_export(tmp_path, "Transparency_export_2_2027-02-01.csv.gz", [
+        ligne("TM-2", "531860823", "A", "250", "10/06/2023"), ligne("TM-3", "531860823", "A", "300", "10/07/2023")])
+    plan = ae.plan_exports()
+    assert [e["fichier"][:22] for e in plan] == ["Transparency_export_2_", "Transparency_export_1_"]
+    bilan = {}
+    lus = {x["ref"]: x["element_aide"] for x in ae.lire_tam(plan, bilan)}
+    assert lus == {"TM-1": "100", "TM-2": "250", "TM-3": "300"}
+    assert bilan["Transparency_export_1_2026-11-18.csv.gz"]["couvertes_par_un_export_plus_recent"] == 1
+
+
+def test_export_colonne_inconnue_refusee(tmp_path, monkeypatch):
+    monkeypatch.setattr(ae, "EXPORT_DIR", tmp_path)
+    ecrire_export(tmp_path, "Transparency_export_1_2026-11-18.csv.gz",
+                  [ligne("TM-1", "531860823", "A", "100", "10/06/2021") + ["x"]], ENTETES + ["Adresse électronique"])
+    with pytest.raises(SystemExit):
+        list(ae.lire_tam())
+
+
+def test_lecture_page_a_page_retiree():
+    for nom in ("SessionTam", "collecter_tam", "collecter_mois", "lire_page_tam"):
+        assert not hasattr(ae, nom), nom
+    assert "pages publiques" not in ae.SOURCES["tam"]["collecte"]
+    assert "export officiel" in ae.SOURCES["tam"]["collecte"]
 
 
 @pytest.mark.parametrize("valeur,attendu", [
     ("1,406,726 EUR", (1406726.0, 1406726.0, 1406726.0)),
     ("180,009.52 EUR", (180009.52, 180009.52, 180009.52)),
     ("500,001 à 1,000,000 EUR", (None, 500001.0, 1000000.0)),
+    ("603748", (603748.0, 603748.0, 603748.0)),
+    ("12500.5", (12500.5, 12500.5, 12500.5)),
+    ("> 100,000 - 500,000", (None, 100000.0, 500000.0)),
+    ("500,000 - 1,000,000", (None, 500000.0, 1000000.0)),
+    ("< 100,000", (None, 0.0, 100000.0)),
+    ("> 30,000,000", (None, 30000000.0, None)),
     ("30,000,001 à EUR", (None, 30000001.0, None)),
     ("", (None, None, None)),
     ("non communiqué", (None, None, None)),
@@ -98,6 +151,10 @@ def test_montants_publies(valeur, attendu):
 
 
 def test_identifiants_et_tranches():
+    assert ae.siren_tam({"id_national": "438 810 129 00025", "autre_etat_membre": "France"}) == "438810129"
+    assert ae.siren_tam({"id_national": "NL123456782B01", "autre_etat_membre": "Pays-Bas"}) == ""
+    assert ae.siren_tam({"id_national": "123456782", "autre_etat_membre": "Belgique"}) == ""
+    assert ae.siren_tam({"id_national": "12345", "autre_etat_membre": "France"}) == ""
     assert ae.siren_de("43881012900025") == "438810129"
     assert ae.siren_de("842959249.0") == "842959249"
     assert ae.siren_de("12345") == "000012345"
@@ -299,6 +356,24 @@ def test_index_sources_cote_a_cote_jamais_additionnees():
 
 
 @avec_donnees
+def test_comparaison_des_deux_lectures_publiee_sans_trancher():
+    i, t = charger("index.json"), charger("tam.json")
+    c = i["comparaison_lectures_tam"]
+    assert c == t["comparaison_lectures"] and c["statut"] == "calculé par le site" and c["methode"]
+    for an, v in c["par_annee"].items():
+        if v["pages_publiques"] and v["export_officiel"]:
+            assert v["ecart_aides"] == v["export_officiel"]["aides"] - v["pages_publiques"]["aides"]
+            assert abs(v["ecart_element_aide_eur"] - (v["export_officiel"]["element_aide_eur"]
+                                                      - v["pages_publiques"]["element_aide_eur"])) < 0.02
+    assert c["total"]["export_officiel"]["aides"] == t["total"]["aides"]
+    assert i["export_officiel_tam"]["date_export"] == t["collecte"]["date_export"]
+    assert t["collecte"]["date_export"] in i["millesime"] and t["collecte"]["date_export"] in t["millesime"]
+    for e in t["collecte"]["exports"]:
+        assert e["lignes"] <= ae.EXPORT_MAX_LIGNES
+        assert not re.search(r"@|courriel", json.dumps(e, ensure_ascii=False))
+
+
+@avec_donnees
 def test_recherche_publique_classee():
     r = charger("index.json")["recherche_publique"]
     assert len(r["trouvailles"]) >= 5
@@ -309,7 +384,7 @@ def test_recherche_publique_classee():
 
 # --- Reproductibilité (entrepôt requis) ----------------------------------------------------------------------------
 
-@pytest.mark.skipif(not any(ae.TAM_DIR.glob("fr_*.csv")) or not ae.SOURCES["france2030"]["chemin"].exists(),
+@pytest.mark.skipif(not ae.fichiers_export() or not ae.SOURCES["france2030"]["chemin"].exists(),
                     reason="entrepôt data/lake/aides_entreprises absent : reproductibilité non vérifiable ici")
 def test_production_reproductible(tmp_path):
     empreintes = []

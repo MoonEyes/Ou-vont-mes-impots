@@ -10692,7 +10692,7 @@
    "nombre_fichiers": 1,
    "etape_pipeline": "aides_entreprises",
    "millesimes": [
-    "Registre TAM consulté au 2026-11-18 ; autres sources collectées au 2026-11-18"
+    "Registre TAM : export officiel du 2026-11-18 ; autres sources collectées au 2026-11-18"
    ],
    "sources_declarees": [
     "pipeline/aides_entreprises.py : Commission européenne (registre TAM), SGPI (France 2030), ministère de l'économie (France Relance), Etalab (PGE) ; voir `sources`"
@@ -10737,10 +10737,10 @@
    "nombre_fichiers": 1,
    "etape_pipeline": "aides_entreprises",
    "millesimes": [
-    "Aides octroyées de 2016 à 2026, registre consulté du 2026-11-18 au 2026-11-18"
+    "Aides octroyées de 2016 à 2026, export officiel du registre du 2026-11-18"
    ],
    "sources_declarees": [
-    "Commission européenne, State Aid Transparency (Transparency Award Module), recherche publique, France : aides individuelles octroyées publiées par les autorités françaises (https://webgate.ec.europa.eu/competition/transparency/public?lang=fr)"
+    "Commission européenne, State Aid Transparency (Transparency Award Module), export officiel du registre (fichiers CSV transmis par la Commission sur demande), France : aides individuelles octroyées publiées par les autorités françaises (https://webgate.ec.europa.eu/competition/transparency/public?lang=fr)"
    ]
   },
   {
@@ -14208,7 +14208,7 @@
   {
    "name": "entites-fiches",
    "title": "fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py)",
-   "description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 617 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 619 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/005.json",
    "format": "json",
    "mediatype": "application/json",
@@ -14230,7 +14230,7 @@
     }
    ],
    "motif": "site/data/entites/fiches/*.json",
-   "nombre_fichiers": 617,
+   "nombre_fichiers": 619,
    "etape_pipeline": "entites",
    "millesimes": [
     "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
@@ -14242,7 +14242,7 @@
   {
    "name": "entites-recherche",
    "title": "organisations dont un mot du nom commence par la clé (pipeline/entites.py)",
-   "description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 651 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 652 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/00.json",
    "format": "json",
    "mediatype": "application/json",
@@ -14264,7 +14264,7 @@
     }
    ],
    "motif": "site/data/entites/recherche/*.json",
-   "nombre_fichiers": 651,
+   "nombre_fichiers": 652,
    "etape_pipeline": "entites",
    "millesimes": [
     "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"

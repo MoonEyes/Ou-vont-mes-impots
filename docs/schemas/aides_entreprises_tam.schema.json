@@ -2,7 +2,7 @@
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/aides_entreprises_tam.schema.json",
  "title": "site/data/aides_entreprises/tam.json : registre européen de transparence des aides d'État, France",
- "description": "Aides individuelles publiées par les autorités françaises (Transparency Award Module), agrégées par année d'octroi, mesure (numéro SA), objectif, instrument, type de bénéficiaire, section NAF, région et tranche ; bénéficiaires nommés : personnes morales seulement.",
+ "description": "Aides individuelles publiées par les autorités françaises (Transparency Award Module), lues dans l'export officiel du registre transmis par la Commission, agrégées par année d'octroi, mesure (numéro SA), objectif, instrument, type de bénéficiaire, section NAF, région et tranche ; bénéficiaires nommés : personnes morales seulement ; ancienne lecture (pages publiques) comparée à l'export.",
  "allOf": [
   {
    "$ref": "commun.schema.json#/$defs/entete"
@@ -31,7 +31,8 @@
   "montants_isoles",
   "beneficiaires",
   "ordre",
-  "collecte"
+  "collecte",
+  "comparaison_lectures"
  ],
  "propertyNames": {
   "not": {
@@ -413,13 +414,74 @@
   "collecte": {
    "type": "object",
    "required": [
-    "mois",
-    "collecte_du",
-    "collecte_au",
+    "date_export",
+    "exports",
     "methode",
     "url",
     "champ_non_lu"
-   ]
+   ],
+   "properties": {
+    "date_export": {
+     "type": "string",
+     "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "exports": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "object",
+      "required": [
+       "fichier",
+       "numero_export",
+       "date_export",
+       "octroi_du",
+       "octroi_au",
+       "lignes",
+       "retenues",
+       "sha256"
+      ],
+      "propertyNames": {
+       "not": {
+        "pattern": "(?i)(courriel|mail|nom_demandeur|demandeur)"
+       }
+      },
+      "properties": {
+       "fichier": {
+        "type": "string",
+        "pattern": "^Transparency_export_[0-9]+_[0-9]{4}-[0-9]{2}-[0-9]{2}[^/@]*\\.csv(\\.gz)?$"
+       },
+       "lignes": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 100000
+       },
+       "retenues": {
+        "type": "integer",
+        "minimum": 0
+       },
+       "sha256": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+       }
+      }
+     }
+    },
+    "methode": {
+     "type": "string",
+     "minLength": 20
+    },
+    "url": {
+     "type": "string",
+     "pattern": "^https://"
+    },
+    "champ_non_lu": {
+     "type": "string",
+     "minLength": 20
+    }
+   }
+  },
+  "comparaison_lectures": {
+   "$ref": "aides_entreprises_index.schema.json#/$defs/comparaison_lectures"
   }
  }
 }
