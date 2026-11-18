@@ -340,6 +340,7 @@ ${a && b && a === b ? '<p class="message-champ">Les deux communes de l’adresse
 <h2>Pour aller plus loin</h2>
 <ul class="liens-sortie">
   <li><a href="#/local">Budget de ma commune</a></li>
+  <li><a href="#/local/croiser">Comparer des communes qui se ressemblent</a> : même densité, même strate de population, même aire d’attraction</li>
   <li><a href="#/explorer/collectivites">Les collectivités locales en France</a></li>
 </ul>
 ${partPersonnelle()}`

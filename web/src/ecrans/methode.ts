@@ -168,7 +168,7 @@ ${
 
 <h2>Licences</h2>
 <ul>
-<li>Données : Licence Ouverte 2.0 (Etalab) ; Eurostat : réutilisation libre avec mention de la source.</li>
+<li>Données : Licence Ouverte 2.0 (Etalab) ; Eurostat : réutilisation libre avec mention de la source. Exception : les fichiers produits à partir d’un jeu publié sous Open Database License 1.0 (par exemple les données de data.ameli.fr de l’Assurance maladie) sont publiés sous la même licence ODbL 1.0, avec partage à l’identique ; la licence de chaque fichier est écrite dans le Data Package du dépôt (docs/datapackage).</li>
 <li>Code du site : MIT. <a href="${DEPOT}" rel="noopener noreferrer">Dépôt public</a>.</li>
 <li>Bibliothèques : modele-social ${h(__VERSION_MODELE_SOCIAL__)} (MIT), publicodes ${h(__VERSION_PUBLICODES__)} (MIT), Apache ECharts ${h(__VERSION_ECHARTS__)} (Apache-2.0), polices Bricolage Grotesque et Figtree (SIL Open Font License 1.1), hébergées avec le site.</li>
 </ul>

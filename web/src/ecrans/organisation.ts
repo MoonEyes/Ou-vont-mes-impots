@@ -10,7 +10,7 @@ import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent, urlDonnee } from '../donnees'
 import { lien, type Rendu } from '../routeur'
 import { ROUTES } from '../routes'
-import { absent, badgeStatut, entier, eur, eur2, h, legendeStatuts, source, surligne, traitStatut } from '../util'
+import { absent, badgeStatut, entier, eur, eur2, h, legendeStatuts, source, surligne, badgeCalcule } from '../util'
 
 type Valeur = [number | string | null, number | null]
 interface Serie {
@@ -98,8 +98,6 @@ const MAX_FICHIERS_RECHERCHE = 4
 const MAX_LIGNES_VISIBLES = 25
 const MOTS_VIDES = new Set(['de', 'du', 'des', 'la', 'le', 'les', 'l', 'd', 'et', 'a', 'au', 'aux', 'en', 'pour', 'sur', 'the', 'of'])
 
-/** Badge « calculé par le site » : motif pointillé (approché) et mention écrite. */
-export const badgeCalcule = () => `<span class="badge">${traitStatut('approche')}calculé par le site</span>`
 
 /** Montant tel que publié : à l'euro, centimes gardés quand la source en publie. */
 export const montantPublie = (x: number) => (Number.isInteger(x) ? eur(x) : eur2(x))
@@ -203,10 +201,10 @@ function tableBloc(idx: Index, b: Bloc, n: number): string {
     html += `<details><summary>Voir les ${h(entier(reste.length))} autres lignes</summary><div class="tableau-defile"><table><caption>${legende} (suite)</caption>${tete}<tbody>${reste.join('')}</tbody></table></div></details>`
   if (b.series_non_affichees) html += `<p class="aide">${h(entier(b.series_non_affichees.nombre))} autres lignes : ${h(b.series_non_affichees.regle)}.</p>`
   if (b.sommes_par_annee?.length) {
-    html += `<div class="tableau-defile"><table class="org-sommes"><caption>Sommes par année calculées par le site pour cette source</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Somme</th><th scope="col">Méthode</th></tr></thead><tbody>${b.sommes_par_annee
+    html += `<div class="tableau-defile"><table class="org-sommes"><caption>Sommes par année de cette source</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Somme</th><th scope="col">Méthode</th></tr></thead><tbody>${b.sommes_par_annee
       .map(
         ([an, somme, nb, groupe]) =>
-          `<tr><th scope="row">${h(String(an))}</th><td class="nombre">${h(montantPublie(somme))}</td><td>somme de ${h(entier(nb))} lignes publiées de la même année, même source et même notion de montant${groupe ? ` (${h(groupe)})` : ''} ${badgeCalcule()}</td></tr>`,
+          `<tr><th scope="row">${h(String(an))}</th><td class="nombre">${h(montantPublie(somme))}</td><td>${badgeCalcule(`somme de ${entier(nb)} lignes publiées de la même année, même source et même notion de montant${groupe ? ` (${groupe})` : ''}`)}</td></tr>`,
       )
       .join('')}</tbody></table></div>`
   }
@@ -257,8 +255,8 @@ ${recoit.length ? sectionBlocs(idx, recoit, 0) : absent('Aucune source du site n
 <p class="aide" data-regle-ordre>${h(REGLE_LIGNES)}</p>
 ${
   se.length
-    ? `<h3>Sommes de plusieurs sources</h3><ul>${se.map((x) => `<li>${h(String(x.annee))} : ${h(montantPublie(x.montant_eur))} (${h(x.canaux.join(', '))}) ${badgeCalcule()}</li>`).join('')}</ul>`
-    : `<p class="aide" data-sans-somme>Aucune somme toutes sources confondues : les sources n’ont pas la même année, la même définition du montant ou le même périmètre. Une somme n’est calculée que pour des lignes d’une même source, d’une même année et d’une même notion de montant ${badgeCalcule()}.</p>`
+    ? `<h3>Sommes de plusieurs sources</h3><ul>${se.map((x) => `<li>${h(String(x.annee))} : ${h(montantPublie(x.montant_eur))} (${h(x.canaux.join(', '))}) ${badgeCalcule('somme des montants de la même année et de la même notion de montant, publiés par chacune des sources citées')}</li>`).join('')}</ul>`
+    : `<p class="aide" data-sans-somme>Aucune somme toutes sources confondues : les sources n’ont pas la même année, la même définition du montant ou le même périmètre. Une somme n’est calculée que pour des lignes d’une même source, d’une même année et d’une même notion de montant.</p>`
 }
 ${autres.length ? `<h2>Autres mentions dans les sources du site</h2><p>Montants qu’elle verse (comme acheteur ou au budget de l’État) et mentions sans argent reçu (rapports de contrôle, répertoires, effectifs). Ils ne s’ajoutent pas à ce qu’elle reçoit.</p>${sectionBlocs(idx, autres, recoit.length)}` : ''}
 ${sectionProbables(idx, f)}

@@ -67,7 +67,8 @@ function accessibilite() {
     for (const th of Array.from(t.querySelectorAll('tbody th'))) expect(th.getAttribute('scope')).toBe('row')
   }
   expect(main.querySelectorAll('.surligne')).toHaveLength(1)
-  for (const a of Array.from(main.querySelectorAll('a[href]'))) {
+  // Lien « Signaler une erreur » (routeur, ticket GitHub du dépôt) : seul lien externe admis hors des sources.
+  for (const a of Array.from(main.querySelectorAll('a[href]:not(.signaler-lien)'))) {
     const href = a.getAttribute('href')!
     expect(href.startsWith('#/') || href.startsWith('data/') || href.startsWith('https://www.ccomptes.fr/'), href).toBe(true)
   }
@@ -164,7 +165,7 @@ describe('écran organisation', () => {
     expect(sommes.length).toBeGreaterThan(0)
     const lignesSommes = Array.from(main.querySelectorAll('table.org-sommes tbody tr'))
     expect(lignesSommes).toHaveLength(sommes.length)
-    for (const tr of lignesSommes) expect(n(tr.textContent)).toContain('calculé par le site')
+    for (const tr of lignesSommes) expect(n(tr.querySelector('[data-calcule]')?.textContent)).toBe('Calculé par le site')
     expect(main.querySelector('[data-sans-somme]')).not.toBeNull()
     expect(n(main.querySelector('[data-regle-ordre]')?.textContent)).toBe(REGLE_LIGNES)
     // Aucun total toutes sources : la somme de tous les montants reçus n'est écrite nulle part.

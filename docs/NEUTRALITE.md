@@ -100,4 +100,4 @@ Sinon le chiffre est retiré de l'affichage, et de préférence mis à `null` av
 | Destination 2025 des recettes douanières attribuée par déduction | non publiée (`parts` vide, `statut` = `non_publie`) |
 | Sommes et écarts entre chiffres publiés (facilité pour la reprise, cofinancement national, écarts entre sources, payé dans l'année par différence de cumuls, part des charges de personnel, médiane des prix) | gardés avec le badge et la méthode |
 
-Reste à arbitrer : les parts « sur 100 € » et la part personnelle du calcul (« ce que tu verses ») sont des calculs du site présents sur presque toutes les pages ; leur méthode est sur la page Méthode, elles n'ont pas encore le badge.
+Parts « sur 100 € » (décision du 18/11/2026) : ce sont des parts de chiffres publiés par une même source, sans badge ; une part qui combine deux sources porte le badge « Calculé par le site » et sa méthode (exemple : part des charges de personnel des hôpitaux). La part personnelle (« ce que tu verses ») relève du calcul personnel, décrit sur la page Méthode.

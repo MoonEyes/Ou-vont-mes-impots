@@ -6,7 +6,7 @@
  "description": "Budget de l'État, Sécurité sociale, collectivités, prélèvements, dette, bénéficiaires nommés (personnes morales), décisions et contrôle, retraités à partir de jeux publics ouverts (data.economie.gouv.fr, data.gouv.fr, Eurostat, Insee, DGFiP, OFGL, Assemblée nationale, Sénat, DILA, CNCCFP, HATVP, Cour des comptes). Site citoyen, non officiel. Chaque fichier JSON porte son millésime et sa source ; un montant écarté est publié avec sa raison. Précautions de lecture et exemples : docs/REUTILISER.md.",
  "homepage": "https://mooneyes.github.io/Ou-vont-mes-impots/",
  "version": "1.6.0",
- "created": "2026-11-18T15:23:19Z",
+ "created": "2026-11-18T16:15:33Z",
  "keywords": [
   "budget de l'État",
   "finances publiques",
@@ -246,6 +246,10 @@
   },
   {
    "title": "DREES",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "title": "Direction de l'immobilier de l'Etat (DGFiP)",
    "licence": "Licence Ouverte 2.0"
   },
   {
@@ -663,6 +667,10 @@
   {
    "title": "Ville de Torcy",
    "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "title": "ameli",
+   "licence": "ODbL 1.0 (partage à l'identique) ; Licence Ouverte 2.0"
   },
   {
    "title": "api.insee.fr",
@@ -10073,7 +10081,7 @@
      "title": "Region Bretagne (autorite de gestion) : Region Bretagne, liste des operations FEDER et FSE (2014-2020, 2021-2027)",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/feder-fse_beneficiaires/exports/csv?select=no_dossier%2Cperiode%2Cfonds%2Caction_du_programme%2Cobjectif_specifique%2Cbeneficiaire%2Cnom_de_l_operation%2Cdate_de_debut_de_l_operation%2Cdate_de_fin_de_l_operation%2Ccout_total_de_l_operation%2Ctaux_de_cofinancement_par_l_ue%2Ccode_postal%2Ccode_insee%2Cdomaine_d_intervention%2Cdate_de_derniere_mise_a_jour"
+     "path": "https://data.bretagne.bzh/explore/dataset/feder-fse_beneficiaires/"
     },
     {
      "title": "Region Ile-de-France (autorite de gestion) (2 jeux)",
@@ -10090,7 +10098,7 @@
      "title": "Region Reunion (autorite de gestion) : Region Reunion, liste des beneficiaires du programme FEDER 2014-2020",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.regionreunion.com/api/explore/v2.1/catalog/datasets/liste_des_operations_31/exports/csv?select=nom_du_beneficiaire_beneficiary%2Cnom_de_l_operation_operation%2Cdate_de_debut_de_l_operation_start_date%2Cdate_de_fin_de_l_operation_end_date%2Ctotal_des_depenses_eligibles_total_eligible_expenditure%2Cue%2Cempty%2Ccp%2Ccategorie_d_intervention_category_of_intervention"
+     "path": "https://data.regionreunion.com/explore/dataset/liste_des_operations_31/"
     },
     {
      "title": "Region des Pays de la Loire (autorite de gestion) : Region des Pays de la Loire, operations FEDER et FSE 2014-2020 (financement par financeur, SIRET)",
@@ -10147,7 +10155,7 @@
      "title": "Region Bretagne (autorite de gestion) : Region Bretagne, liste des operations FEDER et FSE (2014-2020, 2021-2027)",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/feder-fse_beneficiaires/exports/csv?select=no_dossier%2Cperiode%2Cfonds%2Caction_du_programme%2Cobjectif_specifique%2Cbeneficiaire%2Cnom_de_l_operation%2Cdate_de_debut_de_l_operation%2Cdate_de_fin_de_l_operation%2Ccout_total_de_l_operation%2Ctaux_de_cofinancement_par_l_ue%2Ccode_postal%2Ccode_insee%2Cdomaine_d_intervention%2Cdate_de_derniere_mise_a_jour"
+     "path": "https://data.bretagne.bzh/explore/dataset/feder-fse_beneficiaires/"
     },
     {
      "title": "Region Ile-de-France (autorite de gestion) (2 jeux)",
@@ -10164,7 +10172,7 @@
      "title": "Region Reunion (autorite de gestion) : Region Reunion, liste des beneficiaires du programme FEDER 2014-2020",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.regionreunion.com/api/explore/v2.1/catalog/datasets/liste_des_operations_31/exports/csv?select=nom_du_beneficiaire_beneficiary%2Cnom_de_l_operation_operation%2Cdate_de_debut_de_l_operation_start_date%2Cdate_de_fin_de_l_operation_end_date%2Ctotal_des_depenses_eligibles_total_eligible_expenditure%2Cue%2Cempty%2Ccp%2Ccategorie_d_intervention_category_of_intervention"
+     "path": "https://data.regionreunion.com/explore/dataset/liste_des_operations_31/"
     },
     {
      "title": "Region des Pays de la Loire (autorite de gestion) : Region des Pays de la Loire, operations FEDER et FSE 2014-2020 (financement par financeur, SIRET)",
@@ -10221,7 +10229,7 @@
      "title": "Region Bretagne (autorite de gestion) : Region Bretagne, liste des operations FEDER et FSE (2014-2020, 2021-2027)",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/feder-fse_beneficiaires/exports/csv?select=no_dossier%2Cperiode%2Cfonds%2Caction_du_programme%2Cobjectif_specifique%2Cbeneficiaire%2Cnom_de_l_operation%2Cdate_de_debut_de_l_operation%2Cdate_de_fin_de_l_operation%2Ccout_total_de_l_operation%2Ctaux_de_cofinancement_par_l_ue%2Ccode_postal%2Ccode_insee%2Cdomaine_d_intervention%2Cdate_de_derniere_mise_a_jour"
+     "path": "https://data.bretagne.bzh/explore/dataset/feder-fse_beneficiaires/"
     },
     {
      "title": "Region Ile-de-France (autorite de gestion) (2 jeux)",
@@ -10238,7 +10246,7 @@
      "title": "Region Reunion (autorite de gestion) : Region Reunion, liste des beneficiaires du programme FEDER 2014-2020",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.regionreunion.com/api/explore/v2.1/catalog/datasets/liste_des_operations_31/exports/csv?select=nom_du_beneficiaire_beneficiary%2Cnom_de_l_operation_operation%2Cdate_de_debut_de_l_operation_start_date%2Cdate_de_fin_de_l_operation_end_date%2Ctotal_des_depenses_eligibles_total_eligible_expenditure%2Cue%2Cempty%2Ccp%2Ccategorie_d_intervention_category_of_intervention"
+     "path": "https://data.regionreunion.com/explore/dataset/liste_des_operations_31/"
     },
     {
      "title": "Region des Pays de la Loire (autorite de gestion) : Region des Pays de la Loire, operations FEDER et FSE 2014-2020 (financement par financeur, SIRET)",
@@ -10295,7 +10303,7 @@
      "title": "Region Bretagne (autorite de gestion) : Region Bretagne, liste des operations FEDER et FSE (2014-2020, 2021-2027)",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/feder-fse_beneficiaires/exports/csv?select=no_dossier%2Cperiode%2Cfonds%2Caction_du_programme%2Cobjectif_specifique%2Cbeneficiaire%2Cnom_de_l_operation%2Cdate_de_debut_de_l_operation%2Cdate_de_fin_de_l_operation%2Ccout_total_de_l_operation%2Ctaux_de_cofinancement_par_l_ue%2Ccode_postal%2Ccode_insee%2Cdomaine_d_intervention%2Cdate_de_derniere_mise_a_jour"
+     "path": "https://data.bretagne.bzh/explore/dataset/feder-fse_beneficiaires/"
     },
     {
      "title": "Region Ile-de-France (autorite de gestion) (2 jeux)",
@@ -10312,7 +10320,7 @@
      "title": "Region Reunion (autorite de gestion) : Region Reunion, liste des beneficiaires du programme FEDER 2014-2020",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.regionreunion.com/api/explore/v2.1/catalog/datasets/liste_des_operations_31/exports/csv?select=nom_du_beneficiaire_beneficiary%2Cnom_de_l_operation_operation%2Cdate_de_debut_de_l_operation_start_date%2Cdate_de_fin_de_l_operation_end_date%2Ctotal_des_depenses_eligibles_total_eligible_expenditure%2Cue%2Cempty%2Ccp%2Ccategorie_d_intervention_category_of_intervention"
+     "path": "https://data.regionreunion.com/explore/dataset/liste_des_operations_31/"
     },
     {
      "title": "Region des Pays de la Loire (autorite de gestion) : Region des Pays de la Loire, operations FEDER et FSE 2014-2020 (financement par financeur, SIRET)",
@@ -10369,7 +10377,7 @@
      "title": "Region Bretagne (autorite de gestion) : Region Bretagne, liste des operations FEDER et FSE (2014-2020, 2021-2027)",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/feder-fse_beneficiaires/exports/csv?select=no_dossier%2Cperiode%2Cfonds%2Caction_du_programme%2Cobjectif_specifique%2Cbeneficiaire%2Cnom_de_l_operation%2Cdate_de_debut_de_l_operation%2Cdate_de_fin_de_l_operation%2Ccout_total_de_l_operation%2Ctaux_de_cofinancement_par_l_ue%2Ccode_postal%2Ccode_insee%2Cdomaine_d_intervention%2Cdate_de_derniere_mise_a_jour"
+     "path": "https://data.bretagne.bzh/explore/dataset/feder-fse_beneficiaires/"
     },
     {
      "title": "Region Ile-de-France (autorite de gestion) (2 jeux)",
@@ -10386,7 +10394,7 @@
      "title": "Region Reunion (autorite de gestion) : Region Reunion, liste des beneficiaires du programme FEDER 2014-2020",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.regionreunion.com/api/explore/v2.1/catalog/datasets/liste_des_operations_31/exports/csv?select=nom_du_beneficiaire_beneficiary%2Cnom_de_l_operation_operation%2Cdate_de_debut_de_l_operation_start_date%2Cdate_de_fin_de_l_operation_end_date%2Ctotal_des_depenses_eligibles_total_eligible_expenditure%2Cue%2Cempty%2Ccp%2Ccategorie_d_intervention_category_of_intervention"
+     "path": "https://data.regionreunion.com/explore/dataset/liste_des_operations_31/"
     },
     {
      "title": "Region des Pays de la Loire (autorite de gestion) : Region des Pays de la Loire, operations FEDER et FSE 2014-2020 (financement par financeur, SIRET)",
@@ -10443,7 +10451,7 @@
      "title": "Region Bretagne (autorite de gestion) : Region Bretagne, liste des operations FEDER et FSE (2014-2020, 2021-2027)",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/feder-fse_beneficiaires/exports/csv?select=no_dossier%2Cperiode%2Cfonds%2Caction_du_programme%2Cobjectif_specifique%2Cbeneficiaire%2Cnom_de_l_operation%2Cdate_de_debut_de_l_operation%2Cdate_de_fin_de_l_operation%2Ccout_total_de_l_operation%2Ctaux_de_cofinancement_par_l_ue%2Ccode_postal%2Ccode_insee%2Cdomaine_d_intervention%2Cdate_de_derniere_mise_a_jour"
+     "path": "https://data.bretagne.bzh/explore/dataset/feder-fse_beneficiaires/"
     },
     {
      "title": "Region Ile-de-France (autorite de gestion) (2 jeux)",
@@ -10460,7 +10468,7 @@
      "title": "Region Reunion (autorite de gestion) : Region Reunion, liste des beneficiaires du programme FEDER 2014-2020",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.regionreunion.com/api/explore/v2.1/catalog/datasets/liste_des_operations_31/exports/csv?select=nom_du_beneficiaire_beneficiary%2Cnom_de_l_operation_operation%2Cdate_de_debut_de_l_operation_start_date%2Cdate_de_fin_de_l_operation_end_date%2Ctotal_des_depenses_eligibles_total_eligible_expenditure%2Cue%2Cempty%2Ccp%2Ccategorie_d_intervention_category_of_intervention"
+     "path": "https://data.regionreunion.com/explore/dataset/liste_des_operations_31/"
     },
     {
      "title": "Region des Pays de la Loire (autorite de gestion) : Region des Pays de la Loire, operations FEDER et FSE 2014-2020 (financement par financeur, SIRET)",
@@ -10517,7 +10525,7 @@
      "title": "Region Bretagne (autorite de gestion) : Region Bretagne, liste des operations FEDER et FSE (2014-2020, 2021-2027)",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/feder-fse_beneficiaires/exports/csv?select=no_dossier%2Cperiode%2Cfonds%2Caction_du_programme%2Cobjectif_specifique%2Cbeneficiaire%2Cnom_de_l_operation%2Cdate_de_debut_de_l_operation%2Cdate_de_fin_de_l_operation%2Ccout_total_de_l_operation%2Ctaux_de_cofinancement_par_l_ue%2Ccode_postal%2Ccode_insee%2Cdomaine_d_intervention%2Cdate_de_derniere_mise_a_jour"
+     "path": "https://data.bretagne.bzh/explore/dataset/feder-fse_beneficiaires/"
     },
     {
      "title": "Region Ile-de-France (autorite de gestion) (2 jeux)",
@@ -10534,7 +10542,7 @@
      "title": "Region Reunion (autorite de gestion) : Region Reunion, liste des beneficiaires du programme FEDER 2014-2020",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.regionreunion.com/api/explore/v2.1/catalog/datasets/liste_des_operations_31/exports/csv?select=nom_du_beneficiaire_beneficiary%2Cnom_de_l_operation_operation%2Cdate_de_debut_de_l_operation_start_date%2Cdate_de_fin_de_l_operation_end_date%2Ctotal_des_depenses_eligibles_total_eligible_expenditure%2Cue%2Cempty%2Ccp%2Ccategorie_d_intervention_category_of_intervention"
+     "path": "https://data.regionreunion.com/explore/dataset/liste_des_operations_31/"
     },
     {
      "title": "Region des Pays de la Loire (autorite de gestion) : Region des Pays de la Loire, operations FEDER et FSE 2014-2020 (financement par financeur, SIRET)",
@@ -10591,7 +10599,7 @@
      "title": "Region Bretagne (autorite de gestion) : Region Bretagne, liste des operations FEDER et FSE (2014-2020, 2021-2027)",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/feder-fse_beneficiaires/exports/csv?select=no_dossier%2Cperiode%2Cfonds%2Caction_du_programme%2Cobjectif_specifique%2Cbeneficiaire%2Cnom_de_l_operation%2Cdate_de_debut_de_l_operation%2Cdate_de_fin_de_l_operation%2Ccout_total_de_l_operation%2Ctaux_de_cofinancement_par_l_ue%2Ccode_postal%2Ccode_insee%2Cdomaine_d_intervention%2Cdate_de_derniere_mise_a_jour"
+     "path": "https://data.bretagne.bzh/explore/dataset/feder-fse_beneficiaires/"
     },
     {
      "title": "Region Ile-de-France (autorite de gestion) (2 jeux)",
@@ -10608,7 +10616,7 @@
      "title": "Region Reunion (autorite de gestion) : Region Reunion, liste des beneficiaires du programme FEDER 2014-2020",
      "licence": "Licence Ouverte 2.0",
      "licence_normalisee": "etalab-2.0",
-     "path": "https://data.regionreunion.com/api/explore/v2.1/catalog/datasets/liste_des_operations_31/exports/csv?select=nom_du_beneficiaire_beneficiary%2Cnom_de_l_operation_operation%2Cdate_de_debut_de_l_operation_start_date%2Cdate_de_fin_de_l_operation_end_date%2Ctotal_des_depenses_eligibles_total_eligible_expenditure%2Cue%2Cempty%2Ccp%2Ccategorie_d_intervention_category_of_intervention"
+     "path": "https://data.regionreunion.com/explore/dataset/liste_des_operations_31/"
     },
     {
      "title": "Region des Pays de la Loire (autorite de gestion) : Region des Pays de la Loire, operations FEDER et FSE 2014-2020 (financement par financeur, SIRET)",
@@ -13504,6 +13512,1019 @@
    ],
    "sources_declarees": [
     "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026) : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf ; Sénat, recueil des textes relatifs aux pouvoirs publics : décret n° 2012-983 du 23 août 2012 et décret n° 2014-425 du 25 avril 2014 : https://www.senat.fr/reglement/pouvoirs_publics22.html"
+   ]
+  },
+  {
+   "name": "assurance-maladie-territoires-index",
+   "title": "présentation, totaux nationaux remboursés par grand poste, ONDAM résumé, écarts entre champs, liens, méthode, sources (pipeline/assurance_maladie_territoires.py)",
+   "description": "site/data/assurance_maladie_territoires/index.json : présentation, totaux nationaux remboursés par grand poste, ONDAM résumé, écarts entre champs, liens, méthode, sources (pipeline/assurance_maladie_territoires.py). Fichier site/data/assurance_maladie_territoires/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/assurance_maladie_territoires/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/assurance_maladie_territoires_index.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (ameli) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "ameli (2 jeux)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0"
+    },
+    {
+     "title": "ameli : Depenses d'assurance maladie par pathologie (Ameli)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.ameli.fr/explore/dataset/depenses/"
+    },
+    {
+     "title": "www.assemblee-nationale.fr (2 jeux)",
+     "licence": "document administratif public, réutilisation libre avec mention (CRPA, art. L321-1)",
+     "licence_normalisee": "document-administratif"
+    }
+   ],
+   "motif": "site/data/assurance_maladie_territoires/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "assurance_maladie_territoires",
+   "millesimes": [
+    "Dépenses 2015 à 2024, départements 2010 à 2025, ONDAM 2023 à 2025"
+   ],
+   "sources_declarees": [
+    "https://data.ameli.fr/explore/dataset/depenses/ ; https://data.ameli.fr/explore/dataset/prescriptions/ ; https://data.ameli.fr/explore/dataset/honoraires/ ; https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1112982/file/PLACSS2025-Annexe%203.pdf ; https://www.assemblee-nationale.fr/dyn/contenu/visualisation/922636/file/PLACSS2024-Annexe3.pdf"
+   ]
+  },
+  {
+   "name": "assurance-maladie-territoires-postes",
+   "title": "dépenses remboursées par l'assurance maladie (tous régimes) par grand poste et sous-poste de soins, France entière, par année (Cnam, cartographie des pathologies)",
+   "description": "site/data/assurance_maladie_territoires/postes.json : dépenses remboursées par l'assurance maladie (tous régimes) par grand poste et sous-poste de soins, France entière, par année (Cnam, cartographie des pathologies). Fichier site/data/assurance_maladie_territoires/postes.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/assurance_maladie_territoires/postes.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/assurance_maladie_territoires_postes.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (ameli) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "ameli (2 jeux)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0"
+    },
+    {
+     "title": "ameli : Depenses d'assurance maladie par pathologie (Ameli)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.ameli.fr/explore/dataset/depenses/"
+    },
+    {
+     "title": "www.assemblee-nationale.fr (2 jeux)",
+     "licence": "document administratif public, réutilisation libre avec mention (CRPA, art. L321-1)",
+     "licence_normalisee": "document-administratif"
+    }
+   ],
+   "motif": "site/data/assurance_maladie_territoires/postes.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "assurance_maladie_territoires",
+   "millesimes": [
+    "2015 à 2024"
+   ],
+   "sources_declarees": [
+    "https://data.ameli.fr/explore/dataset/depenses/"
+   ]
+  },
+  {
+   "name": "assurance-maladie-territoires-departements",
+   "title": "prescriptions des médecins libéraux par poste et honoraires des professionnels libéraux par département et par année (Cnam, data.ameli.fr)",
+   "description": "site/data/assurance_maladie_territoires/departements.json : prescriptions des médecins libéraux par poste et honoraires des professionnels libéraux par département et par année (Cnam, data.ameli.fr). Fichier site/data/assurance_maladie_territoires/departements.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/assurance_maladie_territoires/departements.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/assurance_maladie_territoires_departements.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (ameli) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "ameli (2 jeux)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0"
+    },
+    {
+     "title": "ameli : Depenses d'assurance maladie par pathologie (Ameli)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.ameli.fr/explore/dataset/depenses/"
+    },
+    {
+     "title": "www.assemblee-nationale.fr (2 jeux)",
+     "licence": "document administratif public, réutilisation libre avec mention (CRPA, art. L321-1)",
+     "licence_normalisee": "document-administratif"
+    }
+   ],
+   "motif": "site/data/assurance_maladie_territoires/departements.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "assurance_maladie_territoires",
+   "millesimes": [
+    "2010 à 2025"
+   ],
+   "sources_declarees": [
+    "https://data.ameli.fr/explore/dataset/prescriptions/ ; https://data.ameli.fr/explore/dataset/honoraires/"
+   ]
+  },
+  {
+   "name": "assurance-maladie-territoires-ondam",
+   "title": "objectif national de dépenses d'assurance maladie par sous-objectif, objectif voté, rectifié et constaté (annexe 3 des PLACSS 2024 et 2025)",
+   "description": "site/data/assurance_maladie_territoires/ondam.json : objectif national de dépenses d'assurance maladie par sous-objectif, objectif voté, rectifié et constaté (annexe 3 des PLACSS 2024 et 2025). Fichier site/data/assurance_maladie_territoires/ondam.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/assurance_maladie_territoires/ondam.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/assurance_maladie_territoires_ondam.schema.json",
+   "licenses": [
+    {
+     "name": "ODbL-1.0",
+     "path": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "title": "Open Database License 1.0"
+    }
+   ],
+   "licence_motif": "ODbL par prudence : l'étape du pipeline qui produit ces fichiers lit au moins un jeu sous ODbL (ameli) ; la lignée est connue par étape, pas par fichier.",
+   "sources": [
+    {
+     "title": "ameli (2 jeux)",
+     "licence": "ODbL 1.0 (partage à l'identique)",
+     "licence_normalisee": "ODbL-1.0"
+    },
+    {
+     "title": "ameli : Depenses d'assurance maladie par pathologie (Ameli)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.ameli.fr/explore/dataset/depenses/"
+    },
+    {
+     "title": "www.assemblee-nationale.fr (2 jeux)",
+     "licence": "document administratif public, réutilisation libre avec mention (CRPA, art. L321-1)",
+     "licence_normalisee": "document-administratif"
+    }
+   ],
+   "motif": "site/data/assurance_maladie_territoires/ondam.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "assurance_maladie_territoires",
+   "millesimes": [
+    "Exécution 2023 à 2025"
+   ],
+   "sources_declarees": [
+    "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1112982/file/PLACSS2025-Annexe%203.pdf ; https://www.assemblee-nationale.fr/dyn/contenu/visualisation/922636/file/PLACSS2024-Annexe3.pdf"
+   ]
+  },
+  {
+   "name": "fiscalite-locale-series-index",
+   "title": "années, séries, variables REI lues, ruptures, renvois vers local/taux, fichiers par département, totaux nationaux, contrôles (pipeline/fiscalite_locale_series.py)",
+   "description": "site/data/fiscalite_locale_series/index.json : années, séries, variables REI lues, ruptures, renvois vers local/taux, fichiers par département, totaux nationaux, contrôles (pipeline/fiscalite_locale_series.py). Fichier site/data/fiscalite_locale_series/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fiscalite_locale_series/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/fiscalite_locale_series_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DGFiP, fichiers annuels « Impôts locaux : fichier de recensement des éléments d'imposition à la fiscalité directe locale (REI) », data.economie.gouv.fr (https://data.economie.gouv.fr/explore/dataset/impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/information/), Licence Ouverte",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/fiscalite_locale_series/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "fiscalite_locale_series",
+   "millesimes": [
+    "REI 2010 à 2025"
+   ],
+   "sources_declarees": [
+    "DGFiP, fichiers annuels « Impôts locaux : fichier de recensement des éléments d'imposition à la fiscalité directe locale (REI) », data.economie.gouv.fr (https://data.economie.gouv.fr/explore/dataset/impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/information/), Licence Ouverte"
+   ]
+  },
+  {
+   "name": "fiscalite-locale-series-communes",
+   "title": "taux votés et produits des impôts locaux par commune et par année depuis 2010 (REI, DGFiP ; pipeline/fiscalite_locale_series.py)",
+   "description": "site/data/fiscalite_locale_series/communes/<dep>.json ou <dep>_<k>.json : taux votés et produits des impôts locaux par commune et par année depuis 2010 (REI, DGFiP ; pipeline/fiscalite_locale_series.py). Famille de 227 fichiers (motif site/data/fiscalite_locale_series/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fiscalite_locale_series/communes/01_1.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/fiscalite_locale_series_communes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DGFiP, fichiers annuels « Impôts locaux : fichier de recensement des éléments d'imposition à la fiscalité directe locale (REI) », data.economie.gouv.fr (https://data.economie.gouv.fr/explore/dataset/impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/information/), Licence Ouverte",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/fiscalite_locale_series/communes/*.json",
+   "nombre_fichiers": 227,
+   "etape_pipeline": "fiscalite_locale_series",
+   "millesimes": [
+    "REI 2010 à 2025"
+   ],
+   "sources_declarees": [
+    "DGFiP, fichiers annuels « Impôts locaux : fichier de recensement des éléments d'imposition à la fiscalité directe locale (REI) », data.economie.gouv.fr (https://data.economie.gouv.fr/explore/dataset/impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/information/), Licence Ouverte"
+   ]
+  },
+  {
+   "name": "immobilier-etat-index",
+   "title": "présentation, définitions, fichiers, chiffres clés, sources, limites, recherche publique",
+   "description": "site/data/immobilier_etat/index.json : présentation, définitions, fichiers, chiffres clés, sources, limites, recherche publique. Fichier site/data/immobilier_etat/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/immobilier_etat/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/immobilier_etat_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Direction de l'immobilier de l'Etat (DGFiP) (4 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "data.economie.gouv.fr : PLRG 2023, 2024 et 2025, annexe 2 des comptes speciaux (CSV) : credits et depenses du programme 723, recouvrements par ligne et solde comptable du compte d'affectation speciale Gestion du patrimoine immobilier de l'Etat (lu par pipeline/immobilier_etat.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_cp_2023_csv"
+    },
+    {
+     "title": "www2.assemblee-nationale.fr : Immobilier de l'Etat, documents budgetaires : document de politique transversale Politique immobiliere de l'Etat annexe au PLF 2025 (donnees 2012 a 2023), projet annuel de performances 2026 et rapport annuel de performances 2025 du compte Gestion du patrimoine immobilier de l'Etat ; miroirs Assemblee nationale (PDF) (lu par pipeline/immobilier_etat.py)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Oranges/12-Orange_Politique_immobiliere.pdf"
+    }
+   ],
+   "motif": "site/data/immobilier_etat/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "immobilier_etat",
+   "millesimes": [
+    "2026"
+   ],
+   "sources_declarees": [
+    "Direction de l'immobilier de l'État (data.gouv.fr, data.economie.gouv.fr) ; document de politique transversale « Politique immobilière de l'État » (PLF 2025) ; PLRG 2023 à 2025 ; projet et rapport annuels de performances du compte"
+   ]
+  },
+  {
+   "name": "immobilier-etat-parc",
+   "title": "jeux « Parc de l'immobilier de l'État » agrégés (ministère, département, type de bien, type de propriétaire) et séries du document de politique transversale",
+   "description": "site/data/immobilier_etat/parc.json : jeux « Parc de l'immobilier de l'État » agrégés (ministère, département, type de bien, type de propriétaire) et séries du document de politique transversale. Fichier site/data/immobilier_etat/parc.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/immobilier_etat/parc.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/immobilier_etat_parc.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Direction de l'immobilier de l'Etat (DGFiP) (4 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "data.economie.gouv.fr : PLRG 2023, 2024 et 2025, annexe 2 des comptes speciaux (CSV) : credits et depenses du programme 723, recouvrements par ligne et solde comptable du compte d'affectation speciale Gestion du patrimoine immobilier de l'Etat (lu par pipeline/immobilier_etat.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_cp_2023_csv"
+    },
+    {
+     "title": "www2.assemblee-nationale.fr : Immobilier de l'Etat, documents budgetaires : document de politique transversale Politique immobiliere de l'Etat annexe au PLF 2025 (donnees 2012 a 2023), projet annuel de performances 2026 et rapport annuel de performances 2025 du compte Gestion du patrimoine immobilier de l'Etat ; miroirs Assemblee nationale (PDF) (lu par pipeline/immobilier_etat.py)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Oranges/12-Orange_Politique_immobiliere.pdf"
+    }
+   ],
+   "motif": "site/data/immobilier_etat/parc.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "immobilier_etat",
+   "millesimes": [
+    "2026"
+   ],
+   "sources_declarees": [
+    "Direction de l'immobilier de l'État : jeux « Parc de l'immobilier de l'État » (data.economie.gouv.fr, data.gouv.fr) ; document de politique transversale « Politique immobilière de l'État » annexé au PLF 2025"
+   ]
+  },
+  {
+   "name": "immobilier-etat-valeur",
+   "title": "valeur comptable du parc contrôlé par l'État (2012 à 2023), par ministère (2017 à 2023), emphytéoses, opérateurs",
+   "description": "site/data/immobilier_etat/valeur.json : valeur comptable du parc contrôlé par l'État (2012 à 2023), par ministère (2017 à 2023), emphytéoses, opérateurs. Fichier site/data/immobilier_etat/valeur.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/immobilier_etat/valeur.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/immobilier_etat_valeur.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Direction de l'immobilier de l'Etat (DGFiP) (4 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "data.economie.gouv.fr : PLRG 2023, 2024 et 2025, annexe 2 des comptes speciaux (CSV) : credits et depenses du programme 723, recouvrements par ligne et solde comptable du compte d'affectation speciale Gestion du patrimoine immobilier de l'Etat (lu par pipeline/immobilier_etat.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_cp_2023_csv"
+    },
+    {
+     "title": "www2.assemblee-nationale.fr : Immobilier de l'Etat, documents budgetaires : document de politique transversale Politique immobiliere de l'Etat annexe au PLF 2025 (donnees 2012 a 2023), projet annuel de performances 2026 et rapport annuel de performances 2025 du compte Gestion du patrimoine immobilier de l'Etat ; miroirs Assemblee nationale (PDF) (lu par pipeline/immobilier_etat.py)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Oranges/12-Orange_Politique_immobiliere.pdf"
+    }
+   ],
+   "motif": "site/data/immobilier_etat/valeur.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "immobilier_etat",
+   "millesimes": [
+    "2026"
+   ],
+   "sources_declarees": [
+    "Document de politique transversale « Politique immobilière de l'État », annexe au projet de loi de finances pour 2025 (données au 31 décembre 2023), miroir Assemblée nationale"
+   ]
+  },
+  {
+   "name": "immobilier-etat-cessions",
+   "title": "produits de cessions (outil de suivi des cessions, compte d'affectation spéciale) et cessions 2013 à 2017",
+   "description": "site/data/immobilier_etat/cessions.json : produits de cessions (outil de suivi des cessions, compte d'affectation spéciale) et cessions 2013 à 2017. Fichier site/data/immobilier_etat/cessions.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/immobilier_etat/cessions.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/immobilier_etat_cessions.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Direction de l'immobilier de l'Etat (DGFiP) (4 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "data.economie.gouv.fr : PLRG 2023, 2024 et 2025, annexe 2 des comptes speciaux (CSV) : credits et depenses du programme 723, recouvrements par ligne et solde comptable du compte d'affectation speciale Gestion du patrimoine immobilier de l'Etat (lu par pipeline/immobilier_etat.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_cp_2023_csv"
+    },
+    {
+     "title": "www2.assemblee-nationale.fr : Immobilier de l'Etat, documents budgetaires : document de politique transversale Politique immobiliere de l'Etat annexe au PLF 2025 (donnees 2012 a 2023), projet annuel de performances 2026 et rapport annuel de performances 2025 du compte Gestion du patrimoine immobilier de l'Etat ; miroirs Assemblee nationale (PDF) (lu par pipeline/immobilier_etat.py)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Oranges/12-Orange_Politique_immobiliere.pdf"
+    }
+   ],
+   "motif": "site/data/immobilier_etat/cessions.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "immobilier_etat",
+   "millesimes": [
+    "2026"
+   ],
+   "sources_declarees": [
+    "Document de politique transversale « Politique immobilière de l'État », annexe au projet de loi de finances pour 2025 (données au 31 décembre 2023), miroir Assemblée nationale ; annexes CSV des PLRG 2023 à 2025 ; jeu « Cessions immobilières de l'État depuis 2013 »"
+   ]
+  },
+  {
+   "name": "immobilier-etat-loyers",
+   "title": "loyers payés par l'État (2014 à 2023), dépenses immobilières, prises à bail, grands baux sans bailleur, propriétaires des biens occupés par type",
+   "description": "site/data/immobilier_etat/loyers.json : loyers payés par l'État (2014 à 2023), dépenses immobilières, prises à bail, grands baux sans bailleur, propriétaires des biens occupés par type. Fichier site/data/immobilier_etat/loyers.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/immobilier_etat/loyers.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/immobilier_etat_loyers.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Direction de l'immobilier de l'Etat (DGFiP) (4 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "data.economie.gouv.fr : PLRG 2023, 2024 et 2025, annexe 2 des comptes speciaux (CSV) : credits et depenses du programme 723, recouvrements par ligne et solde comptable du compte d'affectation speciale Gestion du patrimoine immobilier de l'Etat (lu par pipeline/immobilier_etat.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_cp_2023_csv"
+    },
+    {
+     "title": "www2.assemblee-nationale.fr : Immobilier de l'Etat, documents budgetaires : document de politique transversale Politique immobiliere de l'Etat annexe au PLF 2025 (donnees 2012 a 2023), projet annuel de performances 2026 et rapport annuel de performances 2025 du compte Gestion du patrimoine immobilier de l'Etat ; miroirs Assemblee nationale (PDF) (lu par pipeline/immobilier_etat.py)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Oranges/12-Orange_Politique_immobiliere.pdf"
+    }
+   ],
+   "motif": "site/data/immobilier_etat/loyers.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "immobilier_etat",
+   "millesimes": [
+    "2026"
+   ],
+   "sources_declarees": [
+    "Document de politique transversale « Politique immobilière de l'État », annexe au projet de loi de finances pour 2025 (données au 31 décembre 2023), miroir Assemblée nationale ; jeux « Parc de l'immobilier de l'État »"
+   ]
+  },
+  {
+   "name": "immobilier-etat-compte",
+   "title": "compte d'affectation spéciale « Gestion du patrimoine immobilier de l'État » (PLRG 2023 à 2025, PAP 2026, RAP 2025)",
+   "description": "site/data/immobilier_etat/compte.json : compte d'affectation spéciale « Gestion du patrimoine immobilier de l'État » (PLRG 2023 à 2025, PAP 2026, RAP 2025). Fichier site/data/immobilier_etat/compte.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/immobilier_etat/compte.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/immobilier_etat_compte.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Direction de l'immobilier de l'Etat (DGFiP) (4 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "data.economie.gouv.fr : PLRG 2023, 2024 et 2025, annexe 2 des comptes speciaux (CSV) : credits et depenses du programme 723, recouvrements par ligne et solde comptable du compte d'affectation speciale Gestion du patrimoine immobilier de l'Etat (lu par pipeline/immobilier_etat.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_cp_2023_csv"
+    },
+    {
+     "title": "www2.assemblee-nationale.fr : Immobilier de l'Etat, documents budgetaires : document de politique transversale Politique immobiliere de l'Etat annexe au PLF 2025 (donnees 2012 a 2023), projet annuel de performances 2026 et rapport annuel de performances 2025 du compte Gestion du patrimoine immobilier de l'Etat ; miroirs Assemblee nationale (PDF) (lu par pipeline/immobilier_etat.py)",
+     "licence": "licence non précisée par l'éditeur",
+     "licence_normalisee": "non-precisee",
+     "path": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Oranges/12-Orange_Politique_immobiliere.pdf"
+    }
+   ],
+   "motif": "site/data/immobilier_etat/compte.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "immobilier_etat",
+   "millesimes": [
+    "2026"
+   ],
+   "sources_declarees": [
+    "Annexes CSV des PLRG 2023, 2024 et 2025 (data.economie.gouv.fr) ; projet annuel de performances 2026 et rapport annuel de performances 2025 du compte"
+   ]
+  },
+  {
+   "name": "typologies-index",
+   "title": "territoires comparables, variables, liste fermée des croisements, facettes, rapports par strate, contrôles et sources (pipeline/typologies.py)",
+   "description": "site/data/typologies/index.json : territoires comparables, variables, liste fermée des croisements, facettes, rapports par strate, contrôles et sources (pipeline/typologies.py). Fichier site/data/typologies/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/typologies/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/typologies_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Insee (3 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "OFGL : OFGL, comptes consolides des communes, exercices 2023 et 2024, cinq agregats, montant, population totale, euros par habitant et strate de population de l'OFGL (pipeline/typologies.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.ofgl.fr/explore/dataset/ofgl-base-communes-consolidee/"
+    }
+   ],
+   "motif": "site/data/typologies/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "typologies",
+   "millesimes": [
+    "grille de densité 2025 (géographie 2026) ; aires d'attraction des villes 2020 (géographie 2026) ; comptes 2023 et 2024 ; revenus 2023 ; taux 2023 et 2024"
+   ],
+   "sources_declarees": [
+    "Insee (grille communale de densité, aires d'attraction des villes) ; OFGL (comptes consolidés des communes, https://www.data.gouv.fr/datasets/comptes-consolides-des-communes-2017-2024/) ; DGFiP (REI, IRCOM) ; Insee (Filosofi 2)"
+   ]
+  },
+  {
+   "name": "typologies-croisements",
+   "title": "un croisement prédéfini (même année, même périmètre), dispersion des communes par case de densité, de strate de l'OFGL et d'aire d'attraction (pipeline/typologies.py)",
+   "description": "site/data/typologies/croisements/<id>.json : un croisement prédéfini (même année, même périmètre), dispersion des communes par case de densité, de strate de l'OFGL et d'aire d'attraction (pipeline/typologies.py). Famille de 8 fichiers (motif site/data/typologies/croisements/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/typologies/croisements/depenses_niveau_vie_2023.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/typologies_croisement.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Insee (3 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "OFGL : OFGL, comptes consolides des communes, exercices 2023 et 2024, cinq agregats, montant, population totale, euros par habitant et strate de population de l'OFGL (pipeline/typologies.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.ofgl.fr/explore/dataset/ofgl-base-communes-consolidee/"
+    }
+   ],
+   "motif": "site/data/typologies/croisements/*.json",
+   "nombre_fichiers": 8,
+   "etape_pipeline": "typologies",
+   "millesimes": [
+    "2023",
+    "2024"
+   ],
+   "sources_declarees": [
+    "Insee, Filosofi 2 2023 : niveau de vie médian par commune (géographie 2026) ; OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population",
+    "OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population ; OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population",
+    "DGFiP, impôt sur le revenu par collectivité territoriale (IRCOM), revenus 2023, communes en vigueur en 2026 ; OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population",
+    "DGFiP, recensement des éléments d'imposition (REI) : taux votés de foncier bâti par commune, exercices 2023 et 2024 ; OFGL, « Comptes consolidés des communes 2018-2025 » (data.ofgl.fr ofgl-base-communes-consolidee) : exercices 2023 et 2024, cinq agrégats, montant, population totale, euros par habitant, strate de population",
+    "Insee, Filosofi 2 2023 : niveau de vie médian par commune (géographie 2026) ; DGFiP, recensement des éléments d'imposition (REI) : taux votés de foncier bâti par commune, exercices 2023 et 2024"
+   ]
+  },
+  {
+   "name": "typologies-communes",
+   "title": "typologies de chaque commune (densité, aire d'attraction, strate de l'OFGL) et valeurs des variables des croisements prédéfinis (pipeline/typologies.py)",
+   "description": "site/data/typologies/communes/<dep>.json : typologies de chaque commune (densité, aire d'attraction, strate de l'OFGL) et valeurs des variables des croisements prédéfinis (pipeline/typologies.py). Famille de 101 fichiers (motif site/data/typologies/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/typologies/communes/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/typologies_communes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Insee (3 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    },
+    {
+     "title": "OFGL : OFGL, comptes consolides des communes, exercices 2023 et 2024, cinq agregats, montant, population totale, euros par habitant et strate de population de l'OFGL (pipeline/typologies.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.ofgl.fr/explore/dataset/ofgl-base-communes-consolidee/"
+    }
+   ],
+   "motif": "site/data/typologies/communes/*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "typologies",
+   "millesimes": [
+    "grille de densité 2025 ; aires d'attraction des villes 2020 ; comptes 2023 et 2024 ; revenus 2023 ; taux 2023 et 2024"
+   ],
+   "sources_declarees": [
+    "Insee (grille communale de densité, aires d'attraction des villes) ; OFGL (comptes consolidés des communes) ; DGFiP (REI, IRCOM) ; Insee (Filosofi 2) ; voir typologies/index.json"
+   ]
+  },
+  {
+   "name": "entites-index",
+   "title": "méthode, canaux, notions de montant, comptes et découpage des organisations reliées (pipeline/entites.py)",
+   "description": "site/data/entites/index.json : méthode, canaux, notions de montant, comptes et découpage des organisations reliées (pipeline/entites.py). Fichier site/data/entites/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/entites_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/entites/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "entites",
+   "millesimes": [
+    "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
+   ],
+   "sources_declarees": [
+    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
+   ]
+  },
+  {
+   "name": "entites-fiches",
+   "title": "fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py)",
+   "description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 617 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/005.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/entites_fiches.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/entites/fiches/*.json",
+   "nombre_fichiers": 617,
+   "etape_pipeline": "entites",
+   "millesimes": [
+    "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
+   ],
+   "sources_declarees": [
+    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
+   ]
+  },
+  {
+   "name": "entites-recherche",
+   "title": "organisations dont un mot du nom commence par la clé (pipeline/entites.py)",
+   "description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 651 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/00.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/entites_recherche.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/entites/recherche/*.json",
+   "nombre_fichiers": 651,
+   "etape_pipeline": "entites",
+   "millesimes": [
+    "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
+   ],
+   "sources_declarees": [
+    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
+   ]
+  },
+  {
+   "name": "entites-recherche-globale",
+   "title": "organisations reliées présentes dans plusieurs canaux, reprises par la recherche du site (pipeline/entites.py)",
+   "description": "site/data/entites/recherche_globale.json : organisations reliées présentes dans plusieurs canaux, reprises par la recherche du site (pipeline/entites.py). Fichier site/data/entites/recherche_globale.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche_globale.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/entites_recherche_globale.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/entites/recherche_globale.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "entites",
+   "millesimes": [
+    "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
+   ],
+   "sources_declarees": [
+    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
+   ]
+  },
+  {
+   "name": "performance-index",
+   "title": "présentation, avertissements, règles, sources, missions et programmes (pipeline/performance.py)",
+   "description": "site/data/performance/index.json : présentation, avertissements, règles, sources, missions et programmes (pipeline/performance.py). Fichier site/data/performance/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/performance/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/performance_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Direction interministerielle de la transformation publique : DITP, barometre des resultats de l'action publique : les 109 fichiers indicateurs du depot public (valeur initiale, valeurs successives, cible, par departement, region et France), metadonnees des indicateurs et des chantiers, dictionnaire des territoires (lu par pipeline/performance.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/metadata/meta_indicateurs.csv"
+    },
+    {
+     "title": "data.economie.gouv.fr : Performance de la depense (RAP)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/"
+    }
+   ],
+   "motif": "site/data/performance/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "performance",
+   "millesimes": [
+    "indicateurs de performance 2012 à 2027 (documents de performance ouverts 2015 à 2025) ; baromètre DITP valeurs datées de 2011-01 à 2027-06"
+   ],
+   "sources_declarees": [
+    "RAP 2025 : https://www.data.gouv.fr/datasets/performance-de-la-depense-rap-2025/ ; PAP 2025 : https://www.data.gouv.fr/datasets/plf-2025-performance-de-la-depense-pap/ ; éditions antérieures : data.economie.gouv.fr (voir sources_performance) ; baromètre : https://www.data.gouv.fr/datasets/barometre-des-resultats-de-laction-publique-1/"
+   ]
+  },
+  {
+   "name": "performance-correspondance",
+   "title": "méthode et comptes de la table de correspondance des indicateurs renommés ou absents des documents 2025 (pipeline/performance.py)",
+   "description": "site/data/performance/correspondance.json : méthode et comptes de la table de correspondance des indicateurs renommés ou absents des documents 2025 (pipeline/performance.py). Fichier site/data/performance/correspondance.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/performance/correspondance.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/performance_correspondance.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Direction interministerielle de la transformation publique : DITP, barometre des resultats de l'action publique : les 109 fichiers indicateurs du depot public (valeur initiale, valeurs successives, cible, par departement, region et France), metadonnees des indicateurs et des chantiers, dictionnaire des territoires (lu par pipeline/performance.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/metadata/meta_indicateurs.csv"
+    },
+    {
+     "title": "data.economie.gouv.fr : Performance de la depense (RAP)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/"
+    }
+   ],
+   "motif": "site/data/performance/correspondance.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "performance",
+   "millesimes": [
+    "documents de performance 2015 à 2025 (RAP et PAP)"
+   ],
+   "sources_declarees": [
+    "RAP 2025 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/ ; Performance : exécution et atteinte de la cible (2022-2024) : https://data.economie.gouv.fr/explore/dataset/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/ ; RAP 2024 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense/ (RAP 2024) ; PAP 2025 : https://data.economie.gouv.fr/explore/dataset/plf-2025-performance/ ; PAP 2023 : https://data.economie.gouv.fr/explore/dataset/pap-2023-objectifs-et-indicateurs-de-performance/ ; RAP 2020 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2020-plr-2020/, RAP2020_synthese.xls ; RAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2019-plr-20192/, RAP_synthese_2019.xls ; PAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance/ ; PAP 2018 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des/ ; RAP 2016 (PLR 2016) : https://data.economie.gouv.fr/explore/dataset/plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese/ ; PAP 2017 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2017-plf-2017-donnees-du-volet-performance/ ; RAP 2015 (PLR 2015) : https://data.economie.gouv.fr/explore/dataset/plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese/ ; PAP 2016 : https://data.economie.gouv.fr/explore/dataset/plf-2016-donnees-du-volet-performance/ ; PAP 2015 : https://data.economie.gouv.fr/explore/dataset/plf-2015-donnees-du-volet-performance/"
+   ]
+  },
+  {
+   "name": "performance-programmes",
+   "title": "objectifs, indicateurs, cibles et réalisés par année, crédits du programme, correspondance (pipeline/performance.py)",
+   "description": "site/data/performance/programmes/<programme>.json : objectifs, indicateurs, cibles et réalisés par année, crédits du programme, correspondance (pipeline/performance.py). Famille de 135 fichiers (motif site/data/performance/programmes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/performance/programmes/101.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/performance_programme.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Direction interministerielle de la transformation publique : DITP, barometre des resultats de l'action publique : les 109 fichiers indicateurs du depot public (valeur initiale, valeurs successives, cible, par departement, region et France), metadonnees des indicateurs et des chantiers, dictionnaire des territoires (lu par pipeline/performance.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/metadata/meta_indicateurs.csv"
+    },
+    {
+     "title": "data.economie.gouv.fr : Performance de la depense (RAP)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/"
+    }
+   ],
+   "motif": "site/data/performance/programmes/*.json",
+   "nombre_fichiers": 135,
+   "etape_pipeline": "performance",
+   "millesimes": [
+    "aucun indicateur publié",
+    "indicateurs 2012-2017",
+    "indicateurs 2012-2025",
+    "indicateurs 2012-2026",
+    "indicateurs 2012-2027",
+    "indicateurs 2013-2027",
+    "indicateurs 2014-2027",
+    "indicateurs 2015-2027",
+    "indicateurs 2016-2027",
+    "indicateurs 2018-2025",
+    "indicateurs 2018-2027",
+    "indicateurs 2020-2025",
+    "indicateurs 2020-2026",
+    "indicateurs 2020-2027",
+    "indicateurs 2022-2027"
+   ],
+   "sources_declarees": [
+    "RAP 2025 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/ ; Performance : exécution et atteinte de la cible (2022-2024) : https://data.economie.gouv.fr/explore/dataset/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/ ; RAP 2024 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense/ (RAP 2024) ; PAP 2025 : https://data.economie.gouv.fr/explore/dataset/plf-2025-performance/ ; PAP 2023 : https://data.economie.gouv.fr/explore/dataset/pap-2023-objectifs-et-indicateurs-de-performance/ ; RAP 2020 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2020-plr-2020/, RAP2020_synthese.xls ; RAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2019-plr-20192/, RAP_synthese_2019.xls ; PAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance/ ; PAP 2018 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des/ ; RAP 2016 (PLR 2016) : https://data.economie.gouv.fr/explore/dataset/plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese/ ; RAP 2015 (PLR 2015) : https://data.economie.gouv.fr/explore/dataset/plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese/ ; PAP 2015 : https://data.economie.gouv.fr/explore/dataset/plf-2015-donnees-du-volet-performance/",
+    "RAP 2025 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/ ; Performance : exécution et atteinte de la cible (2022-2024) : https://data.economie.gouv.fr/explore/dataset/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/ ; RAP 2024 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense/ (RAP 2024) ; PAP 2025 : https://data.economie.gouv.fr/explore/dataset/plf-2025-performance/ ; PAP 2023 : https://data.economie.gouv.fr/explore/dataset/pap-2023-objectifs-et-indicateurs-de-performance/ ; RAP 2020 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2020-plr-2020/, RAP2020_synthese.xls ; RAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2019-plr-20192/, RAP_synthese_2019.xls ; PAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance/ ; PAP 2018 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des/ ; RAP 2016 (PLR 2016) : https://data.economie.gouv.fr/explore/dataset/plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese/ ; PAP 2017 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2017-plf-2017-donnees-du-volet-performance/ ; RAP 2015 (PLR 2015) : https://data.economie.gouv.fr/explore/dataset/plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese/ ; PAP 2016 : https://data.economie.gouv.fr/explore/dataset/plf-2016-donnees-du-volet-performance/ ; PAP 2015 : https://data.economie.gouv.fr/explore/dataset/plf-2015-donnees-du-volet-performance/",
+    "RAP 2025 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/ ; Performance : exécution et atteinte de la cible (2022-2024) : https://data.economie.gouv.fr/explore/dataset/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/ ; RAP 2024 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense/ (RAP 2024) ; PAP 2025 : https://data.economie.gouv.fr/explore/dataset/plf-2025-performance/ ; PAP 2023 : https://data.economie.gouv.fr/explore/dataset/pap-2023-objectifs-et-indicateurs-de-performance/ ; RAP 2020 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2020-plr-2020/, RAP2020_synthese.xls ; RAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2019-plr-20192/, RAP_synthese_2019.xls ; PAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance/ ; PAP 2018 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des/ ; RAP 2016 (PLR 2016) : https://data.economie.gouv.fr/explore/dataset/plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese/ ; RAP 2015 (PLR 2015) : https://data.economie.gouv.fr/explore/dataset/plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese/ ; PAP 2016 : https://data.economie.gouv.fr/explore/dataset/plf-2016-donnees-du-volet-performance/ ; PAP 2015 : https://data.economie.gouv.fr/explore/dataset/plf-2015-donnees-du-volet-performance/",
+    "site/data/realisations (aucun indicateur publié)",
+    "RAP 2025 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/ ; Performance : exécution et atteinte de la cible (2022-2024) : https://data.economie.gouv.fr/explore/dataset/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/ ; RAP 2024 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense/ (RAP 2024) ; PAP 2025 : https://data.economie.gouv.fr/explore/dataset/plf-2025-performance/ ; PAP 2023 : https://data.economie.gouv.fr/explore/dataset/pap-2023-objectifs-et-indicateurs-de-performance/ ; RAP 2020 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2020-plr-2020/, RAP2020_synthese.xls ; RAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2019-plr-20192/, RAP_synthese_2019.xls ; PAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance/ ; PAP 2018 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des/ ; RAP 2016 (PLR 2016) : https://data.economie.gouv.fr/explore/dataset/plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese/ ; PAP 2017 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2017-plf-2017-donnees-du-volet-performance/ ; RAP 2015 (PLR 2015) : https://data.economie.gouv.fr/explore/dataset/plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese/ ; PAP 2015 : https://data.economie.gouv.fr/explore/dataset/plf-2015-donnees-du-volet-performance/",
+    "RAP 2025 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/ ; Performance : exécution et atteinte de la cible (2022-2024) : https://data.economie.gouv.fr/explore/dataset/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/ ; RAP 2024 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense/ (RAP 2024) ; PAP 2025 : https://data.economie.gouv.fr/explore/dataset/plf-2025-performance/ ; PAP 2023 : https://data.economie.gouv.fr/explore/dataset/pap-2023-objectifs-et-indicateurs-de-performance/",
+    "RAP 2025 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/ ; Performance : exécution et atteinte de la cible (2022-2024) : https://data.economie.gouv.fr/explore/dataset/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/ ; PAP 2025 : https://data.economie.gouv.fr/explore/dataset/plf-2025-performance/ ; PAP 2023 : https://data.economie.gouv.fr/explore/dataset/pap-2023-objectifs-et-indicateurs-de-performance/ ; RAP 2020 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2020-plr-2020/, RAP2020_synthese.xls ; RAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2019-plr-20192/, RAP_synthese_2019.xls ; PAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance/ ; PAP 2018 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des/ ; RAP 2016 (PLR 2016) : https://data.economie.gouv.fr/explore/dataset/plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese/ ; RAP 2015 (PLR 2015) : https://data.economie.gouv.fr/explore/dataset/plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese/ ; PAP 2015 : https://data.economie.gouv.fr/explore/dataset/plf-2015-donnees-du-volet-performance/",
+    "RAP 2025 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/ ; Performance : exécution et atteinte de la cible (2022-2024) : https://data.economie.gouv.fr/explore/dataset/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/ ; RAP 2024 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense/ (RAP 2024) ; PAP 2025 : https://data.economie.gouv.fr/explore/dataset/plf-2025-performance/ ; PAP 2023 : https://data.economie.gouv.fr/explore/dataset/pap-2023-objectifs-et-indicateurs-de-performance/ ; RAP 2020 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2020-plr-2020/, RAP2020_synthese.xls ; RAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2019-plr-20192/, RAP_synthese_2019.xls ; PAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance/ ; PAP 2018 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des/",
+    "RAP 2025 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/ ; Performance : exécution et atteinte de la cible (2022-2024) : https://data.economie.gouv.fr/explore/dataset/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/ ; PAP 2025 : https://data.economie.gouv.fr/explore/dataset/plf-2025-performance/ ; PAP 2023 : https://data.economie.gouv.fr/explore/dataset/pap-2023-objectifs-et-indicateurs-de-performance/ ; RAP 2020 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2020-plr-2020/, RAP2020_synthese.xls ; RAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2019-plr-20192/, RAP_synthese_2019.xls ; PAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance/ ; PAP 2018 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des/",
+    "RAP 2025 : https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/ ; Performance : exécution et atteinte de la cible (2022-2024) : https://data.economie.gouv.fr/explore/dataset/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur/ ; PAP 2025 : https://data.economie.gouv.fr/explore/dataset/plf-2025-performance/ ; PAP 2023 : https://data.economie.gouv.fr/explore/dataset/pap-2023-objectifs-et-indicateurs-de-performance/ ; RAP 2020 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2020-plr-2020/, RAP2020_synthese.xls ; RAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-reglement-2019-plr-20192/, RAP_synthese_2019.xls ; PAP 2019 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance/ ; PAP 2018 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des/ ; RAP 2016 (PLR 2016) : https://data.economie.gouv.fr/explore/dataset/plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese/ ; PAP 2017 : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2017-plf-2017-donnees-du-volet-performance/ ; RAP 2015 (PLR 2015) : https://data.economie.gouv.fr/explore/dataset/plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese/ ; PAP 2016 : https://data.economie.gouv.fr/explore/dataset/plf-2016-donnees-du-volet-performance/ ; PAP 2015 : https://data.economie.gouv.fr/explore/dataset/plf-2015-donnees-du-volet-performance/"
+   ]
+  },
+  {
+   "name": "performance-barometre-index",
+   "title": "indicateurs du baromètre de la DITP, départements (pipeline/performance.py)",
+   "description": "site/data/performance/barometre/index.json : indicateurs du baromètre de la DITP, départements (pipeline/performance.py). Fichier site/data/performance/barometre/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/performance/barometre/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/performance_barometre_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Direction interministerielle de la transformation publique : DITP, barometre des resultats de l'action publique : les 109 fichiers indicateurs du depot public (valeur initiale, valeurs successives, cible, par departement, region et France), metadonnees des indicateurs et des chantiers, dictionnaire des territoires (lu par pipeline/performance.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/metadata/meta_indicateurs.csv"
+    },
+    {
+     "title": "data.economie.gouv.fr : Performance de la depense (RAP)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/"
+    }
+   ],
+   "motif": "site/data/performance/barometre/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "performance",
+   "millesimes": [
+    "valeurs datées de 2011-01 à 2027-06"
+   ],
+   "sources_declarees": [
+    "Direction interministérielle de la transformation publique (DITP), « Baromètre des résultats de l'action publique » : https://www.data.gouv.fr/datasets/barometre-des-resultats-de-laction-publique-1/ ; fichiers indicateurs : https://github.com/DITP-pilotage/barometre-resultats"
+   ]
+  },
+  {
+   "name": "performance-barometre-0-9f",
+   "title": "valeurs initiales, successives et cibles des indicateurs du baromètre de la DITP (pipeline/performance.py)",
+   "description": "site/data/performance/barometre/<département ou FR>.json : valeurs initiales, successives et cibles des indicateurs du baromètre de la DITP (pipeline/performance.py). Famille de 102 fichiers (motif site/data/performance/barometre/[0-9F]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/performance/barometre/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/performance_barometre_zone.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Direction interministerielle de la transformation publique : DITP, barometre des resultats de l'action publique : les 109 fichiers indicateurs du depot public (valeur initiale, valeurs successives, cible, par departement, region et France), metadonnees des indicateurs et des chantiers, dictionnaire des territoires (lu par pipeline/performance.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/metadata/meta_indicateurs.csv"
+    },
+    {
+     "title": "data.economie.gouv.fr : Performance de la depense (RAP)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://data.economie.gouv.fr/explore/dataset/performance-de-la-depense-rap-2025/"
+    }
+   ],
+   "motif": "site/data/performance/barometre/[0-9F]*.json",
+   "nombre_fichiers": 102,
+   "etape_pipeline": "performance",
+   "millesimes": [
+    "valeurs datées de 2011-01 à 2027-06"
+   ],
+   "sources_declarees": [
+    "Direction interministérielle de la transformation publique (DITP), « Baromètre des résultats de l'action publique » : https://www.data.gouv.fr/datasets/barometre-des-resultats-de-laction-publique-1/ ; fichiers indicateurs : https://github.com/DITP-pilotage/barometre-resultats"
    ]
   },
   {

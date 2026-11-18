@@ -112,7 +112,7 @@ describe('écran des territoires comparables', () => {
     expect(texte()).toContain(CR.methode)
     // tableau accessible
     const table = main.querySelector('table')!
-    expect(table.querySelector('caption')?.textContent).toContain('calculé par le site')
+    expect(table.querySelector('caption')?.textContent).toContain('dispersion par case')
     expect(table.querySelectorAll('th[scope=col]').length).toBeGreaterThan(3)
     expect(table.querySelectorAll('tbody th[scope=row]')).toHaveLength(IDX.facettes.strate.cases.length + 1)
     verifierLexique(texte(), 'page')

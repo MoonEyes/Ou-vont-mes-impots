@@ -7,7 +7,7 @@ import { fragmentCommune } from '../chemins'
 import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { lien, type Rendu } from '../routeur'
-import { absent, entier, h, source, traitStatut } from '../util'
+import { absent, entier, h, source, badgeCalcule } from '../util'
 
 export const TITRE = 'Comparer des communes qui se ressemblent'
 export const AVERTISSEMENT = 'Mettre deux chiffres côte à côte ne dit pas que l’un explique l’autre ; ce sont des moyennes de communes, pas d’habitants.'
@@ -56,7 +56,6 @@ export function valeur(x: number | null | undefined, unite: string): string {
   return `${nf(1).format(x)} ${unite}`
 }
 const court = (x: number, unite: string) => (unite === '%' ? `${nf(1).format(x)} %` : `${nf(0).format(x)} €`)
-export const badgeCalcule = () => `<span class="badge">${traitStatut('approche')}Calculé par le site</span>`
 const MOTIFS: Record<string, string> = {
   absente: 'aucune ligne de la source',
   perimetre: 'territoire de la commune modifié depuis l’année des données',
@@ -230,7 +229,7 @@ ${petite ? '<p class="aide">Commune de moins de 2 000 habitants : ses montants p
     .map((a) => {
       const v = idx.variables[a.variable]
       const s = v ? idx.sources[v.source] : undefined
-      return `<li><strong>${h(a.libelle)}</strong> (${h(a.annee)}) : ${h(v?.definition ?? '')}. ${a.statut === 'calculé par le site' ? `${badgeCalcule()} ${h(v?.methode ?? '')}` : ''}${source(s?.titre ?? cr.source, String(a.annee))}</li>`
+      return `<li><strong>${h(a.libelle)}</strong> (${h(a.annee)}) : ${h(v?.definition ?? '')}. ${a.statut === 'calculé par le site' && v?.methode ? badgeCalcule(v.methode) : ''}${source(s?.titre ?? cr.source, String(a.annee))}</li>`
     })
     .join('')
 
@@ -241,7 +240,7 @@ ${formulaire}
 ${blocLieu}
 <section aria-labelledby="croiser-titre"><h2 id="croiser-titre">${h(cr.titre)}</h2>
 <p>En abscisse (de gauche à droite) : ${h(cr.x.libelle)}, de ${h(court(cr.axes.x[0], cr.x.unite))} à ${h(court(cr.axes.x[1], cr.x.unite))}. En ordonnée (de bas en haut) : ${h(cr.y.libelle)}, de ${h(court(cr.axes.y[0], cr.y.unite))} à ${h(court(cr.axes.y[1], cr.y.unite))}. Mêmes axes dans toutes les cases. Chaque bande est une tranche de communes : la partie claire va de 10 à 90 % des communes, la partie foncée de 25 à 75 %, le trait est la médiane. Un losange marque une commune au-delà des bornes des axes.</p>
-<p class="aide">Dispersion ${badgeCalcule()} : ${h(cr.methode)}</p>
+<p class="aide">Dispersion ${badgeCalcule(cr.methode)}</p>
 <div class="croiser-grille">
 ${vignette('Toutes les communes', cr.ensemble, null, false)}
 </div>
@@ -250,7 +249,7 @@ ${vignette('Toutes les communes', cr.ensemble, null, false)}
 <div class="croiser-grille">
 ${cases.map(({ libelle, cs }) => vignette(libelle, cs, cs.code ?? '', !!ligne && caseDe(ligne) === cs.code)).join('')}
 </div>
-${tableau(cr, [{ libelle: 'Toutes les communes', cs: cr.ensemble }, ...cases], `${cr.titre}, ${FACETTES[facette]} (calculé par le site)`)}
+${tableau(cr, [{ libelle: 'Toutes les communes', cs: cr.ensemble }, ...cases], `${cr.titre}, ${FACETTES[facette]}, dispersion par case`)}
 </section>
 <h2>D’où viennent ces chiffres</h2>
 <ul>${sources}</ul>
@@ -267,8 +266,11 @@ ${sorties}`
     const d = (f.querySelector<HTMLInputElement>('#croiser-dep')?.value ?? '').trim().toUpperCase()
     location.hash = lien('/local/croiser', { c: choisi.id, f: facette, insee: /^(\d{5}|2[AB]\d{3})$/.test(i) ? i : undefined, dep: !i && /^(\d{2,3}|2[AB])$/.test(d) ? d : undefined })
   })
-  return {
-    titre: ligne ? `${TITRE} : ${ligne.nom}` : TITRE,
-    description: `${cr.titre} : dispersion entre communes ${FACETTES[facette]}, mêmes axes dans toutes les cases, sans droite ni coefficient.`,
-  }
+  // Sans commune choisie : titre et description de la table des routes (page prérendue et partagée).
+  return ligne
+    ? {
+        titre: `${TITRE} : ${ligne.nom}`,
+        description: `${cr.titre} : dispersion entre communes ${FACETTES[facette]}, mêmes axes dans toutes les cases, sans droite ni coefficient.`,
+      }
+    : {}
 }
