@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/securite_interieure_index.schema.json",
+  "title": "site/data/securite_interieure/index.json : fichiers, repères, limites, sources de l'axe sécurité intérieure",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "fichiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fichier": {
+            "type": "string",
+            "pattern": "^securite_interieure/[a-z_]+\\.json$"
+          },
+          "contenu": {
+            "type": "string"
+          },
+          "octets": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "fichier",
+          "contenu",
+          "octets"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 3
+    },
+    "reperes": {
+      "type": "object",
+      "properties": {
+        "programmes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "programme": {
+                "type": "string",
+                "pattern": "^[0-9]{3}$"
+              },
+              "libelle": {
+                "type": "string"
+              },
+              "annee": {
+                "type": "integer"
+              },
+              "depenses_constatees_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "par_titre": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "titre": {
+                      "type": "string"
+                    },
+                    "groupe": {
+                      "enum": [
+                        "personnel",
+                        "fonctionnement",
+                        "investissement",
+                        "intervention",
+                        "operations_financieres"
+                      ]
+                    },
+                    "eur": {
+                      "type": "number"
+                    },
+                    "part_pct": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "titre",
+                    "groupe",
+                    "eur",
+                    "part_pct"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "etpt_lfi": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "annee_etpt": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "programme",
+              "libelle",
+              "annee",
+              "depenses_constatees_eur",
+              "par_titre",
+              "etpt_lfi",
+              "annee_etpt"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 4
+        },
+        "mission": {
+          "type": "object",
+          "properties": {
+            "annee": {
+              "type": "integer"
+            },
+            "depenses_constatees_eur": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "dont_personnel_eur": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "statut": {
+              "const": "calculé"
+            }
+          },
+          "required": [
+            "annee",
+            "depenses_constatees_eur",
+            "dont_personnel_eur",
+            "statut"
+          ],
+          "additionalProperties": false
+        },
+        "amendes": {
+          "type": "object",
+          "properties": {
+            "annee": {
+              "type": "integer"
+            },
+            "recouvrements_eur": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "depenses_eur": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "solde_fin_eur": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "annee",
+            "recouvrements_eur",
+            "depenses_eur",
+            "solde_fin_eur"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "programmes",
+        "mission",
+        "amendes"
+      ],
+      "additionalProperties": false
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "voir_aussi": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "id_catalogue": {
+            "type": "string"
+          },
+          "titre": {
+            "type": "string"
+          },
+          "page": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "collecte_le": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fichiers_collectes": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "id_catalogue",
+          "titre",
+          "page",
+          "licence",
+          "collecte_le",
+          "fichiers_collectes"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "motif": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "motif"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "conclusion": {
+          "type": "string"
+        },
+        "trouvailles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "nom": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "verdict": {
+                "enum": [
+                  "réutilisable tel quel",
+                  "à adapter",
+                  "inspiration seulement"
+                ]
+              },
+              "licence": {
+                "type": "string"
+              },
+              "mise_a_jour": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "nom",
+              "url",
+              "verdict",
+              "licence",
+              "mise_a_jour"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "date",
+        "conclusion",
+        "trouvailles"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "avertissement",
+    "fichiers",
+    "reperes",
+    "limites",
+    "voir_aussi",
+    "sources",
+    "sources_inaccessibles",
+    "recherche_publique"
+  ],
+  "additionalProperties": false
+}

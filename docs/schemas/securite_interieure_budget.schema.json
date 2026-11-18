@@ -1,0 +1,754 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/securite_interieure_budget.schema.json",
+  "title": "site/data/securite_interieure/budget.json : crédits des programmes 176, 152, 161 et 207 par exécution, titre et catégorie, action et sous-action",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "programmes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "mission": {
+            "const": "Sécurités"
+          },
+          "execution": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "annee": {
+                  "type": "integer"
+                },
+                "personnel": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "lfi_eur": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "lfr_eur": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "credits_ouverts_eur": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "depenses_constatees_eur": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "lfi_eur",
+                        "lfr_eur",
+                        "credits_ouverts_eur",
+                        "depenses_constatees_eur"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                },
+                "autres_titres": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "lfi_eur": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "lfr_eur": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "credits_ouverts_eur": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "depenses_constatees_eur": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "lfi_eur",
+                        "lfr_eur",
+                        "credits_ouverts_eur",
+                        "depenses_constatees_eur"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                },
+                "total": {
+                  "type": "object",
+                  "properties": {
+                    "lfi_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "lfr_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "credits_ouverts_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "depenses_constatees_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "lfi_eur",
+                    "lfr_eur",
+                    "credits_ouverts_eur",
+                    "depenses_constatees_eur"
+                  ],
+                  "additionalProperties": false
+                },
+                "source": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "annee",
+                "personnel",
+                "autres_titres",
+                "total",
+                "source"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 3
+          },
+          "nature": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "annee": {
+                  "type": "integer"
+                },
+                "titres": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "titre": {
+                        "enum": [
+                          "2",
+                          "3",
+                          "5",
+                          "6",
+                          "7"
+                        ]
+                      },
+                      "groupe": {
+                        "enum": [
+                          "personnel",
+                          "fonctionnement",
+                          "investissement",
+                          "intervention",
+                          "operations_financieres"
+                        ]
+                      },
+                      "libelle": {
+                        "type": "string"
+                      },
+                      "eur": {
+                        "type": "number"
+                      },
+                      "categories": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "categorie": {
+                              "type": "string",
+                              "pattern": "^[0-9]{2}$"
+                            },
+                            "libelle": {
+                              "type": "string"
+                            },
+                            "eur": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "categorie",
+                            "libelle",
+                            "eur"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 1
+                      },
+                      "part_pct": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "titre",
+                      "groupe",
+                      "libelle",
+                      "eur",
+                      "categories",
+                      "part_pct"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1
+                },
+                "controle": {
+                  "type": "object",
+                  "properties": {
+                    "somme_categories_eur": {
+                      "type": "number"
+                    },
+                    "depenses_constatees_etat_cp_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "ecart_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "somme_categories_eur",
+                    "depenses_constatees_etat_cp_eur",
+                    "ecart_eur"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "annee",
+                "titres",
+                "controle"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 3
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "pattern": "^[0-9]{3}-[0-9]{2}$"
+                },
+                "libelle": {
+                  "type": "string"
+                },
+                "sous_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "libelle": {
+                        "type": "string"
+                      },
+                      "execution_2024_eur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "lfi_2025_eur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "plf_2026_eur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "libelle",
+                      "execution_2024_eur",
+                      "lfi_2025_eur",
+                      "plf_2026_eur"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1
+                },
+                "execution_2024_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "lfi_2025_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "plf_2026_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "code",
+                "libelle",
+                "sous_actions",
+                "execution_2024_eur",
+                "lfi_2025_eur",
+                "plf_2026_eur"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1
+          },
+          "lignes_techniques_budget_vert": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "libelle": {
+                  "type": "string"
+                },
+                "execution_2024_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "lfi_2025_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "plf_2026_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "code",
+                "libelle",
+                "execution_2024_eur",
+                "lfi_2025_eur",
+                "plf_2026_eur"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "controle_actions": {
+            "type": "object",
+            "properties": {
+              "somme_actions_execution_2024_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "depenses_constatees_2024_plrg_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "ecart_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "lecture": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "somme_actions_execution_2024_eur",
+              "depenses_constatees_2024_plrg_eur",
+              "ecart_eur",
+              "lecture"
+            ],
+            "additionalProperties": false
+          },
+          "nature_par_action_plf2025": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "libelle": {
+                  "type": "string"
+                },
+                "titres": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "titre": {
+                        "enum": [
+                          "2",
+                          "3",
+                          "5",
+                          "6",
+                          "7"
+                        ]
+                      },
+                      "groupe": {
+                        "enum": [
+                          "personnel",
+                          "fonctionnement",
+                          "investissement",
+                          "intervention",
+                          "operations_financieres"
+                        ]
+                      },
+                      "eur": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "titre",
+                      "groupe",
+                      "eur"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "total_eur": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "code",
+                "libelle",
+                "titres",
+                "total_eur"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "serie_longue": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "annee": {
+                  "type": "integer"
+                },
+                "vote_lfi_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "depense_constatee_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "annee",
+                "vote_lfi_eur",
+                "depense_constatee_eur"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "programme",
+          "libelle",
+          "mission",
+          "execution",
+          "nature",
+          "actions",
+          "lignes_techniques_budget_vert",
+          "controle_actions",
+          "nature_par_action_plf2025",
+          "serie_longue"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 4
+    },
+    "mission": {
+      "type": "object",
+      "properties": {
+        "statut": {
+          "const": "calculé"
+        },
+        "formule": {
+          "type": "string"
+        },
+        "annees": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "depenses_constatees_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "dont_personnel_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "annee",
+              "depenses_constatees_eur",
+              "dont_personnel_eur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "statut",
+        "formule",
+        "annees"
+      ],
+      "additionalProperties": false
+    },
+    "securite_routiere": {
+      "type": "object",
+      "properties": {
+        "lecture": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "lignes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "programme": {
+                "type": "string",
+                "pattern": "^[0-9]{3}$"
+              },
+              "action": {
+                "type": "string"
+              },
+              "libelle": {
+                "type": "string"
+              },
+              "execution_2024_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "lfi_2025_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "plf_2026_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "programme",
+              "action",
+              "libelle",
+              "execution_2024_eur",
+              "lfi_2025_eur",
+              "plf_2026_eur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "lecture",
+        "source",
+        "lignes"
+      ],
+      "additionalProperties": false
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "objet": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "montant": {
+            "type": "number"
+          },
+          "autre_source": {
+            "type": "string"
+          },
+          "autre_montant": {
+            "type": "number"
+          },
+          "ecart": {
+            "type": "number"
+          },
+          "unite": {
+            "type": "string"
+          },
+          "lecture": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "objet",
+          "source",
+          "montant",
+          "autre_source",
+          "autre_montant",
+          "ecart",
+          "unite",
+          "lecture"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ordre": {
+      "type": "object",
+      "properties": {
+        "regle": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "required": [
+        "regle"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "avertissement",
+    "definitions",
+    "programmes",
+    "mission",
+    "securite_routiere",
+    "ecarts",
+    "ordre"
+  ],
+  "additionalProperties": false
+}

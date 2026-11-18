@@ -2,6 +2,48 @@
  "note": "Fichiers de data/lake lus par la production de chaque étape (python pipeline/tout.py inventorier, sous strace). `sources` : identifiants du catalogue (collecte/collecte.py) et chemins ; `caches` : dossiers remplis par les commandes de collecte des modules ; `hors_catalogue` : fichiers déposés par la collecte d'un module ; `urls` : URL publique de chaque fichier (manifeste), lue par `tout.py entrepot`.",
  "releve_le": "2026-11-17",
  "etapes": {
+  "securite_interieure": {
+   "sources": {
+    "securite_interieure_budget_vert_2026": [
+     "data/lake/securite_interieure/securite_interieure_budget_vert_2026.csv"
+    ],
+    "securite_interieure_etpt_lfi_2019": [
+     "data/lake/securite_interieure/securite_interieure_etpt_lfi_2019.csv"
+    ],
+    "securite_interieure_etpt_lfi_2020_2022": [
+     "data/lake/securite_interieure/securite_interieure_etpt_lfi_2020_2022/lfi_2020_emplois.csv",
+     "data/lake/securite_interieure/securite_interieure_etpt_lfi_2020_2022/lfi_2021_emplois.csv",
+     "data/lake/securite_interieure/securite_interieure_etpt_lfi_2020_2022/lfi_2022_emplois.csv"
+    ],
+    "securite_interieure_etpt_lfi_2023": [
+     "data/lake/securite_interieure/securite_interieure_etpt_lfi_2023.csv"
+    ],
+    "securite_interieure_plf25_destination_nature": [
+     "data/lake/securite_interieure/securite_interieure_plf25_destination_nature.csv"
+    ],
+    "securite_interieure_plrg_annexes": [
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2023_bg_cp.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2023_bg_titre_categorie.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2023_cs_comptable.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2023_cs_cp.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2023_cs_recouvrements.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2024_bg_cp.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2024_bg_titre_categorie.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2024_cs_comptable.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2024_cs_cp.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2024_cs_recouvrements.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2025_bg_cp.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2025_bg_titre_categorie.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2025_cs_comptable.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2025_cs_cp.csv",
+     "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2025_cs_recouvrements.csv"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 964902,
+   "note": "sources du domaine « securite_interieure » de collecte/catalogue.json, collectées par `python pipeline/securite_interieure.py collecter` ; lit aussi site/data/realisations/<programme>.json (étape realisations)"
+  },
   "base": {
    "sources": {},
    "caches": [],
@@ -1551,6 +1593,28 @@
   }
  },
  "urls": {
+  "data/lake/securite_interieure/securite_interieure_budget_vert_2026.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf-2026-budget-vert/exports/csv?where=numero_programme+in+%28176%2C152%2C161%2C207%2C751%2C753%2C754%2C755%29",
+  "data/lake/securite_interieure/securite_interieure_etpt_lfi_2019.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/loi-de-finances-initiale-pour-2019-lfi-2019/exports/csv",
+  "data/lake/securite_interieure/securite_interieure_etpt_lfi_2020_2022/lfi_2020_emplois.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-initiale-pour-2020-lfi-2020/attachments/lfi2020_emplois_csv",
+  "data/lake/securite_interieure/securite_interieure_etpt_lfi_2020_2022/lfi_2021_emplois.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-initiale-pour-2021-lfi-2021/attachments/lfi2021_emplois_csv",
+  "data/lake/securite_interieure/securite_interieure_etpt_lfi_2020_2022/lfi_2022_emplois.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-initiale-pour-2022-lfi-2022/attachments/lfi2022_emplois_csv",
+  "data/lake/securite_interieure/securite_interieure_etpt_lfi_2023.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/etpt-par-ministere-mission-programme-pour-le-bg-et-les-ba-lfi-2023/exports/csv",
+  "data/lake/securite_interieure/securite_interieure_plf25_destination_nature.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf25-depenses-2025-du-bg-et-des-ba-selon-nomenclatures-destination-et-nature/exports/csv?where=programme+in+%28176%2C152%2C161%2C207%29",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2023_bg_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe1_etat_cp_2023_csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2023_bg_titre_categorie.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe1_etat_titre_cat_2023_csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2023_cs_comptable.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_comptable_2023_csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2023_cs_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_cp_2023_csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2023_cs_recouvrements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_recouvt_2023_csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2024_bg_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe1_etat_cp_2024_csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2024_bg_titre_categorie.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe1_etat_titre_cat_2024_csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2024_cs_comptable.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_comptable_2024_csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2024_cs_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_cp_2024_csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2024_cs_recouvrements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_recouvt_2024_csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2025_bg_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe1_etat_cp_2025csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2025_bg_titre_categorie.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe1_etat_titre_cat_2025csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2025_cs_comptable.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_comptable_2025csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2025_cs_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_cp_2025csv",
+  "data/lake/securite_interieure/securite_interieure_plrg_annexes/plrg_2025_cs_recouvrements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_recouvt_2025csv",
   "data/lake/_restreint/beneficiaires/benef_decp/decp_11cea8e8.parquet": "https://static.data.gouv.fr/resources/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire/20261117-051110/decp.parquet",
   "data/lake/_restreint/beneficiaires/datagouv__subventions-de-bourges-plus-en-2018-et-2019/subventions-de-bourges-plus-en-2018-et-2019_85c2c379.parquet": "https://data.bourgesplus.fr/api/v2/catalog/datasets/subventions-de-bourges-plus-en-2018-et-2019/exports/parquet",
   "data/lake/_restreint/beneficiaires/ods_laregion__subventions-du-conseil-regional.parquet": "https://data.laregion.fr/api/explore/v2.1/catalog/datasets/subventions-du-conseil-regional/exports/parquet",

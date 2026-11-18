@@ -252,6 +252,11 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # sécurité intérieure : police, gendarmerie, sécurité civile, sécurité routière, compte des amendes (pipeline/securite_interieure.py)
+    ("securite_interieure_index.schema.json", "securite_interieure/index.json", "existant"),
+    ("securite_interieure_budget.schema.json", "securite_interieure/budget.json", "existant"),
+    ("securite_interieure_effectifs.schema.json", "securite_interieure/effectifs.json", "existant"),
+    ("securite_interieure_amendes.schema.json", "securite_interieure/amendes.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
