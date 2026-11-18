@@ -2562,3 +2562,17 @@ td.nombre {
   border-radius: var(--rayon);
   padding: 0.25rem 1.5rem;
 }
+
+/* trame partagée : fond de carte des pages département et commune (src/composants/trame-france.svg, par <use>).
+   Le fichier n'a ni couleur ni police : tout est hérité de l'élément <use>, thème sombre compris. */
+.trame .t-fond {
+  fill: var(--papier);
+  stroke: var(--contour);
+  stroke-width: 1.5;
+  color: var(--texte);
+  font-family: var(--texte-police);
+  font-weight: 600;
+  font-size: 15px;
+  text-anchor: middle;
+  pointer-events: none;
+}

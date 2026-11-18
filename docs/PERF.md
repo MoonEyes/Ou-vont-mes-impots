@@ -33,6 +33,29 @@ Proposition : un fichier par département pour les élections locales et législ
 
 `local/decisions/{siren}/{annee}.json` (63 Mo au total, jusqu'à 1,5 Mo par fichier) et `local/dotations/epci.json` (3 Mo) ne sont lus par aucun écran : ils sont copiés dans `dist/` à chaque construction. Si leur publication sert seulement au téléchargement des données, les sortir de `site/data` (ou les lister dans un dossier « téléchargements ») réduirait le temps de déploiement sans effet sur les pages.
 
+## Budgets du prérendu
+
+Mesures du 18/11/2026 (`npm run build`, données du 17/11/2026 : 2 380 pages dont 101 départements et 2 251 communes). Poids transféré : gzip niveau 9, comme un hébergeur qui compresse. Les budgets sont vérifiés par `web/tests/performance.test.ts` sur le site construit (`dist/prerendu.json` et pages réelles).
+
+| Mesure | Avant | Après | Budget |
+|---|---|---|---|
+| HTML prérendu, total | 99,3 Mo | 62,2 Mo | < 70 Mo |
+| `dist/`, total (dont 425 Mo de données) | 527 Mo | 490 Mo | |
+| Page commune, brute (médiane / max) | 41,8 Ko / 42,5 Ko | 26,0 Ko / 26,7 Ko | max < 30 Ko |
+| Page commune, transférée (médiane ; Nantes) | 8,9 Ko ; 8,9 Ko | 5,9 Ko ; 6,0 Ko | < 7 Ko |
+| Page département, brute (médiane / max) | 53,3 Ko / 94,0 Ko | 37,5 Ko / 78,2 Ko | max < 85 Ko |
+| Encadré « Où c'est » dans le HTML | 16,4 Ko (3,1 Ko transférés) | 1,0 Ko | < 1,5 Ko |
+| Fond de carte partagé `assets/trame-france-*.svg` | | 9,0 Ko (1,1 Ko transféré, une fois puis en cache) | < 12 Ko |
+
+Cause de la hausse (59 à 99 Mo) : la carte de France en trame (101 carrés, chacun avec son lien) était écrite en entier dans chacune des 2 352 pages département et commune, 16,4 Ko par page.
+
+Ce qui a changé (`web/src/composants/trame.ts`) :
+
+- Les 101 carrés et leurs numéros sont dans un seul fichier, `web/src/composants/trame-france.svg`, émis par Vite dans `assets/` avec une empreinte (mis en cache par le navigateur) et dessiné par `<use href="…/assets/trame-france-….svg#trame-france">`. Le fichier n'a ni couleur ni police : contour, fond, couleur des numéros et police (Figtree) viennent de l'élément `<use>` de la page, donc le thème sombre est suivi. `web/scripts/prerendre.mjs` réécrit son adresse relativement à chaque page.
+- Le HTML de chaque page ne contient plus que le carré de son département, avec son lien, au même endroit : rendu identique, avec ou sans JavaScript.
+- Accessibilité : le nom de la carte, le département mis en avant et la légende « Ton département » sont inchangés. Les 100 autres liens (100 arrêts de tabulation avant le contenu de la page) sont remplacés par un lien vers la carte complète de la page « Chez moi », qui garde un lien par département, et par le fil d'Ariane.
+- `dist/prerendu.json` donne aussi `octets_page_commune_max` et `octets_page_departement_max`.
+
 ## Déjà fait côté site (sans changement de format)
 
 - Commune : titre, population et liens affichés dès la géographie (environ 7 Ko compressés) ; budgets ensuite, puis dotations, taux et subventions demandés seulement après les budgets.

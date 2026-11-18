@@ -121,6 +121,10 @@ const jeuLd = jeuDeDonnees(ldSource['@graph'].find((x) => x['@type'] === 'Datase
 // premier affichage, ce qui évite le décalage de mise en page au remplacement de la police de repli.
 const POLICES = ['figtree-latin-wght-normal', 'bricolage-grotesque-latin-opsz-normal']
 const polices = readdirSync(join(DIST, 'assets')).filter((f) => f.endsWith('.woff2') && POLICES.some((p) => f.startsWith(p + '-')))
+// Fond de carte partagé des pages département et commune (src/composants/trame-france.svg, docs/PERF.md) : Vite
+// l'émet dans assets/ avec une empreinte ; dans le prérendu, le module le désigne par son chemin source, remplacé
+// ici par le fichier construit, relatif à la page. Une seule copie, mise en cache, au lieu de 17 Ko par page.
+const trameFrance = readdirSync(join(DIST, 'assets')).find((f) => /^trame-france-[\w-]+\.svg$/.test(f))
 
 const pages = []
 
@@ -184,6 +188,10 @@ async function prerendre(fragment, { indexable = true, lastmod = dateDonnees } =
   // La CSP interdit les attributs style : les largeurs (data-l, data-g) sont reposées par le script une fois chargé.
   main.querySelectorAll('[style]').forEach((el) => el.removeAttribute('style'))
   main.querySelectorAll('a[href^="#/"]').forEach((a) => a.setAttribute('href', prefixe + versChemin(a.getAttribute('href'))))
+  main.querySelectorAll('use[href$="#trame-france"]').forEach((u) => {
+    if (!trameFrance) throw new Error('dist/assets/trame-france-*.svg absent : le fond de carte partagé n’a pas été construit.')
+    u.setAttribute('href', `${prefixe}assets/${trameFrance}#trame-france`)
+  })
   const html = composer({ chemin, titre: page.titre, description: page.description, fil: page.fil, contenu: main.innerHTML, indexable })
   const dossier = join(DIST, chemin)
   mkdirSync(dossier, { recursive: true })
@@ -257,6 +265,8 @@ try {
     pages_communes: pages.filter((p) => /^local\/(\d{5}|2[AB]\d{3})-/.test(p.chemin)).length,
     pages_indexables: indexables.length,
     octets_pages: pages.reduce((s, p) => s + p.octets, 0),
+    octets_page_commune_max: Math.max(0, ...pages.filter((p) => /^local\/(\d{5}|2[AB]\d{3})-/.test(p.chemin)).map((p) => p.octets)),
+    octets_page_departement_max: Math.max(0, ...pages.filter((p) => /^local\/(\d{2,3}|2[AB])-/.test(p.chemin)).map((p) => p.octets)),
     fichiers_dist: fichiers,
     octets_dist: octets,
     limite_fichiers: LIMITE_FICHIERS,
