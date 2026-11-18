@@ -252,6 +252,11 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # pouvoirs publics : dotations, budgets des institutions, indemnités par fonction (pipeline/pouvoirs_publics.py)
+    ("pouvoirs_publics_index.schema.json", "pouvoirs_publics/index.json", "existant"),
+    ("pouvoirs_publics_dotations.schema.json", "pouvoirs_publics/dotations.json", "existant"),
+    ("pouvoirs_publics_budgets.schema.json", "pouvoirs_publics/budgets.json", "existant"),
+    ("pouvoirs_publics_indemnites.schema.json", "pouvoirs_publics/indemnites.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

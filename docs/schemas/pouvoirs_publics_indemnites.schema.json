@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/pouvoirs_publics_indemnites.schema.json",
+  "title": "site/data/pouvoirs_publics/indemnites.json : barèmes des indemnités par fonction (jamais par personne)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "unite": {
+      "type": "string"
+    },
+    "lecture": {
+      "type": "string"
+    },
+    "lignes": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "properties": {
+          "institution": {
+            "enum": [
+              "Assemblée nationale",
+              "Sénat",
+              "Exécutif"
+            ]
+          },
+          "fonction": {
+            "type": "string"
+          },
+          "composante": {
+            "type": "string"
+          },
+          "montant_mensuel_eur": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "brut_ou_net": {
+            "enum": [
+              "brut",
+              "net"
+            ]
+          },
+          "statut": {
+            "enum": [
+              "publié",
+              "calculé",
+              "non publié dans les sources lues"
+            ]
+          },
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "en_vigueur": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "en_vigueur_texte": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "enveloppe": {
+            "type": "boolean"
+          },
+          "formule": {
+            "type": "string"
+          },
+          "entrees": {
+            "type": "object"
+          },
+          "limite": {
+            "type": "string"
+          },
+          "mention": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "institution",
+          "fonction",
+          "composante",
+          "montant_mensuel_eur",
+          "brut_ou_net",
+          "statut",
+          "source",
+          "en_vigueur"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "statut": {
+                  "const": "calculé"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "formule",
+                "limite"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "montant_mensuel_eur": {
+                  "type": "null"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "mention"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^pouvoirs_publics_"
+          },
+          "titre": {
+            "type": "string"
+          },
+          "producteur": {
+            "type": "string"
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "licence": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "collecte_le": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "titre",
+          "producteur",
+          "url"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "date_sources",
+    "avertissement",
+    "lignes",
+    "sources"
+  ],
+  "additionalProperties": false
+}

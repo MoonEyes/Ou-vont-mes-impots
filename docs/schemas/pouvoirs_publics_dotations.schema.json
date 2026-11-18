@@ -1,0 +1,375 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/pouvoirs_publics_dotations.schema.json",
+  "title": "site/data/pouvoirs_publics/dotations.json : dotations de la mission Pouvoirs publics par programme et par année",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "unite": {
+      "type": "string"
+    },
+    "grandeurs": {
+      "type": "object",
+      "required": [
+        "lfi",
+        "plf",
+        "prevu",
+        "execute"
+      ]
+    },
+    "lecture": {
+      "type": "string"
+    },
+    "programmes": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^5[0-9]{2}$"
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "institution": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "annees": {
+            "type": "array",
+            "minItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "annee": {
+                  "type": "integer",
+                  "minimum": 2000,
+                  "maximum": 2100
+                },
+                "lfi": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "plf": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "execute": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "source_lfi": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "source_plf": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "source_execute": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "annee",
+                "lfi",
+                "plf",
+                "execute",
+                "source_lfi",
+                "source_plf",
+                "source_execute"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "pattern": "^[0-9]{2}$"
+                },
+                "libelle": {
+                  "type": "string"
+                },
+                "annees": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "annee": {
+                        "type": "integer",
+                        "minimum": 2000,
+                        "maximum": 2100
+                      },
+                      "lfi": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "plf": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "annee",
+                      "lfi",
+                      "plf"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "code",
+                "libelle",
+                "annees"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "programme",
+          "libelle",
+          "institution",
+          "annees",
+          "actions"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "programmes_sans_credits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "libelle"
+        ]
+      }
+    },
+    "note_sans_credits": {
+      "type": "string"
+    },
+    "totaux_publies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "grandeur": {
+            "enum": [
+              "lfi",
+              "plf",
+              "execute",
+              "prevu"
+            ]
+          },
+          "montant_eur": {
+            "type": "number",
+            "minimum": 0
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "annee",
+          "grandeur",
+          "montant_eur",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "programme": {
+            "type": "string"
+          },
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "grandeur": {
+            "enum": [
+              "lfi",
+              "plf",
+              "execute",
+              "prevu"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "montant_eur": {
+            "type": "number"
+          },
+          "autre_source": {
+            "type": "string"
+          },
+          "autre_montant_eur": {
+            "type": "number"
+          },
+          "ecart_eur": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "programme",
+          "annee",
+          "grandeur",
+          "source",
+          "montant_eur",
+          "autre_source",
+          "autre_montant_eur",
+          "ecart_eur"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "valeurs_absentes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "programme": {
+            "type": "string"
+          },
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "grandeur": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "programme",
+          "annee",
+          "grandeur"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "note_absentes": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^pouvoirs_publics_"
+          },
+          "titre": {
+            "type": "string"
+          },
+          "producteur": {
+            "type": "string"
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "licence": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "collecte_le": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "titre",
+          "producteur",
+          "url"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "date_sources",
+    "avertissement",
+    "unite",
+    "programmes",
+    "totaux_publies",
+    "ecarts",
+    "valeurs_absentes",
+    "sources"
+  ],
+  "additionalProperties": false
+}

@@ -1460,6 +1460,56 @@
    "octets_sources": null,
    "note": "relevé à la main d'après les constantes de pipeline/outremer.py (entrée « outremer » du catalogue)"
   },
+  "pouvoirs_publics": {
+   "sources": {
+    "pouvoirs_publics_an_budgets_2012_2017": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_an_budgets_2012_2017.zip"
+    ],
+    "pouvoirs_publics_an_rapport_comptes_2025": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_an_rapport_comptes_2025.pdf"
+    ],
+    "pouvoirs_publics_an_situation_materielle": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_an_situation_materielle.pdf"
+    ],
+    "pouvoirs_publics_np_senat_plf2027": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_np_senat_plf2027.pdf"
+    ],
+    "pouvoirs_publics_pap_2022": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_pap_2022.pdf"
+    ],
+    "pouvoirs_publics_pap_2023": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_pap_2023.pdf"
+    ],
+    "pouvoirs_publics_pap_2024": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_pap_2024.pdf"
+    ],
+    "pouvoirs_publics_pap_2025": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_pap_2025.pdf"
+    ],
+    "pouvoirs_publics_pap_2026": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_pap_2026.pdf"
+    ],
+    "pouvoirs_publics_qe_traitement_president": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_qe_traitement_president.pdf"
+    ],
+    "pouvoirs_publics_rap_2025": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_rap_2025.pdf"
+    ],
+    "pouvoirs_publics_senat_budget": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_senat_budget.html"
+    ],
+    "pouvoirs_publics_senat_indemnite": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_senat_indemnite.html"
+    ],
+    "pouvoirs_publics_senat_moyens": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_senat_moyens.html"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 8488564,
+   "note": "sources du domaine « pouvoirs_publics » de collecte/catalogue.json, collectées par `python pipeline/pouvoirs_publics.py collecter` ; lit aussi site/data/realisations/5*.json (sortie de l'étape realisations)"
+  },
   "recouvrement": {
    "sources": {
     "recouvrement_urssaf_controle": [
@@ -1954,6 +2004,20 @@
   "data/lake/outremer/outremer/nc_epic.meta.json": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/situation-budgetaire-epic-depuis-2012",
   "data/lake/outremer/outremer/nc_impots.csv": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/rendement-des-impots-depuis-2010/exports/csv?delimiter=%3B",
   "data/lake/outremer/outremer/nc_impots.meta.json": "https://data.gouv.nc/api/explore/v2.1/catalog/datasets/rendement-des-impots-depuis-2010",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_an_budgets_2012_2017.zip": "https://data.assemblee-nationale.fr/static/openData/repository/BudgetsAN/BudgetsAN_2012-2017.csv.zip",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_an_rapport_comptes_2025.pdf": "https://www2.assemblee-nationale.fr/static/comptes/Rapport_comptes_2025.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_an_situation_materielle.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_np_senat_plf2027.pdf": "https://www.senat.fr/fileadmin/cru-1792598966/Commissions/Finances/2026-2027/PLF_2027/NP/NP_Pouvoirs_publics_PLF_27.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_pap_2022.pdf": "https://www2.assemblee-nationale.fr/static/15/pdf/FR_2022_PLF_BG_MSN_PB.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_pap_2023.pdf": "https://www2.assemblee-nationale.fr/static/16/pdf/FR_2023_PLF_BG_MSN_PB.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_pap_2024.pdf": "https://www2.assemblee-nationale.fr/static/16/pdf/FR_2024_PLF_BG_MSN_PB.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_pap_2025.pdf": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2025/Pouvoirs_publics.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_pap_2026.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_qe_traitement_president.pdf": "https://www.assemblee-nationale.fr/dyn/15/questions/QANR5L15QE24217.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_rap_2025.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1109910/file/Pouvoirs_publics_PB.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_senat_budget.html": "https://www.senat.fr/connaitre-le-senat/role-et-fonctionnement/le-budget-du-senat.html",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_senat_indemnite.html": "https://www.senat.fr/connaitre-le-senat/role-et-fonctionnement/lindemnite-parlementaire.html",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_senat_moyens.html": "https://www.senat.fr/connaitre-le-senat/role-et-fonctionnement/les-moyens-mis-a-la-disposition-des-senateurs.html",
   "data/lake/recouvrement/recouvrement_ce_ecart_tva/vat_gap_en.html": "https://taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en",
   "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2010.zip": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-153459/annuaire-statistique-2010.zip",
   "data/lake/recouvrement/recouvrement_dgfip_annuaires/annuaire-statistique-2019.zip": "https://static.data.gouv.fr/resources/annuaire-statistique/20211206-152555/annuaire-statistique-2019.zip",

@@ -154,6 +154,7 @@ ETAPES: tuple[Etape, ...] = (
     axe("marches", "Marchés publics", ("beneficiaires",)),
     axe("numerique_etat", "Numérique de l'État", ("base", "territoires"), collecte=False),
     axe("outremer", "Outre-mer", ("base",)),
+    axe("pouvoirs_publics", "Pouvoirs publics (dotations, budgets des institutions, indemnités)", ("realisations",)),
     axe("recouvrement", "Recouvrement", ("base",), collecte=False),
     axe("retraites", "Retraites par régime", ("base", "secu", "prestations"), duree_s=30),
     axe("sante_etablissements", "Établissements de santé", ("secu", "subventions")),

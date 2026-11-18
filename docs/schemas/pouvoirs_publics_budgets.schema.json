@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/pouvoirs_publics_budgets.schema.json",
+  "title": "site/data/pouvoirs_publics/budgets.json : budgets publiés des institutions de la mission Pouvoirs publics",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "unite": {
+      "type": "string"
+    },
+    "lecture": {
+      "type": "string"
+    },
+    "assemblee_nationale": {
+      "type": "object",
+      "properties": {
+        "syntheses": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "document": {
+                "type": "string"
+              },
+              "colonnes": {
+                "type": "array",
+                "minItems": 2,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "cle": {
+                      "type": "string",
+                      "pattern": "^(budget|realise)_[0-9]{4}$"
+                    },
+                    "nature": {
+                      "type": "string"
+                    },
+                    "annee": {
+                      "type": "integer",
+                      "minimum": 2000,
+                      "maximum": 2100
+                    }
+                  },
+                  "required": [
+                    "cle",
+                    "nature",
+                    "annee"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "lignes": {
+                "type": "array",
+                "minItems": 23,
+                "maxItems": 23,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "poste": {
+                      "type": "string"
+                    },
+                    "niveau": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 2
+                    },
+                    "valeurs_eur": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "poste",
+                    "niveau",
+                    "valeurs_eur"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "document",
+              "colonnes",
+              "lignes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "ecarts_entre_annexes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "colonne",
+              "document",
+              "montant_eur",
+              "autre_document",
+              "autre_montant_eur",
+              "ecart_eur"
+            ]
+          }
+        },
+        "lecture_ecarts": {
+          "type": "string"
+        },
+        "comptes_2012_2017": {
+          "type": "object",
+          "required": [
+            "document",
+            "colonnes",
+            "lignes"
+          ]
+        },
+        "execution_2025": {
+          "type": "object",
+          "required": [
+            "document",
+            "annee",
+            "depenses_executees_meur",
+            "recettes_propres_meur",
+            "solde_budgetaire_meur"
+          ]
+        }
+      },
+      "required": [
+        "syntheses",
+        "ecarts_entre_annexes",
+        "comptes_2012_2017",
+        "execution_2025"
+      ]
+    },
+    "senat": {
+      "type": "object",
+      "properties": {
+        "montants_2025": {
+          "type": "object",
+          "required": [
+            "document",
+            "annee",
+            "entites",
+            "dotation_etat_meur",
+            "ressources_propres_meur",
+            "solde_publie_meur",
+            "solde_recalcule_meur",
+            "ecart_solde_meur"
+          ]
+        }
+      },
+      "required": [
+        "montants_2025"
+      ]
+    },
+    "presidence": {
+      "type": "object",
+      "required": [
+        "equilibre",
+        "destinations"
+      ]
+    },
+    "conseil_constitutionnel": {
+      "type": "object",
+      "required": [
+        "document",
+        "annee",
+        "par_nature",
+        "total_eur"
+      ]
+    },
+    "cour_justice_republique": {
+      "type": "object",
+      "required": [
+        "document",
+        "postes",
+        "controles"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^pouvoirs_publics_"
+          },
+          "titre": {
+            "type": "string"
+          },
+          "producteur": {
+            "type": "string"
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "licence": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "collecte_le": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "titre",
+          "producteur",
+          "url"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "date_sources",
+    "avertissement",
+    "assemblee_nationale",
+    "senat",
+    "presidence",
+    "conseil_constitutionnel",
+    "cour_justice_republique",
+    "sources"
+  ],
+  "additionalProperties": true
+}
