@@ -4,6 +4,7 @@
 // Arborescence de trois niveaux au plus ; fil d'Ariane et liens « voir aussi » déduits de la table des routes.
 import { versChemin } from './chemins'
 import { picto } from './composants/pictos'
+import { marquerSigles } from './composants/sigles'
 import { annoncer, appliquerLargeurs, h } from './util'
 
 /**
@@ -204,6 +205,8 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
       propre = rendu
       suite = rendu.suite ?? null
     }
+    // Sigles : leur première occurrence devient un lien vers le glossaire, une fois l'écran complet (src/composants/sigles.ts).
+    suite = marquerSigles(zone, suite)
     if (prerendu && suite) {
       await suite.catch((e) => console.error(e))
       suite = null

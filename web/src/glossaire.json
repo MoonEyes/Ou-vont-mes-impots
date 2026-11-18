@@ -1,0 +1,3195 @@
+{
+ "description": "Glossaire du site : sigles et mots techniques, définis en langage courant avec leur source. Lu par l’écran /methode/glossaire (web/src/ecrans/glossaire.ts) et par le marquage des sigles (web/src/composants/sigles.ts) ; vérifié par web/tests/glossaire.test.ts. Champs : id (ancre), terme, sigle et variantes (graphies reconnues), forme (forme développée), indices (mots dont l’un doit figurer dans la page pour que le sigle y soit marqué : sens ambigu ou sigle de deux lettres), definition, source, voir (renvois). pas_des_sigles : mots en capitales qui ne sont pas des sigles.",
+ "maj": "2026-11-18",
+ "termes": [
+  {
+   "id": "aah",
+   "terme": "AAH",
+   "sigle": "AAH",
+   "forme": "allocation aux adultes handicapés",
+   "definition": "Revenu minimum versé aux personnes handicapées qui ont peu de ressources ; il est financé par l’État et versé par les caisses d’allocations familiales.",
+   "source": {
+    "nom": "service-public.fr, « Allocation aux adultes handicapés (AAH) »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F12242"
+   },
+   "voir": [
+    "pch"
+   ]
+  },
+  {
+   "id": "acoss",
+   "terme": "ACOSS",
+   "sigle": "ACOSS",
+   "variantes": [
+    "Acoss"
+   ],
+   "forme": "Agence centrale des organismes de sécurité sociale, aujourd’hui Urssaf Caisse nationale",
+   "definition": "Organisme qui centralise les cotisations et contributions encaissées par les Urssaf et les répartit entre les branches de la Sécurité sociale.",
+   "source": {
+    "nom": "securite-sociale.fr, « Les branches »",
+    "url": "https://www.securite-sociale.fr/la-secu-cest-quoi/organisation/les-branches"
+   },
+   "voir": [
+    "urssaf"
+   ]
+  },
+  {
+   "id": "action",
+   "terme": "Action",
+   "definition": "Subdivision d’un programme qui précise à quoi servent les crédits, par exemple « Enseignement en collège ». La répartition entre actions est indicative : le responsable du programme peut la modifier en cours d’année.",
+   "source": {
+    "nom": "vie-publique.fr, fiche « Les principales innovations introduites par la LOLF »",
+    "url": "https://www.vie-publique.fr/fiches/21908-les-principales-innovations-introduites-par-la-lolf"
+   },
+   "voir": [
+    "programme",
+    "mission"
+   ]
+  },
+  {
+   "id": "ademe",
+   "terme": "ADEME",
+   "sigle": "ADEME",
+   "forme": "Agence de l’environnement et de la maîtrise de l’énergie (Agence de la transition écologique)",
+   "definition": "Établissement public de l’État qui conseille et finance des projets de transition écologique : énergie, déchets, qualité de l’air.",
+   "source": {
+    "nom": "ADEME, Agence de la transition écologique",
+    "url": "https://www.ademe.fr/"
+   },
+   "voir": [
+    "operateur",
+    "epic"
+   ]
+  },
+  {
+   "id": "ae",
+   "terme": "AE",
+   "sigle": "AE",
+   "forme": "autorisations d’engagement",
+   "indices": [
+    "engagement",
+    "crédits"
+   ],
+   "definition": "Le plafond des engagements que l’État peut prendre dans l’année (signer un marché, une convention), même si le paiement vient plus tard. Les crédits de paiement, eux, plafonnent ce qui est payé dans l’année.",
+   "source": {
+    "nom": "Légifrance, loi organique relative aux lois de finances, article 8",
+    "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000394028"
+   },
+   "voir": [
+    "cp"
+   ]
+  },
+  {
+   "id": "afd",
+   "terme": "AFD",
+   "sigle": "AFD",
+   "forme": "Agence française de développement",
+   "definition": "Établissement public qui finance des projets dans les pays en développement et dans les outre-mer, pour le compte de l’État.",
+   "source": {
+    "nom": "Agence française de développement",
+    "url": "https://www.afd.fr/fr"
+   },
+   "voir": [
+    "apd"
+   ]
+  },
+  {
+   "id": "afitf",
+   "terme": "AFITF",
+   "sigle": "AFITF",
+   "forme": "Agence de financement des infrastructures de transport de France",
+   "definition": "Établissement public qui finance les grands projets de transport (routes, voies ferrées, voies navigables) pour le compte de l’État ; elle reçoit une part de la taxe sur les carburants.",
+   "source": {
+    "nom": "Agence de financement des infrastructures de transport de France",
+    "url": "https://www.afitf.net/"
+   },
+   "voir": [
+    "ticpe",
+    "operateur"
+   ]
+  },
+  {
+   "id": "agirc-arrco",
+   "terme": "Agirc-Arrco",
+   "sigle": "Agirc-Arrco",
+   "variantes": [
+    "AGIRC-ARRCO"
+   ],
+   "forme": "régime de retraite complémentaire des salariés du secteur privé",
+   "definition": "Régime obligatoire qui verse une retraite en plus de la retraite de base aux salariés du secteur privé ; il est géré par les syndicats de salariés et d’employeurs.",
+   "source": {
+    "nom": "Agirc-Arrco",
+    "url": "https://www.agirc-arrco.fr/"
+   },
+   "voir": [
+    "cnav"
+   ]
+  },
+  {
+   "id": "ags",
+   "terme": "AGS",
+   "sigle": "AGS",
+   "forme": "Association pour la gestion du régime de garantie des créances des salariés",
+   "definition": "Organisme financé par une cotisation des employeurs, qui paie les salaires dus quand une entreprise est en redressement ou en liquidation judiciaire.",
+   "source": {
+    "nom": "Régime de garantie des salaires (AGS)",
+    "url": "https://www.ags-garantie-salaires.org/"
+   }
+  },
+  {
+   "id": "an",
+   "terme": "AN",
+   "sigle": "AN",
+   "forme": "Assemblée nationale",
+   "indices": [
+    "assemblée",
+    "amendement",
+    "sénat",
+    "commission des finances",
+    "journal officiel"
+   ],
+   "definition": "Chambre du Parlement élue au suffrage universel direct ; avec le Sénat, elle vote les lois, dont le budget.",
+   "source": {
+    "nom": "Assemblée nationale",
+    "url": "https://www.assemblee-nationale.fr/"
+   },
+   "voir": [
+    "plf"
+   ]
+  },
+  {
+   "id": "anr",
+   "terme": "ANR",
+   "sigle": "ANR",
+   "forme": "Agence nationale de la recherche",
+   "definition": "Agence de l’État qui finance des projets de recherche choisis sur appels à projets.",
+   "source": {
+    "nom": "Agence nationale de la recherche",
+    "url": "https://anr.fr/"
+   },
+   "voir": [
+    "operateur"
+   ]
+  },
+  {
+   "id": "apa",
+   "terme": "APA",
+   "sigle": "APA",
+   "variantes": [
+    "Apa"
+   ],
+   "forme": "allocation personnalisée d’autonomie",
+   "definition": "Aide versée par le département aux personnes de 60 ans ou plus en perte d’autonomie, à domicile ou en établissement.",
+   "source": {
+    "nom": "service-public.fr, « Allocation personnalisée d’autonomie (Apa) »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F10009"
+   },
+   "voir": [
+    "cnsa",
+    "ehpad"
+   ]
+  },
+  {
+   "id": "apd",
+   "terme": "APD",
+   "sigle": "APD",
+   "forme": "aide publique au développement",
+   "indices": [
+    "développement",
+    "aide"
+   ],
+   "definition": "Les dons et les prêts à conditions avantageuses accordés par les États aux pays en développement, selon la définition de l’OCDE.",
+   "source": {
+    "nom": "Insee, définition « Aide publique au développement »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1430"
+   },
+   "voir": [
+    "afd",
+    "ocde"
+   ]
+  },
+  {
+   "id": "ape-activite",
+   "terme": "APE",
+   "sigle": "APE",
+   "forme": "activité principale exercée",
+   "indices": [
+    "activité principale",
+    "code naf",
+    "nomenclature d’activités"
+   ],
+   "definition": "Code qui indique l’activité principale d’une entreprise ou d’un établissement, attribué par l’Insee.",
+   "source": {
+    "nom": "Insee, définition « Activité principale exercée »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1888"
+   }
+  },
+  {
+   "id": "ape-agence",
+   "terme": "APE",
+   "sigle": "APE",
+   "forme": "Agence des participations de l’État",
+   "indices": [
+    "participations",
+    "actionnaire",
+    "actions",
+    "portefeuille"
+   ],
+   "definition": "Service du ministère de l’Économie qui gère les participations de l’État dans des entreprises : achats et ventes d’actions, dividendes.",
+   "source": {
+    "nom": "Ministère de l’Économie, « Agence des participations de l’État »",
+    "url": "https://www.economie.gouv.fr/agence-participations-etat"
+   }
+  },
+  {
+   "id": "api",
+   "terme": "API",
+   "sigle": "API",
+   "forme": "interface de programmation",
+   "definition": "Accès automatisé aux données d’un site, utilisé par des programmes plutôt que par des personnes.",
+   "source": {
+    "nom": "Documentation web de Mozilla, glossaire « API »",
+    "url": "https://developer.mozilla.org/fr/docs/Glossary/API"
+   }
+  },
+  {
+   "id": "apu",
+   "terme": "APU",
+   "sigle": "APU",
+   "forme": "administrations publiques",
+   "definition": "En comptabilité nationale, l’ensemble formé par l’État et ses organismes, les collectivités locales et la Sécurité sociale.",
+   "source": {
+    "nom": "Insee, définition « Administrations publiques »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1244"
+   },
+   "voir": [
+    "apuc",
+    "apul",
+    "asso"
+   ]
+  },
+  {
+   "id": "apuc",
+   "terme": "APUC",
+   "sigle": "APUC",
+   "forme": "administrations publiques centrales",
+   "definition": "En comptabilité nationale, l’État et les organismes divers d’administration centrale (agences, établissements publics nationaux, universités…).",
+   "source": {
+    "nom": "Insee, définition « Administrations publiques »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1244"
+   },
+   "voir": [
+    "apu",
+    "odac"
+   ]
+  },
+  {
+   "id": "apul",
+   "terme": "APUL",
+   "sigle": "APUL",
+   "forme": "administrations publiques locales",
+   "definition": "En comptabilité nationale, les collectivités locales (communes, intercommunalités, départements, régions) et les organismes qui en dépendent.",
+   "source": {
+    "nom": "Insee, définition « Administrations publiques locales »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1540"
+   },
+   "voir": [
+    "apu"
+   ]
+  },
+  {
+   "id": "are",
+   "terme": "ARE",
+   "sigle": "ARE",
+   "forme": "allocation d’aide au retour à l’emploi",
+   "definition": "Allocation chômage versée par France Travail aux personnes qui ont perdu leur emploi après avoir travaillé assez longtemps.",
+   "source": {
+    "nom": "Unédic",
+    "url": "https://www.unedic.org/"
+   },
+   "voir": [
+    "unedic"
+   ]
+  },
+  {
+   "id": "ars-sante",
+   "terme": "ARS",
+   "sigle": "ARS",
+   "forme": "agence régionale de santé",
+   "indices": [
+    "santé",
+    "agence"
+   ],
+   "definition": "Établissement public de l’État qui pilote la politique de santé dans chaque région : hôpitaux, prévention, établissements médico-sociaux.",
+   "source": {
+    "nom": "Agences régionales de santé",
+    "url": "https://www.ars.sante.fr/"
+   },
+   "voir": [
+    "operateur"
+   ]
+  },
+  {
+   "id": "ars-allocation",
+   "terme": "ARS",
+   "sigle": "ARS",
+   "forme": "allocation de rentrée scolaire",
+   "indices": [
+    "rentrée",
+    "scolaire"
+   ],
+   "definition": "Aide versée en août par les caisses d’allocations familiales aux familles modestes pour chaque enfant scolarisé de 6 à 18 ans.",
+   "source": {
+    "nom": "service-public.fr, « Allocation de rentrée scolaire (ARS) »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F1878"
+   },
+   "voir": [
+    "caf"
+   ]
+  },
+  {
+   "id": "asso",
+   "terme": "ASSO",
+   "sigle": "ASSO",
+   "forme": "administrations de sécurité sociale",
+   "definition": "En comptabilité nationale, les régimes de sécurité sociale, l’assurance chômage, les retraites complémentaires et les organismes qui en dépendent, comme les hôpitaux publics.",
+   "source": {
+    "nom": "Insee, définition « Administrations publiques »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1244"
+   },
+   "voir": [
+    "apu"
+   ]
+  },
+  {
+   "id": "asv",
+   "terme": "ASV",
+   "sigle": "ASV",
+   "forme": "allocation supplémentaire vieillesse",
+   "definition": "Ancienne allocation du minimum vieillesse, remplacée depuis 2007 par l’allocation de solidarité aux personnes âgées (Aspa) pour les nouveaux bénéficiaires.",
+   "source": {
+    "nom": "service-public.fr, « Allocation de solidarité aux personnes âgées (Aspa) »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F16871"
+   },
+   "voir": [
+    "fsv"
+   ]
+  },
+  {
+   "id": "atih",
+   "terme": "ATIH",
+   "sigle": "ATIH",
+   "forme": "Agence technique de l’information sur l’hospitalisation",
+   "definition": "Agence de l’État qui collecte et analyse les données d’activité et les comptes des établissements de santé.",
+   "source": {
+    "nom": "ATIH",
+    "url": "https://www.atih.sante.fr/"
+   }
+  },
+  {
+   "id": "bce",
+   "terme": "BCE",
+   "sigle": "BCE",
+   "forme": "Banque centrale européenne",
+   "indices": [
+    "banque",
+    "dette",
+    "euro",
+    "monétaire"
+   ],
+   "definition": "La banque centrale des pays de la zone euro : elle fixe les taux d’intérêt directeurs et a acheté des titres de dette publique lors de programmes exceptionnels.",
+   "source": {
+    "nom": "Banque centrale européenne",
+    "url": "https://www.ecb.europa.eu/home/html/index.fr.html"
+   },
+   "voir": [
+    "pspp",
+    "pepp"
+   ]
+  },
+  {
+   "id": "bop",
+   "terme": "BOP",
+   "sigle": "BOP",
+   "forme": "budget opérationnel de programme",
+   "definition": "Partie d’un programme du budget de l’État confiée à un service (une direction, une région) qui en gère les crédits.",
+   "source": {
+    "nom": "vie-publique.fr, fiche « LOLF : les prérogatives des gestionnaires dans l’exécution des dépenses »",
+    "url": "https://www.vie-publique.fr/fiches/21876-lolf-les-prerogatives-des-gestionnaires-dans-lexecution-des-depenses"
+   },
+   "voir": [
+    "programme"
+   ]
+  },
+  {
+   "id": "bpi",
+   "terme": "BPI",
+   "sigle": "BPI",
+   "variantes": [
+    "Bpi"
+   ],
+   "forme": "Banque publique d’investissement (Bpifrance)",
+   "definition": "Banque publique qui finance et accompagne les entreprises (prêts, garanties, prises de participation) ; elle est détenue par l’État et la Caisse des dépôts.",
+   "source": {
+    "nom": "Bpifrance",
+    "url": "https://www.bpifrance.fr/"
+   },
+   "voir": [
+    "cdc"
+   ]
+  },
+  {
+   "id": "budget-vert",
+   "terme": "Budget vert",
+   "definition": "Présentation du budget de l’État qui classe chaque dépense selon son effet estimé sur l’environnement. Le site s’en sert comme source des montants par programme.",
+   "source": {
+    "nom": "data.gouv.fr, jeu de données « PLF 2026, budget vert »",
+    "url": "https://www.data.gouv.fr/datasets/plf-2026-budget-vert"
+   }
+  },
+  {
+   "id": "cad",
+   "terme": "CAD",
+   "sigle": "CAD",
+   "forme": "Comité d’aide au développement",
+   "indices": [
+    "développement",
+    "ocde"
+   ],
+   "definition": "Comité de l’OCDE qui définit et recense l’aide publique au développement déclarée par ses membres.",
+   "source": {
+    "nom": "OCDE",
+    "url": "https://www.oecd.org/fr/"
+   },
+   "voir": [
+    "apd",
+    "ocde"
+   ]
+  },
+  {
+   "id": "cades",
+   "terme": "CADES",
+   "sigle": "CADES",
+   "variantes": [
+    "Cades"
+   ],
+   "forme": "Caisse d’amortissement de la dette sociale",
+   "definition": "Organisme public chargé de rembourser la dette accumulée par la Sécurité sociale ; il est financé surtout par la contribution au remboursement de la dette sociale et par une part de la contribution sociale généralisée.",
+   "source": {
+    "nom": "Caisse d’amortissement de la dette sociale",
+    "url": "https://www.cades.fr/"
+   },
+   "voir": [
+    "crds",
+    "csg"
+   ]
+  },
+  {
+   "id": "caf",
+   "terme": "CAF",
+   "sigle": "CAF",
+   "variantes": [
+    "Caf"
+   ],
+   "forme": "caisse d’allocations familiales",
+   "definition": "Organisme local qui verse les prestations familiales, les aides au logement, la prime d’activité et le revenu de solidarité active.",
+   "source": {
+    "nom": "Caisse d’allocations familiales",
+    "url": "https://www.caf.fr/"
+   },
+   "voir": [
+    "cnaf",
+    "rsa"
+   ]
+  },
+  {
+   "id": "carpa",
+   "terme": "CARPA",
+   "sigle": "CARPA",
+   "forme": "caisse des règlements pécuniaires des avocats",
+   "definition": "Caisse par laquelle passent les sommes maniées par les avocats pour leurs clients, dont l’aide juridictionnelle versée par l’État.",
+   "source": {
+    "nom": "Union nationale des CARPA",
+    "url": "https://www.unca.fr/"
+   }
+  },
+  {
+   "id": "cas",
+   "terme": "CAS",
+   "sigle": "CAS",
+   "forme": "compte d’affectation spéciale",
+   "indices": [
+    "compte",
+    "pensions",
+    "affectation"
+   ],
+   "definition": "Compte spécial du budget de l’État qui retrace des recettes réservées à une dépense précise, par exemple le compte « Pensions » des fonctionnaires de l’État.",
+   "source": {
+    "nom": "Légifrance, loi organique relative aux lois de finances, article 21",
+    "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000394028"
+   },
+   "voir": [
+    "comptes-speciaux"
+   ]
+  },
+  {
+   "id": "ccam",
+   "terme": "CCAM",
+   "sigle": "CCAM",
+   "forme": "classification commune des actes médicaux",
+   "definition": "Liste officielle des actes techniques des médecins (opérations, examens) qui sert à leur tarification.",
+   "source": {
+    "nom": "data.gouv.fr, « Open CCAM, national »",
+    "url": "https://www.data.gouv.fr/datasets/open-ccam-national"
+   }
+  },
+  {
+   "id": "ccss",
+   "terme": "CCSS",
+   "sigle": "CCSS",
+   "forme": "Commission des comptes de la sécurité sociale",
+   "definition": "Commission qui examine chaque année les comptes et les prévisions de la Sécurité sociale, à partir des rapports de la direction de la sécurité sociale.",
+   "source": {
+    "nom": "securite-sociale.fr, « Commission des comptes »",
+    "url": "https://www.securite-sociale.fr/la-secu-en-detail/comptes-de-la-securite-sociale/ccss"
+   },
+   "voir": [
+    "dss"
+   ]
+  },
+  {
+   "id": "cdc",
+   "terme": "CDC",
+   "sigle": "CDC",
+   "forme": "Caisse des dépôts et consignations",
+   "definition": "Établissement public financier qui gère notamment l’épargne réglementée (livret A), des régimes de retraite publics et des investissements d’intérêt général.",
+   "source": {
+    "nom": "Groupe Caisse des Dépôts",
+    "url": "https://www.caissedesdepots.fr/"
+   },
+   "voir": [
+    "bpi"
+   ]
+  },
+  {
+   "id": "cea",
+   "terme": "CEA",
+   "sigle": "CEA",
+   "forme": "Commissariat à l’énergie atomique et aux énergies alternatives",
+   "definition": "Organisme public de recherche dans l’énergie, la défense, le numérique et la santé.",
+   "source": {
+    "nom": "Commissariat à l’énergie atomique et aux énergies alternatives",
+    "url": "https://www.cea.fr/"
+   },
+   "voir": [
+    "epic"
+   ]
+  },
+  {
+   "id": "cfe",
+   "terme": "CFE",
+   "sigle": "CFE",
+   "forme": "cotisation foncière des entreprises",
+   "indices": [
+    "cotisation foncière"
+   ],
+   "definition": "Impôt local payé par les entreprises et les travailleurs indépendants, calculé sur la valeur des locaux qu’ils utilisent.",
+   "source": {
+    "nom": "entreprendre.service-public.fr, « Cotisation foncière des entreprises (CFE) »",
+    "url": "https://entreprendre.service-public.fr/vosdroits/F23547"
+   }
+  },
+  {
+   "id": "cfp-ue",
+   "terme": "CFP",
+   "sigle": "CFP",
+   "forme": "cadre financier pluriannuel",
+   "indices": [
+    "européen",
+    "union",
+    "commission",
+    "2021-2027"
+   ],
+   "definition": "Le budget de l’Union européenne sur sept ans : il fixe les plafonds de dépenses par grande politique, pour 2021 à 2027 aujourd’hui.",
+   "source": {
+    "nom": "vie-publique.fr, « Le cadre financier pluriannuel européen 2028-2034 en sept questions »",
+    "url": "https://www.vie-publique.fr/questions-reponses/297386-le-cadre-financier-pluriannuel-europeen-2028-2034-en-sept-questions"
+   },
+   "voir": [
+    "ue",
+    "pac"
+   ]
+  },
+  {
+   "id": "cfp-franc",
+   "terme": "CFP",
+   "sigle": "CFP",
+   "forme": "franc CFP (franc Pacifique)",
+   "indices": [
+    "franc pacifique",
+    "franc cfp",
+    "polynésie",
+    "calédonie",
+    "wallis"
+   ],
+   "definition": "Monnaie de la Nouvelle-Calédonie, de la Polynésie française et de Wallis-et-Futuna, émise par l’Institut d’émission d’outre-mer ; sa valeur est fixe par rapport à l’euro.",
+   "source": {
+    "nom": "Institut d’émission d’outre-mer",
+    "url": "https://www.ieom.fr/"
+   }
+  },
+  {
+   "id": "cgi",
+   "terme": "CGI",
+   "sigle": "CGI",
+   "forme": "code général des impôts",
+   "definition": "Recueil des lois fiscales en vigueur en France.",
+   "source": {
+    "nom": "Légifrance, code général des impôts",
+    "url": "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006069577"
+   }
+  },
+  {
+   "id": "cice",
+   "terme": "CICE",
+   "sigle": "CICE",
+   "forme": "crédit d’impôt pour la compétitivité et l’emploi",
+   "definition": "Crédit d’impôt accordé aux entreprises de 2013 à 2018, calculé sur les salaires ; il a été remplacé en 2019 par une baisse des cotisations patronales.",
+   "source": {
+    "nom": "Légifrance, code général des impôts (article 244 quater C)",
+    "url": "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006069577"
+   },
+   "voir": [
+    "depense-fiscale"
+   ]
+  },
+  {
+   "id": "cir",
+   "terme": "CIR",
+   "sigle": "CIR",
+   "forme": "crédit d’impôt recherche",
+   "definition": "Crédit d’impôt accordé aux entreprises pour une partie de leurs dépenses de recherche.",
+   "source": {
+    "nom": "entreprendre.service-public.fr, « Crédit d’impôt recherche (CIR) »",
+    "url": "https://entreprendre.service-public.fr/vosdroits/F23533"
+   },
+   "voir": [
+    "depense-fiscale"
+   ]
+  },
+  {
+   "id": "cnaf",
+   "terme": "CNAF",
+   "sigle": "CNAF",
+   "variantes": [
+    "Cnaf"
+   ],
+   "forme": "Caisse nationale des allocations familiales",
+   "definition": "Tête du réseau des caisses d’allocations familiales, qui versent les prestations familiales, les aides au logement et le revenu de solidarité active.",
+   "source": {
+    "nom": "securite-sociale.fr, « Les branches »",
+    "url": "https://www.securite-sociale.fr/la-secu-cest-quoi/organisation/les-branches"
+   },
+   "voir": [
+    "caf"
+   ]
+  },
+  {
+   "id": "cnam",
+   "terme": "CNAM",
+   "sigle": "CNAM",
+   "variantes": [
+    "Cnam"
+   ],
+   "forme": "Caisse nationale de l’assurance maladie",
+   "definition": "Tête du réseau de l’assurance maladie du régime général, qui gère les branches maladie et accidents du travail.",
+   "source": {
+    "nom": "securite-sociale.fr, « Les branches »",
+    "url": "https://www.securite-sociale.fr/la-secu-cest-quoi/organisation/les-branches"
+   },
+   "voir": [
+    "ondam"
+   ]
+  },
+  {
+   "id": "cnav",
+   "terme": "CNAV",
+   "sigle": "CNAV",
+   "variantes": [
+    "Cnav"
+   ],
+   "forme": "Caisse nationale d’assurance vieillesse",
+   "definition": "Caisse qui gère la retraite de base des salariés du secteur privé (l’Assurance retraite).",
+   "source": {
+    "nom": "L’Assurance retraite",
+    "url": "https://www.lassuranceretraite.fr/"
+   },
+   "voir": [
+    "agirc-arrco"
+   ]
+  },
+  {
+   "id": "cnavpl",
+   "terme": "CNAVPL",
+   "sigle": "CNAVPL",
+   "forme": "Caisse nationale d’assurance vieillesse des professions libérales",
+   "definition": "Caisse de retraite de base des professions libérales.",
+   "source": {
+    "nom": "CNAVPL",
+    "url": "https://www.cnavpl.fr/"
+   },
+   "voir": [
+    "cnav"
+   ]
+  },
+  {
+   "id": "cnccfp",
+   "terme": "CNCCFP",
+   "sigle": "CNCCFP",
+   "forme": "Commission nationale des comptes de campagne et des financements politiques",
+   "definition": "Autorité qui contrôle les comptes de campagne des candidats et les comptes des partis politiques ; elle publie ses décisions.",
+   "source": {
+    "nom": "Commission nationale des comptes de campagne et des financements politiques",
+    "url": "https://www.cnccfp.fr/"
+   },
+   "voir": [
+    "pdr"
+   ]
+  },
+  {
+   "id": "cnes",
+   "terme": "CNES",
+   "sigle": "CNES",
+   "forme": "Centre national d’études spatiales",
+   "definition": "Établissement public qui conduit la politique spatiale de la France.",
+   "source": {
+    "nom": "Centre national d’études spatiales",
+    "url": "https://cnes.fr/"
+   },
+   "voir": [
+    "epic"
+   ]
+  },
+  {
+   "id": "cnil",
+   "terme": "CNIL",
+   "sigle": "CNIL",
+   "forme": "Commission nationale de l’informatique et des libertés",
+   "definition": "Autorité indépendante chargée de la protection des données personnelles en France.",
+   "source": {
+    "nom": "Commission nationale de l’informatique et des libertés",
+    "url": "https://www.cnil.fr/fr"
+   },
+   "voir": [
+    "rgpd"
+   ]
+  },
+  {
+   "id": "cnracl",
+   "terme": "CNRACL",
+   "sigle": "CNRACL",
+   "forme": "Caisse nationale de retraites des agents des collectivités locales",
+   "definition": "Caisse de retraite des fonctionnaires des collectivités locales et des hôpitaux publics.",
+   "source": {
+    "nom": "CNRACL",
+    "url": "https://www.cnracl.retraites.fr/"
+   }
+  },
+  {
+   "id": "cnrs",
+   "terme": "CNRS",
+   "sigle": "CNRS",
+   "forme": "Centre national de la recherche scientifique",
+   "definition": "Organisme public de recherche présent dans toutes les disciplines scientifiques.",
+   "source": {
+    "nom": "Centre national de la recherche scientifique",
+    "url": "https://www.cnrs.fr/fr"
+   },
+   "voir": [
+    "epst"
+   ]
+  },
+  {
+   "id": "cnsa",
+   "terme": "CNSA",
+   "sigle": "CNSA",
+   "forme": "Caisse nationale de solidarité pour l’autonomie",
+   "definition": "Caisse qui gère la branche autonomie de la Sécurité sociale : aide aux personnes âgées en perte d’autonomie et aux personnes handicapées.",
+   "source": {
+    "nom": "securite-sociale.fr, « Les branches »",
+    "url": "https://www.securite-sociale.fr/la-secu-cest-quoi/organisation/les-branches"
+   },
+   "voir": [
+    "apa",
+    "pch"
+   ]
+  },
+  {
+   "id": "cofog",
+   "terme": "COFOG",
+   "sigle": "COFOG",
+   "forme": "classification des fonctions des administrations publiques",
+   "definition": "Nomenclature internationale qui range les dépenses publiques en dix grandes fonctions (santé, enseignement, protection sociale…) pour comparer les pays et les années.",
+   "source": {
+    "nom": "Insee, définition « Classification des fonctions des administrations publiques »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1064"
+   },
+   "voir": [
+    "apu"
+   ]
+  },
+  {
+   "id": "cog",
+   "terme": "COG",
+   "sigle": "COG",
+   "forme": "code officiel géographique",
+   "definition": "Liste officielle des communes, départements et régions avec leurs codes, tenue par l’Insee.",
+   "source": {
+    "nom": "Insee, « Code officiel géographique (COG) »",
+    "url": "https://www.insee.fr/fr/information/2560452"
+   },
+   "voir": [
+    "insee"
+   ]
+  },
+  {
+   "id": "coicop",
+   "terme": "COICOP",
+   "sigle": "COICOP",
+   "forme": "classification des fonctions de consommation des ménages",
+   "definition": "Nomenclature internationale qui range les dépenses des ménages par grand poste : alimentation, logement, transports…",
+   "source": {
+    "nom": "Insee, définition « Classification des fonctions de consommation des ménages »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1212"
+   }
+  },
+  {
+   "id": "com",
+   "terme": "COM",
+   "sigle": "COM",
+   "forme": "collectivité d’outre-mer",
+   "indices": [
+    "outre-mer"
+   ],
+   "definition": "Territoires d’outre-mer au statut particulier, comme la Polynésie française, Saint-Pierre-et-Miquelon, Saint-Martin, Saint-Barthélemy ou Wallis-et-Futuna.",
+   "source": {
+    "nom": "Insee, définition « Collectivité d’outre-mer »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1842"
+   },
+   "voir": [
+    "dom"
+   ]
+  },
+  {
+   "id": "comptes-speciaux",
+   "terme": "Comptes spéciaux",
+   "definition": "Comptes du budget de l’État tenus à part du budget général pour des opérations particulières, par exemple les pensions des fonctionnaires de l’État. Le site les laisse hors du total pour ne pas compter deux fois les mêmes sommes.",
+   "source": {
+    "nom": "Légifrance, loi organique relative aux lois de finances, articles 19 à 24",
+    "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000394028"
+   },
+   "voir": [
+    "cas"
+   ]
+  },
+  {
+   "id": "cor",
+   "terme": "COR",
+   "sigle": "COR",
+   "forme": "Conseil d’orientation des retraites",
+   "definition": "Instance d’études qui publie chaque année des projections sur les retraites : financement, niveau des pensions, nombre de cotisants.",
+   "source": {
+    "nom": "Conseil d’orientation des retraites",
+    "url": "https://www.cor-retraites.fr/"
+   }
+  },
+  {
+   "id": "cp",
+   "terme": "CP",
+   "sigle": "CP",
+   "forme": "crédits de paiement",
+   "indices": [
+    "crédits",
+    "paiement"
+   ],
+   "definition": "Le plafond des sommes que l’État peut réellement payer dans l’année. Sauf mention contraire, les montants du budget de l’État affichés sur le site sont des crédits de paiement.",
+   "source": {
+    "nom": "Légifrance, loi organique relative aux lois de finances, article 8",
+    "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000394028"
+   },
+   "voir": [
+    "ae"
+   ]
+  },
+  {
+   "id": "crc",
+   "terme": "CRC",
+   "sigle": "CRC",
+   "forme": "chambre régionale des comptes",
+   "definition": "Juridiction financière qui contrôle les comptes et la gestion des collectivités locales et de leurs organismes dans une région ; ses rapports sont publiés.",
+   "source": {
+    "nom": "vie-publique.fr, fiche « Compétences des chambres régionales et territoriales des comptes »",
+    "url": "https://www.vie-publique.fr/fiches/269289-competences-des-chambres-regionales-et-territoriales-des-comptes-crtc"
+   }
+  },
+  {
+   "id": "crds",
+   "terme": "CRDS",
+   "sigle": "CRDS",
+   "forme": "contribution au remboursement de la dette sociale",
+   "definition": "Prélèvement de 0,5 % sur la plupart des revenus, versé à la Caisse d’amortissement de la dette sociale.",
+   "source": {
+    "nom": "Insee, définition « Contribution pour le remboursement de la dette sociale »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1516"
+   },
+   "voir": [
+    "cades",
+    "csg"
+   ]
+  },
+  {
+   "id": "cre",
+   "terme": "CRE",
+   "sigle": "CRE",
+   "forme": "Commission de régulation de l’énergie",
+   "definition": "Autorité indépendante qui veille au fonctionnement des marchés de l’électricité et du gaz et évalue chaque année les charges de service public de l’énergie.",
+   "source": {
+    "nom": "Commission de régulation de l’énergie",
+    "url": "https://www.cre.fr/"
+   },
+   "voir": [
+    "cspe",
+    "zni"
+   ]
+  },
+  {
+   "id": "csg",
+   "terme": "CSG",
+   "sigle": "CSG",
+   "forme": "contribution sociale généralisée",
+   "definition": "Prélèvement sur presque tous les revenus (salaires, retraites, revenus du patrimoine…) qui finance plusieurs branches de la Sécurité sociale, l’assurance chômage et le remboursement de la dette sociale.",
+   "source": {
+    "nom": "Insee, définition « Contribution sociale généralisée »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1956"
+   },
+   "voir": [
+    "crds",
+    "urssaf"
+   ]
+  },
+  {
+   "id": "csp-categorie",
+   "terme": "CSP",
+   "sigle": "CSP",
+   "forme": "catégorie socioprofessionnelle",
+   "indices": [
+    "socioprofessionnelle"
+   ],
+   "definition": "Classement de la population selon la profession, tenu par l’Insee ; son nom actuel est « professions et catégories socioprofessionnelles ».",
+   "source": {
+    "nom": "Insee, définition « Nomenclature des professions et catégories socioprofessionnelles »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1758"
+   }
+  },
+  {
+   "id": "csp-securite",
+   "terme": "CSP",
+   "sigle": "CSP",
+   "forme": "politique de sécurité du contenu (Content Security Policy)",
+   "indices": [
+    "sécurité du contenu",
+    "content security"
+   ],
+   "definition": "Règle technique envoyée par un site au navigateur pour limiter ce que la page peut charger ou contacter.",
+   "source": {
+    "nom": "Documentation web de Mozilla, glossaire « CSP »",
+    "url": "https://developer.mozilla.org/fr/docs/Glossary/CSP"
+   }
+  },
+  {
+   "id": "cspe",
+   "terme": "CSPE",
+   "sigle": "CSPE",
+   "forme": "contribution au service public de l’électricité",
+   "definition": "Nom historique du prélèvement qui finance les charges de service public de l’électricité, comme le soutien aux énergies renouvelables et le même tarif dans les zones non interconnectées. Ces charges sont évaluées chaque année par la Commission de régulation de l’énergie.",
+   "source": {
+    "nom": "Commission de régulation de l’énergie, « La CRE réévalue les charges de service public de l’énergie »",
+    "url": "https://www.cre.fr/actualites/notre-magazine-parlons-energie/parlons-energie-n9/la-cre-reevalue-les-charges-de-service-public-de-lenergie.html"
+   },
+   "voir": [
+    "zni"
+   ]
+  },
+  {
+   "id": "csrf",
+   "terme": "CSRF",
+   "sigle": "CSRF",
+   "forme": "falsification de requête intersites (cross-site request forgery)",
+   "definition": "Type d’attaque contre les sites web ; un « jeton CSRF » est un code de protection qu’un site exige avec chaque demande.",
+   "source": {
+    "nom": "Documentation web de Mozilla, glossaire « Falsification de requête inter-sites »",
+    "url": "https://developer.mozilla.org/fr/docs/Glossary/CSRF"
+   }
+  },
+  {
+   "id": "css-mayotte",
+   "terme": "CSS",
+   "sigle": "CSS",
+   "forme": "Caisse de sécurité sociale de Mayotte",
+   "indices": [
+    "mayotte"
+   ],
+   "definition": "Organisme qui gère la sécurité sociale à Mayotte : santé, retraite, famille et recouvrement des cotisations.",
+   "source": {
+    "nom": "Caisse de sécurité sociale de Mayotte",
+    "url": "https://www.cssm.fr/"
+   }
+  },
+  {
+   "id": "css",
+   "terme": "CSS",
+   "sigle": "CSS",
+   "forme": "code de la sécurité sociale",
+   "indices": [
+    "code de la sécurité sociale",
+    "art. l",
+    "article l"
+   ],
+   "definition": "Recueil des lois et règlements sur la Sécurité sociale : cotisations, prestations, organisation des caisses.",
+   "source": {
+    "nom": "Légifrance, code de la sécurité sociale",
+    "url": "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006073189"
+   }
+  },
+  {
+   "id": "csv",
+   "terme": "CSV",
+   "sigle": "CSV",
+   "forme": "valeurs séparées par des virgules",
+   "definition": "Format de tableau en texte (une ligne par enregistrement, des séparateurs entre les colonnes) que les tableurs savent ouvrir.",
+   "source": {
+    "nom": "Norme internet 4180 sur le format des fichiers CSV (rfc-editor.org)",
+    "url": "https://www.rfc-editor.org/rfc/rfc4180"
+   }
+  },
+  {
+   "id": "decile",
+   "terme": "Décile",
+   "definition": "Si l’on range les ménages selon leur niveau de vie, les déciles les partagent en dix groupes de même taille. Le site dit « 5e décile » pour le cinquième de ces groupes, celui du milieu.",
+   "source": {
+    "nom": "Insee, définition « Déciles »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1265"
+   },
+   "voir": [
+    "niveau-de-vie",
+    "uc"
+   ]
+  },
+  {
+   "id": "decp",
+   "terme": "DECP",
+   "sigle": "DECP",
+   "forme": "données essentielles de la commande publique",
+   "definition": "Informations que les acheteurs publics doivent publier sur leurs marchés : objet, titulaire, montant, date.",
+   "source": {
+    "nom": "data.gouv.fr, « Données essentielles de la commande publique, fichiers consolidés »",
+    "url": "https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-fichiers-consolides"
+   }
+  },
+  {
+   "id": "deficit-public",
+   "terme": "Déficit public",
+   "definition": "Écart entre les dépenses et les recettes de l’ensemble des administrations publiques sur une année, en comptabilité nationale.",
+   "source": {
+    "nom": "Insee, définition « Déficit public »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1750"
+   },
+   "voir": [
+    "dette-maastricht"
+   ]
+  },
+  {
+   "id": "depense-fiscale",
+   "terme": "Dépense fiscale",
+   "definition": "Mesure qui réduit l’impôt de certaines personnes ou entreprises par rapport à la règle générale (réduction ou crédit d’impôt, exonération, taux réduit) ; elle est souvent appelée niche fiscale. Elle n’est pas versée : elle diminue les recettes publiques. Son montant est une estimation publiée avec le projet de budget.",
+   "source": {
+    "nom": "Assemblée nationale, annexe au projet de loi de finances pour 2025 « Évaluation des voies et moyens », tome II",
+    "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2025/Voies_et_moyens_Tome_2_2025.pdf"
+   },
+   "voir": [
+    "cir",
+    "cice"
+   ]
+  },
+  {
+   "id": "detr",
+   "terme": "DETR",
+   "sigle": "DETR",
+   "forme": "dotation d’équipement des territoires ruraux",
+   "definition": "Aide de l’État aux projets d’investissement des communes et intercommunalités rurales : écoles, voirie, équipements.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « Dotation d’équipement des territoires ruraux (DETR) »",
+    "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/execution-des-recettes-et-des-depenses-locales/recettes-locales/dotations/soutien-linvestissement-local-dpv-detr-fctva/dotation-dequipement-des-territoires-ruraux"
+   },
+   "voir": [
+    "dsil",
+    "dpv",
+    "dsid"
+   ]
+  },
+  {
+   "id": "dette-maastricht",
+   "terme": "Dette publique au sens de Maastricht",
+   "definition": "Ce que doit l’ensemble des administrations publiques (État, Sécurité sociale, collectivités locales), selon la définition européenne qui permet de comparer les pays.",
+   "source": {
+    "nom": "Insee, définition « Dette au sens de Maastricht »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1091"
+   },
+   "voir": [
+    "pde",
+    "deficit-public"
+   ]
+  },
+  {
+   "id": "dgac",
+   "terme": "DGAC",
+   "sigle": "DGAC",
+   "forme": "direction générale de l’Aviation civile",
+   "definition": "Administration de l’État chargée du transport aérien : sécurité, navigation aérienne, soutien au secteur.",
+   "source": {
+    "nom": "Ministère de la Transition écologique, « Direction générale de l’Aviation civile (DGAC) »",
+    "url": "https://www.ecologie.gouv.fr/direction-generale-laviation-civile-dgac"
+   }
+  },
+  {
+   "id": "dgcl",
+   "terme": "DGCL",
+   "sigle": "DGCL",
+   "forme": "direction générale des collectivités locales",
+   "definition": "Administration de l’État qui calcule et répartit les dotations aux collectivités locales et publie leurs statistiques.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr",
+    "url": "https://www.collectivites-locales.gouv.fr/"
+   },
+   "voir": [
+    "dgf"
+   ]
+  },
+  {
+   "id": "dgf",
+   "terme": "DGF",
+   "sigle": "DGF",
+   "forme": "dotation globale de fonctionnement",
+   "definition": "Principale somme versée chaque année par l’État aux collectivités locales pour leur fonctionnement ; elle dépend notamment de la population et de la richesse de chaque collectivité.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « Présentation de la dotation globale de fonctionnement (DGF) »",
+    "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/execution-des-recettes-et-des-depenses-locales/recettes-locales/dotations/dotation-globale-de-fonctionnement/presentation-de-la-dotation-globale-de-fonctionnement"
+   },
+   "voir": [
+    "dsu",
+    "dsr",
+    "dnp",
+    "psr"
+   ]
+  },
+  {
+   "id": "dgfip",
+   "terme": "DGFiP",
+   "sigle": "DGFiP",
+   "variantes": [
+    "DGFIP"
+   ],
+   "forme": "direction générale des finances publiques",
+   "definition": "Administration qui calcule et encaisse la plupart des impôts, tient les comptes de l’État et des collectivités locales et paie les dépenses publiques.",
+   "source": {
+    "nom": "impots.gouv.fr",
+    "url": "https://www.impots.gouv.fr/"
+   }
+  },
+  {
+   "id": "dila",
+   "terme": "DILA",
+   "sigle": "DILA",
+   "forme": "direction de l’information légale et administrative",
+   "definition": "Service du Premier ministre qui publie le Journal officiel et diffuse les données juridiques publiques.",
+   "source": {
+    "nom": "Direction de l’information légale et administrative",
+    "url": "https://www.dila.premier-ministre.gouv.fr/"
+   },
+   "voir": [
+    "jorf"
+   ]
+  },
+  {
+   "id": "dnb",
+   "terme": "DNB",
+   "sigle": "DNB",
+   "forme": "diplôme national du brevet",
+   "definition": "Diplôme passé en fin de troisième, au collège.",
+   "source": {
+    "nom": "Institut des hautes études de l’éducation et de la formation, « Diplôme national du brevet (DNB) »",
+    "url": "https://www.ih2ef.gouv.fr/node/951"
+   }
+  },
+  {
+   "id": "dnp",
+   "terme": "DNP",
+   "sigle": "DNP",
+   "forme": "dotation nationale de péréquation",
+   "definition": "Part de la dotation globale de fonctionnement qui réduit les écarts de richesse fiscale entre communes.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « DGF des communes »",
+    "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/execution-des-recettes-et-des-depenses-locales/recettes-locales/dotations/dotation-globale-de-fonctionnement/dgf-des-communes"
+   },
+   "voir": [
+    "dgf"
+   ]
+  },
+  {
+   "id": "dom",
+   "terme": "DOM",
+   "sigle": "DOM",
+   "forme": "département d’outre-mer",
+   "definition": "Guadeloupe, Martinique, Guyane, La Réunion et Mayotte, qui ont le statut de département avec des adaptations.",
+   "source": {
+    "nom": "Insee, définition « Département d’outre-mer »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c2031"
+   },
+   "voir": [
+    "com"
+   ]
+  },
+  {
+   "id": "dpv",
+   "terme": "DPV",
+   "sigle": "DPV",
+   "forme": "dotation politique de la ville",
+   "definition": "Aide de l’État aux projets des communes qui comptent des quartiers prioritaires de la politique de la ville.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « Dotation politique de la ville (DPV) »",
+    "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/execution-des-recettes-et-des-depenses-locales/recettes-locales/dotations/soutien-linvestissement-local-dpv-detr-fctva/dotation-politique-de-la-ville-dpv"
+   },
+   "voir": [
+    "qpv"
+   ]
+  },
+  {
+   "id": "drees",
+   "terme": "DREES",
+   "sigle": "DREES",
+   "variantes": [
+    "Drees"
+   ],
+   "forme": "direction de la recherche, des études, de l’évaluation et des statistiques",
+   "definition": "Service statistique des ministères sociaux (santé, protection sociale, solidarités) ; il publie notamment les comptes de la protection sociale.",
+   "source": {
+    "nom": "DREES",
+    "url": "https://drees.solidarites-sante.gouv.fr/"
+   }
+  },
+  {
+   "id": "dsid",
+   "terme": "DSID",
+   "sigle": "DSID",
+   "forme": "dotation de soutien à l’investissement des départements",
+   "definition": "Aide de l’État aux projets d’investissement des départements.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « Dotation de soutien à l’investissement des départements (DSID) »",
+    "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/execution-des-recettes-et-des-depenses-locales/recettes-locales/dotations/autres-dotations/dotation-de-soutien-linvestissement-des-departements-dsid"
+   }
+  },
+  {
+   "id": "dsil",
+   "terme": "DSIL",
+   "sigle": "DSIL",
+   "forme": "dotation de soutien à l’investissement local",
+   "definition": "Aide de l’État aux projets d’investissement des communes et intercommunalités, par exemple la rénovation énergétique ou la mise aux normes des bâtiments.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « Subventions de l’État pour des projets d’investissement »",
+    "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/execution-des-recettes-et-des-depenses-locales/recettes-locales/subventions/subventions-de-letat-pour-des-projets-dinvestissement"
+   },
+   "voir": [
+    "detr"
+   ]
+  },
+  {
+   "id": "dsr",
+   "terme": "DSR",
+   "sigle": "DSR",
+   "forme": "dotation de solidarité rurale",
+   "definition": "Part de la dotation globale de fonctionnement versée en plus aux communes rurales, selon leurs ressources et leurs charges.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « DGF des communes »",
+    "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/execution-des-recettes-et-des-depenses-locales/recettes-locales/dotations/dotation-globale-de-fonctionnement/dgf-des-communes"
+   },
+   "voir": [
+    "dgf"
+   ]
+  },
+  {
+   "id": "dss",
+   "terme": "DSS",
+   "sigle": "DSS",
+   "forme": "direction de la sécurité sociale",
+   "definition": "Administration des ministères sociaux qui prépare les lois de financement de la sécurité sociale et en suit l’exécution.",
+   "source": {
+    "nom": "securite-sociale.fr, « La direction de la sécurité sociale »",
+    "url": "https://www.securite-sociale.fr/la-secu-cest-quoi/la-direction-de-la-securite-sociale/presentation"
+   },
+   "voir": [
+    "lfss",
+    "ccss"
+   ]
+  },
+  {
+   "id": "dsu",
+   "terme": "DSU",
+   "sigle": "DSU",
+   "forme": "dotation de solidarité urbaine et de cohésion sociale",
+   "definition": "Part de la dotation globale de fonctionnement versée en plus aux villes dont les habitants ont des revenus plus modestes et dont les charges sont plus élevées.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « DGF des communes »",
+    "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/execution-des-recettes-et-des-depenses-locales/recettes-locales/dotations/dotation-globale-de-fonctionnement/dgf-des-communes"
+   },
+   "voir": [
+    "dgf"
+   ]
+  },
+  {
+   "id": "eacr",
+   "terme": "EACR",
+   "sigle": "EACR",
+   "forme": "enquête annuelle auprès des caisses de retraite",
+   "definition": "Enquête de la DREES qui recueille chaque année, auprès des régimes de retraite, le nombre de retraités et le montant des pensions.",
+   "source": {
+    "nom": "data.gouv.fr, « Données de l’enquête annuelle auprès des caisses de retraite »",
+    "url": "https://www.data.gouv.fr/datasets/donnees-de-lenquete-annuelle-aupres-des-caisses-de-retraite"
+   },
+   "voir": [
+    "drees"
+   ]
+  },
+  {
+   "id": "ehpad",
+   "terme": "EHPAD",
+   "sigle": "EHPAD",
+   "variantes": [
+    "Ehpad",
+    "Éhpad"
+   ],
+   "forme": "établissement d’hébergement pour personnes âgées dépendantes",
+   "definition": "Maison de retraite médicalisée qui accueille des personnes âgées ayant besoin d’aide et de soins au quotidien.",
+   "source": {
+    "nom": "service-public.fr, « Éhpad : établissement d’hébergement pour personnes âgées dépendantes »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F763"
+   },
+   "voir": [
+    "apa"
+   ]
+  },
+  {
+   "id": "epa",
+   "terme": "EPA",
+   "sigle": "EPA",
+   "forme": "établissement public administratif",
+   "definition": "Organisme public doté de sa propre personnalité juridique, chargé d’une mission d’intérêt général non commerciale (par exemple une agence de l’État) ; il relève du droit public.",
+   "source": {
+    "nom": "vie-publique.fr, fiche « Établissement public administratif (EPA) et industriel et commercial (EPIC) »",
+    "url": "https://www.vie-publique.fr/fiches/20247-etablissement-public-administratif-epa-industriel-et-commercial-epic"
+   },
+   "voir": [
+    "epic",
+    "operateur"
+   ]
+  },
+  {
+   "id": "epci",
+   "terme": "EPCI",
+   "sigle": "EPCI",
+   "forme": "établissement public de coopération intercommunale",
+   "definition": "Regroupement de communes qui exercent ensemble certaines compétences : communauté de communes, d’agglomération, communauté urbaine, métropole ou syndicat de communes.",
+   "source": {
+    "nom": "Insee, définition « Établissement public de coopération intercommunale »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1160"
+   },
+   "voir": [
+    "gfp",
+    "sivu"
+   ]
+  },
+  {
+   "id": "epic",
+   "terme": "EPIC",
+   "sigle": "EPIC",
+   "forme": "établissement public industriel et commercial",
+   "definition": "Organisme public qui exerce une activité de type commercial (vente de biens ou de services) ; la plupart de ses salariés relèvent du droit privé.",
+   "source": {
+    "nom": "vie-publique.fr, fiche « Établissement public administratif (EPA) et industriel et commercial (EPIC) »",
+    "url": "https://www.vie-publique.fr/fiches/20247-etablissement-public-administratif-epa-industriel-et-commercial-epic"
+   },
+   "voir": [
+    "epa"
+   ]
+  },
+  {
+   "id": "epscp",
+   "terme": "EPSCP",
+   "sigle": "EPSCP",
+   "forme": "établissement public à caractère scientifique, culturel et professionnel",
+   "definition": "Statut des universités et de certaines grandes écoles publiques, qui disposent d’une large autonomie.",
+   "source": {
+    "nom": "Légifrance, code de l’éducation (article L. 711-1)",
+    "url": "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006071191"
+   },
+   "voir": [
+    "epst",
+    "operateur"
+   ]
+  },
+  {
+   "id": "epst",
+   "terme": "EPST",
+   "sigle": "EPST",
+   "forme": "établissement public à caractère scientifique et technologique",
+   "definition": "Statut d’organismes publics de recherche, comme le CNRS ou l’Inserm.",
+   "source": {
+    "nom": "Légifrance, code de la recherche (article L. 311-1)",
+    "url": "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006071190"
+   },
+   "voir": [
+    "cnrs",
+    "epscp"
+   ]
+  },
+  {
+   "id": "erfs",
+   "terme": "ERFS",
+   "sigle": "ERFS",
+   "forme": "enquête revenus fiscaux et sociaux",
+   "definition": "Enquête annuelle de l’Insee qui rapproche les revenus déclarés aux impôts et les prestations sociales des ménages, pour mesurer les niveaux de vie.",
+   "source": {
+    "nom": "Insee, « Enquête revenus fiscaux et sociaux »",
+    "url": "https://www.insee.fr/fr/metadonnees/source/serie/s1231"
+   },
+   "voir": [
+    "niveau-de-vie",
+    "decile"
+   ]
+  },
+  {
+   "id": "esms",
+   "terme": "ESMS",
+   "sigle": "ESMS",
+   "forme": "établissements et services sociaux et médico-sociaux",
+   "definition": "Structures qui accueillent ou accompagnent des personnes âgées, des personnes handicapées ou des personnes en difficulté sociale : Ehpad, foyers, services à domicile…",
+   "source": {
+    "nom": "Caisse nationale de solidarité pour l’autonomie",
+    "url": "https://www.cnsa.fr/"
+   },
+   "voir": [
+    "ehpad",
+    "cnsa"
+   ]
+  },
+  {
+   "id": "eti",
+   "terme": "ETI",
+   "sigle": "ETI",
+   "forme": "entreprises de taille intermédiaire",
+   "definition": "Entreprises plus grandes que les PME mais sous les seuils des grandes entreprises, en général de 250 à 4 999 salariés.",
+   "source": {
+    "nom": "Insee, définition « Entreprise de taille intermédiaire »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c2034"
+   },
+   "voir": [
+    "pme"
+   ]
+  },
+  {
+   "id": "etpt",
+   "terme": "ETPT",
+   "sigle": "ETPT",
+   "forme": "équivalent temps plein travaillé",
+   "definition": "Unité qui compte les emplois selon le temps de travail et la durée d’emploi dans l’année : un agent à temps plein toute l’année compte pour 1, un agent à mi-temps pendant six mois pour 0,25.",
+   "source": {
+    "nom": "Insee, définition « Salaire en équivalent temps plein » (même principe de calcul)",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1729"
+   }
+  },
+  {
+   "id": "fctva",
+   "terme": "FCTVA",
+   "sigle": "FCTVA",
+   "forme": "fonds de compensation pour la taxe sur la valeur ajoutée",
+   "definition": "Somme versée par l’État aux collectivités locales pour leur rembourser une partie de la taxe sur la valeur ajoutée payée sur leurs investissements.",
+   "source": {
+    "nom": "Insee, définition « Fonds de compensation de la TVA »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1763"
+   },
+   "voir": [
+    "tva"
+   ]
+  },
+  {
+   "id": "fdj",
+   "terme": "FDJ",
+   "sigle": "FDJ",
+   "forme": "La Française des jeux",
+   "definition": "Entreprise de jeux d’argent (loterie, paris sportifs), cotée en bourse depuis 2019 ; l’État en reste actionnaire.",
+   "source": {
+    "nom": "Groupe FDJ",
+    "url": "https://www.groupefdj.com/fr/"
+   },
+   "voir": [
+    "ape-agence"
+   ]
+  },
+  {
+   "id": "finess",
+   "terme": "FINESS",
+   "sigle": "FINESS",
+   "variantes": [
+    "Finess"
+   ],
+   "forme": "fichier national des établissements sanitaires et sociaux",
+   "definition": "Répertoire officiel des hôpitaux, cliniques et établissements médico-sociaux et sociaux, avec leurs identifiants.",
+   "source": {
+    "nom": "FINESS",
+    "url": "https://finess.esante.gouv.fr/"
+   }
+  },
+  {
+   "id": "fir",
+   "terme": "FIR",
+   "sigle": "FIR",
+   "forme": "fonds d’intervention régional",
+   "indices": [
+    "santé",
+    "agence régionale"
+   ],
+   "definition": "Fonds géré par chaque agence régionale de santé pour financer des actions de santé : prévention, permanence des soins, modernisation des établissements.",
+   "source": {
+    "nom": "Légifrance, code de la santé publique (article L. 1435-8)",
+    "url": "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006072665"
+   },
+   "voir": [
+    "ars-sante"
+   ]
+  },
+  {
+   "id": "frr-facilite",
+   "terme": "FRR",
+   "sigle": "FRR",
+   "forme": "facilité pour la reprise et la résilience",
+   "indices": [
+    "relance",
+    "résilience"
+   ],
+   "definition": "Instrument de l’Union européenne, créé en 2021, qui finance les plans nationaux de relance des États membres par des subventions et des prêts.",
+   "source": {
+    "nom": "Commission européenne, « Facilité pour la reprise et la résilience »",
+    "url": "https://commission.europa.eu/business-economy-euro/economic-recovery/recovery-and-resilience-facility_fr"
+   },
+   "voir": [
+    "pnrr"
+   ]
+  },
+  {
+   "id": "frr-retraites",
+   "terme": "FRR",
+   "sigle": "FRR",
+   "forme": "Fonds de réserve pour les retraites",
+   "indices": [
+    "retraite",
+    "réserve",
+    "cades"
+   ],
+   "definition": "Fonds public créé en 1999 pour placer des réserves destinées aux retraites ; depuis 2011, il contribue au remboursement de la dette sociale par des versements à la Caisse d’amortissement de la dette sociale.",
+   "source": {
+    "nom": "Fonds de réserve pour les retraites",
+    "url": "https://www.fondsdereserve.fr/"
+   },
+   "voir": [
+    "cades"
+   ]
+  },
+  {
+   "id": "fsv",
+   "terme": "FSV",
+   "sigle": "FSV",
+   "forme": "Fonds de solidarité vieillesse",
+   "definition": "Fonds de la Sécurité sociale qui finance des avantages de retraite non liés aux cotisations, comme le minimum vieillesse ou les trimestres validés pendant le chômage.",
+   "source": {
+    "nom": "Légifrance, code de la sécurité sociale (article L. 135-1)",
+    "url": "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006073189"
+   }
+  },
+  {
+   "id": "fts",
+   "terme": "FTS",
+   "sigle": "FTS",
+   "forme": "Financial Transparency System (système de transparence financière)",
+   "definition": "Base de données de la Commission européenne qui publie les bénéficiaires des fonds qu’elle gère directement.",
+   "source": {
+    "nom": "Commission européenne, Financial Transparency System",
+    "url": "https://ec.europa.eu/budget/financial-transparency-system/"
+   },
+   "voir": [
+    "ue"
+   ]
+  },
+  {
+   "id": "gemapi",
+   "terme": "GEMAPI",
+   "sigle": "GEMAPI",
+   "variantes": [
+    "Gemapi"
+   ],
+   "forme": "gestion des milieux aquatiques et prévention des inondations",
+   "definition": "Compétence des intercommunalités, qui peuvent la financer par une taxe ajoutée aux impôts locaux (la taxe GEMAPI).",
+   "source": {
+    "nom": "Ministère de la Transition écologique, « Gestion des milieux aquatiques et prévention des inondations (GEMAPI) »",
+    "url": "https://www.ecologie.gouv.fr/politiques-publiques/gestion-milieux-aquatiques-prevention-inondations-gemapi"
+   }
+  },
+  {
+   "id": "gfp",
+   "terme": "GFP",
+   "sigle": "GFP",
+   "forme": "groupement à fiscalité propre",
+   "definition": "Intercommunalité qui vote ses propres impôts locaux : communauté de communes, d’agglomération, communauté urbaine ou métropole.",
+   "source": {
+    "nom": "Insee, définition « Groupement de communes à fiscalité propre »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1883"
+   },
+   "voir": [
+    "epci"
+   ]
+  },
+  {
+   "id": "gfs",
+   "terme": "GFS",
+   "sigle": "GFS",
+   "forme": "statistiques de finances publiques (Government Finance Statistics)",
+   "definition": "Base de données de la Banque centrale européenne sur les recettes, les dépenses et la dette des administrations publiques de la zone euro.",
+   "source": {
+    "nom": "Banque centrale européenne, portail de données « GFS »",
+    "url": "https://data.ecb.europa.eu/data/datasets/GFS"
+   },
+   "voir": [
+    "bce",
+    "dette-maastricht"
+   ]
+  },
+  {
+   "id": "gip",
+   "terme": "GIP",
+   "sigle": "GIP",
+   "forme": "groupement d’intérêt public",
+   "definition": "Structure qui associe des partenaires publics, et parfois privés, pour mener ensemble une activité d’intérêt général.",
+   "source": {
+    "nom": "Légifrance, loi n° 2011-525 du 17 mai 2011 (chapitre sur les groupements d’intérêt public)",
+    "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000024021430"
+   }
+  },
+  {
+   "id": "gir",
+   "terme": "GIR",
+   "sigle": "GIR",
+   "variantes": [
+    "Gir"
+   ],
+   "forme": "groupe iso-ressources",
+   "definition": "Degré de perte d’autonomie d’une personne âgée, de 1 (la plus forte) à 6 (personne autonome), mesuré par une grille nationale ; il ouvre droit ou non à l’allocation personnalisée d’autonomie.",
+   "source": {
+    "nom": "service-public.fr, « Que sont les Gir 1, Gir 2, Gir 3 et Gir 4 ? »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F1229"
+   },
+   "voir": [
+    "apa",
+    "ehpad"
+   ]
+  },
+  {
+   "id": "hatvp",
+   "terme": "HATVP",
+   "sigle": "HATVP",
+   "forme": "Haute Autorité pour la transparence de la vie publique",
+   "definition": "Autorité indépendante qui contrôle les déclarations de patrimoine et d’intérêts des responsables publics et tient le répertoire des représentants d’intérêts.",
+   "source": {
+    "nom": "Haute Autorité pour la transparence de la vie publique",
+    "url": "https://www.hatvp.fr/"
+   }
+  },
+  {
+   "id": "hcsp-sante",
+   "terme": "HCSP",
+   "sigle": "HCSP",
+   "forme": "Haut Conseil de la santé publique",
+   "indices": [
+    "santé publique"
+   ],
+   "definition": "Instance d’expertise qui conseille les pouvoirs publics sur les questions de santé publique.",
+   "source": {
+    "nom": "Haut Conseil de la santé publique",
+    "url": "https://www.hcsp.fr/"
+   }
+  },
+  {
+   "id": "hcsp-plan",
+   "terme": "HCSP",
+   "sigle": "HCSP",
+   "forme": "Haut-Commissariat à la stratégie et au plan",
+   "indices": [
+    "stratégie",
+    "plan",
+    "note d’analyse",
+    "aides aux entreprises"
+   ],
+   "definition": "Organisme d’études rattaché au Premier ministre, issu en 2025 de France Stratégie et du Haut-Commissariat au plan, qui publie des analyses sur les politiques publiques.",
+   "source": {
+    "nom": "Haut-Commissariat à la stratégie et au plan",
+    "url": "https://www.strategie-plan.gouv.fr/"
+   }
+  },
+  {
+   "id": "http",
+   "terme": "HTTP",
+   "sigle": "HTTP",
+   "forme": "protocole de transfert hypertexte",
+   "definition": "Le protocole qui sert à échanger les pages et les fichiers sur le web. Un « code HTTP 403 » signifie que le serveur refuse l’accès ; 401, qu’il demande une identification ; 429, qu’il reçoit plus de demandes qu’il n’en accepte.",
+   "source": {
+    "nom": "Documentation web de Mozilla, glossaire « HTTP »",
+    "url": "https://developer.mozilla.org/fr/docs/Glossary/HTTP"
+   }
+  },
+  {
+   "id": "iati",
+   "terme": "IATI",
+   "sigle": "IATI",
+   "forme": "initiative internationale pour la transparence de l’aide",
+   "definition": "Norme internationale de publication des données de l’aide au développement : projets, montants, bénéficiaires.",
+   "source": {
+    "nom": "iatistandard.org, « Initiative internationale pour la transparence de l’aide »",
+    "url": "https://iatistandard.org/fr/"
+   },
+   "voir": [
+    "apd"
+   ]
+  },
+  {
+   "id": "insee",
+   "terme": "Insee",
+   "sigle": "Insee",
+   "variantes": [
+    "INSEE"
+   ],
+   "forme": "Institut national de la statistique et des études économiques",
+   "definition": "Institut public qui produit les statistiques officielles : population, prix, emploi, revenus, comptes de la nation.",
+   "source": {
+    "nom": "Insee",
+    "url": "https://www.insee.fr/fr/accueil"
+   },
+   "voir": [
+    "sirene",
+    "cog"
+   ]
+  },
+  {
+   "id": "ircantec",
+   "terme": "Ircantec",
+   "sigle": "Ircantec",
+   "variantes": [
+    "IRCANTEC"
+   ],
+   "forme": "Institution de retraite complémentaire des agents non titulaires de l’État et des collectivités publiques",
+   "definition": "Retraite complémentaire des agents contractuels de la fonction publique et des élus locaux.",
+   "source": {
+    "nom": "Ircantec",
+    "url": "https://www.ircantec.retraites.fr/"
+   }
+  },
+  {
+   "id": "isf",
+   "terme": "ISF",
+   "sigle": "ISF",
+   "forme": "impôt de solidarité sur la fortune",
+   "indices": [
+    "fortune"
+   ],
+   "definition": "Impôt annuel sur le patrimoine des ménages les plus aisés, remplacé en 2018 par l’impôt sur la fortune immobilière.",
+   "source": {
+    "nom": "Légifrance, code général des impôts",
+    "url": "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006069577"
+   }
+  },
+  {
+   "id": "jaune",
+   "terme": "Jaune budgétaire",
+   "definition": "Annexe d’information jointe au projet de loi de finances, imprimée à l’origine sur papier jaune : opérateurs de l’État, subventions aux associations, effectifs, relations financières avec l’Union européenne…",
+   "source": {
+    "nom": "Assemblée nationale, fiche de synthèse « L’examen des lois de finances »",
+    "url": "https://www.assemblee-nationale.fr/dyn/contenu/telechargement/629134/file/Fiche%2053%20-%20Examen%20LF.pdf"
+   },
+   "voir": [
+    "plf",
+    "operateur"
+   ]
+  },
+  {
+   "id": "jo",
+   "terme": "JO",
+   "sigle": "JO",
+   "forme": "Journal officiel",
+   "indices": [
+    "journal officiel",
+    "publié au jo",
+    "publiée au jo",
+    "jo an",
+    "jo du",
+    "question écrite"
+   ],
+   "definition": "Publication quotidienne où paraissent les lois, les décrets et d’autres textes officiels ; un texte entre en vigueur après sa publication.",
+   "source": {
+    "nom": "Direction de l’information légale et administrative",
+    "url": "https://www.dila.premier-ministre.gouv.fr/"
+   },
+   "voir": [
+    "jorf",
+    "dila"
+   ]
+  },
+  {
+   "id": "jorf",
+   "terme": "JORF",
+   "sigle": "JORF",
+   "forme": "Journal officiel, édition « Lois et décrets »",
+   "definition": "L’édition du Journal officiel qui publie les lois, les décrets, les arrêtés et d’autres textes officiels.",
+   "source": {
+    "nom": "Direction de l’information légale et administrative",
+    "url": "https://www.dila.premier-ministre.gouv.fr/"
+   },
+   "voir": [
+    "jo",
+    "dila"
+   ]
+  },
+  {
+   "id": "json",
+   "terme": "JSON",
+   "sigle": "JSON",
+   "forme": "notation des objets JavaScript",
+   "definition": "Format de fichier texte pour échanger des données ; les données du site sont publiées dans ce format.",
+   "source": {
+    "nom": "Documentation web de Mozilla, glossaire « JSON »",
+    "url": "https://developer.mozilla.org/fr/docs/Glossary/JSON"
+   }
+  },
+  {
+   "id": "lcen",
+   "terme": "LCEN",
+   "sigle": "LCEN",
+   "forme": "loi pour la confiance dans l’économie numérique",
+   "definition": "Loi de 2004 qui fixe notamment les obligations des éditeurs et des hébergeurs de sites internet.",
+   "source": {
+    "nom": "Légifrance, loi n° 2004-575 du 21 juin 2004",
+    "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000801164"
+   }
+  },
+  {
+   "id": "lfi",
+   "terme": "LFI",
+   "sigle": "LFI",
+   "forme": "loi de finances initiale",
+   "definition": "Le budget de l’État voté par le Parlement pour l’année, en général en décembre de l’année précédente : il fixe les recettes attendues et les crédits que chaque mission peut dépenser. Sur le site, on dit « budget voté ».",
+   "source": {
+    "nom": "Insee, définition « Loi de finances initiale »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1418"
+   },
+   "voir": [
+    "plf",
+    "lfr",
+    "plrg"
+   ]
+  },
+  {
+   "id": "lfr",
+   "terme": "LFR",
+   "sigle": "LFR",
+   "forme": "loi de finances rectificative",
+   "definition": "Loi votée en cours d’année pour modifier le budget voté, ses crédits ou ses recettes. On parle aussi de « collectif budgétaire ».",
+   "source": {
+    "nom": "Insee, définition « Loi de finances rectificative »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1463"
+   },
+   "voir": [
+    "lfi",
+    "plfg"
+   ]
+  },
+  {
+   "id": "lfss",
+   "terme": "LFSS",
+   "sigle": "LFSS",
+   "forme": "loi de financement de la sécurité sociale",
+   "definition": "La loi votée chaque fin d’année qui fixe les prévisions de recettes et les objectifs de dépenses de la Sécurité sociale pour l’année suivante.",
+   "source": {
+    "nom": "securite-sociale.fr, « La loi de financement : présentation »",
+    "url": "https://www.securite-sociale.fr/la-secu-en-detail/loi-de-financement/presentation"
+   },
+   "voir": [
+    "plfss",
+    "ondam",
+    "placss"
+   ]
+  },
+  {
+   "id": "lolf",
+   "terme": "LOLF",
+   "sigle": "LOLF",
+   "forme": "loi organique relative aux lois de finances",
+   "definition": "La loi de 2001 qui fixe les règles du budget de l’État : présentation en missions, programmes et actions, vote des crédits par mission, objectifs et indicateurs de résultat pour chaque programme.",
+   "source": {
+    "nom": "vie-publique.fr, fiche « Les principales innovations introduites par la LOLF »",
+    "url": "https://www.vie-publique.fr/fiches/21908-les-principales-innovations-introduites-par-la-lolf"
+   },
+   "voir": [
+    "mission",
+    "programme",
+    "action"
+   ]
+  },
+  {
+   "id": "mesr",
+   "terme": "MESR",
+   "sigle": "MESR",
+   "forme": "ministère de l’Enseignement supérieur et de la Recherche",
+   "definition": "Ministère chargé des universités et de la recherche publique ; il publie des statistiques, par exemple sur le crédit d’impôt recherche.",
+   "source": {
+    "nom": "Ministère de l’Enseignement supérieur et de la Recherche",
+    "url": "https://www.enseignementsup-recherche.gouv.fr/"
+   },
+   "voir": [
+    "cir"
+   ]
+  },
+  {
+   "id": "mission",
+   "terme": "Mission",
+   "definition": "Regroupement de programmes du budget de l’État qui servent une même politique publique, par exemple « Enseignement scolaire ». Le Parlement vote les crédits mission par mission.",
+   "source": {
+    "nom": "vie-publique.fr, fiche « Les principales innovations introduites par la LOLF »",
+    "url": "https://www.vie-publique.fr/fiches/21908-les-principales-innovations-introduites-par-la-lolf"
+   },
+   "voir": [
+    "programme",
+    "action",
+    "lolf"
+   ]
+  },
+  {
+   "id": "mit",
+   "terme": "MIT",
+   "sigle": "MIT",
+   "forme": "licence MIT (du Massachusetts Institute of Technology)",
+   "indices": [
+    "licence",
+    "license",
+    "logiciel"
+   ],
+   "definition": "Licence libre qui permet de réutiliser, modifier et redistribuer un logiciel, à condition de conserver la mention de l’auteur et de la licence.",
+   "source": {
+    "nom": "Open Source Initiative, « The MIT License »",
+    "url": "https://opensource.org/license/mit"
+   }
+  },
+  {
+   "id": "msa",
+   "terme": "MSA",
+   "sigle": "MSA",
+   "forme": "Mutualité sociale agricole",
+   "definition": "Régime de sécurité sociale des exploitants et des salariés agricoles : santé, famille, retraite.",
+   "source": {
+    "nom": "Mutualité sociale agricole",
+    "url": "https://www.msa.fr/"
+   }
+  },
+  {
+   "id": "neb",
+   "terme": "NEB",
+   "sigle": "NEB",
+   "forme": "note d’exécution budgétaire",
+   "definition": "Analyse publiée chaque printemps par la Cour des comptes, mission par mission, sur la façon dont le budget de l’année précédente a été exécuté. On dit aussi note d’analyse de l’exécution budgétaire.",
+   "source": {
+    "nom": "Cour des comptes, publications",
+    "url": "https://www.ccomptes.fr/fr/publications"
+   }
+  },
+  {
+   "id": "niveau-de-vie",
+   "terme": "Niveau de vie",
+   "definition": "Revenu disponible du ménage divisé par son nombre d’unités de consommation : il permet de comparer des ménages de tailles différentes.",
+   "source": {
+    "nom": "Insee, définition « Niveau de vie »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1890"
+   },
+   "voir": [
+    "uc",
+    "decile"
+   ]
+  },
+  {
+   "id": "ocde",
+   "terme": "OCDE",
+   "sigle": "OCDE",
+   "forme": "Organisation de coopération et de développement économiques",
+   "definition": "Organisation internationale de 38 pays qui publie des statistiques et des comparaisons sur les économies et les politiques publiques.",
+   "source": {
+    "nom": "Insee, définition « Organisation de coopération et de développement économiques »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1794"
+   }
+  },
+  {
+   "id": "odac",
+   "terme": "ODAC",
+   "sigle": "ODAC",
+   "forme": "organismes divers d’administration centrale",
+   "definition": "En comptabilité nationale, les organismes publics nationaux autres que l’État, financés surtout par des fonds publics : agences, établissements publics, universités…",
+   "source": {
+    "nom": "Insee, définition « Organismes divers d’administration centrale »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1451"
+   },
+   "voir": [
+    "apuc",
+    "operateur"
+   ]
+  },
+  {
+   "id": "ods",
+   "terme": "ODS",
+   "sigle": "ODS",
+   "forme": "Opendatasoft",
+   "indices": [
+    "portail",
+    "données",
+    "series",
+    "séries"
+   ],
+   "definition": "Logiciel de portail de données ouvertes (aujourd’hui appelé Huwise), utilisé par plusieurs administrations pour publier leurs données.",
+   "source": {
+    "nom": "Opendatasoft (Huwise)",
+    "url": "https://www.opendatasoft.com/fr/"
+   }
+  },
+  {
+   "id": "ofgl",
+   "terme": "OFGL",
+   "sigle": "OFGL",
+   "forme": "Observatoire des finances et de la gestion publique locales",
+   "definition": "Organisme qui publie les comptes des collectivités locales et des analyses sur leurs finances (site data.ofgl.fr).",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « Observatoire des finances et de la gestion publique locales (OFGL) »",
+    "url": "https://www.collectivites-locales.gouv.fr/connaitre-les-acteurs-et-les-institutions/organismes-consultatifs/observatoire-des-finances-et-de-la-gestion-publique-locales-ofgl"
+   }
+  },
+  {
+   "id": "ondam",
+   "terme": "ONDAM",
+   "sigle": "ONDAM",
+   "variantes": [
+    "Ondam"
+   ],
+   "forme": "objectif national de dépenses d’assurance maladie",
+   "definition": "Le montant de dépenses d’assurance maladie (soins de ville, hôpitaux, établissements médico-sociaux) fixé chaque année par la loi de financement de la sécurité sociale.",
+   "source": {
+    "nom": "vie-publique.fr, fiche « Qu’est-ce que l’Ondam ? »",
+    "url": "https://www.vie-publique.fr/fiches/37919-quest-ce-que-londam-objectif-national-des-depenses-dassurance-maladie"
+   },
+   "voir": [
+    "lfss"
+   ]
+  },
+  {
+   "id": "opc",
+   "terme": "OPC",
+   "sigle": "OPC",
+   "forme": "organismes de placement collectif",
+   "definition": "Fonds d’investissement qui placent l’épargne de nombreux épargnants en titres financiers, dont des titres de dette publique.",
+   "source": {
+    "nom": "Insee, définition « Organismes de placement collectif »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1915"
+   }
+  },
+  {
+   "id": "operateur",
+   "terme": "Opérateur de l’État",
+   "definition": "Organisme distinct de l’État (agence, établissement public, université…) qui met en œuvre une politique de l’État, est financé majoritairement par lui et placé sous son contrôle. La liste est publiée chaque année dans une annexe du projet de budget.",
+   "source": {
+    "nom": "Assemblée nationale, annexe au projet de loi de finances pour 2026 « Opérateurs de l’État »",
+    "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2026/22-Jaune2026_Operateurs.pdf"
+   },
+   "voir": [
+    "scsp",
+    "jaune",
+    "odac"
+   ]
+  },
+  {
+   "id": "pac",
+   "terme": "PAC",
+   "sigle": "PAC",
+   "forme": "politique agricole commune",
+   "definition": "Politique de l’Union européenne qui soutient les revenus agricoles et le développement rural ; c’est l’un des principaux postes du budget européen.",
+   "source": {
+    "nom": "Commission européenne, « La PAC 2023-2027 »",
+    "url": "https://agriculture.ec.europa.eu/common-agricultural-policy/cap-overview/cap-2023-27_fr"
+   },
+   "voir": [
+    "cfp-ue",
+    "ue"
+   ]
+  },
+  {
+   "id": "pap",
+   "terme": "PAP",
+   "sigle": "PAP",
+   "forme": "projet annuel de performances",
+   "definition": "Document joint au projet de budget pour chaque programme : crédits demandés, objectifs, indicateurs et valeurs cibles.",
+   "source": {
+    "nom": "vie-publique.fr, fiche « La gestion par la performance dans l’administration »",
+    "url": "https://www.vie-publique.fr/fiches/37989-la-gestion-par-la-performance-dans-ladministration"
+   },
+   "voir": [
+    "rap",
+    "programme"
+   ]
+  },
+  {
+   "id": "pch",
+   "terme": "PCH",
+   "sigle": "PCH",
+   "forme": "prestation de compensation du handicap",
+   "definition": "Aide versée par le département pour financer les besoins liés au handicap : aide humaine, aménagement du logement, matériel.",
+   "source": {
+    "nom": "service-public.fr, « Prestation de compensation du handicap (PCH) »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F14202"
+   },
+   "voir": [
+    "cnsa",
+    "aah"
+   ]
+  },
+  {
+   "id": "pde",
+   "terme": "PDE",
+   "sigle": "PDE",
+   "forme": "procédure concernant les déficits excessifs",
+   "definition": "Procédure européenne de surveillance des déficits et des dettes publiques des États membres. Les chiffres « notifiés » chaque année à la Commission européenne servent à cette surveillance.",
+   "source": {
+    "nom": "Eurostat, « Excessive deficit procedure »",
+    "url": "https://ec.europa.eu/eurostat/web/government-finance-statistics/excessive-deficit-procedure"
+   },
+   "voir": [
+    "dette-maastricht",
+    "deficit-public"
+   ]
+  },
+  {
+   "id": "pdf",
+   "terme": "PDF",
+   "sigle": "PDF",
+   "forme": "format de document portable",
+   "definition": "Format de document qui garde la même mise en page sur tous les appareils ; de nombreux documents budgétaires sont publiés dans ce format.",
+   "source": {
+    "nom": "Organisation internationale de normalisation (ISO), norme 32000-2",
+    "url": "https://www.iso.org/standard/75839.html"
+   }
+  },
+  {
+   "id": "pdr",
+   "terme": "PDR",
+   "sigle": "PDR",
+   "forme": "décision du Conseil constitutionnel sur l’élection présidentielle",
+   "indices": [
+    "conseil constitutionnel",
+    "présidentielle"
+   ],
+   "definition": "Lettres placées après le numéro d’une décision du Conseil constitutionnel qui concerne l’élection présidentielle, par exemple « 2013-156 PDR ».",
+   "source": {
+    "nom": "Conseil constitutionnel, décision n° 2013-156 PDR du 4 juillet 2013",
+    "url": "https://www.conseil-constitutionnel.fr/decision/2013/2013156PDR.htm"
+   },
+   "voir": [
+    "cnccfp"
+   ]
+  },
+  {
+   "id": "pepp",
+   "terme": "PEPP",
+   "sigle": "PEPP",
+   "forme": "programme d’achats d’urgence face à la pandémie",
+   "definition": "Programme exceptionnel de la Banque centrale européenne (2020 à 2022) pendant lequel elle a acheté des titres, dont des dettes publiques, pendant la crise sanitaire.",
+   "source": {
+    "nom": "Banque centrale européenne, « Pandemic Emergency Purchase Programme »",
+    "url": "https://www.ecb.europa.eu/mopo/implement/pepp/html/index.fr.html"
+   },
+   "voir": [
+    "bce",
+    "pspp"
+   ]
+  },
+  {
+   "id": "petr",
+   "terme": "PETR",
+   "sigle": "PETR",
+   "forme": "pôle d’équilibre territorial et rural",
+   "definition": "Structure qui associe plusieurs intercommunalités, surtout rurales, pour mener un projet commun de territoire.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « Les groupements intercommunaux »",
+    "url": "https://www.collectivites-locales.gouv.fr/connaitre-les-acteurs-et-les-institutions/structures-territoriales/les-intercommunalites-et-groupements-de-collectivites/les-groupements-intercommunaux"
+   },
+   "voir": [
+    "epci"
+   ]
+  },
+  {
+   "id": "pib",
+   "terme": "PIB",
+   "sigle": "PIB",
+   "forme": "produit intérieur brut",
+   "definition": "La valeur de ce qui est produit en un an dans le pays. Les dettes et les dépenses publiques sont souvent rapportées au PIB pour comparer les années et les pays.",
+   "source": {
+    "nom": "Insee, définition « Produit intérieur brut »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1365"
+   }
+  },
+  {
+   "id": "placss",
+   "terme": "PLACSS",
+   "sigle": "PLACSS",
+   "forme": "projet de loi d’approbation des comptes de la sécurité sociale",
+   "definition": "La loi qui approuve, au printemps, les comptes de l’année écoulée de la Sécurité sociale. Elle existe depuis 2023.",
+   "source": {
+    "nom": "securite-sociale.fr, « Projet de loi d’approbation des comptes de la sécurité sociale »",
+    "url": "https://www.securite-sociale.fr/home/la-secu-en-detail/loi-de-financement/projet-de-loi-d-approbation-des-comptes-de-la-securite-sociale-placss.html"
+   },
+   "voir": [
+    "lfss"
+   ]
+  },
+  {
+   "id": "plf",
+   "terme": "PLF",
+   "sigle": "PLF",
+   "forme": "projet de loi de finances",
+   "definition": "Le projet de budget de l’État présenté par le Gouvernement à l’automne, puis examiné et amendé par le Parlement. Une fois voté, il devient la loi de finances initiale. Sur le site, on dit « budget proposé ».",
+   "source": {
+    "nom": "Insee, définition « Projet de loi de finances »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1628"
+   },
+   "voir": [
+    "lfi",
+    "plfss"
+   ]
+  },
+  {
+   "id": "plfg",
+   "terme": "PLFG",
+   "sigle": "PLFG",
+   "forme": "projet de loi de finances de fin de gestion",
+   "definition": "Loi de finances rectificative présentée en fin d’année pour ajuster les crédits de l’année en cours. Elle a été créée par la réforme de la loi organique relative aux lois de finances de décembre 2021.",
+   "source": {
+    "nom": "vie-publique.fr, « Loi du 28 décembre 2021 relative à la modernisation de la gestion des finances publiques »",
+    "url": "https://www.vie-publique.fr/loi/281020-loi-28-decembre-2021-lolf-modernisation-gestion-des-finances-publiques"
+   },
+   "voir": [
+    "lfr",
+    "lolf"
+   ]
+  },
+  {
+   "id": "plfss",
+   "terme": "PLFSS",
+   "sigle": "PLFSS",
+   "forme": "projet de loi de financement de la sécurité sociale",
+   "definition": "Le projet présenté par le Gouvernement à l’automne pour la Sécurité sociale ; une fois voté, il devient la loi de financement de la sécurité sociale.",
+   "source": {
+    "nom": "Assemblée nationale, fiche de synthèse « Le projet de loi de financement de la sécurité sociale »",
+    "url": "https://www.assemblee-nationale.fr/dyn/contenu/telechargement/629137/file/Fiche%2054%20-%20PLFSS.pdf"
+   },
+   "voir": [
+    "lfss",
+    "plf"
+   ]
+  },
+  {
+   "id": "plr",
+   "terme": "PLR",
+   "sigle": "PLR",
+   "forme": "projet de loi de règlement",
+   "definition": "Ancien nom de la loi qui arrête les comptes de l’année écoulée, utilisé jusqu’aux comptes 2021. Depuis, on parle de loi relative aux résultats de la gestion.",
+   "source": {
+    "nom": "vie-publique.fr, « Loi du 28 décembre 2021 relative à la modernisation de la gestion des finances publiques »",
+    "url": "https://www.vie-publique.fr/loi/281020-loi-28-decembre-2021-lolf-modernisation-gestion-des-finances-publiques"
+   },
+   "voir": [
+    "plrg"
+   ]
+  },
+  {
+   "id": "plrg",
+   "terme": "PLRG",
+   "sigle": "PLRG",
+   "forme": "projet de loi relatif aux résultats de la gestion et portant approbation des comptes de l’année",
+   "definition": "La loi qui arrête, au printemps, les comptes de l’année écoulée : ce que l’État a réellement dépensé et encaissé. Les montants « dépensés » du site viennent de ces comptes. Elle a pris la suite de la loi de règlement à partir des comptes 2022.",
+   "source": {
+    "nom": "vie-publique.fr, « Projet de loi relatif aux résultats de la gestion et portant approbation des comptes de l’année 2025 »",
+    "url": "https://www.vie-publique.fr/loi/302930-deficit-public-2025-projet-de-loi-resultats-gestion-approbation-comptes"
+   },
+   "voir": [
+    "plr",
+    "rap",
+    "lfi"
+   ]
+  },
+  {
+   "id": "pme",
+   "terme": "PME",
+   "sigle": "PME",
+   "forme": "petites et moyennes entreprises",
+   "definition": "Entreprises de moins de 250 salariés dont le chiffre d’affaires annuel ne dépasse pas 50 millions d’euros ou le total de bilan 43 millions d’euros.",
+   "source": {
+    "nom": "Insee, définition « Petite et moyenne entreprise »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1962"
+   },
+   "voir": [
+    "eti"
+   ]
+  },
+  {
+   "id": "pmsi",
+   "terme": "PMSI",
+   "sigle": "PMSI",
+   "forme": "programme de médicalisation des systèmes d’information",
+   "definition": "Recueil des informations médicales et administratives de chaque séjour à l’hôpital, qui sert notamment au calcul du financement des établissements.",
+   "source": {
+    "nom": "ATIH, « Recueils »",
+    "url": "https://www.atih.sante.fr/mco/presentation"
+   },
+   "voir": [
+    "atih"
+   ]
+  },
+  {
+   "id": "pnrr",
+   "terme": "PNRR",
+   "sigle": "PNRR",
+   "forme": "plan national de relance et de résilience",
+   "definition": "Le plan d’investissements et de réformes de la France financé par la facilité européenne pour la reprise et la résilience, après la crise sanitaire (2021 à 2026).",
+   "source": {
+    "nom": "Direction générale du Trésor, « Présentation du plan national de relance et de résilience français »",
+    "url": "https://www.tresor.economie.gouv.fr/Articles/2021/04/29/presentation-du-plan-national-de-relance-et-de-resilience-francais"
+   },
+   "voir": [
+    "frr-facilite"
+   ]
+  },
+  {
+   "id": "prelevements-obligatoires",
+   "terme": "Prélèvements obligatoires",
+   "definition": "Ensemble des impôts et des cotisations sociales reçus par les administrations publiques et par les institutions de l’Union européenne.",
+   "source": {
+    "nom": "Insee, définition « Prélèvements obligatoires »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1571"
+   }
+  },
+  {
+   "id": "programme",
+   "terme": "Programme",
+   "definition": "Subdivision d’une mission : un ensemble de crédits confié à un responsable, avec des objectifs et des indicateurs de résultat. Chaque programme porte un numéro, par exemple 141 « Enseignement scolaire public du second degré ».",
+   "source": {
+    "nom": "vie-publique.fr, fiche « Les principales innovations introduites par la LOLF »",
+    "url": "https://www.vie-publique.fr/fiches/21908-les-principales-innovations-introduites-par-la-lolf"
+   },
+   "voir": [
+    "mission",
+    "action",
+    "pap"
+   ]
+  },
+  {
+   "id": "pspp",
+   "terme": "PSPP",
+   "sigle": "PSPP",
+   "forme": "programme d’achats de titres du secteur public",
+   "definition": "Programme de la Banque centrale européenne, lancé en 2015, par lequel les banques centrales de la zone euro achètent des titres de dette publique sur les marchés.",
+   "source": {
+    "nom": "Banque centrale européenne, « Programmes d’achats d’actifs »",
+    "url": "https://www.ecb.europa.eu/mopo/implement/app/html/index.fr.html"
+   },
+   "voir": [
+    "bce",
+    "pepp"
+   ]
+  },
+  {
+   "id": "psr",
+   "terme": "PSR",
+   "sigle": "PSR",
+   "forme": "prélèvements sur recettes",
+   "definition": "Sommes retirées des recettes de l’État avant toute dépense, au profit des collectivités locales (dont la dotation globale de fonctionnement) et de l’Union européenne (contribution de la France à son budget).",
+   "source": {
+    "nom": "Légifrance, loi organique relative aux lois de finances, article 6",
+    "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000394028"
+   },
+   "voir": [
+    "dgf",
+    "ue"
+   ]
+  },
+  {
+   "id": "qpv",
+   "terme": "QPV",
+   "sigle": "QPV",
+   "forme": "quartier prioritaire de la politique de la ville",
+   "definition": "Quartier urbain où les revenus des habitants sont faibles et où l’État et les collectivités concentrent des aides particulières.",
+   "source": {
+    "nom": "Insee, définition « Quartiers prioritaires de la politique de la ville »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c2114"
+   },
+   "voir": [
+    "dpv",
+    "zfu"
+   ]
+  },
+  {
+   "id": "rafp",
+   "terme": "RAFP",
+   "sigle": "RAFP",
+   "forme": "retraite additionnelle de la fonction publique",
+   "definition": "Régime obligatoire qui verse aux fonctionnaires une retraite complémentaire calculée sur une partie de leurs primes.",
+   "source": {
+    "nom": "Retraite additionnelle de la fonction publique",
+    "url": "https://www.rafp.fr/"
+   }
+  },
+  {
+   "id": "rap",
+   "terme": "RAP",
+   "sigle": "RAP",
+   "forme": "rapport annuel de performances",
+   "definition": "Document joint à la loi qui arrête les comptes de l’année, pour chaque programme : crédits réellement dépensés et résultats des indicateurs, comparés aux prévisions du projet annuel de performances.",
+   "source": {
+    "nom": "vie-publique.fr, fiche « La gestion par la performance dans l’administration »",
+    "url": "https://www.vie-publique.fr/fiches/37989-la-gestion-par-la-performance-dans-ladministration"
+   },
+   "voir": [
+    "pap",
+    "plrg"
+   ]
+  },
+  {
+   "id": "ratp",
+   "terme": "RATP",
+   "sigle": "RATP",
+   "forme": "Régie autonome des transports parisiens",
+   "definition": "Entreprise publique de transport en Île-de-France ; ses salariés relèvent d’un régime spécial de retraite, financé en partie par l’État.",
+   "source": {
+    "nom": "Assemblée nationale, projet annuel de performances 2026 « Régimes sociaux et de retraite »",
+    "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088020/file/PAP2026_BG_Regimes_sociaux_retraite_RB.pdf"
+   }
+  },
+  {
+   "id": "rei",
+   "terme": "REI",
+   "sigle": "REI",
+   "forme": "recensement des éléments d’imposition",
+   "definition": "Fichier publié par la direction générale des finances publiques qui donne, pour chaque commune, les bases, les taux et le produit des impôts locaux.",
+   "source": {
+    "nom": "data.gouv.fr, « Impôts locaux : fichier de recensement des éléments d’imposition (REI) »",
+    "url": "https://www.data.gouv.fr/datasets/impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-directe-locale-rei-4"
+   },
+   "voir": [
+    "dgfip"
+   ]
+  },
+  {
+   "id": "remboursements-degrevements",
+   "terme": "Remboursements et dégrèvements",
+   "definition": "Impôts rendus ou annulés par l’État : impôt payé en excédent, crédits d’impôt restitués, allègements accordés après coup. Le site les exclut des dépenses de l’État (voir Méthode et sources).",
+   "source": {
+    "nom": "Assemblée nationale, projet annuel de performances 2026 « Remboursements et dégrèvements »",
+    "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088026/file/PAP2026_BG_Remboursements_degrevements_RD.pdf"
+   }
+  },
+  {
+   "id": "reom",
+   "terme": "REOM",
+   "sigle": "REOM",
+   "forme": "redevance d’enlèvement des ordures ménagères",
+   "definition": "Redevance que certaines communes ou intercommunalités demandent pour la collecte des déchets, à la place de la taxe ; son montant dépend du service rendu.",
+   "source": {
+    "nom": "service-public.fr, « Taxe ou redevance d’enlèvement des ordures ménagères »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F22730"
+   },
+   "voir": [
+    "teom"
+   ]
+  },
+  {
+   "id": "rep",
+   "terme": "REP",
+   "sigle": "REP",
+   "forme": "réseau d’éducation prioritaire",
+   "definition": "Écoles et collèges situés dans des secteurs aux difficultés sociales marquées, qui reçoivent des moyens supplémentaires.",
+   "source": {
+    "nom": "Ministère de l’Éducation nationale, « L’éducation prioritaire »",
+    "url": "https://www.education.gouv.fr/l-education-prioritaire-3140"
+   }
+  },
+  {
+   "id": "rgpd",
+   "terme": "RGPD",
+   "sigle": "RGPD",
+   "forme": "règlement général sur la protection des données",
+   "definition": "Règlement européen de 2016 qui encadre l’utilisation des données personnelles et donne des droits aux personnes concernées.",
+   "source": {
+    "nom": "CNIL, « Le règlement général sur la protection des données »",
+    "url": "https://www.cnil.fr/fr/reglement-europeen-protection-donnees"
+   },
+   "voir": [
+    "cnil"
+   ]
+  },
+  {
+   "id": "rmi",
+   "terme": "RMI",
+   "sigle": "RMI",
+   "forme": "revenu minimum d’insertion",
+   "definition": "Revenu minimum qui a précédé le revenu de solidarité active, remplacé par celui-ci en 2009.",
+   "source": {
+    "nom": "Insee, définition « Revenu minimum d’insertion »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1852"
+   },
+   "voir": [
+    "rsa"
+   ]
+  },
+  {
+   "id": "rna",
+   "terme": "RNA",
+   "sigle": "RNA",
+   "forme": "répertoire national des associations",
+   "definition": "Fichier officiel des associations déclarées en préfecture, avec leur numéro d’identification.",
+   "source": {
+    "nom": "data.gouv.fr, « Répertoire national des associations »",
+    "url": "https://www.data.gouv.fr/datasets/repertoire-national-des-associations"
+   }
+  },
+  {
+   "id": "rnf",
+   "terme": "RNF",
+   "sigle": "RNF",
+   "forme": "registre national des fonds et fondations",
+   "definition": "Registre tenu par le ministère de l’Intérieur qui recense les fondations et les fonds de dotation.",
+   "source": {
+    "nom": "data.gouv.fr, « Fichiers relatifs au registre national des fonds et fondations »",
+    "url": "https://www.data.gouv.fr/datasets/fichiers-relatifs-aux-registre-national-des-fonds-et-fondations-rnf"
+   },
+   "voir": [
+    "rna"
+   ]
+  },
+  {
+   "id": "rsa",
+   "terme": "RSA",
+   "sigle": "RSA",
+   "forme": "revenu de solidarité active",
+   "definition": "Revenu minimum versé aux personnes sans ressources ou à faibles ressources ; il est financé surtout par les départements et versé par les caisses d’allocations familiales.",
+   "source": {
+    "nom": "Insee, définition « Revenu de solidarité active »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1718"
+   },
+   "voir": [
+    "caf",
+    "rmi"
+   ]
+  },
+  {
+   "id": "scdl",
+   "terme": "SCDL",
+   "sigle": "SCDL",
+   "forme": "socle commun des données locales",
+   "definition": "Formats communs pour publier les données des collectivités, par exemple la liste des subventions qu’elles versent.",
+   "source": {
+    "nom": "schema.data.gouv.fr, « Subventions (socle commun des données locales) »",
+    "url": "https://schema.data.gouv.fr/scdl/subventions/"
+   }
+  },
+  {
+   "id": "scsp",
+   "terme": "SCSP",
+   "sigle": "SCSP",
+   "forme": "subvention pour charges de service public",
+   "definition": "Somme versée chaque année par l’État à un opérateur pour financer ses missions courantes (personnel, fonctionnement).",
+   "source": {
+    "nom": "Assemblée nationale, annexe au projet de loi de finances pour 2026 « Opérateurs de l’État »",
+    "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2026/22-Jaune2026_Operateurs.pdf"
+   },
+   "voir": [
+    "operateur"
+   ]
+  },
+  {
+   "id": "seita",
+   "terme": "SEITA",
+   "sigle": "SEITA",
+   "forme": "Société nationale d’exploitation industrielle des tabacs et allumettes",
+   "definition": "Ancienne entreprise publique du tabac ; l’État finance encore le régime de retraite de ses anciens salariés.",
+   "source": {
+    "nom": "Assemblée nationale, projet annuel de performances 2026 « Régimes sociaux et de retraite »",
+    "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088020/file/PAP2026_BG_Regimes_sociaux_retraite_RB.pdf"
+   }
+  },
+  {
+   "id": "sil",
+   "terme": "SIL",
+   "sigle": "SIL",
+   "forme": "SIL Open Font License",
+   "indices": [
+    "police",
+    "font",
+    "licence",
+    "license"
+   ],
+   "definition": "Licence libre de polices de caractères, publiée par l’organisation SIL International.",
+   "source": {
+    "nom": "SIL Open Font License",
+    "url": "https://openfontlicense.org/"
+   }
+  },
+  {
+   "id": "siren",
+   "terme": "SIREN",
+   "sigle": "SIREN",
+   "variantes": [
+    "Siren"
+   ],
+   "forme": "système d’identification du répertoire des entreprises",
+   "definition": "Numéro à 9 chiffres qui identifie chaque entreprise, association ou organisme public en France.",
+   "source": {
+    "nom": "Insee, définition « Numéro Siren »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c2047"
+   },
+   "voir": [
+    "siret",
+    "sirene"
+   ]
+  },
+  {
+   "id": "sirene",
+   "terme": "SIRENE",
+   "sigle": "SIRENE",
+   "variantes": [
+    "Sirene"
+   ],
+   "forme": "système informatisé du répertoire national des entreprises et des établissements",
+   "definition": "Le répertoire officiel des entreprises et des établissements, tenu par l’Insee ; il indique notamment la catégorie juridique de chaque organisme, qui permet de distinguer les personnes morales.",
+   "source": {
+    "nom": "Insee, définition « Sirene »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1135"
+   },
+   "voir": [
+    "siren"
+   ]
+  },
+  {
+   "id": "siret",
+   "terme": "SIRET",
+   "sigle": "SIRET",
+   "variantes": [
+    "Siret"
+   ],
+   "forme": "système d’identification du répertoire des établissements",
+   "definition": "Numéro à 14 chiffres qui identifie chaque établissement (chaque site) d’une entreprise ou d’un organisme : le numéro SIREN suivi de 5 chiffres.",
+   "source": {
+    "nom": "Insee, définition « Numéro Siret »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1841"
+   },
+   "voir": [
+    "siren"
+   ]
+  },
+  {
+   "id": "sivom",
+   "terme": "SIVOM",
+   "sigle": "SIVOM",
+   "forme": "syndicat intercommunal à vocation multiple",
+   "definition": "Regroupement de communes pour plusieurs activités, financé par les communes membres.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « Les groupements intercommunaux »",
+    "url": "https://www.collectivites-locales.gouv.fr/connaitre-les-acteurs-et-les-institutions/structures-territoriales/les-intercommunalites-et-groupements-de-collectivites/les-groupements-intercommunaux"
+   },
+   "voir": [
+    "sivu"
+   ]
+  },
+  {
+   "id": "sivu",
+   "terme": "SIVU",
+   "sigle": "SIVU",
+   "forme": "syndicat intercommunal à vocation unique",
+   "definition": "Regroupement de communes pour une seule activité (eau, école, transport scolaire…), financé par les communes membres.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « Les groupements intercommunaux »",
+    "url": "https://www.collectivites-locales.gouv.fr/connaitre-les-acteurs-et-les-institutions/structures-territoriales/les-intercommunalites-et-groupements-de-collectivites/les-groupements-intercommunaux"
+   },
+   "voir": [
+    "sivom",
+    "epci"
+   ]
+  },
+  {
+   "id": "smf",
+   "terme": "SMF",
+   "sigle": "SMF",
+   "forme": "syndicat mixte fermé",
+   "definition": "Syndicat qui associe des communes et des intercommunalités, ou uniquement des intercommunalités.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « Les groupements intercommunaux »",
+    "url": "https://www.collectivites-locales.gouv.fr/connaitre-les-acteurs-et-les-institutions/structures-territoriales/les-intercommunalites-et-groupements-de-collectivites/les-groupements-intercommunaux"
+   },
+   "voir": [
+    "smo"
+   ]
+  },
+  {
+   "id": "smic",
+   "terme": "SMIC",
+   "sigle": "SMIC",
+   "variantes": [
+    "Smic"
+   ],
+   "forme": "salaire minimum interprofessionnel de croissance",
+   "definition": "Le salaire horaire minimum légal en France, revalorisé au moins une fois par an.",
+   "source": {
+    "nom": "Insee, définition « Salaire minimum de croissance »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1006"
+   }
+  },
+  {
+   "id": "smo",
+   "terme": "SMO",
+   "sigle": "SMO",
+   "forme": "syndicat mixte ouvert",
+   "definition": "Syndicat qui associe des collectivités de niveaux différents (communes, départements, régions) et parfois d’autres organismes publics.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « Les groupements intercommunaux »",
+    "url": "https://www.collectivites-locales.gouv.fr/connaitre-les-acteurs-et-les-institutions/structures-territoriales/les-intercommunalites-et-groupements-de-collectivites/les-groupements-intercommunaux"
+   },
+   "voir": [
+    "smf"
+   ]
+  },
+  {
+   "id": "sncf",
+   "terme": "SNCF",
+   "sigle": "SNCF",
+   "forme": "Société nationale des chemins de fer français",
+   "definition": "Groupe public ferroviaire. Une partie de la dette de sa filiale SNCF Réseau a été reprise par l’État, qui en paie les intérêts sur son budget.",
+   "source": {
+    "nom": "SNCF",
+    "url": "https://www.sncf.com/fr"
+   }
+  },
+  {
+   "id": "sql",
+   "terme": "SQL",
+   "sigle": "SQL",
+   "forme": "langage de requête structurée",
+   "definition": "Langage utilisé pour interroger et gérer des bases de données.",
+   "source": {
+    "nom": "Documentation web de Mozilla, glossaire « SQL »",
+    "url": "https://developer.mozilla.org/fr/docs/Glossary/SQL"
+   }
+  },
+  {
+   "id": "sru",
+   "terme": "SRU",
+   "sigle": "SRU",
+   "forme": "loi relative à la solidarité et au renouvellement urbains",
+   "definition": "Loi de 2000 qui impose notamment à certaines communes une part minimale de logements sociaux.",
+   "source": {
+    "nom": "Légifrance, loi n° 2000-1208 du 13 décembre 2000",
+    "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000207538"
+   }
+  },
+  {
+   "id": "tam",
+   "terme": "TAM",
+   "sigle": "TAM",
+   "forme": "module de transparence des aides d’État (Transparency Award Module)",
+   "definition": "Base de données de la Commission européenne où les États publient les aides d’État individuelles importantes accordées aux entreprises.",
+   "source": {
+    "nom": "Commission européenne, State Aid Transparency Public Search",
+    "url": "https://webgate.ec.europa.eu/competition/transparency/public"
+   }
+  },
+  {
+   "id": "tasa",
+   "terme": "TASA",
+   "sigle": "TASA",
+   "forme": "taxe additionnelle spéciale annuelle",
+   "definition": "Taxe ajoutée aux impôts locaux en Île-de-France, perçue au profit de la région.",
+   "source": {
+    "nom": "Bulletin officiel des finances publiques, « Taxes et prélèvements additionnels aux impôts fonciers »",
+    "url": "https://bofip.impots.gouv.fr/bofip/4287-PGP.html/identifiant=BOI-IF-AUT-20240619"
+   }
+  },
+  {
+   "id": "taxe-affectee",
+   "terme": "Taxe affectée",
+   "definition": "Impôt dont le produit va directement à un organisme précis (agence, caisse, collectivité) plutôt qu’au budget général de l’État.",
+   "source": {
+    "nom": "Sénat, rapport sur le projet de loi de finances pour 2018, « Impositions et autres ressources affectées à des tiers »",
+    "url": "https://www.senat.fr/rap/l17-108-21-1/l17-108-21-13.html"
+   },
+   "voir": [
+    "operateur"
+   ]
+  },
+  {
+   "id": "teom",
+   "terme": "TEOM",
+   "sigle": "TEOM",
+   "variantes": [
+    "Teom"
+   ],
+   "forme": "taxe d’enlèvement des ordures ménagères",
+   "definition": "Taxe locale qui finance la collecte et le traitement des déchets ; elle figure sur l’avis de taxe foncière et peut être refacturée aux locataires dans les charges.",
+   "source": {
+    "nom": "service-public.fr, « Taxe ou redevance d’enlèvement des ordures ménagères (TEOM ou REOM) »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F22730"
+   },
+   "voir": [
+    "tfb"
+   ]
+  },
+  {
+   "id": "tfb",
+   "terme": "TFB",
+   "sigle": "TFB",
+   "variantes": [
+    "TFPB"
+   ],
+   "forme": "taxe foncière sur les propriétés bâties",
+   "definition": "Impôt local payé chaque année par les propriétaires de logements et de locaux ; son taux est voté par les communes et les intercommunalités.",
+   "source": {
+    "nom": "service-public.fr, « Taxe foncière sur les propriétés bâties (TFPB) »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F59"
+   },
+   "voir": [
+    "teom",
+    "rei"
+   ]
+  },
+  {
+   "id": "ticpe",
+   "terme": "TICPE",
+   "sigle": "TICPE",
+   "forme": "taxe intérieure de consommation sur les produits énergétiques",
+   "definition": "Taxe sur les carburants et les combustibles, aujourd’hui appelée accise sur les énergies ; son produit est partagé entre l’État, les collectivités locales et d’autres organismes.",
+   "source": {
+    "nom": "Insee, définition « Taxe intérieure de consommation sur les produits énergétiques »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1410"
+   },
+   "voir": [
+    "tipp"
+   ]
+  },
+  {
+   "id": "tipp",
+   "terme": "TIPP",
+   "sigle": "TIPP",
+   "forme": "taxe intérieure sur les produits pétroliers",
+   "definition": "Ancien nom de la taxe intérieure de consommation sur les produits énergétiques, la taxe sur les carburants.",
+   "source": {
+    "nom": "Insee, définition « Taxe intérieure de consommation sur les produits énergétiques »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1410"
+   },
+   "voir": [
+    "ticpe"
+   ]
+  },
+  {
+   "id": "tva",
+   "terme": "TVA",
+   "sigle": "TVA",
+   "forme": "taxe sur la valeur ajoutée",
+   "definition": "Impôt sur la consommation, compris dans le prix de la plupart des biens et services ; c’est l’une des principales recettes publiques, partagée entre l’État, la Sécurité sociale et les collectivités locales.",
+   "source": {
+    "nom": "Insee, définition « Taxe sur la valeur ajoutée »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1777"
+   },
+   "voir": [
+    "fctva"
+   ]
+  },
+  {
+   "id": "uc",
+   "terme": "UC",
+   "sigle": "UC",
+   "forme": "unité de consommation",
+   "indices": [
+    "consommation",
+    "niveau de vie",
+    "décile"
+   ],
+   "definition": "Unité qui permet de comparer des ménages de tailles différentes : 1 pour le premier adulte, 0,5 pour chaque autre personne de 14 ans ou plus, 0,3 pour chaque enfant de moins de 14 ans.",
+   "source": {
+    "nom": "Insee, définition « Unité de consommation »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1802"
+   },
+   "voir": [
+    "niveau-de-vie"
+   ]
+  },
+  {
+   "id": "ue",
+   "terme": "UE",
+   "sigle": "UE",
+   "forme": "Union européenne",
+   "definition": "Union de 27 pays européens qui ont mis en commun certaines politiques et un budget. La France verse une contribution à ce budget et en reçoit une partie en retour.",
+   "source": {
+    "nom": "Insee, définition « Union européenne »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1753"
+   },
+   "voir": [
+    "cfp-ue",
+    "pac"
+   ]
+  },
+  {
+   "id": "unedic",
+   "terme": "Unédic",
+   "sigle": "Unédic",
+   "variantes": [
+    "UNEDIC",
+    "Unedic"
+   ],
+   "forme": "Union nationale interprofessionnelle pour l’emploi dans l’industrie et le commerce",
+   "definition": "Association gérée par les syndicats de salariés et d’employeurs qui pilote et finance l’assurance chômage ; les allocations sont versées par France Travail.",
+   "source": {
+    "nom": "Unédic",
+    "url": "https://www.unedic.org/"
+   }
+  },
+  {
+   "id": "url",
+   "terme": "URL",
+   "sigle": "URL",
+   "forme": "adresse web (uniform resource locator)",
+   "definition": "L’adresse d’une page ou d’un fichier sur internet, par exemple https://www.insee.fr/fr/accueil.",
+   "source": {
+    "nom": "Documentation web de Mozilla, glossaire « URL »",
+    "url": "https://developer.mozilla.org/fr/docs/Glossary/URL"
+   }
+  },
+  {
+   "id": "urssaf",
+   "terme": "Urssaf",
+   "sigle": "Urssaf",
+   "variantes": [
+    "URSSAF"
+   ],
+   "forme": "unions de recouvrement des cotisations de sécurité sociale et d’allocations familiales",
+   "definition": "Organismes qui encaissent les cotisations sociales et la contribution sociale généralisée sur les salaires, puis les reversent aux caisses de la Sécurité sociale et à d’autres organismes.",
+   "source": {
+    "nom": "securite-sociale.fr, « Les branches »",
+    "url": "https://www.securite-sociale.fr/la-secu-cest-quoi/organisation/les-branches"
+   },
+   "voir": [
+    "acoss",
+    "csg"
+   ]
+  },
+  {
+   "id": "zfu",
+   "terme": "ZFU",
+   "sigle": "ZFU",
+   "forme": "zone franche urbaine",
+   "definition": "Quartier où les entreprises qui s’installaient pouvaient être exonérées d’impôts et de cotisations pendant plusieurs années.",
+   "source": {
+    "nom": "Insee, définition « Zone franche urbaine »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c2051"
+   },
+   "voir": [
+    "qpv"
+   ]
+  },
+  {
+   "id": "zni",
+   "terme": "ZNI",
+   "sigle": "ZNI",
+   "forme": "zones non interconnectées",
+   "definition": "Territoires non reliés au réseau électrique de la métropole continentale (Corse, outre-mer, certaines îles), où l’électricité est produite sur place ; la différence de prix de revient est compensée pour que les clients paient le même tarif.",
+   "source": {
+    "nom": "Commission de régulation de l’énergie, « Transition énergétique dans les ZNI »",
+    "url": "https://www.cre.fr/electricite/transition-energetique-dans-les-zni.html"
+   },
+   "voir": [
+    "cspe"
+   ]
+  }
+ ],
+ "pas_des_sigles": [
+  {
+   "mot": "COPY",
+   "raison": "commande du langage SQL citée dans la description d’une source"
+  },
+  {
+   "mot": "ECARTS",
+   "raison": "nom de fichier (ECARTS.md)"
+  },
+  {
+   "mot": "AGGLOMERATION",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "ANNEXE",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "ARTISANAT",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "ASSOCIATION",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "COLLECTIVITE",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "COMMUNAUTE",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "COMMUNE",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "DEPARTEMENT",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "ENSEIGNEMENT",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "FEMMES",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "FINANCES",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "GROUPEMENT",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "HABITAT",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "HOMMES",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "INDUSTRIE",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "INSTITUT",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "JEUNESSE",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "METROPOLE",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "NOM",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "NON",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "PORTAIL",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "PROJET",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "PROVINCE",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "PUBLIC",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "REGIE",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "REGION",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "SOCIETE",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "SUITE",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "TEST",
+   "raison": "mot ordinaire écrit en capitales dans les données publiées (type d’organisme, nom d’usage)"
+  },
+  {
+   "mot": "ARTE",
+   "raison": "nom de chaîne de télévision (ARTE France), écrit tel qu’il est publié"
+  },
+  {
+   "mot": "DCNS",
+   "raison": "ancien nom d’entreprise (aujourd’hui Naval Group), cité comme dénomination publiée"
+  },
+  {
+   "mot": "SAFRAN",
+   "raison": "nom d’entreprise écrit en capitales"
+  },
+  {
+   "mot": "TCRD",
+   "raison": "préfixe d’identifiant de tableau de l’Insee (par exemple « TCRD 052 »)"
+  },
+  {
+   "mot": "TELECOM",
+   "raison": "mot d’un nom d’entreprise (France Telecom) écrit en capitales"
+  },
+  {
+   "mot": "TSA",
+   "raison": "nom de société (ex-Thomson SA), écrit tel qu’il est publié"
+  }
+ ]
+}
