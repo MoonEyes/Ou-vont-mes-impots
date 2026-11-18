@@ -1,7 +1,6 @@
 // Écran 6 : qui reçoit l'argent (associations, opérateurs, France 2030, marchés de l'État).
 // Seules des personnes morales sont nommées ; le reste est agrégé (règle du pipeline).
 import { charger, chargerSiPresent, listeProgrammes, type Noeud } from '../donnees'
-import { cartesRayons } from '../composants/hub'
 import { lien } from '../routeur'
 import { absent, entier, eurLisible, h, source, sur100, surligne } from '../util'
 
@@ -144,8 +143,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 <div class="bascule" role="group" aria-label="Catégorie de bénéficiaires">${ONGLETS.map(
     ([k, l]) => `<a class="bouton" href="${lien('/beneficiaires', { onglet: k, p: k === 'programme' ? p : undefined })}"${k === onglet ? ' aria-current="true"' : ''}>${h(l)}</a>`,
   ).join('')}</div>
-${contenu}
-${cartesRayons('/beneficiaires')}`
+${contenu}`
   brancherVoirPlus(cible)
   cible.querySelector<HTMLSelectElement>('#prog')?.addEventListener('change', (e) => {
     location.hash = lien('/beneficiaires', { onglet: 'programme', p: (e.target as HTMLSelectElement).value })

@@ -50,8 +50,8 @@ export async function rendre(cible: HTMLElement) {
 
   cible.innerHTML = `
 <h1>Méthode et sources</h1>
-<p class="chapeau">Comment les chiffres sont obtenus, ce qui est exclu, ce qui pourrait être compté deux fois, et les limites. Chaque chiffre du site indique sa source et son millésime.</p>
 ${cartesRayons('/methode')}
+<p class="chapeau">Comment les chiffres sont obtenus, ce qui est exclu, ce qui pourrait être compté deux fois, et les limites. Chaque chiffre du site indique sa source et son millésime.</p>
 
 <h2>Ton calcul personnel</h2>
 <ul>
