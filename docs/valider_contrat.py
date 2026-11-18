@@ -289,6 +289,10 @@ FICHIERS = [
     # millésimes : exécution 2025 préparée, vérification des éditions attendues (pipeline/millesimes.py)
     ("millesimes_index.schema.json", "millesimes/index.json", "existant"),
     ("arbre_etat.schema.json", "millesimes/execution2025/*.json", "existant"),
+    # revenus et impôt sur le revenu par commune : IRCOM, Filosofi (pipeline/revenus_communes.py)
+    ("revenus_communes_index.schema.json", "revenus_communes/index.json", "existant"),
+    ("revenus_communes_communes.schema.json", "revenus_communes/communes/*.json", "existant"),
+    ("revenus_communes_tranches.schema.json", "revenus_communes/tranches/*/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

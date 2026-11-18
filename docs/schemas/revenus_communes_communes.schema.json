@@ -1,0 +1,390 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/revenus_communes_communes.schema.json",
+ "title": "site/data/revenus_communes/communes/<dep>.json : impôt sur le revenu par commune (IRCOM, toutes les années) et niveau de vie médian (Filosofi), communes en vigueur d'un département (pipeline/revenus_communes.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "unite",
+  "date_sources",
+  "departement",
+  "annees",
+  "colonnes",
+  "cimr_colonnes",
+  "filosofi_millesimes",
+  "filosofi_colonnes",
+  "regle_null",
+  "etats",
+  "statuts_filosofi",
+  "communes",
+  "controles",
+  "controles_lecture",
+  "liens"
+ ],
+ "$defs": {
+  "ligne": {
+   "type": "array",
+   "prefixItems": [
+    {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    {
+     "type": [
+      "integer",
+      "null"
+     ]
+    }
+   ],
+   "minItems": 5,
+   "maxItems": 5,
+   "description": "[foyers, foyers_imposes, rfr_eur, rfr_imposes_eur, impot_net_eur] ; null = non communiqué par la source (regle_null) ; impot_net_eur peut être négatif"
+  },
+  "filosofi": {
+   "type": "array",
+   "minItems": 3,
+   "maxItems": 3,
+   "prefixItems": [
+    {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    {
+     "enum": [
+      "publie",
+      "secret",
+      "valeur_manquante",
+      "hors_champ",
+      "absente",
+      "perimetre"
+     ]
+    }
+   ],
+   "description": "[mediane_eur, menages, statut] ; menages null en 2023 (non publié à la commune)"
+  },
+  "etat": {
+   "enum": [
+    "absente",
+    "incomplete",
+    "perimetre"
+   ]
+  },
+  "commune": {
+   "type": "object",
+   "required": [
+    "nom",
+    "ircom",
+    "filosofi"
+   ],
+   "additionalProperties": false,
+   "properties": {
+    "nom": {
+     "type": "string",
+     "minLength": 1
+    },
+    "ircom": {
+     "type": "array",
+     "items": {
+      "oneOf": [
+       {
+        "$ref": "#/$defs/ligne"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "description": "aligné sur `annees` ; null = ligne absente, raison dans `etat`"
+    },
+    "etat": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^(19|20)[0-9]{2}$"
+     },
+     "additionalProperties": {
+      "$ref": "#/$defs/etat"
+     }
+    },
+    "perimetre": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^(19|20)[0-9]{2}$"
+     },
+     "additionalProperties": {
+      "type": "object"
+     },
+     "description": "détail d'un `etat` perimetre (code source -> communes actuelles qu'il couvre) ou incomplete (codes_source, codes_attendus)"
+    },
+    "recompose": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^(19|20)[0-9]{2}$"
+     },
+     "additionalProperties": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+       "type": "string",
+       "pattern": "^[0-9AB]{5}$"
+      }
+     },
+     "description": "années où la ligne vient de codes de la source différents du code en vigueur : somme de plusieurs anciennes communes ou arrondissements municipaux, ou ancien code d'une commune qui a changé de code"
+    },
+    "tranches": {
+     "type": "array",
+     "items": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+     },
+     "description": "années dont le détail par tranche est dans tranches/<annee>/<dep>.json"
+    },
+    "cimr": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^(19|20)[0-9]{2}$"
+     },
+     "additionalProperties": {
+      "type": "array",
+      "prefixItems": [
+       {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       {
+        "type": [
+         "integer",
+         "null"
+        ]
+       }
+      ],
+      "minItems": 2,
+      "maxItems": 2
+     },
+     "description": "revenus 2018 : [impot_net_avant_cimr_eur, cimr_eur]"
+    },
+    "filosofi": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/filosofi"
+     },
+     "description": "aligné sur `filosofi_millesimes`"
+    },
+    "filosofi_anciennes": {
+     "type": "object",
+     "additionalProperties": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^[0-9AB]{5}$"
+      },
+      "additionalProperties": {
+       "$ref": "#/$defs/filosofi"
+      }
+     }
+    }
+   }
+  },
+  "controle": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "annee",
+    "departement",
+    "grandeur",
+    "valeurs_non_communiquees",
+    "source",
+    "montant",
+    "autre_source",
+    "autre_montant",
+    "ecart",
+    "ecart_pct"
+   ],
+   "properties": {
+    "annee": {
+     "$ref": "commun.schema.json#/$defs/annee_entier"
+    },
+    "departement": {
+     "type": "string",
+     "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+    },
+    "grandeur": {
+     "enum": [
+      "foyers",
+      "rfr_eur",
+      "impot_net_eur"
+     ]
+    },
+    "valeurs_non_communiquees": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "source": {
+     "const": "somme_des_communes_publiees"
+    },
+    "autre_source": {
+     "const": "total_departemental_publie"
+    },
+    "montant": {
+     "type": "integer"
+    },
+    "autre_montant": {
+     "type": "integer"
+    },
+    "ecart": {
+     "type": "integer"
+    },
+    "ecart_pct": {
+     "type": [
+      "number",
+      "null"
+     ]
+    }
+   }
+  }
+ },
+ "properties": {
+  "unite": {
+   "type": "string"
+  },
+  "date_sources": {
+   "type": "string",
+   "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+  },
+  "departement": {
+   "type": "object",
+   "required": [
+    "code",
+    "nom"
+   ],
+   "properties": {
+    "code": {
+     "type": "string",
+     "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+    },
+    "nom": {
+     "type": "string"
+    }
+   }
+  },
+  "annees": {
+   "type": "array",
+   "minItems": 20,
+   "items": {
+    "$ref": "commun.schema.json#/$defs/annee_entier"
+   }
+  },
+  "colonnes": {
+   "const": [
+    "foyers",
+    "foyers_imposes",
+    "rfr_eur",
+    "rfr_imposes_eur",
+    "impot_net_eur"
+   ]
+  },
+  "cimr_colonnes": {
+   "const": [
+    "impot_net_avant_cimr_eur",
+    "cimr_eur"
+   ]
+  },
+  "filosofi_millesimes": {
+   "type": "array",
+   "items": {
+    "$ref": "commun.schema.json#/$defs/annee_entier"
+   }
+  },
+  "filosofi_colonnes": {
+   "const": [
+    "mediane_eur",
+    "menages",
+    "statut"
+   ]
+  },
+  "regle_null": {
+   "type": "string",
+   "minLength": 50
+  },
+  "etats": {
+   "type": "object",
+   "required": [
+    "absente",
+    "incomplete",
+    "perimetre"
+   ]
+  },
+  "statuts_filosofi": {
+   "type": "object"
+  },
+  "communes": {
+   "type": "object",
+   "minProperties": 1,
+   "propertyNames": {
+    "pattern": "^([0-9]{2}|2A|2B)[0-9]{3}$|^97[1-6][0-9]{2}$"
+   },
+   "additionalProperties": {
+    "$ref": "#/$defs/commune"
+   }
+  },
+  "controles": {
+   "type": "array",
+   "items": {
+    "$ref": "#/$defs/controle"
+   }
+  },
+  "controles_lecture": {
+   "type": "string",
+   "minLength": 20
+  },
+  "liens": {
+   "type": "object",
+   "required": [
+    "geo",
+    "index"
+   ],
+   "properties": {
+    "geo": {
+     "type": "string",
+     "pattern": "^local/geo/.+\\.json$"
+    },
+    "index": {
+     "const": "revenus_communes/index.json"
+    }
+   }
+  }
+ }
+}

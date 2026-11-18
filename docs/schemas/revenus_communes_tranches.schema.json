@@ -1,0 +1,155 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/revenus_communes_tranches.schema.json",
+ "title": "site/data/revenus_communes/tranches/<annee>/<dep>.json : impôt sur le revenu par tranche de revenu fiscal de référence, communes d'un département où la DGFiP publie ce détail (pipeline/revenus_communes.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "unite",
+  "date_sources",
+  "annee",
+  "departement",
+  "tranches",
+  "colonnes",
+  "regle_null",
+  "note",
+  "communes",
+  "liens"
+ ],
+ "properties": {
+  "unite": {
+   "type": "string"
+  },
+  "date_sources": {
+   "type": "string",
+   "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+  },
+  "annee": {
+   "$ref": "commun.schema.json#/$defs/annee_entier"
+  },
+  "departement": {
+   "type": "object",
+   "required": [
+    "code",
+    "nom"
+   ],
+   "properties": {
+    "code": {
+     "type": "string",
+     "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+    },
+    "nom": {
+     "type": "string"
+    }
+   }
+  },
+  "tranches": {
+   "type": "array",
+   "minItems": 6,
+   "maxItems": 12,
+   "items": {
+    "type": "object",
+    "required": [
+     "libelle",
+     "de_eur",
+     "a_eur"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "libelle": {
+      "type": "string",
+      "minLength": 3
+     },
+     "de_eur": {
+      "type": [
+       "integer",
+       "null"
+      ],
+      "minimum": 0
+     },
+     "a_eur": {
+      "type": [
+       "integer",
+       "null"
+      ],
+      "minimum": 0
+     }
+    }
+   },
+   "description": "libellé publié et bornes en euros ; « + de X » : de_eur = X, a_eur = null ; « - de X » : de_eur = null, a_eur = X"
+  },
+  "colonnes": {
+   "oneOf": [
+    {
+     "const": [
+      "foyers",
+      "foyers_imposes",
+      "rfr_eur",
+      "rfr_imposes_eur",
+      "impot_net_eur"
+     ]
+    },
+    {
+     "const": [
+      "foyers",
+      "foyers_imposes",
+      "rfr_eur",
+      "rfr_imposes_eur",
+      "impot_net_eur",
+      "impot_net_avant_cimr_eur",
+      "cimr_eur"
+     ]
+    }
+   ]
+  },
+  "regle_null": {
+   "type": "string",
+   "minLength": 50
+  },
+  "note": {
+   "type": "string"
+  },
+  "communes": {
+   "type": "object",
+   "minProperties": 1,
+   "propertyNames": {
+    "pattern": "^([0-9]{2}|2A|2B)[0-9]{3}$|^97[1-6][0-9]{2}$"
+   },
+   "additionalProperties": {
+    "type": "array",
+    "minItems": 6,
+    "maxItems": 12,
+    "items": {
+     "type": "array",
+     "minItems": 5,
+     "maxItems": 7,
+     "items": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     }
+    }
+   },
+   "description": "une ligne par tranche, dans l'ordre de `tranches`, alignée sur `colonnes`"
+  },
+  "liens": {
+   "type": "object",
+   "required": [
+    "communes"
+   ],
+   "properties": {
+    "communes": {
+     "type": "string",
+     "pattern": "^revenus_communes/communes/.+\\.json$"
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,417 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/revenus_communes_index.schema.json",
+ "title": "site/data/revenus_communes/index.json : années, géographie, définitions, ruptures, couverture Filosofi, contrôles, sources et recherche préalable de l'axe revenus par commune (pipeline/revenus_communes.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "unite",
+  "date_sources",
+  "geographie",
+  "annees",
+  "colonnes",
+  "definitions",
+  "ruptures",
+  "regle_null",
+  "etats",
+  "statuts_filosofi",
+  "filosofi",
+  "departements",
+  "controles",
+  "methode",
+  "limites",
+  "non_repris",
+  "regle",
+  "tailles_octets",
+  "sources",
+  "sources_inaccessibles",
+  "recherche_publique",
+  "liens"
+ ],
+ "properties": {
+  "geographie": {
+   "type": "object",
+   "required": [
+    "cog",
+    "communes",
+    "departements",
+    "jointure"
+   ],
+   "properties": {
+    "cog": {
+     "type": "integer"
+    },
+    "communes": {
+     "type": "integer",
+     "minimum": 30000
+    }
+   }
+  },
+  "annees": {
+   "type": "array",
+   "minItems": 20,
+   "items": {
+    "type": "object",
+    "required": [
+     "annee",
+     "annee_imposition",
+     "ircom",
+     "fichier_source",
+     "url",
+     "geographie_source",
+     "rapprochement",
+     "unite_source",
+     "libelle_foyers_imposes",
+     "notes_source",
+     "tranches",
+     "colonnes_tranches",
+     "marques_source",
+     "lecture",
+     "communes",
+     "totaux_departementaux",
+     "fichiers_tranches",
+     "departements_tranches"
+    ],
+    "properties": {
+     "annee": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+     },
+     "annee_imposition": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+     },
+     "ircom": {
+      "type": "string",
+      "pattern": "^IRCOM [0-9]{4}$"
+     },
+     "url": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "geographie_source": {
+      "type": "integer",
+      "minimum": 2003,
+      "maximum": 2100
+     },
+     "rapprochement": {
+      "type": "object",
+      "required": [
+       "codes_source",
+       "dans_geographie",
+       "communes_de_la_geographie_absentes",
+       "codes_lus_dans_une_autre_geographie",
+       "fenetre_annees",
+       "non_rattaches"
+      ],
+      "properties": {
+       "non_rattaches": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "required": [
+          "code",
+          "nom",
+          "foyers"
+         ],
+         "properties": {
+          "code": {
+           "type": "string"
+          },
+          "nom": {
+           "type": "string"
+          },
+          "foyers": {
+           "type": [
+            "integer",
+            "null"
+           ]
+          }
+         }
+        }
+       }
+      }
+     },
+     "tranches": {
+      "type": "array",
+      "minItems": 6
+     },
+     "colonnes_tranches": {
+      "type": "array",
+      "items": {
+       "enum": [
+        "foyers",
+        "foyers_imposes",
+        "rfr_eur",
+        "rfr_imposes_eur",
+        "impot_net_eur",
+        "impot_net_avant_cimr_eur",
+        "cimr_eur"
+       ]
+      }
+     },
+     "marques_source": {
+      "type": "object",
+      "additionalProperties": {
+       "type": "integer",
+       "minimum": 0
+      }
+     },
+     "communes": {
+      "type": "object",
+      "required": [
+       "communes_publiees"
+      ],
+      "additionalProperties": {
+       "type": "integer",
+       "minimum": 0
+      }
+     },
+     "totaux_departementaux": {
+      "oneOf": [
+       {
+        "type": "null"
+       },
+       {
+        "type": "object",
+        "required": [
+         "departements",
+         "foyers",
+         "rfr_eur",
+         "impot_net_eur"
+        ]
+       }
+      ]
+     },
+     "fichiers_tranches": {
+      "type": "string",
+      "pattern": "^revenus_communes/tranches/[0-9]{4}/<dep>\\.json$"
+     },
+     "departements_tranches": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+      }
+     }
+    }
+   }
+  },
+  "colonnes": {
+   "const": [
+    "foyers",
+    "foyers_imposes",
+    "rfr_eur",
+    "rfr_imposes_eur",
+    "impot_net_eur"
+   ]
+  },
+  "definitions": {
+   "type": "object",
+   "required": [
+    "foyers",
+    "foyers_imposes",
+    "rfr_eur",
+    "rfr_imposes_eur",
+    "impot_net_eur",
+    "mediane_eur",
+    "menages"
+   ],
+   "additionalProperties": {
+    "type": "string"
+   }
+  },
+  "ruptures": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "annee",
+     "grandeur",
+     "type",
+     "constat",
+     "lecture"
+    ],
+    "properties": {
+     "annee": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+     },
+     "grandeur": {
+      "enum": [
+       "foyers",
+       "foyers_imposes",
+       "rfr_eur",
+       "rfr_imposes_eur",
+       "impot_net_eur",
+       "tranches"
+      ]
+     },
+     "type": {
+      "enum": [
+       "libelle",
+       "tranches",
+       "colonnes",
+       "definition"
+      ]
+     },
+     "constat": {
+      "type": "string",
+      "minLength": 10
+     },
+     "lecture": {
+      "type": "string",
+      "minLength": 20
+     },
+     "citations": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "filosofi": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "object",
+    "required": [
+     "annee",
+     "dispositif",
+     "geographie_source",
+     "champ",
+     "fichier_source",
+     "statuts"
+    ],
+    "properties": {
+     "annee": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+     },
+     "dispositif": {
+      "enum": [
+       "Filosofi",
+       "Filosofi 2"
+      ]
+     },
+     "statuts": {
+      "type": "object",
+      "additionalProperties": {
+       "type": "integer",
+       "minimum": 0
+      }
+     }
+    }
+   }
+  },
+  "departements": {
+   "type": "array",
+   "minItems": 96,
+   "items": {
+    "type": "object",
+    "required": [
+     "code",
+     "nom",
+     "fichier",
+     "communes"
+    ],
+    "properties": {
+     "code": {
+      "type": "string",
+      "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+     },
+     "fichier": {
+      "type": "string",
+      "pattern": "^revenus_communes/communes/.+\\.json$"
+     },
+     "communes": {
+      "type": "integer",
+      "minimum": 1
+     }
+    }
+   }
+  },
+  "controles": {
+   "type": "object",
+   "required": [
+    "nombre",
+    "egaux",
+    "avec_valeurs_non_communiquees",
+    "lecture"
+   ]
+  },
+  "methode": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "limites": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "non_repris": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "objet",
+     "motif"
+    ]
+   }
+  },
+  "sources": {
+   "type": "object",
+   "required": [
+    "ircom",
+    "filosofi_2021",
+    "filosofi_2023",
+    "passage_cog",
+    "local"
+   ]
+  },
+  "sources_inaccessibles": {
+   "type": "array"
+  },
+  "recherche_publique": {
+   "type": "object",
+   "required": [
+    "date",
+    "trouvailles"
+   ],
+   "properties": {
+    "trouvailles": {
+     "type": "array",
+     "minItems": 3,
+     "items": {
+      "type": "object",
+      "required": [
+       "nom",
+       "url",
+       "licence",
+       "derniere_modification",
+       "verdict"
+      ],
+      "properties": {
+       "verdict": {
+        "enum": [
+         "réutilisable tel quel",
+         "à adapter",
+         "inspiration seulement"
+        ]
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}
