@@ -27,6 +27,9 @@ function cheminSur(chemin: string): string {
   return racineSite + 'data/' + chemin
 }
 
+/** Adresse d'un fichier de données, pour un lien de téléchargement (même règle que charger). */
+export const urlDonnee = (chemin: string) => cheminSur(chemin)
+
 export function charger<T = any>(chemin: string): Promise<T> {
   const deja = cache.get(chemin)
   if (deja) return deja as Promise<T>
@@ -100,6 +103,7 @@ export const VUES_ARBRE: VueArbre[] = [
   { cle: 'execution2024', dossier: 'arbre', libelle: 'Dépensé en 2024 (par politique)', millesime: 'Exécution 2024', periode: 'dépenses réelles 2024' },
   { cle: 'lfi2025', dossier: 'arbre_lfi2025', libelle: 'Budget voté 2025 (par politique)', millesime: 'LFI 2025', periode: 'budget voté 2025' },
   { cle: 'nature2025', dossier: 'arbre_plf2025_nature', libelle: 'Budget proposé 2025 (par type de dépense)', millesime: 'PLF 2025', periode: 'budget proposé 2025' },
+  { cle: 'execution2025', dossier: 'millesimes/execution2025', libelle: 'Dépensé en 2025 (par politique)', millesime: 'Exécution 2025', periode: 'dépenses réelles 2025' },
 ]
 
 export const vueArbre = (cle: string | null) => VUES_ARBRE.find((v) => v.cle === cle) ?? VUES_ARBRE[0]

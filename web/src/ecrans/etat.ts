@@ -2,7 +2,7 @@
 import { billet, FAMILLES_TOURNANTES, type Part, partsAdministrations } from '../composants/billet'
 import { eurosNonPublies } from '../composants/chiffres-site'
 import { blocTracabilite } from '../composants/tracabilite'
-import { charger, chargerSiPresent, deplier, type Noeud, VUES_ARBRE, vueArbre } from '../donnees'
+import { charger, chargerSiPresent, deplier, type Noeud, urlDonnee, VUES_ARBRE, vueArbre } from '../donnees'
 import { LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
 import { ORDRE_ADMIN, parAdministration, sur100Entiers } from '../calcul/repartition'
 import { session } from '../etat'
@@ -16,11 +16,61 @@ interface Deficit {
   avertissement: string
 }
 
+/** Totaux publiés par pipeline/millesimes.py (site/data/millesimes/index.json, contrat 2.48), en euros. */
+export interface Millesimes {
+  comparaison?: {
+    totaux?: { execution_2024_affichee_eur: number; execution_2024_plrg_eur: number; execution_2025_plrg_eur: number; ecart_methode_2024_eur: number }
+  }
+}
+
+/** Vue de l'exécution 2025 (dépenses constatées, grand poste > mission > programme). */
+export const VUE_2025 = 'execution2025'
+export const FICHIER_MILLESIMES = 'millesimes/index.json'
+
+const nf2 = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+/** Milliards d'euros à deux décimales (502,96 Md€) : l'écart entre les deux méthodes se lit au centième. */
+export const md2 = (euros: number) => `${nf2.format(euros / 1e9)} Md€`
+
+/** Lien vers un fichier de données : absolu sur le site publié, « ./data/… » au prérendu (réécrit vers la racine) et en développement. */
+export function lienDonnee(chemin: string): string {
+  const u = urlDonnee(chemin)
+  return u.startsWith('/') ? u : `./${u}`
+}
+
+/** Phrase de la vue 2025 : où elle s'arrête et pourquoi. */
+export const PHRASE_NIVEAU_2025 =
+  'Cette vue s’arrête au niveau du programme, car la loi relative aux résultats de la gestion publie les dépenses constatées par programme et non par action ; le niveau de l’action viendra du budget vert du projet de loi de finances 2027, quand il sera publié en données ouvertes.'
+
+/**
+ * Écart de méthode entre l'exécution 2024 affichée (budget vert retraité) et les lois relatives aux résultats de la gestion,
+ * publié tel quel : aucun des deux montants ne corrige l'autre. Vue 2024 : chiffres 2024 seulement.
+ */
+export function blocMethode(cle: string, idx: Millesimes | null): string {
+  const t = idx?.comparaison?.totaux
+  if (!t || (cle !== 'execution2024' && cle !== VUE_2025)) return ''
+  const affichee = md2(t.execution_2024_affichee_eur)
+  const constatee2024 = md2(t.execution_2024_plrg_eur)
+  const phrase =
+    cle === VUE_2025
+      ? `Cette vue reprend les dépenses constatées publiées avec la loi relative aux résultats de la gestion 2025 (${md2(t.execution_2025_plrg_eur)}) ; la même méthode donne ${constatee2024} pour 2024, alors que la vue « Dépensé en 2024 » affiche ${affichee}, car elle reprend le budget vert du projet de loi de finances 2026, retraité au format de ce projet par la direction du budget : l’écart de ${md2(t.ecart_methode_2024_eur)} tient à la méthode, et les deux montants sont publiés sans que l’un corrige l’autre.`
+      : `Cette vue affiche ${affichee} pour 2024, car elle reprend le budget vert du projet de loi de finances 2026, retraité au format de ce projet par la direction du budget ; les dépenses constatées publiées avec la loi relative aux résultats de la gestion 2024 donnent ${constatee2024} pour la même année : l’écart de ${md2(t.ecart_methode_2024_eur)} tient à la méthode, et les deux montants sont publiés sans que l’un corrige l’autre.`
+  return `<section class="carte" aria-labelledby="titre-methode">
+  <h2 id="titre-methode">Deux méthodes pour les dépenses réelles</h2>
+  <p>${h(phrase)}</p>
+  <p><a href="${h(lienDonnee(FICHIER_MILLESIMES))}">L’écart de méthode grand poste par grand poste (fichier de données, rubrique « comparaison »)</a></p>
+</section>`
+}
+
 export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const vue = vueArbre(params.get('m'))
   const vues = VUES_ARBRE.filter((v) => v.cle !== 'nature2025')
   const v = vues.includes(vue) ? vue : vues[0]
-  const [racine, deficit] = await Promise.all([charger<Noeud>(`${v.dossier}/racine.json`), chargerSiPresent<Deficit>('deficit.json')])
+  const en2025 = v.cle === VUE_2025
+  const [racine, deficit, millesimes] = await Promise.all([
+    charger<Noeud>(`${v.dossier}/racine.json`),
+    chargerSiPresent<Deficit>('deficit.json'),
+    v.cle === 'execution2024' || en2025 ? chargerSiPresent<Millesimes>(FICHIER_MILLESIMES) : Promise.resolve(null),
+  ])
   const total = racine.md
   const postes = racine.enfants ?? []
   const emprunt = deficit?.etat.annees[racine.millesime ?? v.millesime]
@@ -69,6 +119,10 @@ ${billet(
 <ul class="liste-niveau">${missions.map((e) => `<li><a href="${lien('/explorer/etat/detail', { m: v.cle, id: e.id })}">${h(libelle(e.nom))}</a> : ${h(sur100((e.md / total) * 100))} sur 100 €, ${h(md(e.md))}</li>`).join('')}</ul>
 </section>`
       : `<p class="aide">Chaque part se clique pour descendre d’un niveau : l’État, puis un grand poste, puis une mission. La liste « Les grands postes » plus bas donne les mêmes montants en texte.</p>`
+  // Vue 2025 : le détail du budget suit le millésime (paramètre m) ; les pages d'un programme n'existent pas encore pour 2025.
+  const noteProgrammes = en2025
+    ? `<p class="aide" id="programmes-2025">Le détail du budget, mission par mission puis programme par programme, reste sur 2025. Les pages consacrées à un programme (nature de la dépense, bénéficiaires, réalisations, votes) ne sont pas encore construites pour 2025 : elles portent sur les années publiées par leurs sources, indiquées sur chaque page.</p>`
+    : ''
   const perso = Object.keys(s100Admin).length
     ? `<ul class="ruban" aria-label="Rappel : sur 100 € que tu verses"><li class="r-tete">Tes 100 € versés</li>${partsAdministrations(s100Admin, ORDRE_ADMIN)
         .map((p) => `<li class="${p.famille === 'nonpub' ? 'r-nonpub' : `f-${p.famille}`}${p.famille === 'etat' ? ' r-actif' : ''}" data-f="${p.valeur}"><span>${p.famille === 'etat' ? `État : ${h(p.texte)}` : h(p.texte)}</span><span class="visuellement-cache"> ${h(p.nom)}</span></li>`)
@@ -92,6 +146,7 @@ ${billet(
     <h1>Le budget de l’État, sur 100 € dépensés</h1>
     <p class="chapeau">Ici, ce n’est plus ton argent : c’est toute la dépense de l’État, quelle que soit la personne qui la paie. ${ir > 0 ? 'Ta part est en bas de page.' : `Pour voir ta part, <a href="${lien('/')}">calcule-la depuis l’accueil</a>.`}</p>
     <p class="chapeau">Le budget de l’État (${h(md(total))}, ${h(periode)}) découpé en grands postes, ramené à 100 €. Les remboursements et dégrèvements d’impôts ne sont pas comptés : c’est de l’argent rendu, pas dépensé.</p>
+    ${en2025 ? `<p class="chapeau" id="niveau-2025">${h(PHRASE_NIVEAU_2025)}</p>` : ''}
   </div>
   <div class="bascule" role="group" aria-label="Millésime">
     ${vues.map((x) => `<a class="bouton" href="${lien('/explorer/etat', { m: x.cle })}"${x === v ? ' aria-current="true"' : ''}>${h(x.libelle)}</a>`).join('')}
@@ -100,6 +155,8 @@ ${billet(
 ${perso}
 ${billet(partsPostes, { etiquette: `Billet de 100 € dépensés par l’État en grands postes (${periode})` })}
 ${niveauBas}
+${noteProgrammes}
+${blocMethode(v.cle, millesimes)}
 <div class="colonnes c-8-4">
   <div>
     <h2>Les grands postes</h2>
