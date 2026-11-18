@@ -5,6 +5,7 @@
 import { versChemin } from './chemins'
 import { picto } from './composants/pictos'
 import { marquerSigles } from './composants/sigles'
+import { brancherExports } from './composants/exporter'
 import { annoncer, appliquerLargeurs, h } from './util'
 
 /**
@@ -225,6 +226,7 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
     zone.insertAdjacentHTML('beforeend', voirAussi(routes, route))
     appliquerLargeurs(zone)
     cible.replaceChildren(zone)
+    brancherExports(cible)
   } catch (e) {
     if (moi !== jeton) return
     console.error(e)

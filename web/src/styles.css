@@ -3028,3 +3028,16 @@ fieldset.saisie-groupe {
 .suivre-etape h2:focus-visible {
   outline: 3px solid var(--contour);
   outline-offset: 4px;
+/* exporter */
+/* Actions discrètes sous chaque tableau : télécharger en CSV, citer. Boutons existants, en petit (cible 44 px gardée). */
+.exporter {
+  margin: -0.5rem 0 1rem;
+.exporter-boutons {
+.exporter-boutons button {
+  padding: 0.25rem 1rem;
+.exporter-citation {
+  border-radius: var(--rayon);
+  padding: 0.75rem 1rem;
+.exporter-citation[hidden] {
+.exporter-texte {
+  user-select: all;
