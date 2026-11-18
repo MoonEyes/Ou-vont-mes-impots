@@ -4674,6 +4674,56 @@
    "licence": "Licence Ouverte 1.0",
    "personnes_physiques": true,
    "module": "pipeline/sport.py"
+  },
+  {
+   "id": "emploi_unedic_financement",
+   "domaine": "emploi",
+   "type": "url",
+   "format": "csv",
+   "url": "https://data.unedic.org/api/explore/v2.1/catalog/datasets/financement-de-l-assurance-chomage/exports/csv?use_labels=true",
+   "titre": "Unédic, « Dépenses et recettes de l'Assurance chômage » : recettes, dépenses, soldes et dette de l'Assurance chômage par année (M€) (pipeline/emploi.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/emploi.py"
+  },
+  {
+   "id": "emploi_unedic_indicateurs",
+   "domaine": "emploi",
+   "type": "url",
+   "format": "csv",
+   "url": "https://data.unedic.org/api/explore/v2.1/catalog/datasets/indicateurs-de-suivi-de-lassurance-chomage-total-france/exports/csv?use_labels=true",
+   "titre": "Unédic, « Indicateurs de suivi de l'Assurance chômage - total France » : allocataires indemnisés et dépense d'allocation, par mois (pipeline/emploi.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/emploi.py"
+  },
+  {
+   "id": "emploi_unedic_activite_partielle",
+   "domaine": "emploi",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://data.unedic.org/api/explore/v2.1/catalog/datasets/activite-partielle-etat-des-lieux-et-perspectives-fevrier-2022/attachments/activite_partielle_etat_des_lieux_et_perspectives_fevrier_2022_graphiques_et_tableaux_xlsx",
+   "titre": "Unédic, « Activité partielle : état des lieux et perspectives » (février 2022), classeur des graphiques et tableaux : tableau 5 (dépenses de l'État et de l'Unédic depuis 2007), tableau 6 (consommation par mois de recours, d'après les demandes d'indemnisation de l'ASP), graphique 5 et tableau 2 (heures par secteur) (pipeline/emploi.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/emploi.py"
+  },
+  {
+   "id": "emploi_urssaf_chomage_partiel",
+   "domaine": "emploi",
+   "type": "url",
+   "format": "csv",
+   "url": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/assiette-chomage-partiel-trimestrielle-du-secteur-prive-par-na38/exports/csv?use_labels=false&delimiter=%3B",
+   "titre": "Urssaf, « Masse salariale et assiette chômage partiel trimestrielles du secteur privé, France entière x secteur NA38 » : indemnités d'activité partielle déclarées par les employeurs (pipeline/emploi.py)",
+   "licence": "ODbL",
+   "module": "pipeline/emploi.py"
+  },
+  {
+   "id": "emploi_dares_aej",
+   "domaine": "emploi",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://static.data.gouv.fr/resources/donnees-sur-le-recours-a-laide-a-lembauche-des-jeunes/20220317-153415/aej-open-data-17-03.xlsx",
+   "titre": "Dares, « Données sur le recours à l'aide à l'embauche des jeunes » (NOE, ASP, DGEFP, au 5 mars 2022) : aides validées par semaine, secteur (groupe de la NAF) et département de l'employeur (pipeline/emploi.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/emploi.py"
   }
  ],
  "non_collectables": [
@@ -4761,6 +4811,10 @@
   {
    "source": "Agence de services et de paiement (asp-public.fr), rapports et chiffres de paiement",
    "motif": "page de controle anti-robot (JavaScript et cookies exiges), constate le 18/11/2026 : non contourne (pipeline/agriculture.py)"
+  },
+  {
+   "source": "Dares, series mensuelles de l'activite partielle (dares.travail-emploi.gouv.fr)",
+   "motif": "page de verification anti-robot constatee le 18/11/2026 : non collecte, non contourne (pipeline/emploi.py)"
   }
  ]
 }

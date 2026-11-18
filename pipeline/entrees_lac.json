@@ -1929,6 +1929,13 @@
    "hors_catalogue": [],
    "octets_sources": 16968628,
    "note": "sources du domaine « culture_medias » de collecte/catalogue.json, collectées par `python pipeline/culture_medias.py collecter` ; chemins relevés le 2026-11-18 d'après data/lake/manifest.json (relevé manuel, pas sous strace) ; le cache des prénoms (pipeline/local.py) est lu s'il existe"
+  },
+  "emploi": {
+   "sources": {},
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "entrées collectées par le module lui-même (pipeline/emploi.py collecter, data/lake/emploi/) ; non relevées sous strace"
   }
  },
  "urls": {

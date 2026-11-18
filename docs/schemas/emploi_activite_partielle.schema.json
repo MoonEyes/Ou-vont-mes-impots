@@ -1,0 +1,596 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/emploi_activite_partielle.schema.json",
+  "title": "site/data/emploi/activite_partielle.json : dépenses, heures et indemnités d'activité partielle (pipeline/emploi.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "definitions",
+    "depenses_annuelles",
+    "consommation_mensuelle",
+    "heures_par_secteur_2020_2021",
+    "indemnites_par_secteur",
+    "indemnites_et_allocations",
+    "credits_etat_programme_103",
+    "regle",
+    "liens"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "depenses_annuelles": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^(19|20)[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "etude_2022_etat_eur",
+          "etude_2022_unedic_eur",
+          "etude_2022_total_eur",
+          "etude_2022_provisoire",
+          "comptes_unedic_eur"
+        ],
+        "properties": {
+          "etude_2022_etat_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "etude_2022_unedic_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "etude_2022_total_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "etude_2022_provisoire": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "comptes_unedic_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "consommation_mensuelle": {
+      "type": "object",
+      "required": [
+        "champ",
+        "mois",
+        "annees",
+        "methode"
+      ],
+      "properties": {
+        "champ": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mois": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "mois",
+              "provisoire",
+              "etablissements",
+              "salaries",
+              "heures",
+              "montant_etat_unedic_eur",
+              "montant_unedic_eur",
+              "montant_horaire_brut_moyen_eur"
+            ],
+            "properties": {
+              "mois": {
+                "type": "string",
+                "pattern": "^20[0-9]{2}-[01][0-9]$"
+              },
+              "provisoire": {
+                "type": "boolean"
+              },
+              "etablissements": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "salaries": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "heures": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "montant_etat_unedic_eur": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "montant_unedic_eur": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "montant_horaire_brut_moyen_eur": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "annees": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "pattern": "^(19|20)[0-9]{2}$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "mois",
+              "heures",
+              "montant_etat_unedic_eur",
+              "montant_unedic_eur",
+              "contient_provisoire"
+            ],
+            "properties": {
+              "mois": {
+                "type": "integer"
+              },
+              "heures": {
+                "type": "integer"
+              },
+              "montant_etat_unedic_eur": {
+                "type": "integer"
+              },
+              "montant_unedic_eur": {
+                "type": "integer"
+              },
+              "contient_provisoire": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "methode": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "heures_par_secteur_2020_2021": {
+      "type": "object",
+      "required": [
+        "champ",
+        "secteurs",
+        "note"
+      ],
+      "properties": {
+        "champ": {
+          "type": "string",
+          "minLength": 1
+        },
+        "secteurs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "libelle",
+              "part_heures_pct",
+              "part_salaries_prive_fin_2019_pct",
+              "heures_par_salarie_mars2020_dec2021",
+              "heures_par_semaine_mars_mai_2020",
+              "heures_par_semaine_juin2020_dec2021"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "part_heures_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "part_salaries_prive_fin_2019_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "heures_par_salarie_mars2020_dec2021": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "heures_par_semaine_mars_mai_2020": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "heures_par_semaine_juin2020_dec2021": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "indemnites_par_secteur": {
+      "type": "object",
+      "required": [
+        "champ",
+        "annees_completes",
+        "totaux",
+        "secteurs",
+        "methode"
+      ],
+      "properties": {
+        "champ": {
+          "type": "string",
+          "minLength": 1
+        },
+        "annees_completes": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "totaux": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "pattern": "^(19|20)[0-9]{2}$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "trimestres",
+              "annee_complete",
+              "indemnites_eur"
+            ],
+            "properties": {
+              "trimestres": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "annee_complete": {
+                "type": "boolean"
+              },
+              "indemnites_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "secteurs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "libelle",
+              "na17",
+              "na17_libelle",
+              "grand_secteur",
+              "annees"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "na17": {
+                "type": "string",
+                "minLength": 1
+              },
+              "na17_libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "grand_secteur": {
+                "type": "string",
+                "minLength": 1
+              },
+              "annees": {
+                "type": "object",
+                "minProperties": 1,
+                "propertyNames": {
+                  "pattern": "^(19|20)[0-9]{2}$"
+                },
+                "additionalProperties": {
+                  "type": "object",
+                  "required": [
+                    "indemnites_eur",
+                    "masse_salariale_eur",
+                    "part_indemnites_pct"
+                  ],
+                  "properties": {
+                    "indemnites_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "minimum": 0
+                    },
+                    "masse_salariale_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "minimum": 0
+                    },
+                    "part_indemnites_pct": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "methode": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "indemnites_et_allocations": {
+      "type": "object",
+      "required": [
+        "lecture",
+        "annees"
+      ],
+      "properties": {
+        "lecture": {
+          "type": "string",
+          "minLength": 1
+        },
+        "annees": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "pattern": "^(19|20)[0-9]{2}$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "indemnites_urssaf_eur",
+              "allocations_etat_unedic_etude_2022_eur",
+              "etude_2022_provisoire"
+            ],
+            "properties": {
+              "indemnites_urssaf_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "allocations_etat_unedic_etude_2022_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "etude_2022_provisoire": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "credits_etat_programme_103": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "action",
+          "libelle",
+          "execution_2024_eur",
+          "execution_2024_lien",
+          "plf_2025_cp_eur",
+          "plf_2025_sous_actions"
+        ],
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "action": {
+            "type": "string",
+            "pattern": "^[0-9]{2}$"
+          },
+          "libelle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "execution_2024_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "execution_2024_lien": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "fichier",
+              "id"
+            ],
+            "properties": {
+              "fichier": {
+                "type": "string",
+                "minLength": 1
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          },
+          "plf_2025_cp_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "plf_2025_sous_actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "libelle",
+                "cp_eur"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "libelle": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "cp_eur": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 1
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vue",
+          "fichier",
+          "id",
+          "lecture"
+        ],
+        "properties": {
+          "vue": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fichier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 1
+          },
+          "millesime": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

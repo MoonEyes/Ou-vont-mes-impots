@@ -177,6 +177,8 @@ ETAPES: tuple[Etape, ...] = (
     axe("culture_medias", "Culture et médias (budget, audiovisuel public, presse, CNC)", ("base",), duree_s=30),
     axe("sport", "Sport : programmes 219 et 350, Agence nationale du sport, CNDS, coût public des Jeux (Cour des comptes)",
         ("base", "realisations", "operateurs", "associations", "local"), duree_s=60),
+    axe("emploi", "Emploi : Unédic, France Travail, activité partielle", ("base", "operateurs", "secu", "prestations"),
+        duree_s=30),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
