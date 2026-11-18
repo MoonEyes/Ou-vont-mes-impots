@@ -54,7 +54,8 @@
         "budget_etat",
         "cabinets",
         "conseils",
-        "indemnites_elus"
+        "indemnites_elus",
+        "remunerations"
       ],
       "properties": {
         "effectifs": {
@@ -175,6 +176,112 @@
               "minimum": 0
             }
           }
+        },
+        "remunerations": {
+          "type": "object",
+          "required": [
+            "annee_salaires",
+            "net_moyen_eur",
+            "brut_moyen_eur",
+            "sur_100_eur_depense_publique"
+          ],
+          "properties": {
+            "annee_salaires": {
+              "$ref": "commun.schema.json#/$defs/annee_entier"
+            },
+            "net_moyen_eur": {
+              "type": "object",
+              "required": [
+                "fpe",
+                "fpt",
+                "fph",
+                "fonction_publique"
+              ],
+              "properties": {
+                "fpe": {
+                  "type": "number"
+                },
+                "fpt": {
+                  "type": "number"
+                },
+                "fph": {
+                  "type": "number"
+                },
+                "fonction_publique": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            },
+            "brut_moyen_eur": {
+              "type": "object",
+              "required": [
+                "fpe",
+                "fpt",
+                "fph",
+                "fonction_publique"
+              ],
+              "properties": {
+                "fpe": {
+                  "type": "number"
+                },
+                "fpt": {
+                  "type": "number"
+                },
+                "fph": {
+                  "type": "number"
+                },
+                "fonction_publique": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            },
+            "sur_100_eur_depense_publique": {
+              "type": "object",
+              "required": [
+                "annee",
+                "valeurs"
+              ],
+              "properties": {
+                "annee": {
+                  "$ref": "commun.schema.json#/$defs/annee_entier"
+                },
+                "valeurs": {
+                  "type": "array",
+                  "minItems": 2,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "producteur",
+                      "valeur_eur",
+                      "statut"
+                    ],
+                    "properties": {
+                      "producteur": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "valeur_eur": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 100
+                      },
+                      "statut": {
+                        "enum": [
+                          "publié",
+                          "calculé"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
         }
       }
     },

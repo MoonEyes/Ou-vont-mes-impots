@@ -11,14 +11,18 @@ contourné) :
   fp_jaune_cabinets_plf<AAAA>.pdf    jaune « Personnels affectés dans les cabinets ministériels » (PLF 2025, 2026)
   fp_jaune_conseils_plf<AAAA>.pdf    jaune « Recours aux conseils extérieurs » (PLF 2024, 2025, 2026)
   fp_dgcl_indemnites_elus.pdf        DGCL, plafonds des indemnités de fonction des élus locaux
+  fp_insee_ip210<0|1|2>.xlsx         Insee Première n° 2100 à 2102, salaires 2024 de l'État, territoriale, hospitalière
+  fp_dgafp_ra2025_remu_niveaux.zip   DGAFP, rapport annuel 2025, rémunérations 2023 et dépenses de personnel des APU
+  fp_eurostat_d1_apu.json            Eurostat gov_10a_exp, rémunération des salariés (D1) et dépenses totales des APU
   data/lake/etat/etat_etpt_lfi_2023.parquet   ministère de chaque programme (même source que site/data/effectifs)
   site/data/effectifs/<programme>.json, site/data/arbre/racine.json   ETPT, titre 2 et nœud de l'arbre (lus, jamais
                                      recalculés : un seul chiffre par programme dans tout le site)
 Sorties (site/data/fonction_publique/, contrat docs/contrat_interface.md, schémas docs/schemas/fonction_publique_*) :
   index.json, effectifs_series.json, emploi.json, territoires.json, ministeres.json, cabinets.json, conseils.json,
-  indemnites_elus.json
+  indemnites_elus.json, remunerations.json
 
 Commande : python pipeline/fonction_publique.py produire [--sortie DOSSIER]   (sans réseau)
+           python pipeline/fonction_publique.py remunerations [--sortie DOSSIER]   (remunerations.json seul)
 
 Confidentialité : aucune personne physique. Cabinets : agrégats par pôle ministériel (les lignes par cabinet, qui
 désignent un ministre par sa fonction, ne sont pas reprises). Prestataires de conseil : nommés seulement si la catégorie
@@ -81,6 +85,26 @@ SOURCES = {
              "0723-1-2.pdf",
              "DGCL, « Indemnités de fonction brutes mensuelles des élus locaux » (plafonds légaux), "
              "collectivites-locales.gouv.fr"),
+    "salaires_fpe": ("fp_insee_ip2100.xlsx", "https://www.insee.fr/fr/statistiques/fichier/8986474/ip2100.xlsx",
+                     "Insee Première n° 2100, « Les salaires dans la fonction publique de l'État en 2024 », données "
+                     "des figures (Siasp)"),
+    "salaires_fpt": ("fp_insee_ip2101.xlsx", "https://www.insee.fr/fr/statistiques/fichier/8984823/IP2101.xlsx",
+                     "Insee Première n° 2101, « Les salaires dans la fonction publique territoriale en 2024 », "
+                     "données des figures (Siasp)"),
+    "salaires_fph": ("fp_insee_ip2102.xlsx", "https://www.insee.fr/fr/statistiques/fichier/8986438/ip2102.xlsx",
+                     "Insee Première n° 2102, « Les salaires dans la fonction publique hospitalière en 2024 », "
+                     "données des figures (Siasp)"),
+    "dgafp_remu": ("fp_dgafp_ra2025_remu_niveaux.zip",
+                   "https://www.fonction-publique.gouv.fr/files/files/publications/vue-rapport-annuel/"
+                   "ra_2025-remu_niveaux.zip",
+                   "DGAFP, rapport annuel sur l'état de la fonction publique, édition 2025, vue « Les rémunérations "
+                   "dans la fonction publique en 2023 », classeurs des figures et des dépenses de personnel"),
+    "eurostat_d1": ("fp_eurostat_d1_apu.json",
+                    "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=FR&unit="
+                    "MIO_EUR&unit=PC_GDP&cofog99=TOTAL&na_item=D1&na_item=TE&sector=S13&sector=S1311&sector=S1313"
+                    "&sector=S1314&sinceTimePeriod=1995&lang=fr",
+                    "Eurostat, gov_10a_exp, « Dépenses des administrations publiques par fonction (CFAP) » : "
+                    "rémunération des salariés (D1) et total des dépenses (TE), France"),
 }
 SRC_ETPT = ("data.economie.gouv.fr/etpt-par-ministere-mission-programme-pour-le-bg-et-les-ba-lfi-2023 (ministère de "
             "chaque programme)")
@@ -255,7 +279,7 @@ def est_valeur(c) -> bool:
     return v is not None or m in MENTIONS
 
 
-def lire_tableau(lignes: list[list]) -> dict:
+def lire_tableau(lignes: list[list], decimales: int = 1) -> dict:
     """Tableau générique d'une feuille Insee : titre, unité, colonnes (en-têtes fusionnés), rubriques, lignes, notes."""
     titre = propre(lignes[0][0]) if lignes and lignes[0] else ""
     fin, notes = pied_de_tableau(lignes)
@@ -304,7 +328,7 @@ def lire_tableau(lignes: list[list]) -> dict:
         vals, absents = [], {}
         for j in range(1, largeur):
             v, mention = nombre(l[j] if j < len(l) else None)
-            vals.append(arrondi(v, 1))
+            vals.append(arrondi(v, decimales))
             if v is None and mention in MENTIONS:
                 absents[str(j - 1)] = mention
         ligne = {"rubrique": rubrique, "libelle": sans_appel_de_note(l[0]), "valeurs": vals}
@@ -1030,6 +1054,517 @@ def rapprocher(ministere_de: dict[str, str], effectifs: dict[str, dict], arbre: 
                 for an, bloc in sorted(conseils_min.items())}}
 
 
+# --- Rémunérations : salaires moyens (Insee, DGAFP) et rémunération des salariés des administrations publiques ----------
+
+VERSANTS_SALAIRES = [("fpe", "salaires_fpe", "Fonction publique de l'État"),
+                     ("fpt", "salaires_fpt", "Fonction publique territoriale"),
+                     ("fph", "salaires_fph", "Fonction publique hospitalière")]
+POINTS = re.compile(r"^(-?\d+(?:[.,]\d+)?)\s*pts?$")
+CLES_DECILES = {"1erdeciled1": "d1", "2edecile": "d2", "3edecile": "d3", "4edecile": "d4", "mediane": "d5",
+                "6edecile": "d6", "7edecile": "d7", "8edecile": "d8", "9edeciled9": "d9",
+                "rapportinterdeciled9d1": "rapport_d9_d1", "moyenne": "moyenne"}
+
+
+def sans_points(lignes: list[list]) -> list[list]:
+    """« 0,03 pt » (évolution d'un rapport interdécile, en points) -> 0.03 ; l'unité est rappelée dans `notes`."""
+    out = []
+    for l in lignes:
+        r = []
+        for c in l:
+            m = POINTS.match(propre(c)) if isinstance(c, str) else None
+            r.append(float(m.group(1).replace(",", ".")) if m else c)
+        out.append(r)
+    return out
+
+
+def tableau_salaires(cle: str, nom: str) -> dict:
+    return lire_tableau(sans_points(feuille(chemin(cle), nom)), decimales=2)
+
+
+def colonne(t: dict, *mots: str) -> int:
+    """Indice de la colonne dont l'en-tête contient tous les mots (sans accent ni casse)."""
+    cands = [j for j, c in enumerate(t["colonnes"]) if all(norm(m) in norm(c) for m in mots)]
+    if len(cands) != 1:
+        raise SystemExit(f"« {t['titre']} » : colonne {mots} introuvable ou ambiguë ({cands})")
+    return cands[0]
+
+
+def ligne_de(t: dict, libelle: str, rubrique: str | None = None) -> dict:
+    cands = [l for l in t["lignes"] if norm(l["libelle"]) == norm(libelle)
+             and (rubrique is None or norm(l["rubrique"] or "") == norm(rubrique))]
+    if not cands:
+        raise SystemExit(f"« {t['titre']} » : ligne « {libelle} » introuvable")
+    return cands[0]
+
+
+def deciles(t: dict, j_montant: int, j_evol: int | None) -> dict:
+    out = {}
+    for l in t["lignes"]:
+        k = CLES_DECILES.get(norm(l["libelle"]))
+        if k:
+            out[k] = {"valeur": l["valeurs"][j_montant],
+                      "evolution": l["valeurs"][j_evol] if j_evol is not None else None}
+    manquants = [k for k in CLES_DECILES.values() if k not in out]
+    if manquants:
+        raise SystemExit(f"« {t['titre']} » : déciles absents {manquants}")
+    return out
+
+
+def lire_salaires_versant(cle: str) -> dict:
+    """Insee Première sur les salaires d'un versant : moyennes brutes et nettes en EQTP (figure 1), série en euros
+    constants (figure 2), catégories A, B, C des fonctionnaires (figure 4, tableaux complémentaires 1 et 5), déciles
+    (figure 5). Contrôles bloquants : net moyen identique entre figure 4 et tableau complémentaire 5 ; moyenne des
+    déciles égale au net moyen de la catégorie."""
+    som = feuille(chemin(cle), "Sommaire")
+    titre = propre(som[0][0]) if som and som[0] else ""
+    m = re.search(r"en (20\d\d)", titre)
+    if not m:
+        raise SystemExit(f"{cle} : année introuvable dans « {titre} »")
+    annee = int(m.group(1))
+    f1, f2, f4, f5 = (tableau_salaires(cle, f"Figure {k}") for k in (1, 2, 4, 5))
+    noms = feuilles(chemin(cle))
+    tc1 = tableau_salaires(cle, next(n for n in noms if re.match(r"^(Tableau|Figure) complémentaire 1$", n)))
+    tc5 = tableau_salaires(cle, next(n for n in noms if re.match(r"^(Tableau|Figure) complémentaire 5$", n)))
+    jp = colonne(f1, "structure")
+    jb, jbc, jbk = (colonne(f1, "brut", "montant"), colonne(f1, "brut", "courants"), colonne(f1, "brut", "constants"))
+    jn, jnc, jnk = (colonne(f1, "net", "montant"), colonne(f1, "net", "courants"), colonne(f1, "net", "constants"))
+
+    def moyennes(l):
+        v = l["valeurs"]
+        return {"rubrique": l["rubrique"], "libelle": re.sub(r",? dont\s*:?$", "", l["libelle"]).strip(),
+                "part_eqtp_pct": v[jp], "brut_eur": v[jb], "brut_evolution_courants_pct": v[jbc],
+                "brut_evolution_constants_pct": v[jbk], "net_eur": v[jn], "net_evolution_courants_pct": v[jnc],
+                "net_evolution_constants_pct": v[jnk]}
+    lignes = [moyennes(l) for l in f1["lignes"]]
+    ens = [l for l in lignes if re.match(r"^ensemble de la fp[eth] y compris", l["libelle"], re.I)]
+    fp_tout = [l for l in lignes if norm(l["libelle"]) == "ensembledelafonctionpublique"]
+    if len(ens) != 1 or len(fp_tout) != 1:
+        raise SystemExit(f"{cle} : ligne d'ensemble introuvable dans la figure 1")
+    # Catégories des fonctionnaires
+    j4p = next(j for j, c in enumerate(f4["colonnes"]) if norm(c).startswith(norm(f"Agents présents en {annee}"))
+               and "structure" in norm(c))
+    j4n = next(j for j, c in enumerate(f4["colonnes"]) if norm(c).startswith(norm(f"Agents présents en {annee}"))
+               and "montant" in norm(c))
+    j4k = next(j for j, c in enumerate(f4["colonnes"]) if norm(c).startswith(norm(f"Agents présents en {annee}"))
+               and "constants" in norm(c) and "rmpp" not in norm(c))
+    j5 = {k: colonne(tc5, "montant", k) for k in ("salaire brut", "traitement brut", "primes", "cotisations",
+                                                    "salaire net")}
+    jpp = next(j for j, c in enumerate(tc5["colonnes"]) if "partdesprimes" in norm(c))
+    categories = []
+    for cat in ("A", "B", "C"):
+        l4 = ligne_de(f4, f"Catégorie {cat}")
+        l5 = ligne_de(tc5, f"Catégorie {cat}")
+        v5 = l5["valeurs"]
+        if abs(v5[j5["salaire net"]] - l4["valeurs"][j4n]) > 1:
+            raise SystemExit(f"{cle} : net moyen de la catégorie {cat} différent entre figure 4 et complément 5")
+        jm = colonne(tc1, f"Catégorie {cat}", "montant")
+        jk = colonne(tc1, f"Catégorie {cat}", "constants")
+        dec = deciles(tc1, jm, jk)
+        if abs(dec["moyenne"]["valeur"] - l4["valeurs"][j4n]) > 1:
+            raise SystemExit(f"{cle} : moyenne des déciles de la catégorie {cat} différente du net moyen")
+        categories.append({"categorie": cat, "population": f"fonctionnaires de catégorie {cat}",
+                           "part_eqtp_pct": l4["valeurs"][j4p], "net_eur": l4["valeurs"][j4n],
+                           "net_evolution_constants_pct": l4["valeurs"][j4k], "brut_eur": v5[j5["salaire brut"]],
+                           "traitement_brut_eur": v5[j5["traitement brut"]],
+                           "primes_et_remunerations_annexes_eur": v5[j5["primes"]],
+                           "cotisations_csg_crds_eur": v5[j5["cotisations"]], "part_primes_dans_brut_pct": v5[jpp],
+                           "deciles_net_eur": dec})
+    # Série en euros constants
+    serie = []
+    for l in f2["lignes"]:
+        if re.fullmatch(r"(19|20)\d\d", l["libelle"]):
+            serie.append({"annee": int(l["libelle"]), "net_eur_constants": l["valeurs"][0],
+                          "evolution_constants_pct": l["valeurs"][1]})
+    ref = re.search(r"constants (20\d\d)", " ".join(f2["colonnes"]))
+    if not serie or serie[-1]["annee"] != annee or abs(serie[-1]["net_eur_constants"] - ens[0]["net_eur"]) > 1:
+        raise SystemExit(f"{cle} : série en euros constants incohérente avec la moyenne de {annee}")
+    jd = colonne(f5, "ensemble", "montant")
+    jdk = colonne(f5, "ensemble", "constants")
+    dec_ens = deciles(f5, jd, jdk)
+    tableaux = {slug(n): t for n, t in (("figure_1", f1), ("figure_2", f2), ("figure_4", f4), ("figure_5", f5),
+                                        ("tableau_complementaire_1", tc1), ("tableau_complementaire_5", tc5))}
+    return {"annee": annee, "publication": re.sub(r"^Données de l'Insee Première no \d+ ", "", titre).strip("« »"),
+            "champ": next((n for n in f1["notes_source"] if n.startswith("Champ")), None),
+            "ensemble": {k: v for k, v in ens[0].items() if k != "rubrique"},
+            "lignes": lignes, "categories_fonctionnaires": categories,
+            "deciles_net_eur": dec_ens,
+            "serie_net_euros_constants": {"euros_constants_de": int(ref.group(1)) if ref else annee, "annees": serie},
+            "fonction_publique": {k: v for k, v in fp_tout[0].items() if k not in ("rubrique", "part_eqtp_pct")},
+            "tableaux": tableaux}
+
+
+def classeur_du_zip(cle: str, motif: str):
+    """Classeur xlsx d'une archive de l'entrepôt, en mémoire (BytesIO, lu par openpyxl)."""
+    import io
+    import zipfile
+    with zipfile.ZipFile(chemin(cle)) as z:
+        noms = [n for n in z.namelist() if re.search(motif, n)]
+        if len(noms) != 1:
+            raise SystemExit(f"{cle} : membre {motif!r} introuvable ou ambigu ({noms})")
+        return io.BytesIO(z.read(noms[0])), noms[0]
+
+
+def feuille_zip(cle: str, motif: str, nom: str) -> list[list]:
+    import io
+    b, _ = classeur_du_zip(cle, motif)
+    return feuille(io.BytesIO(b.getvalue()), nom)
+
+
+VERSANTS_DGAFP = {"FPE": "fpe", "FPT": "fpt", "FPH": "fph", "Fonction publique": "fonction_publique",
+                  "Ensemble FP": "fonction_publique"}
+
+
+def euro(x):
+    return arrondi(x, 0) if isinstance(x, (int, float)) else None
+
+
+def lire_dgafp_moyennes(lignes: list[list]) -> list[dict]:
+    """Figure 3 : salaire net moyen par catégorie et statut (bloc) et par versant (une ligne par versant)."""
+    out, bloc = [], None
+    for l in lignes:
+        cel = [propre(c) if isinstance(c, str) else c for c in l]
+        if len(cel) < 4 or not isinstance(cel[3], (int, float)) or cel[2] not in VERSANTS_DGAFP:
+            continue
+        if cel[1]:
+            bloc = {"population": sans_appel_de_note(re.sub(r"\s*\(\d\)$", "", cel[1])), "net_eur": {}}
+            out.append(bloc)
+        bloc["net_eur"][VERSANTS_DGAFP[cel[2]]] = euro(cel[3])
+    for b in out:
+        if set(b["net_eur"]) != {"fpe", "fpt", "fph", "fonction_publique"}:
+            raise SystemExit(f"DGAFP figure 3 : versants incomplets pour « {b['population']} »")
+    return out
+
+
+def lire_dgafp_decomposition(lignes: list[list]) -> list[dict]:
+    """Figure 9 : décomposition du salaire des fonctionnaires (brut, traitement, primes, cotisations, CSG et CRDS,
+    net), par catégorie et par versant. Contrôle bloquant : brut - cotisations salariales - CSG et CRDS = net."""
+    i_ent = next(i for i, l in enumerate(lignes) if "FPE" in [propre(c) for c in l if isinstance(c, str)])
+    cols = {j: VERSANTS_DGAFP[propre(c)] for j, c in enumerate(lignes[i_ent]) if isinstance(c, str)
+            and propre(c) in VERSANTS_DGAFP}
+    fin, notes = pied_de_tableau([[c for c in l if c is not None] for l in lignes])
+    out, bloc = [], None
+    for l in lignes[i_ent + 1:]:
+        cel = [propre(c) if isinstance(c, str) else c for c in l] + [None] * 8
+        if not cel[2] or not isinstance(cel[2], str):
+            if cel[1] and str(cel[1]).startswith(("Source", "Champ")):
+                break
+            continue
+        if cel[1]:
+            pop = {"Ensemble": "ensemble des fonctionnaires"}.get(cel[1], f"fonctionnaires de catégorie {cel[1]}")
+            bloc = {"categorie": None if cel[1] == "Ensemble" else cel[1], "population": pop, "elements": []}
+            out.append(bloc)
+        lib = re.sub(r"^[-\s]+", "", cel[2])
+        lib = re.sub(r"\((\d)\)", "", lib).replace("\n", " ")
+        lib = re.sub(r"\s+", " ", lib).strip()
+        vals = {v: (arrondi(cel[j], 1) if "%" in lib else euro(cel[j])) if isinstance(cel[j], (int, float)) else None
+                for j, v in cols.items()}
+        bloc["elements"].append({"id": slug(re.sub(r"\s*\([abc]\)|=.*$", "", lib)), "libelle": lib,
+                                 "valeurs": vals, "non_publie": [v for v, x in vals.items() if x is None]})
+    for b in out:
+        e = {x["id"]: x["valeurs"] for x in b["elements"]}
+        for v in cols.values():
+            brut, cot, csg = e["salaire_brut"][v], e["cotisations_salariales"][v], e["csg_et_crds"][v]
+            net = e["salaire_net_de_prelevements"][v]
+            if abs(brut - cot - csg - net) > 2:
+                raise SystemExit(f"DGAFP figure 9 : brut - cotisations - CSG différent du net ({b['population']}, {v})")
+    return out
+
+
+def lire_dgafp_distribution(lignes: list[list]) -> dict:
+    """Figure 1 : salaire net moyen, médian, déciles et quartiles par versant, statut, sexe et âge."""
+    i_ent = next(i for i, l in enumerate(lignes) if any(isinstance(c, str) and propre(c) == "Salaire médian" for c in l))
+    ent = [propre(c) if isinstance(c, str) else "" for c in lignes[i_ent]]
+    cles = {"structure": "part_eqtp_pct", "salairemoyen": "moyenne_eur", "salairemedian": "mediane_eur",
+            "1erdecile": "d1_eur", "1erquartile": "q1_eur", "3equartile": "q3_eur", "9edecile": "d9_eur"}
+    cols = {}
+    for j, e in enumerate(ent):
+        for k, v in cles.items():
+            if norm(e).startswith(k):
+                cols[j] = v
+    if len(cols) != len(cles):
+        raise SystemExit(f"DGAFP figure 1 : en-têtes inattendus {ent}")
+    j_lib = min(cols) - 1
+    out = []
+    for l in lignes[i_ent + 1:]:
+        if len(l) <= max(cols) or not isinstance(l[j_lib], str) or not isinstance(l[max(cols)], (int, float)):
+            continue
+        lib = sans_appel_de_note(re.sub(r"\(\d\)$", "", propre(l[j_lib])).strip())
+        out.append({"population": re.sub(r"^dont ", "", lib),
+                    **{v: (arrondi(l[j], 1) if v.endswith("pct") else euro(l[j])) for j, v in cols.items()}})
+    return {"lignes": out, "notes_source": [propre(l[j_lib]) for l in lignes[i_ent + 1:]
+                                             if len(l) > j_lib and isinstance(l[j_lib], str)
+                                             and propre(l[j_lib]).startswith(("Source", "Champ", "("))]}
+
+
+SECTIONS_DEPENSES = {"depensesderemunerationenmdeur": "remuneration_md_eur", "poidsdanslepibenpourcent": "part_pib_pct",
+                     "poidsdesdepensesderemunerationdesapudansleurdepensetotaleenpourcent":
+                         "part_depense_totale_pct", "depensestotalesenmdeur": "depenses_totales_md_eur"}
+SECTEURS_DEPENSES = [("administrationspubliquescentrales", "apuc", "Administrations publiques centrales"),
+                     ("dontetat", "etat", "dont État"),
+                     ("administrationspubliqueslocales", "apul", "Administrations publiques locales"),
+                     ("dontcollectiviteslocales", "collectivites_locales", "dont collectivités locales"),
+                     ("administrationsdesecuritesociale", "asso", "Administrations de sécurité sociale"),
+                     ("dontorganismesdependantdesassurancessociales", "odass",
+                      "dont organismes dépendant des assurances sociales (hôpitaux notamment)"),
+                     ("toutesadministrationspubliques", "apu", "Toutes administrations publiques"),
+                     ("produitinterieurbrut", "pib", "Produit intérieur brut")]
+STATUTS_COMPTES = {"*": "définitif actualisé", "**": "semi-définitif", "***": "provisoire"}
+
+
+def lire_dgafp_depenses(lignes: list[list]) -> dict:
+    """Figure 1 du classeur « dépenses » : rémunérations (D1) et dépenses totales des administrations publiques par
+    sous-secteur, en comptabilité nationale (Insee, traitement DGAFP), 1978 à la dernière année."""
+    i_an = next(i for i, l in enumerate(lignes) if sum(1 for c in l if re.fullmatch(r"(19|20)\d\d\**", propre(c))) >= 3)
+    annees, statuts = {}, {}
+    for j, c in enumerate(lignes[i_an]):
+        m = re.fullmatch(r"((?:19|20)\d\d)(\**)", propre(c))
+        if m:
+            annees[j] = int(m.group(1))
+            if m.group(2):
+                statuts[int(m.group(1))] = STATUTS_COMPTES[m.group(2)]
+    section, out = None, {v: {} for v in SECTIONS_DEPENSES.values()}
+    for l in lignes[i_an + 1:]:
+        if not l or not isinstance(l[0], str):
+            continue
+        k = norm(l[0].replace("%", " pourcent").replace("€", " eur"))
+        if k in SECTIONS_DEPENSES and all(c is None for c in l[1:]):
+            section = SECTIONS_DEPENSES[k]
+            continue
+        if section is None:
+            continue
+        k = re.sub(r"\d$", "", norm(re.sub(r"\(\d\)", "", l[0])))
+        sid = next((s for n, s, _ in SECTEURS_DEPENSES if k == n), None)
+        if sid is None:
+            if k.startswith("source"):
+                break
+            continue
+        if sid == "pib":
+            section_pib = "pib_md_eur"
+            out.setdefault(section_pib, {})[sid] = [arrondi(l[j], 4) if isinstance(l[j], (int, float)) else None
+                                                    for j in sorted(annees)]
+            continue
+        d = 4 if section.endswith("md_eur") else 3
+        out[section][sid] = [arrondi(l[j], d) if j < len(l) and isinstance(l[j], (int, float)) else None
+                             for j in sorted(annees)]
+    for s in ("remuneration_md_eur", "part_depense_totale_pct", "depenses_totales_md_eur"):
+        if "apu" not in out[s]:
+            raise SystemExit(f"DGAFP dépenses : section {s} incomplète")
+    return {"annees": [annees[j] for j in sorted(annees)], "statut_des_comptes": statuts,
+            "secteurs": [{"id": s, "libelle": l} for _, s, l in SECTEURS_DEPENSES if s != "pib"], **out}
+
+
+SECTEURS_EUROSTAT = {"S13": ("apu", "Administrations publiques"),
+                     "S1311": ("apuc", "Administration centrale (État et organismes divers d'administration centrale)"),
+                     "S1313": ("apul", "Administrations locales"),
+                     "S1314": ("asso", "Administrations de sécurité sociale")}
+
+
+def lire_eurostat_d1() -> dict:
+    """gov_10a_exp, France, fonction totale : D1 et TE par sous-secteur, en millions d'euros et en % du PIB, avec les
+    indicateurs de statut d'Eurostat (« p » : provisoire). Contrôle bloquant : somme des D1 des sous-secteurs = D1 des
+    administrations publiques (la rémunération des salariés n'est pas consolidée entre sous-secteurs)."""
+    d = json.loads(chemin("eurostat_d1").read_text(encoding="utf-8"))
+    ids, tailles = d["id"], d["size"]
+    cats = [[c for c, _ in sorted(d["dimension"][k]["category"]["index"].items(), key=lambda kv: kv[1])] for k in ids]
+    pas = [1] * len(ids)
+    for i in range(len(ids) - 2, -1, -1):
+        pas[i] = pas[i + 1] * tailles[i + 1]
+    statut = d.get("status") or {}
+    val: dict = {}
+    for plat, v in d["value"].items():
+        r = {k: cs[(int(plat) // p) % t] for k, cs, p, t in zip(ids, cats, pas, tailles)}
+        val[(r["unit"], r["sector"], r["na_item"], int(r["time"]))] = (v, statut.get(plat))
+    annees = sorted({k[3] for k in val})
+    lignes = []
+    for a in annees:
+        e = {"annee": a, "provisoire": any(val.get((u, s, n, a), (None, None))[1] == "p" for u in ("MIO_EUR",)
+                                           for s in SECTEURS_EUROSTAT for n in ("D1", "TE"))}
+        for n, nom in (("D1", "remuneration_m_eur"), ("TE", "depenses_totales_m_eur")):
+            e[nom] = {SECTEURS_EUROSTAT[s][0]: val.get(("MIO_EUR", s, n, a), (None,))[0] for s in SECTEURS_EUROSTAT}
+        e["remuneration_pct_pib"] = {SECTEURS_EUROSTAT[s][0]: val.get(("PC_GDP", s, "D1", a), (None,))[0]
+                                     for s in SECTEURS_EUROSTAT}
+        r, t = e["remuneration_m_eur"], e["depenses_totales_m_eur"]
+        if None not in r.values():
+            if abs(r["apuc"] + r["apul"] + r["asso"] - r["apu"]) > 1:
+                raise SystemExit(f"Eurostat {a} : la somme des D1 des sous-secteurs diffère du total")
+        e["sur_100_eur_de_depense_publique"] = (arrondi(100 * r["apu"] / t["apu"], 2)
+                                                if r["apu"] is not None and t["apu"] else None)
+        e["repartition_remuneration_pct"] = ({k: arrondi(100 * r[k] / r["apu"], 1) for k in ("apuc", "apul", "asso")}
+                                             if None not in r.values() else None)
+        lignes.append(e)
+    return {"mise_a_jour_eurostat": d.get("updated"), "secteurs": [{"id": v[0], "code": k, "libelle": v[1]}
+                                                                    for k, v in SECTEURS_EUROSTAT.items()],
+            "annees": lignes}
+
+
+def remunerations(collecte: str, budget_etat: dict | None) -> dict:
+    """Contenu de remunerations.json (sans écriture)."""
+    versants = []
+    for vid, cle, lib in VERSANTS_SALAIRES:
+        v = lire_salaires_versant(cle)
+        versants.append({"id": vid, "libelle": lib, "source": src(cle), **v})
+    annee = {v["annee"] for v in versants}
+    if len(annee) != 1:
+        raise SystemExit(f"salaires Insee : années différentes selon le versant {annee}")
+    annee = annee.pop()
+    fp_tout = {json.dumps(v["fonction_publique"], sort_keys=True) for v in versants}
+    if len(fp_tout) != 1:
+        raise SystemExit("salaires Insee : l'ensemble de la fonction publique diffère entre les trois publications")
+    xlsx_vue = r"vue_ren?umerations_niveaux\.xlsx$"
+    dgafp_moy = lire_dgafp_moyennes(feuille_zip("dgafp_remu", xlsx_vue, "Figure 3"))
+    dgafp_dec = lire_dgafp_decomposition(feuille_zip("dgafp_remu", xlsx_vue, "Figure 9"))
+    dgafp_dis = lire_dgafp_distribution(feuille_zip("dgafp_remu", xlsx_vue, "Figure 1"))
+    dep = lire_dgafp_depenses(feuille_zip("dgafp_remu", r"donnees_comp_depenses\.xlsx$", "Figure 1"))
+    eu = lire_eurostat_d1()
+    # Dernière année commune Eurostat / DGAFP
+    eu_an = {e["annee"]: e for e in eu["annees"] if e["sur_100_eur_de_depense_publique"] is not None}
+    k_dg = {a: i for i, a in enumerate(dep["annees"])}
+    communes = sorted(set(eu_an) & {a for a in k_dg if dep["remuneration_md_eur"]["apu"][k_dg[a]] is not None})
+    a = communes[-1]
+    e, i = eu_an[a], k_dg[a]
+    sur100 = {
+        "annee": a,
+        "valeurs": [
+            {"producteur": "Eurostat", "source": src("eurostat_d1"), "valeur_eur": e["sur_100_eur_de_depense_publique"],
+             "statut": "calculé", "provisoire": e["provisoire"],
+             "formule": "100 x rémunération des salariés (D1) des administrations publiques / total des dépenses des "
+                        "administrations publiques (TE), en millions d'euros, gov_10a_exp, fonction totale",
+             "remuneration_m_eur": e["remuneration_m_eur"]["apu"],
+             "depenses_totales_m_eur": e["depenses_totales_m_eur"]["apu"]},
+            {"producteur": "DGAFP (comptes nationaux de l'Insee)", "source": src("dgafp_remu"),
+             "valeur_eur": arrondi(dep["part_depense_totale_pct"]["apu"][i], 2), "statut": "publié",
+             "statut_des_comptes": dep["statut_des_comptes"].get(a),
+             "remuneration_md_eur": dep["remuneration_md_eur"]["apu"][i],
+             "depenses_totales_md_eur": dep["depenses_totales_md_eur"]["apu"][i]}],
+        "lecture": f"Sur 100 € de dépense de l'ensemble des administrations publiques (État, organismes centraux, "
+                   f"collectivités locales, sécurité sociale et hôpitaux) en {a}, part qui rémunère leurs salariés "
+                   f"(salaires bruts et cotisations des employeurs). Deux publications, posées côte à côte."}
+    ecarts = [
+        {"grandeur": f"rémunération des salariés des administrations publiques en {a}",
+         "valeurs": [{"source": "Eurostat gov_10a_exp", "valeur": e["remuneration_m_eur"]["apu"], "unite": "M€"},
+                     {"source": "DGAFP, rapport annuel 2025", "valeur": arrondi(dep["remuneration_md_eur"]["apu"][i] * 1000, 1),
+                      "unite": "M€"}],
+         "note": "Même agrégat des comptes nationaux (D1) ; valeurs publiées telles quelles."},
+        {"grandeur": f"total des dépenses des administrations publiques en {a}",
+         "valeurs": [{"source": "Eurostat gov_10a_exp", "valeur": e["depenses_totales_m_eur"]["apu"], "unite": "M€"},
+                     {"source": "DGAFP, rapport annuel 2025",
+                      "valeur": arrondi(dep["depenses_totales_md_eur"]["apu"][i] * 1000, 1), "unite": "M€"}],
+         "note": f"Millésimes de comptes différents (mise à jour Eurostat du {(eu['mise_a_jour_eurostat'] or '')[:10]}, "
+                 "édition 2025 du rapport de la DGAFP) : l'écart n'est pas arbitré."},
+        {"grandeur": f"part de la rémunération des salariés dans la dépense publique en {a}, en %",
+         "valeurs": [{"source": "Eurostat gov_10a_exp (calcul du site)", "valeur": e["sur_100_eur_de_depense_publique"]},
+                     {"source": "DGAFP, rapport annuel 2025 (publié)",
+                      "valeur": arrondi(dep["part_depense_totale_pct"]["apu"][i], 2)}],
+         "note": "Les deux publications retiennent la même rémunération des salariés et un total des dépenses "
+                 "différent (ligne précédente)."}]
+    i_dg = len(dep["annees"]) - 1
+    reperes_etat = {
+        "lecture": "Deux mesures de périmètres différents, jamais additionnées ni soustraites : le titre 2 du budget "
+                   "de l'État (crédits de personnel votés, y compris la contribution au compte d'affectation spéciale "
+                   "Pensions) et la rémunération des salariés de l'État en comptabilité nationale (D1, sous-secteur "
+                   "État, hors organismes divers d'administration centrale).",
+        "titre2_budget_etat_eur": (budget_etat or {}).get("titre2_eur"),
+        "millesime_titre2": (budget_etat or {}).get("millesime_titre2"),
+        "remuneration_salaries_etat_md_eur": dep["remuneration_md_eur"]["etat"][i_dg],
+        "annee_remuneration_salaries_etat": dep["annees"][i_dg], "source_remuneration": src("dgafp_remu")}
+    return {
+        "millesime": f"salaires {annee} (Insee) et 2023 (DGAFP) ; rémunération des salariés des administrations "
+                     f"publiques {eu['annees'][0]['annee']} à {eu['annees'][-1]['annee']} (Eurostat) et "
+                     f"{dep['annees'][0]} à {dep['annees'][-1]} (DGAFP)",
+        "source": src(*(c for _, c, _ in VERSANTS_SALAIRES), "dgafp_remu", "eurostat_d1"), "collecte_le": collecte,
+        "definitions": {
+            "eqtp": "équivalent temps plein : un poste à mi-temps occupé toute l'année compte pour 0,5 ; les salaires "
+                    "sont ramenés à ce qu'ils seraient pour un temps plein sur toute l'année, par mois",
+            "salaire_brut": "traitement indiciaire, primes et rémunérations annexes, indemnité de résidence et "
+                            "supplément familial, avant cotisations salariales, CSG et CRDS",
+            "salaire_net": "salaire brut diminué des cotisations salariales, de la CSG et de la CRDS ; avant impôt sur "
+                           "le revenu",
+            "euros_constants": "montants corrigés de la hausse des prix à la consommation (y compris tabac), pour "
+                               "comparer les années entre elles",
+            "remuneration_des_salaries": "agrégat D1 des comptes nationaux : salaires et traitements bruts et "
+                                         "cotisations sociales à la charge des employeurs (effectives et imputées, dont "
+                                         "pensions des fonctionnaires de l'État), versés par les administrations "
+                                         "publiques à leurs salariés, militaires compris",
+            "depense_publique": "total des dépenses des administrations publiques (TE) : État, organismes divers "
+                                "d'administration centrale, collectivités et organismes locaux, sécurité sociale et "
+                                "hôpitaux publics, consolidé entre ces sous-secteurs"},
+        "regle_personnes": "Moyennes, médianes et déciles publiés par l'Insee et la DGAFP sur des populations entières "
+                           "(versant, catégorie, statut, sexe, âge) ; aucune rémunération individuelle, aucun nom. Les "
+                           "hautes rémunérations nominatives publiées par certains employeurs ne sont pas lues.",
+        "valeurs_absentes": "null : « /// » dans la source (absence de résultat due à la nature des choses), ou valeur "
+                            "publiée pour un seul versant (`non_publie`)",
+        "salaires": {
+            "annee": annee, "unite": "euros par mois en équivalent temps plein (EQTP)",
+            "producteur": "Insee (Siasp)",
+            "fonction_publique": versants[0]["fonction_publique"],
+            "versants": versants,
+            "notes": ["Les évolutions sont en % d'une année sur l'autre ; celle du rapport interdécile est en points.",
+                      "Catégories A, B, C : fonctionnaires seulement ; contractuels et personnels médicaux à part.",
+                      "Champ : France hors Mayotte, hors militaires, apprentis, internes et externes médicaux, "
+                      "assistants maternels et familiaux."]},
+        "salaires_dgafp": {
+            "annee": 2023, "unite": "euros par mois en équivalent temps plein (EQTP)", "producteur":
+            "DGAFP (Siasp de l'Insee, traitements Drees, DGCL et DGAFP)", "source": src("dgafp_remu"),
+            "moyennes_nettes": dgafp_moy, "decomposition_fonctionnaires": dgafp_dec,
+            "distribution_nette": dgafp_dis["lignes"], "notes_source": dgafp_dis["notes_source"],
+            "lecture": "Seule source de cette sélection qui publie, pour l'ensemble de la fonction publique, le salaire "
+                       "brut et net moyen par catégorie ; millésime antérieur d'un an à celui de l'Insee : les deux ne "
+                       "sont pas comparés."},
+        "remuneration_salaries_apu": {
+            "unite": "millions d'euros (Eurostat) ; milliards d'euros (DGAFP)",
+            "sur_100_eur": sur100,
+            "eurostat": {"source": src("eurostat_d1"), **eu},
+            "dgafp": {"source": src("dgafp_remu"), **dep},
+            "notes": ["Les dépenses des sous-secteurs ne s'additionnent pas : les transferts entre eux sont "
+                      "consolidés dans le total des administrations publiques.",
+                      "La rémunération des salariés n'est pas consolidée : la somme des sous-secteurs égale le total.",
+                      "Dernières années provisoires ou semi-définitives (indicateurs `provisoire`, "
+                      "`statut_des_comptes`)."]},
+        "reperes_budget_etat": reperes_etat,
+        "ecarts_entre_sources": ecarts,
+        "regles": ["Les salaires moyens (par agent en EQTP, nets ou bruts, hors cotisations des employeurs) et la "
+                   "rémunération des salariés des comptes nationaux (masse totale, cotisations des employeurs "
+                   "comprises) sont deux mesures différentes : jamais multipliées l'une par l'autre ni additionnées.",
+                   "Insee (2024) et DGAFP (2023) : millésimes différents, posés côte à côte.",
+                   "La part sur 100 € de dépense publique porte sur toutes les administrations publiques, pas seulement "
+                   "sur le budget de l'État."],
+        "limites": ["Moyennes en EQTP : un agent à temps partiel est compté au prorata, son salaire est ramené à un "
+                    "temps plein.",
+                    "Militaires exclus des salaires de l'Insee et de la DGAFP ; ils sont compris dans la rémunération "
+                    "des salariés des comptes nationaux.",
+                    "L'Insee ne publie pas, dans les trois Insee Première de 2024, de moyenne par catégorie pour "
+                    "l'ensemble des trois versants ; cette moyenne vient de la DGAFP pour 2023.",
+                    "Insee, comptes des administrations publiques (Melodi DD_CNA_APU) : rémunération des salariés "
+                    "concordante, mais total des dépenses à 75 % du PIB, incohérent avec le total publié (57 %) : non "
+                    "retenu en attendant une explication du producteur."]}
+
+
+def produire_remunerations(sortie: Path = SORTIE) -> dict:
+    """Écrit remunerations.json seul (budget de l'État relu dans index.json s'il existe)."""
+    manquants = [SOURCES[c][0] for c in ("salaires_fpe", "salaires_fpt", "salaires_fph", "dgafp_remu",
+                                         "eurostat_d1") if not chemin(c).exists()]
+    if manquants:
+        raise SystemExit(f"sources absentes de {LAKE} : {manquants} (python collecte/collecte.py --domaine "
+                         "fonction_publique)")
+    idx = sortie / "index.json"
+    be = json.loads(idx.read_text(encoding="utf-8"))["reperes"].get("budget_etat") if idx.exists() else None
+    r = remunerations(date_sources("fonction_publique"), be)
+    dump(sortie / "remunerations.json", r)
+    return r
+
+
+def reperes_remunerations(r: dict) -> dict:
+    s100 = r["remuneration_salaries_apu"]["sur_100_eur"]
+    return {"annee_salaires": r["salaires"]["annee"],
+            "net_moyen_eur": {v["id"]: v["ensemble"]["net_eur"] for v in r["salaires"]["versants"]}
+            | {"fonction_publique": r["salaires"]["fonction_publique"]["net_eur"]},
+            "brut_moyen_eur": {v["id"]: v["ensemble"]["brut_eur"] for v in r["salaires"]["versants"]}
+            | {"fonction_publique": r["salaires"]["fonction_publique"]["brut_eur"]},
+            "sur_100_eur_depense_publique": {"annee": s100["annee"],
+                                             "valeurs": [{"producteur": v["producteur"], "valeur_eur": v["valeur_eur"],
+                                                          "statut": v["statut"]} for v in s100["valeurs"]]}}
+
+
 # --- Production ----------------------------------------------------------------------------------------------------------
 
 RECHERCHE_PREALABLE = [
@@ -1054,6 +1589,22 @@ RECHERCHE_PREALABLE = [
      "repris"},
     {"trouvaille": "pipeline/operateurs.py du dépôt (lecture de jaunes PDF par mots positionnés et ancres de colonnes)",
      "verdict": "à adapter", "licence": "MIT", "mise_a_jour": "2026-11-17", "usage": "méthode de lecture des PDF"},
+    {"trouvaille": "Insee Première n° 2100, 2101 et 2102 (salaires 2024 par versant), classeurs des figures",
+     "verdict": "réutilisable tel quel", "licence": "Licence Ouverte 2.0", "mise_a_jour": "2026 (millésime 2024)",
+     "usage": "salaires bruts et nets moyens par versant et catégorie, déciles, série depuis 2010"},
+    {"trouvaille": "DGAFP, rapport annuel 2025, archives xlsx des vues « rémunérations » (niveaux ; dépenses de "
+     "personnel)", "verdict": "réutilisable tel quel", "licence": "Licence Ouverte 2.0", "mise_a_jour": "2025 "
+     "(millésime 2023 ; comptes nationaux jusqu'en 2024)", "usage": "moyennes par catégorie pour l'ensemble de la "
+     "fonction publique ; part de la rémunération des salariés dans la dépense publique, publiée"},
+    {"trouvaille": "Eurostat gov_10a_exp (D1 et TE par sous-secteur) et décodeur JSON-stat de pipeline/transform.py",
+     "verdict": "réutilisable tel quel", "licence": "CC BY 4.0 (Eurostat) ; MIT", "mise_a_jour": "2026-10-21",
+     "usage": "rémunération des salariés de toutes les administrations publiques sur 100 € de dépense publique"},
+    {"trouvaille": "Insee, Tableaux de l'économie française, « Salaires dans la fonction publique » (page 4277685)",
+     "verdict": "inspiration seulement", "licence": "Licence Ouverte 2.0", "mise_a_jour": "2020-02-27 (millésime "
+     "2017)", "usage": "millésime trop ancien : remplacé par les Insee Première de 2024"},
+    {"trouvaille": "Insee Melodi, comptes des administrations publiques (DD_CNA_APU, déjà dans l'entrepôt)",
+     "verdict": "inspiration seulement", "licence": "Licence Ouverte 2.0", "mise_a_jour": "2026",
+     "usage": "D1 concordant avec Eurostat, mais total des dépenses à 75 % du PIB, incohérent : non retenu"},
     {"trouvaille": "dépôts publics GitHub (recherches « cabinets ministériels », « conseils extérieurs jaune », "
      "« indemnités élus barème », « siasp »)", "verdict": "inspiration seulement", "licence": "sans objet",
      "mise_a_jour": "2026-11-17", "usage": "aucun dépôt réutilisable trouvé"},
@@ -1324,10 +1875,19 @@ def produire(sortie: Path = SORTIE) -> None:
                                "inclut."})
     dernier_cab = cabinets[-1]
     tot_cons = [t for t in conseils["totaux"] if not t["semestre_1_seul"]]
+    budget_etat = {"etpt": arrondi(sum(m["etpt"] for m in rap["ministeres"]), 2),
+                   "millesime_etpt": ex["millesime_etpt"],
+                   "titre2_eur": arrondi(sum(m["titre2_eur"] or 0 for m in rap["ministeres"]), 2),
+                   "millesime_titre2": ex["millesime_titre2"], "nb_ministeres": len(rap["ministeres"]),
+                   "nb_programmes": sum(m["nb_programmes"] for m in rap["ministeres"])}
+
+    # Rémunérations
+    rem = remunerations(collecte, budget_etat)
+    dump(sortie / "remunerations.json", rem)
     dump(sortie / "index.json", {
         "millesime": f"effectifs {min(annees)} à {derniere} ; cabinets {cabinets[0]['annee']} et {dernier_cab['annee']} ; "
                      f"conseils {tot_cons[0]['exercice']} à {tot_cons[-1]['exercice']} ; barème des élus au "
-                     f"{bareme['date_valeur']}",
+                     f"{bareme['date_valeur']} ; rémunérations : {rem['millesime']}",
         "source": src(*SOURCES), "collecte_le": collecte,
         "fichiers": [
             {"fichier": "fonction_publique/effectifs_series.json",
@@ -1340,20 +1900,21 @@ def produire(sortie: Path = SORTIE) -> None:
             {"fichier": "fonction_publique/conseils.json",
              "contenu": "recours aux conseils extérieurs par ministère, mission, programme et prestataire"},
             {"fichier": "fonction_publique/indemnites_elus.json",
-             "contenu": "plafonds légaux des indemnités de fonction des élus locaux"}],
+             "contenu": "plafonds légaux des indemnités de fonction des élus locaux"},
+            {"fichier": "fonction_publique/remunerations.json",
+             "contenu": "salaires moyens nets et bruts par versant et catégorie, distributions, évolutions ; "
+                        "rémunération des salariés de toutes les administrations publiques sur 100 € de dépense "
+                        "publique"}],
         "reperes": {
             "effectifs": {"annee": derniere, "unite": "milliers de personnes au 31 décembre",
                           "ensemble": ens["valeurs"]["ensemble"][k_der], "versants": versants},
-            "budget_etat": {"etpt": arrondi(sum(m["etpt"] for m in rap["ministeres"]), 2),
-                            "millesime_etpt": ex["millesime_etpt"],
-                            "titre2_eur": arrondi(sum(m["titre2_eur"] or 0 for m in rap["ministeres"]), 2),
-                            "millesime_titre2": ex["millesime_titre2"], "nb_ministeres": len(rap["ministeres"]),
-                            "nb_programmes": sum(m["nb_programmes"] for m in rap["ministeres"])},
+            "budget_etat": budget_etat,
             "cabinets": {"annee": dernier_cab["annee"], **dernier_cab["total"], "nb_poles": len(dernier_cab["poles"])},
             "conseils": {"exercice": tot_cons[-1]["exercice"], "ae_eur": tot_cons[-1]["ae_eur"],
                          "cp_eur": tot_cons[-1]["cp_eur"], "edition": tot_cons[-1]["edition_retenue"]},
             "indemnites_elus": {"indice_brut_1027_mensuel_eur": bareme["indice_brut_1027_mensuel_eur"],
-                                "nb_rangees": len(bareme["lignes"])}},
+                                "nb_rangees": len(bareme["lignes"])},
+            "remunerations": reperes_remunerations(rem)},
         "regles": REGLES_SANS_DOUBLE_COMPTE,
         "ecarts_entre_sources": ecarts,
         "regle_personnes": "Aucune personne physique nommée : effectifs et montants agrégés ; prestataires de conseil "
@@ -1364,7 +1925,10 @@ def produire(sortie: Path = SORTIE) -> None:
                     "Effectifs par ministère : regroupements de l'Insee, différents des ministères du budget.",
                     "Cabinets et conseils : documents en PDF sans jeu de données structuré ; lecture automatique "
                     "vérifiée par les totaux publiés.",
-                    "Indemnités des élus : plafonds légaux, pas montants versés."]})
+                    "Indemnités des élus : plafonds légaux, pas montants versés.",
+                    "Rémunérations : moyennes et déciles agrégés (Insee 2024, DGAFP 2023) ; la part sur 100 € de "
+                    "dépense publique porte sur toutes les administrations publiques (Eurostat et DGAFP, côte à "
+                    "côte)."]})
     print(f"fonction_publique : {len(series['lignes'])} lignes Insee, {len(dep['lignes'])} lignes territoriales, "
           f"{len(rap['ministeres'])} ministères, {len(conseils['par_programme'])} programmes (conseils), "
           f"{len(bareme['lignes'])} rangées de barème", file=sys.stderr)
@@ -1372,10 +1936,13 @@ def produire(sortie: Path = SORTIE) -> None:
 
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("commande", nargs="?", default="produire", choices=["produire"])
+    ap.add_argument("commande", nargs="?", default="produire", choices=["produire", "remunerations"])
     ap.add_argument("--sortie", type=Path, default=SORTIE)
     a = ap.parse_args(argv)
-    produire(a.sortie)
+    if a.commande == "remunerations":
+        produire_remunerations(a.sortie)
+    else:
+        produire(a.sortie)
 
 
 if __name__ == "__main__":

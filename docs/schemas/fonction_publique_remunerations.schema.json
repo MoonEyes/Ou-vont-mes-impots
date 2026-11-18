@@ -1,0 +1,1754 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonction_publique_remunerations.schema.json",
+  "title": "site/data/fonction_publique/remunerations.json : salaires moyens nets et bruts par versant et catégorie, distributions et évolutions (Insee 2024, DGAFP 2023) ; rémunération des salariés de toutes les administrations publiques sur 100 € de dépense publique (Eurostat, DGAFP) (pipeline/fonction_publique.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "definitions",
+    "regle_personnes",
+    "valeurs_absentes",
+    "salaires",
+    "salaires_dgafp",
+    "remuneration_salaries_apu",
+    "reperes_budget_etat",
+    "ecarts_entre_sources",
+    "regles",
+    "limites"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "regle_personnes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "valeurs_absentes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "salaires": {
+      "type": "object",
+      "required": [
+        "annee",
+        "unite",
+        "producteur",
+        "fonction_publique",
+        "versants",
+        "notes"
+      ],
+      "properties": {
+        "annee": {
+          "$ref": "commun.schema.json#/$defs/annee_entier"
+        },
+        "unite": {
+          "type": "string",
+          "minLength": 1
+        },
+        "producteur": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fonction_publique": {
+          "type": "object",
+          "required": [
+            "libelle",
+            "brut_eur",
+            "net_eur"
+          ],
+          "properties": {
+            "libelle": {
+              "type": "string",
+              "minLength": 1
+            },
+            "brut_eur": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "brut_evolution_courants_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "brut_evolution_constants_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "net_eur": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "net_evolution_courants_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "net_evolution_constants_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "versants": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "libelle",
+              "source",
+              "annee",
+              "publication",
+              "champ",
+              "ensemble",
+              "lignes",
+              "categories_fonctionnaires",
+              "deciles_net_eur",
+              "serie_net_euros_constants",
+              "fonction_publique",
+              "tableaux"
+            ],
+            "properties": {
+              "id": {
+                "enum": [
+                  "fpe",
+                  "fpt",
+                  "fph"
+                ]
+              },
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              },
+              "annee": {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              "publication": {
+                "type": "string",
+                "minLength": 1
+              },
+              "champ": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "ensemble": {
+                "type": "object",
+                "required": [
+                  "libelle",
+                  "part_eqtp_pct",
+                  "brut_eur",
+                  "net_eur",
+                  "net_evolution_constants_pct"
+                ],
+                "properties": {
+                  "libelle": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "part_eqtp_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "brut_eur": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "brut_evolution_courants_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "brut_evolution_constants_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "net_eur": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "net_evolution_courants_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "net_evolution_constants_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "lignes": {
+                "type": "array",
+                "minItems": 3,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "libelle",
+                    "brut_eur",
+                    "net_eur"
+                  ],
+                  "properties": {
+                    "rubrique": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "libelle": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "part_eqtp_pct": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "brut_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "brut_evolution_courants_pct": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "brut_evolution_constants_pct": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "net_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "net_evolution_courants_pct": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "net_evolution_constants_pct": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "categories_fonctionnaires": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "categorie",
+                    "population",
+                    "part_eqtp_pct",
+                    "net_eur",
+                    "net_evolution_constants_pct",
+                    "brut_eur",
+                    "traitement_brut_eur",
+                    "primes_et_remunerations_annexes_eur",
+                    "cotisations_csg_crds_eur",
+                    "part_primes_dans_brut_pct",
+                    "deciles_net_eur"
+                  ],
+                  "properties": {
+                    "categorie": {
+                      "enum": [
+                        "A",
+                        "B",
+                        "C"
+                      ]
+                    },
+                    "population": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "part_eqtp_pct": {
+                      "type": "number"
+                    },
+                    "net_eur": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "net_evolution_constants_pct": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "brut_eur": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "traitement_brut_eur": {
+                      "type": "number"
+                    },
+                    "primes_et_remunerations_annexes_eur": {
+                      "type": "number"
+                    },
+                    "cotisations_csg_crds_eur": {
+                      "type": "number"
+                    },
+                    "part_primes_dans_brut_pct": {
+                      "type": "number"
+                    },
+                    "deciles_net_eur": {
+                      "type": "object",
+                      "required": [
+                        "d1",
+                        "d2",
+                        "d3",
+                        "d4",
+                        "d5",
+                        "d6",
+                        "d7",
+                        "d8",
+                        "d9",
+                        "rapport_d9_d1",
+                        "moyenne"
+                      ],
+                      "properties": {
+                        "d1": {
+                          "type": "object",
+                          "required": [
+                            "valeur",
+                            "evolution"
+                          ],
+                          "properties": {
+                            "valeur": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            },
+                            "evolution": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "d2": {
+                          "type": "object",
+                          "required": [
+                            "valeur",
+                            "evolution"
+                          ],
+                          "properties": {
+                            "valeur": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            },
+                            "evolution": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "d3": {
+                          "type": "object",
+                          "required": [
+                            "valeur",
+                            "evolution"
+                          ],
+                          "properties": {
+                            "valeur": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            },
+                            "evolution": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "d4": {
+                          "type": "object",
+                          "required": [
+                            "valeur",
+                            "evolution"
+                          ],
+                          "properties": {
+                            "valeur": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            },
+                            "evolution": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "d5": {
+                          "type": "object",
+                          "required": [
+                            "valeur",
+                            "evolution"
+                          ],
+                          "properties": {
+                            "valeur": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            },
+                            "evolution": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "d6": {
+                          "type": "object",
+                          "required": [
+                            "valeur",
+                            "evolution"
+                          ],
+                          "properties": {
+                            "valeur": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            },
+                            "evolution": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "d7": {
+                          "type": "object",
+                          "required": [
+                            "valeur",
+                            "evolution"
+                          ],
+                          "properties": {
+                            "valeur": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            },
+                            "evolution": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "d8": {
+                          "type": "object",
+                          "required": [
+                            "valeur",
+                            "evolution"
+                          ],
+                          "properties": {
+                            "valeur": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            },
+                            "evolution": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "d9": {
+                          "type": "object",
+                          "required": [
+                            "valeur",
+                            "evolution"
+                          ],
+                          "properties": {
+                            "valeur": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            },
+                            "evolution": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "rapport_d9_d1": {
+                          "type": "object",
+                          "required": [
+                            "valeur",
+                            "evolution"
+                          ],
+                          "properties": {
+                            "valeur": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            },
+                            "evolution": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "moyenne": {
+                          "type": "object",
+                          "required": [
+                            "valeur",
+                            "evolution"
+                          ],
+                          "properties": {
+                            "valeur": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            },
+                            "evolution": {
+                              "type": [
+                                "number",
+                                "null"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "deciles_net_eur": {
+                "type": "object",
+                "required": [
+                  "d1",
+                  "d2",
+                  "d3",
+                  "d4",
+                  "d5",
+                  "d6",
+                  "d7",
+                  "d8",
+                  "d9",
+                  "rapport_d9_d1",
+                  "moyenne"
+                ],
+                "properties": {
+                  "d1": {
+                    "type": "object",
+                    "required": [
+                      "valeur",
+                      "evolution"
+                    ],
+                    "properties": {
+                      "valeur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "evolution": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "d2": {
+                    "type": "object",
+                    "required": [
+                      "valeur",
+                      "evolution"
+                    ],
+                    "properties": {
+                      "valeur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "evolution": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "d3": {
+                    "type": "object",
+                    "required": [
+                      "valeur",
+                      "evolution"
+                    ],
+                    "properties": {
+                      "valeur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "evolution": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "d4": {
+                    "type": "object",
+                    "required": [
+                      "valeur",
+                      "evolution"
+                    ],
+                    "properties": {
+                      "valeur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "evolution": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "d5": {
+                    "type": "object",
+                    "required": [
+                      "valeur",
+                      "evolution"
+                    ],
+                    "properties": {
+                      "valeur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "evolution": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "d6": {
+                    "type": "object",
+                    "required": [
+                      "valeur",
+                      "evolution"
+                    ],
+                    "properties": {
+                      "valeur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "evolution": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "d7": {
+                    "type": "object",
+                    "required": [
+                      "valeur",
+                      "evolution"
+                    ],
+                    "properties": {
+                      "valeur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "evolution": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "d8": {
+                    "type": "object",
+                    "required": [
+                      "valeur",
+                      "evolution"
+                    ],
+                    "properties": {
+                      "valeur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "evolution": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "d9": {
+                    "type": "object",
+                    "required": [
+                      "valeur",
+                      "evolution"
+                    ],
+                    "properties": {
+                      "valeur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "evolution": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "rapport_d9_d1": {
+                    "type": "object",
+                    "required": [
+                      "valeur",
+                      "evolution"
+                    ],
+                    "properties": {
+                      "valeur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "evolution": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "moyenne": {
+                    "type": "object",
+                    "required": [
+                      "valeur",
+                      "evolution"
+                    ],
+                    "properties": {
+                      "valeur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "evolution": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              },
+              "serie_net_euros_constants": {
+                "type": "object",
+                "required": [
+                  "euros_constants_de",
+                  "annees"
+                ],
+                "properties": {
+                  "euros_constants_de": {
+                    "$ref": "commun.schema.json#/$defs/annee_entier"
+                  },
+                  "annees": {
+                    "type": "array",
+                    "minItems": 5,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "annee",
+                        "net_eur_constants",
+                        "evolution_constants_pct"
+                      ],
+                      "properties": {
+                        "annee": {
+                          "$ref": "commun.schema.json#/$defs/annee_entier"
+                        },
+                        "net_eur_constants": {
+                          "type": "number"
+                        },
+                        "evolution_constants_pct": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "additionalProperties": false
+              },
+              "fonction_publique": {
+                "type": "object",
+                "required": [
+                  "libelle",
+                  "brut_eur",
+                  "net_eur"
+                ],
+                "properties": {
+                  "libelle": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "brut_eur": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "brut_evolution_courants_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "brut_evolution_constants_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "net_eur": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "net_evolution_courants_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "net_evolution_constants_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "tableaux": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "required": [
+                    "titre",
+                    "colonnes",
+                    "lignes",
+                    "notes_source"
+                  ]
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "salaires_dgafp": {
+      "type": "object",
+      "required": [
+        "annee",
+        "unite",
+        "producteur",
+        "source",
+        "moyennes_nettes",
+        "decomposition_fonctionnaires",
+        "distribution_nette",
+        "notes_source",
+        "lecture"
+      ],
+      "properties": {
+        "annee": {
+          "$ref": "commun.schema.json#/$defs/annee_entier"
+        },
+        "unite": {
+          "type": "string",
+          "minLength": 1
+        },
+        "producteur": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lecture": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes_source": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "moyennes_nettes": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "object",
+            "required": [
+              "population",
+              "net_eur"
+            ],
+            "properties": {
+              "population": {
+                "type": "string",
+                "minLength": 1
+              },
+              "net_eur": {
+                "type": "object",
+                "required": [
+                  "fpe",
+                  "fpt",
+                  "fph",
+                  "fonction_publique"
+                ],
+                "properties": {
+                  "fpe": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "fpt": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "fph": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "fonction_publique": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "decomposition_fonctionnaires": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "required": [
+              "categorie",
+              "population",
+              "elements"
+            ],
+            "properties": {
+              "categorie": {
+                "enum": [
+                  "A",
+                  "B",
+                  "C",
+                  null
+                ]
+              },
+              "population": {
+                "type": "string",
+                "minLength": 1
+              },
+              "elements": {
+                "type": "array",
+                "minItems": 5,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "libelle",
+                    "valeurs",
+                    "non_publie"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9_]+$"
+                    },
+                    "libelle": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "valeurs": {
+                      "type": "object",
+                      "required": [
+                        "fpe",
+                        "fpt",
+                        "fph",
+                        "fonction_publique"
+                      ],
+                      "properties": {
+                        "fpe": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "fpt": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "fph": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "fonction_publique": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "non_publie": {
+                      "type": "array",
+                      "items": {
+                        "enum": [
+                          "fpe",
+                          "fpt",
+                          "fph",
+                          "fonction_publique"
+                        ]
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "distribution_nette": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "object",
+            "required": [
+              "population",
+              "part_eqtp_pct",
+              "moyenne_eur",
+              "mediane_eur",
+              "d1_eur",
+              "q1_eur",
+              "q3_eur",
+              "d9_eur"
+            ],
+            "properties": {
+              "population": {
+                "type": "string",
+                "minLength": 1
+              },
+              "part_eqtp_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "moyenne_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "mediane_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "d1_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "q1_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "q3_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "d9_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "remuneration_salaries_apu": {
+      "type": "object",
+      "required": [
+        "unite",
+        "sur_100_eur",
+        "eurostat",
+        "dgafp",
+        "notes"
+      ],
+      "properties": {
+        "unite": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "sur_100_eur": {
+          "type": "object",
+          "required": [
+            "annee",
+            "valeurs",
+            "lecture"
+          ],
+          "properties": {
+            "annee": {
+              "$ref": "commun.schema.json#/$defs/annee_entier"
+            },
+            "lecture": {
+              "type": "string",
+              "minLength": 1
+            },
+            "valeurs": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "type": "object",
+                "required": [
+                  "producteur",
+                  "source",
+                  "valeur_eur",
+                  "statut"
+                ],
+                "properties": {
+                  "producteur": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "valeur_eur": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 100
+                  },
+                  "statut": {
+                    "enum": [
+                      "publié",
+                      "calculé"
+                    ]
+                  },
+                  "formule": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "eurostat": {
+          "type": "object",
+          "required": [
+            "source",
+            "mise_a_jour_eurostat",
+            "secteurs",
+            "annees"
+          ],
+          "properties": {
+            "source": {
+              "type": "string",
+              "minLength": 1
+            },
+            "mise_a_jour_eurostat": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "secteurs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "code",
+                  "libelle"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "libelle": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "annees": {
+              "type": "array",
+              "minItems": 10,
+              "items": {
+                "type": "object",
+                "required": [
+                  "annee",
+                  "provisoire",
+                  "remuneration_m_eur",
+                  "depenses_totales_m_eur",
+                  "remuneration_pct_pib",
+                  "sur_100_eur_de_depense_publique",
+                  "repartition_remuneration_pct"
+                ],
+                "properties": {
+                  "annee": {
+                    "$ref": "commun.schema.json#/$defs/annee_entier"
+                  },
+                  "provisoire": {
+                    "type": "boolean"
+                  },
+                  "remuneration_m_eur": {
+                    "type": "object",
+                    "required": [
+                      "apu",
+                      "apuc",
+                      "apul",
+                      "asso"
+                    ],
+                    "properties": {
+                      "apu": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "apuc": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "apul": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "asso": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "depenses_totales_m_eur": {
+                    "type": "object",
+                    "required": [
+                      "apu",
+                      "apuc",
+                      "apul",
+                      "asso"
+                    ],
+                    "properties": {
+                      "apu": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "apuc": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "apul": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "asso": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "remuneration_pct_pib": {
+                    "type": "object",
+                    "required": [
+                      "apu",
+                      "apuc",
+                      "apul",
+                      "asso"
+                    ],
+                    "properties": {
+                      "apu": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "apuc": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "apul": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "asso": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "sur_100_eur_de_depense_publique": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "repartition_remuneration_pct": {
+                    "type": [
+                      "object",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "dgafp": {
+          "type": "object",
+          "required": [
+            "source",
+            "annees",
+            "statut_des_comptes",
+            "secteurs",
+            "remuneration_md_eur",
+            "part_pib_pct",
+            "part_depense_totale_pct",
+            "depenses_totales_md_eur"
+          ],
+          "properties": {
+            "source": {
+              "type": "string",
+              "minLength": 1
+            },
+            "annees": {
+              "type": "array",
+              "minItems": 10,
+              "items": {
+                "type": "integer",
+                "minimum": 1950,
+                "maximum": 2100
+              }
+            },
+            "statut_des_comptes": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "secteurs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "libelle"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "libelle": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "remuneration_md_eur": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "part_pib_pct": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "part_depense_totale_pct": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "depenses_totales_md_eur": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "pib_md_eur": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "reperes_budget_etat": {
+      "type": "object",
+      "required": [
+        "lecture",
+        "titre2_budget_etat_eur",
+        "millesime_titre2",
+        "remuneration_salaries_etat_md_eur",
+        "annee_remuneration_salaries_etat",
+        "source_remuneration"
+      ],
+      "properties": {
+        "lecture": {
+          "type": "string",
+          "minLength": 1
+        },
+        "titre2_budget_etat_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "millesime_titre2": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "remuneration_salaries_etat_md_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "annee_remuneration_salaries_etat": {
+          "$ref": "commun.schema.json#/$defs/annee_entier"
+        },
+        "source_remuneration": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "ecarts_entre_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "grandeur",
+          "valeurs",
+          "note"
+        ],
+        "properties": {
+          "grandeur": {
+            "type": "string",
+            "minLength": 1
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valeurs": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "source",
+                "valeur"
+              ],
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "valeur": {
+                  "type": "number"
+                },
+                "unite": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "regles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

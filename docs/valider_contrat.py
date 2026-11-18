@@ -229,6 +229,7 @@ FICHIERS = [
     ("fonction_publique_cabinets.schema.json", "fonction_publique/cabinets.json", "existant"),
     ("fonction_publique_conseils.schema.json", "fonction_publique/conseils.json", "existant"),
     ("fonction_publique_indemnites_elus.schema.json", "fonction_publique/indemnites_elus.json", "existant"),
+    ("fonction_publique_remunerations.schema.json", "fonction_publique/remunerations.json", "existant"),
     # collectivités d'outre-mer 975, 977, 978, 986, 987, 988 (pipeline/outremer.py)
     ("outremer_index.schema.json", "outremer/index.json", "existant"),
     ("outremer_territoire.schema.json", "outremer/9[78][0-9].json", "existant"),

@@ -19,7 +19,7 @@ import fonction_publique as fp  # noqa: E402
 DATA = ROOT / "site" / "data"
 FP = DATA / "fonction_publique"
 FICHIERS = ["index", "effectifs_series", "emploi", "territoires", "ministeres", "cabinets", "conseils",
-            "indemnites_elus"]
+            "indemnites_elus", "remunerations"]
 
 
 def charger(nom: str) -> dict:
@@ -609,3 +609,100 @@ def test_aucune_personne_physique_dans_les_sorties():
         d = charger(nom)
         assert not interdites & set(cles(d)), nom
         assert "CHUNG" not in json.dumps(d, ensure_ascii=False)  # auteur des métadonnées du PDF, jamais repris
+
+
+# --- Rémunérations ---------------------------------------------------------------------------------------------------
+
+def test_points_et_deciles_lus():
+    lignes = [["Distribution"], [None, "Ensemble"], ["Décile", "Montant (en euros)", "Évolution (% en euros constants)"],
+              ["1er décile (D1)", 1761, 1.3], ["2e décile", 2117, 1.6], ["3e décile", 2385, 2.3],
+              ["4e décile", 2608, 2.7], ["Médiane", 2823, 3.2], ["6e décile", 3067, 3.7], ["7e décile", 3345, 3.6],
+              ["8e décile", 3697, 3.1], ["9e décile (D9)", 4330, 2.6], ["Rapport interdécile (D9/D1)", 2.46, "0,03 pt"],
+              ["Moyenne", 3018, 2.6], ["Source : Insee, Siasp."]]
+    t = fp.lire_tableau(fp.sans_points(lignes), decimales=2)
+    d = fp.deciles(t, 0, 1)
+    assert d["d5"] == {"valeur": 2823, "evolution": 3.2}
+    assert d["rapport_d9_d1"] == {"valeur": 2.46, "evolution": 0.03}
+    del t["lignes"][4]
+    with pytest.raises(SystemExit):
+        fp.deciles(t, 0, 1)
+
+
+def test_dgafp_decomposition_controle_brut_moins_prelevements():
+    ent = [None, "en euros", None, "FPE", "FPT", "FPH", "Ensemble FP"]
+    bloc = [[None, "A", "Salaire brut (a)", 4000, 4100, 3700, 4050],
+            [None, None, "     - Traitement brut", 3000, 3000, 2800, 3000],
+            [None, None, "       - dont indemnité de résidence(2)", 30],
+            [None, None, "     - Cotisations salariales(3) (b)", 400, 400, 350, 390],
+            [None, None, "     - CSG et CRDS (c)", 390, 400, 350, 380],
+            [None, None, "Salaire net de prélèvements \n= (a)-(b)-(c)", 3210, 3300, 3000, 3280],
+            [None, "Source : Siasp, Insee."]]
+    out = fp.lire_dgafp_decomposition([[None, "Figure 9"], ent] + bloc)
+    assert out[0]["categorie"] == "A" and out[0]["population"] == "fonctionnaires de catégorie A"
+    ir = next(e for e in out[0]["elements"] if e["id"].startswith("dont_indemnite"))
+    assert ir["valeurs"]["fpe"] == 30 and ir["valeurs"]["fpt"] is None and "fpt" in ir["non_publie"]
+    bloc[5][3] = 3000  # net incohérent
+    with pytest.raises(SystemExit):
+        fp.lire_dgafp_decomposition([[None, "Figure 9"], ent] + bloc)
+
+
+def test_dgafp_depenses_annees_etoilees_et_secteurs():
+    lignes = [["Poids"], [], [None, 2022, "2023**", "2024***"], ["Dépenses de rémunération (en Md€)"],
+              ["Administrations publiques centrales (1)", 160, 171, 181], ["dont État", 135, 142, 151],
+              ["Toutes administrations publiques", 330, 346, 362],
+              ["Poids des dépenses de rémunération des APU dans leur dépense totale (en %)"],
+              ["Toutes administrations publiques", 21.3, 21.5, 21.7], ["Dépenses totales (en Md€)"],
+              ["Toutes administrations publiques (5)", 1550, 1607, 1670], ["   Source : Comptes nationaux"]]
+    d = fp.lire_dgafp_depenses(lignes)
+    assert d["annees"] == [2022, 2023, 2024]
+    assert d["statut_des_comptes"] == {2023: "semi-définitif", 2024: "provisoire"}
+    assert d["remuneration_md_eur"]["apu"] == [330, 346, 362] and d["remuneration_md_eur"]["etat"][2] == 151
+    assert d["depenses_totales_md_eur"]["apu"][2] == 1670
+
+
+def test_remunerations_salaires_par_versant_et_categorie():
+    r = charger("remunerations")
+    s = r["salaires"]
+    assert [v["id"] for v in s["versants"]] == ["fpe", "fpt", "fph"]
+    for v in s["versants"]:
+        assert v["annee"] == s["annee"]
+        e = v["ensemble"]
+        assert 0 < e["net_eur"] < e["brut_eur"]
+        assert v["fonction_publique"] == s["fonction_publique"]  # même ensemble dans les trois publications
+        assert v["serie_net_euros_constants"]["annees"][-1]["net_eur_constants"] == e["net_eur"]
+        assert v["deciles_net_eur"]["moyenne"]["valeur"] == e["net_eur"]
+        for c in v["categories_fonctionnaires"]:
+            assert c["net_eur"] < c["brut_eur"]
+            assert abs(c["traitement_brut_eur"] + c["primes_et_remunerations_annexes_eur"] - c["brut_eur"]) <= 2
+            assert abs(c["brut_eur"] - c["cotisations_csg_crds_eur"] - c["net_eur"]) <= 2
+            d = c["deciles_net_eur"]
+            assert d["d1"]["valeur"] <= d["d5"]["valeur"] <= d["d9"]["valeur"]
+            assert abs(d["moyenne"]["valeur"] - c["net_eur"]) <= 1
+
+
+def test_remunerations_dgafp_par_categorie_pour_toute_la_fonction_publique():
+    d = charger("remunerations")["salaires_dgafp"]
+    pops = {m["population"]: m["net_eur"] for m in d["moyennes_nettes"]}
+    assert {"Fonctionnaires A", "Fonctionnaires B", "Fonctionnaires C"} <= set(pops)
+    for b in d["decomposition_fonctionnaires"]:
+        e = {x["id"]: x["valeurs"] for x in b["elements"]}
+        for v in ("fpe", "fpt", "fph", "fonction_publique"):
+            assert abs(e["salaire_brut"][v] - e["cotisations_salariales"][v] - e["csg_et_crds"][v]
+                       - e["salaire_net_de_prelevements"][v]) <= 2
+        if b["categorie"]:
+            assert e["salaire_net_de_prelevements"] == pops[f"Fonctionnaires {b['categorie']}"]
+
+
+def test_remunerations_sur_100_eur_toutes_administrations():
+    a = charger("remunerations")["remuneration_salaries_apu"]
+    s = a["sur_100_eur"]
+    assert {v["statut"] for v in s["valeurs"]} == {"calculé", "publié"}  # deux sources, jamais arbitrées
+    assert all(10 < v["valeur_eur"] < 40 for v in s["valeurs"])
+    calc = next(v for v in s["valeurs"] if v["statut"] == "calculé")
+    assert abs(100 * calc["remuneration_m_eur"] / calc["depenses_totales_m_eur"] - calc["valeur_eur"]) < 0.01
+    for e in a["eurostat"]["annees"]:
+        r = e["remuneration_m_eur"]
+        if None not in r.values():
+            assert abs(r["apuc"] + r["apul"] + r["asso"] - r["apu"]) <= 1
+    idx = charger("index")["reperes"]["remunerations"]
+    assert idx["sur_100_eur_depense_publique"]["annee"] == s["annee"]

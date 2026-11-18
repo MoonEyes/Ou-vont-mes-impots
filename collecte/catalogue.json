@@ -3380,6 +3380,76 @@
    "module": "pipeline/fonction_publique.py"
   },
   {
+   "id": "fp_insee_ip2100",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/8986474/ip2100.xlsx",
+   "titre": "Insee Premiere n° 2100, Les salaires dans la fonction publique de l'Etat en 2024 : salaires bruts et nets moyens en EQTP, categories A B C, deciles, serie depuis 2010 (agregats Siasp)",
+   "licence": "Licence Ouverte 2.0 (Insee, reutilisation libre avec mention de la source)",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_insee_ip2101",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/8984823/IP2101.xlsx",
+   "titre": "Insee Premiere n° 2101, Les salaires dans la fonction publique territoriale en 2024 : salaires bruts et nets moyens en EQTP, categories A B C, deciles, serie depuis 2010 (agregats Siasp)",
+   "licence": "Licence Ouverte 2.0 (Insee, reutilisation libre avec mention de la source)",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_insee_ip2102",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/8986438/ip2102.xlsx",
+   "titre": "Insee Premiere n° 2102, Les salaires dans la fonction publique hospitaliere en 2024 : salaires bruts et nets moyens en EQTP, categories A B C, deciles, serie depuis 2011 (agregats Siasp)",
+   "licence": "Licence Ouverte 2.0 (Insee, reutilisation libre avec mention de la source)",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_dgafp_ra2025_remu_niveaux",
+   "domaine": "fonction_publique",
+   "type": "url",
+   "format": "zip",
+   "url": "https://www.fonction-publique.gouv.fr/files/files/publications/vue-rapport-annuel/ra_2025-remu_niveaux.zip",
+   "titre": "DGAFP, rapport annuel sur l'etat de la fonction publique 2025, vue Les remunerations en 2023 : classeurs des figures (salaires nets et bruts moyens par versant et categorie, distribution) et depenses de personnel des administrations publiques en comptabilite nationale (1978-2024)",
+   "licence": "Licence Ouverte 2.0 (DGAFP, reutilisation libre avec mention de la source)",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
+   "id": "fp_eurostat_d1_apu",
+   "domaine": "fonction_publique",
+   "type": "eurostat",
+   "dataset": "gov_10a_exp",
+   "params": {
+    "geo": "FR",
+    "unit": [
+     "MIO_EUR",
+     "PC_GDP"
+    ],
+    "cofog99": "TOTAL",
+    "na_item": [
+     "D1",
+     "TE"
+    ],
+    "sector": [
+     "S13",
+     "S1311",
+     "S1313",
+     "S1314"
+    ],
+    "sinceTimePeriod": "1995",
+    "lang": "fr"
+   },
+   "titre": "Eurostat gov_10a_exp : remuneration des salaries (D1) et total des depenses des administrations publiques et de leurs sous-secteurs, France, depuis 1995",
+   "licence": "CC BY 4.0 (Eurostat)",
+   "producteur": "Eurostat",
+   "module": "pipeline/fonction_publique.py"
+  },
+  {
    "id": "apd_afd_iati",
    "domaine": "aide_developpement",
    "type": "datagouv",
