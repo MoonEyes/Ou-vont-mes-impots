@@ -1,0 +1,492 @@
+{
+ "millesime": "Exécution 2010-2025 selon disponibilité (voir chaque année) ; performance : RAP et PAP 2015 à 2025",
+ "source": "data.economie.gouv.fr/pap-2023-objectifs-et-indicateurs-de-performance ; data.economie.gouv.fr/performance-de-la-depense (RAP 2024) ; data.economie.gouv.fr/performance-de-la-depense-rap-2025 ; data.economie.gouv.fr/performance-execution-et-atteinte-de-la-cible-du-budget-de-l-etat-jusqu-au-niveau-sous-indicateur ; data.economie.gouv.fr/plf-2015-donnees-du-volet-performance ; data.economie.gouv.fr/plf-2016-donnees-du-volet-performance ; data.economie.gouv.fr/plf-2025-performance ; data.economie.gouv.fr/plr-2015-projet-de-loi-de-reglement-pour-2015-donnees-du-volet-performance-prese ; data.economie.gouv.fr/plr-2016-projet-de-loi-de-reglement-pour-2016-donnees-du-volet-performance-prese ; data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024) ; data.economie.gouv.fr/projet-de-loi-de-finances-pour-2017-plf-2017-donnees-du-volet-performance ; data.economie.gouv.fr/projet-de-loi-de-finances-pour-2018-plf-2018-donnees-du-du-volet-performance-des ; data.economie.gouv.fr/projet-de-loi-de-finances-pour-2019-plf-2019-annexe-projet-annuel-de-performance ; data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls ; data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls ; data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023) ; data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)",
+ "avertissement": "Les indicateurs sont choisis par l'administration ; une évolution ne prouve pas l'effet de la dépense.",
+ "programme": "156",
+ "libelle": "Gestion fiscale et financière de l'État et du secteur public local",
+ "mission": "Gestion des finances publiques",
+ "unite_montants": "euros (crédits de paiement)",
+ "prevu_depense": {
+  "annees": [
+   {
+    "annee": 2024,
+    "source": "data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)",
+    "vote_lfi_eur": 8138123940.0,
+    "ouvert_en_gestion": {
+     "total_eur": 8041435570.79,
+     "lfr_eur": -177380076.0,
+     "reports_entrants_eur": 72425767.0,
+     "mouvements_reglementaires_eur": -14205300.0,
+     "fonds_de_concours_et_attributions_de_produits_eur": 22471239.79,
+     "fongibilite_asymetrique_eur": 0.0
+    },
+    "depense_constatee_eur": 7959196649.26,
+    "ecart_eur": -178927290.74,
+    "ecart_pct": -2.2,
+    "ecart_ouvert_eur": -82238921.53,
+    "eur_sur_100": 1.58246
+   },
+   {
+    "annee": 2025,
+    "source": "data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)",
+    "vote_lfi_eur": 8137480441.0,
+    "ouvert_en_gestion": {
+     "total_eur": 8121171862.93,
+     "lfr_eur": -70483876.0,
+     "reports_entrants_eur": 43215740.0,
+     "mouvements_reglementaires_eur": -14366235.0,
+     "fonds_de_concours_et_attributions_de_produits_eur": 25325792.93,
+     "fongibilite_asymetrique_eur": 0.0
+    },
+    "depense_constatee_eur": 8001324844.4,
+    "ecart_eur": -136155596.6,
+    "ecart_pct": -1.67,
+    "ecart_ouvert_eur": -119847018.53
+   }
+  ],
+  "lecture": "Voté = loi de finances initiale (LFI). Ouvert en gestion = LFI + lois de finances rectificatives + reports de l'année précédente + mouvements réglementaires + fonds de concours et attributions de produits. Écart = dépensé - voté (en % du voté). Crédits de paiement (CP).",
+  "note_perimetre": "Avant 2018 et en 2022 : budget général seulement et nomenclature de l'année ; un même numéro de programme peut avoir changé de périmètre."
+ },
+ "resultats_mesures": {
+  "indicateurs": [
+   {
+    "id": "156-24",
+    "code_indicateur": "P156-3-1",
+    "objectif": "Maîtriser les coûts de gestion de la DGFiP au profit d'une efficience accrue",
+    "indicateur": "Taux d'intervention et d'évolution de la productivité",
+    "sous_indicateur": "Taux d'intervention sur l'impôt",
+    "unite": "%",
+    "indicateur_de_contexte": false,
+    "libelles_anterieurs": null,
+    "valeurs": [
+     {
+      "annee": 2012,
+      "valeur": 0.94,
+      "brut": "0,94",
+      "source": "PAP 2015"
+     },
+     {
+      "annee": 2013,
+      "valeur": 0.88,
+      "brut": "0,88",
+      "source": "RAP 2015 (PLR 2015)"
+     },
+     {
+      "annee": 2014,
+      "valeur": 0.86,
+      "brut": "0,86",
+      "source": "RAP 2016 (PLR 2016)"
+     },
+     {
+      "annee": 2015,
+      "valeur": 0.96,
+      "brut": "0,96",
+      "source": "PAP 2018"
+     },
+     {
+      "annee": 2016,
+      "valeur": 0.92,
+      "brut": "0,92",
+      "source": "PAP 2019"
+     },
+     {
+      "annee": 2017,
+      "valeur": 0.84,
+      "brut": "0,84",
+      "source": "RAP 2019"
+     },
+     {
+      "annee": 2018,
+      "valeur": 0.81,
+      "brut": "0,81",
+      "source": "RAP 2020"
+     },
+     {
+      "annee": 2019,
+      "valeur": 0.79,
+      "brut": "0,79",
+      "source": "RAP 2020"
+     },
+     {
+      "annee": 2020,
+      "valeur": 0.71,
+      "brut": "0,71",
+      "source": "PAP 2023"
+     },
+     {
+      "annee": 2021,
+      "valeur": 0.74,
+      "brut": "0,74",
+      "source": "PAP 2023"
+     },
+     {
+      "annee": 2022,
+      "valeur": 0.67,
+      "brut": "0.67",
+      "source": "Performance : exécution et atteinte de la cible (2022-2024)"
+     },
+     {
+      "annee": 2023,
+      "valeur": 0.68,
+      "brut": "0,68",
+      "source": "RAP 2025"
+     },
+     {
+      "annee": 2024,
+      "valeur": 0.54,
+      "brut": "0,54",
+      "source": "RAP 2025"
+     },
+     {
+      "annee": 2025,
+      "valeur": 0.53,
+      "brut": "0,53",
+      "source": "RAP 2025"
+     }
+    ],
+    "cibles": [
+     {
+      "annee": 2014,
+      "valeur": 0.9,
+      "brut": "0,9",
+      "source": "PAP 2015"
+     },
+     {
+      "annee": 2015,
+      "valeur": 0.85,
+      "brut": "0,85",
+      "source": "RAP 2015 (PLR 2015)"
+     },
+     {
+      "annee": 2016,
+      "valeur": 0.8,
+      "brut": "0,80",
+      "source": "RAP 2016 (PLR 2016)"
+     },
+     {
+      "annee": 2017,
+      "valeur": 0.77,
+      "brut": "0.77",
+      "source": "PAP 2017"
+     },
+     {
+      "annee": 2018,
+      "valeur": 0.87,
+      "brut": "0,87",
+      "source": "PAP 2019"
+     },
+     {
+      "annee": 2019,
+      "valeur": 0.81,
+      "brut": "0,81",
+      "source": "RAP 2019"
+     },
+     {
+      "annee": 2020,
+      "valeur": 0.86,
+      "brut": "0,86",
+      "source": "RAP 2020"
+     },
+     {
+      "annee": 2022,
+      "valeur": 0.67,
+      "brut": "0.67",
+      "source": "Performance : exécution et atteinte de la cible (2022-2024)"
+     },
+     {
+      "annee": 2023,
+      "valeur": 0.68,
+      "brut": "0.68",
+      "source": "Performance : exécution et atteinte de la cible (2022-2024)"
+     },
+     {
+      "annee": 2024,
+      "valeur": 0.69,
+      "brut": "0.69",
+      "source": "Performance : exécution et atteinte de la cible (2022-2024)"
+     },
+     {
+      "annee": 2025,
+      "valeur": 0.71,
+      "brut": "0,71",
+      "source": "RAP 2025"
+     },
+     {
+      "annee": 2026,
+      "valeur": 0.57,
+      "brut": "0,57",
+      "source": "RAP 2025"
+     },
+     {
+      "annee": 2027,
+      "valeur": 0.7,
+      "brut": "0,70",
+      "source": "PAP 2025"
+     }
+    ],
+    "ecarts_a_la_cible": [
+     {
+      "annee": 2014,
+      "realise": 0.86,
+      "cible": 0.9,
+      "ecart": -0.04,
+      "atteinte_publiee": null
+     },
+     {
+      "annee": 2015,
+      "realise": 0.96,
+      "cible": 0.85,
+      "ecart": 0.11,
+      "atteinte_publiee": null
+     },
+     {
+      "annee": 2016,
+      "realise": 0.92,
+      "cible": 0.8,
+      "ecart": 0.12,
+      "atteinte_publiee": null
+     },
+     {
+      "annee": 2017,
+      "realise": 0.84,
+      "cible": 0.77,
+      "ecart": 0.07,
+      "atteinte_publiee": null
+     },
+     {
+      "annee": 2018,
+      "realise": 0.81,
+      "cible": 0.87,
+      "ecart": -0.06,
+      "atteinte_publiee": null
+     },
+     {
+      "annee": 2019,
+      "realise": 0.79,
+      "cible": 0.81,
+      "ecart": -0.02,
+      "atteinte_publiee": null
+     },
+     {
+      "annee": 2020,
+      "realise": 0.71,
+      "cible": 0.86,
+      "ecart": -0.15,
+      "atteinte_publiee": null
+     },
+     {
+      "annee": 2022,
+      "realise": 0.67,
+      "cible": 0.67,
+      "ecart": 0.0,
+      "atteinte_publiee": "cible atteinte"
+     },
+     {
+      "annee": 2023,
+      "realise": 0.68,
+      "cible": 0.68,
+      "ecart": 0.0,
+      "atteinte_publiee": "cible atteinte"
+     },
+     {
+      "annee": 2024,
+      "realise": 0.54,
+      "cible": 0.69,
+      "ecart": -0.15,
+      "atteinte_publiee": "cible atteinte"
+     },
+     {
+      "annee": 2025,
+      "realise": 0.53,
+      "cible": 0.71,
+      "ecart": -0.18,
+      "atteinte_publiee": "cible atteinte"
+     }
+    ],
+    "sens_souhaite": {
+     "valeur": "baisse",
+     "methode": "colonne evolution",
+     "source": "data.economie.gouv.fr/performance-de-la-depense-rap-2025",
+     "justification": "Sens d'évolution « Baisse » publié dans le RAP 2025."
+    },
+    "tendance": {
+     "valeur": "dans le sens souhaité publié",
+     "de_annee": 2024,
+     "a_annee": 2025,
+     "de": 0.54,
+     "a": 0.53,
+     "variation": -0.01,
+     "variation_relative_pct": -1.85,
+     "justification": {
+      "sens_souhaite": "baisse",
+      "methode": "colonne evolution",
+      "source": "data.economie.gouv.fr/performance-de-la-depense-rap-2025"
+     }
+    },
+    "rapprochement": {
+     "création": 1,
+     "code": 10,
+     "libellé": 5
+    }
+   }
+  ],
+  "note": null,
+  "lecture": "Valeurs réalisées et cibles par année ; « brut » = valeur publiée avant nettoyage. Le sens souhaité vient de la colonne `evolution` du RAP 2025, sinon de la position des cibles par rapport au réalisé, sinon il est inconnu. « Stable » : variation de 1.0 % ou moins entre les deux dernières valeurs."
+ },
+ "realisations_concretes": {
+  "liste": [
+   {
+    "objet": "Prestation de service",
+    "beneficiaire": "ASSOCIATION LA RESIDENCE DE L ECOLE NATIONALE DES FINANCES PUBLIQUES",
+    "siren": "775633795",
+    "montant_eur": 2630992.45,
+    "eur_sur_100": 0.000523,
+    "type": "subvention à une association"
+   },
+   {
+    "objet": "Prestation de service",
+    "beneficiaire": "ASSOCIATION POUR LE LOGEMENT DES STAGIAIRES DE L ECOLE NATIONALE DES FINANCES PUBLIQUES",
+    "siren": "449695196",
+    "montant_eur": 1300000.0,
+    "eur_sur_100": 0.000258,
+    "type": "subvention à une association"
+   },
+   {
+    "objet": "Prestation de service",
+    "beneficiaire": "SELFY 78",
+    "siren": "820366300",
+    "montant_eur": 677255.5,
+    "eur_sur_100": 0.000135,
+    "type": "subvention à une association"
+   },
+   {
+    "objet": "Prestation de service",
+    "beneficiaire": "AGR ENFIP",
+    "siren": "394083703",
+    "montant_eur": 466395.57,
+    "eur_sur_100": 9.3e-05,
+    "type": "subvention à une association"
+   },
+   {
+    "objet": "Prestation de service",
+    "beneficiaire": "ARA 06",
+    "siren": "790637730",
+    "montant_eur": 390400.1,
+    "eur_sur_100": 7.8e-05,
+    "type": "subvention à une association"
+   },
+   {
+    "objet": "Prestation de service",
+    "beneficiaire": "ASSOCIATION DES AGENTS DES FINANCES PUBLIQUES",
+    "siren": "793909003",
+    "montant_eur": 335563.0,
+    "eur_sur_100": 6.7e-05,
+    "type": "subvention à une association"
+   },
+   {
+    "objet": "Prestation de service",
+    "beneficiaire": "ASSOCIATION DE GESTION DES RESTAURANTS ADMNISTRATIFS MOSELLE",
+    "siren": "832611156",
+    "montant_eur": 318185.0,
+    "eur_sur_100": 6.3e-05,
+    "type": "subvention à une association"
+   },
+   {
+    "objet": "Prestation de service",
+    "beneficiaire": "ASS GESTION RESTAURANT ADMIN DIRCOFI IDF",
+    "siren": "445247745",
+    "montant_eur": 278665.0,
+    "eur_sur_100": 5.5e-05,
+    "type": "subvention à une association"
+   },
+   {
+    "objet": "Prestation de service",
+    "beneficiaire": "ASSOCIATION DE GESTION DES RESTAURANTS ADMINISTRATIFS DES FINANCES DE L HERAULT",
+    "siren": "845013655",
+    "montant_eur": 270639.22,
+    "eur_sur_100": 5.4e-05,
+    "type": "subvention à une association"
+   },
+   {
+    "objet": "Prestation de service",
+    "beneficiaire": "ASS GESTION RESTAURANT IMPOTS DE RENNES",
+    "siren": "428764070",
+    "montant_eur": 264171.0,
+    "eur_sur_100": 5.3e-05,
+    "type": "subvention à une association"
+   }
+  ],
+  "fichier_beneficiaires": "beneficiaires/programme_156.json",
+  "millesime": "Crédits versés en 2023 (jaune PLF 2025)",
+  "source": "data.economie.gouv.fr/plf25-donnees-de-l-annexe-jaune-effort-financier-de-l-etat-en-faveur-des-associations (jaune PLF 2025, crédits versés en 2023) ; API Recherche d'entreprises (recherche-entreprises.api.gouv.fr), catégorie juridique",
+  "france2030": null,
+  "note": "Les plus gros objets nommés connus, pas l'ensemble de la dépense du programme."
+ },
+ "evaluations": {
+  "liens": [
+   {
+    "type": "note d'exécution budgétaire (NEB)",
+    "annee_execution": 2025,
+    "titre": "Note d'exécution budgétaire 2025 : Gestion des finances publiques",
+    "titre_publie": "Gestion des finances publiques",
+    "url": "https://www.ccomptes.fr/sites/default/files/2026-04/NEB-2026-Gestion-finances-publiques.pdf",
+    "page": "https://www.ccomptes.fr/fr/publications/le-budget-de-letat-en-2025-resultats-et-gestion",
+    "rattachement": "mission (titre de la note, sans l'année, = nom exact de la mission)",
+    "verifie": true,
+    "verifie_le": "2026-11-16",
+    "statut_http": 200
+   },
+   {
+    "type": "note d'exécution budgétaire (NEB)",
+    "annee_execution": 2024,
+    "titre": "Note d'exécution budgétaire 2024 : Gestion des finances publiques",
+    "titre_publie": "Gestion des finances publiques",
+    "url": "https://www.ccomptes.fr/sites/default/files/2025-04/NEB-2024-Gestion-finances-publiques.pdf",
+    "page": "https://www.ccomptes.fr/fr/publications/le-budget-de-letat-en-2024-resultats-et-gestion",
+    "rattachement": "mission (titre de la note, sans l'année, = nom exact de la mission)",
+    "verifie": true,
+    "verifie_le": "2026-11-16",
+    "statut_http": 200
+   },
+   {
+    "type": "note d'exécution budgétaire (NEB)",
+    "annee_execution": 2023,
+    "titre": "Note d'exécution budgétaire 2023 : Gestion des finances publiques",
+    "titre_publie": "Gestion des finances publiques",
+    "url": "https://www.ccomptes.fr/sites/default/files/2024-04/NEB-2023-Gestion-finances-publiques.pdf",
+    "page": "https://www.ccomptes.fr/fr/publications/le-budget-de-letat-en-2023-resultats-et-gestion",
+    "rattachement": "mission (titre de la note, sans l'année, = nom exact de la mission)",
+    "verifie": true,
+    "verifie_le": "2026-11-16",
+    "statut_http": 200
+   },
+   {
+    "type": "note d'exécution budgétaire (NEB)",
+    "annee_execution": 2022,
+    "titre": "Note d'exécution budgétaire 2022 : Gestion des finances publiques",
+    "titre_publie": "Gestion des finances publiques 2022",
+    "url": "https://www.ccomptes.fr/sites/default/files/2023-10/NEB-2022-Gestion-finances-publiques.pdf",
+    "page": "https://www.ccomptes.fr/fr/publications/le-budget-de-letat-en-2022-resultats-et-gestion",
+    "rattachement": "mission (titre de la note, sans l'année, = nom exact de la mission)",
+    "verifie": true,
+    "verifie_le": "2026-11-16",
+    "statut_http": 200
+   },
+   {
+    "type": "note d'exécution budgétaire (NEB)",
+    "annee_execution": 2021,
+    "titre": "Note d'exécution budgétaire 2021 : Gestion des finances publiques",
+    "titre_publie": "Gestion des finances publiques 2021",
+    "url": "https://www.ccomptes.fr/sites/default/files/2023-10/NEB-2021-Gestion-finances-publiques.pdf",
+    "page": "https://www.ccomptes.fr/fr/publications/le-budget-de-letat-en-2021-resultats-et-gestion",
+    "rattachement": "mission (titre de la note, sans l'année, = nom exact de la mission)",
+    "verifie": true,
+    "verifie_le": "2026-11-16",
+    "statut_http": 200
+   }
+  ],
+  "source": "https://www.ccomptes.fr (pages « Le budget de l'État en <année> », flux https://www.ccomptes.fr/fr/rss/publications)",
+  "liens_ecartes_non_verifies": 0,
+  "note": null
+ }
+}

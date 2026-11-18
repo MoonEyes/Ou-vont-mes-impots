@@ -2808,3 +2808,44 @@ fieldset.saisie-groupe {
   border-color: var(--contour);
   background: var(--papier);
 }
+/* recouvrement */
+.recouvrement-vues,
+.recouvrement-estimations {
+  display: grid;
+  gap: 1rem;
+.recouvrement-notions {
+  display: grid;
+  gap: 0.75rem;
+.recouvrement-notions h4,
+.recouvrement-estimation h4 {
+  margin: 0.5rem 0 0.25rem;
+.recouvrement-notions ul {
+  padding-left: 1.25rem;
+.recouvrement-valeur strong {
+  font-size: 1.5rem;
+.recouvrement-estimation dl,
+.recouvrement-definitions {
+  margin: 0.5rem 0;
+.recouvrement-estimation dt,
+.recouvrement-definitions dt {
+  margin-top: 0.5rem;
+.recouvrement-estimation dd,
+.recouvrement-definitions dd {
+  margin: 0.125rem 0 0;
+.recouvrement-citation {
+  margin: 0.75rem 0 0;
+  padding: 0.25rem 0 0.25rem 1rem;
+  border-left: var(--trait) solid var(--contour);
+.recouvrement-citation p {
+  font-style: italic;
+.recouvrement-citation footer {
+  margin: 0.25rem 0 0;
+  overflow-wrap: anywhere;
+.recouvrement-constats {
+  padding-left: 1.25rem;
+@media (min-width: 56rem) {
+  .recouvrement-vues,
+  .recouvrement-estimations {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .recouvrement-notions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
