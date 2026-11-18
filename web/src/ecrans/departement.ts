@@ -8,6 +8,7 @@ import { chargerSiPresent } from '../donnees'
 import type { Rendu } from '../routeur'
 import { absent, appliquerLargeurs, entier, h, source } from '../util'
 import { blocBudget, clesBudget, type Budgets, type Geo } from './commune'
+import { blocAideSociale, blocInvestissementDepartement, blocOrganismesDepartement, blocSruDepartement, type FichierCcas, type FichierSyndicats, type Territoire } from './territoires'
 
 export const titreDepartement = (nom: string, code: string) => `${nom} (${code}) : budget des communes, dépenses, dotations, taux`
 
@@ -36,6 +37,14 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
   ${ouCest(dep, nom)}
 </div>
 <div id="sec-budget-dep" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>
+<h2>Les projets aidés par l’État dans le département</h2>
+<div id="sec-projets-etat" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>
+<h2>L’aide sociale du département</h2>
+<div id="sec-aide-sociale" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>
+<h2>Logement social : les communes de la loi SRU</h2>
+<div id="sec-sru" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>
+<h2>Syndicats et organismes départementaux</h2>
+<div id="sec-organismes" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>
 ${
   grandes.length
     ? `<h2>Communes de plus de ${h(entier(SEUIL_PAGE_COMMUNE))} habitants</h2>
@@ -59,7 +68,14 @@ ${source(geo.source, geo.millesime)}
 </ul>
 ${partPersonnelle()}`
 
-  const suite = (async () => {
+  const remplir = (id: string, html: string) => {
+    const z = cible.querySelector<HTMLElement>(`#${id}`)
+    if (!z) return
+    z.innerHTML = html
+    z.removeAttribute('aria-busy')
+    appliquerLargeurs(z)
+  }
+  const budget = (async () => {
     const z = cible.querySelector<HTMLElement>('#sec-budget-dep')!
     const bd = await chargerSiPresent<Budgets>('local/budgets/departements.json')
     const dpt = bd?.collectivites[dep]
@@ -67,6 +83,28 @@ ${partPersonnelle()}`
     z.removeAttribute('aria-busy')
     appliquerLargeurs(z)
   })()
+  // Données par département : projets aidés par l'État, aide sociale, inventaire SRU (territoires/), syndicats et
+  // centres d'action sociale (local_satellites/). Demandées après le budget du département.
+  const territoires = budget.then(async () => {
+    const [ter, syn, ccas] = await Promise.all([
+      chargerSiPresent<Territoire>(`territoires/${dep}.json`),
+      chargerSiPresent<FichierSyndicats>(`local_satellites/syndicats/${dep}.json`),
+      chargerSiPresent<FichierCcas>(`local_satellites/ccas/${dep}.json`),
+    ])
+    remplir('sec-projets-etat', ter ? blocInvestissementDepartement(ter) : absent('Projets non disponibles.'))
+    remplir('sec-aide-sociale', ter ? blocAideSociale(ter) : absent('Aide sociale non disponible.'))
+    remplir('sec-sru', ter ? blocSruDepartement(ter) : absent('Inventaire non disponible.'))
+    remplir('sec-organismes', blocOrganismesDepartement(syn, ccas))
+  })
+  const suite = Promise.all([budget, territoires])
+    .then(() => undefined)
+    .catch((e) => {
+      console.error(e)
+      cible.querySelectorAll<HTMLElement>('.section-donnees[aria-busy]').forEach((z) => {
+        z.innerHTML = absent()
+        z.removeAttribute('aria-busy')
+      })
+    })
   return {
     suite,
     titre: titreDepartement(nom, dep),

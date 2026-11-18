@@ -7,6 +7,7 @@ import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { lien, type Rendu } from '../routeur'
 import { absent, appliquerLargeurs, badgeStatut, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
+import { blocInvestissementCommune, blocOrganismesCommune, blocSruCommune, type Beneficiaire, type FichierCcas, type FichierEau, type FichierMobilite, type FichierSyndicats, type Territoire } from './territoires'
 
 export interface Geo {
   millesime: string
@@ -127,6 +128,12 @@ ${attente('sec-dotations')}
 ${attente('sec-taux')}
 <h2>Subventions votées et publiées</h2>
 ${attente('sec-subventions')}
+<h2>Les projets aidés par l’État, de la commune et de son intercommunalité</h2>
+${attente('sec-projets-etat')}
+<h2>Logement social : la loi SRU</h2>
+${attente('sec-sru')}
+<h2>Syndicats, action sociale, transports, eau : les organismes rattachés</h2>
+${attente('sec-organismes')}
 <h2>Pour aller plus loin</h2>
 <ul class="liens-sortie">
   <li><a href="#/explorer/collectivites">Les collectivités locales en France</a></li>
@@ -168,7 +175,7 @@ ${reg && br ? blocBudget(br, reg, `La région : ${reg.nom}`, false) : ''}`,
   })()
 
   // Fichiers plus bas dans la page : demandés après les budgets pour ne pas leur prendre la bande passante.
-  const suite = budgets.then(async () => {
+  const locales = budgets.then(async () => {
     const [dot, taux, dec] = await Promise.all([
       chargerSiPresent<{ source: string; millesime: string; annees: string[]; communes: Record<string, { eur: Record<string, Record<string, number>> }>; investissement_etat: Record<string, Record<string, { total: number; nb_projets: number; projets: [string, string | null, number, number][] }>> }>(`local/dotations/communes/${dep}.json`),
       chargerSiPresent<{ source: string; colonnes: string[]; communes: Record<string, Record<string, number[]>> }>(`local/taux/${dep}.json`),
@@ -226,6 +233,33 @@ ${
 ${dec ? `<p class="aide">${h(dec.limites)}</p>` : ''}`,
     )
   })
+  // Données par département (territoires, local_satellites) : projets aidés par l'État, logement social, organismes.
+  const territoires = budgets.then(async () => {
+    const [ter, syn, ccas, mob, eau] = await Promise.all([
+      chargerSiPresent<Territoire>(`territoires/${dep}.json`),
+      chargerSiPresent<FichierSyndicats>(`local_satellites/syndicats/${dep}.json`),
+      chargerSiPresent<FichierCcas>(`local_satellites/ccas/${dep}.json`),
+      chargerSiPresent<FichierMobilite>(`local_satellites/mobilite/${dep}.json`),
+      chargerSiPresent<FichierEau>(`local_satellites/eau/${dep}.json`),
+    ])
+    let projets = absent('Projets non disponibles.')
+    if (ter) {
+      // Un bénéficiaire (l'intercommunalité) peut être publié dans le fichier d'un autre département.
+      const refs = ter.investissement_etat.par_commune[insee] ?? []
+      const autres = [...new Set(refs.map(([, d]) => d).filter((d) => d !== dep))]
+      const fichiers = new Map<string, Territoire | null>([[dep, ter]])
+      for (const d of autres) fichiers.set(d, /^(\d{2,3}|2[AB])$/.test(d) ? await chargerSiPresent<Territoire>(`territoires/${d}.json`) : null)
+      const benef = refs
+        .map(([id, d]) => fichiers.get(d)?.investissement_etat.beneficiaires.find((b) => b.id === id))
+        .filter((b): b is Beneficiaire => !!b)
+        .sort((a, b) => (a.type === 'commune' ? 0 : 1) - (b.type === 'commune' ? 0 : 1) || a.nom.localeCompare(b.nom, 'fr'))
+      projets = blocInvestissementCommune(benef, ter)
+    }
+    remplir('sec-projets-etat', projets)
+    remplir('sec-sru', ter ? blocSruCommune(ter.sru?.communes[insee], ter) : absent('Inventaire non disponible.'))
+    remplir('sec-organismes', blocOrganismesCommune(insee, syn, ccas, mob, eau))
+  })
+  const suite = Promise.all([locales, territoires]).then(() => undefined)
   return {
     titre: titreCommune(g.nom, geo.departement.nom),
     adresse: fragmentCommune(insee, g.nom, g.population),
