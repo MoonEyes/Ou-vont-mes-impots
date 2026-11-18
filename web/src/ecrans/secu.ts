@@ -6,7 +6,7 @@ import { rendreArbre } from './detail'
 const VUES: VueArbre[] = [
   { cle: 'organismes2024', dossier: 'secu/arbre', libelle: 'Comptes des organismes 2024', millesime: 'Exécution 2024' },
   { cle: 'organismes2025', dossier: 'secu/arbre_2025', libelle: 'Comptes des organismes 2025', millesime: 'Exécution 2025' },
-  { cle: 'protection2024', dossier: 'secu/cps', libelle: 'Protection sociale 2024 (DREES)', millesime: '2024' },
+  { cle: 'protection2024', dossier: 'secu/cps', libelle: 'Protection sociale 2024 (statistiques DREES)', millesime: '2024' },
 ]
 
 type NoeudSecu = Noeud & {

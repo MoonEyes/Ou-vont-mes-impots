@@ -77,8 +77,8 @@ function fiche(o: Operateur, totalScsp: number, limites: string[]): string {
   return `
 <p>${traitStatut(s.statut)}<strong>${h(s.libelle)}</strong> : ${h(s.raison)}</p>
 ${scsp(ref) > 0 ? `<p>Subvention pour charges de service public ${ANNEE_REF} : ${h(eurLisible(scsp(ref)))}, soit ${h(sur100((scsp(ref) / totalScsp) * 100))} sur 100 € de subventions de l’État aux opérateurs.</p>` : ''}
-<div class="tableau-defile"><table><caption>${h(o.nom)} : exécution ${annees.filter((y) => o.annees[y].nature === 'execution').join(', ')}${annees.some((y) => o.annees[y].nature === 'lfi') ? ' ; crédits votés (LFI) pour ' + annees.filter((y) => o.annees[y].nature === 'lfi').join(', ') : ''}</caption>
-<thead><tr><th scope="col">Euros</th>${annees.map((y) => `<th scope="col" class="nombre">${y}${o.annees[y].nature === 'lfi' ? ' (LFI)' : ''}</th>`).join('')}</tr></thead>
+<div class="tableau-defile"><table><caption>${h(o.nom)} : exécution ${annees.filter((y) => o.annees[y].nature === 'execution').join(', ')}${annees.some((y) => o.annees[y].nature === 'lfi') ? ' ; budget voté pour ' + annees.filter((y) => o.annees[y].nature === 'lfi').join(', ') : ''}</caption>
+<thead><tr><th scope="col">Euros</th>${annees.map((y) => `<th scope="col" class="nombre">${y}${o.annees[y].nature === 'lfi' ? ' (voté)' : ''}</th>`).join('')}</tr></thead>
 <tbody>
 ${ligne('Subvention pour charges de service public', (a) => val(a.nature === 'lfi' ? a.credits_votes_lfi?.scsp?.cp_eur : a.financement_etat?.scsp?.cp_eur, eurLisible))}
 ${ligne('Transferts', (a) => val(a.nature === 'lfi' ? a.credits_votes_lfi?.transferts?.cp_eur : a.financement_etat?.transferts?.cp_eur, eurLisible))}

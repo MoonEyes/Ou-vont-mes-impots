@@ -37,6 +37,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 
   // Le billet de l'État : une part par grand poste, chacune ouvre ses missions un niveau plus bas.
   const an = racine.millesime ?? v.millesime
+  const periode = v.periode ?? an
   const partsPostes: Part[] = postes.map((p, i) => ({
     nom: libelle(p.nom),
     valeur: p.md,
@@ -88,21 +89,22 @@ ${billet(
   cible.innerHTML = `
 <div class="entete-section">
   <div>
-    <h1>Sur 100 € dépensés par l’État</h1>
-    <p class="chapeau">Le budget de l’État (${h(md(total))}, ${h(an)}) découpé en grands postes, ramené à 100 €. Les remboursements et dégrèvements d’impôts ne sont pas comptés : c’est de l’argent rendu, pas dépensé.</p>
+    <h1>Le budget de l’État, sur 100 € dépensés</h1>
+    <p class="chapeau">Ici, ce n’est plus ton argent : c’est toute la dépense de l’État, quelle que soit la personne qui la paie. ${ir > 0 ? 'Ta part est en bas de page.' : `Pour voir ta part, <a href="${lien('/')}">calcule-la depuis l’accueil</a>.`}</p>
+    <p class="chapeau">Le budget de l’État (${h(md(total))}, ${h(periode)}) découpé en grands postes, ramené à 100 €. Les remboursements et dégrèvements d’impôts ne sont pas comptés : c’est de l’argent rendu, pas dépensé.</p>
   </div>
   <div class="bascule" role="group" aria-label="Millésime">
     ${vues.map((x) => `<a class="bouton" href="${lien('/explorer/etat', { m: x.cle })}"${x === v ? ' aria-current="true"' : ''}>${h(x.libelle)}</a>`).join('')}
   </div>
 </div>
 ${perso}
-${billet(partsPostes, { etiquette: `Billet de 100 € dépensés par l’État en grands postes (${an})` })}
+${billet(partsPostes, { etiquette: `Billet de 100 € dépensés par l’État en grands postes (${periode})` })}
 ${niveauBas}
 <div class="colonnes c-8-4">
   <div>
     <h2>Les grands postes</h2>
     <div class="carte">
-      <p class="aide">${h(an)}, ramené à 100 €.</p>
+      <p class="aide">${h(periode)}, ramené à 100 €.</p>
       ${barres(
         postes.map((p) => ({
           nom: libelle(p.nom),
@@ -127,7 +129,7 @@ ${
   emprunt
     ? `<div class="carte" data-cle>
   <div class="empile" aria-hidden="true"><span class="recettes-seg" data-l="${(100 - emprunt.part_empruntee * 100).toFixed(2)}"></span><span class="emprunt-seg" data-l="${(emprunt.part_empruntee * 100).toFixed(2)}"></span></div>
-  <p>Sur 100 € dépensés par l’État (${h(md(total))} au total) : <strong class="texte-accent">${h(sur100(100 - emprunt.part_empruntee * 100))}</strong> venaient des recettes de l’année, <strong class="texte-emprunt">${surligne(sur100(emprunt.part_empruntee * 100))}</strong> ont été empruntés (${h(an)}).</p>
+  <p>Sur 100 € dépensés par l’État (${h(md(total))} au total) : <strong class="texte-accent">${h(sur100(100 - emprunt.part_empruntee * 100))}</strong> venaient des recettes de l’année, <strong class="texte-emprunt">${surligne(sur100(emprunt.part_empruntee * 100))}</strong> ont été empruntés (${h(periode)}).</p>
 </div>`
     : absent('Part empruntée non disponible pour ce millésime.')
 }

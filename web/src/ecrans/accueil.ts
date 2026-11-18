@@ -93,7 +93,7 @@ ${tuiles()}
 <h2>À quoi servent mes impôts ?</h2>
 <p>Ce que tu verses en impôts, en cotisations et en taxes va à quatre ensembles : l’État, la Sécurité sociale, les collectivités locales et l’Union européenne. Le site suit chaque montant jusqu’au document public d’où il vient, jusqu’à la ligne du budget voté.</p>
 <ul class="liens-sortie">
-  <li><a href="#/explorer/etat">Sur 100 € dépensés par l’État</a></li>
+  <li><a href="#/explorer/etat">Le budget de l’État, sur 100 € dépensés</a></li>
   <li><a href="#/explorer/secu">Sécurité sociale : retraites, santé, famille</a></li>
   <li><a href="#/explorer/recettes">D’où vient l’argent : les recettes</a></li>
   <li><a href="#/explorer/dette">La dette publique</a></li>

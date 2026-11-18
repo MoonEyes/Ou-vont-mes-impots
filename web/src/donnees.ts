@@ -92,12 +92,14 @@ export interface VueArbre {
   dossier: string
   libelle: string
   millesime: string
+  /** Période en clair, sans sigle, pour l'affichage. */
+  periode?: string
 }
 
 export const VUES_ARBRE: VueArbre[] = [
-  { cle: 'execution2024', dossier: 'arbre', libelle: 'Dépenses exécutées 2024', millesime: 'Exécution 2024' },
-  { cle: 'lfi2025', dossier: 'arbre_lfi2025', libelle: 'Budget voté 2025 (LFI)', millesime: 'LFI 2025' },
-  { cle: 'nature2025', dossier: 'arbre_plf2025_nature', libelle: 'Par nature, projet 2025 (PLF)', millesime: 'PLF 2025' },
+  { cle: 'execution2024', dossier: 'arbre', libelle: 'Dépensé en 2024 (par politique)', millesime: 'Exécution 2024', periode: 'dépenses réelles 2024' },
+  { cle: 'lfi2025', dossier: 'arbre_lfi2025', libelle: 'Budget voté 2025 (par politique)', millesime: 'LFI 2025', periode: 'budget voté 2025' },
+  { cle: 'nature2025', dossier: 'arbre_plf2025_nature', libelle: 'Budget proposé 2025 (par type de dépense)', millesime: 'PLF 2025', periode: 'budget proposé 2025' },
 ]
 
 export const vueArbre = (cle: string | null) => VUES_ARBRE.find((v) => v.cle === cle) ?? VUES_ARBRE[0]

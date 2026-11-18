@@ -93,7 +93,7 @@ function blocTotal(r: ResultatOk, c: Complet | null): string {
     <p class="aide">Soit ${h(eur(t.central / 12))} par mois, pour ${h(eur(net))} net avant impôt par an. Hors cotisations de ton employeur (plus bas)${
       c?.lignes.some((l) => l.non_chiffre) ? ' ; les montants « non chiffré » ne sont pas comptés' : ''
     }.</p>
-    <p class="source">calcul sur ton appareil (modele-social, vérifié face à OpenFisca), Insee, PLF et PLFSS 2026, DGFiP. <a href="#/methode">Méthode</a></p>
+    <p class="source">calcul sur ton appareil (modele-social, vérifié face à OpenFisca), Insee, projets de budget 2026 de l’État (PLF) et de la Sécurité sociale (PLFSS), DGFiP. <a href="#/methode">Méthode</a></p>
   </section>`
 }
 

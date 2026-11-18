@@ -97,7 +97,7 @@ ${
 
 <h2>Le budget de l’État</h2>
 <ul>
-<li>Vue par défaut : <strong>${h(meta.millesime?.etat_defaut ?? 'Exécution 2024')}</strong> (dépenses réellement payées, crédits de paiement), autre vue : ${h((meta.millesime?.etat_disponibles ?? []).join(', '))}. Source : budget vert du PLF 2026 (data.economie.gouv.fr), complété par le PLRG.</li>
+<li>Vue par défaut : <strong>${h(meta.millesime?.etat_defaut ?? 'Exécution 2024')}</strong> (dépenses réellement payées, crédits de paiement), autre vue : ${h((meta.millesime?.etat_disponibles ?? []).join(', '))}. Source : budget vert du projet de loi de finances 2026 (PLF, data.economie.gouv.fr), complété par la loi qui arrête les comptes de l’année (PLRG, projet de loi relatif aux résultats de la gestion).</li>
 ${
   ex
     ? `<li>Total retenu (${h(ex.millesime)}) : ${h(md(ex.total_md))}, budget général et prélèvements sur recettes (${Object.entries(ex.prelevements_sur_recettes_md)
@@ -131,7 +131,7 @@ ${
       }, dû aux retraitements du budget vert.</li>`
     : ''
 }
-<li>Effectifs : plafonds d’emplois votés en LFI 2023, dernier millésime publié par programme, rapportés aux dépenses de personnel 2024.</li>
+<li>Effectifs : plafonds d’emplois votés dans le budget 2023 (loi de finances initiale, LFI), dernier millésime publié par programme, rapportés aux dépenses de personnel 2024.</li>
 <li>Associations : crédits versés en 2023 (dernier « jaune » publié).</li>
 <li>Indicateurs de performance : choisis par l’administration ; une évolution ne prouve pas l’effet de la dépense. Quand le sens souhaité n’est pas publié, il est déduit de la position des cibles${fiabPct ? ` (règle concordante à ${h(pct(fiabPct, 0))} avec le sens publié là où les deux existent)` : ''}.</li>
 <li>Années sans données d’exécution par programme en données ouvertes : 2015, 2016, 2017 et 2021.</li>

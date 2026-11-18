@@ -432,12 +432,12 @@ describe('écrans', () => {
     cat.dispatchEvent(new Event('input', { bubbles: true }))
     const lignes = main.querySelectorAll('#liste-op details[data-id]')
     expect(lignes.length).toBe(4)
-    // Fiche d'une catégorie : séries, LFI 2025, établissements, rémunérations en somme seulement
+    // Fiche d'une catégorie : séries, budget voté 2025, établissements, rémunérations en somme seulement
     const d = lignes[0] as HTMLDetailsElement
     d.open = true
     d.dispatchEvent(new Event('toggle'))
     const fiche = d.querySelector('.fiche')!.textContent ?? ''
-    expect(fiche).toContain('2025 (LFI)')
+    expect(fiche).toContain('2025 (voté)')
     expect(fiche).toContain('Approché par catégorie')
     expect(fiche).toMatch(/dix plus hautes rémunérations 2024 \(somme\)/)
     // Tri par nom
