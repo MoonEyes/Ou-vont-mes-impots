@@ -5,6 +5,7 @@ import { partPersonnelle } from '../composants/hub'
 import { ouCest } from '../composants/trame'
 import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
+import { brancherProjets } from './projets'
 import { lien, type Rendu } from '../routeur'
 import { absent, appliquerLargeurs, badgeStatut, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
 
@@ -227,6 +228,7 @@ ${
 ${dec ? `<p class="aide">${h(dec.limites)}</p>` : ''}`,
     )
   })
+  brancherProjets(cible, { insee, nom: g.nom })
   return {
     titre: titreCommune(g.nom, geo.departement.nom),
     adresse: fragmentCommune(insee, g.nom, g.population),

@@ -2077,6 +2077,30 @@
    "hors_catalogue": [],
    "octets_sources": 8570682,
    "note": "source « application_lois_barometre » de collecte/catalogue.json (python pipeline/application_lois.py collecter) ; entrées relevées dans le manifeste de collecte"
+  },
+  "projets_subventionnes": {
+   "sources": {
+    "projets_subv_acv": [
+     "data/lake/projets_subventionnes/projets_subv_acv/villes_action_coeurdeville_97d44c4a.csv"
+    ],
+    "projets_subv_pvd": [
+     "data/lake/projets_subventionnes/projets_subv_pvd/Liste_des_communes_b_n_ficiaires_COG_2026_1fa831ec.csv"
+    ],
+    "subv_fonds_vert": [
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2023-export_ac2da594.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2024-export_1fdc94e1.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2025-export_b5d38c64.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2024-export_558ace5f.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2025-export_df1c6fc7.csv"
+    ]
+   },
+   "caches": [
+    "data/lake/_cache/local/prenoms.json",
+    "data/lake/_cache/local/sirene_unite_legale.parquet"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": 16317173,
+   "note": "entrées relevées dans le manifeste de collecte (python pipeline/projets_subventionnes.py collecter), non relevées sous strace ; lit aussi site/data/local/geo, site/data/territoires et site/data/subventions"
   }
  },
  "urls": {
@@ -2748,6 +2772,13 @@
   "data/lake/typologies/typologies_grille_densite.xlsx": "https://www.insee.fr/fr/statistiques/fichier/8571524/fichier_diffusion_2026.xlsx",
   "data/lake/typologies/typologies_ofgl_communes.csv": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/ofgl-base-communes-consolidee/exports/csv?where=exer%3E%3D2023+and+exer%3C%3D2024+and+agregat+in+%28%22D%C3%A9penses+totales%22%2C%22Encours+de+dette%22%2C%22Dotation+globale+de+fonctionnement%22%2C%22Imp%C3%B4ts+locaux%22%2C%22D%C3%A9penses+d%27%C3%A9quipement%22%29&select=exer%2Ccom_code%2Cinsee%2Ctranche_population%2Cagregat%2Cmontant%2Cptot%2Cptot_n%2Ceuros_par_habitant",
   "data/lake/application_lois/application_lois_barometre/Liste_des_lois_35ca58b9.csv": "https://barometre.assemblee-nationale.fr/barometre_application_lois_assemblee.csv",
-  "data/lake/application_lois/application_lois_barometre/Liste_des_mesures_e1938c3f.csv": "https://barometre.assemblee-nationale.fr/barometre_application_mesures_assemblee.csv"
+  "data/lake/application_lois/application_lois_barometre/Liste_des_mesures_e1938c3f.csv": "https://barometre.assemblee-nationale.fr/barometre_application_mesures_assemblee.csv",
+  "data/lake/projets_subventionnes/projets_subv_acv/villes_action_coeurdeville_97d44c4a.csv": "https://opendata.caissedesdepots.fr/api/explore/v2.1/catalog/datasets/villes_action_coeurdeville/exports/csv?use_labels=true",
+  "data/lake/projets_subventionnes/projets_subv_pvd/Liste_des_communes_b_n_ficiaires_COG_2026_1fa831ec.csv": "https://static.data.gouv.fr/resources/programme-petites-villes-de-demain/20260819-140115/liste-pvd-com2026-20260819.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2023-export_ac2da594.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes-en-2023/20240731-110636/fonds-vert-2023-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2024-export_1fdc94e1.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20250731-095516/fonds-vert-2024-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2025-export_b5d38c64.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20260622-085623/fonds-vert-2025-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2024-export_558ace5f.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20250731-100849/fonds-vert-p113-2024-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2025-export_df1c6fc7.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20260728-085038/fonds-vert-p113-2025-export.csv.csv"
  }
 }

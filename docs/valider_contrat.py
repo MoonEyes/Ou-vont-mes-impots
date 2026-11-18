@@ -340,6 +340,9 @@ FICHIERS = [
     ("application_lois_finances.schema.json", "application_lois/lois_finances.json", "existant"),
     ("application_lois_lois.schema.json", "application_lois/lois/*.json", "existant"),
     ("application_lois_mesures.schema.json", "application_lois/mesures/*.json", "existant"),
+    # projets subventionnés par l'État : Fonds vert par commune, badges ACV et PVD, liens vers les dotations (pipeline/projets_subventionnes.py)
+    ("projets_subventionnes_index.schema.json", "projets_subventionnes/index.json", "existant"),
+    ("projets_subventionnes_departement.schema.json", "projets_subventionnes/[0-9]*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

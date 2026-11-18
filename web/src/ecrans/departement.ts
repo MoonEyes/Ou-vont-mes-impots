@@ -8,6 +8,7 @@ import { chargerSiPresent } from '../donnees'
 import type { Rendu } from '../routeur'
 import { absent, appliquerLargeurs, entier, h, source } from '../util'
 import { blocBudget, clesBudget, type Budgets, type Geo } from './commune'
+import { brancherProjets } from './projets'
 
 export const titreDepartement = (nom: string, code: string) => `${nom} (${code}) : budget des communes, dépenses, dotations, taux`
 
@@ -63,6 +64,7 @@ ${source(geo.source, geo.millesime)}
 </ul>
 ${partPersonnelle()}`
 
+  brancherProjets(cible, { dep, nom })
   const suite = (async () => {
     const z = cible.querySelector<HTMLElement>('#sec-budget-dep')!
     const bd = await chargerSiPresent<Budgets>('local/budgets/departements.json')
