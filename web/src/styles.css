@@ -2562,3 +2562,34 @@ td.nombre {
   border-radius: var(--rayon);
   padding: 0.25rem 1.5rem;
 }
+
+/* exporter */
+/* Actions discrètes sous chaque tableau : télécharger en CSV, citer. Boutons existants, en petit (cible 44 px gardée). */
+.exporter {
+  margin: -0.5rem 0 1rem;
+}
+.exporter-boutons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.exporter-boutons button {
+  font-size: 0.9375rem;
+  min-height: 2.75rem;
+  padding: 0.25rem 1rem;
+}
+.exporter-citation {
+  margin-top: 0.5rem;
+  background: var(--papier);
+  border: var(--trait) solid var(--contour);
+  border-radius: var(--rayon);
+  padding: 0.75rem 1rem;
+}
+.exporter-citation[hidden] {
+  display: none;
+}
+.exporter-texte {
+  margin: 0;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
