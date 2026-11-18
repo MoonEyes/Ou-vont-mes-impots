@@ -1105,6 +1105,39 @@ data/lake/secu/retraites_* (DREES EACR table A-Cadrage ; DREES emploi intérieur
 
 Règles propres : les effectifs des régimes ne s'additionnent pas (une personne qui perçoit des pensions de plusieurs régimes est comptée dans chacun ; seule la série `tous_regimes`, estimée par la DREES, compte chaque personne une fois) ; aucune masse de pensions n'est recalculée à partir d'un effectif et d'une moyenne ; une valeur absente à la source est null, jamais 0. Non couverts, faute de jeu ouvert (`sources_inaccessibles`) : cotisants des autres régimes, ressources par origine des régimes hors CAS Pensions, exécution du CAS Pensions ; les fichiers du Conseil d'orientation des retraites ne sont pas repris (réutilisation soumise à accord).
 
+### 2.41 Sport : `sport/` (pipeline/sport.py)
+
+Budget de l'État pour le sport (programme 219 « Sport » et programme 350 « Jeux olympiques et paralympiques 2024 »), financement de l'Agence nationale du sport, subventions du programme 219 aux fédérations, subventions du CNDS (prédécesseur de l'Agence) par fédération et par région en 2015, coût public des Jeux de Paris 2024 tel qu'évalué par la Cour des comptes. Les séries budgétaires, l'Agence et les subventions du programme 219 sont reprises des fichiers déjà produits par `realisations/`, `programmes/`, `operateurs/` et `associations/` (chaque bloc porte `fichier`, le fichier d'origine) : rien n'est recalculé. Commandes : `python pipeline/sport.py collecter` (réseau, entrées `sport` et `sport_cnds` du catalogue ; un refus est noté, jamais contourné), `python pipeline/sport.py produire` (sans réseau, reproductible). Tests : `pytest tests/test_sport.py`.
+
+```
+data/lake/sport/sport/ccomptes_jop2024_rapport.pdf            (Cour des comptes, septembre 2025)
+data/lake/_restreint/sport/sport_cnds/cnds_part_*_2015.xlsx    (CNDS 2015, data.gouv.fr ; noms sans SIREN)
+site/data/realisations/219.json, 350.json ; programmes/219.json ; operateurs/operateurs.json (id ans) ;
+site/data/associations/programmes/219.json ; local/geo/*.json
+     └─> pipeline/sport.py ─> site/data/sport/index.json, budget.json, federations.json, cnds_2015.json, jop.json
+```
+
+Pour l'écran : `index.json` d'abord. `blocs.<id>.statut` vaut `publié` (avec `fichier`, `source`, `description`) ou `non publié en données ouvertes` (avec `motif`, sans fichier ni nombre) ; le bloc `agence_nationale_du_sport_subventions` est non publié : l'écran affiche son motif, jamais un zéro. `chiffres_cles` donne trois montants de sources différentes, à présenter côte à côte avec leur source, jamais additionnés. Tous les montants en euros sauf `jop.json` (millions d'euros, une décimale, tels que publiés par la Cour) et `actions_219` (milliards d'euros).
+
+| Fichier, champ | Sens |
+|---|---|
+| `index.json`, `blocs`, `statuts`, `limites`, `sources`, `sources_inaccessibles`, `recherche_publique` | statut de chaque bloc, définition des statuts, limites à afficher, sources (titre, producteur, URL, licence, verdict, `collecte_le`), sources non lues et motif, recherche préalable (Règle n°0) |
+| `index.json`, `chiffres_cles` | `programme_219_depense_constatee` (dernière année exécutée : `annee`, `eur`), `jop_organisation_meur`, `jop_infrastructures_meur`, `cnds_2015_part_territoriale_eur`, `lecture` |
+| `index.json`, `liens[]` | fichiers voisins (`fichier`, `id` éventuel, `lecture`) : prévu et dépensé, opérateurs, associations, bénéficiaires du programme 219 |
+| `budget.json`, `programmes.<219\|350>.annees[]` | `annee`, `vote_lfi_eur`, `ouvert_en_gestion_eur`, `depense_constatee_eur` (null si non publié ; `trou` donne le motif), `source` ; une valeur négative est publiée telle quelle (annulation de crédits) |
+| `budget.json`, `actions_219` | actions du programme 219 au projet de loi de finances 2025 (`code`, `nom`, `md`), avec `avertissement` (projet, pas exécution) |
+| `budget.json`, `agence_nationale_du_sport.annees[]` | `nature` (`execution` ou `lfi`), `financement_etat_scsp_cp_eur`, `financement_etat_transferts_cp_eur`, `financement_etat_total_cp_eur`, `credits_votes_lfi_total_cp_eur`, `taxes_affectees_eur` (hors budget de l'État), `taxes_affectees_prevision_eur`, `programmes_financeurs`, `sources` (jaune utilisé) ; `definitions` explique chaque grandeur. Le financement de l'Agence est une partie du programme 219, pas un supplément |
+| `federations.json`, `federations[]` | `siren`, `denomination` (telle que publiée), `categorie_juridique` (personne morale), `total_eur`, `montants_eur` (suit `annees_plf` ; crédits versés `annees_credits`, deux ans avant ; null = absente ou année non publiée) ; ordre dans `ordre` |
+| `federations.json`, `par_annee[]` | `annee_plf`, `annee_credits`, `statut`, `federations_eur` (somme des fédérations nommées), `programme_219_total_source_eur` (toutes associations du programme) ; la baisse après les crédits 2019 vient du transfert des subventions aux fédérations vers l'Agence (texte dans `lecture`) |
+| `cnds_2015.json`, `part_territoriale` | `total_eur`, `par_federation[]` (`code`, `nom` de la fédération de rattachement, `montant_eur`, `lignes`), `par_service[]` (service instructeur, `niveau` régional ou départemental, `departement`, `region` actuelle), `par_region[]` (région actuelle ou collectivité d'outre-mer, part des services régionaux et départementaux), `par_objectif[]`, `federation_par_region.valeurs` (code fédération -> code région -> euros), `methode_region` |
+| `cnds_2015.json`, `part_nationale`, `part_equipement` | part nationale par `type` ; part équipement par département (`montant_accorde_eur`, `montant_operations_eur` = coût total déclaré de l'opération, `operations`), par région et par objectif. Les trois parts ne s'additionnent pas dans l'écran |
+| `jop.json` | `statut`, `producteur`, `document` (titre, date, URL, page du tableau), `perimetre`, `methode`, `controle` : trois textes à afficher avec les montants (charte : producteur, périmètre, méthode) |
+| `jop.json`, `postes[]`, `totaux_meur` | tableau n° 5 de la Cour : `volet` (`organisation` ou `infrastructures`), `poste` (libellé de la Cour), `montant_meur` ; totaux par volet (3 019,2 et 3 631,4 M€ au 30 juin 2025) ; publiés seulement si la somme des postes redonne chaque total à 0,2 M€ près |
+| `jop.json`, `par_acteur`, `autres_montants`, `estimation_anterieure` | répartition par acteur (État et opérateurs, collectivités, entreprises de service public ; arrondis de la Cour, somme différente du total), recettes publiques, dépenses nettes d'organisation, dépenses fiscales, budget du comité d'organisation, estimation de la note d'étape de juin 2025 ; chaque montant porte `citation`, phrase exacte du rapport |
+| `jop.json`, `programme_350` | crédits du programme 350 par année (budget de l'État), autre périmètre : à afficher à côté de l'évaluation de la Cour, jamais ajouté |
+
+Règles propres : aucun bénéficiaire du CNDS n'est nommé (pas de SIREN dans la source ; colonnes bénéficiaire, siège, code postal, porteur, commune et projet jamais lues ; fichiers bruts en zone restreinte) ; une fédération n'est nommée que si `sirene.personne_morale` est vrai ; la sélection des fédérations se fait sur la dénomination (comités, ligues et fédérations d'éducation populaire compris, voir `regle`) ; deux sources ne sont jamais additionnées. Non couverts, faute de jeu ouvert (`sources_inaccessibles`) : subventions de l'Agence nationale du sport depuis 2019 (agencedusport.fr a refusé la connexion), subventions du CNDS de 2016 à 2018.
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.

@@ -1,0 +1,327 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/sport_index.schema.json",
+  "title": "site/data/sport/index.json : blocs et statut de publication, chiffres clés, liens, sources, sources inaccessibles, recherche préalable (pipeline/sport.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "fichiers": {
+      "type": "object",
+      "properties": {
+        "budget": {
+          "const": "sport/budget.json"
+        },
+        "federations": {
+          "const": "sport/federations.json"
+        },
+        "cnds_2015": {
+          "const": "sport/cnds_2015.json"
+        },
+        "jop": {
+          "const": "sport/jop.json"
+        }
+      },
+      "required": [
+        "budget",
+        "federations",
+        "cnds_2015",
+        "jop"
+      ],
+      "additionalProperties": false
+    },
+    "blocs": {
+      "type": "object",
+      "minProperties": 7,
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "statut": {
+            "enum": [
+              "publié",
+              "non publié en données ouvertes"
+            ]
+          },
+          "fichier": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "motif": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "statut"
+        ],
+        "additionalProperties": false,
+        "if": {
+          "properties": {
+            "statut": {
+              "const": "non publié en données ouvertes"
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "motif"
+          ],
+          "not": {
+            "required": [
+              "fichier"
+            ]
+          }
+        },
+        "else": {
+          "required": [
+            "fichier",
+            "source",
+            "description"
+          ]
+        }
+      }
+    },
+    "statuts": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "publié",
+          "non publié en données ouvertes"
+        ]
+      },
+      "minProperties": 2,
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "chiffres_cles": {
+      "type": "object",
+      "properties": {
+        "programme_219_depense_constatee": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "annee": {
+                  "type": "integer"
+                },
+                "eur": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annee",
+                "eur"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "jop_organisation_meur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "jop_infrastructures_meur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "cnds_2015_part_territoriale_eur": {
+          "type": "number"
+        },
+        "lecture": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "programme_219_depense_constatee",
+        "jop_organisation_meur",
+        "jop_infrastructures_meur",
+        "cnds_2015_part_territoriale_eur",
+        "lecture"
+      ],
+      "additionalProperties": false
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fichier": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lecture": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fichier",
+          "lecture"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "sources": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "titre": {
+            "type": "string"
+          },
+          "producteur": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "page": {
+            "type": "string"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string"
+          },
+          "collecte_le": {
+            "type": "string"
+          },
+          "modifie_le": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "titre",
+          "producteur",
+          "url",
+          "page",
+          "licence",
+          "verdict",
+          "collecte_le"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "motif": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "motif"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "recherche_publique": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "conclusion": {
+          "type": "string"
+        },
+        "trouvailles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "nom": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "licence": {
+                "type": "string"
+              },
+              "mise_a_jour": {
+                "type": "string"
+              },
+              "verdict": {
+                "type": "string",
+                "pattern": "^(réutilisable tel quel|à adapter|inspiration|aucun)"
+              }
+            },
+            "required": [
+              "nom",
+              "url",
+              "licence",
+              "mise_a_jour",
+              "verdict"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "date",
+        "conclusion",
+        "trouvailles"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "fichiers",
+    "blocs",
+    "statuts",
+    "chiffres_cles",
+    "liens",
+    "limites",
+    "sources",
+    "sources_inaccessibles",
+    "recherche_publique"
+  ],
+  "additionalProperties": false
+}

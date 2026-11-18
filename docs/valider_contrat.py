@@ -252,6 +252,12 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # sport : programmes 219 et 350, Agence nationale du sport, CNDS 2015, coût public des Jeux (pipeline/sport.py)
+    ("sport_index.schema.json", "sport/index.json", "existant"),
+    ("sport_budget.schema.json", "sport/budget.json", "existant"),
+    ("sport_federations.schema.json", "sport/federations.json", "existant"),
+    ("sport_cnds_2015.schema.json", "sport/cnds_2015.json", "existant"),
+    ("sport_jop.schema.json", "sport/jop.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
