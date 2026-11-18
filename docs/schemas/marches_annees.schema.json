@@ -243,6 +243,26 @@
                 ],
                 "additionalProperties": false
               },
+              "montant_serie_repetee": {
+                "type": "object",
+                "properties": {
+                  "lignes": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "montant_eur": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "lignes",
+                  "montant_eur"
+                ],
+                "additionalProperties": false
+              },
               "siret_titulaire_invalide": {
                 "type": "object",
                 "properties": {
@@ -269,6 +289,7 @@
               "montant_aberrant",
               "montant_suspect",
               "montant_negatif",
+              "montant_serie_repetee",
               "siret_titulaire_invalide"
             ],
             "additionalProperties": false

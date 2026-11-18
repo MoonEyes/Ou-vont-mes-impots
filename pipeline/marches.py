@@ -15,6 +15,10 @@ Sorties (site/data/marches/, chaque fichier < 5 Mo, avec `millesime` et `source`
   categories.json            par catégorie d'acheteur et par année
   departements.json          par département de l'acheteur et par année ; liens vers les fichiers par département
   departements/<code>.json   par acheteur (SIREN) du département : montants par année et premiers titulaires nommés
+  regions.json               par région de l'acheteur (déduite du département) et par année
+  secteurs.json              par division du vocabulaire commun des marchés publics (CPV, deux premiers chiffres)
+  titulaires.json            principaux titulaires nommés (personnes morales), sur la période et par année
+  acheteurs.json             principaux acheteurs nommés, tous départements réunis
 
 Commandes :
   python pipeline/marches.py collecter   # réseau : collecte/collecte.py (benef_decp, marches_decp_doublons_sources)
@@ -29,7 +33,11 @@ Règles de qualité (chaque ligne écartée est comptée dans le premier motif r
   4. année = année de la notification initiale ; dates absentes ou impossibles écartées ; hors 2019-2025 à part ;
   5. montant non renseigné : jamais compté 0, ligne à part ;
   6. lignes marquées « aberrant » et « suspect » par le producteur écartées, comptées, total publié à part ;
-  7. SIRET du titulaire à 14 chiffres, clé de contrôle valide ; sinon ligne écartée et comptée.
+  7. montant négatif écarté ;
+  8. série de montants identiques : au moins SERIE_MIN_MARCHES marchés d'un même acheteur, la même année, déclarés au
+     même montant d'au moins SERIE_SEUIL_EUR (montant global vraisemblablement repris sur chaque lot) : écartés,
+     comptés, montant déclaré publié à part (`series_repetees`) ;
+  9. SIRET du titulaire à 14 chiffres, clé de contrôle valide ; sinon ligne écartée et comptée.
 Confidentialité : un titulaire ou un acheteur n'est nommé que si sa catégorie juridique SIRENE est une personne morale
 (sirene.personne_morale) et que sa diffusion n'est pas partielle ; son nom vient du stock SIRENE. Les colonnes de nom,
 d'objet, de commune et de coordonnées des DECP ne sont jamais lues. Entrepreneurs individuels : agrégés, jamais nommés.
@@ -62,6 +70,12 @@ ANNEE_PLANCHER = 2000          # avant : date impossible (l'obligation de public
 TOP_TITULAIRES = 10
 MAX_OCTETS = 5_000_000
 SEUIL_DECOUPE = 4_500_000      # au-delà, un fichier départemental est découpé en parties
+SERIE_SEUIL_EUR = 100_000_000  # règle 8 : montant unitaire à partir duquel une série de montants identiques est écartée
+SERIE_MIN_MARCHES = 3          # règle 8 : nombre de marchés distincts du même acheteur, même année, même montant
+TOP_NATIONAL = 100             # titulaires et acheteurs nommés publiés sur la période
+TOP_ANNEE = 20                 # titulaires nommés publiés pour chaque année
+TOP_SERIES = 25                # séries écartées détaillées (règle 8)
+TOP_GROS = 15                  # plus gros montants unitaires retenus, publiés pour être vérifiables
 MICRO = 1_000_000              # sommes en millionièmes d'euro (entiers : résultat indépendant de l'ordre de calcul)
 
 PAGE_JEU = "https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire"
@@ -73,7 +87,7 @@ UNITE = "euros HT (montant notifié ; pour un accord-cadre, montant maximum esti
 # Colonnes lues, et seulement elles (aucune colonne de nom, d'objet, de commune ni de coordonnées).
 COLONNES = ("uid", "acheteur_id", "titulaire_id", "nature", "type", "montant", "montant_anomalie", "dateNotification",
             "modification_id", "donneesActuelles", "acheteur_categorie", "acheteur_departement_code",
-            "acheteur_departement_nom", "sourceDataset")
+            "acheteur_departement_nom", "sourceDataset", "codeCPV")
 
 # --- Repère officiel -----------------------------------------------------------------------------------------------
 # Saisie manuelle : la page officielle refuse les scripts (HTTP 403, non contourné). Valeur relevée sur une page
@@ -315,6 +329,105 @@ def departement(code) -> str | None:
     return c if DEP_RE.match(c) else None
 
 
+# Divisions du vocabulaire commun pour les marchés publics (CPV, règlement (CE) n° 213/2008) : deux premiers chiffres
+# du code, libellés officiels en français.
+CPV_DIVISIONS = {
+    "03": "Produits agricoles, de l'élevage, de la pêche, de la sylviculture et produits connexes",
+    "09": "Produits pétroliers, combustibles, électricité et autres sources d'énergie",
+    "14": "Produits d'exploitation minière, métaux de base et produits connexes",
+    "15": "Produits alimentaires, boissons, tabac et produits connexes",
+    "16": "Machines agricoles",
+    "18": "Vêtements, articles chaussants, bagages et accessoires",
+    "19": "Cuir et textiles, plastiques et caoutchouc",
+    "22": "Imprimés et produits connexes",
+    "24": "Produits chimiques",
+    "30": "Machines de bureau et matériel informatique, équipement et fournitures, excepté les meubles et logiciels",
+    "31": "Machines, appareils, équipement et consommables électriques ; éclairage",
+    "32": "Équipement de radio, de télévision, de communication, de télécommunication et équipements connexes",
+    "33": "Matériels médicaux, pharmaceutiques et produits de soins personnels",
+    "34": "Équipements de transport et produits auxiliaires pour le transport",
+    "35": "Équipements de sécurité, de lutte contre l'incendie, de police et de défense",
+    "37": "Instruments de musique, articles de sport, jeux, jouets, articles pour artisanat, articles pour travaux "
+          "artistiques et accessoires",
+    "38": "Équipements de laboratoire, d'optique et de précision (excepté les lunettes)",
+    "39": "Meubles (y compris les meubles de bureau), aménagements, appareils électroménagers (à l'exclusion de "
+          "l'éclairage) et produits de nettoyage",
+    "41": "Eau collectée et purifiée",
+    "42": "Machines industrielles",
+    "43": "Machines pour l'exploitation minière et le travail en carrière, matériel de construction",
+    "44": "Structures et matériaux de construction ; produits auxiliaires pour la construction (excepté les "
+          "appareils électriques)",
+    "45": "Travaux de construction",
+    "48": "Logiciels et systèmes d'information",
+    "50": "Services de réparation et d'entretien",
+    "51": "Services d'installation (à l'exception des logiciels)",
+    "55": "Services d'hôtellerie, de restauration et de commerce au détail",
+    "60": "Services de transport (à l'exclusion du transport des déchets)",
+    "63": "Services de transport complémentaires et auxiliaires ; services des agences de voyages",
+    "64": "Services des postes et télécommunications",
+    "65": "Services publics (eau, gaz, électricité et autres réseaux)",
+    "66": "Services financiers et d'assurance",
+    "70": "Services immobiliers",
+    "71": "Services d'architecture, services de construction, services d'ingénierie et services d'inspection",
+    "72": "Services de technologies de l'information, conseil, développement de logiciels, internet et appui",
+    "73": "Services de recherche et développement et services de conseil connexes",
+    "75": "Services de l'administration publique, de la défense et de la sécurité sociale",
+    "76": "Services relatifs à l'industrie du pétrole et du gaz",
+    "77": "Services agricoles, sylvicoles, horticoles, aquacoles et apicoles",
+    "79": "Services aux entreprises : droit, marketing, conseil, recrutement, impression et sécurité",
+    "80": "Services d'enseignement et de formation",
+    "85": "Services de santé et services sociaux",
+    "90": "Services d'évacuation des eaux usées, d'élimination des déchets, de nettoyage et services "
+          "environnementaux",
+    "92": "Services récréatifs, culturels et sportifs",
+    "98": "Autres services communautaires, sociaux et personnels",
+}
+CPV_ILLISIBLE = "00"
+LIBELLE_CPV_ILLISIBLE = "Code absent ou illisible dans la source"
+
+
+def division_cpv(code) -> str:
+    """« 45233140-2 », « 45000000 » -> « 45 » ; code absent, de moins de huit chiffres ou division inconnue -> « 00 »."""
+    c = re.sub(r"\D", "", propre(code))
+    return c[:2] if len(c) >= 8 and c[:2] in CPV_DIVISIONS else CPV_ILLISIBLE
+
+
+# Régions (code officiel géographique depuis 2016) d'après le département de l'acheteur ; les collectivités
+# d'outre-mer (975, 977, 978, 98x) ne sont pas des régions et sont regroupées à part.
+REGIONS = {
+    "84": ("Auvergne-Rhône-Alpes", "01 03 07 15 26 38 42 43 63 69 73 74"),
+    "27": ("Bourgogne-Franche-Comté", "21 25 39 58 70 71 89 90"),
+    "53": ("Bretagne", "22 29 35 56"),
+    "24": ("Centre-Val de Loire", "18 28 36 37 41 45"),
+    "94": ("Corse", "2A 2B"),
+    "44": ("Grand Est", "08 10 51 52 54 55 57 67 68 88"),
+    "32": ("Hauts-de-France", "02 59 60 62 80"),
+    "11": ("Île-de-France", "75 77 78 91 92 93 94 95"),
+    "28": ("Normandie", "14 27 50 61 76"),
+    "75": ("Nouvelle-Aquitaine", "16 17 19 23 24 33 40 47 64 79 86 87"),
+    "76": ("Occitanie", "09 11 12 30 31 32 34 46 48 65 66 81 82"),
+    "52": ("Pays de la Loire", "44 49 53 72 85"),
+    "93": ("Provence-Alpes-Côte d'Azur", "04 05 06 13 83 84"),
+    "01": ("Guadeloupe", "971"),
+    "02": ("Martinique", "972"),
+    "03": ("Guyane", "973"),
+    "04": ("La Réunion", "974"),
+    "06": ("Mayotte", "976"),
+}
+COM = "COM"
+NOM_COM = "Collectivités d'outre-mer (hors régions)"
+REGION_DU_DEPARTEMENT = {d: r for r, (_, deps) in REGIONS.items() for d in deps.split()}
+
+
+def region(dep: str | None) -> str | None:
+    """Code de région d'un département ; COM pour 975, 977, 978 et 98x ; None si le département est inconnu."""
+    if dep is None:
+        return None
+    if dep in REGION_DU_DEPARTEMENT:
+        return REGION_DU_DEPARTEMENT[dep]
+    return COM if dep in ("975", "977", "978") or dep.startswith("98") else None
+
+
 MOTIFS = [  # (identifiant, règle publiée, le montant de la ligne est-il publié ?)
     ("nature_hors_champ", "Concessions et délégations de service public : hors du champ des marchés.", True),
     ("date_absente", "Date de notification absente : année inconnue.", True),
@@ -324,15 +437,20 @@ MOTIFS = [  # (identifiant, règle publiée, le montant de la ligne est-il publi
     ("montant_aberrant", "Montant marqué « aberrant » par le producteur du jeu (montant déclaré, publié à part).", True),
     ("montant_suspect", "Montant marqué « suspect » par le producteur du jeu (montant déclaré, publié à part).", True),
     ("montant_negatif", "Montant négatif.", True),
+    ("montant_serie_repetee", f"Série de montants identiques : au moins {SERIE_MIN_MARCHES} marchés d'un même acheteur, "
+                              f"notifiés la même année, déclarés au même montant d'au moins "
+                              f"{SERIE_SEUIL_EUR // 1_000_000} millions d'euros HT (montant global vraisemblablement "
+                              "repris sur chaque lot) ; montant déclaré publié à part.", True),
     ("siret_titulaire_invalide", "Identifiant du titulaire qui n'est pas un SIRET à 14 chiffres à clé de contrôle "
                                  "valide (identifiants étrangers, numéros de TVA, valeurs tronquées ou vides).", True),
 ]
 MOTIFS_PAR_ANNEE = ("montant_non_renseigne", "montant_aberrant", "montant_suspect", "montant_negatif",
-                    "siret_titulaire_invalide")
+                    "montant_serie_repetee", "siret_titulaire_invalide")
 RETENU = "retenu"
 
 
-def motif_ligne(nature: str, annee, date_impossible: bool, montant, anomalie, siret_ok: bool) -> str:
+def motif_ligne(nature: str, annee, date_impossible: bool, montant, anomalie, siret_ok: bool,
+                serie: bool = False) -> str:
     """Premier motif d'écart rencontré, dans l'ordre publié ; `retenu` sinon. (Même règle que la requête SQL.)"""
     if nature == NATURE_HORS_CHAMP:
         return "nature_hors_champ"
@@ -350,6 +468,8 @@ def motif_ligne(nature: str, annee, date_impossible: bool, montant, anomalie, si
         return "montant_suspect"
     if montant < 0:
         return "montant_negatif"
+    if serie:
+        return "montant_serie_repetee"
     if not siret_ok:
         return "siret_titulaire_invalide"
     return RETENU
@@ -408,7 +528,7 @@ def preparer(con, decp: Path, stock_path: Path, date_collecte: str) -> dict:
     con.execute(f"""create table brut as
         select uid, acheteur_id, titulaire_id, nature, type, montant, montant_anomalie ano, dateNotification dn,
                coalesce(modification_id, 0) mid, coalesce(donneesActuelles, false) da, acheteur_categorie cat,
-               acheteur_departement_code dep, acheteur_departement_nom dep_nom, sourceDataset src
+               acheteur_departement_code dep, acheteur_departement_nom dep_nom, sourceDataset src, codeCPV cpv
         from read_parquet('{decp}')""")
     un = lambda q: con.execute(q).fetchone()[0]  # noqa: E731
     compte = {"lignes_source": un("select count(*) from brut"),
@@ -451,10 +571,14 @@ def preparer(con, decp: Path, stock_path: Path, date_collecte: str) -> dict:
     _table(con, "ach", "acheteur_id varchar, siren varchar", ach)
     _table(con, "deps", "dep varchar, code varchar",
            [(r[0], departement(r[0])) for r in con.execute("select distinct dep from k").fetchall()])
+    _table(con, "cpvs", "cpv varchar, division varchar",
+           [(r[0], division_cpv(r[0])) for r in con.execute("select distinct cpv from k").fetchall()])
     annees = ", ".join(str(a) for a in ANNEES)
     con.execute(f"""create table l as
         select k.uid, a.siren ach, dp.code dep, t.siren tit, nat.nn nature, typ.tn type, k.ano, k.src, k.cat,
-               year(d0.d0) an, co.n,
+               year(d0.d0) an, co.n, cp.division cpv,
+               case when k.montant is null or isnan(k.montant) or isinf(k.montant) or abs(k.montant) > 1e18 then null
+                    else cast(round(k.montant * 100) as hugeint) end centimes,
                case when k.montant is null or isnan(k.montant) or isinf(k.montant) or abs(k.montant) > 1e18 then null
                     else (cast(round(k.montant * 100) as hugeint) * {MICRO // 100}) // co.n end part,
                case when nat.nn = '{NATURE_HORS_CHAMP}' then 'nature_hors_champ'
@@ -473,9 +597,20 @@ def preparer(con, decp: Path, stock_path: Path, date_collecte: str) -> dict:
              left join typ on typ.type is not distinct from k.type
              left join tit t on t.titulaire_id = k.titulaire_id
              left join ach a on a.acheteur_id = k.acheteur_id
-             left join deps dp on dp.dep is not distinct from k.dep""")
+             left join deps dp on dp.dep is not distinct from k.dep
+             left join cpvs cp on cp.cpv is not distinct from k.cpv""")
     if un("select count(*) from l") != compte["lignes_dedoublonnees"]:
         raise SystemExit("jointure non conservatrice : le nombre de lignes a changé")
+    # Règle 8 : séries de montants identiques (même acheteur, même année, même montant, au moins N marchés), parmi
+    # les lignes qui passent les règles précédentes ; le motif « SIRET invalide » vient après.
+    con.execute(f"""create table serie as
+        select ach, an, centimes, count(distinct uid) marches from l
+        where motif in ('{RETENU}', 'siret_titulaire_invalide') and ach is not null
+              and centimes >= {SERIE_SEUIL_EUR * 100}
+        group by 1, 2, 3 having count(distinct uid) >= {SERIE_MIN_MARCHES}""")
+    con.execute(f"""update l set motif = 'montant_serie_repetee'
+        from serie s where l.ach = s.ach and l.an = s.an and l.centimes = s.centimes
+        and l.motif in ('{RETENU}', 'siret_titulaire_invalide')""")
     # Stock SIRENE des seuls SIREN rencontrés (catégorie juridique, dénomination, statut de diffusion).
     con.execute(f"""create table s as
         with q as (select ach siren from l where ach is not null union select tit from l where tit is not null)
@@ -516,7 +651,8 @@ def produire(sortie: Path | None = None, decp: Path | None = None, stock_path: P
 
     con = duckdb.connect()
     con.execute("set threads = 4")
-    con.execute("set memory_limit = '4GB'")
+    con.execute("set memory_limit = '1500MB'")
+    con.execute(f"set temp_directory = '{LAKE / '_cache' / 'duckdb_marches'}'")
     con.execute("set preserve_insertion_order = false")
     compte = preparer(con, Path(decp), Path(stock_path), collecte_le)
     stock = {r[0]: (r[1] or "", r[2], r[3]) for r in con.execute("select siren, cj, nom, diffusion from s").fetchall()}
@@ -772,6 +908,159 @@ def produire(sortie: Path | None = None, decp: Path | None = None, stock_path: P
                               "lignes « suspect » et les identifiants de titulaire invalides. Les deux montants sont "
                               "publiés, aucun n'est corrigé par l'autre.")})
 
+    # --- Règle 8 : séries de montants identiques écartées --------------------------------------------------------------
+    serie_an = {r["an"]: r for r in _lignes(con, """
+        select an, count(*) series, sum(marches) marches from serie group by 1""")}
+    serie_lignes = {r["an"]: r for r in _lignes(con, """
+        select an, count(*) lignes, sum(part) m from l where motif = 'montant_serie_repetee' group by 1""")}
+    principales = []
+    for r in _lignes(con, f"""
+            select s.ach, s.an, s.centimes, s.marches, sum(l.part) m from serie s
+            join l on l.ach = s.ach and l.an = s.an and l.centimes = s.centimes and l.motif = 'montant_serie_repetee'
+            group by 1, 2, 3, 4 order by m desc, s.ach, s.an, s.centimes limit {TOP_SERIES}"""):
+        st, cj, nom = statut_siren(r["ach"], stock)
+        info = acheteurs.get(r["ach"]) or {}
+        principales.append({
+            "annee": r["an"], "siren": r["ach"] if st == "pm" else None, "denomination": nom if st == "pm" else None,
+            "categorie": info.get("categorie") or categorie_acheteur(cat_source.get(r["ach"]),
+                                                                     (stock.get(r["ach"]) or ("",))[0])[0],
+            "marches": r["marches"], "montant_unitaire_eur": round(int(r["centimes"]) / 100, 2),
+            "montant_declare_eur": eur(r["m"])})
+    series_repetees = {
+        "regle": MOTIFS[[m[0] for m in MOTIFS].index("montant_serie_repetee")][1],
+        "seuil_eur": SERIE_SEUIL_EUR, "marches_minimum": SERIE_MIN_MARCHES,
+        "pourquoi": ("Quand un acheteur découpe un achat en lots, le montant global est parfois saisi sur chaque lot : "
+                     "il est alors compté autant de fois qu'il y a de lots. Ces lignes ne sont pas marquées par le "
+                     "producteur du jeu. Elles sont écartées des totaux, comptées, et leur montant déclaré est publié "
+                     "ici, sans correction : la règle repère une forme de saisie, elle ne prouve pas une erreur."),
+        "par_annee": [{"annee": a, "series": serie_an.get(a, {}).get("series", 0),
+                       "marches": int(serie_an.get(a, {}).get("marches") or 0),
+                       "lignes": serie_lignes.get(a, {}).get("lignes", 0),
+                       "montant_declare_eur": eur(serie_lignes.get(a, {}).get("m") or 0)} for a in ANNEES],
+        "principales": principales,
+        "ordre": "Séries par montant déclaré décroissant, puis SIREN ; l'ordre ne porte aucune appréciation.",
+    }
+
+    # Plus gros montants unitaires conservés dans les totaux : publiés pour qu'un montant isolé douteux reste visible.
+    gros = []
+    for r in _lignes(con, f"""select uid, min(ach) ach, min(an) an, min(type) type, min(cpv) cpv, min(nature) nature,
+                                     sum(part) m from r group by uid order by m desc, uid limit {TOP_GROS}"""):
+        st, cj, nom = statut_siren(r["ach"], stock)
+        gros.append({"annee": r["an"], "acheteur_siren": r["ach"] if st == "pm" else None,
+                     "acheteur": nom if st == "pm" else None,
+                     "categorie": (acheteurs.get(r["ach"]) or {}).get("categorie", CAT_INCONNUE),
+                     "nature": r["nature"], "type": r["type"], "division_cpv": r["cpv"], "montant_eur": eur(r["m"])})
+    plus_gros = {"note": ("Les plus gros montants unitaires retenus dans les totaux. Ils ne sont marqués ni par le "
+                          "producteur du jeu ni par la règle des séries : ils sont comptés, sans vérification une à "
+                          "une. Un montant d'accord-cadre est un maximum sur plusieurs années, pas une dépense."),
+                 "marches": gros,
+                 "ordre": "Marchés par montant décroissant, puis identifiant ; l'ordre ne porte aucune appréciation."}
+
+    # --- Par région de l'acheteur (déduite du département) ------------------------------------------------------------
+    _table(con, "regs", "dep varchar, reg varchar", [(d, region(d)) for (d,) in con.execute(
+        "select distinct dep from r where dep is not null").fetchall()])
+    con.execute("create table rr as select r.*, g.reg from r left join regs g using (dep)")
+    reg_tot = {r["reg"]: r for r in _lignes(con, """
+        select reg, count(distinct uid) marches, count(distinct ach) acheteurs, count(distinct dep) departements,
+               sum(part) m from rr group by 1""")}
+    reg_an = defaultdict(dict)
+    for r in _lignes(con, "select reg, an, sum(part) m from rr group by 1, 2"):
+        reg_an[r["reg"]][r["an"]] = r
+    reg_type = defaultdict(list)
+    for r in _lignes(con, """select reg, type, count(distinct uid) marches, sum(part) m from rr group by 1, 2"""):
+        reg_type[r["reg"]].append(r)
+    reg_deps = defaultdict(list)
+    for (g, d) in con.execute("select distinct reg, dep from rr where dep is not null order by 1, 2").fetchall():
+        reg_deps[g].append(d)
+    ordre_types = list(TYPES.values()) + [TYPE_AUTRE]
+
+    def fiche_region(g):
+        v = reg_tot[g]
+        return {"marches": v["marches"], "acheteurs": v["acheteurs"], "total_eur": eur(v["m"]),
+                "montants_eur": _serie(reg_an[g]),
+                "par_type": [{"type": t["type"], "marches": t["marches"], "montant_eur": eur(t["m"])}
+                             for t in sorted(reg_type[g], key=lambda t: ordre_types.index(t["type"]))]}
+    regions = [{"region": g, "nom": REGIONS[g][0] if g in REGIONS else NOM_COM, "departements": reg_deps[g],
+                **fiche_region(g)} for g in sorted((g for g in reg_tot if g is not None),
+                                                   key=lambda g: (g == COM, g))]
+    reg_non_localise = fiche_region(None) if None in reg_tot else None
+
+    # --- Par secteur (division CPV) -----------------------------------------------------------------------------------
+    sec_tot = {r["cpv"]: r for r in _lignes(con, """
+        select cpv, count(distinct uid) marches, count(distinct ach) acheteurs, sum(part) m from r group by 1""")}
+    sec_an = defaultdict(dict)
+    for r in _lignes(con, "select cpv, an, count(distinct uid) marches, sum(part) m from r group by 1, 2"):
+        sec_an[r["cpv"]][r["an"]] = r
+    sec_type = defaultdict(list)
+    for r in _lignes(con, "select cpv, type, sum(part) m from r group by 1, 2"):
+        sec_type[r["cpv"]].append(r)
+    secteurs = []
+    for c in list(CPV_DIVISIONS) + [CPV_ILLISIBLE]:
+        if c not in sec_tot:
+            continue
+        v = sec_tot[c]
+        secteurs.append({
+            "division": c, "libelle": CPV_DIVISIONS.get(c, LIBELLE_CPV_ILLISIBLE),
+            "marches": v["marches"], "acheteurs": v["acheteurs"], "total_eur": eur(v["m"]),
+            "montants_eur": _serie(sec_an[c]),
+            "marches_par_annee": [sec_an[c][a]["marches"] if a in sec_an[c] else 0 for a in ANNEES],
+            "par_type": [{"type": t["type"], "montant_eur": eur(t["m"])}
+                         for t in sorted(sec_type[c], key=lambda t: ordre_types.index(t["type"]))]})
+
+    # --- Principaux titulaires nommés (personnes morales), sur la période et par année ----------------------------------
+    tit_tot = _lignes(con, """select tit, count(distinct uid) marches, count(distinct ach) acheteurs, sum(part) m
+                              from r group by 1 order by m desc, tit""")
+    tit_an = defaultdict(dict)
+    for r in _lignes(con, "select tit, an, count(distinct uid) marches, sum(part) m from r group by 1, 2"):
+        tit_an[r["tit"]][r["an"]] = r
+    top_tit, autres_pm = [], {"nombre": 0, "m": 0}
+    for t in tit_tot:
+        st, cj, nom = titulaires[t["tit"]]
+        if st != "pm":
+            continue
+        if len(top_tit) < TOP_NATIONAL:
+            top_tit.append({"siren": t["tit"], "denomination": nom, "categorie_juridique": cj,
+                            "marches": t["marches"], "acheteurs": t["acheteurs"], "total_eur": eur(t["m"]),
+                            "montants_eur": _serie(tit_an[t["tit"]])})
+        else:
+            autres_pm["nombre"] += 1
+            autres_pm["m"] += int(t["m"])
+    tit_par_annee = []
+    for a in ANNEES:
+        lst = sorted(((int(v[a]["m"]), s_) for s_, v in tit_an.items() if a in v and titulaires[s_][0] == "pm"),
+                     key=lambda x: (-x[0], x[1]))
+        tit_par_annee.append({"annee": a, "titulaires": [
+            {"siren": s_, "denomination": titulaires[s_][2], "categorie_juridique": titulaires[s_][1],
+             "marches": tit_an[s_][a]["marches"], "montant_eur": eur(m)} for m, s_ in lst[:TOP_ANNEE]],
+            "autres_personnes_morales": {"nombre": max(0, len(lst) - TOP_ANNEE),
+                                         "montant_eur": eur(sum(m for m, _ in lst[TOP_ANNEE:]))},
+            "agrege_confidentialite": confidentialite(statut_annee[a], int(annee[a]["m"])) if a in annee else None})
+
+    # --- Principaux acheteurs nommés, tous départements réunis -----------------------------------------------------------
+    ach_nat = _lignes(con, """select ach, count(distinct uid) marches, count(distinct dep) departements, sum(part) m
+                              from r where ach is not null group by 1 order by m desc, ach""")
+    ach_nat_an = defaultdict(dict)
+    for r in _lignes(con, "select ach, an, sum(part) m from r where ach is not null group by 1, 2"):
+        ach_nat_an[r["ach"]][r["an"]] = r
+    top_ach, ach_autres = [], {"nombre": 0, "m": 0}
+    ach_non_nommes = {"nombre": 0, "marches": 0, "m": 0}
+    for v in ach_nat:
+        info = acheteurs.get(v["ach"])
+        if info is None or not info["nomme"]:
+            ach_non_nommes["nombre"] += 1
+            ach_non_nommes["marches"] += v["marches"]
+            ach_non_nommes["m"] += int(v["m"])
+        elif len(top_ach) < TOP_NATIONAL:
+            top_ach.append({"siren": v["ach"], "denomination": info["nom"], "categorie_juridique": info["cj"],
+                            "categorie": info["categorie"], "marches": v["marches"],
+                            "departements": v["departements"], "total_eur": eur(v["m"]),
+                            "montants_eur": _serie(ach_nat_an[v["ach"]]),
+                            "centrale_achat": v["ach"] in CENTRALES_ACHAT})
+        else:
+            ach_autres["nombre"] += 1
+            ach_autres["m"] += int(v["m"])
+    sans_ach = con.execute("select count(distinct uid), coalesce(sum(part), 0) from r where ach is null").fetchone()
+
     total = int(retenu["m"])
     acheteurs_retenus = con.execute("select count(distinct ach) from r").fetchone()[0]
     index = {
@@ -803,10 +1092,16 @@ def produire(sortie: Path | None = None, decp: Path | None = None, stock_path: P
             "Année : année de la notification initiale du marché, pas celle d'une modification.",
             "Lignes marquées « aberrant » ou « suspect » par le producteur du jeu : écartées, comptées, total publié "
             "à part (`regles_qualite`, `anomalies_source`, `annees.json`).",
+            f"Séries de montants identiques (au moins {SERIE_MIN_MARCHES} marchés d'un même acheteur, la même année, "
+            f"au même montant d'au moins {SERIE_SEUIL_EUR // 1_000_000} millions d'euros) : écartées, comptées, "
+            "montant déclaré publié à part (`series_repetees`).",
             "Titulaire : SIRET à 14 chiffres à clé de contrôle valide ; sinon la ligne est écartée et comptée.",
             "Catégorie d'acheteur : celle du jeu (`origine` = decp) ; à défaut, dérivée de la catégorie juridique "
             "SIRENE (`origine` = sirene).",
             "Département : celui de l'établissement acheteur (SIRET), pas le lieu d'exécution ni celui du titulaire.",
+            "Région : déduite du département de l'acheteur (régions en vigueur depuis 2016).",
+            "Secteur : division du vocabulaire commun pour les marchés publics (CPV), deux premiers chiffres du code "
+            "publié par l'acheteur.",
             "Chaque ligne écartée est comptée dans le premier motif rencontré, dans l'ordre de `regles_qualite`.",
         ],
         "regles_qualite": regles,
@@ -839,6 +1134,8 @@ def produire(sortie: Path | None = None, decp: Path | None = None, stock_path: P
                               "DECP comptent les marchés publiés en données ouvertes, sans seuil commun à toutes les "
                               "années, après les règles de qualité de ce fichier. Les deux montants sont publiés côte "
                               "à côte ; ils ne sont ni additionnés ni corrigés l'un par l'autre.")},
+        "series_repetees": series_repetees,
+        "plus_gros_marches": plus_gros,
         "recoupements": recoupements,
         "centrales_achat": {
             "note": ("Risque de double compte, non corrigé : une centrale d'achat (UGAP, Resah...) publie ses marchés "
@@ -872,6 +1169,10 @@ def produire(sortie: Path | None = None, decp: Path | None = None, stock_path: P
             "marchés de ses établissements du département.",
             "Les montants par année ne sont pas des dépenses de l'année : un marché pluriannuel est compté en entier "
             "l'année de sa notification.",
+            "Un montant erroné isolé, non marqué par le producteur et hors série de montants identiques, reste dans "
+            "les totaux : les plus gros montants unitaires ne sont pas vérifiés un à un.",
+            "Le code CPV est choisi par l'acheteur pour l'ensemble du marché : un marché qui mêle travaux et services "
+            "est classé dans une seule division.",
         ],
         "sources_inaccessibles": [
             {"source": REPERE_OECP["source_officielle"]["url"],
@@ -880,7 +1181,9 @@ def produire(sortie: Path | None = None, decp: Path | None = None, stock_path: P
         "recherche_publique": RECHERCHE_PUBLIQUE,
         "fichiers": {"annees": "marches/annees.json", "categories": "marches/categories.json",
                      "departements": "marches/departements.json",
-                     "departement": "marches/departements/<code>.json"},
+                     "departement": "marches/departements/<code>.json", "regions": "marches/regions.json",
+                     "secteurs": "marches/secteurs.json", "titulaires": "marches/titulaires.json",
+                     "acheteurs": "marches/acheteurs.json"},
     }
     dump(sortie / "index.json", index)
     dump(sortie / "annees.json", {**entete, "annees": ANNEES, "par_annee": par_annee,
@@ -898,6 +1201,38 @@ def produire(sortie: Path | None = None, decp: Path | None = None, stock_path: P
         "note": "Département de l'établissement acheteur. `montants_eur` est aligné sur `annees` ; null : aucune ligne "
                 "retenue cette année-là.",
         "ordre": "Départements par code."})
+    dump(sortie / "regions.json", {
+        **entete, "annees": ANNEES, "regions": regions, "non_localise": reg_non_localise,
+        "note": ("Région déduite du département de l'établissement acheteur (régions en vigueur depuis 2016). "
+                 "`montants_eur` est aligné sur `annees` ; null : aucune ligne retenue cette année-là. "
+                 "`non_localise` : département absent ou illisible dans la source."),
+        "ordre": "Régions par code officiel, collectivités d'outre-mer à la fin."})
+    dump(sortie / "secteurs.json", {
+        **entete, "annees": ANNEES, "secteurs": secteurs,
+        "nomenclature": ("Vocabulaire commun pour les marchés publics (CPV), règlement (CE) n° 213/2008 : division = "
+                         "deux premiers chiffres du code principal publié par l'acheteur. Code absent, de moins de "
+                         "huit chiffres ou division inconnue : division « 00 »."),
+        "note": "`montants_eur` et `marches_par_annee` sont alignés sur `annees` ; null : aucune ligne retenue.",
+        "ordre": "Divisions par code, dans l'ordre de la nomenclature, sans rapport avec les montants."})
+    dump(sortie / "titulaires.json", {
+        **entete, "annees": ANNEES, "titulaires": top_tit,
+        "autres_personnes_morales": {"nombre": autres_pm["nombre"], "montant_eur": eur(autres_pm["m"])},
+        "agrege_confidentialite": confidentialite(glob_statut, total),
+        "par_annee": tit_par_annee,
+        "regle_personnes": index["regle_personnes"],
+        "note": (f"Les {TOP_NATIONAL} premiers titulaires nommés sur la période, puis les {TOP_ANNEE} premiers de chaque "
+                 "année. Montant d'un marché à plusieurs titulaires réparti à parts égales. Entrepreneurs individuels "
+                 "et unités non diffusibles : agrégés (`agrege_confidentialite`), jamais nommés."),
+        "ordre": "Titulaires par montant décroissant, puis SIREN ; l'ordre ne porte aucune appréciation."})
+    dump(sortie / "acheteurs.json", {
+        **entete, "annees": ANNEES, "acheteurs": top_ach,
+        "autres_acheteurs_nommes": {"nombre": ach_autres["nombre"], "montant_eur": eur(ach_autres["m"])},
+        "acheteurs_non_nommes": {"nombre": ach_non_nommes["nombre"], "marches": ach_non_nommes["marches"],
+                                 "montant_eur": eur(ach_non_nommes["m"])},
+        "acheteur_illisible": {"marches": sans_ach[0], "montant_eur": eur(sans_ach[1])},
+        "note": (f"Les {TOP_NATIONAL} premiers acheteurs nommés, tous départements réunis. Une centrale d'achat "
+                 "(`centrale_achat`) achète pour d'autres acheteurs : voir `centrales_achat` dans index.json."),
+        "ordre": "Acheteurs par montant décroissant, puis SIREN ; l'ordre ne porte aucune appréciation."})
     con.close()
     return index
 

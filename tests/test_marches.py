@@ -117,6 +117,8 @@ def test_statut_siren_personnes_morales_seules():
     (("Marché", 2024, False, 5e6, "suspect", False), "montant_suspect"),
     (("Marché", 2024, False, -5.0, None, True), "montant_negatif"),
     (("Marché", 2024, False, 10.0, None, False), "siret_titulaire_invalide"),
+    (("Marché", 2024, False, 2e9, None, False, True), "montant_serie_repetee"),
+    (("Marché", 2024, False, 2e9, "suspect", True, True), "montant_suspect"),
     (("Marché", 2019, False, 0.0, None, True), "retenu"), (("Accord-cadre", 2025, False, 10.0, None, True), "retenu"),
 ])
 def test_motif_ligne(args, attendu):
@@ -129,6 +131,24 @@ def test_departement_et_euros():
     assert mp.departement("987") == "987" and mp.departement(None) is None and mp.departement("999") is None
     assert mp.departement("4") is None and mp.departement("FR") is None
     assert mp.eur(1_234_567_890) == 1234.57 and mp.eur(0) == 0.0
+
+
+@pytest.mark.parametrize("brut,attendu", [
+    ("45233140-2", "45"), ("45000000", "45"), ("72600000-6", "72"), (" 09310000 ", "09"), (None, "00"),
+    ("", "00"), ("4523", "00"), ("99000000", "00"), ("XX000000", "00"),
+])
+def test_division_cpv(brut, attendu):
+    assert mp.division_cpv(brut) == attendu
+    assert attendu in mp.CPV_DIVISIONS or attendu == mp.CPV_ILLISIBLE
+
+
+def test_divisions_cpv_et_regions_completes():
+    assert len(mp.CPV_DIVISIONS) == 45 and all(len(k) == 2 and k.isdigit() for k in mp.CPV_DIVISIONS)
+    metropole = [f"{i:02d}" for i in range(1, 96) if i != 20] + ["2A", "2B"]
+    assert all(mp.region(d) not in (None, mp.COM) for d in metropole + ["971", "972", "973", "974", "976"])
+    assert len(mp.REGION_DU_DEPARTEMENT) == len(metropole) + 5 and len(mp.REGIONS) == 18
+    assert mp.region("44") == "52" and mp.region("2A") == "94" and mp.region("976") == "06"
+    assert mp.region("975") == mp.region("987") == mp.region("988") == mp.COM and mp.region(None) is None
 
 
 def test_colonnes_sensibles_jamais_lues():
@@ -175,11 +195,12 @@ def _lignes_decp() -> list[dict]:
     d = dt.date
 
     def li(uid, ach, tit, montant, date, nature="Marché", cat="Commune", dep="44", mid=0, da=True, ano=None,
-           type_="Travaux"):
+           type_="Travaux", cpv="45000000-7"):
         return {"uid": uid, "acheteur_id": ach, "titulaire_id": tit, "nature": nature, "type": type_,
                 "montant": montant, "montant_anomalie": ano, "dateNotification": date, "modification_id": mid,
                 "donneesActuelles": da, "acheteur_categorie": cat, "acheteur_departement_code": dep,
                 "acheteur_departement_nom": "Loire-Atlantique" if dep == "44" else None, "sourceDataset": "source_a",
+                "codeCPV": cpv,
                 "titulaire_nom": "NE JAMAIS LIRE", "objet": "NE JAMAIS LIRE"}
 
     lignes = [
@@ -199,12 +220,16 @@ def _lignes_decp() -> list[dict]:
         li("u10", com, siret(T1), 3000.0, d(2024, 1, 1), nature="Concession de service"),     # hors champ
         li("u11", epa, siret(ND), 40000.0, d(2025, 1, 1), cat=None, dep="75"),                # diffusion partielle
         li("u12", siret(EPA, 2), siret(ABSENT), 10000.0, d(2025, 1, 1), cat=None, dep="77"),  # absent du stock
-        li("u13", ugap, siret(T1), 500000.0, d(2024, 4, 1), nature="ACCORD-CADRE", cat="EPIC", dep="77"),
-        li("u14", com, ugap, 20000.0, d(2024, 5, 1), type_="Fournitures"),                    # la centrale est titulaire
+        li("u13", ugap, siret(T1), 500000.0, d(2024, 4, 1), nature="ACCORD-CADRE", cat="EPIC", dep="77", cpv=None),
+        li("u14", com, ugap, 20000.0, d(2024, 5, 1), type_="Fournitures", cpv="30200000"),   # la centrale est titulaire
         li("u15", com, siret(T2), 5000.0, d(2019, 1, 1), dep=None),                           # non localisé
         li("u16", siret(SANS_STOCK), siret(T1), 8000.0, d(2020, 1, 1), cat=None, dep="44"),   # acheteur non nommé
     ]
     lignes += [li(f"v{i}", com, siret(s), 1000.0 * (i + 1), d(2021, 1, 1)) for i, s in enumerate(AUTRES)]
+    # Série : trois marchés du même acheteur, même année, même montant >= 100 M€ (règle 8) ; le troisième a un
+    # titulaire sans SIRET valide (la série passe avant ce motif).
+    lignes += [li(f"s{i}", com, siret(T2) if i < 2 else "FR999", 2e8, d(2022, 7, 1), cpv="72600000-6")
+               for i in range(3)]
     return lignes
 
 
@@ -249,7 +274,7 @@ def test_synthetique_regles_de_qualite(production):
     attendu = {"versions_anterieures": (1, None), "doublons_uid_titulaire": (1, None), "nature_hors_champ": (1, 3000.0),
                "date_absente": (0, 0.0), "date_impossible": (2, 2500.0), "hors_periode": (1, 2000.0),
                "montant_non_renseigne": (1, None), "montant_aberrant": (1, 9e9), "montant_suspect": (1, 5e6),
-               "montant_negatif": (0, 0.0), "siret_titulaire_invalide": (1, 7000.0)}
+               "montant_negatif": (0, 0.0), "montant_serie_repetee": (3, 6e8), "siret_titulaire_invalide": (1, 7000.0)}
     assert {k: (v["lignes"], v["montant_eur"]) for k, v in regles.items()} == attendu
     assert [r["id"] for r in idx["regles_qualite"]][2:] == [m[0] for m in mp.MOTIFS]
     assert idx["anomalies_source"]["aberrant"] == {"lignes": 1, "marches": 1, "montant_declare_eur": 9e9}
@@ -276,6 +301,45 @@ def test_synthetique_annee_de_la_notification_initiale_et_cotitulaires(productio
     assert an[2024]["ecartes"]["montant_suspect"] == {"lignes": 1, "montant_eur": 5e6}
     assert an[2024]["ecartes"]["montant_non_renseigne"] == {"lignes": 1, "montant_eur": None}   # jamais 0
     assert an[2024]["ecartes"]["siret_titulaire_invalide"] == {"lignes": 1, "montant_eur": 7000.0}
+    assert an[2022]["ecartes"]["montant_serie_repetee"] == {"lignes": 3, "montant_eur": 6e8}
+    assert an[2022]["total_eur"] == 80000.0            # la série n'entre pas dans le total de l'année
+
+
+def test_synthetique_series_repetees_publiees(production):
+    sr = _lire(production[0], "index.json")["series_repetees"]
+    assert sr["seuil_eur"] == mp.SERIE_SEUIL_EUR and sr["marches_minimum"] == mp.SERIE_MIN_MARCHES
+    assert {p["annee"]: (p["series"], p["marches"], p["lignes"], p["montant_declare_eur"]) for p in sr["par_annee"]}[2022] \
+        == (1, 3, 3, 6e8)
+    assert sr["principales"] == [{"annee": 2022, "siren": COMMUNE, "denomination": "COMMUNE DE TEST",
+                                  "categorie": "Commune", "marches": 3, "montant_unitaire_eur": 2e8,
+                                  "montant_declare_eur": 6e8}]
+    gros = _lire(production[0], "index.json")["plus_gros_marches"]["marches"]
+    assert gros[0]["montant_eur"] == 500000.0 and gros[0]["acheteur"] == "UNION DES GROUPEMENTS D'ACHATS PUBLICS"
+    assert all(g["montant_eur"] < 2e8 for g in gros)
+
+
+def test_synthetique_regions_secteurs_titulaires_acheteurs(production):
+    idx = _lire(production[0], "index.json")
+    total = idx["totaux"]["total_retenu_eur"]
+    reg = _lire(production[0], "regions.json")
+    assert [(r["region"], r["departements"]) for r in reg["regions"]] == [("11", ["75", "77"]), ("52", ["44"])]
+    assert reg["non_localise"]["total_eur"] == 5000.0
+    assert sum(r["total_eur"] for r in reg["regions"]) + 5000.0 == pytest.approx(total)
+    sec = {s["division"]: s for s in _lire(production[0], "secteurs.json")["secteurs"]}
+    assert set(sec) == {"30", "45", "00"} and sec["00"]["total_eur"] == 500000.0 and sec["30"]["total_eur"] == 20000.0
+    assert sec["00"]["libelle"] == mp.LIBELLE_CPV_ILLISIBLE and sec["45"]["libelle"] == "Travaux de construction"
+    assert sum(s["total_eur"] for s in sec.values()) == pytest.approx(total)
+    tit = _lire(production[0], "titulaires.json")
+    assert tit["titulaires"][0]["siren"] == T1 and EI not in {t["siren"] for t in tit["titulaires"]}
+    assert (sum(t["total_eur"] for t in tit["titulaires"]) + tit["autres_personnes_morales"]["montant_eur"]
+            + tit["agrege_confidentialite"]["montant_eur"]) == pytest.approx(total)
+    a23 = {p["annee"]: p for p in tit["par_annee"]}[2023]
+    assert [t["siren"] for t in a23["titulaires"]] == [T1] and a23["agrege_confidentialite"]["montant_eur"] == 30000.0
+    ach = _lire(production[0], "acheteurs.json")
+    noms = {a["siren"]: a for a in ach["acheteurs"]}
+    assert set(noms) == {COMMUNE, UGAP, EPA} and noms[EPA]["departements"] == 2 and noms[UGAP]["centrale_achat"]
+    assert ach["acheteurs_non_nommes"] == {"nombre": 1, "marches": 1, "montant_eur": 8000.0}
+    assert sum(a["total_eur"] for a in ach["acheteurs"]) + 8000.0 == pytest.approx(total)
 
 
 def test_synthetique_categories_et_departements(production):
@@ -341,7 +405,9 @@ def test_synthetique_conforme_aux_schemas_et_reproductible(production):
     import valider_contrat as vc
     js = pytest.importorskip("jsonschema")
     schemas = {"index.json": "marches_index", "annees.json": "marches_annees", "categories.json": "marches_categories",
-               "departements.json": "marches_departements"}
+               "departements.json": "marches_departements", "regions.json": "marches_regions",
+               "secteurs.json": "marches_secteurs", "titulaires.json": "marches_titulaires",
+               "acheteurs.json": "marches_acheteurs"}
     fichiers = sorted(p.relative_to(production[0]).as_posix() for p in production[0].rglob("*.json"))
     assert fichiers == sorted(p.relative_to(production[1]).as_posix() for p in production[1].rglob("*.json"))
     for rel in fichiers:
@@ -456,6 +522,30 @@ def test_departements_conservation_liens_et_personnes_morales():
                 assert sum(m or 0 for m in a["montants_eur"]) == pytest.approx(a["total_eur"], abs=1)
         assert somme + non_nommes["montant_eur"] == pytest.approx(d["total_eur"], abs=1), d["departement"]
         assert nommes + non_nommes["nombre"] == d["acheteurs"], d["departement"]
+
+
+@publie
+def test_series_repetees_et_nouveaux_fichiers_publies():
+    idx = charger("marches/index.json")
+    an = {p["annee"]: p for p in charger("marches/annees.json")["par_annee"]}
+    sr = {p["annee"]: p for p in idx["series_repetees"]["par_annee"]}
+    for a, p in an.items():
+        assert p["ecartes"]["montant_serie_repetee"]["montant_eur"] == sr[a]["montant_declare_eur"]
+    assert idx["series_repetees"]["principales"] and idx["plus_gros_marches"]["marches"]
+    total = idx["totaux"]["total_retenu_eur"]
+    reg = charger("marches/regions.json")
+    assert len(reg["regions"]) >= 18
+    assert sum(r["total_eur"] for r in reg["regions"]) + (reg["non_localise"] or {"total_eur": 0})["total_eur"] \
+        == pytest.approx(total, abs=1)
+    assert sum(s["total_eur"] for s in charger("marches/secteurs.json")["secteurs"]) == pytest.approx(total, abs=1)
+    tit = charger("marches/titulaires.json")
+    assert all(t["categorie_juridique"][0] in "23456789" for t in tit["titulaires"])
+    assert (sum(t["total_eur"] for t in tit["titulaires"]) + tit["autres_personnes_morales"]["montant_eur"]
+            + tit["agrege_confidentialite"]["montant_eur"]) == pytest.approx(total, abs=1)
+    ach = charger("marches/acheteurs.json")
+    assert (sum(a["total_eur"] for a in ach["acheteurs"]) + ach["autres_acheteurs_nommes"]["montant_eur"]
+            + ach["acheteurs_non_nommes"]["montant_eur"] + ach["acheteur_illisible"]["montant_eur"]) \
+        == pytest.approx(total, abs=1)
 
 
 @publie

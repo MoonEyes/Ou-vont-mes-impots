@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/marches_secteurs.schema.json",
+  "title": "site/data/marches/secteurs.json : marchés retenus par division du vocabulaire commun pour les marchés publics (CPV) et par année (pipeline/marches.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "type": "string",
+      "pattern": "^euros HT"
+    },
+    "collecte_le": {
+      "type": "string",
+      "format": "date"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 2019,
+        "maximum": 2100
+      },
+      "minItems": 1
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nomenclature": {
+      "type": "string",
+      "minLength": 1
+    },
+    "secteurs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "division": {
+            "type": "string",
+            "pattern": "^\\d{2}$"
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "marches": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "acheteurs": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total_eur": {
+            "type": "number"
+          },
+          "montants_eur": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "minItems": 1
+          },
+          "marches_par_annee": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 1
+          },
+          "par_type": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "Travaux",
+                    "Services",
+                    "Fournitures",
+                    "Non catégorisé"
+                  ]
+                },
+                "montant_eur": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "type",
+                "montant_eur"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "division",
+          "libelle",
+          "marches",
+          "acheteurs",
+          "total_eur",
+          "montants_eur",
+          "marches_par_annee",
+          "par_type"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "collecte_le",
+    "annees",
+    "note",
+    "ordre",
+    "nomenclature",
+    "secteurs"
+  ],
+  "additionalProperties": false
+}
