@@ -293,6 +293,11 @@ FICHIERS = [
     ("revenus_communes_index.schema.json", "revenus_communes/index.json", "existant"),
     ("revenus_communes_communes.schema.json", "revenus_communes/communes/*.json", "existant"),
     ("revenus_communes_tranches.schema.json", "revenus_communes/tranches/*/*.json", "existant"),
+    # douane et accises : produit par accise, recettes perçues par la douane, affectation (pipeline/douanes_accises.py)
+    ("douanes_accises_index.schema.json", "douanes_accises/index.json", "existant"),
+    ("douanes_accises_produits.schema.json", "douanes_accises/produits.json", "existant"),
+    ("douanes_accises_collecte.schema.json", "douanes_accises/collecte.json", "existant"),
+    ("douanes_accises_affectation.schema.json", "douanes_accises/affectation.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

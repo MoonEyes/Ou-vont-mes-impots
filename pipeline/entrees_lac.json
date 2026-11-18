@@ -1777,6 +1777,46 @@
    "hors_catalogue": [],
    "octets_sources": 381275910,
    "note": "entrées relevées dans le manifeste de collecte (python pipeline/revenus_communes.py collecter), non relevées sous strace"
+  },
+  "douanes_accises": {
+   "sources": {
+    "douanes_insee_t3217": [
+     "data/lake/douanes_accises/douanes_insee_t3217.xlsx"
+    ],
+    "douanes_dgddi_recettes_2010_2015": [
+     "data/lake/douanes_accises/douanes_dgddi_recettes_2010_2015.xls"
+    ],
+    "douanes_bilan_2020": [
+     "data/lake/douanes_accises/douanes_bilan_2020.pdf"
+    ],
+    "douanes_bilan_2022": [
+     "data/lake/douanes_accises/douanes_bilan_2022.pdf"
+    ],
+    "douanes_bilan_2023": [
+     "data/lake/douanes_accises/douanes_bilan_2023.pdf"
+    ],
+    "douanes_bilan_2024": [
+     "data/lake/douanes_accises/douanes_bilan_2024.pdf"
+    ],
+    "douanes_bilan_2025": [
+     "data/lake/douanes_accises/douanes_bilan_2025.pdf"
+    ],
+    "douanes_vm1_plf2024": [
+     "data/lake/douanes_accises/douanes_vm1_plf2024.pdf"
+    ],
+    "douanes_vm1_plf2025": [
+     "data/lake/douanes_accises/douanes_vm1_plf2025.pdf"
+    ],
+    "douanes_vm1_plf2026": [
+     "data/lake/douanes_accises/douanes_vm1_plf2026.pdf"
+    ],
+    "douanes_plfss2026_annexe3": [
+     "data/lake/douanes_accises/douanes_plfss2026_annexe3.pdf"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 106909095
   }
  },
  "urls": {
@@ -2294,6 +2334,17 @@
   "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2022_d_clar_s_en_2023_par_collectiv_35c857d5.zip": "https://static.data.gouv.fr/resources/limpot-sur-le-revenu-par-collectivite-territoriale-ircom/20240610-082154/ircom-2023-revenus-2022.zip",
   "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2023_d_clar_s_en_2024_par_collectiv_65c61c89.zip": "https://static.data.gouv.fr/resources/limpot-sur-le-revenu-par-collectivite-territoriale-ircom/20250919-135242/ircom-2024-revenus-2023.zip",
   "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2024_d_clar_s_en_2025_par_collectiv_e626cd65.zip": "https://static.data.gouv.fr/resources/limpot-sur-le-revenu-par-collectivite-territoriale-ircom/20260526-131537/ircom-2025-revenus-2024.zip",
-  "data/lake/revenus_communes/revenus_communes_passage_cog.zip": "https://www.insee.fr/fr/statistiques/fichier/7671867/table_passage_annuelle_2026.zip"
+  "data/lake/revenus_communes/revenus_communes_passage_cog.zip": "https://www.insee.fr/fr/statistiques/fichier/7671867/table_passage_annuelle_2026.zip",
+  "data/lake/douanes_accises/douanes_insee_t3217.xlsx": "https://www.insee.fr/fr/statistiques/fichier/8988845/t_3217_fr.xlsx",
+  "data/lake/douanes_accises/douanes_dgddi_recettes_2010_2015.xls": "https://www.douane.gouv.fr/sites/default/files/openData/files/dgddi-2010-2015-recettes-fiscales-montants-redresses.xls",
+  "data/lake/douanes_accises/douanes_bilan_2020.pdf": "https://www.douane.gouv.fr/sites/default/files/2021-04/02/Bilan-annuel-de-la-douane-2020.pdf",
+  "data/lake/douanes_accises/douanes_bilan_2022.pdf": "https://Douane.gouv.fr/sites/default/files/2023-02/22/bilan-annuel-de-la-douane-2022.pdf",
+  "data/lake/douanes_accises/douanes_bilan_2023.pdf": "https://Douane.gouv.fr/sites/default/files/2024-05/09/bilan-annuel-de-la-douane-2023.pdf",
+  "data/lake/douanes_accises/douanes_bilan_2024.pdf": "https://douane.gouv.fr/sites/default/files/2025-03/24/Bilan_DGDDI_2024.pdf",
+  "data/lake/douanes_accises/douanes_bilan_2025.pdf": "https://www.douane.gouv.fr/sites/default/files/2026-02/19/Bilan_Douane_2025.pdf",
+  "data/lake/douanes_accises/douanes_vm1_plf2024.pdf": "https://questions.assemblee-nationale.fr/dyn/contenu/visualisation/705205/file/Evaluation%20des%20voies%20et%20moyens%20-%20Tome%20I",
+  "data/lake/douanes_accises/douanes_vm1_plf2025.pdf": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2025/Voies_et_moyens_Tome_1_2025.pdf",
+  "data/lake/douanes_accises/douanes_vm1_plf2026.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1087930/file/PLF%202026%20-%20V%26M%20TI%20-%20Evaluations%20des%20recettes.pdf",
+  "data/lake/douanes_accises/douanes_plfss2026_annexe3.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1089896/file/PLFSS2026-Annexe3-20251015-103900-55-4.pdf"
  }
 }

@@ -4289,7 +4289,128 @@
   {"id": "logement_sgfgas_ecoptz", "domaine": "logement", "type": "url", "format": "csv", "url": "https://static.data.gouv.fr/resources/base-de-donnees-eco-ptz-eco-pret-a-taux-zero/20220412-141925/opendataecoptz2022.csv", "dataset": "58edf4d088ee38604b3b69c7", "titre": "SGFGAS, base des eco-prets a taux zero 2009-2021, une ligne par pret sans nom ni identifiant, 30 Mo (pipeline/logement.py)", "licence": "Licence Ouverte 1.0", "producteur": "Ministere de la Cohesion des territoires, SGFGAS", "module": "pipeline/logement.py", "lu_par": "pipeline/logement.py : annee, type, departement et montants seulement, agreges par departement et par annee (jamais commune)"},
   {"id": "revenus_communes_ircom", "domaine": "revenus_communes", "type": "datagouv_ressources", "ressources": ["1859baa1-873c-4ffb-8f92-953c2b2eae2b", "239cf93b-8712-4511-a0fa-1fecaa77111c", "b291e147-af9c-4235-83d1-dd1094c69392", "41719202-e720-48b2-9b2a-912188c6dab3", "66e309d1-c684-4f34-9a19-73e502f62ec3", "4370dfeb-c557-4243-b22f-5c306bdbcd0a", "088bf32c-9f0e-4058-9d52-1b5ea3d28eea", "ee496d5f-e23d-4784-b10c-0dad556a9364", "1ac687e5-bbf9-4db9-a7d8-11bcacb5c235", "fb3c472a-7db4-461b-a69f-a6533f623f1b", "3e18d0e2-98fa-4199-90e5-fd72185870e4", "0d96fc3e-605a-4906-957c-d7d97b24a472", "9f4aa23a-5ab3-4e10-9cbe-779a467a4a00", "0949ed65-f95a-4395-a5d9-18d901cfd37e", "72e526ce-24ea-41be-a271-84b0fcffc948", "58ead9c4-ee25-46d6-8c14-a41cf00c3e8e", "d8d5252c-cb72-4ee3-80c3-9e47ec1137a0", "cc0d8dc0-6b13-4a86-bcf7-32418bf7b787", "23c55b31-74c2-4669-9815-84b79d7c5d8f", "261bc54d-d856-4d11-b4f8-f2b01e3073c6", "35c857d5-7479-4c5f-9b0a-8036e24fbbb6", "65c61c89-ab5d-42dc-ac5b-03194f9d2efc", "e626cd65-9c88-419e-8eff-d2165fe388ee"], "lourd": true, "timeout_s": 3600, "dataset": "536998cba3a729239d20505e", "producteur": "DGFiP", "titre": "DGFiP, L'impot sur le revenu par collectivite territoriale (IRCOM), impots 2003 a 2025 (revenus 2002 a 2024), une ressource par annee, 370 Mo (pipeline/revenus_communes.py)", "licence": "Licence Ouverte 2.0", "module": "pipeline/revenus_communes.py"},
   {"id": "revenus_communes_filosofi_2021", "domaine": "revenus_communes", "type": "url", "format": "zip", "url": "https://www.insee.fr/fr/statistiques/fichier/7756729/base-cc-filosofi-2021-geo2025_csv.zip", "producteur": "Insee", "titre": "Insee, Revenus, pauvrete et niveau de vie en 2021 (Filosofi), base communale, geographie au 01/01/2025 (pipeline/revenus_communes.py)", "licence": "Licence Ouverte 2.0", "module": "pipeline/revenus_communes.py"},
-  {"id": "revenus_communes_passage_cog", "domaine": "revenus_communes", "type": "url", "format": "zip", "url": "https://www.insee.fr/fr/statistiques/fichier/7671867/table_passage_annuelle_2026.zip", "producteur": "Insee", "titre": "Insee, table de passage annuelle des communes 2026 : code de chaque commune (et arrondissement municipal) dans chaque geographie de 2003 a 2026, fusions et scissions (pipeline/revenus_communes.py)", "licence": "Licence Ouverte 2.0", "module": "pipeline/revenus_communes.py"}
+  {"id": "revenus_communes_passage_cog", "domaine": "revenus_communes", "type": "url", "format": "zip", "url": "https://www.insee.fr/fr/statistiques/fichier/7671867/table_passage_annuelle_2026.zip", "producteur": "Insee", "titre": "Insee, table de passage annuelle des communes 2026 : code de chaque commune (et arrondissement municipal) dans chaque geographie de 2003 a 2026, fusions et scissions (pipeline/revenus_communes.py)", "licence": "Licence Ouverte 2.0", "module": "pipeline/revenus_communes.py"},
+  {
+   "id": "douanes_insee_t3217",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/8988845/t_3217_fr.xlsx",
+   "titre": "Comptes nationaux annuels, base 2020 : tableau 3.217 « Principaux impôts par catégorie » (1995 à 2025), publication « Dépenses et recettes des administrations publiques en 2025 »",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Insee",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_dgddi_recettes_2010_2015",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "xls",
+   "url": "https://www.douane.gouv.fr/sites/default/files/openData/files/dgddi-2010-2015-recettes-fiscales-montants-redresses.xls",
+   "titre": "DGDDI, données ouvertes : « Recettes fiscales perçues et montants redressés 2010-2015 » (feuille « recettes douanieres »)",
+   "licence": "Licence Ouverte",
+   "producteur": "Direction générale des douanes et droits indirects (DGDDI)",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_bilan_2020",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.douane.gouv.fr/sites/default/files/2021-04/02/Bilan-annuel-de-la-douane-2020.pdf",
+   "titre": "Bilan annuel de la douane 2020, « Recettes douanières en millions d'euros (détail) », 2019 et 2020",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "DGDDI",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_bilan_2022",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://Douane.gouv.fr/sites/default/files/2023-02/22/bilan-annuel-de-la-douane-2022.pdf",
+   "titre": "Bilan annuel de la douane 2022, « Recettes douanières en millions d'euros (détail) », 2021 et 2022",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "DGDDI",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_bilan_2023",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://Douane.gouv.fr/sites/default/files/2024-05/09/bilan-annuel-de-la-douane-2023.pdf",
+   "titre": "Bilan annuel de la douane 2023, « Évolution des recettes douanières en millions d'euros (détail) », 2023",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "DGDDI",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_bilan_2024",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://douane.gouv.fr/sites/default/files/2025-03/24/Bilan_DGDDI_2024.pdf",
+   "titre": "Bilan de la douane 2024, « Recettes douanières en millions d'euros (détail) » et chiffres clés (destination des recettes)",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "DGDDI",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_bilan_2025",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.douane.gouv.fr/sites/default/files/2026-02/19/Bilan_Douane_2025.pdf",
+   "titre": "Bilan de la douane 2025, « Recettes douanières en millions d'euros (détail) » et chiffres clés (destination et provenance des recettes), 19 février 2026",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "DGDDI",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_vm1_plf2024",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://questions.assemblee-nationale.fr/dyn/contenu/visualisation/705205/file/Evaluation%20des%20voies%20et%20moyens%20-%20Tome%20I",
+   "titre": "PLF 2024, Évaluation des voies et moyens tome I : TICPE nette (p. 29), ligne 2301 (p. 50)",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "Direction du budget / DGFiP",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_vm1_plf2025",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2025/Voies_et_moyens_Tome_1_2025.pdf",
+   "titre": "PLF 2025, Évaluation des voies et moyens tome I : TICPE nette (p. 27), ligne 2301 (p. 48)",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "Direction du budget / DGFiP",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_vm1_plf2026",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1087930/file/PLF%202026%20-%20V%26M%20TI%20-%20Evaluations%20des%20recettes.pdf",
+   "titre": "PLF 2026, Évaluation des voies et moyens tome I : accise sur les produits énergétiques (p. 28), ligne 2301 (p. 54), octobre 2025",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "Direction du budget / DGFiP",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_plfss2026_annexe3",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1089896/file/PLFSS2026-Annexe3-20251015-103900-55-4.pdf",
+   "titre": "PLFSS 2026, annexe 3, tableau 31 « Répartition des impositions affectées à la sécurité sociale entre 2018 et 2025 » (p. 44), octobre 2025",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "Direction de la sécurité sociale",
+   "module": "pipeline/douanes_accises.py"
+  }
  ],
  "non_collectables": [
   {
