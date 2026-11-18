@@ -386,11 +386,6 @@ FICHIERS = [
     ("performance_programme.schema.json", "performance/programmes/*.json", "existant"),
     ("performance_barometre_index.schema.json", "performance/barometre/index.json", "existant"),
     ("performance_barometre_zone.schema.json", "performance/barometre/[0-9F]*.json", "existant"),
-    # organisations reliées d'une source à l'autre : SIREN, Splink, fiches et recherche (pipeline/entites.py)
-    ("entites_index.schema.json", "entites/index.json", "existant"),
-    ("entites_fiches.schema.json", "entites/fiches/*.json", "existant"),
-    ("entites_recherche.schema.json", "entites/recherche/*.json", "existant"),
-    ("entites_recherche_globale.schema.json", "entites/recherche_globale.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
