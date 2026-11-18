@@ -258,6 +258,76 @@ def test_sources_et_source_inaccessible(index):
     assert {s["id"] for s in index["sources"]} <= ids
 
 
+def test_valeur_du_portefeuille_deux_mesures_citees_jamais_additionnees(index):
+    v = index["valeur_portefeuille"]
+    agence, bilan = v["agence"], v["bilan_etat"]
+    assert agence["statut"] == "approché" and bilan["statut"] == "tracé"
+    assert "ne s'additionnent pas" in v["definition"]
+    serie = agence["serie"]
+    assert [p["date"] for p in serie] == sorted(p["date"] for p in serie) and agence["ordre"]["cles"] == ["date"]
+    assert [p["valeur_md"] for p in serie] == [128.0, 153.0, 179.5, 209.1]
+    for p in serie + [agence["cotees_fin_2025"], bilan]:
+        assert p["url"].startswith("https://") and p["annee"] == int(p["date"][:4])
+        assert all(c["page"] >= 1 and len(c["texte"]) > 20 for c in p["citations"])
+        for cle in ("valeur_md", "valeur_cotee_md", "entreprises", "entreprises_cotees", "entites", "entites_controlees",
+                    "entites_non_controlees", "entites_controlees_md", "entites_non_controlees_md"):
+            if cle in p:  # chaque montant se lit dans une citation exacte, tel qu'écrit par la source
+                assert any(ea._fr(p[cle]) in c["texte"] for c in p["citations"]), (p["date"], cle)
+    assert abs(bilan["entites_controlees_md"] + bilan["entites_non_controlees_md"] - bilan["valeur_md"]) < 0.15
+    assert bilan["entites_controlees"] + bilan["entites_non_controlees"] == bilan["entites"] == 1508
+    # deux périmètres : aucun total ni somme des deux mesures n'est publié
+    def cles(x):
+        if isinstance(x, dict):
+            for k, y in x.items():
+                yield k
+                yield from cles(y)
+        elif isinstance(x, list):
+            for y in x:
+                yield from cles(y)
+    assert not [k for k in cles(v) if "total" in k or "somme" in k or "cumul" in k]
+    assert agence["methode_citation"]["texte"].startswith("Précision méthodologique")
+
+
+def test_bpifrance_et_tsa_rapprochement_justifie(entites):
+    lignes = {l["code_execution"]: l for l in entites["dividendes_par_ligne_d_execution"]}
+    for code, siren, cj, extrait in (("211609", "483790069", "4120", "« EPIC Bpifrance 100% »"),
+                                     ("211668", "542089750", "5710", "« TSA 100% »")):
+        l = lignes[code]
+        assert l["entite"]["siren"] == siren and l["entite"]["categorie_juridique"] == cj
+        assert "Participations directes de l'État" in l["note"] and extrait in l["note"]
+    assert ea.PARTICIPATIONS_DIRECTES[2][1:] == ["EPIC Bpifrance 100%", "TSA 100%"]
+
+
+class _PageFactice:
+    """Deux colonnes : la phrase de gauche court sur deux lignes, la colonne de droite s'intercale à la lecture."""
+
+    def __init__(self, mots):
+        self.mots = mots
+
+    def extract_words(self, **_):
+        return self.mots
+
+    def extract_text(self):
+        return " ".join(w["text"] for w in sorted(self.mots, key=lambda w: (round(w["top"]), w["x0"])))
+
+
+def _mots(x, top, texte):
+    out = []
+    for m in texte.split():
+        out.append({"text": m, "x0": x, "x1": x + 5 * len(m), "top": top})
+        x += 5 * len(m) + 2.5
+    return out
+
+
+def test_textes_page_relit_chaque_colonne_d_un_seul_tenant():
+    page = _PageFactice(_mots(100, 400, "La valeur totale est") + _mots(320, 400.4, "Le secteur de")
+                        + _mots(100, 411, "estimée à 12 Md€.") + _mots(320, 411.3, "l'énergie représente"))
+    textes = ea.textes_page(page)
+    assert "La valeur totale est estimée à 12 Md€." not in textes[0]  # page entière : colonnes entremêlées
+    assert "La valeur totale est estimée à 12 Md€." in textes[1:]
+    assert "Le secteur de l'énergie représente" in textes[1:]
+
+
 def test_neutralite_aucun_qualificatif():
     for nom in FICHIERS:
         d = _lire(nom)
@@ -392,7 +462,8 @@ def test_table_des_entites_coherente():
 # --- Avec l'entrepôt ---------------------------------------------------------------------------------------------------
 
 ENTREPOT = (ea.PLRG / "plrg_2025_recettes.csv").exists() and (ea.DOCS / ea.SENAT["fichier"]).exists() \
-    and (ea.DOCS / ea.PAP["fichier"]).exists() and (ea.DOCS / ea.INSEE["fichier"]).exists() and ea.CACHE_ENTITES.exists()
+    and (ea.DOCS / ea.PAP["fichier"]).exists() and (ea.DOCS / ea.INSEE["fichier"]).exists() and ea.CACHE_ENTITES.exists() \
+    and all((d["dossier"] / d["fichier"]).exists() for d in ea.DOCS_VALEUR.values())
 avec_entrepot = pytest.mark.skipif(not ENTREPOT, reason="entrepôt data/lake/etat_actionnaire ou cache des entités absent")
 
 
@@ -418,3 +489,13 @@ def test_citations_du_senat_presentes_dans_le_document_collecte():
             assert senat["page_de"](citation) >= 1
     with pytest.raises(SystemExit):
         senat["page_de"]("une phrase qui n'est pas dans le document")
+
+
+@avec_entrepot
+def test_valeur_citation_hors_de_sa_page_arrete_la_production():
+    page, citation = ea.VALEUR_AGENCE[2][3][1]
+    ea.verifier_citations("jaune_2025", [(page, citation)])
+    with pytest.raises(SystemExit):
+        ea.verifier_citations("jaune_2025", [(page + 1, citation)])
+    with pytest.raises(SystemExit):
+        ea.verifier_citations("cge_2025", [(26, "Valeur d'équivalence (EC) | Valeur nette comptable (ENC) 233,0 Md€")])

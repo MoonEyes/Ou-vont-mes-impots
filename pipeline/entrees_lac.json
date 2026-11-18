@@ -1306,7 +1306,8 @@
     "etat_actionnaire_plf25_depenses_destination": [],
     "etat_actionnaire_plf25_recettes_bg": [],
     "etat_actionnaire_plf25_recettes_cas": [],
-    "etat_actionnaire_plrg_annexes": []
+    "etat_actionnaire_plrg_annexes": [],
+    "etat_actionnaire_valeur_portefeuille": []
    },
    "caches": [],
    "hors_catalogue": [],

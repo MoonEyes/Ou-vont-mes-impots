@@ -3782,6 +3782,33 @@
    "module": "pipeline/etat_actionnaire.py"
   },
   {
+   "id": "etat_actionnaire_valeur_portefeuille",
+   "domaine": "etat_actionnaire",
+   "type": "urls",
+   "personnes_physiques": true,
+   "urls": [
+    {
+     "url": "https://www2.assemblee-nationale.fr/static/16/pdf/Annexes_PLF/Rapport_%C3%89tat_actionnaire.pdf",
+     "nom": "jaune_plf2024_etat_actionnaire.pdf"
+    },
+    {
+     "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Jaunes/10-Jaune_Etat_actionnaire.pdf",
+     "nom": "jaune_plf2025_etat_actionnaire.pdf"
+    },
+    {
+     "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1109904/file/Participations_financieres_Etat_YC.pdf",
+     "nom": "rap2025_cas_pfe.pdf"
+    },
+    {
+     "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1109793/file/Rapport%20de%20pr%C3%A9sentation%20du%20CGE%202025.pdf",
+     "nom": "cge2025_presentation.pdf"
+    }
+   ],
+   "titre": "Etat actionnaire, valeur des participations : rapports relatifs a l'Etat actionnaire 2024 et 2025 (annexes aux PLF, rapports d'activite de l'Agence des participations de l'Etat), rapport annuel de performances 2025 du compte Participations financieres de l'Etat, rapport de presentation du compte general de l'Etat 2025 ; miroirs Assemblee nationale (PDF). Les rapports nomment des dirigeants : zone _restreint, seuls des montants et des citations sans nom sont repris (lu par pipeline/etat_actionnaire.py)",
+   "licence": "documents budgetaires publics",
+   "module": "pipeline/etat_actionnaire.py"
+  },
+  {
    "id": "outremer",
    "domaine": "outremer",
    "type": "urls",

@@ -6,12 +6,19 @@ l'État » encaisse (cessions, reversements, versement du budget général) et d
 capital ; programme 732, désendettement), en prévision (PLF, LFI) et en exécution (PLRG). Les montants de sources
 différentes sont publiés côte à côte ; un écart entre deux sources est publié, jamais tranché ni additionné.
 
+Valeur des participations : deux mesures publiées par des sources primaires, côte à côte et jamais additionnées.
+Estimation de l'Agence des participations de l'État au 30 juin de chaque année (rapports relatifs à l'État actionnaire
+annexés aux PLF 2024 et 2025, projet annuel de performances 2026) et valeur au bilan de l'État au 31 décembre 2025
+(compte général de l'État). Chaque montant est retrouvé mot pour mot, à sa page, dans le document collecté.
+
 Commandes :
     python collecte/collecte.py etat_actionnaire_plf25_recettes_bg etat_actionnaire_plf24_recettes_bg \
         etat_actionnaire_plf25_recettes_cas etat_actionnaire_plf24_recettes_cas etat_actionnaire_lfi23_recettes_cas \
-        etat_actionnaire_plf25_depenses_destination etat_actionnaire_plrg_annexes etat_actionnaire_documents
+        etat_actionnaire_plf25_depenses_destination etat_actionnaire_plrg_annexes etat_actionnaire_documents \
+        etat_actionnaire_valeur_portefeuille
         (réseau, collecteur du dépôt : un refus 401/403 n'est jamais contourné ; sources déclarées dans
-        collecte/catalogue.json, tracées dans data/lake/manifest.json)
+        collecte/catalogue.json, tracées dans data/lake/manifest.json ; les rapports qui nomment des dirigeants
+        vont dans data/lake/_restreint/etat_actionnaire/)
     python pipeline/etat_actionnaire.py collecter   (réseau : catégorie juridique des entités nommées par les lignes
         d'exécution, API Recherche d'entreprises ; cache data/lake/_cache/etat_actionnaire_entites.json)
     python pipeline/etat_actionnaire.py produire [--sortie DOSSIER]   (sans réseau)
@@ -44,6 +51,8 @@ SORTIE = SITE / "etat_actionnaire"
 CACHE_ENTITES = ROOT / "data" / "lake" / "_cache" / "etat_actionnaire_entites.json"
 PLRG = LAKE / "etat_actionnaire_plrg_annexes"
 DOCS = LAKE / "etat_actionnaire_documents"
+# Rapports qui nomment des dirigeants (rémunérations, gouvernance) : zone restreinte de l'entrepôt, jamais publiés.
+VALEUR = ROOT / "data" / "lake" / "_restreint" / "etat_actionnaire" / "etat_actionnaire_valeur_portefeuille"
 ODS = "https://data.economie.gouv.fr/explore/dataset"
 COMPTE = "Participations financières de l'État"
 ANNEES_EXECUTION = [2023, 2024, 2025]
@@ -82,8 +91,14 @@ ENTITES = {
     "211692": "315065292", "211698": "562082909", "219920": "572104891",
 }
 NOTES_ENTITES = {
-    "211609": "Le libellé de la source ne distingue pas l'établissement public Bpifrance de la société Bpifrance : "
-              "le SIREN indiqué est celui de l'établissement public.",
+    "211609": "Le libellé de la source ne distingue pas l'établissement public Bpifrance de la société Bpifrance. Le "
+              "SIREN retenu est celui de l'établissement public (catégorie juridique 4120, actif au répertoire Sirene) : "
+              "c'est lui que l'annexe 1 « Participations directes de l'État » du rapport relatif à l'État actionnaire "
+              "2025 cite comme participation directe de l'État (« EPIC Bpifrance 100% », page 110).",
+    "211668": "Libellé de la source : « TSA (ex- Thomson SA) ». Le SIREN retenu est celui de la société TSA (catégorie "
+              "juridique 5710, active au répertoire Sirene, activité de holding), que l'annexe 1 « Participations "
+              "directes de l'État » du rapport relatif à l'État actionnaire 2025 cite comme participation directe de "
+              "l'État (« TSA 100% », page 110).",
 }
 # Lignes d'exécution au libellé générique (aucune entité désignée) : publiées telles quelles.
 LIGNES_GENERIQUES = {"211601", "211621", "219901", "219902", "219906", "219907"}
@@ -138,6 +153,73 @@ INSEE = {"fichier": "insee_societes_controlees_2022.xlsx",
          "titre": "Insee, sociétés contrôlées majoritairement par l'État fin 2022 (répertoire des entreprises "
                   "contrôlées majoritairement par l'État)"}
 
+# Valeur des participations : documents primaires (miroirs Assemblée nationale ; le site de l'Agence des participations
+# de l'État répond 403). Chaque montant est retrouvé mot pour mot à la page indiquée (page du fichier PDF).
+DOCS_VALEUR = {
+    "jaune_2024": {"dossier": VALEUR, "fichier": "jaune_plf2024_etat_actionnaire.pdf",
+                   "url": "https://www2.assemblee-nationale.fr/static/16/pdf/Annexes_PLF/Rapport_%C3%89tat_actionnaire.pdf",
+                   "titre": "Rapport relatif à l'État actionnaire 2024, annexe au projet de loi de finances pour 2024 "
+                            "(rapport d'activité 2022-2023 de l'Agence des participations de l'État)"},
+    "jaune_2025": {"dossier": VALEUR, "fichier": "jaune_plf2025_etat_actionnaire.pdf",
+                   "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Jaunes/10-Jaune_Etat_actionnaire.pdf",
+                   "titre": "Rapport relatif à l'État actionnaire 2025, annexe au projet de loi de finances pour 2025 "
+                            "(rapport d'activité 2023-2024 de l'Agence des participations de l'État)"},
+    "pap_2026": {"dossier": DOCS, "fichier": PAP["fichier"], "url": PAP["url"], "titre": PAP["titre"]},
+    "rap_2025": {"dossier": VALEUR, "fichier": "rap2025_cas_pfe.pdf",
+                 "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1109904/file/"
+                        "Participations_financieres_Etat_YC.pdf",
+                 "titre": "Rapport annuel de performances 2025 du compte d'affectation spéciale « Participations "
+                          "financières de l'État » (annexe au projet de loi relative aux résultats de la gestion et "
+                          "portant approbation des comptes de l'année 2025)"},
+    "cge_2025": {"dossier": VALEUR, "fichier": "cge2025_presentation.pdf",
+                 "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1109793/file/"
+                        "Rapport%20de%20pr%C3%A9sentation%20du%20CGE%202025.pdf",
+                 "titre": "Rapport de présentation du compte général de l'État 2025 (annexe au projet de loi relative "
+                          "aux résultats de la gestion et portant approbation des comptes de l'année 2025)"},
+}
+# Estimation de l'Agence au 30 juin : (date, document, montants, [(page, citation)], note)
+VALEUR_AGENCE = [
+    ("2022-06-30", "jaune_2024", {"valeur_md": 128.0},
+     [(8, "La valeur totale du portefeuille de l’APE est estimée au 30 juin 2023 à 153 Md€ (128 Md€ au 30 juin 2022).")],
+     None),
+    ("2023-06-30", "jaune_2024", {"valeur_md": 153.0, "valeur_cotee_md": 50.0},
+     [(29, "La valeur totale du portefeuille de l’APE est estimée à 153 Md€ au 30 juin 2023, dont 50 Md€ correspondant "
+           "à la valeur totale des participations dans des sociétés cotées (40 % de la valeur totale du portefeuille).")],
+     "La source écrit aussi « 40 % de la valeur totale du portefeuille » ; 50 Md€ rapportés à 153 Md€ font 33 %. Les "
+     "deux nombres sont reproduits tels que publiés, aucun n'est corrigé."),
+    ("2024-06-30", "jaune_2025", {"valeur_md": 179.5, "valeur_cotee_md": 50.0, "entreprises": 85, "entreprises_cotees": 10},
+     [(4, "85 entreprises composent le portefeuille, dont 10 cotées. La valeur de celui-ci s’établit à 179,5 Md€ au "
+          "30 juin 2024."),
+      (28, "La valeur totale du portefeuille de l’APE est estimée à 179,5 Md€ au 30 juin 2024, dont 50 Md€ correspondant "
+           "à la valeur totale des participations dans des sociétés cotées (28 % de la valeur totale du portefeuille).")],
+     None),
+    ("2025-06-30", "pap_2026", {"valeur_md": 209.1, "valeur_cotee_md": 67.9, "entreprises": 86, "entreprises_cotees": 10},
+     [(20, "regroupant, au 30 juin 2025, 86 entreprises dont 10 entreprises cotées"),
+      (20, "valeur patrimoniale est estimée au 30 juin 2025 à 209,1 Md€ (dont 67,9 Md€ correspondent à la valeur totale "
+           "des participations dans des sociétés cotées"),
+      (23, "La valeur totale du portefeuille de l’APE est estimée à près de 209,1 Md€ au 30 juin 2025, avec une "
+           "valorisation boursière du portefeuille coté de l’État qui s’établit à 68 Md€")],
+     "Le même document écrit aussi « 68 Md€ » (page 23) pour les sociétés cotées : arrondi de 67,9 Md€. Le rapport "
+     "annuel de l'agence est publié sur son site, qui refuse l'accès (403) : la valeur au 30 juin 2025 est reprise du "
+     "projet annuel de performances 2026 du compte, dont les deux programmes ont pour responsable le directeur général "
+     "de l'agence."),
+]
+METHODE_AGENCE = ("pap_2026", 23, "Précision méthodologique : pour les sociétés non cotées, la valeur retenue est la "
+                                  "valeur comptable des capitaux propres au 31 décembre N-1.")
+COTEES_FIN_2025 = ("2025-12-31", "rap_2025", {"valeur_cotee_md": 72.1, "entites": 89},
+                   [(19, "le portefeuille de l’État actionnaire, qui compte 89 entités au 31 décembre 2025"),
+                    (21, "Au 31 décembre 2025, la valorisation boursière du portefeuille coté de l’État s’établit à 72,1 Md€")])
+BILAN_ETAT = ("2025-12-31", "cge_2025",
+              {"valeur_md": 394.5, "entites_controlees_md": 237.3, "entites_non_controlees_md": 157.2, "entites": 1508,
+               "entites_controlees": 633, "entites_non_controlees": 875},
+              [(26, "Chiffres clés des participations de l’État au 31 décembre 2025 en milliards d’euros"),
+               (26, "Nombre d'entités 633 entités 875 entités 1508 entités"),
+               (26, "Valeur d'équivalence (EC) | Valeur nette comptable (ENC) 237,3 Md€ 157,2 Md€ 394,5 Md€"),
+               (26, "Les entités contrôlées sont évaluées dans les comptes de l’État à leur valeur d’équivalence"),
+               (28, "Les entités non contrôlées sont valorisées dans les comptes de l’État à leur valeur nette comptable")])
+# Participations directes de l'État (annexe 1 du rapport 2025) : contrôle des rapprochements Bpifrance et TSA.
+PARTICIPATIONS_DIRECTES = ("jaune_2025", 110, ["Participations directes de l’État", "EPIC Bpifrance 100%", "TSA 100%"])
+
 MESURES = {
     "plf_eur": "prévision du projet de loi de finances de l'année",
     "lfi_eur": "prévision de la loi de finances initiale (jeu de la loi de finances ; 2025 pour le compte : projet "
@@ -154,11 +236,25 @@ MESURES = {
 }
 
 RECHERCHE_PUBLIQUE = {
-    "date": "2026-11-17",
+    "date": "2026-11-18",
     "requetes": ["data.economie.gouv.fr : recettes, comptes d'affectation spéciale, comptes spéciaux, participations",
                  "data.gouv.fr : participations de l'État, agence des participations de l'État, État actionnaire",
-                 "GitHub : agence participations etat ; etat actionnaire france ; participations financieres etat budget"],
+                 "GitHub : agence participations etat ; etat actionnaire france ; participations financieres etat budget",
+                 "Assemblée nationale, Sénat : rapport relatif à l'État actionnaire (annexes aux PLF), valeur du "
+                 "portefeuille de l'agence, compte général de l'État 2025, rapport annuel de performances 2025 du compte"],
     "trouvailles": [
+        {"nom": "Assemblée nationale, annexes « Rapport relatif à l'État actionnaire » des PLF 2024 et 2025 (rapports "
+                "d'activité de l'Agence des participations de l'État)", "url": DOCS_VALEUR["jaune_2025"]["url"],
+         "verdict": "réutilisable tel quel", "licence": "document budgétaire public", "date": "2024-10 (PLF 2025)",
+         "usage": "valeur estimée du portefeuille au 30 juin 2022, 2023 et 2024 ; participations directes de l'État "
+                  "(annexe 1), contrôle des rapprochements Bpifrance et TSA"},
+        {"nom": "Assemblée nationale, rapport de présentation du compte général de l'État 2025",
+         "url": DOCS_VALEUR["cge_2025"]["url"], "verdict": "réutilisable tel quel", "licence": "document budgétaire public",
+         "date": "2026 (comptes 2025)", "usage": "valeur des participations au bilan de l'État au 31 décembre 2025"},
+        {"nom": "Assemblée nationale, rapport annuel de performances 2025 du compte « Participations financières de "
+                "l'État »", "url": DOCS_VALEUR["rap_2025"]["url"], "verdict": "réutilisable tel quel",
+         "licence": "document budgétaire public", "date": "2026 (exécution 2025)",
+         "usage": "valeur boursière des participations cotées et nombre d'entités au 31 décembre 2025"},
         {"nom": "data.economie.gouv.fr, recettes du budget général et des comptes spéciaux (PLF 2024, PLF 2025, LFI 2023), "
                 "dépenses selon destination (PLF 2025)", "url": "https://data.economie.gouv.fr/explore/",
          "verdict": "réutilisable tel quel", "licence": "Licence Ouverte 2.0",
@@ -513,6 +609,117 @@ def lire_insee() -> dict:
     return {"serie": serie, "activites": activites}
 
 
+def textes_page(page, ecart: float = 10.0, marge: float = 20.0) -> list[str]:
+    """Texte de la page entière, puis de chaque colonne. Les rapports sont composés en colonnes : une ligne est coupée
+    là où deux mots sont séparés de plus de `ecart` points (gouttière), et chaque morceau rejoint la colonne qui
+    commence à la même abscisse (à `marge` points près). Une phrase sur plusieurs lignes d'une colonne se lit ainsi
+    d'un seul tenant."""
+    mots = sorted(page.extract_words(x_tolerance=1.5), key=lambda w: (w["top"], w["x0"]))
+    lignes: list[list[dict]] = []
+    haut = None
+    for w in mots:
+        if haut is None or abs(w["top"] - haut) > 2.5:
+            lignes.append([])
+            haut = w["top"]
+        lignes[-1].append(w)
+    colonnes: list[tuple[float, list[str]]] = []
+    for ligne in lignes:
+        ligne.sort(key=lambda w: w["x0"])
+        morceaux = [[ligne[0]]]
+        for a, b in zip(ligne, ligne[1:]):
+            if b["x0"] - a["x1"] > ecart:
+                morceaux.append([])
+            morceaux[-1].append(b)
+        for m in morceaux:
+            col = next((c for c in colonnes if abs(c[0] - m[0]["x0"]) <= marge), None)
+            if col is None:
+                col = (m[0]["x0"], [])
+                colonnes.append(col)
+            col[1].append(" ".join(w["text"] for w in m))
+    return [_espaces(page.extract_text() or "")] + [_espaces(" ".join(c[1])) for c in colonnes]
+
+
+def verifier_citations(cle: str, attendues: list[tuple[int, str]]) -> None:
+    """Chaque citation doit se lire mot pour mot à sa page du document collecté ; sinon la production s'arrête."""
+    import pdfplumber
+    doc = DOCS_VALEUR[cle]
+    chemin = doc["dossier"] / doc["fichier"]
+    if not chemin.exists():
+        raise SystemExit(f"document absent de l'entrepôt : {chemin} (python collecte/collecte.py "
+                         f"{'etat_actionnaire_documents' if doc['dossier'] == DOCS else 'etat_actionnaire_valeur_portefeuille'})")
+    lus: dict[int, list[str]] = {}
+    with pdfplumber.open(chemin) as pdf:
+        for page, citation in attendues:
+            if not 1 <= page <= len(pdf.pages):
+                raise SystemExit(f"{doc['fichier']} : page {page} absente ({len(pdf.pages)} pages)")
+            if page not in lus:
+                lus[page] = textes_page(pdf.pages[page - 1])
+            if not any(citation in t for t in lus[page]):
+                raise SystemExit(f"citation absente de {doc['fichier']}, page {page} : « {citation} »")
+
+
+def _fr(x: float) -> str:
+    """Nombre tel qu'écrit dans les documents : « 179,5 », « 1508 », « 128 »."""
+    return (f"{x:.1f}".rstrip("0").rstrip(".") if isinstance(x, float) else str(x)).replace(".", ",")
+
+
+def _point(date: str, cle: str, montants: dict, citations: list[tuple[int, str]], note: str | None = None) -> dict:
+    """Un relevé daté : chaque montant doit figurer dans l'une de ses citations, chaque citation à sa page."""
+    for nom, v in montants.items():
+        assert any(_fr(v) in c for _, c in citations), (date, nom, v)
+    verifier_citations(cle, citations)
+    p = {"date": date, "annee": int(date[:4]), **montants, "source": DOCS_VALEUR[cle]["titre"],
+         "url": DOCS_VALEUR[cle]["url"], "citations": [{"page": page, "texte": c} for page, c in citations]}
+    if note:
+        p["note"] = note
+    return p
+
+
+def valeur_portefeuille() -> dict:
+    """Valeur des participations : estimation de l'agence (30 juin) et valeur au bilan de l'État (31 décembre 2025),
+    deux mesures publiées côte à côte, jamais additionnées. Contrôle aussi l'annexe des participations directes."""
+    serie = [_point(d, cle, m, cits, note) for d, cle, m, cits, note in VALEUR_AGENCE]
+    assert [p["date"] for p in serie] == sorted(p["date"] for p in serie)
+    cle_m, page_m, cit_m = METHODE_AGENCE
+    verifier_citations(cle_m, [(page_m, cit_m)])
+    cle_d, page_d, cits_d = PARTICIPATIONS_DIRECTES
+    verifier_citations(cle_d, [(page_d, c) for c in cits_d])
+    d_c, cle_c, m_c, cits_c = COTEES_FIN_2025
+    d_b, cle_b, m_b, cits_b = BILAN_ETAT
+    bilan = _point(d_b, cle_b, m_b, cits_b)
+    assert abs(bilan["entites_controlees_md"] + bilan["entites_non_controlees_md"] - bilan["valeur_md"]) < 0.15
+    assert bilan["entites_controlees"] + bilan["entites_non_controlees"] == bilan["entites"]
+    return {
+        "definition": "Valeur des participations de l'État à une date donnée. Deux mesures sont publiées, chacune avec "
+                      "son producteur, son périmètre et sa méthode : elles ne s'additionnent pas et ne se comparent pas "
+                      "terme à terme. Une valeur n'est ni un prix de vente ni une somme disponible.",
+        "agence": {
+            "producteur": "Agence des participations de l'État",
+            "perimetre": "entreprises relevant du périmètre de l'agence (85 au 30 juin 2024, 86 au 30 juin 2025)",
+            "methode": "sociétés cotées : valeur boursière à la date indiquée ; sociétés non cotées : valeur comptable "
+                       "des capitaux propres au 31 décembre de l'année précédente",
+            "methode_citation": {"source": DOCS_VALEUR[cle_m]["titre"], "url": DOCS_VALEUR[cle_m]["url"],
+                                 "page": page_m, "texte": cit_m},
+            "statut": "approché",
+            "unite": "milliards d'euros",
+            "ordre": {"regle": "Dates croissantes ; chaque valeur est relevée dans le rapport de l'année suivante.",
+                      "cles": ["date"]},
+            "serie": serie,
+            "cotees_fin_2025": {**_point(d_c, cle_c, m_c, cits_c), "statut": "approché"},
+        },
+        "bilan_etat": {
+            "producteur": "Direction générale des Finances publiques (compte général de l'État)",
+            "perimetre": "ensemble des participations de l'État au 31 décembre 2025 (entités contrôlées et non "
+                         "contrôlées, établissements publics compris)",
+            "methode": "entités contrôlées : valeur d'équivalence (part des capitaux propres détenue par l'État) ; "
+                       "entités non contrôlées : valeur nette comptable (valeur brute diminuée des dépréciations)",
+            "statut": "tracé",
+            "unite": "milliards d'euros",
+            **bilan,
+        },
+    }
+
+
 # --- Entités nommées ---------------------------------------------------------------------------------------------------
 
 def _tous_sirens() -> list[str]:
@@ -858,15 +1065,23 @@ def produire(sortie: Path = SORTIE) -> None:
     def dernier(l, mesure="execution_eur", a="2025"):
         return l.get(a, {}).get(mesure)
 
+    valeur = valeur_portefeuille()
     index = {
-        "millesime": flux["millesime"],
-        "source": f"{entete_flux} ; Insee, sociétés contrôlées majoritairement par l'État fin 2022",
-        "unite": "euros (détail dans chaque fichier)",
+        "millesime": f"{flux['millesime']} ; valeur des participations au 30 juin 2022 à 2025 (estimation de l'Agence "
+                     f"des participations de l'État) et au 31 décembre 2025 (compte général de l'État)",
+        "source": f"{entete_flux} ; Insee, sociétés contrôlées majoritairement par l'État fin 2022 ; rapports relatifs "
+                  f"à l'État actionnaire 2024 et 2025 (annexes aux PLF) ; rapport annuel de performances 2025 du "
+                  f"compte ; rapport de présentation du compte général de l'État 2025",
+        "unite": "euros (détail dans chaque fichier ; valeur des participations : milliards d'euros)",
         "avertissement": "Dividendes reçus, cessions et opérations en capital de l'État, présentés comme flux bruts "
                          "par année. Aucun montant n'est qualifié ; un écart entre deux sources est publié sans être "
-                         "tranché. Ces flux ne mesurent pas la valeur des participations de l'État.",
+                         "tranché. Ces flux ne mesurent pas la valeur des participations de l'État, publiée à part avec "
+                         "son producteur, son périmètre et sa méthode.",
         "collecte_le": collecte_le,
         "definitions": {
+            "valeur_portefeuille": "valeur des participations à une date donnée : estimation de l'Agence des "
+                                   "participations de l'État pour son périmètre, ou valeur au bilan de l'État (compte "
+                                   "général) ; deux mesures distinctes, jamais additionnées",
             "dividendes": "produits des participations versés au budget général (lignes 2110, 2116, 2199 des recettes "
                           "non fiscales)",
             "cessions": "ligne 01 des recettes du compte : produit des cessions de titres, parts ou droits de sociétés "
@@ -930,11 +1145,20 @@ def produire(sortie: Path = SORTIE) -> None:
             {"id": "etat_actionnaire_documents", "titre": INSEE["titre"], "url": INSEE["url"], "licence": "Licence Ouverte 2.0"},
             {"id": "etat_actionnaire_documents", "titre": SENAT["titre"], "url": SENAT["url"], "licence": "document parlementaire public"},
             {"id": "etat_actionnaire_documents", "titre": PAP["titre"], "url": PAP["url"], "licence": "document budgétaire public"},
+            *({"id": "etat_actionnaire_valeur_portefeuille", "titre": DOCS_VALEUR[c]["titre"], "url": DOCS_VALEUR[c]["url"],
+               "licence": "document budgétaire public"} for c in ("jaune_2024", "jaune_2025", "rap_2025", "cge_2025")),
         ],
         "sources_inaccessibles": [
-            {"source": "Agence des participations de l'État, site de l'agence (rapports d'activité, portefeuille)",
-             "motif": "refus d'accès HTTP 403, non contourné", "constate_le": "2026-11-17"}],
+            {"source": "Agence des participations de l'État, site de l'agence (rapports annuels et d'activité, "
+                       "portefeuille) : la valeur au 30 juin 2025 est reprise du projet annuel de performances 2026",
+             "motif": "refus d'accès HTTP 403, non contourné", "constate_le": "2026-11-18"}],
+        "valeur_portefeuille": valeur,
         "limites": [
+            "Valeur des participations : estimation publiée une fois par an par l'Agence des participations de l'État "
+            "pour son seul périmètre (au 30 juin) ; elle mêle valeur boursière et valeur comptable. La valeur au bilan "
+            "de l'État couvre un autre périmètre avec une autre méthode : les deux ne s'additionnent pas.",
+            "La liste des entreprises du périmètre de l'agence, publiée dans son rapport annuel, n'est pas reprise : "
+            "seules les entités des lignes de dividendes, vérifiées au répertoire Sirene, sont nommées.",
             "Montants par entreprise : seuls les dividendes versés au budget général sont publiés par entité (lignes "
             "d'exécution du PLRG). Les cessions et les opérations en capital ne sont pas publiées par entreprise en "
             "données ouvertes ; les opérations de 2025 reprises viennent du texte de l'annexe du Sénat.",

@@ -287,6 +287,343 @@
           }
         }
       }
+    },
+    "valeur_portefeuille": {
+      "type": "object",
+      "description": "Valeur des participations : estimation de l'Agence des participations de l'État au 30 juin (statut « approché ») et valeur au bilan de l'État au 31 décembre 2025 (compte général, statut « tracé »). Deux mesures publiées côte à côte, jamais additionnées ; chaque montant figure dans une citation exacte.",
+      "required": [
+        "definition",
+        "agence",
+        "bilan_etat"
+      ],
+      "properties": {
+        "definition": {
+          "type": "string",
+          "minLength": 40
+        },
+        "agence": {
+          "type": "object",
+          "required": [
+            "producteur",
+            "perimetre",
+            "methode",
+            "methode_citation",
+            "statut",
+            "unite",
+            "ordre",
+            "serie",
+            "cotees_fin_2025"
+          ],
+          "properties": {
+            "statut": {
+              "const": "approché"
+            },
+            "unite": {
+              "const": "milliards d'euros"
+            },
+            "methode_citation": {
+              "type": "object",
+              "required": [
+                "source",
+                "url",
+                "page",
+                "texte"
+              ]
+            },
+            "ordre": {
+              "type": "object",
+              "required": [
+                "regle",
+                "cles"
+              ]
+            },
+            "serie": {
+              "type": "array",
+              "minItems": 3,
+              "items": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "date",
+                      "annee",
+                      "source",
+                      "url",
+                      "citations"
+                    ],
+                    "properties": {
+                      "date": {
+                        "type": "string",
+                        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                      },
+                      "annee": {
+                        "type": "integer"
+                      },
+                      "source": {
+                        "type": "string",
+                        "minLength": 10
+                      },
+                      "url": {
+                        "type": "string",
+                        "pattern": "^https://"
+                      },
+                      "citations": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "page",
+                            "texte"
+                          ],
+                          "additionalProperties": false,
+                          "properties": {
+                            "page": {
+                              "type": "integer",
+                              "minimum": 1
+                            },
+                            "texte": {
+                              "type": "string",
+                              "minLength": 10
+                            }
+                          }
+                        }
+                      },
+                      "valeur_md": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "valeur_cotee_md": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "entreprises": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      "entreprises_cotees": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      "entites": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      "note": {
+                        "type": "string",
+                        "minLength": 10
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "valeur_md"
+                    ]
+                  }
+                ]
+              }
+            },
+            "cotees_fin_2025": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "date",
+                    "annee",
+                    "source",
+                    "url",
+                    "citations"
+                  ],
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "annee": {
+                      "type": "integer"
+                    },
+                    "source": {
+                      "type": "string",
+                      "minLength": 10
+                    },
+                    "url": {
+                      "type": "string",
+                      "pattern": "^https://"
+                    },
+                    "citations": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "page",
+                          "texte"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                          "page": {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          "texte": {
+                            "type": "string",
+                            "minLength": 10
+                          }
+                        }
+                      }
+                    },
+                    "valeur_md": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "valeur_cotee_md": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "entreprises": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "entreprises_cotees": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "entites": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "note": {
+                      "type": "string",
+                      "minLength": 10
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "valeur_cotee_md",
+                    "statut"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "bilan_etat": {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "date",
+                "annee",
+                "source",
+                "url",
+                "citations"
+              ],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                "annee": {
+                  "type": "integer"
+                },
+                "source": {
+                  "type": "string",
+                  "minLength": 10
+                },
+                "url": {
+                  "type": "string",
+                  "pattern": "^https://"
+                },
+                "citations": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "page",
+                      "texte"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "page": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      "texte": {
+                        "type": "string",
+                        "minLength": 10
+                      }
+                    }
+                  }
+                },
+                "valeur_md": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "valeur_cotee_md": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "entreprises": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "entreprises_cotees": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "entites": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "note": {
+                  "type": "string",
+                  "minLength": 10
+                }
+              }
+            },
+            {
+              "type": "object",
+              "required": [
+                "producteur",
+                "perimetre",
+                "methode",
+                "statut",
+                "unite",
+                "valeur_md",
+                "entites_controlees_md",
+                "entites_non_controlees_md",
+                "entites",
+                "entites_controlees",
+                "entites_non_controlees"
+              ],
+              "properties": {
+                "statut": {
+                  "const": "tracé"
+                },
+                "unite": {
+                  "const": "milliards d'euros"
+                },
+                "entites_controlees_md": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "entites_non_controlees_md": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "entites_controlees": {
+                  "type": "integer"
+                },
+                "entites_non_controlees": {
+                  "type": "integer"
+                }
+              }
+            }
+          ]
+        }
+      }
     }
   },
   "required": [
@@ -302,6 +639,7 @@
     "sources",
     "sources_inaccessibles",
     "limites",
-    "recherche_publique"
+    "recherche_publique",
+    "valeur_portefeuille"
   ]
 }
