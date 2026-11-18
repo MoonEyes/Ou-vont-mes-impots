@@ -3041,3 +3041,8 @@ fieldset.saisie-groupe {
 .exporter-citation[hidden] {
 .exporter-texte {
   user-select: all;
+/* signaler */
+.signaler {
+  margin-top: 2rem;
+.signaler p {
+.signaler-lien {
