@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/entites_recherche.schema.json",
+  "title": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "properties": {
+    "cle": {"type": "string", "pattern": "^[a-z0-9]+_?$"},
+    "colonnes": {"const": ["siren", "denomination", "canaux", "departement"]},
+    "entrees": {"type": "array", "items": {"type": "array", "prefixItems": [
+        {"$ref": "commun.schema.json#/$defs/siren"}, {"type": "string", "minLength": 1},
+        {"type": "integer", "minimum": 1}, {"type": ["string", "null"]}], "minItems": 4, "maxItems": 4}}
+  },
+  "required": ["cle", "colonnes", "entrees"]
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/entites_recherche_globale.schema.json",
+  "title": "site/data/entites/recherche_globale.json : organisations reliées présentes dans plusieurs canaux, reprises par la recherche du site (pipeline/entites.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "properties": {
+    "colonnes": {"const": ["siren", "denomination", "canaux"]},
+    "regle": {"type": "string"},
+    "entrees": {"type": "array", "items": {"type": "array", "prefixItems": [
+        {"$ref": "commun.schema.json#/$defs/siren"}, {"type": "string", "minLength": 1}, {"type": "integer", "minimum": 2}],
+      "minItems": 3, "maxItems": 3}}
+  },
+  "required": ["colonnes", "regle", "entrees"]
+}
