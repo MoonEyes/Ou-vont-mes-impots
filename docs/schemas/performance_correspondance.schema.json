@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/performance_correspondance.schema.json",
+  "title": "site/data/performance/correspondance.json : méthode et comptes de la table de correspondance des indicateurs renommés ou absents des documents 2025 (pipeline/performance.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "documents_recents",
+    "methode",
+    "emplacement",
+    "limites",
+    "comptes",
+    "programmes"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "documents_recents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "emplacement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "comptes": {
+      "type": "object",
+      "required": [
+        "series",
+        "libelle_modifie",
+        "absent_des_documents_2025",
+        "code_encore_au_rap_2025"
+      ],
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "programmes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "programme",
+          "libelle",
+          "mission",
+          "libelle_modifie",
+          "absent_des_documents_2025",
+          "fichier"
+        ],
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mission": {
+            "type": "string",
+            "minLength": 1
+          },
+          "libelle_modifie": {
+            "type": "integer"
+          },
+          "absent_des_documents_2025": {
+            "type": "integer"
+          },
+          "fichier": {
+            "type": "string",
+            "pattern": "^performance/programmes/[0-9]{3}\\.json$"
+          }
+        }
+      }
+    }
+  }
+}

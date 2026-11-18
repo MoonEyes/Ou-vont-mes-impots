@@ -58,6 +58,7 @@ ${source(geo.source, geo.millesime)}
 <ul class="liens-sortie">
   <li><a href="#/explorer/collectivites">Les collectivités locales en France</a></li>
   <li><a href="#/decisions/controle?dep=${h(dep)}">Les rapports de contrôle dans le département ${h(nom)}</a></li>
+  <li><a href="#/decisions/resultats?dep=${h(dep)}">Le baromètre des résultats de l’action publique dans le département ${h(nom)}</a></li>
   <li><a href="#/local">Choisir un autre département</a></li>
 </ul>
 ${partPersonnelle()}`

@@ -90,6 +90,8 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 ${blocNature}
 ${blocEff}
 <div id="trac"></div>
+<div id="perf-programme"></div>
 <div class="actions"><a class="bouton" href="${lien('/beneficiaires', { p })}">Qui reçoit l’argent du programme ${h(p)}</a><a class="bouton" href="${lien('/decisions/realisations', { p })}">Ce qui a été fait (programme ${h(p)})</a><a class="bouton" href="${lien('/decisions/votes', { p })}">Votes et mouvements (programme ${h(p)})</a><a class="bouton" href="${lien('/explorer/operateurs', { p })}">Opérateurs financés par ce programme</a></div>`
   ;(cible.querySelector('#trac') as HTMLElement).innerHTML = await blocTracabilite('programme', p, 'Exécution 2024')
+  ;(cible.querySelector('#perf-programme') as HTMLElement).innerHTML = await (await import('./resultats')).blocProgramme(p)
 }

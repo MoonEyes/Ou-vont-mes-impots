@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/performance_barometre_index.schema.json",
+  "title": "site/data/performance/barometre/index.json : indicateurs du baromètre de la DITP, départements (pipeline/performance.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "presentation",
+    "avertissement",
+    "regle",
+    "sens_publie_lecture",
+    "licence",
+    "indicateurs",
+    "indicateurs_non_collectes",
+    "departements",
+    "france",
+    "fichier_departement"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "presentation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sens_publie_lecture": {
+      "type": "string",
+      "minLength": 1
+    },
+    "licence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "indicateurs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "chantier_id",
+          "chantier",
+          "engagement",
+          "intitule",
+          "description_publiee",
+          "sens_publie",
+          "categorie_evolution_publiee",
+          "nombre_valeurs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^IND-[0-9]+$"
+          },
+          "chantier_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "chantier": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "engagement": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "intitule": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description_publiee": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sens_publie": {
+            "enum": [
+              "hausse",
+              "baisse",
+              null
+            ]
+          },
+          "categorie_evolution_publiee": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "nombre_valeurs": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "indicateurs_non_collectes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "departements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "nom",
+          "nombre_indicateurs"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^([0-9]{2,3}|2[AB])$"
+          },
+          "nom": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nombre_indicateurs": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "france": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fichier_departement": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
