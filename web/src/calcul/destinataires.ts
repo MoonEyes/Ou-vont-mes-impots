@@ -22,6 +22,15 @@ export const DESTINATAIRES: Record<IdDestinataire, Destinataire> = {
   epci: D('epci', 'Intercommunalité', 'Collectivites locales'),
   departement: D('departement', 'Département', 'Collectivites locales'),
   plusieurs: D('plusieurs', 'Sécurité sociale (plusieurs branches)', 'Securite sociale'),
+  // Destinataires des profils étendus (prelevements/affectation.json, commit 32e891c) : libellés lisibles, famille de
+  // couleur de leur administration (billet.ts, FAMILLE_ADMIN).
+  fsv: D('fsv', 'Fonds de solidarité vieillesse', 'Securite sociale'),
+  cas_pensions: D('cas_pensions', 'État, compte des pensions des fonctionnaires de l’État', 'Etat'),
+  cnracl: D('cnracl', 'Caisse de retraite des fonctionnaires territoriaux et hospitaliers (CNRACL)', 'Securite sociale'),
+  ircantec: D('ircantec', 'Retraite complémentaire des agents publics contractuels (Ircantec)', 'Securite sociale'),
+  erafp: D('erafp', 'Retraite additionnelle de la fonction publique (ERAFP)', 'Securite sociale'),
+  rci_independants: D('rci_independants', 'Retraite complémentaire des indépendants (Assurance retraite)', 'Securite sociale'),
+  regime_local_am: D('regime_local_am', 'Assurance maladie du régime local d’Alsace-Moselle', 'Securite sociale'),
 }
 
 /** Destinataires lus dans prelevements/affectation.json (contrat 1.4), ajoutés au registre du contrat. */
@@ -30,6 +39,8 @@ const SUPPLEMENTAIRES: Record<string, Destinataire> = {
   autres_taxes_produits: { id: 'autres_taxes_produits', nom: 'Plusieurs bénéficiaires (répartition non sourcée)', administration: 'Plusieurs' },
   // Lignes des profils étendus sans entrée dans affectation.json (moteur-etendu.ts, NON_AFFECTE) : aucune répartition supposée.
   non_affecte: { id: 'non_affecte', nom: 'Destinataire non publié dans les données du site', administration: 'Plusieurs' },
+  // Ligne répartie entre organismes de plusieurs administrations (agregats.ts) : le détail est dans sa ventilation.
+  plusieurs_organismes: { id: 'plusieurs_organismes', nom: 'Plusieurs organismes (répartition publiée)', administration: 'Plusieurs' },
 }
 export function enregistrerDestinataires(d: Record<string, { nom: string; administration: string }> | undefined) {
   for (const [id, v] of Object.entries(d ?? {}))

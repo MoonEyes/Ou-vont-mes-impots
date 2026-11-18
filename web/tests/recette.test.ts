@@ -69,11 +69,12 @@ describe('recette', () => {
   it('saisie : message hors V1 focalisable', async () => {
     await ecran('#/calcul')
     const s = main.querySelector<HTMLSelectElement>('#p1-statut')!
-    s.value = 'fonctionnaire'
+    s.value = 'demandeur_emploi'
     s.dispatchEvent(new Event('change', { bubbles: true }))
     soumettre()
     await attendreQue(() => !!main.querySelector('#retour .avertissement'))
     expect(main.querySelector('#retour .avertissement')?.getAttribute('tabindex')).toBe('-1')
+    expect(main.querySelector('#retour .avertissement')?.textContent).toContain('allocations chômage')
   })
 
   it('destinataires : jamais d’identifiant technique affiché', () => {

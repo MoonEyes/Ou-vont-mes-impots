@@ -9,6 +9,7 @@
 // Chaque profil est vérifié sur des cas types (tests/cas_types/cas_types_profils.json, web/ECARTS.md).
 // Ce qui n'a pas pu être vérifié est refusé par défaut (option autoriserNonVerifie). API décrite dans README.md.
 import { DESTINATAIRES } from './destinataires'
+import { tauxCsgPensionDesLignes } from './agregats'
 import { BAREMES_2025 as B, MILLESIME_BAREMES, assietteCsgActivite, tauxCsgPension } from './baremes-2025'
 // Contrôle de saisie et de périmètre : module léger, partagé avec l'écran de saisie (fil principal).
 import { profilDe, verifierProfilEtendu } from './perimetre-etendu'
@@ -79,8 +80,6 @@ export const CLES_AFFECTATION_A_CREER: Record<string, string> = {
   fonds_emploi_hospitalier: 'fonds_emploi_hospitalier',
   ircantec_salarie: 'ircantec',
   ircantec_employeur: 'ircantec',
-  csg_pension_deductible: 'csg_remplacement',
-  csg_pension_non_deductible: 'csg_remplacement',
   casa: 'casa',
   maladie_retraite_complementaire: 'maladie_retraite_complementaire',
   micro_maladie_maternite: 'independants_maladie_maternite',
@@ -109,6 +108,16 @@ export const CLES_AFFECTATION_A_CREER: Record<string, string> = {
   forfait_social: 'forfait_social',
   reduction_generale: 'reduction_generale',
   autres_cotisations_salarie: 'autres_cotisations_salarie',
+}
+
+/**
+ * CSG sur les pensions : la clé dépend du taux de CSG de la personne (la répartition entre organismes change avec le
+ * taux). Mêmes clés que correspondance_calcul_selon_taux de prelevements/affectation.json ; au taux réduit, la CSG non
+ * déductible est nulle (pas de ligne).
+ */
+export const CLES_AFFECTATION_A_CREER_SELON_TAUX: Record<string, Partial<Record<TauxCsgRetraite, string>>> = {
+  csg_pension_deductible: { normal: 'csg_remplacement_taux_normal', median: 'csg_remplacement_taux_median', reduit: 'csg_remplacement_taux_reduit' },
+  csg_pension_non_deductible: { normal: 'csg_remplacement_taux_normal', median: 'csg_remplacement_taux_median' },
 }
 
 export const VERIFICATIONS: Record<VerificationProfil['profil'], VerificationProfil> = {
@@ -753,7 +762,9 @@ export function affectationsManquantes(prelevements: Prelevement[], affectation?
   for (const l of prelevements) {
     if (l.ventilation?.length && affectation) continue
     const base = l.id.replace(/_declarant2$/, '')
-    const cle = CLES_AFFECTATION_A_CREER[base]
+    const selonTaux = CLES_AFFECTATION_A_CREER_SELON_TAUX[base]
+    const taux = selonTaux ? tauxCsgPensionDesLignes(prelevements, l.personne) : null
+    const cle = selonTaux ? (taux ? selonTaux[taux] : undefined) : CLES_AFFECTATION_A_CREER[base]
     if (!cle) continue
     if (!vus.has(base)) vus.set(base, { id: base, libelle: l.libelle, cle_proposee: cle })
   }

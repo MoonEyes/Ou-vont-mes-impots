@@ -187,17 +187,24 @@ describe('profils étendus : saisie, inversion, périmètre, affectation', () =>
       }
       for (const m of r.affectations_manquantes) {
         manquantes.add(m.id)
-        expect(Object.keys(affectation.prelevements)).not.toContain(m.cle_proposee)
+        // Clé absente, ou présente sans répartition publiée (« non sourcee », jamais complétée par une estimation).
+        const a = affectation.prelevements[m.cle_proposee]
+        if (a) {
+          expect(a.statut, m.cle_proposee).toBe('non sourcee')
+          expect(a.ventilation, m.cle_proposee).toEqual([])
+        }
       }
       // CSG d'activité (salaire, traitement, forfait micro) : répartition publiée appliquée.
       for (const l of r.prelevements.filter((x) => /^csg_(deductible|non_deductible|micro)/.test(x.id))) expect(l.ventilation?.length, l.id).toBe(5)
     }
     expect([...manquantes].sort()).toEqual(
       [
-        'ags', 'apec_employeur', 'apec_salarie', 'ati', 'atiacl', 'casa', 'cet_employeur', 'cet_salarie', 'contribution_cas_pensions', 'contribution_cnracl', 'csg_pension_deductible', 'csg_pension_non_deductible',
-        'fonds_emploi_hospitalier', 'formation_professionnelle', 'ircantec_employeur', 'ircantec_salarie', 'maladie_regime_local', 'maladie_retraite_complementaire',
-        'micro_formation_professionnelle', 'micro_invalidite_deces', 'micro_maladie_maternite', 'micro_retraite_base', 'micro_retraite_complementaire', 'micro_taxe_chambre_consulaire',
-        'rafp_employeur', 'rafp_salarie', 'reduction_generale', 'retenue_cnracl', 'retenue_pension_civile', 'taxe_apprentissage',
+        // Depuis le commit 32e891c : pensions des fonctionnaires, Ircantec, RAFP, CSG sur les pensions, Casa, retraite des
+        // indépendants et régime local d'Alsace-Moselle sont répartis ; restent les lignes sans source publiée.
+        'ags', 'apec_employeur', 'apec_salarie', 'atiacl', 'cet_employeur', 'cet_salarie',
+        'fonds_emploi_hospitalier', 'formation_professionnelle', 'maladie_retraite_complementaire',
+        'micro_formation_professionnelle', 'micro_invalidite_deces', 'micro_maladie_maternite', 'micro_taxe_chambre_consulaire',
+        'reduction_generale', 'taxe_apprentissage',
       ].sort(),
     )
     expect(affectationsManquantes([], affectation)).toEqual([])

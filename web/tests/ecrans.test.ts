@@ -141,11 +141,11 @@ describe('écrans', () => {
   it('1. saisie : profil hors V1, message de sortie et redirection', async () => {
     await ecran('#/calcul')
     const s = main.querySelector<HTMLSelectElement>('#p1-statut')!
-    s.value = 'fonctionnaire'
+    s.value = 'demandeur_emploi'
     s.dispatchEvent(new Event('change', { bubbles: true }))
     main.querySelector<HTMLFormElement>('#formulaire')!.dispatchEvent(new Event('submit', { cancelable: true }))
     await attendreQue(() => !!main.querySelector('#retour .avertissement'))
-    expect(texte()).toContain('pension civile')
+    expect(texte()).toContain('allocations chômage')
     expect(main.querySelector('#retour a')?.getAttribute('href')).toBe('./#/explorer')
   })
 

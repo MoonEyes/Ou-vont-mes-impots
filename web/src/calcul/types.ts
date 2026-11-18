@@ -62,6 +62,13 @@ export type IdDestinataire =
   | 'epci'
   | 'departement'
   | 'plusieurs'
+  | 'fsv'
+  | 'cas_pensions'
+  | 'cnracl'
+  | 'ircantec'
+  | 'erafp'
+  | 'rci_independants'
+  | 'regime_local_am'
 
 export type Administration = 'Etat' | 'Collectivites locales' | 'Securite sociale' | 'Plusieurs'
 

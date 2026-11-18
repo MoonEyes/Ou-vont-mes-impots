@@ -40,7 +40,8 @@ Même forme que le résultat du contrat 1.0 (`prelevements[]`, `totaux`, `averti
 - `entree.personnes[]` : `profil`, revenu net et brut de l'année, `revenu_imposable_annuel`, `detail` (traitement et primes, taux de CSG appliqué, pensions brutes) ;
 - `millesime` : année et barèmes appliqués ;
 - `verifications[]` : pour chaque profil du foyer, `statut` (`verifie` ou `non verifie`) et la référence utilisée ;
-- `affectations_manquantes[]` : lignes sans entrée dans `prelevements/affectation.json`. Ces lignes portent le destinataire `non_affecte` (« Destinataire non publié dans les données du site ») et `statut_affectation: 'non sourcee'` ; aucune répartition n'est supposée. `cle_proposee` nomme l'entrée à créer côté données.
+- `affectations_manquantes[]` : lignes sans entrée dans `prelevements/affectation.json`. Ces lignes portent le destinataire `non_affecte` (« Destinataire non publié dans les données du site ») et `statut_affectation: 'non sourcee'` ; aucune répartition n'est supposée. `cle_proposee` nomme l'entrée à créer côté données, ou l'entrée existante sans répartition publiée (`non sourcee`, ex. maladie-maternité des indépendants), qui reste « non publié ».
+- Affectation (`agregats.ts`, `appliquerAffectation`) : clé lue dans `correspondance_calcul_selon_taux` pour la CSG sur les pensions (taux normal, médian ou réduit de la personne, retrouvé par `tauxCsgPensionDesLignes` dans ses lignes), sinon dans `correspondance_calcul`. Une ligne non affectée répartie entre branches de la sécurité sociale prend le destinataire `plusieurs`. Clés proposées : `CLES_AFFECTATION_A_CREER` et, pour la CSG sur les pensions, `CLES_AFFECTATION_A_CREER_SELON_TAUX` (`moteur-etendu.ts`).
 
 Familles de lignes : les cotisations personnelles d'un indépendant ou d'un retraité utilisent la famille `cotisation_salariale` (cotisations versées par la personne) ; le versement libératoire est une ligne `impot_revenu`.
 
