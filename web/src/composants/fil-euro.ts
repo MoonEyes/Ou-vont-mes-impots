@@ -139,3 +139,39 @@ export function filEuro(sources: SourceFil[], total: string, dest: DestFil[]): s
   const lecture = `${src.map((x) => `${x.nom.toLowerCase()} : ${x.texte}`).join(' ; ')}. Au total ${total} en un an. Sur 100 € : ${dst.map((x) => `${x.texte} ${x.nom}`).join(', ')}.`
   return `<div class="fil-euro">${large(src, total, dst, id)}${compact(src, total, dst, `${id}c`)}<p class="visuellement-cache">${h(lecture)}</p></div>`
 }
+
+/** Un maillon de la piste d'un euro : nom, montant affiché, valeur suivie (1 = l'euro de départ) et statut de la source. */
+export interface MaillonPiste {
+  nom: string
+  texte: string
+  valeur: number
+  statut: Statut
+}
+
+/**
+ * La piste d'un euro, étape par étape : un ruban vertical qui s'amincit à chaque étape (épaisseur proportionnelle à la part suivie,
+ * avec un minimum visible) et garde le motif du statut de chaque étape. Décoratif : la liste des étapes dit la même chose en texte.
+ */
+export function filPiste(maillons: MaillonPiste[]): string {
+  if (!maillons.length) return ''
+  const id = `p${++compteur}`
+  const L = 120
+  const pas = 58
+  const haut = 26
+  const c = L / 2
+  const larg = (v: number) => Math.max(3, Math.min(1, Math.max(0, v)) * L)
+  const out: string[] = [motifs(id)]
+  maillons.forEach((m, i) => {
+    const w = larg(m.valeur)
+    const y = i * pas + 1.5
+    if (i > 0) {
+      const wp = larg(maillons[i - 1].valeur)
+      out.push(`<path ${remplissage(id, m.statut)} d="${rubanV(y - pas + haut, [c - wp / 2, wp], y, [c - w / 2, w])}"/>`)
+    }
+    out.push(`<rect ${remplissage(id, m.statut)} x="${n(c - w / 2)}" y="${n(y)}" width="${n(w)}" height="${haut}" rx="${w > 12 ? 6 : 1.5}"/>`)
+    const nom = m.nom.length > 34 ? `${m.nom.slice(0, 33)}…` : m.nom
+    out.push(`<text x="${L + 16}" y="${n(y + 11)}" font-size="13">${h(nom)}</text><text class="fe-titre" x="${L + 16}" y="${n(y + 29)}" font-size="15">${h(m.texte)}</text>`)
+  })
+  const H = (maillons.length - 1) * pas + haut + 3
+  return `<div class="fil-euro fil-piste"><svg viewBox="0 0 400 ${H}" aria-hidden="true" focusable="false">${out.join('')}</svg></div>`
+}

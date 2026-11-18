@@ -2997,3 +2997,34 @@ fieldset.saisie-groupe {
 @media (min-width: 1100px) {
   .sl-multiples {
     grid-template-columns: repeat(3, 1fr);
+/* suivre */
+.suivre-etapes {
+.suivre-etapes > li {
+  margin-bottom: 1.25rem;
+.suivre-options {
+.suivre-options li {
+  gap: 0.25rem 1rem;
+  padding: 0.625rem 0;
+  border-bottom: 1.5px solid var(--filet);
+.suivre-options li:last-child {
+  border-bottom: 0;
+.suivre-options .barre-tete {
+  justify-content: space-between;
+  gap: 0.375rem 1rem;
+.suivre-options .valeur {
+  font-family: var(--chiffres);
+.suivre-choix {
+  padding: 0.375rem 1rem;
+  text-align: left;
+  justify-content: flex-start;
+.suivre-options li.actif .barre {
+  border-width: var(--trait);
+.suivre-fin {
+  border-top: var(--trait) dashed var(--contour);
+  padding-top: 0.75rem;
+.suivre-fin h3 {
+.fil-piste svg {
+  max-width: 30rem;
+.suivre-etape h2:focus-visible {
+  outline: 3px solid var(--contour);
+  outline-offset: 4px;
