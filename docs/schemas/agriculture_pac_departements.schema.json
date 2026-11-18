@@ -1,0 +1,379 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/agriculture_pac_departements.schema.json",
+  "title": "site/data/agriculture/pac_departements.json : aides de la politique agricole commune par département, année et type d'aide (Agreste et ASP, 2005-2009 ; pipeline/agriculture.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "url",
+    "licence",
+    "date_sources",
+    "unite",
+    "annees",
+    "piliers",
+    "aides",
+    "colonnes",
+    "territoires",
+    "cellules_secretes",
+    "controles",
+    "definitions",
+    "limites",
+    "confidentialite"
+  ],
+  "properties": {
+    "url": {
+      "type": "string",
+      "minLength": 1
+    },
+    "licence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date_sources": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 2000,
+        "maximum": 2100
+      },
+      "minItems": 1
+    },
+    "piliers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "required": [
+        "premier_pilier",
+        "developpement_rural"
+      ]
+    },
+    "aides": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "nom",
+          "libelle_source",
+          "pilier",
+          "annees",
+          "montant_retenu"
+        ],
+        "properties": {
+          "nom": {
+            "type": "string",
+            "minLength": 1
+          },
+          "libelle_source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pilier": {
+            "enum": [
+              "premier_pilier",
+              "developpement_rural"
+            ]
+          },
+          "annees": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 2000,
+              "maximum": 2100
+            },
+            "minItems": 1
+          },
+          "montant_retenu": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "colonnes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "aide",
+          "indicateur",
+          "unite",
+          "libelle_source"
+        ],
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "aide": {
+            "type": "string",
+            "minLength": 1
+          },
+          "indicateur": {
+            "type": "string",
+            "minLength": 1
+          },
+          "unite": {
+            "enum": [
+              "euros",
+              "exploitations",
+              "animaux",
+              "tonnes"
+            ]
+          },
+          "libelle_source": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "territoires": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "niveau",
+          "code",
+          "nom",
+          "region",
+          "valeurs",
+          "par_annee"
+        ],
+        "properties": {
+          "niveau": {
+            "enum": [
+              "france",
+              "ensemble",
+              "region",
+              "departement"
+            ]
+          },
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nom": {
+            "type": "string",
+            "minLength": 1
+          },
+          "region": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "valeurs": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "par_annee": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "required": [
+                "montants_retenus_eur",
+                "somme_montants_retenus_eur",
+                "aides_sans_montant"
+              ],
+              "properties": {
+                "montants_retenus_eur": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer"
+                  }
+                },
+                "somme_montants_retenus_eur": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "aides_sans_montant": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 90
+    },
+    "cellules_secretes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "niveau",
+          "territoire",
+          "annee",
+          "aide",
+          "indicateur"
+        ],
+        "properties": {
+          "niveau": {
+            "enum": [
+              "france",
+              "ensemble",
+              "region",
+              "departement"
+            ]
+          },
+          "territoire": {
+            "type": "string",
+            "minLength": 1
+          },
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "aide": {
+            "type": "string",
+            "minLength": 1
+          },
+          "indicateur": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "controles": {
+      "type": "object",
+      "required": [
+        "comparaisons_completes",
+        "comparaisons_avec_cellule_secrete",
+        "ecarts",
+        "regle"
+      ],
+      "properties": {
+        "comparaisons_completes": {
+          "type": "integer"
+        },
+        "comparaisons_avec_cellule_secrete": {
+          "type": "integer"
+        },
+        "ecarts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "objet",
+              "niveau",
+              "territoire",
+              "annee",
+              "aide",
+              "indicateur",
+              "valeur_publiee",
+              "somme_des_lignes",
+              "ecart"
+            ],
+            "properties": {
+              "objet": {
+                "enum": [
+                  "region_contre_departements",
+                  "france_metropolitaine_contre_regions"
+                ]
+              },
+              "territoire": {
+                "type": "string",
+                "minLength": 1
+              },
+              "annee": {
+                "type": "integer",
+                "minimum": 2000,
+                "maximum": 2100
+              },
+              "aide": {
+                "type": "string",
+                "minLength": 1
+              },
+              "indicateur": {
+                "type": "string",
+                "minLength": 1
+              },
+              "valeur_publiee": {
+                "type": "number"
+              },
+              "somme_des_lignes": {
+                "type": "number"
+              },
+              "ecart": {
+                "type": "number"
+              },
+              "niveau": {
+                "enum": [
+                  "france",
+                  "ensemble",
+                  "region",
+                  "departement"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "regle": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "confidentialite": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

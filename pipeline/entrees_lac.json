@@ -1500,6 +1500,26 @@
    "hors_catalogue": [],
    "octets_sources": 24826525
   },
+  "agriculture": {
+   "sources": {
+    "agriculture_pac_departements_2005_2009": [
+     "data/lake/agriculture/agriculture_pac_departements_2005_2009/9cca7586-9643-4595-8886-df68fc171706_9cca7586.csv"
+    ],
+    "agriculture_feader_2014_2020_fr": [
+     "data/lake/agriculture/agriculture_feader_2014_2020_fr.json"
+    ],
+    "agriculture_feaga_paiements_2023_2027": [
+     "data/lake/agriculture/agriculture_feaga_paiements_2023_2027.json"
+    ],
+    "agriculture_feader_paiements_2023_2027": [
+     "data/lake/agriculture/agriculture_feader_paiements_2023_2027.json"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 7837257,
+   "note": "sources du domaine « agriculture » de collecte/catalogue.json, collectées par `python pipeline/agriculture.py collecter` ; lit aussi, en lecture seule, site/data/realisations, arbre, niches et ue"
+  },
   "retraites": {
    "sources": {},
    "caches": [],
@@ -1551,6 +1571,10 @@
   }
  },
  "urls": {
+  "data/lake/agriculture/agriculture_feader_2014_2020_fr.json": "https://cohesiondata.ec.europa.eu/resource/99js-gm52.json?%24limit=50000&ms=FR&fund=EAFRD",
+  "data/lake/agriculture/agriculture_feader_paiements_2023_2027.json": "https://cohesiondata.ec.europa.eu/resource/7wr2-9vpr.json",
+  "data/lake/agriculture/agriculture_feaga_paiements_2023_2027.json": "https://cohesiondata.ec.europa.eu/resource/qgpc-e9qr.json",
+  "data/lake/agriculture/agriculture_pac_departements_2005_2009/9cca7586-9643-4595-8886-df68fc171706_9cca7586.csv": "https://static.data.gouv.fr/52/9810eab537f437b490ba43afa032a8c605e58c7edd11a8f1f24c35f003e124.csv",
   "data/lake/_restreint/beneficiaires/benef_decp/decp_11cea8e8.parquet": "https://static.data.gouv.fr/resources/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire/20261117-051110/decp.parquet",
   "data/lake/_restreint/beneficiaires/datagouv__subventions-de-bourges-plus-en-2018-et-2019/subventions-de-bourges-plus-en-2018-et-2019_85c2c379.parquet": "https://data.bourgesplus.fr/api/v2/catalog/datasets/subventions-de-bourges-plus-en-2018-et-2019/exports/parquet",
   "data/lake/_restreint/beneficiaires/ods_laregion__subventions-du-conseil-regional.parquet": "https://data.laregion.fr/api/explore/v2.1/catalog/datasets/subventions-du-conseil-regional/exports/parquet",
