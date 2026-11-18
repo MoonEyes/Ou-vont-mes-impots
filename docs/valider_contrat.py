@@ -312,6 +312,13 @@ FICHIERS = [
     # fiscalité locale par commune, séries 2010 à aujourd'hui : taux et produits du REI (pipeline/fiscalite_locale_series.py)
     ("fiscalite_locale_series_index.schema.json", "fiscalite_locale_series/index.json", "existant"),
     ("fiscalite_locale_series_communes.schema.json", "fiscalite_locale_series/communes/*.json", "existant"),
+    # immobilier de l'État : parc, valeur, cessions, loyers, compte (pipeline/immobilier_etat.py)
+    ("immobilier_etat_index.schema.json", "immobilier_etat/index.json", "existant"),
+    ("immobilier_etat_parc.schema.json", "immobilier_etat/parc.json", "existant"),
+    ("immobilier_etat_valeur.schema.json", "immobilier_etat/valeur.json", "existant"),
+    ("immobilier_etat_cessions.schema.json", "immobilier_etat/cessions.json", "existant"),
+    ("immobilier_etat_loyers.schema.json", "immobilier_etat/loyers.json", "existant"),
+    ("immobilier_etat_compte.schema.json", "immobilier_etat/compte.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

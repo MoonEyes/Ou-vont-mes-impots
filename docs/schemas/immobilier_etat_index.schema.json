@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/immobilier_etat_index.schema.json",
+  "title": "site/data/immobilier_etat/index.json : présentation, définitions, fichiers, chiffres clés, sources, limites, recherche publique",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "presentation": {
+      "type": "string",
+      "minLength": 20
+    },
+    "definitions": {
+      "type": "object",
+      "required": [
+        "parc",
+        "valeur",
+        "cessions",
+        "loyers",
+        "compte"
+      ],
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "fichiers": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "fichier",
+          "contenu"
+        ],
+        "properties": {
+          "fichier": {
+            "type": "string",
+            "pattern": "^immobilier_etat/.+\\.json$"
+          }
+        }
+      }
+    },
+    "chiffres_cles": {
+      "type": "object",
+      "minProperties": 5,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "annee",
+          "valeur",
+          "unite",
+          "source",
+          "statut"
+        ],
+        "properties": {
+          "annee": {
+            "type": "string",
+            "pattern": "^[0-9]{4}$"
+          },
+          "valeur": {
+            "type": "number"
+          },
+          "statut": {
+            "enum": [
+              "tracé",
+              "approché",
+              "non publié"
+            ]
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "nom",
+          "url",
+          "licence"
+        ]
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "url",
+          "motif"
+        ]
+      }
+    },
+    "limites": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "requetes",
+        "trouvailles"
+      ],
+      "properties": {
+        "trouvailles": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "nom",
+              "url",
+              "verdict",
+              "licence",
+              "date"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "collecte_le",
+    "presentation",
+    "definitions",
+    "fichiers",
+    "chiffres_cles",
+    "sources",
+    "sources_inaccessibles",
+    "limites",
+    "recherche_publique"
+  ]
+}

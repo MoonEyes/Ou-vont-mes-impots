@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/immobilier_etat_loyers.schema.json",
+  "title": "site/data/immobilier_etat/loyers.json : loyers payés par l'État (2014 à 2023), dépenses immobilières, prises à bail, grands baux sans bailleur, propriétaires des biens occupés par type",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "url": {
+      "type": "string"
+    },
+    "loyers_payes": {
+      "type": "object",
+      "required": [
+        "page",
+        "valeurs_meur",
+        "statut",
+        "perimetre"
+      ],
+      "properties": {
+        "valeurs_meur": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[0-9]{4}$"
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "depenses_immobilieres": {
+      "type": "object",
+      "required": [
+        "annees",
+        "lignes",
+        "total_meur"
+      ]
+    },
+    "prises_a_bail": {
+      "type": "object",
+      "required": [
+        "nombre"
+      ]
+    },
+    "grands_baux": {
+      "type": "object",
+      "required": [
+        "definition",
+        "baux",
+        "par_ministere"
+      ],
+      "properties": {
+        "baux": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "ministere",
+              "date_effet",
+              "surface_m2",
+              "occupant",
+              "loyer_annuel_ht_eur",
+              "departement",
+              "loyer_par_m2_eur",
+              "page"
+            ],
+            "properties": {
+              "ministere": {
+                "type": "string"
+              },
+              "date_effet": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+              },
+              "surface_m2": {
+                "type": "number"
+              },
+              "occupant": {
+                "enum": [
+                  "Service État",
+                  "Service Opérateur"
+                ]
+              },
+              "loyer_annuel_ht_eur": {
+                "type": "number"
+              },
+              "departement": {
+                "type": "string"
+              },
+              "loyer_par_m2_eur": {
+                "type": "number"
+              },
+              "page": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "biens_occupes_non_proprietes_de_l_etat": {
+      "type": "object",
+      "required": [
+        "definition",
+        "publications"
+      ]
+    },
+    "ecarts_entre_sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "objet",
+          "valeurs",
+          "lecture"
+        ],
+        "properties": {
+          "valeurs": {
+            "type": "array",
+            "minItems": 2
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 10
+          }
+        }
+      }
+    },
+    "ordre": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "collecte_le",
+    "url",
+    "loyers_payes",
+    "depenses_immobilieres",
+    "prises_a_bail",
+    "grands_baux",
+    "biens_occupes_non_proprietes_de_l_etat",
+    "ecarts_entre_sources"
+  ]
+}

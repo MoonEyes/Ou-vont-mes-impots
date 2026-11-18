@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/immobilier_etat_compte.schema.json",
+  "title": "site/data/immobilier_etat/compte.json : compte d'affectation spéciale « Gestion du patrimoine immobilier de l'État » (PLRG 2023 à 2025, PAP 2026, RAP 2025)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "compte": {
+      "const": "Gestion du patrimoine immobilier de l'État"
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "par_annee": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[0-9]{4}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "source",
+          "recettes",
+          "depenses",
+          "solde"
+        ],
+        "properties": {
+          "recettes": {
+            "type": "object",
+            "required": [
+              "sections",
+              "evaluation_eur",
+              "execution_eur"
+            ]
+          },
+          "depenses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "programme",
+                "libelle",
+                "execution_eur"
+              ]
+            }
+          },
+          "solde": {
+            "type": "object",
+            "required": [
+              "debut_eur",
+              "recettes_eur",
+              "depenses_eur",
+              "fin_eur"
+            ]
+          }
+        }
+      }
+    },
+    "prevision_pap_2026": {
+      "type": "object",
+      "required": [
+        "source",
+        "url",
+        "recettes",
+        "credits_723"
+      ]
+    },
+    "rapport_annuel_2025": {
+      "type": "object",
+      "required": [
+        "recettes",
+        "citations"
+      ],
+      "properties": {
+        "citations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "document",
+              "page",
+              "texte"
+            ],
+            "properties": {
+              "page": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "texte": {
+                "type": "string",
+                "minLength": 10
+              }
+            }
+          }
+        }
+      }
+    },
+    "ecarts_entre_sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "objet",
+          "valeurs",
+          "lecture"
+        ],
+        "properties": {
+          "valeurs": {
+            "type": "array",
+            "minItems": 2
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 10
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "collecte_le",
+    "compte",
+    "definitions",
+    "par_annee",
+    "prevision_pap_2026",
+    "rapport_annuel_2025",
+    "ecarts_entre_sources"
+  ]
+}
