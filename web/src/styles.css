@@ -2849,3 +2849,11 @@ fieldset.saisie-groupe {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   .recouvrement-notions {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+/* comparaison-europe */
+.tableau-comparaison td.barre-cellule {
+  min-width: 6rem;
+  width: 35%;
+.tableau-comparaison td.barre-cellule .barre {
+/* La France est repérée par un trait (forme), jamais par une couleur propre. */
+.tableau-comparaison tr.repere-france > * {
+  border-bottom: var(--trait) solid var(--contour);
