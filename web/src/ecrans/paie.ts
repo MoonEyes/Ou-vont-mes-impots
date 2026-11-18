@@ -257,4 +257,5 @@ ${blocTaxeFonciere()}
       info.textContent = 'Impossible de créer l’image sur cet appareil.'
     }
   })
+  ;(await import('../composants/carte-partage')).monterPartage(cible)
 }
