@@ -4314,6 +4314,50 @@
      "nom": "eurostat_gov_10a_exp.json"
     }
    ]
+  },
+  {
+   "id": "agriculture_pac_departements_2005_2009",
+   "domaine": "agriculture",
+   "type": "datagouv",
+   "dataset": "53698ec1a3a729239d203552",
+   "format": "csv",
+   "titre": "Agreste et ASP, aides de la politique agricole commune de 2005 a 2009 par region et departement (montants en milliers d'euros, beneficiaires ; agregats, aucun beneficiaire individuel) (pipeline/agriculture.py)",
+   "licence": "Licence Ouverte 1.0",
+   "producteur": "Agreste (ministere de l'Agriculture) et Agence de services et de paiement",
+   "module": "pipeline/agriculture.py"
+  },
+  {
+   "id": "agriculture_feader_2014_2020_fr",
+   "domaine": "agriculture",
+   "type": "url",
+   "format": "json",
+   "url": "https://cohesiondata.ec.europa.eu/resource/99js-gm52.json?%24limit=50000&ms=FR&fund=EAFRD",
+   "titre": "Commission europeenne, ESIF 2014-2020 Finance Implementation Details, lignes France du FEADER (programmes de developpement rural, part UE et contrepartie nationale) (pipeline/agriculture.py)",
+   "licence": "CC0 1.0 (Commission europeenne)",
+   "producteur": "Commission europeenne",
+   "module": "pipeline/agriculture.py"
+  },
+  {
+   "id": "agriculture_feaga_paiements_2023_2027",
+   "domaine": "agriculture",
+   "type": "url",
+   "format": "json",
+   "url": "https://cohesiondata.ec.europa.eu/resource/qgpc-e9qr.json",
+   "titre": "Commission europeenne, 2023-2027 EAGF Payments, paiements du FEAGA par Etat membre et exercice financier (pipeline/agriculture.py)",
+   "licence": "CC0 1.0 (Commission europeenne)",
+   "producteur": "Commission europeenne (DG AGRI)",
+   "module": "pipeline/agriculture.py"
+  },
+  {
+   "id": "agriculture_feader_paiements_2023_2027",
+   "domaine": "agriculture",
+   "type": "url",
+   "format": "json",
+   "url": "https://cohesiondata.ec.europa.eu/resource/7wr2-9vpr.json",
+   "titre": "Commission europeenne, 2023-2027 EU Payments by MS - EAFRD, paiements du FEADER par Etat membre (pipeline/agriculture.py)",
+   "licence": "CC0 1.0 (Commission europeenne)",
+   "producteur": "Commission europeenne (DG AGRI)",
+   "module": "pipeline/agriculture.py"
   }
  ],
  "non_collectables": [
@@ -4393,6 +4437,14 @@
   {"source": "DGCL, notes de repartition du FMDI, du dispositif de compensation perequee et du fonds de perequation des droits de mutation (collectivites-locales.gouv.fr) : pipeline/solidarites_departements.py", "motif": "publiees en PDF seulement ; la note 2025 du fonds de perequation des droits de mutation est une image numerisee sans texte (18/11/2026)"},
   {"source": "Europe en France (europe-en-france.gouv.fr), listes des opérations et pages programmes (pipeline/fonds_europeens.py)", "motif": "page de vérification anti-robot (preuve de travail en JavaScript) servie à toute requête automatique le 18/11/2026 : non collecté, non contourné"},
   {"source": "Aides d'Etat (TAM, Commission europeenne), France : collecte par pipeline/aides_entreprises.py", "motif": "collecte/collecte.py ne tient pas de session : le module lit les pages publiques de la recherche (100 resultats par page, une requete a la fois, par mois d'octroi) ; l'export CSV ou XLSX, qui demande un nom et une adresse de courriel et part par courriel, n'est pas utilise ; le nom du beneficiaire n'est jamais enregistre"},
-  {"source": "Cour des comptes, pages des rapports d'observations definitives des chambres regionales et territoriales des comptes 2020-2026 (ccomptes.fr) : collecte par pipeline/controle.py", "motif": "aucun jeu ouvert apres les rapports de 2019 (data.gouv.fr) et data.ccomptes.fr injoignable (18/11/2026) : le module lit le plan du site sitemap_publication puis chaque page, une requete par seconde au plus, reprenable, arret au premier 403 ou 429 (non contourne) ; robots.txt exclut les adresses a parametres (recherche, listes filtrees), non utilisees ; metadonnees seulement, ni texte ni reponses"}
+  {"source": "Cour des comptes, pages des rapports d'observations definitives des chambres regionales et territoriales des comptes 2020-2026 (ccomptes.fr) : collecte par pipeline/controle.py", "motif": "aucun jeu ouvert apres les rapports de 2019 (data.gouv.fr) et data.ccomptes.fr injoignable (18/11/2026) : le module lit le plan du site sitemap_publication puis chaque page, une requete par seconde au plus, reprenable, arret au premier 403 ou 429 (non contourne) ; robots.txt exclut les adresses a parametres (recherche, listes filtrees), non utilisees ; metadonnees seulement, ni texte ni reponses"},
+  {
+   "source": "Telepac, transparence des beneficiaires de la PAC (telepac.agriculture.gouv.fr/telepac/tbp/)",
+   "motif": "HTTP 503 « service temporairement indisponible » sur tout le site les 18/11/2026 (plusieurs essais espaces) ; seule source des montants PAC par departement apres 2009 ; donnees nominatives : seule une agregation par departement et par mesure serait publiee (pipeline/agriculture.py)"
+  },
+  {
+   "source": "Agence de services et de paiement (asp-public.fr), rapports et chiffres de paiement",
+   "motif": "page de controle anti-robot (JavaScript et cookies exiges), constate le 18/11/2026 : non contourne (pipeline/agriculture.py)"
+  }
  ]
 }

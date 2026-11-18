@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/agriculture_index.schema.json",
+  "title": "site/data/agriculture/index.json : fichiers, repères, liens, sources, sources inaccessibles et recherche préalable de l'axe agriculture (pipeline/agriculture.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "date_sources",
+    "fichiers",
+    "reperes",
+    "liens",
+    "confidentialite",
+    "limites",
+    "sources",
+    "sources_inaccessibles",
+    "recherche_publique"
+  ],
+  "properties": {
+    "date_sources": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fichiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "fichier",
+          "contenu"
+        ],
+        "properties": {
+          "fichier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contenu": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 3
+    },
+    "reperes": {
+      "type": "object",
+      "required": [
+        "pac_france_hors_tom",
+        "feader_2014_2022",
+        "feaga_paiements",
+        "programme_149",
+        "lecture"
+      ]
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vue",
+          "fichier",
+          "lecture"
+        ],
+        "properties": {
+          "vue": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fichier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "confidentialite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "sources": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "id_catalogue",
+          "entrepot",
+          "titre",
+          "producteur",
+          "url",
+          "page",
+          "licence",
+          "millesime",
+          "verdict"
+        ],
+        "properties": {
+          "id_catalogue": {
+            "type": "string",
+            "minLength": 1
+          },
+          "entrepot": {
+            "type": "string",
+            "minLength": 1
+          },
+          "titre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "producteur": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "minLength": 1
+          },
+          "page": {
+            "type": "string",
+            "minLength": 1
+          },
+          "licence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "millesime": {
+            "type": "string",
+            "minLength": 1
+          },
+          "verdict": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "url",
+          "constat",
+          "effet"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "minLength": 1
+          },
+          "constat": {
+            "type": "string",
+            "minLength": 1
+          },
+          "effet": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "verdict",
+        "trouvailles"
+      ],
+      "properties": {
+        "date": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verdict": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trouvailles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "nom",
+              "classement",
+              "licence",
+              "derniere_mise_a_jour"
+            ],
+            "properties": {
+              "nom": {
+                "type": "string",
+                "minLength": 1
+              },
+              "classement": {
+                "enum": [
+                  "réutilisable tel quel",
+                  "à adapter",
+                  "inspiration",
+                  "écarté"
+                ]
+              },
+              "licence": {
+                "type": "string",
+                "minLength": 1
+              },
+              "derniere_mise_a_jour": {
+                "type": "string",
+                "minLength": 1
+              },
+              "motif": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -300,6 +300,11 @@ FICHIERS = [
     # séries longues : indice des prix, PIB, dépenses par fonction depuis 2005 (pipeline/series.py)
     ("series_index.schema.json", "series/index.json", "existant"),
     ("series_fonctions.schema.json", "series/fonctions.json", "existant"),
+    # agriculture : PAC par département (2005-2009), FEADER et cofinancement, budget de l'État (pipeline/agriculture.py)
+    ("agriculture_index.schema.json", "agriculture/index.json", "existant"),
+    ("agriculture_pac_departements.schema.json", "agriculture/pac_departements.json", "existant"),
+    ("agriculture_developpement_rural.schema.json", "agriculture/developpement_rural.json", "existant"),
+    ("agriculture_etat.schema.json", "agriculture/etat.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/agriculture_etat.schema.json",
+  "title": "site/data/agriculture/etat.json : budget de l'État pour l'agriculture (programmes 149, 206, 215, 381), renvois vers les dépenses fiscales et le cofinancement (pipeline/agriculture.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "programmes",
+    "programmes_absents",
+    "depenses_fiscales",
+    "cofinancement_feader",
+    "limites"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date_sources": {
+      "type": "string",
+      "minLength": 1
+    },
+    "programmes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "nom",
+          "mission",
+          "fichier_realisations",
+          "perimetre",
+          "annees",
+          "arbre"
+        ],
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "nom": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mission": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fichier_realisations": {
+            "type": "string",
+            "minLength": 1
+          },
+          "perimetre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "annees": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "annee",
+                "vote_lfi_eur",
+                "depense_constatee_eur",
+                "source"
+              ],
+              "properties": {
+                "annee": {
+                  "type": "integer",
+                  "minimum": 2000,
+                  "maximum": 2100
+                },
+                "vote_lfi_eur": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "depense_constatee_eur": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "source": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "arbre": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "fichier",
+                  "id",
+                  "millesime",
+                  "md",
+                  "actions"
+                ],
+                "properties": {
+                  "fichier": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "millesime": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "md": {
+                    "type": "number"
+                  },
+                  "actions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "nom",
+                        "md"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "nom": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "md": {
+                          "type": "number"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 4
+    },
+    "programmes_absents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "nom",
+          "periode",
+          "constat"
+        ],
+        "properties": {
+          "programme": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nom": {
+            "type": "string",
+            "minLength": 1
+          },
+          "periode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "constat": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "depenses_fiscales": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "fichier",
+            "programme",
+            "noeud",
+            "mesures",
+            "fichier_mesures",
+            "lecture"
+          ],
+          "properties": {
+            "fichier": {
+              "type": "string",
+              "minLength": 1
+            },
+            "programme": {
+              "type": "string",
+              "minLength": 1
+            },
+            "noeud": {
+              "type": "string",
+              "minLength": 1
+            },
+            "mesures": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "fichier_mesures": {
+              "type": "string",
+              "minLength": 1
+            },
+            "lecture": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "cofinancement_feader": {
+      "type": "object",
+      "required": [
+        "fichier",
+        "lecture"
+      ],
+      "properties": {
+        "fichier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lecture": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    }
+  }
+}

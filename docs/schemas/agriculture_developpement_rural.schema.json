@@ -1,0 +1,650 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/agriculture_developpement_rural.schema.json",
+  "title": "site/data/agriculture/developpement_rural.json : FEADER 2014-2022 par programme de développement rural et par mesure, contrepartie nationale ; paiements FEAGA et FEADER 2023-2027 (Commission européenne ; pipeline/agriculture.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "url",
+    "licence",
+    "date_sources",
+    "unite",
+    "feader_2014_2022",
+    "psn_2023_2027",
+    "autre_vue_ue",
+    "limites"
+  ],
+  "properties": {
+    "url": {
+      "type": "string",
+      "minLength": 1
+    },
+    "licence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date_sources": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "feader_2014_2022": {
+      "type": "object",
+      "required": [
+        "annee_situation",
+        "definitions",
+        "national",
+        "ecarts_total_source",
+        "selection_superieure_a_la_maquette",
+        "programmes",
+        "par_mesure",
+        "serie",
+        "note_serie"
+      ],
+      "properties": {
+        "annee_situation": {
+          "type": "integer",
+          "minimum": 2000,
+          "maximum": 2100
+        },
+        "definitions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "national": {
+          "type": "object",
+          "required": [
+            "ue_eur",
+            "contrepartie_nationale_eur",
+            "total_eur",
+            "projets_selectionnes_eur",
+            "depenses_declarees_eur"
+          ],
+          "properties": {
+            "ue_eur": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "contrepartie_nationale_eur": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "total_eur": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "projets_selectionnes_eur": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "depenses_declarees_eur": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "selection_superieure_a_la_maquette": {
+          "type": "object",
+          "required": [
+            "mesures",
+            "constat"
+          ],
+          "properties": {
+            "mesures": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "mesure",
+                  "projets_selectionnes_eur",
+                  "total_eur"
+                ],
+                "properties": {
+                  "mesure": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "projets_selectionnes_eur": {
+                    "type": "integer"
+                  },
+                  "total_eur": {
+                    "type": "integer"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "constat": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "programmes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "cci",
+              "titre_source",
+              "type",
+              "region",
+              "version",
+              "ue_eur",
+              "contrepartie_nationale_eur",
+              "total_eur",
+              "projets_selectionnes_eur",
+              "depenses_declarees_eur",
+              "part_ue_pct",
+              "par_mesure"
+            ],
+            "properties": {
+              "cci": {
+                "type": "string",
+                "pattern": "^2014FR06RD"
+              },
+              "titre_source": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "enum": [
+                  "regional",
+                  "national",
+                  "reseau_rural"
+                ]
+              },
+              "region": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "code_ancienne_region",
+                      "nom",
+                      "departements"
+                    ],
+                    "properties": {
+                      "code_ancienne_region": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "nom": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "departements": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "version": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "ue_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "contrepartie_nationale_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "total_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "projets_selectionnes_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "depenses_declarees_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "part_ue_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "par_mesure": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "mesure",
+                    "nom",
+                    "libelle_source",
+                    "ue_eur",
+                    "contrepartie_nationale_eur",
+                    "total_eur",
+                    "projets_selectionnes_eur",
+                    "depenses_declarees_eur"
+                  ],
+                  "properties": {
+                    "mesure": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "nom": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "libelle_source": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "ue_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "contrepartie_nationale_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "total_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "projets_selectionnes_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "depenses_declarees_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "minItems": 1
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "par_mesure": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "mesure",
+              "nom",
+              "libelle_source",
+              "ue_eur",
+              "contrepartie_nationale_eur",
+              "total_eur",
+              "projets_selectionnes_eur",
+              "depenses_declarees_eur"
+            ],
+            "properties": {
+              "mesure": {
+                "type": "string",
+                "minLength": 1
+              },
+              "nom": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "libelle_source": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "ue_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "contrepartie_nationale_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "total_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "projets_selectionnes_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "depenses_declarees_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "serie": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "annee",
+              "programmes",
+              "ue_eur",
+              "contrepartie_nationale_eur",
+              "total_eur",
+              "projets_selectionnes_eur",
+              "depenses_declarees_eur"
+            ],
+            "properties": {
+              "annee": {
+                "type": "integer",
+                "minimum": 2000,
+                "maximum": 2100
+              },
+              "programmes": {
+                "type": "integer"
+              },
+              "ue_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "contrepartie_nationale_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "total_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "projets_selectionnes_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "depenses_declarees_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "note_serie": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ecarts_total_source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "programmes",
+            "constat"
+          ],
+          "properties": {
+            "programmes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "cci",
+                  "total_eur",
+                  "ue_plus_contrepartie_eur",
+                  "ecart"
+                ],
+                "properties": {
+                  "cci": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "total_eur": {
+                    "type": "integer"
+                  },
+                  "ue_plus_contrepartie_eur": {
+                    "type": "integer"
+                  },
+                  "ecart": {
+                    "type": "integer"
+                  }
+                }
+              }
+            },
+            "constat": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "psn_2023_2027": {
+      "type": "object",
+      "required": [
+        "feaga_paiements",
+        "feaga_note",
+        "feader"
+      ],
+      "properties": {
+        "feaga_paiements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "exercice_financier",
+              "paiements_eur"
+            ],
+            "properties": {
+              "exercice_financier": {
+                "type": "integer",
+                "minimum": 2000,
+                "maximum": 2100
+              },
+              "paiements_eur": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "feaga_note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feader": {
+          "type": "object",
+          "required": [
+            "maquette_ue_eur",
+            "prefinancement_net_eur",
+            "paiements_intermediaires_nets_eur",
+            "paiements_nets_eur",
+            "taux_paiement_pct",
+            "note"
+          ],
+          "properties": {
+            "maquette_ue_eur": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "prefinancement_net_eur": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "paiements_intermediaires_nets_eur": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "paiements_nets_eur": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "taux_paiement_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "autre_vue_ue": {
+      "type": "object",
+      "required": [
+        "fichier",
+        "rubrique",
+        "valeurs_md",
+        "lecture"
+      ],
+      "properties": {
+        "fichier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rubrique": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lecture": {
+          "type": "string",
+          "minLength": 1
+        },
+        "valeurs_md": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "annee",
+              "md",
+              "nom",
+              "source"
+            ],
+            "properties": {
+              "annee": {
+                "type": "integer",
+                "minimum": 2000,
+                "maximum": 2100
+              },
+              "md": {
+                "type": "number"
+              },
+              "nom": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    }
+  }
+}

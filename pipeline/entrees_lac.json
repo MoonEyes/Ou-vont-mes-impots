@@ -1786,6 +1786,26 @@
    "hors_catalogue": [],
    "octets_sources": 381275910,
    "note": "entrées relevées dans le manifeste de collecte (python pipeline/revenus_communes.py collecter), non relevées sous strace"
+  },
+  "agriculture": {
+   "sources": {
+    "agriculture_pac_departements_2005_2009": [
+     "data/lake/agriculture/agriculture_pac_departements_2005_2009/9cca7586-9643-4595-8886-df68fc171706_9cca7586.csv"
+    ],
+    "agriculture_feader_2014_2020_fr": [
+     "data/lake/agriculture/agriculture_feader_2014_2020_fr.json"
+    ],
+    "agriculture_feaga_paiements_2023_2027": [
+     "data/lake/agriculture/agriculture_feaga_paiements_2023_2027.json"
+    ],
+    "agriculture_feader_paiements_2023_2027": [
+     "data/lake/agriculture/agriculture_feader_paiements_2023_2027.json"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 7837257,
+   "note": "sources du domaine « agriculture » de collecte/catalogue.json, collectées par `python pipeline/agriculture.py collecter` ; lit aussi, en lecture seule, site/data/realisations, arbre, niches et ue"
   }
  },
  "urls": {
@@ -2303,6 +2323,10 @@
   "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2022_d_clar_s_en_2023_par_collectiv_35c857d5.zip": "https://static.data.gouv.fr/resources/limpot-sur-le-revenu-par-collectivite-territoriale-ircom/20240610-082154/ircom-2023-revenus-2022.zip",
   "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2023_d_clar_s_en_2024_par_collectiv_65c61c89.zip": "https://static.data.gouv.fr/resources/limpot-sur-le-revenu-par-collectivite-territoriale-ircom/20250919-135242/ircom-2024-revenus-2023.zip",
   "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2024_d_clar_s_en_2025_par_collectiv_e626cd65.zip": "https://static.data.gouv.fr/resources/limpot-sur-le-revenu-par-collectivite-territoriale-ircom/20260526-131537/ircom-2025-revenus-2024.zip",
-  "data/lake/revenus_communes/revenus_communes_passage_cog.zip": "https://www.insee.fr/fr/statistiques/fichier/7671867/table_passage_annuelle_2026.zip"
+  "data/lake/revenus_communes/revenus_communes_passage_cog.zip": "https://www.insee.fr/fr/statistiques/fichier/7671867/table_passage_annuelle_2026.zip",
+  "data/lake/agriculture/agriculture_feader_2014_2020_fr.json": "https://cohesiondata.ec.europa.eu/resource/99js-gm52.json?%24limit=50000&ms=FR&fund=EAFRD",
+  "data/lake/agriculture/agriculture_feader_paiements_2023_2027.json": "https://cohesiondata.ec.europa.eu/resource/7wr2-9vpr.json",
+  "data/lake/agriculture/agriculture_feaga_paiements_2023_2027.json": "https://cohesiondata.ec.europa.eu/resource/qgpc-e9qr.json",
+  "data/lake/agriculture/agriculture_pac_departements_2005_2009/9cca7586-9643-4595-8886-df68fc171706_9cca7586.csv": "https://static.data.gouv.fr/52/9810eab537f437b490ba43afa032a8c605e58c7edd11a8f1f24c35f003e124.csv"
  }
 }
