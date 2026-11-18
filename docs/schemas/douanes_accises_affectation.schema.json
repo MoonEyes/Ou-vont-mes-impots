@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/douanes_accises_affectation.schema.json",
+  "title": "site/data/douanes_accises/affectation.json : bénéficiaires de chaque ligne d'accise et de droit de douane (OCDE, détail des recettes fiscales de la France), en série (pipeline/douanes_accises.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "annees",
+    "beneficiaires",
+    "methode",
+    "perimetre",
+    "lignes",
+    "controles",
+    "ordre"
+  ],
+  "properties": {
+    "unite": {
+      "$ref": "commun.schema.json#/$defs/unite_md_cp"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      },
+      "minItems": 5
+    },
+    "methode": {
+      "type": "string"
+    },
+    "perimetre": {
+      "type": "string"
+    },
+    "ordre": {
+      "type": "string"
+    },
+    "beneficiaires": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "code_ocde"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "enum": [
+              "administration_centrale",
+              "securite_sociale",
+              "collectivites",
+              "union_europeenne"
+            ]
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "code_ocde": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "lignes": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "produit",
+          "categorie_ocde",
+          "code_ocde",
+          "libelle",
+          "serie"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "produit": {
+            "enum": [
+              "energies",
+              "tabacs",
+              "alcools_boissons",
+              "droits_douane",
+              "autres"
+            ]
+          },
+          "categorie_ocde": {
+            "type": "string",
+            "pattern": "^51[0-9]{2}$"
+          },
+          "code_ocde": {
+            "type": "string"
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "serie": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^(19|20)[0-9]{2}$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "required": [
+                "total_md",
+                "par_beneficiaire_md",
+                "parts"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "total_md": {
+                  "type": "number"
+                },
+                "par_beneficiaire_md": {
+                  "type": "object",
+                  "required": [
+                    "administration_centrale",
+                    "securite_sociale",
+                    "collectivites",
+                    "union_europeenne"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "administration_centrale": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "securite_sociale": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "collectivites": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "union_europeenne": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "parts": {
+                  "type": "object",
+                  "required": [
+                    "administration_centrale",
+                    "securite_sociale",
+                    "collectivites",
+                    "union_europeenne"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "administration_centrale": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "securite_sociale": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "collectivites": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "union_europeenne": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "controles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "ligne",
+          "annee",
+          "total_publie_md",
+          "somme_beneficiaires_md",
+          "lecture_ecart"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "ligne": {
+            "type": "string"
+          },
+          "annee": {
+            "type": "integer",
+            "minimum": 1950,
+            "maximum": 2100
+          },
+          "total_publie_md": {
+            "type": "number"
+          },
+          "somme_beneficiaires_md": {
+            "type": "number"
+          },
+          "lecture_ecart": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

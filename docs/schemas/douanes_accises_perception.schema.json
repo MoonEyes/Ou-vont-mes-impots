@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/douanes_accises_perception.schema.json",
+  "title": "site/data/douanes_accises/perception.json : recettes perçues par la douane elle-même, par poste, 2021-2025 (bilans annuels de la DGDDI ; pipeline/douanes_accises.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "annees",
+    "methode",
+    "perimetre",
+    "postes",
+    "controles",
+    "verification_documents",
+    "ordre"
+  ],
+  "properties": {
+    "unite": {
+      "const": "millions d'euros"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      },
+      "minItems": 1
+    },
+    "methode": {
+      "type": "string"
+    },
+    "perimetre": {
+      "type": "string"
+    },
+    "ordre": {
+      "type": "string"
+    },
+    "postes": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "rubrique",
+          "libelle",
+          "produit",
+          "valeurs_m"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "rubrique": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "produit": {
+            "oneOf": [
+              {
+                "enum": [
+                  "energies",
+                  "tabacs",
+                  "alcools_boissons",
+                  "droits_douane",
+                  "autres"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "valeurs_m": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^(19|20)[0-9]{2}$"
+            },
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "marques": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^(19|20)[0-9]{2}$"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "controles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "poste",
+          "publie_m",
+          "somme_detail_m",
+          "ecart_m",
+          "lecture_ecart"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "poste": {
+            "type": "string"
+          },
+          "publie_m": {
+            "type": "number"
+          },
+          "somme_detail_m": {
+            "type": "number"
+          },
+          "ecart_m": {
+            "type": "number"
+          },
+          "lecture_ecart": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "verification_documents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "statut"
+        ],
+        "properties": {
+          "statut": {
+            "type": "string"
+          },
+          "motifs": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    }
+  }
+}

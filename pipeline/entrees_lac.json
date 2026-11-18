@@ -1500,6 +1500,21 @@
    "hors_catalogue": [],
    "octets_sources": 24826525
   },
+  "douanes_accises": {
+   "sources": {
+    "douanes_accises": [
+     "data/lake/douanes_accises/douanes_accises/dgddi_bilan_2022.pdf",
+     "data/lake/douanes_accises/douanes_accises/dgddi_bilan_2023.pdf",
+     "data/lake/douanes_accises/douanes_accises/dgddi_bilan_2024.pdf",
+     "data/lake/douanes_accises/douanes_accises/dgddi_bilan_2025.pdf",
+     "data/lake/douanes_accises/douanes_accises/insee_t_3217.xlsx",
+     "data/lake/douanes_accises/douanes_accises/ocde_revfra_accises_douane.csv"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 102056019
+  },
   "retraites": {
    "sources": {},
    "caches": [],
@@ -1857,6 +1872,12 @@
   "data/lake/dette/datagouv__compte-administratif-ca-2021-de-nantes-metropole/244400404_compte-administratif-ca-2021-nantes-metropole_17646595.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2021-nantes-metropole/exports/csv?use_labels=true",
   "data/lake/dette/datagouv__compte-administratif-ca-2023-de-nantes-metropole-2/244400404_compte-administratif-ca-2023-nantes-metropole_0c4083e3.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2023-nantes-metropole/exports/csv?use_labels=true",
   "data/lake/dette/datagouv__compte-administratif-ca-2024-de-nantes-metropole-1/244400404_compte-administratif-ca-2024-nantes-metropole_a37b82ed.csv": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_compte-administratif-ca-2024-nantes-metropole/exports/csv?use_labels=true",
+  "data/lake/douanes_accises/douanes_accises/dgddi_bilan_2022.pdf": "https://www.douane.gouv.fr/sites/default/files/2023-02/22/bilan-annuel-de-la-douane-2022.pdf",
+  "data/lake/douanes_accises/douanes_accises/dgddi_bilan_2023.pdf": "https://www.douane.gouv.fr/sites/default/files/2024-05/09/bilan-annuel-de-la-douane-2023.pdf",
+  "data/lake/douanes_accises/douanes_accises/dgddi_bilan_2024.pdf": "https://www.douane.gouv.fr/sites/default/files/2025-03/24/Bilan-annuel-2024-douane.pdf",
+  "data/lake/douanes_accises/douanes_accises/dgddi_bilan_2025.pdf": "https://www.douane.gouv.fr/sites/default/files/2026-02/19/Bilan_Douane_2025.pdf",
+  "data/lake/douanes_accises/douanes_accises/insee_t_3217.xlsx": "https://www.insee.fr/fr/statistiques/fichier/8988845/t_3217_fr.xlsx",
+  "data/lake/douanes_accises/douanes_accises/ocde_revfra_accises_douane.csv": "https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_REV_OECD@DF_REVFRA,/FRA.TAX_REV..T_5121+T_5123...A?format=csvfilewithlabels",
   "data/lake/etat/datagouv__projet-de-loi-de-finances-pour-2024-plf-2024-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/plf2024-jauneoperateurs_b1571906.csv": "https://static.data.gouv.fr/resources/projet-de-loi-de-finances-pour-2024-plf-2024-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/20240709-095128/plf2024-jauneoperateurs.csv",
   "data/lake/etat/datagouv__projet-de-loi-de-finances-pour-2025-plf-2025-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/plf2025-jauneoperateurs_c6839cf6.csv": "https://static.data.gouv.fr/resources/projet-de-loi-de-finances-pour-2025-plf-2025-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/20250203-100832/plf2025-jauneoperateurs.csv",
   "data/lake/etat/datagouv__projet-de-loi-de-finances-pour-2026-plf-2026-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/plf2026-jauneoperateurs_314b8900.csv": "https://static.data.gouv.fr/resources/projet-de-loi-de-finances-pour-2026-plf-2026-jaune-operateurs-de-letat-liste-des-operateurs-et-categories/20260113-145343/plf2026-jauneoperateurs.csv",

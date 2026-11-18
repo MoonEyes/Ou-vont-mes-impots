@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/douanes_accises_series.schema.json",
+  "title": "site/data/douanes_accises/series.json : produit des accises et des droits de douane par ligne de l'Insee (tableau 3.217), en série (pipeline/douanes_accises.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "annees",
+    "methode",
+    "lignes",
+    "ordre"
+  ],
+  "properties": {
+    "unite": {
+      "$ref": "commun.schema.json#/$defs/unite_md_cp"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      },
+      "minItems": 5
+    },
+    "methode": {
+      "type": "string"
+    },
+    "ordre": {
+      "type": "string"
+    },
+    "lignes": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "produit",
+          "libelle_source",
+          "valeurs"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "produit": {
+            "enum": [
+              "energies",
+              "tabacs",
+              "alcools_boissons",
+              "droits_douane",
+              "autres"
+            ]
+          },
+          "libelle_source": {
+            "type": "string",
+            "minLength": 3
+          },
+          "valeurs": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^(19|20)[0-9]{2}$"
+            },
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

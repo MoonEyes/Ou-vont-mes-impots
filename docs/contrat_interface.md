@@ -1105,6 +1105,35 @@ data/lake/secu/retraites_* (DREES EACR table A-Cadrage ; DREES emploi intérieur
 
 Règles propres : les effectifs des régimes ne s'additionnent pas (une personne qui perçoit des pensions de plusieurs régimes est comptée dans chacun ; seule la série `tous_regimes`, estimée par la DREES, compte chaque personne une fois) ; aucune masse de pensions n'est recalculée à partir d'un effectif et d'une moyenne ; une valeur absente à la source est null, jamais 0. Non couverts, faute de jeu ouvert (`sources_inaccessibles`) : cotisants des autres régimes, ressources par origine des régimes hors CAS Pensions, exécution du CAS Pensions ; les fichiers du Conseil d'orientation des retraites ne sont pas repris (réutilisation soumise à accord).
 
+### 2.41 Douane et accises : `douanes_accises/` (pipeline/douanes_accises.py)
+
+Ce que rapportent les accises et les droits de douane, produit par produit (énergies, tabacs, alcools et boissons, droits de douane reversés à l'Union européenne, autres), en série, qui reçoit chaque produit (État et ses agences, sécurité sociale, collectivités, Union européenne) et ce que la douane perçoit elle-même. Détaille sans recopier : les totaux par grande catégorie (Eurostat D214A, D2) restent dans `recettes.json` (2.6), la ventilation 2025 par organisme dans `prelevements/affectation.json` (2.12, `ticpe`, `tabac`, `alcool`), la contribution nette au budget de l'Union dans `ue/contribution.json` (2.17) : `index.json` y renvoie par `liens[]` (fichier et champ). Commandes : `python pipeline/douanes_accises.py collecter` (réseau, par `collecte/collecte.py`, entrée `douanes_accises` du catalogue ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/douanes_accises.py produire` (sans réseau). Tests : `pytest tests/test_douanes_accises.py`.
+
+```
+data/lake/douanes_accises/douanes_accises/ (Insee tableau 3.217 ; OCDE DF_REVFRA catégories 5121 et 5123 ;
+                                            bilans annuels de la douane 2022 à 2025, PDF)
+     └─> pipeline/douanes_accises.py ─> site/data/douanes_accises/index.json, series.json, affectation.json,
+                                        perception.json
+                                          └─ liens (fichier + champ) vers recettes.json, prelevements/affectation.json,
+                                             ue/contribution.json
+```
+
+| Fichier, champ | Sens |
+|---|---|
+| `index.json`, `produits[]` | ordre fixe : `energies`, `tabacs`, `alcools_boissons`, `droits_douane`, `autres` ; `libelle`, `definition` (texte public, sans sigle seul), `lignes_series` (ids de `series.json`), `lignes_affectation` (ids de `affectation.json`), `postes_perception` (ids de `perception.json`) |
+| `index.json`, `produits[].repartition_derniere_annee` | dernière année de l'OCDE (2024) : `total_md`, `par_beneficiaire_md` et `parts` (en principe de 0 à 1 ; négative si la source publie un montant négatif) pour `administration_centrale`, `securite_sociale`, `collectivites`, `union_europeenne` ; somme des lignes OCDE du produit, même source ; null si une ligne manque |
+| `index.json`, `ecarts[]` | même produit, même année (2021 à 2025), trois sources côte à côte : `insee_md`, `ocde_md`, `douane_percu_md`, `ecart_ocde_insee_md`, `ecart_douane_insee_md` (null si une valeur manque), `lecture_ecart` ; jamais tranché, jamais additionné |
+| `index.json`, `liens[]` | `vue`, `fichier`, `champ`, `lecture` : la même recette vue ailleurs dans le site |
+| `index.json`, `definitions`, `limites`, `regle`, `sources[]`, `sources_inaccessibles[]`, `recherche_publique` | textes publics, sources (URL, licence, verdict de réutilisation), sources refusées (bilan 2021 : HTTP 403), recherche d'existant (Règle n° 0) |
+| `series.json`, `lignes[]` | Insee, comptes nationaux base 2020, 1995 à 2025 (`annees`) : `id` (`ticpe`, `ticfe`, `ticgn`, `autres_energie`, `tabacs`, `alcools_boissons`, `droits_importation_ue`, `impots_importations_d212`, `octroi_de_mer`, `tgap`), `produit`, `libelle_source` (libellé exact de l'Insee), `valeurs` (année -> milliards d'euros ou null), `note` ; `impots_importations_d212` contient `droits_importation_ue` : contexte, jamais additionné |
+| `affectation.json`, `lignes[]` | OCDE, 1970 à 2024 : `id`, `produit`, `categorie_ocde` (5121 accises, 5123 droits à l'importation), `code_ocde`, `libelle` (libellé français de l'OCDE), `serie` (année -> `total_md`, `par_beneficiaire_md`, `parts`) ; une année où l'impôt vaut 0 à la source n'a pas d'entrée |
+| `affectation.json`, `beneficiaires[]`, `perimetre` | les quatre bénéficiaires avec leur code OCDE (S1311, S1314, S1313, S1315) ; `administration_centrale` = État et agences (dont l'Agence de financement des infrastructures de transport) |
+| `affectation.json`, `controles[]` | années où la somme des bénéficiaires ne retrouve pas le total publié (1970 à 1972) : ventilation publiée null |
+| `perception.json`, `postes[]` | bilans de la douane, 2021 à 2025, millions d'euros (`unite`) : `id`, `rubrique` (null pour une rubrique ou le total), `libelle`, `produit` (null si hors des cinq produits), `valeurs_m` (année -> nombre ou null), `marques` (année -> raison d'un null ou d'une valeur non revérifiée : tiret, astérisque de transfert, ligne absente, texte du PDF illisible) |
+| `perception.json`, `controles[]`, `verification_documents` | sous-totaux et totaux publiés que la somme du détail ne retrouve pas (2023 : octroi de mer et total ; 2025 : total), reproduits tels quels avec `ecart_m` ; statut de la comparaison des valeurs saisies au texte de chaque PDF |
+
+Règles propres : trois sources de périmètres différents (produit en comptabilité nationale pour l'Insee, classification de l'OCDE, encaissements de la seule douane), montrées côte à côte, jamais additionnées entre elles ; une valeur absente est null, jamais 0 (un 0 de l'OCDE pour un bénéficiaire qui ne reçoit rien reste 0) ; aucune estimation. Le périmètre de `perception.json` change avec les transferts de perception vers les finances publiques (TVA à l'importation 2022, électricité et gaz 2021 à 2023, tabacs et alcools 2024 et 2025) : un écran qui montre la série doit le dire à côté du graphique. Pour l'écran : « tu verses » ces accises quand tu achètes carburant, tabac ou boissons ; motifs « plein » pour les montants publiés, « hachuré » pour les null ; pas de couleur par bénéficiaire qui suggère un jugement. Non couverts : frais de perception conservés par la France sur les droits de douane (aucune des trois sources), recettes perçues par la douane avant 2021.
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.

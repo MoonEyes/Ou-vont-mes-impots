@@ -1,0 +1,594 @@
+{
+ "millesime": "Insee 1995-2025 ; OCDE 1970-2024 ; douane 2021-2025",
+ "source": "Insee (comptes nationaux, tableau 3.217) ; OCDE (statistiques des recettes publiques, détail France) ; DGDDI (bilans annuels de la douane 2022 à 2025)",
+ "unite": "milliards d'euros",
+ "date_sources": "2026-11-18",
+ "fichiers": {
+  "series": "douanes_accises/series.json",
+  "affectation": "douanes_accises/affectation.json",
+  "perception": "douanes_accises/perception.json"
+ },
+ "produits": [
+  {
+   "id": "energies",
+   "libelle": "Accises sur les énergies (carburants, fioul, électricité, gaz, charbon)",
+   "definition": "Accise sur les produits énergétiques (ex-TICPE, carburants et combustibles), accises sur l'électricité (ex-TICFE), le gaz naturel (ex-TICGN) et le charbon ; regroupées depuis 2022 dans le code des impositions sur les biens et services sous le nom d'« accise sur les énergies ».",
+   "lignes_series": [
+    "ticpe",
+    "ticfe",
+    "ticgn",
+    "autres_energie"
+   ],
+   "lignes_affectation": [
+    "droit_produits_energetiques",
+    "electricite_chauffage",
+    "redevances_prix_carburants",
+    "produits_petroliers"
+   ],
+   "postes_perception": [
+    "accise_produits_energetiques",
+    "ticgn_ticfe_tichlc"
+   ],
+   "repartition_derniere_annee": {
+    "annee": "2024",
+    "total_md": 35.559,
+    "par_beneficiaire_md": {
+     "administration_centrale": 20.669,
+     "securite_sociale": 0.004,
+     "collectivites": 14.886,
+     "union_europeenne": 0.0
+    },
+    "parts": {
+     "administration_centrale": 0.5813,
+     "securite_sociale": 0.0001,
+     "collectivites": 0.4186,
+     "union_europeenne": 0.0
+    },
+    "source": "OCDE, somme des lignes du produit (affectation.json)"
+   }
+  },
+  {
+   "id": "tabacs",
+   "libelle": "Accises sur les tabacs",
+   "definition": "Droit de consommation sur les tabacs manufacturés (cigarettes, tabac à rouler, cigares).",
+   "lignes_series": [
+    "tabacs"
+   ],
+   "lignes_affectation": [
+    "tabacs_allumettes"
+   ],
+   "postes_perception": [
+    "tabacs"
+   ],
+   "repartition_derniere_annee": {
+    "annee": "2024",
+    "total_md": 13.606,
+    "par_beneficiaire_md": {
+     "administration_centrale": 0.048,
+     "securite_sociale": 13.166,
+     "collectivites": 0.392,
+     "union_europeenne": 0.0
+    },
+    "parts": {
+     "administration_centrale": 0.0035,
+     "securite_sociale": 0.9677,
+     "collectivites": 0.0288,
+     "union_europeenne": 0.0
+    },
+    "source": "OCDE, somme des lignes du produit (affectation.json)"
+   }
+  },
+  {
+   "id": "alcools_boissons",
+   "libelle": "Accises sur les alcools et les boissons",
+   "definition": "Droits sur les alcools, les vins, les bières et les produits intermédiaires, cotisation sur les boissons de plus de 18 degrés et contributions sur les boissons sucrées ou édulcorées.",
+   "lignes_series": [
+    "alcools_boissons"
+   ],
+   "lignes_affectation": [
+    "alcools",
+    "bieres_eaux_minerales",
+    "vins_cidres",
+    "boissons_sucrees"
+   ],
+   "postes_perception": [
+    "alcools_boissons"
+   ],
+   "repartition_derniere_annee": {
+    "annee": "2024",
+    "total_md": 4.749,
+    "par_beneficiaire_md": {
+     "administration_centrale": 0.0,
+     "securite_sociale": 4.727,
+     "collectivites": 0.022,
+     "union_europeenne": 0.0
+    },
+    "parts": {
+     "administration_centrale": 0.0,
+     "securite_sociale": 0.9954,
+     "collectivites": 0.0046,
+     "union_europeenne": 0.0
+    },
+    "source": "OCDE, somme des lignes du produit (affectation.json)"
+   }
+  },
+  {
+   "id": "droits_douane",
+   "libelle": "Droits de douane reversés à l'Union européenne",
+   "definition": "Droits du tarif douanier commun, perçus par la douane française sur les marchandises importées de pays hors de l'Union européenne ; ils font partie des ressources propres du budget de l'Union.",
+   "lignes_series": [
+    "droits_importation_ue",
+    "impots_importations_d212"
+   ],
+   "lignes_affectation": [
+    "droits_douane_ue"
+   ],
+   "postes_perception": [
+    "droits_douane"
+   ],
+   "repartition_derniere_annee": {
+    "annee": "2024",
+    "total_md": 2.6,
+    "par_beneficiaire_md": {
+     "administration_centrale": 0.0,
+     "securite_sociale": 0.0,
+     "collectivites": 0.0,
+     "union_europeenne": 2.6
+    },
+    "parts": {
+     "administration_centrale": 0.0,
+     "securite_sociale": 0.0,
+     "collectivites": 0.0,
+     "union_europeenne": 1.0
+    },
+    "source": "OCDE, somme des lignes du produit (affectation.json)"
+   }
+  },
+  {
+   "id": "autres",
+   "libelle": "Autres prélèvements liés à la douane",
+   "definition": "Octroi de mer (outre-mer) et taxe générale sur les activités polluantes, publiés à part par l'Insee et l'OCDE ; la douane perçoit aussi des droits de port, la TVA à l'importation de certains redevables et d'autres taxes (voir perception.json).",
+   "lignes_series": [
+    "octroi_de_mer",
+    "tgap"
+   ],
+   "lignes_affectation": [
+    "octroi_de_mer_accise",
+    "octroi_de_mer_importations",
+    "tgap"
+   ],
+   "postes_perception": [
+    "octroi_de_mer",
+    "tgap"
+   ],
+   "repartition_derniere_annee": {
+    "annee": "2024",
+    "total_md": 2.601,
+    "par_beneficiaire_md": {
+     "administration_centrale": 1.011,
+     "securite_sociale": 0.0,
+     "collectivites": 1.59,
+     "union_europeenne": 0.0
+    },
+    "parts": {
+     "administration_centrale": 0.3887,
+     "securite_sociale": 0.0,
+     "collectivites": 0.6113,
+     "union_europeenne": 0.0
+    },
+    "source": "OCDE, somme des lignes du produit (affectation.json)"
+   }
+  }
+ ],
+ "definitions": {
+  "accise": "Impôt sur la quantité d'un produit (litre de carburant, paquet de cigarettes, hectolitre d'alcool), inclus dans le prix payé ; tu le verses quand tu achètes ce produit.",
+  "produit": "Montant de l'impôt sur l'année, quel que soit le service qui le perçoit (Insee, OCDE).",
+  "percu_par_la_douane": "Montant encaissé par la direction générale des douanes et droits indirects elle-même (bilans annuels) ; une partie des accises est perçue par la direction générale des finances publiques depuis les transferts de 2021 à 2025.",
+  "beneficiaire": "Niveau d'administration qui reçoit le produit (État et ses agences, sécurité sociale, collectivités, Union européenne), d'après l'OCDE."
+ },
+ "liens": [
+  {
+   "vue": "recettes",
+   "fichier": "recettes.json",
+   "champ": "impots.D214A.par_administration",
+   "lecture": "Eurostat, droits d'accise et impôts de consommation (D214A), total par administration bénéficiaire 2005-2025 : catégorie plus large (taxes sur les assurances, les jeux, les transactions financières, etc.), même argent vu de plus haut, jamais additionné aux produits de cette vue."
+  },
+  {
+   "vue": "recettes",
+   "fichier": "recettes.json",
+   "champ": "impots.D2.par_administration",
+   "lecture": "Eurostat, impôts sur la production et les importations (D2), qui contiennent les accises et les droits de douane."
+  },
+  {
+   "vue": "affectation_2025",
+   "fichier": "prelevements/affectation.json",
+   "champ": "prelevements.ticpe",
+   "lecture": "Accise sur les produits énergétiques en 2025 : part de l'État, des collectivités, de l'AFITF, d'Île-de-France Mobilités (PLF 2026, Voies et moyens tome I)."
+  },
+  {
+   "vue": "affectation_2025",
+   "fichier": "prelevements/affectation.json",
+   "champ": "prelevements.tabac",
+   "lecture": "Droit de consommation sur les tabacs en 2025 : assurance maladie (PLFSS 2026, annexe 3)."
+  },
+  {
+   "vue": "affectation_2025",
+   "fichier": "prelevements/affectation.json",
+   "champ": "prelevements.alcool",
+   "lecture": "Droits sur les alcools en 2025 : régime des non-salariés agricoles (PLFSS 2026, annexe 3)."
+  },
+  {
+   "vue": "ue",
+   "fichier": "ue/contribution.json",
+   "champ": "contribution_comptable_2024_md",
+   "lecture": "Contribution de la France au budget de l'Union au sens comptable : prélèvement sur recettes et droits de douane reversés, nets des frais de perception."
+  }
+ ],
+ "ecarts": [
+  {
+   "produit": "energies",
+   "libelle": "Accise sur les produits énergétiques (ex-TICPE)",
+   "annee": "2021",
+   "insee_md": 30.564,
+   "ocde_md": 30.001,
+   "douane_percu_md": 31.991,
+   "ecart_ocde_insee_md": -0.563,
+   "ecart_douane_insee_md": 1.427,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "energies",
+   "libelle": "Accise sur les produits énergétiques (ex-TICPE)",
+   "annee": "2022",
+   "insee_md": 30.946,
+   "ocde_md": 30.371,
+   "douane_percu_md": 32.507,
+   "ecart_ocde_insee_md": -0.575,
+   "ecart_douane_insee_md": 1.561,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "energies",
+   "libelle": "Accise sur les produits énergétiques (ex-TICPE)",
+   "annee": "2023",
+   "insee_md": 30.289,
+   "ocde_md": 29.677,
+   "douane_percu_md": 31.721,
+   "ecart_ocde_insee_md": -0.612,
+   "ecart_douane_insee_md": 1.432,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "energies",
+   "libelle": "Accise sur les produits énergétiques (ex-TICPE)",
+   "annee": "2024",
+   "insee_md": 30.188,
+   "ocde_md": 29.554,
+   "douane_percu_md": 31.66,
+   "ecart_ocde_insee_md": -0.634,
+   "ecart_douane_insee_md": 1.472,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "energies",
+   "libelle": "Accise sur les produits énergétiques (ex-TICPE)",
+   "annee": "2025",
+   "insee_md": 30.457,
+   "ocde_md": null,
+   "douane_percu_md": 31.284,
+   "ecart_ocde_insee_md": null,
+   "ecart_douane_insee_md": 0.827,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "tabacs",
+   "libelle": "Tabacs",
+   "annee": "2021",
+   "insee_md": 15.326,
+   "ocde_md": 15.326,
+   "douane_percu_md": 15.204,
+   "ecart_ocde_insee_md": 0.0,
+   "ecart_douane_insee_md": -0.122,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "tabacs",
+   "libelle": "Tabacs",
+   "annee": "2022",
+   "insee_md": 14.361,
+   "ocde_md": 14.361,
+   "douane_percu_md": 14.414,
+   "ecart_ocde_insee_md": 0.0,
+   "ecart_douane_insee_md": 0.053,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "tabacs",
+   "libelle": "Tabacs",
+   "annee": "2023",
+   "insee_md": 14.24,
+   "ocde_md": 14.24,
+   "douane_percu_md": 14.214,
+   "ecart_ocde_insee_md": 0.0,
+   "ecart_douane_insee_md": -0.026,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "tabacs",
+   "libelle": "Tabacs",
+   "annee": "2024",
+   "insee_md": 13.662,
+   "ocde_md": 13.606,
+   "douane_percu_md": 2.197,
+   "ecart_ocde_insee_md": -0.056,
+   "ecart_douane_insee_md": -11.465,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "tabacs",
+   "libelle": "Tabacs",
+   "annee": "2025",
+   "insee_md": 13.598,
+   "ocde_md": null,
+   "douane_percu_md": 0.085,
+   "ecart_ocde_insee_md": null,
+   "ecart_douane_insee_md": -13.513,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "alcools_boissons",
+   "libelle": "Alcools et boissons",
+   "annee": "2021",
+   "insee_md": 4.774,
+   "ocde_md": 4.774,
+   "douane_percu_md": 4.13,
+   "ecart_ocde_insee_md": 0.0,
+   "ecart_douane_insee_md": -0.644,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "alcools_boissons",
+   "libelle": "Alcools et boissons",
+   "annee": "2022",
+   "insee_md": 4.893,
+   "ocde_md": 4.893,
+   "douane_percu_md": 4.29,
+   "ecart_ocde_insee_md": 0.0,
+   "ecart_douane_insee_md": -0.603,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "alcools_boissons",
+   "libelle": "Alcools et boissons",
+   "annee": "2023",
+   "insee_md": 4.75,
+   "ocde_md": 4.75,
+   "douane_percu_md": 4.211,
+   "ecart_ocde_insee_md": 0.0,
+   "ecart_douane_insee_md": -0.539,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "alcools_boissons",
+   "libelle": "Alcools et boissons",
+   "annee": "2024",
+   "insee_md": 4.749,
+   "ocde_md": 4.749,
+   "douane_percu_md": 0.725,
+   "ecart_ocde_insee_md": 0.0,
+   "ecart_douane_insee_md": -4.024,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "alcools_boissons",
+   "libelle": "Alcools et boissons",
+   "annee": "2025",
+   "insee_md": 5.106,
+   "ocde_md": null,
+   "douane_percu_md": 0.058,
+   "ecart_ocde_insee_md": null,
+   "ecart_douane_insee_md": -5.048,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "droits_douane",
+   "libelle": "Droits de douane",
+   "annee": "2021",
+   "insee_md": 2.123,
+   "ocde_md": 2.123,
+   "douane_percu_md": 2.408,
+   "ecart_ocde_insee_md": 0.0,
+   "ecart_douane_insee_md": 0.285,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "droits_douane",
+   "libelle": "Droits de douane",
+   "annee": "2022",
+   "insee_md": 3.013,
+   "ocde_md": 3.013,
+   "douane_percu_md": 3.062,
+   "ecart_ocde_insee_md": 0.0,
+   "ecart_douane_insee_md": 0.049,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "droits_douane",
+   "libelle": "Droits de douane",
+   "annee": "2023",
+   "insee_md": 2.688,
+   "ocde_md": 2.688,
+   "douane_percu_md": 2.653,
+   "ecart_ocde_insee_md": 0.0,
+   "ecart_douane_insee_md": -0.035,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "droits_douane",
+   "libelle": "Droits de douane",
+   "annee": "2024",
+   "insee_md": 2.6,
+   "ocde_md": 2.6,
+   "douane_percu_md": 2.693,
+   "ecart_ocde_insee_md": 0.0,
+   "ecart_douane_insee_md": 0.093,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  },
+  {
+   "produit": "droits_douane",
+   "libelle": "Droits de douane",
+   "annee": "2025",
+   "insee_md": 2.863,
+   "ocde_md": null,
+   "douane_percu_md": 2.893,
+   "ecart_ocde_insee_md": null,
+   "ecart_douane_insee_md": 0.03,
+   "lecture_ecart": "L'Insee publie le produit de l'impôt en comptabilité nationale ; l'OCDE publie les recettes transmises par la France selon sa propre classification, ici la somme des lignes OCDE du même produit ; la douane publie ce qu'elle a perçu elle-même, sans ce que perçoivent les finances publiques après les transferts de perception. Les trois montants ne s'additionnent pas."
+  }
+ ],
+ "limites": [
+  "Les trois sources n'ont ni le même périmètre ni la même comptabilité : elles sont montrées côte à côte, jamais additionnées entre elles.",
+  "La ventilation par bénéficiaire s'arrête à la dernière année publiée par l'OCDE ; la ventilation 2025 par organisme (CNAM, MSA, régions, AFITF) est dans prelevements/affectation.json.",
+  "La part des droits de douane conservée par la France au titre des frais de perception n'est publiée par aucune des trois sources : voir ue/contribution.json pour la contribution nette.",
+  "Les recettes perçues par la douane ne sont publiées dans un tableau détaillé qu'à partir de 2021 (bilan 2021 inaccessible, voir sources_inaccessibles)."
+ ],
+ "regle": "Aucune estimation : chaque montant vient d'une source citée ; une valeur absente est null, jamais 0 ; les écarts entre sources sont calculés et montrés, jamais corrigés.",
+ "sources": [
+  {
+   "id": "insee_t_3217",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/8988845/t_3217_fr.xlsx",
+   "page": "https://www.insee.fr/fr/statistiques/8988845",
+   "titre": "Insee, comptes nationaux annuels base 2020, « Dépenses et recettes des administrations publiques en 2025 », tableau 3.217 « Principaux impôts par catégorie » (1995-2025)",
+   "producteur": "Insee",
+   "licence": "Licence Ouverte 2.0 (réutilisation libre avec mention de l'Insee)",
+   "verdict": "réutilisable tel quel"
+  },
+  {
+   "id": "ocde_revfra",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_REV_OECD@DF_REVFRA,/FRA.TAX_REV..T_5121+T_5123...A?format=csvfilewithlabels",
+   "page": "https://data-explorer.oecd.org/ (Statistiques des recettes publiques, « France - recettes fiscales »)",
+   "titre": "OCDE, Statistiques des recettes publiques, détail des recettes fiscales de la France (DF_REVFRA), catégories 5121 (accises) et 5123 (droits de douane et droits à l'importation), par niveau d'administration, millions d'euros",
+   "producteur": "OCDE, d'après les données transmises par la France",
+   "licence": "conditions d'utilisation de l'OCDE (réutilisation avec mention de la source)",
+   "verdict": "réutilisable tel quel"
+  },
+  {
+   "id": "dgddi_bilan_2022",
+   "url": "https://www.douane.gouv.fr/sites/default/files/2023-02/22/bilan-annuel-de-la-douane-2022.pdf",
+   "titre": "Bilan annuel de la douane 2022, « Évolution des recettes douanières en millions d'euros (détail) », colonnes 2021 et 2022 (page 25 du PDF)",
+   "producteur": "Direction générale des douanes et droits indirects (DGDDI)",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "verdict": "à adapter (tableau lu dans le PDF, vérifié contre son texte)",
+   "page_pdf": 25
+  },
+  {
+   "id": "dgddi_bilan_2023",
+   "url": "https://www.douane.gouv.fr/sites/default/files/2024-05/09/bilan-annuel-de-la-douane-2023.pdf",
+   "titre": "Bilan annuel de la douane 2023, « Évolution des recettes douanières en millions d'euros (détail) », colonne 2023 (page 60 du PDF)",
+   "producteur": "Direction générale des douanes et droits indirects (DGDDI)",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "verdict": "à adapter (tableau lu dans le PDF, vérifié contre son texte)",
+   "page_pdf": 60
+  },
+  {
+   "id": "dgddi_bilan_2024",
+   "url": "https://www.douane.gouv.fr/sites/default/files/2025-03/24/Bilan-annuel-2024-douane.pdf",
+   "titre": "Bilan de la douane 2024, « Recettes douanières en millions d'euros (détail) », colonne 2024 (page 25 du PDF)",
+   "producteur": "Direction générale des douanes et droits indirects (DGDDI)",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "verdict": "à adapter (tableau lu dans le PDF, vérifié contre son texte)",
+   "page_pdf": 25
+  },
+  {
+   "id": "dgddi_bilan_2025",
+   "url": "https://www.douane.gouv.fr/sites/default/files/2026-02/19/Bilan_Douane_2025.pdf",
+   "titre": "Bilan de la douane 2025, « Recettes douanières en millions d'euros (détail) », colonne 2025 (page 26 du PDF)",
+   "producteur": "Direction générale des douanes et droits indirects (DGDDI)",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "verdict": "à adapter (tableau lu dans le PDF, vérifié contre son texte)",
+   "page_pdf": 26
+  }
+ ],
+ "sources_inaccessibles": [
+  {
+   "source": "Bilan annuel de la douane 2021 (colonne 2020 du tableau des recettes)",
+   "url": "https://www.douane.gouv.fr/sites/default/files/2022-02/14/bilan-annuel-2021-douane-FR.pdf",
+   "constat": "HTTP 403 le 18/11/2026 ; non contourné",
+   "effet": "recettes perçues par la douane publiées à partir de 2021"
+  },
+  {
+   "source": "data.gouv.fr, recherche « douane », « accises », « recettes douane » (API, 18/11/2026)",
+   "url": "https://www.data.gouv.fr/api/1/datasets/?q=douane",
+   "constat": "aucun jeu de recettes douanières par produit : la DGDDI publie sur data.gouv.fr le commerce extérieur, des statistiques de consultation et de concours, pas ses recettes",
+   "effet": "recettes perçues par la douane lues dans les bilans annuels (PDF)"
+  }
+ ],
+ "recherche_publique": {
+  "date": "2026-11-18",
+  "conclusion": "Aucun jeu ouvert ne publie les recettes de la douane par produit ; les deux séries officielles réutilisables telles quelles sont le tableau 3.217 de l'Insee (produit par impôt) et le détail des recettes fiscales de la France publié par l'OCDE (bénéficiaire par impôt). Aucun dépôt public ne les réunit : module écrit pour le dépôt, sur le modèle de pipeline/outremer.py (collecte par le catalogue) et de pipeline/prelevements.py (vérification des chiffres lus dans les PDF).",
+  "trouvailles": [
+   {
+    "nom": "Insee, comptes nationaux annuels, tableau 3.217",
+    "url": "https://www.insee.fr/fr/statistiques/8988845",
+    "licence": "Licence Ouverte 2.0",
+    "mise_a_jour": "comptes 2025 (base 2020)",
+    "verdict": "réutilisable tel quel"
+   },
+   {
+    "nom": "OCDE, Statistiques des recettes publiques, détail France (DF_REVFRA)",
+    "url": "https://sdmx.oecd.org/public/rest/dataflow/OECD.CTP.TPS/DSD_REV_OECD@DF_REVFRA/latest",
+    "licence": "conditions d'utilisation de l'OCDE",
+    "mise_a_jour": "2025-12-09 (dernière année 2024)",
+    "verdict": "réutilisable tel quel"
+   },
+   {
+    "nom": "DGDDI, bilans annuels de la douane 2022 à 2025 (PDF)",
+    "url": "https://www.douane.gouv.fr/actualites/etiquette/missions-et-organisation-de-la-douane/bilans",
+    "licence": "document administratif public",
+    "mise_a_jour": "2026-02-19 (bilan 2025)",
+    "verdict": "à adapter (aucun jeu ouvert équivalent : tableaux lus dans le PDF et vérifiés)"
+   },
+   {
+    "nom": "Eurostat gov_10a_taxag (déjà dans le dépôt : site/data/recettes.json)",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_taxag/default/table",
+    "licence": "réutilisation libre avec mention d'Eurostat",
+    "mise_a_jour": "déjà en place",
+    "verdict": "réutilisé par lien (totaux D214A et D2 non recopiés)"
+   },
+   {
+    "nom": "pipeline/prelevements.py du dépôt (affectation 2025 de l'accise sur les énergies, des tabacs et des alcools, d'après le PLF 2026 et le PLFSS 2026)",
+    "url": "https://github.com/MoonEyes/Ou-vont-mes-impots",
+    "licence": "licence du dépôt",
+    "dernier_commit": "2026-11-17",
+    "verdict": "réutilisé par lien (lu, non modifié)"
+   },
+   {
+    "nom": "data.gouv.fr, « PLF 2023 voies et moyens tome 1, liste des taxes affectées » (Ministères économiques et financiers)",
+    "url": "https://www.data.gouv.fr/datasets/640bc7871040ee1c4330406a",
+    "licence": "Licence Ouverte 2.0",
+    "mise_a_jour": "2023-03-10",
+    "verdict": "inspiration (un seul millésime, plafonds de taxes affectées, pas de série par produit)"
+   },
+   {
+    "nom": "data.gouv.fr, « Ventes de tabacs manufacturés en France métropolitaine depuis 2018 »",
+    "url": "https://www.data.gouv.fr/datasets/5c5c21248b4c4114cce91bf8",
+    "licence": "Licence Ouverte 2.0",
+    "mise_a_jour": "2019-07-16",
+    "verdict": "non retenu (volumes vendus, pas de recettes)"
+   },
+   {
+    "nom": "François Geerolf, republication du tableau 3.217 de l'Insee (fgeerolf.com)",
+    "url": "https://fgeerolf.com/data/insee/t_3217.html",
+    "licence": "non précisée",
+    "dernier_commit": "2026-11-17 (dernière compilation affichée)",
+    "verdict": "inspiration (la source Insee est lue directement)"
+   },
+   {
+    "nom": "GitHub, recherche « recettes douanieres », « TICPE », « accises france », « douane france data »",
+    "url": "https://github.com/search?type=repositories&q=recettes+douanieres",
+    "licence": "sans objet",
+    "verdict": "aucun dépôt réutilisable trouvé"
+   }
+  ]
+ }
+}

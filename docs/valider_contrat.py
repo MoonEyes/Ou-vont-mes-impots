@@ -252,6 +252,11 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # douane et accises : produit par produit, bénéficiaires, recettes perçues par la douane (pipeline/douanes_accises.py)
+    ("douanes_accises_index.schema.json", "douanes_accises/index.json", "existant"),
+    ("douanes_accises_series.schema.json", "douanes_accises/series.json", "existant"),
+    ("douanes_accises_affectation.schema.json", "douanes_accises/affectation.json", "existant"),
+    ("douanes_accises_perception.schema.json", "douanes_accises/perception.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

@@ -1,0 +1,372 @@
+{
+ "millesime": "2021-2025 (bilans annuels de la douane 2022 à 2025)",
+ "source": "Bilan annuel de la douane 2022, « Évolution des recettes douanières en millions d'euros (détail) », colonnes 2021 et 2022 (page 25 du PDF) : https://www.douane.gouv.fr/sites/default/files/2023-02/22/bilan-annuel-de-la-douane-2022.pdf ; Bilan annuel de la douane 2023, « Évolution des recettes douanières en millions d'euros (détail) », colonne 2023 (page 60 du PDF) : https://www.douane.gouv.fr/sites/default/files/2024-05/09/bilan-annuel-de-la-douane-2023.pdf ; Bilan de la douane 2024, « Recettes douanières en millions d'euros (détail) », colonne 2024 (page 25 du PDF) : https://www.douane.gouv.fr/sites/default/files/2025-03/24/Bilan-annuel-2024-douane.pdf ; Bilan de la douane 2025, « Recettes douanières en millions d'euros (détail) », colonne 2025 (page 26 du PDF) : https://www.douane.gouv.fr/sites/default/files/2026-02/19/Bilan_Douane_2025.pdf",
+ "unite": "millions d'euros",
+ "annees": [
+  "2021",
+  "2022",
+  "2023",
+  "2024",
+  "2025"
+ ],
+ "methode": "Tableau « recettes douanières » de chaque bilan, saisi ligne par ligne tel qu'imprimé (millions d'euros), puis comparé au texte du PDF à chaque production (verification_documents). 2021 et 2022 viennent du bilan 2022, qui publie les deux années. Un tiret, un astérisque seul ou une ligne absente sont publiés null, jamais 0.",
+ "perimetre": "Recettes perçues par la douane elle-même. Ce périmètre change d'une année à l'autre : la perception de la TVA à l'importation (2022), des accises sur l'électricité et le gaz (2021 à 2023), puis des droits sur les tabacs et les alcools (2024 et 2025) est passée à la direction générale des finances publiques ; les bilans le signalent (« diminution des perceptions liées au transfert des missions fiscales »). Une baisse dans ce tableau peut donc venir d'un transfert de perception, pas d'une baisse du produit de l'impôt (voir series.json).",
+ "postes": [
+  {
+   "id": "dedouanement",
+   "rubrique": null,
+   "libelle": "Dédouanement",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 9334.0,
+    "2022": 3722.0,
+    "2023": 3045.0,
+    "2024": 3124.0,
+    "2025": 3317.0
+   }
+  },
+  {
+   "id": "droits_douane",
+   "rubrique": "dedouanement",
+   "libelle": "Droits de douane",
+   "produit": "droits_douane",
+   "valeurs_m": {
+    "2021": 2408.0,
+    "2022": 3062.0,
+    "2023": 2653.0,
+    "2024": 2693.0,
+    "2025": 2893.0
+   }
+  },
+  {
+   "id": "tva_import",
+   "rubrique": "dedouanement",
+   "libelle": "TVA import",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 6875.0,
+    "2022": 593.0,
+    "2023": 331.0,
+    "2024": 369.0,
+    "2025": 360.0
+   }
+  },
+  {
+   "id": "dedouanement_autres",
+   "rubrique": "dedouanement",
+   "libelle": "Autres",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 51.0,
+    "2022": 67.0,
+    "2023": 62.0,
+    "2024": 62.0,
+    "2025": 64.0
+   }
+  },
+  {
+   "id": "energie_environnement",
+   "rubrique": null,
+   "libelle": "Énergie et environnement",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 42512.0,
+    "2022": 34697.0,
+    "2023": 32899.0,
+    "2024": 32278.0,
+    "2025": 31905.0
+   }
+  },
+  {
+   "id": "accise_produits_energetiques",
+   "rubrique": "energie_environnement",
+   "libelle": "Accise sur les produits énergétiques (« TICPE » jusqu'au bilan 2024)",
+   "produit": "energies",
+   "valeurs_m": {
+    "2021": 31991.0,
+    "2022": 32507.0,
+    "2023": 31721.0,
+    "2024": 31660.0,
+    "2025": 31284.0
+   }
+  },
+  {
+   "id": "tsc_dom",
+   "rubrique": "energie_environnement",
+   "libelle": "Taxe spéciale de consommation dans les départements et régions d'outre-mer",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 533.0,
+    "2022": 550.0,
+    "2023": 583.0,
+    "2024": 596.05,
+    "2025": 598.76
+   }
+  },
+  {
+   "id": "tva_petrole",
+   "rubrique": "energie_environnement",
+   "libelle": "TVA pétrole",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 259.0,
+    "2022": null,
+    "2023": 0.18,
+    "2024": 0.97,
+    "2025": 0.2
+   },
+   "marques": {
+    "2021": "valeur suivie d'un astérisque : taxe transférée ensuite",
+    "2022": "astérisque seul : taxe transférée, plus perçue par la douane",
+    "2024": "texte du PDF illisible à cet endroit (caractères superposés ou colonnes mêlées) : valeur lue sur la page, non revérifiée automatiquement"
+   }
+  },
+  {
+   "id": "taxes_professionnels_petrole",
+   "rubrique": "energie_environnement",
+   "libelle": "Taxes et rémunérations pour le compte de professionnels du pétrole",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 8.0,
+    "2022": 8.0,
+    "2023": 11.0,
+    "2024": 12.49,
+    "2025": 10.77
+   },
+   "marques": {
+    "2021": "texte du PDF illisible à cet endroit (caractères superposés ou colonnes mêlées) : valeur lue sur la page, non revérifiée automatiquement",
+    "2022": "texte du PDF illisible à cet endroit (caractères superposés ou colonnes mêlées) : valeur lue sur la page, non revérifiée automatiquement",
+    "2024": "texte du PDF illisible à cet endroit (caractères superposés ou colonnes mêlées) : valeur lue sur la page, non revérifiée automatiquement"
+   }
+  },
+  {
+   "id": "ticgn_ticfe_tichlc",
+   "rubrique": "energie_environnement",
+   "libelle": "Accises sur le gaz naturel, l'électricité et le charbon",
+   "produit": "energies",
+   "valeurs_m": {
+    "2021": 9690.0,
+    "2022": 1633.0,
+    "2023": 35.0,
+    "2024": 5.76e-05,
+    "2025": null
+   },
+   "marques": {
+    "2023": "texte du PDF illisible à cet endroit (caractères superposés ou colonnes mêlées) : valeur lue sur la page, non revérifiée automatiquement",
+    "2025": "ligne absente du tableau de cette année"
+   }
+  },
+  {
+   "id": "tgap",
+   "rubrique": "energie_environnement",
+   "libelle": "Taxe générale sur les activités polluantes",
+   "produit": "autres",
+   "valeurs_m": {
+    "2021": 32.0,
+    "2022": null,
+    "2023": 549.0,
+    "2024": 8.59,
+    "2025": 11.29
+   },
+   "marques": {
+    "2021": "valeur suivie d'un astérisque : taxe transférée ensuite",
+    "2022": "astérisque seul : taxe transférée, plus perçue par la douane"
+   }
+  },
+  {
+   "id": "contributions_indirectes",
+   "rubrique": null,
+   "libelle": "Contributions indirectes",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 19339.0,
+    "2022": 18713.0,
+    "2023": 18437.0,
+    "2024": 2932.16,
+    "2025": 156.75
+   }
+  },
+  {
+   "id": "alcools_boissons",
+   "rubrique": "contributions_indirectes",
+   "libelle": "Alcools et boissons",
+   "produit": "alcools_boissons",
+   "valeurs_m": {
+    "2021": 4130.0,
+    "2022": 4290.0,
+    "2023": 4211.0,
+    "2024": 725.14,
+    "2025": 57.99
+   }
+  },
+  {
+   "id": "tabacs",
+   "rubrique": "contributions_indirectes",
+   "libelle": "Tabacs",
+   "produit": "tabacs",
+   "valeurs_m": {
+    "2021": 15204.0,
+    "2022": 14414.0,
+    "2023": 14214.0,
+    "2024": 2197.3,
+    "2025": 85.09
+   }
+  },
+  {
+   "id": "contributions_indirectes_autres",
+   "rubrique": "contributions_indirectes",
+   "libelle": "Autres contributions indirectes",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 5.0,
+    "2022": 9.0,
+    "2023": 11.0,
+    "2024": 9.72,
+    "2025": 13.67
+   }
+  },
+  {
+   "id": "octroi_mer_maritime",
+   "rubrique": null,
+   "libelle": "Octroi de mer et activités maritimes",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 2027.0,
+    "2022": 2263.0,
+    "2023": 2263.0,
+    "2024": 2323.17,
+    "2025": 2372.58
+   }
+  },
+  {
+   "id": "octroi_de_mer",
+   "rubrique": "octroi_mer_maritime",
+   "libelle": "Octroi de mer",
+   "produit": "autres",
+   "valeurs_m": {
+    "2021": 1485.0,
+    "2022": 1696.0,
+    "2023": 1696.0,
+    "2024": 1706.92,
+    "2025": 1740.74
+   }
+  },
+  {
+   "id": "droits_de_ports",
+   "rubrique": "octroi_mer_maritime",
+   "libelle": "Droits de ports",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 492.0,
+    "2022": 563.0,
+    "2023": 604.0,
+    "2024": 614.88,
+    "2025": 631.81
+   }
+  },
+  {
+   "id": "dafn",
+   "rubrique": "octroi_mer_maritime",
+   "libelle": "Droit annuel de francisation et de navigation",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 49.0,
+    "2022": 4.0,
+    "2023": 3.0,
+    "2024": 1.37,
+    "2025": 0.03
+   }
+  },
+  {
+   "id": "tsvr",
+   "rubrique": null,
+   "libelle": "Taxe spéciale sur certains véhicules routiers (taxe à l'essieu)",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 11.0,
+    "2022": null,
+    "2023": null,
+    "2024": null,
+    "2025": null
+   },
+   "marques": {
+    "2021": "valeur suivie d'un astérisque : taxe transférée ensuite",
+    "2022": "astérisque seul : taxe transférée, plus perçue par la douane",
+    "2023": "tiret dans le tableau",
+    "2024": "tiret dans le tableau",
+    "2025": "ligne absente du tableau de cette année"
+   }
+  },
+  {
+   "id": "autres_taxes",
+   "rubrique": null,
+   "libelle": "Autres taxes",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 325.0,
+    "2022": 293.0,
+    "2023": 245.0,
+    "2024": 220.86,
+    "2025": 267.53
+   }
+  },
+  {
+   "id": "total",
+   "rubrique": null,
+   "libelle": "Total",
+   "produit": null,
+   "valeurs_m": {
+    "2021": 73548.0,
+    "2022": 59688.0,
+    "2023": 56924.0,
+    "2024": 40878.0,
+    "2025": 37919.49
+   }
+  }
+ ],
+ "controles": [
+  {
+   "annee": 2023,
+   "poste": "octroi_mer_maritime",
+   "publie_m": 2263.0,
+   "somme_detail_m": 2303.0,
+   "ecart_m": 40.0,
+   "lecture_ecart": "la somme des lignes de détail publiées ne retrouve pas le sous-total publié ; les deux sont reproduits tels quels"
+  },
+  {
+   "annee": 2023,
+   "poste": "total",
+   "publie_m": 56924.0,
+   "somme_detail_m": 56889.0,
+   "ecart_m": -35.0,
+   "lecture_ecart": "la somme des rubriques publiées ne retrouve pas le total publié ; les deux sont reproduits tels quels"
+  },
+  {
+   "annee": 2025,
+   "poste": "total",
+   "publie_m": 37919.49,
+   "somme_detail_m": 38018.86,
+   "ecart_m": 99.37,
+   "lecture_ecart": "la somme des rubriques publiées ne retrouve pas le total publié ; les deux sont reproduits tels quels"
+  }
+ ],
+ "verification_documents": {
+  "dgddi_bilan_2022": {
+   "statut": "vérifié",
+   "motifs": 21
+  },
+  "dgddi_bilan_2023": {
+   "statut": "vérifié",
+   "motifs": 20
+  },
+  "dgddi_bilan_2024": {
+   "statut": "vérifié",
+   "motifs": 19
+  },
+  "dgddi_bilan_2025": {
+   "statut": "vérifié",
+   "motifs": 20
+  }
+ },
+ "ordre": "ordre du tableau publié (rubrique puis lignes de détail)"
+}
