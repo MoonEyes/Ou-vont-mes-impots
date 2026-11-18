@@ -252,6 +252,10 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # impôts locaux par commune, séries 2010 et plus : taux et produits (REI DGFiP, pipeline/fiscalite_locale_series.py)
+    ("fiscalite_locale_series_index.schema.json", "fiscalite_locale_series/index.json", "existant"),
+    ("fiscalite_locale_series_departement.schema.json", "fiscalite_locale_series/taux/*.json", "existant"),
+    ("fiscalite_locale_series_departement.schema.json", "fiscalite_locale_series/produits/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
