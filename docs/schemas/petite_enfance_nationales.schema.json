@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/petite_enfance_nationales.schema.json",
+  "title": "site/data/petite_enfance/nationales.json : séries annuelles France de l'accueil du jeune enfant (pipeline/petite_enfance.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "serie": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      },
+      "additionalProperties": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    },
+    "serie_cnaf": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "enum": [
+            "depuis_2022",
+            "historique_2017_2022"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "annees": {
+          "type": "array",
+          "items": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          }
+        },
+        "modes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "annees",
+        "modes"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "date_sources": {
+      "type": "string"
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "cmg": {
+      "type": "object",
+      "properties": {
+        "montant_eur": {
+          "$ref": "#/$defs/serie"
+        },
+        "postes": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "nom": {
+                "type": "string"
+              },
+              "lignes_source": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "montant_eur": {
+                "$ref": "#/$defs/serie"
+              },
+              "detail_eur": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": {
+                  "$ref": "#/$defs/serie"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "nom",
+              "lignes_source",
+              "montant_eur"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "lien": {
+          "type": "object"
+        },
+        "montants_mensuels_caf_eur": {
+          "type": "object",
+          "required": [
+            "source",
+            "valeurs",
+            "methode"
+          ]
+        },
+        "foyers_decembre_par_type": {
+          "type": "object",
+          "required": [
+            "source",
+            "valeurs",
+            "methode"
+          ]
+        }
+      },
+      "required": [
+        "nom",
+        "source",
+        "perimetre",
+        "montant_eur",
+        "postes",
+        "lien"
+      ]
+    },
+    "action_sociale": {
+      "type": "object",
+      "properties": {
+        "petite_enfance_eur": {
+          "$ref": "#/$defs/serie"
+        },
+        "ensemble_action_sociale_eur": {
+          "$ref": "#/$defs/serie"
+        },
+        "postes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "nom": {
+                "type": "string"
+              },
+              "colonne_source": {
+                "type": "string"
+              },
+              "montant_eur": {
+                "$ref": "#/$defs/serie"
+              }
+            },
+            "required": [
+              "id",
+              "nom",
+              "colonne_source",
+              "montant_eur"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "nom",
+        "source",
+        "petite_enfance_eur",
+        "ensemble_action_sociale_eur",
+        "postes",
+        "note"
+      ]
+    },
+    "places_cnaf": {
+      "type": "object",
+      "properties": {
+        "series": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/serie_cnaf"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "series",
+        "modes",
+        "note"
+      ]
+    },
+    "couverture_cnaf": {
+      "type": "object",
+      "properties": {
+        "series": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/serie_cnaf"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "series",
+        "note"
+      ]
+    },
+    "places_drees": {
+      "type": "object",
+      "properties": {
+        "places": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/serie"
+          }
+        },
+        "assistants_maternels": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/serie"
+          }
+        }
+      },
+      "required": [
+        "source",
+        "annees",
+        "categories",
+        "places",
+        "assistants_maternels",
+        "note"
+      ]
+    }
+  },
+  "required": [
+    "unite",
+    "definitions",
+    "cmg",
+    "action_sociale",
+    "places_cnaf",
+    "couverture_cnaf",
+    "places_drees"
+  ]
+}
