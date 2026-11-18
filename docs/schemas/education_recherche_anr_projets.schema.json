@@ -57,7 +57,10 @@
                 "minimum": 0
               },
               "aide_eur": {
-                "type": "number"
+                "type": [
+                  "number",
+                  "null"
+                ]
               },
               "participations": {
                 "type": "integer",
@@ -94,7 +97,10 @@
                 "minimum": 0
               },
               "aide_eur": {
-                "type": "number"
+                "type": [
+                  "number",
+                  "null"
+                ]
               },
               "premiere_edition": {
                 "type": [
@@ -144,7 +150,10 @@
                 "minimum": 0
               },
               "aide_projets_coordonnes_eur": {
-                "type": "number"
+                "type": [
+                  "number",
+                  "null"
+                ]
               }
             },
             "required": [
@@ -197,7 +206,10 @@
               "minimum": 0
             },
             "aide_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "participations": {
               "type": "integer",
@@ -263,14 +275,20 @@
                 "minimum": 0
               },
               "aide_projets_eur": {
-                "type": "number"
+                "type": [
+                  "number",
+                  "null"
+                ]
               },
               "participations": {
                 "type": "integer",
                 "minimum": 0
               },
               "aide_partenaires_eur": {
-                "type": "number"
+                "type": [
+                  "number",
+                  "null"
+                ]
               }
             },
             "required": [
@@ -304,7 +322,10 @@
                 "minimum": 0
               },
               "aide_projets_eur": {
-                "type": "number"
+                "type": [
+                  "number",
+                  "null"
+                ]
               }
             },
             "required": [
@@ -333,7 +354,10 @@
               "minimum": 0
             },
             "aide_projets_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             }
           },
           "required": [
@@ -384,14 +408,20 @@
               "minimum": 0
             },
             "aide_projets_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "participations": {
               "type": "integer",
               "minimum": 0
             },
             "aide_partenaires_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             }
           },
           "required": [
@@ -443,16 +473,25 @@
             "type": "string"
           },
           "montant": {
-            "type": "number"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "autre_source": {
             "type": "string"
           },
           "autre_montant": {
-            "type": "number"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "ecart": {
-            "type": "number"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "ecart_pct": {
             "type": [

@@ -416,6 +416,12 @@
                   "calculé",
                   null
                 ]
+              },
+              "mention": {
+                "type": [
+                  "string",
+                  "null"
+                ]
               }
             },
             "required": [
@@ -424,7 +430,8 @@
               "budget_esve_eur",
               "etudiants",
               "cout_par_etudiant_eur",
-              "statut"
+              "statut",
+              "mention"
             ],
             "additionalProperties": false,
             "propertyNames": {
@@ -445,7 +452,25 @@
                   "const": "calculé"
                 }
               }
-            }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "cout_par_etudiant_eur": {
+                      "type": "null"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "mention": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            ]
           }
         },
         "regions": {
@@ -496,6 +521,12 @@
                         "calculé",
                         null
                       ]
+                    },
+                    "mention": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
                     }
                   },
                   "required": [
@@ -504,7 +535,8 @@
                     "budget_esve_eur",
                     "etudiants",
                     "cout_par_etudiant_eur",
-                    "statut"
+                    "statut",
+                    "mention"
                   ],
                   "additionalProperties": false,
                   "propertyNames": {
@@ -525,7 +557,25 @@
                         "const": "calculé"
                       }
                     }
-                  }
+                  },
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "cout_par_etudiant_eur": {
+                            "type": "null"
+                          }
+                        }
+                      },
+                      "then": {
+                        "properties": {
+                          "mention": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             },

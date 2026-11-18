@@ -10,6 +10,7 @@ Entrées (entrepôt brut, non versionné ; sources déclarées dans collecte/cat
   data/lake/education_recherche/edrech_budget_collectivites_esr.parquet
   data/lake/education_recherche/edrech_effectifs_etudiants.parquet
   data/lake/education_recherche/edrech_lycees_idf.parquet, edrech_lycees_pdl.parquet, edrech_lycees_cvl_<année>.parquet
+  data/lake/education_recherche/edrech_insee_depenses_education.xlsx  compte de l'éducation (tableur Insee, DEPP)
   data/lake/_cache/local/sirene_unite_legale.parquet                  stock SIRENE (catégorie juridique), partagé
   site/data/beneficiaires/france2030.json                              lecture seule : lien, jamais recopié
 Sorties (site/data/education_recherche/, chacune < 5 Mo) :
@@ -19,6 +20,8 @@ Sorties (site/data/education_recherche/, chacune < 5 Mo) :
   lycees/<région>.json     subventions et dotations par lycée (UAI, SIREN), commune, département, année, dispositif
   collectivites_esr.json   budgets des collectivités (recherche, enseignement supérieur) par région, type, année
   etudiants.json           effectifs par établissement, commune, département, région ; coût par étudiant « calculé »
+  compte_education.json    compte de l'éducation (DEPP, tableur de l'Insee) : financement par financeur (dont familles
+                           et entreprises), dépense intérieure d'éducation, dépense moyenne par élève et par niveau
 
 Commandes :
   python pipeline/education_recherche.py collecter   # réseau, par collecte/collecte.py ; un refus est noté, jamais contourné
@@ -34,6 +37,7 @@ Règles :
     les délégations de sept organismes nationaux ; le nom publié est la dénomination SIRENE ;
   - deux sources ne sont jamais additionnées ; les écarts sont publiés tels quels ;
   - une valeur absente à la source reste null, jamais 0 ; un 0 publié reste 0 et il est compté (lignes_montant_zero) ;
+    une somme dont aucune valeur n'est publiée reste null (ajoute, somme) ;
   - toute date vient de pipeline/reproductible.py : deux productions sur le même entrepôt sont identiques.
 """
 from __future__ import annotations
@@ -140,6 +144,19 @@ SOURCES = {
                  "(export sans adresse ni géolocalisation)",
         "millesime": "campagnes 2017-2018 à 2020-2021",
         "verdict": "réutilisable tel quel (export de l'API Opendatasoft)"},
+    "compte_education": {
+        "catalogue": ["edrech_insee_depenses_education"], "licence": LO,
+        "producteur": "Ministère de l'Éducation nationale, service statistique (DEPP), Compte de l'éducation ; "
+                      "tableur diffusé par l'Insee",
+        "page": "https://www.insee.fr/fr/statistiques/8612572",
+        "fichier": "https://www.insee.fr/fr/statistiques/fichier/8612572/FPORSOC25-F34.xlsx",
+        "page_producteur": "https://www.education.gouv.fr/le-compte-de-l-education-principes-methodes-et-"
+                           "resultats-40844",
+        "titre": "Insee, France, portrait social, édition 2025, fiche « Dépenses d'éducation » : données des "
+                 "figures 1 à 4 (source des données : MEN-MESRE-Depp, Compte de l'éducation)",
+        "millesime": "Compte de l'éducation, années 1980 à 2024 (2024 provisoire)",
+        "verdict": "réutilisable tel quel (tableur des figures, Insee ; données du compte de l'éducation de la "
+                   "DEPP)"},
 }
 SOURCE_SIRENE = ("Insee, base SIRENE des unités légales (stock, Licence Ouverte 2.0) : catégorie juridique et "
                  "dénomination")
@@ -235,6 +252,14 @@ RECHERCHE_PUBLIQUE = {
         {"nom": "pipeline/sirene.py, pipeline/local.py (ce dépôt) : personne_morale, objet_publiable, stock SIRENE",
          "url": "https://github.com/MoonEyes/Ou-vont-mes-impots", "licence": "MIT", "dernier_commit": "2026-11-17",
          "verdict": "réutilisable tel quel"},
+        {"nom": "Insee, France, portrait social 2025, « Dépenses d'éducation » (tableur des figures, données du "
+                "compte de l'éducation de la DEPP)", "url": "https://www.insee.fr/fr/statistiques/8612572",
+         "licence": LO, "mise_a_jour": "2025-11", "verdict": "réutilisable tel quel"},
+        {"nom": "data.education.gouv.fr (catalogue complet de l'API, recherche « dépense », « compte », « coût ») et "
+                "data.gouv.fr (« compte de l'éducation », « dépense intérieure d'éducation », « dépense moyenne par "
+                "élève »)", "url": "https://data.education.gouv.fr/", "licence": None, "dernier_commit": None,
+         "verdict": "aucun jeu ouvert du compte de l'éducation ni de la dépense moyenne par élève (recherche du "
+                    "18/11/2026) : tableur de l'Insee retenu"},
         {"nom": "Recherches web « ANR projets financés data.gouv dépôt analyse partenaires », « annuaire éducation "
                 "UAI SIRET dotations lycées région script »", "url": "https://www.data.gouv.fr/", "licence": None,
          "dernier_commit": None,
@@ -271,6 +296,21 @@ def cles_organisme(nom) -> list[tuple[str, str]]:
 
 def arrondi(x):
     return None if x is None else round(x + 0.0, 2)
+
+
+def ajoute(acc, x):
+    """Somme qui reste null tant qu'aucune valeur n'est publiée : une absence n'est jamais comptée 0."""
+    if x is None:
+        return acc
+    return x if acc is None else acc + x
+
+
+def somme(valeurs):
+    """Somme des valeurs publiées ; null si aucune ne l'est (jamais 0 pour une absence)."""
+    acc = None
+    for v in valeurs:
+        acc = ajoute(acc, v)
+    return acc
 
 
 def dump(path: Path, obj) -> int:
@@ -429,7 +469,7 @@ def agreger_anr(partenaires: list[dict], aide_coordonnee: dict[str, float | None
     nommes: dict[str, dict] = {}
     agreges: dict[str, dict] = {}
     motifs: dict[str, int] = defaultdict(int)
-    total = {"participations": 0, "projets_coordonnes": 0, champ_aide: 0.0, "lignes_sans_montant": 0}
+    total = {"participations": 0, "projets_coordonnes": 0, champ_aide: None, "lignes_sans_montant": 0}
     for p in partenaires:
         aide = p["aide"]
         r = rattachement.get(p["nom"]) or {"motif": "denomination_absente"}
@@ -437,13 +477,13 @@ def agreger_anr(partenaires: list[dict], aide_coordonnee: dict[str, float | None
             e = nommes.setdefault(r["siren"], {
                 "siren": r["siren"], "denomination": r["denomination"],
                 "categorie_juridique": r["categorie_juridique"], "methodes": set(), "categories": set(),
-                "participations": 0, "projets_coordonnes": 0, champ_aide: 0.0, "lignes_sans_montant": 0,
+                "participations": 0, "projets_coordonnes": 0, champ_aide: None, "lignes_sans_montant": 0,
                 "editions": set()})
             e["methodes"].add(r["methode"])
         else:
             cat = p["categorie"] or "Non renseigné"
             e = agreges.setdefault(cat, {"categorie": cat, "organismes": set(), "participations": 0,
-                                         "projets_coordonnes": 0, champ_aide: 0.0, "lignes_sans_montant": 0,
+                                         "projets_coordonnes": 0, champ_aide: None, "lignes_sans_montant": 0,
                                          "categories": set(), "editions": set()})
             e["organismes"].add(norme(p["nom"]))
             motifs[r["motif"]] += 1
@@ -456,10 +496,10 @@ def agreger_anr(partenaires: list[dict], aide_coordonnee: dict[str, float | None
             if aide is None:
                 cible["lignes_sans_montant"] += 1 if p["compte_montant"] else 0
             else:
-                cible[champ_aide] += aide
+                cible[champ_aide] = ajoute(cible[champ_aide], aide)
     lignes = []
-    for e in sorted(nommes.values(), key=lambda e: (-e[champ_aide], -e["participations"], e["denomination"],
-                                                     e["siren"])):
+    for e in sorted(nommes.values(), key=lambda e: (e[champ_aide] is None, -(e[champ_aide] or 0),
+                                                     -e["participations"], e["denomination"], e["siren"])):
         ed = sorted(e["editions"])
         lignes.append([e["siren"], e["denomination"], e["categorie_juridique"],
                        "regle_organisme_national" if "regle_organisme_national" in e["methodes"]
@@ -471,20 +511,21 @@ def agreger_anr(partenaires: list[dict], aide_coordonnee: dict[str, float | None
                    "participations": a["participations"], "projets_coordonnes": a["projets_coordonnes"],
                    champ_aide: arrondi(a[champ_aide]), "lignes_sans_montant": a["lignes_sans_montant"]}
                   for a in sorted(agreges.values(), key=lambda a: (-a["participations"], a["categorie"]))]
-    somme = lambda xs, c: sum(x[c] for x in xs)  # noqa: E731
+    total_col = lambda xs, c: sum(x[c] for x in xs)  # noqa: E731
     return {
         "colonnes": ["siren", "denomination", "categorie_juridique", "methode_appariement", "categories_source",
                      "participations", "projets_coordonnes", champ_aide, "lignes_sans_montant", "premiere_edition",
                      "derniere_edition", "lien_france2030"],
         "etablissements": lignes,
         "ordre": {"cles": [f"-{champ_aide}", "-participations", "denomination", "siren"],
-                  "regle": "montant décroissant, puis nombre de participations décroissant, puis dénomination"},
+                  "regle": "montant décroissant (montants null en dernier), puis nombre de participations "
+                           "décroissant, puis dénomination"},
         "nommes": {"nombre": len(lignes), "participations": sum(x[5] for x in lignes),
-                   "projets_coordonnes": sum(x[6] for x in lignes), champ_aide: arrondi(sum(x[7] for x in lignes))},
+                   "projets_coordonnes": sum(x[6] for x in lignes), champ_aide: arrondi(somme(x[7] for x in lignes))},
         "non_nommes": {"organismes": sum(len(a["organismes"]) for a in agreges.values()),
-                       "participations": somme(non_nommes, "participations"),
-                       "projets_coordonnes": somme(non_nommes, "projets_coordonnes"),
-                       champ_aide: arrondi(sum(a[champ_aide] for a in agreges.values())),
+                       "participations": total_col(non_nommes, "participations"),
+                       "projets_coordonnes": total_col(non_nommes, "projets_coordonnes"),
+                       champ_aide: arrondi(somme(a[champ_aide] for a in agreges.values())),
                        "motifs": dict(sorted(motifs.items())), "par_categorie": non_nommes},
         "total": {"participations": total["participations"], "projets_coordonnes": total["projets_coordonnes"],
                   champ_aide: arrondi(total[champ_aide]), "lignes_sans_montant": total["lignes_sans_montant"]},
@@ -492,13 +533,13 @@ def agreger_anr(partenaires: list[dict], aide_coordonnee: dict[str, float | None
 
 
 def series(lignes: list[dict], cle: str, champs: list[str], limite: int | None = None) -> list[dict]:
-    """Regroupe par `cle` en sommant `champs` (None ignoré) ; ordre : clé croissante (null en dernier)."""
+    """Regroupe par `cle` en sommant `champs` ; une valeur absente est ignorée et un groupe sans aucune valeur
+    publiée reste null, jamais 0. Ordre : clé croissante (null en dernier)."""
     acc: dict = {}
     for li in lignes:
-        a = acc.setdefault(li[cle], {cle: li[cle], **{c: 0 for c in champs}})
+        a = acc.setdefault(li[cle], {cle: li[cle], **{c: None for c in champs}})
         for c in champs:
-            if li.get(c) is not None:
-                a[c] += li[c]
+            a[c] = ajoute(a[c], li.get(c))
     out = sorted(acc.values(), key=lambda a: (a[cle] is None, a[cle] if a[cle] is not None else 0))
     for a in out:
         for c in champs:
@@ -542,9 +583,9 @@ def construire_anr(brut: dict, rattachement: dict[str, dict], france2030: dict |
                     "aide": pj.get("aide") if coord else None, "compte_montant": coord,
                     "region": (p["Projet.Partenaire.Adresse.Region"] or "").strip() or None})
     bloc_pia = agreger_anr(pia, {}, rattachement, "aide_projets_coordonnes_eur", sirens_f2030)
-    total_pia = sum(v["aide"] or 0 for v in projets.values())
+    total_pia = somme(v["aide"] for v in projets.values())
     sans_coord = sorted(set(projets) - {p["projet"] for p in pia if p["coordinateur"]})
-    aide_sans_coord = sum(projets[c]["aide"] or 0 for c in sans_coord)
+    aide_sans_coord = somme(projets[c]["aide"] for c in sans_coord)
 
     lignes_proj = [{"annee": v["annee"], "action": v["action"], "projets": 1, "aide_eur": v["aide"]}
                    for v in projets.values()]
@@ -556,23 +597,24 @@ def construire_anr(brut: dict, rattachement: dict[str, dict], france2030: dict |
         a["participations"] = part_annee.get(a["annee"], 0)
     actions: dict = {}
     for li in lignes_proj:
-        a = actions.setdefault(li["action"], {"action": li["action"], "projets": 0, "aide_eur": 0.0, "annees": set()})
+        a = actions.setdefault(li["action"], {"action": li["action"], "projets": 0, "aide_eur": None, "annees": set()})
         a["projets"] += 1
-        a["aide_eur"] += li["aide_eur"] or 0
+        a["aide_eur"] = ajoute(a["aide_eur"], li["aide_eur"])
         if li["annee"]:
             a["annees"].add(li["annee"])
     par_action = [{"action": a["action"], "projets": a["projets"], "aide_eur": arrondi(a["aide_eur"]),
                    "premiere_edition": min(a["annees"]) if a["annees"] else None,
                    "derniere_edition": max(a["annees"]) if a["annees"] else None}
-                  for a in sorted(actions.values(), key=lambda a: (-a["aide_eur"], str(a["action"])))]
+                  for a in sorted(actions.values(), key=lambda a: (a["aide_eur"] is None, -(a["aide_eur"] or 0),
+                                                                    str(a["action"])))]
     regions: dict = {}
     for p in pia:
         r = regions.setdefault(p["region"], {"region": p["region"], "participations": 0, "projets_coordonnes": 0,
-                                             "aide_projets_coordonnes_eur": 0.0})
+                                             "aide_projets_coordonnes_eur": None})
         r["participations"] += 1
         if p["coordinateur"]:
             r["projets_coordonnes"] += 1
-            r["aide_projets_coordonnes_eur"] += p["aide"] or 0
+            r["aide_projets_coordonnes_eur"] = ajoute(r["aide_projets_coordonnes_eur"], p["aide"])
     par_region = sorted(regions.values(), key=lambda r: (r["region"] is None, norme(r["region"])))
     for r in par_region:
         r["aide_projets_coordonnes_eur"] = arrondi(r["aide_projets_coordonnes_eur"])
@@ -592,21 +634,22 @@ def construire_anr(brut: dict, rattachement: dict[str, dict], france2030: dict |
     lignes_a = [{"annee": v["annee"], "programme": v["programme"], "projets": 1, "aide_projets_eur": v["aide"]}
                 for v in proj_a.values()]
     par_annee_a = series(lignes_a, "annee", ["projets", "aide_projets_eur"])
-    part_a = defaultdict(lambda: [0, 0.0])
+    part_a = defaultdict(lambda: [0, None])
     for p in anc:
         part_a[p["edition"]][0] += 1
-        part_a[p["edition"]][1] += p["aide"] or 0
+        part_a[p["edition"]][1] = ajoute(part_a[p["edition"]][1], p["aide"])
     for a in par_annee_a:
         a["participations"], a["aide_partenaires_eur"] = part_a[a["annee"]][0], arrondi(part_a[a["annee"]][1])
     progs: dict = {}
     for li in lignes_a:
-        g = progs.setdefault(li["programme"], {"programme": li["programme"], "projets": 0, "aide_projets_eur": 0.0})
+        g = progs.setdefault(li["programme"], {"programme": li["programme"], "projets": 0, "aide_projets_eur": None})
         g["projets"] += 1
-        g["aide_projets_eur"] += li["aide_projets_eur"] or 0
-    tries = sorted(progs.values(), key=lambda g: (-g["aide_projets_eur"], str(g["programme"])))
+        g["aide_projets_eur"] = ajoute(g["aide_projets_eur"], li["aide_projets_eur"])
+    tries = sorted(progs.values(), key=lambda g: (g["aide_projets_eur"] is None, -(g["aide_projets_eur"] or 0),
+                                                  str(g["programme"])))
     par_programme = [dict(g, aide_projets_eur=arrondi(g["aide_projets_eur"])) for g in tries[:MAX_DISPOSITIFS]]
     autres = tries[MAX_DISPOSITIFS:]
-    total_proj_a = sum(v["aide"] or 0 for v in proj_a.values())
+    total_proj_a = somme(v["aide"] for v in proj_a.values())
     total_part_a = bloc_anc["total"]["aide_allouee_eur"]
 
     source_pia = f"{SOURCES['anr_pia']['titre']} ({SOURCES['anr_pia']['page']}) ; {SOURCE_SIRENE}"
@@ -627,7 +670,8 @@ def construire_anr(brut: dict, rattachement: dict[str, dict], france2030: dict |
             {"millesime": SOURCES["anr_pia"]["millesime"], "source": source_pia,
              "lecture": "aide_projets_coordonnes_eur : aide allouée aux projets dont l'établissement est le "
                         "coordinateur. La source publie l'aide par projet, pas sa répartition entre partenaires : "
-                        "ce montant n'est pas la somme reçue par l'établissement.",
+                        "ce montant n'est pas la somme reçue par l'établissement. Il vaut null (non publié, pas 0) "
+                        "quand l'organisme ne coordonne aucun projet : sa part de l'aide n'est pas publiée.",
              "lien_france2030": {
                  "fichier": "beneficiaires/france2030.json", "id": "par_operateur.ANR",
                  "lecture": "lien_france2030 vaut vrai quand le SIREN figure parmi les bénéficiaires nommés de "
@@ -641,7 +685,8 @@ def construire_anr(brut: dict, rattachement: dict[str, dict], france2030: dict |
             {"millesime": SOURCES["anr_2005_2009"]["millesime"], "source": source_anc,
              "lecture": "aide_allouee_eur : aide allouée par l'ANR au partenaire, telle que publiée ; "
                         "lignes_sans_montant compte les partenaires sans aide publiée (financement autre que "
-                        "l'ANR, fonds propres ou montant absent), jamais comptés 0."},
+                        "l'ANR, fonds propres ou montant absent), jamais comptés 0 ; aide_allouee_eur vaut null "
+                        "quand aucune aide n'est publiée pour l'organisme ou la catégorie."},
             **bloc_anc,
             total_projets={"projets": len(proj_a), "aide_eur": arrondi(total_proj_a)}),
     }
@@ -649,20 +694,23 @@ def construire_anr(brut: dict, rattachement: dict[str, dict], france2030: dict |
         "objet": "ANR 2005-2009 : aide par projet et aide par partenaire", "annee": None,
         "source": "fichier des projets (aide allouée par projet)", "montant": arrondi(total_proj_a),
         "autre_source": "fichier des partenaires (somme des aides allouées aux partenaires)",
-        "autre_montant": arrondi(total_part_a), "ecart": arrondi(total_proj_a - total_part_a),
-        "ecart_pct": round((total_proj_a - total_part_a) / total_part_a * 100, 3) if total_part_a else None,
+        "autre_montant": arrondi(total_part_a),
+        "ecart": arrondi(total_proj_a - total_part_a) if None not in (total_proj_a, total_part_a) else None,
+        "ecart_pct": round((total_proj_a - total_part_a) / total_part_a * 100, 3)
+        if total_proj_a is not None and total_part_a else None,
         "lecture": "deux fichiers du même jeu ; l'écart est publié tel quel"}]
     if f2030_anr:
         annees_f = [a for a in par_annee if a["annee"] and 2021 <= a["annee"] <= 2025]
-        m = sum(a["aide_eur"] for a in annees_f)
+        m = somme(a["aide_eur"] for a in annees_f)
         ecarts.append({
             "objet": "France 2030 opéré par l'ANR", "annee": None,
             "source": "ANR, projets des éditions 2021 à 2025 (aide allouée par projet)", "montant": arrondi(m),
             "autre_source": "beneficiaires/france2030.json, opérateur ANR (projets décidés de 2021 à 2025, "
                             "subvention et avance remboursable par bénéficiaire)",
             "autre_montant": f2030_anr.get("total_eur"),
-            "ecart": arrondi(m - f2030_anr["total_eur"]),
-            "ecart_pct": round((m - f2030_anr["total_eur"]) / f2030_anr["total_eur"] * 100, 2),
+            "ecart": arrondi(m - f2030_anr["total_eur"]) if m is not None else None,
+            "ecart_pct": round((m - f2030_anr["total_eur"]) / f2030_anr["total_eur"] * 100, 2)
+            if m is not None and f2030_anr.get("total_eur") else None,
             "lecture": "champs différents : année d'édition de l'action et aide par projet pour l'ANR (les actions "
                        "du programme d'investissements d'avenir encore ouvertes y figurent) ; date de décision et "
                        "montant par bénéficiaire pour le jeu France 2030. Les deux montants ne s'additionnent pas."})
@@ -683,7 +731,7 @@ def construire_anr(brut: dict, rattachement: dict[str, dict], france2030: dict |
             "par_annee": par_annee_a, "par_programme": par_programme,
             "par_programme_autres": {"programmes": len(autres),
                                      "projets": sum(g["projets"] for g in autres),
-                                     "aide_projets_eur": arrondi(sum(g["aide_projets_eur"] for g in autres))},
+                                     "aide_projets_eur": arrondi(somme(g["aide_projets_eur"] for g in autres))},
             "ordre": {"cles": ["annee", "-aide_projets_eur puis programme"],
                       "regle": "années croissantes ; programmes par aide décroissante puis sigle"},
             "note": "Année : édition de l'appel à projets. La source ne publie ni région ni commune pour la plupart "
@@ -782,18 +830,24 @@ def lignes_cvl(con) -> tuple[list[dict], list[dict]]:
                             "dispositif": disp, "montant": r[c_mt], "type_tiers": None, "code_commune": None})
         else:
             c_total = next((c for c in cols if c.startswith("total_verse")), None)
-            somme = total = 0.0
+            s_dot = total = None
+            totaux_absents = 0
             for r in lignes:
                 for c, lib in CVL_2017.items():
                     if c in r and r[c] is not None:   # cellule vide : dotation absente, pas un 0
-                        somme += r[c]
+                        s_dot = ajoute(s_dot, float(r[c]))
                         out.append({"annee": an, "uai": uai_propre(r[c_uai]), "siren": None,
                                     "dispositif": lib, "montant": float(r[c]), "type_tiers": None,
                                     "code_commune": None})
-                total += (r.get(c_total) or 0) if c_total else 0
+                if c_total:
+                    if r.get(c_total) is None:     # total absent : compté, jamais pris pour 0
+                        totaux_absents += 1
+                    total = ajoute(total, r.get(c_total))
             if c_total:
-                controles.append({"annee": an, "somme_des_dotations_eur": arrondi(somme),
-                                  "total_publie_eur": arrondi(total), "ecart_eur": arrondi(somme - total)})
+                controles.append({"annee": an, "somme_des_dotations_eur": arrondi(s_dot),
+                                  "total_publie_eur": arrondi(total),
+                                  "ecart_eur": arrondi(s_dot - total) if None not in (s_dot, total) else None,
+                                  "lignes_total_absent": totaux_absents})
     return out, controles
 
 
@@ -815,13 +869,14 @@ def construire_lycees(code: str, lignes: list[dict], annuaire: dict[str, dict], 
     rang = {a: i for i, a in enumerate(annees)}
     benef: dict = {}
     disp: dict = {}
-    par_annee = {a: {"annee": a, "total_eur": 0.0, "nommes_eur": 0.0, "non_nommes_eur": 0.0, "lignes": 0,
+    # total_eur reste null pour une année sans aucun montant publié (lignes toutes sans montant) : jamais 0.
+    par_annee = {a: {"annee": a, "total_eur": None, "nommes_eur": 0.0, "non_nommes_eur": 0.0, "lignes": 0,
                      "lignes_montant_absent": 0, "lignes_montant_zero": 0, "beneficiaires": set()} for a in annees}
-    hors_annee = {"lignes": 0, "montant_eur": 0.0}
+    hors_annee = {"lignes": 0, "montant_eur": None}
     for li in lignes:
         if li["annee"] is None:
             hors_annee["lignes"] += 1
-            hors_annee["montant_eur"] += li["montant"] or 0
+            hors_annee["montant_eur"] = ajoute(hors_annee["montant_eur"], li["montant"])
             continue
         pa = par_annee[li["annee"]]
         pa["lignes"] += 1
@@ -841,7 +896,7 @@ def construire_lycees(code: str, lignes: list[dict], annuaire: dict[str, dict], 
             b["sans_siren"] = True
         i = rang[li["annee"]]
         b["montants"][i] = (b["montants"][i] or 0.0) + li["montant"]
-        pa["total_eur"] += li["montant"]
+        pa["total_eur"] = ajoute(pa["total_eur"], li["montant"])
         pa["beneficiaires"].add(cle)
         d = disp.setdefault(li["dispositif"], {"montants": [None] * len(annees), "total": 0.0})
         d["montants"][i] = (d["montants"][i] or 0.0) + li["montant"]
@@ -891,9 +946,12 @@ def construire_lycees(code: str, lignes: list[dict], annuaire: dict[str, dict], 
     lignes_nommees.sort(key=lambda r: (-r[9], r[2], r[0] or "", r[1]))
     for i, a in enumerate(annees):
         pa = par_annee[a]
+        if pa["total_eur"] is None:          # aucun montant publié cette année : rien de nommé ni d'agrégé
+            pa["non_nommes_eur"] = pa["nommes_eur"] = None
+            continue
         pa["non_nommes_eur"] = non_nommes_annee[i]
         pa["nommes_eur"] = pa["total_eur"] - non_nommes_annee[i]
-    total = sum(pa["total_eur"] for pa in par_annee.values())
+    total = somme(pa["total_eur"] for pa in par_annee.values())
     total_non_nommes = sum(m["montant_eur"] for m in motifs.values())
 
     tri_disp = sorted(disp.items(), key=lambda kv: (-kv[1]["total"], str(kv[0])))
@@ -933,7 +991,8 @@ def construire_lycees(code: str, lignes: list[dict], annuaire: dict[str, dict], 
         "etablissements": lignes_nommees,
         "ordre": {"cles": ["-total_eur", "nom", "uai", "siren"],
                   "regle": "montant total décroissant, puis nom, puis identifiant"},
-        "nommes": {"nombre": len(lignes_nommees), "montant_eur": arrondi(total - total_non_nommes)},
+        "nommes": {"nombre": len(lignes_nommees),
+                   "montant_eur": arrondi(total - total_non_nommes) if total is not None else None},
         "non_nommes": {"nombre": sum(m["nombre"] for m in motifs.values()), "montant_eur": arrondi(total_non_nommes),
                        "part_pct": round(total_non_nommes / total * 100, 2) if total else None,
                        "motifs": {k: {"nombre": v["nombre"], "montant_eur": arrondi(v["montant_eur"])}
@@ -963,6 +1022,9 @@ def construire_lycees(code: str, lignes: list[dict], annuaire: dict[str, dict], 
 # --- Collectivités : recherche et enseignement supérieur ---------------------------------------------------------
 
 CATEGORIES_ESR = {"Recherche et transfert de technologie": "rt", "Enseignement supérieur et vie étudiante": "esve"}
+MENTION_CATEGORIE_ABSENTE = ("La source ne publie aucune ligne « {libelle} » pour {annee} : {champ} vaut null "
+                             "(non publié, pas 0) ; total_eur aussi, faute de l'une de ses deux parts. par_type et "
+                             "par_nature ne couvrent que les catégories publiées (categories_publiees).")
 
 
 def construire_collectivites(lignes: list[dict]) -> dict:
@@ -972,7 +1034,9 @@ def construire_collectivites(lignes: list[dict]) -> dict:
     types = {}
     natures = {}
     regions: dict = {}
-    nat = [{"annee": a, "qualite": None, "total_eur": 0.0, "rt_eur": 0.0, "esve_eur": 0.0, "par_type": {},
+    # Une catégorie sans ligne publiée pour l'année reste null (2006 à 2014 : aucune ligne « enseignement
+    # supérieur et vie étudiante » à la source), jamais 0.
+    nat = [{"annee": a, "qualite": None, "total_eur": None, "rt_eur": None, "esve_eur": None, "par_type": {},
             "par_nature": {}} for a in annees]
     sans_montant = 0
     for r in lignes:
@@ -990,8 +1054,7 @@ def construire_collectivites(lignes: list[dict]) -> dict:
         m = float(r["montant"])
         n = nat[i]
         n["qualite"] = r["qualite"]
-        n["total_eur"] += m
-        n[f"{cat}_eur"] += m
+        n[f"{cat}_eur"] = ajoute(n[f"{cat}_eur"], m)
         n["par_type"][r["type_co"]] = n["par_type"].get(r["type_co"], 0.0) + m
         n["par_nature"][r["code_var"]] = n["par_nature"].get(r["code_var"], 0.0) + m
         g = regions.setdefault(r["code_reg"], {"code": r["code_reg"], "nom": r["lib_reg"], "groupe": r["groupe_reg"],
@@ -1001,6 +1064,13 @@ def construire_collectivites(lignes: list[dict]) -> dict:
         t = g["par_type"].setdefault(r["type_co"], [None] * len(annees))
         t[i] = (t[i] or 0.0) + m
     for n in nat:
+        publiees = [c for c in ("rt", "esve") if n[f"{c}_eur"] is not None]
+        n["categories_publiees"] = publiees
+        n["total_eur"] = n["rt_eur"] + n["esve_eur"] if len(publiees) == 2 else None
+        absentes = [c for c in ("rt", "esve") if c not in publiees]
+        n["mention"] = " ".join(MENTION_CATEGORIE_ABSENTE.format(
+            libelle={"rt": "recherche et transfert de technologie", "esve": "enseignement supérieur et vie "
+                     "étudiante"}[c], annee=n["annee"], champ=f"{c}_eur") for c in absentes) or None
         for k in ("total_eur", "rt_eur", "esve_eur"):
             n[k] = arrondi(n[k])
         n["par_type"] = {k: arrondi(v) for k, v in sorted(n["par_type"].items())}
@@ -1024,6 +1094,8 @@ def construire_collectivites(lignes: list[dict]) -> dict:
         "lignes_sans_montant": sans_montant,
         "note": "Montants déclarés par les collectivités à l'enquête du SIES, par région de la collectivité. Une "
                 "valeur null signale l'absence de ligne à la source pour la région et l'année, pas un montant nul. "
+                "national[] : de 2006 à 2014, la source ne publie que la recherche et le transfert de technologie ; "
+                "esve_eur et total_eur y valent null (categories_publiees, mention). "
                 "Les années semi-définitives et prévisionnelles sont révisées par le producteur.",
     }
 
@@ -1045,6 +1117,16 @@ def _code(v, prefixe: str):
 
 # Régions d'outre-mer : code Insee de la région (effectifs) -> code publié dans les budgets des collectivités.
 REGIONS_OUTRE_MER = {"01": "971", "02": "972", "03": "973", "04": "974", "06": "976"}
+
+
+def mention_cout(budget, etudiants) -> str | None:
+    """Pourquoi le coût par étudiant n'est pas calculé (null, jamais 0) ; None quand il l'est."""
+    if budget is None:
+        return ("non calculé : dépense des collectivités pour l'enseignement supérieur et la vie étudiante non "
+                "publiée pour cette année et ce périmètre")
+    if not etudiants:
+        return "non calculé : effectif étudiant absent pour cette année et ce périmètre"
+    return None
 
 
 def construire_etudiants(lignes: list[dict], collectivites: dict, rattachement: dict[str, dict]) -> dict:
@@ -1112,15 +1194,17 @@ def construire_etudiants(lignes: list[dict], collectivites: dict, rattachement: 
             n = e["eff"][rang[a]] if e else None
             valeurs.append({"annee": a, "qualite_budget": qualite[str(a)], "budget_esve_eur": budget, "etudiants": n,
                             "cout_par_etudiant_eur": round(budget / n, 2) if budget is not None and n else None,
-                            "statut": STATUT_CALCULE if budget is not None and n else None})
+                            "statut": STATUT_CALCULE if budget is not None and n else None,
+                            "mention": mention_cout(budget, n)})
         cout_regions.append({"code": code, "nom": (g or {}).get("nom") or (e or {}).get("nom"), "valeurs": valeurs})
     national = []
     for a in sorted(set(c_annees) & set(annees)):
         budget = collectivites["national"][c_annees.index(a)]["esve_eur"]
-        n = sum(g["eff"][rang[a]] or 0 for g in reg.values())
+        n = somme(g["eff"][rang[a]] for g in reg.values())
+        ok = budget is not None and bool(n)
         national.append({"annee": a, "qualite_budget": qualite[str(a)], "budget_esve_eur": budget, "etudiants": n,
-                         "cout_par_etudiant_eur": round(budget / n, 2) if n else None,
-                         "statut": STATUT_CALCULE if n else None})
+                         "cout_par_etudiant_eur": round(budget / n, 2) if ok else None,
+                         "statut": STATUT_CALCULE if ok else None, "mention": mention_cout(budget, n)})
     s = SOURCES["effectifs"]
     return {
         "millesime": "Effectifs étudiants " + s["millesime"] + " ; coût par étudiant calculé, 2007 à 2025",
@@ -1164,7 +1248,9 @@ def construire_etudiants(lignes: list[dict], collectivites: dict, rattachement: 
                 "code 971 à 976 ; le rapprochement est écrit dans correspondance_regions. Les collectivités "
                 "d'outre-mer (code 00 des effectifs ; 987 et 988 des budgets) ne sont pas rapprochées.",
                 "Budgets 2024 semi-définitifs et 2025 prévisionnels : valeurs révisées par le producteur.",
-                "Valeur null quand le budget ou l'effectif manque pour la région et l'année.",
+                "Valeur null, avec sa mention, quand le budget ou l'effectif manque pour l'année et le périmètre ; "
+                "de 2007 à 2014, la source ne publie pas la dépense des collectivités pour l'enseignement supérieur "
+                "et la vie étudiante : aucun coût n'est calculé, au niveau national comme régional.",
             ],
             "fichier": "education_recherche/collectivites_esr.json",
             "correspondance_regions": REGIONS_OUTRE_MER, "national": national, "regions": cout_regions,
@@ -1172,9 +1258,214 @@ def construire_etudiants(lignes: list[dict], collectivites: dict, rattachement: 
     }
 
 
+# --- Compte de l'éducation : qui finance la dépense d'éducation, dépense moyenne par élève ----------------------------
+
+FICHIER_COMPTE = BRUT / "edrech_insee_depenses_education.xlsx"
+# Financement initial de la dépense intérieure d'éducation (figure 1) : libellé du tableur -> (id, parent).
+FINANCEURS = [
+    (r"^[ÉE]tat", "etat", None, "État"),
+    (r"^MEN", "etat_ministeres_education", "etat",
+     "dont ministères de l'Éducation nationale et de l'Enseignement supérieur"),
+    (r"^Collectivit", "collectivites", None, "Collectivités territoriales"),
+    (r"^Autres administrations", "autres_administrations", None,
+     "Autres administrations publiques et caisses d'allocations familiales"),
+    (r"^Entreprises", "entreprises", None, "Entreprises"),
+    (r"^M[ée]nages", "menages", None, "Ménages (familles)"),
+]
+NIVEAUX_DEGRES = [(r"^Premier", "premier_degre", "Premier degré (école)"),
+                  (r"^Second", "second_degre", "Second degré (collège et lycée)"),
+                  (r"^Sup", "superieur", "Enseignement supérieur")]
+
+
+def _texte(v) -> str:
+    return re.sub(r"\s+", " ", str(v or "")).strip()
+
+
+def _valeur(v):
+    """Cellule numérique publiée, sinon null (cellule vide ou texte : non publié, jamais 0)."""
+    return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else None
+
+
+def _annee_col(v) -> tuple[int | None, bool]:
+    """(année, provisoire) pour un en-tête « 2024 » ou « 2024p »."""
+    m = re.match(r"^((?:19|20)\d\d)\s*(p?)$", _texte(v))
+    return (int(m.group(1)), bool(m.group(2))) if m else (None, False)
+
+
+def lire_compte_education(chemin: Path = FICHIER_COMPTE) -> dict[str, list[tuple]]:
+    """Feuilles « Figure 1 » à « Figure 4 » du tableur : lignes brutes (aucune donnée de personne)."""
+    if not chemin.exists():
+        raise SystemExit(f"source absente : {chemin} (python pipeline/education_recherche.py collecter)")
+    import openpyxl
+    wb = openpyxl.load_workbook(chemin, data_only=True, read_only=True)
+    out = {}
+    for ws in wb.worksheets:
+        m = re.match(r"^Figure\s*(\d)", ws.title.strip())
+        if m:
+            out[f"figure{m.group(1)}"] = [tuple(r) for r in ws.iter_rows(values_only=True)]
+    wb.close()
+    manquantes = {"figure1", "figure2", "figure3", "figure4"} - set(out)
+    if manquantes:
+        raise SystemExit(f"tableur du compte de l'éducation : feuilles absentes {sorted(manquantes)}")
+    return out
+
+
+def _ligne(lignes: list[tuple], motif: str) -> tuple:
+    trouvees = [r for r in lignes if r and re.search(motif, _texte(r[0]), re.I)]
+    if len(trouvees) != 1:
+        raise SystemExit(f"tableur du compte de l'éducation : ligne « {motif} » trouvée {len(trouvees)} fois")
+    return trouvees[0]
+
+
+def _mentions(lignes: list[tuple]) -> dict:
+    """Lecture, champ, source et notes du bas de feuille, tels que publiés."""
+    out = {"notes": []}
+    for r in lignes:
+        t = _texte(r[0]) if r else ""
+        if t.startswith("Lecture"):
+            out["lecture_publiee"] = t
+        elif t.startswith("Champ"):
+            out["champ"] = re.sub(r"^Champ\s*:\s*", "", t).rstrip(".")
+        elif t.startswith("Source"):
+            out["source_citee"] = re.sub(r"^Source\s*:\s*", "", t)
+        elif re.match(r"^(\d\.|p :|Note)", t):
+            out["notes"].append(t)
+    return out
+
+
+def construire_compte_education(brut: dict[str, list[tuple]]) -> dict:
+    s = SOURCES["compte_education"]
+    # Figure 1 : DIE, dépense moyenne et structure du financement initial, années choisies.
+    f1 = brut["figure1"]
+    entete = _ligne(f1, r"^D[ée]penses d.?[ée]ducation et structure")
+    cols = [(i, *_annee_col(v)) for i, v in enumerate(entete) if _annee_col(v)[0]]
+    annees = [a for _, a, _ in cols]
+    provisoires = [a for _, a, p in cols if p]
+
+    def serie(motif):
+        r = _ligne(f1, motif)
+        return [_valeur(r[i]) if i < len(r) else None for i, _, _ in cols]
+
+    financeurs = [{"id": fid, "libelle": lib, "libelle_source": _texte(_ligne(f1, motif)[0]).rstrip(" :,"),
+                   "parent": parent, "part_pct": serie(motif)} for motif, fid, parent, lib in FINANCEURS]
+    premiers = [f for f in financeurs if f["parent"] is None]
+    controle = []
+    for j, a in enumerate(annees):
+        parts = [f["part_pct"][j] for f in premiers]
+        controle.append({"annee": a, "somme_pct": round(sum(parts), 1) if None not in parts else None})
+    par_id = {f["id"]: f for f in financeurs}
+    j_der = len(annees) - 1
+    # Figure 2 : série annuelle de la DIE et de sa part dans le PIB.
+    f2 = brut["figure2"]
+    e2 = _ligne(f2, r"^Ann[ée]e$")
+    i_pib = next(i for i, v in enumerate(e2) if re.search(r"PIB", _texte(v)))
+    i_die = next(i for i, v in enumerate(e2) if re.search(r"milliards", _texte(v)))
+    prix2 = re.search(r"(\d{4})\)?$", _texte(e2[i_die]))
+    s2 = [r for r in f2 if r and _annee_col(r[0])[0]]
+    # Figure 3 : dépense moyenne par élève selon le niveau, dernière année.
+    f3 = brut["figure3"]
+    an3 = re.search(r"en ((?:19|20)\d\d)", _texte(f3[0][0]))
+    niveaux, degre = [], None
+    for r in f3:
+        if not r or len(r) < 3:
+            continue
+        tete = _texte(r[0])
+        for motif, did, dlib in NIVEAUX_DEGRES:
+            if tete and re.match(motif, tete):
+                degre = (did, dlib)
+        niveau = _texte(r[1])
+        if degre and niveau and isinstance(r[2], (int, float)):
+            niveaux.append({"degre": degre[0], "libelle_degre": degre[1], "niveau": niveau,
+                            "ensemble_du_degre": niveau == "Ensemble", "depense_moyenne_eur": _valeur(r[2])})
+    # Figure 4 : évolution de la dépense moyenne, euros constants.
+    f4 = brut["figure4"]
+    e4 = _ligne(f4, r"^Ann[ée]e$")
+    prix4 = re.search(r"prix ((?:19|20)\d\d)", " ".join(_texte(v) for r in f4[:3] for v in r if v))
+    s4 = [r for r in f4 if r and _annee_col(r[0])[0]]
+    cles4 = []
+    for i, v in enumerate(e4[1:], 1):
+        t = _texte(v)
+        if not t:
+            continue
+        cles4.append((i, "premier_degre" if "1er" in t else "second_degre" if "2nd" in t
+                      else "superieur" if "supérieur" in t else "ensemble", t))
+    return {
+        "millesime": s["millesime"],
+        "source": f"{s['titre']} ({s['page']}, tableur {s['fichier']}) ; compte de l'éducation, méthode : "
+                  f"{s['page_producteur']}",
+        "unite": "pourcentages de la dépense intérieure d'éducation ; euros par élève ou étudiant ; milliards "
+                 "d'euros", "licence": s["licence"], "date_sources": date_sources(DOMAINE),
+        "producteur": s["producteur"], "champ": _mentions(f1).get("champ"),
+        "statut": "publié (tracé) : valeurs du tableur, sans calcul du site",
+        "annees_provisoires": provisoires,
+        "financement_initial": {
+            "annees": annees, "provisoire": [a in provisoires for a in annees],
+            "financeurs": financeurs,
+            "familles_et_entreprises": {
+                "annee": annees[j_der], "provisoire": annees[j_der] in provisoires,
+                "menages_pct": par_id["menages"]["part_pct"][j_der],
+                "entreprises_pct": par_id["entreprises"]["part_pct"][j_der],
+                "lecture": "Part de la dépense intérieure d'éducation financée au départ par les ménages (familles : "
+                           "cantine, internat, fournitures, cours, droits d'inscription…) et par les entreprises "
+                           "(dont taxe d'apprentissage et formation des apprentis). Deux parts publiées séparément, "
+                           "non additionnées par le site."},
+            "controle_somme": controle,
+            "lecture": "Financement initial : qui paie avant les transferts entre financeurs (par exemple, les "
+                       "bourses versées par l'État aux familles restent comptées à l'État). L'État comprend les "
+                       "ministères de l'Éducation nationale et de l'Enseignement supérieur (ligne « dont », à ne "
+                       "pas ajouter). Les parts de premier niveau font 100 % à l'arrondi près (controle_somme).",
+            **{k: v for k, v in _mentions(f1).items() if k != "champ"}},
+        "die": {"annees": annees, "provisoire": [a in provisoires for a in annees],
+                "die_md_eur_courants": serie(r"^DIE en valeur"),
+                "die_md_eur_constants": serie(r"^DIE en milliards d.euros constants"),
+                "depense_moyenne_eur_courants": serie(r"^D[ée]pense moyenne en euros courants"),
+                "depense_moyenne_eur_constants": serie(r"^D[ée]pense moyenne en euros constants"),
+                "prix_constants": re.search(r"prix ((?:19|20)\d\d)",
+                                            _texte(_ligne(f1, r"^DIE en milliards d.euros constants")[0])).group(1),
+                "lecture": "Dépense intérieure d'éducation (DIE) : toute la dépense d'éducation en France, quel que "
+                           "soit le financeur (État, collectivités, entreprises, familles). Dépense moyenne : DIE "
+                           "rapportée au nombre d'élèves, apprentis et étudiants."},
+        "die_serie": {"annees": [_annee_col(r[0])[0] for r in s2],
+                      "part_pib_pct": [_valeur(r[i_pib]) for r in s2],
+                      "die_md_eur_constants": [_valeur(r[i_die]) for r in s2],
+                      "prix_constants": prix2.group(1) if prix2 else None, **_mentions(f2)},
+        "depense_moyenne_par_niveau": {
+            "annee": int(an3.group(1)) if an3 else None,
+            "provisoire": bool(an3) and int(an3.group(1)) in provisoires,
+            "unite": "euros courants par élève ou étudiant", "niveaux": niveaux,
+            "lecture": "Dépense de tous les financeurs (État, collectivités, entreprises, familles) rapportée au "
+                       "nombre d'élèves du niveau : ce n'est pas seulement de l'argent public. Second degré et "
+                       "supérieur : y compris apprentissage.", **_mentions(f3)},
+        "depense_moyenne_evolution": {
+            "annees": [_annee_col(r[0])[0] for r in s4],
+            "provisoire": [_annee_col(r[0])[1] for r in s4],
+            "prix_constants": prix4.group(1) if prix4 else None,
+            "series": [{"id": cle, "libelle_source": lib, "eur_constants": [_valeur(r[i]) for r in s4]}
+                       for i, cle, lib in cles4], **_mentions(f4)},
+        "note": "Valeurs reprises du tableur, sans calcul ; une cellule vide ou non numérique vaut null (non publié), "
+                "jamais 0. Les montants de ce fichier couvrent toute la dépense d'éducation (y compris familles et "
+                "entreprises) : ils ne se comparent pas au coût par étudiant calculé par le site (etudiants.json), "
+                "qui ne compte que les dépenses des collectivités, et ne s'y additionnent pas.",
+    }
+
+
 # --- Index -----------------------------------------------------------------------------------------------------------
 
-def construire_index(resume_anr: dict, lycees: dict[str, dict], collectivites: dict, etudiants: dict) -> dict:
+def totaux_compte(c: dict) -> dict:
+    """Résumé pour l'index : parts des familles et des entreprises, dépense moyenne par niveau (dernière année)."""
+    fe = c["financement_initial"]["familles_et_entreprises"]
+    n = c["depense_moyenne_par_niveau"]
+    ens = {x["degre"]: x["depense_moyenne_eur"] for x in n["niveaux"] if x["ensemble_du_degre"]}
+    d = c["die"]
+    return {"annee": fe["annee"], "provisoire": fe["provisoire"], "menages_pct": fe["menages_pct"],
+            "entreprises_pct": fe["entreprises_pct"], "die_md_eur_courants": d["die_md_eur_courants"][-1],
+            "depense_moyenne_eur": d["depense_moyenne_eur_courants"][-1],
+            "depense_moyenne_par_degre_eur": ens, "annee_par_niveau": n["annee"],
+            "fichier": f"{DOMAINE}/compte_education.json"}
+
+
+def construire_index(resume_anr: dict, lycees: dict[str, dict], collectivites: dict, etudiants: dict,
+                     compte: dict | None = None) -> dict:
     sources = []
     for cle, s in SOURCES.items():
         sources.append({"id": cle, "titre": s["titre"], "producteur": s["producteur"], "page": s["page"],
@@ -1193,21 +1484,25 @@ def construire_index(resume_anr: dict, lycees: dict[str, dict], collectivites: d
     return {
         "millesime": "ANR 2005-2009 et programmes d'investissements d'avenir 2006-2026 ; lycées : Île-de-France "
                      "2021-2023, Centre-Val de Loire 2017-2025, Pays de la Loire 2017-2020 ; budgets des "
-                     "collectivités 2006-2025 ; effectifs étudiants 2006-07 à 2024-25",
+                     "collectivités 2006-2025 ; effectifs étudiants 2006-07 à 2024-25 ; compte de l'éducation "
+                     "1980-2024",
         "source": " ; ".join(f"{s['producteur']} ({s['page']})" for s in SOURCES.values()),
         "unite": "euros, sauf effectifs (étudiants inscrits)", "date_sources": date_sources(DOMAINE),
         "fichiers": {"anr_etablissements": f"{DOMAINE}/anr_etablissements.json",
                      "anr_projets": f"{DOMAINE}/anr_projets.json",
                      "lycees": {code: f"{DOMAINE}/lycees/{code}.json" for code in sorted(lycees)},
                      "collectivites_esr": f"{DOMAINE}/collectivites_esr.json",
-                     "etudiants": f"{DOMAINE}/etudiants.json"},
+                     "etudiants": f"{DOMAINE}/etudiants.json",
+                     **({"compte_education": f"{DOMAINE}/compte_education.json"} if compte else {})},
         "sorties": {
             "par_etablissement": ["anr_etablissements.json (SIREN)", "lycees/<région>.json (UAI, SIREN)",
                                   "etudiants.json (UAI)"],
             "par_commune_et_departement": ["lycees/<région>.json (par_commune, par_departement)",
                                            "etudiants.json (par_commune, par_departement, par_region)"],
             "par_annee": ["anr_projets.json", "lycees/<région>.json (par_annee)", "collectivites_esr.json",
-                          "etudiants.json"]},
+                          "etudiants.json", "compte_education.json"],
+            "national": ["compte_education.json (financement par financeur, dépense moyenne par élève et par "
+                         "niveau)"]},
         "sources": sources,
         "licences": {
             "odbl": odbl,
@@ -1224,7 +1519,8 @@ def construire_index(resume_anr: dict, lycees: dict[str, dict], collectivites: d
                                   "rt_eur": dern["rt_eur"], "esve_eur": dern["esve_eur"]},
             "etudiants": {"annee": etudiants["annees"][-1],
                           "annee_universitaire": etudiants["annees_universitaires"][-1],
-                          "etudiants_hors_cpge": cout[-1]["etudiants"] if cout else None}},
+                          "etudiants_hors_cpge": cout[-1]["etudiants"] if cout else None},
+            **({"compte_education": totaux_compte(compte)} if compte else {})},
         "cout_par_etudiant": {"statut": STATUT_CALCULE, "formule": FORMULE_COUT,
                               "fichier": f"{DOMAINE}/etudiants.json", "national": cout},
         "ecarts": resume_anr["ecarts"],
@@ -1240,7 +1536,11 @@ def construire_index(resume_anr: dict, lycees: dict[str, dict], collectivites: d
             "à l'autre (votés, versés, aides à des actions) et ne se comparent pas.",
             "Annuaire de l'éducation : établissements ouverts au jour de la collecte ; un établissement fermé depuis "
             "n'a ni commune ni SIRET.",
-            "Aucun effectif d'élèves par lycée dans ces sources : aucun montant par élève n'est calculé.",
+            "Aucun effectif d'élèves par lycée dans ces sources : aucun montant par élève n'est calculé par le site. "
+            "La dépense moyenne par élève publiée par le compte de l'éducation (compte_education.json) est "
+            "nationale, tous financeurs confondus.",
+            "Budgets des collectivités : la part « enseignement supérieur et vie étudiante » n'est publiée qu'à "
+            "partir de 2015 ; de 2006 à 2014 elle vaut null (non publiée), comme le total et le coût par étudiant.",
             "Le coût par étudiant est un calcul du site, à lire avec sa formule et ses limites (etudiants.json).",
         ],
         "sources_inaccessibles": [
@@ -1252,6 +1552,14 @@ def construire_index(resume_anr: dict, lycees: dict[str, dict], collectivites: d
              "motif": "non recherchées pour cet axe : trois jeux régionaux désignés"},
             {"source": "Pays de la Loire, actions éducatives après la campagne 2020-2021",
              "motif": "le jeu publié s'arrête à la campagne 2020-2021"},
+            {"source": "DEPP, Repères et références statistiques, chapitre 10 (tableaux téléchargeables) et pages du "
+                       "compte de l'éducation sur education.gouv.fr",
+             "motif": "accès refusé aux robots (HTTP 403, protection anti-robot), non contourné le 18/11/2026 ; les "
+                      "données du compte de l'éducation sont reprises du tableur de l'Insee (compte_education.json). "
+                      "Les tableaux détaillés (financement final, dépense par niveau et par financeur) restent "
+                      "non repris."},
+            {"source": "Compte de l'éducation, jeu ouvert sur data.education.gouv.fr ou data.gouv.fr",
+             "motif": "aucun jeu publié (recherche du 18/11/2026)"},
         ],
         "recherche_publique": RECHERCHE_PUBLIQUE,
     }
@@ -1286,12 +1594,14 @@ def produire(sortie: Path = SORTIE_DEFAUT) -> dict:
     collectivites = construire_collectivites(lire(con, "budget_collectivites",
                                                   BRUT / "edrech_budget_collectivites_esr.parquet"))
     etudiants = construire_etudiants(eff, collectivites, rattachement)
-    index = construire_index(resume, lycees, collectivites, etudiants)
+    compte = construire_compte_education(lire_compte_education())
+    index = construire_index(resume, lycees, collectivites, etudiants, compte)
 
     tailles = {"anr_etablissements.json": dump(sortie / "anr_etablissements.json", anr_etab),
                "anr_projets.json": dump(sortie / "anr_projets.json", anr_proj),
                "collectivites_esr.json": dump(sortie / "collectivites_esr.json", collectivites),
-               "etudiants.json": dump(sortie / "etudiants.json", etudiants)}
+               "etudiants.json": dump(sortie / "etudiants.json", etudiants),
+               "compte_education.json": dump(sortie / "compte_education.json", compte)}
     for code, doc in lycees.items():
         tailles[f"lycees/{code}.json"] = dump(sortie / "lycees" / f"{code}.json", doc)
     tailles["index.json"] = dump(sortie / "index.json", index)

@@ -46,6 +46,9 @@
         },
         "etudiants": {
           "const": "education_recherche/etudiants.json"
+        },
+        "compte_education": {
+          "const": "education_recherche/compte_education.json"
         }
       },
       "required": [
@@ -78,6 +81,12 @@
           }
         },
         "par_annee": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "national": {
           "type": "array",
           "items": {
             "type": "string"
@@ -235,7 +244,10 @@
                 }
               },
               "total_eur": {
-                "type": "number"
+                "type": [
+                  "number",
+                  "null"
+                ]
               },
               "nommes": {
                 "type": "object",
@@ -245,7 +257,10 @@
                     "minimum": 0
                   },
                   "montant_eur": {
-                    "type": "number"
+                    "type": [
+                      "number",
+                      "null"
+                    ]
                   }
                 },
                 "required": [
@@ -267,7 +282,10 @@
                     "minimum": 0
                   },
                   "montant_eur": {
-                    "type": "number"
+                    "type": [
+                      "number",
+                      "null"
+                    ]
                   },
                   "part_pct": {
                     "type": [
@@ -326,13 +344,22 @@
               ]
             },
             "total_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "rt_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "esve_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             }
           },
           "required": [
@@ -369,6 +396,76 @@
             "annee",
             "annee_universitaire",
             "etudiants_hors_cpge"
+          ],
+          "additionalProperties": false,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
+            }
+          }
+        },
+        "compte_education": {
+          "type": "object",
+          "properties": {
+            "annee": {
+              "$ref": "commun.schema.json#/$defs/annee_entier"
+            },
+            "provisoire": {
+              "type": "boolean"
+            },
+            "menages_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "entreprises_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "die_md_eur_courants": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "depense_moyenne_eur": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "depense_moyenne_par_degre_eur": {
+              "type": "object",
+              "additionalProperties": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "annee_par_niveau": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "fichier": {
+              "const": "education_recherche/compte_education.json"
+            }
+          },
+          "required": [
+            "annee",
+            "provisoire",
+            "menages_pct",
+            "entreprises_pct",
+            "die_md_eur_courants",
+            "depense_moyenne_eur",
+            "depense_moyenne_par_degre_eur",
+            "annee_par_niveau",
+            "fichier"
           ],
           "additionalProperties": false,
           "propertyNames": {
@@ -440,6 +537,12 @@
                   "calculé",
                   null
                 ]
+              },
+              "mention": {
+                "type": [
+                  "string",
+                  "null"
+                ]
               }
             },
             "required": [
@@ -448,7 +551,8 @@
               "budget_esve_eur",
               "etudiants",
               "cout_par_etudiant_eur",
-              "statut"
+              "statut",
+              "mention"
             ],
             "additionalProperties": false,
             "propertyNames": {
@@ -469,7 +573,25 @@
                   "const": "calculé"
                 }
               }
-            }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "cout_par_etudiant_eur": {
+                      "type": "null"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "mention": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            ]
           }
         }
       },
@@ -504,16 +626,25 @@
             "type": "string"
           },
           "montant": {
-            "type": "number"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "autre_source": {
             "type": "string"
           },
           "autre_montant": {
-            "type": "number"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "ecart": {
-            "type": "number"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "ecart_pct": {
             "type": [

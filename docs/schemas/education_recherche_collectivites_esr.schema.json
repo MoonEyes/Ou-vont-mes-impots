@@ -117,13 +117,22 @@
             ]
           },
           "total_eur": {
-            "type": "number"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "rt_eur": {
-            "type": "number"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "esve_eur": {
-            "type": "number"
+            "type": [
+              "number",
+              "null"
+            ]
           },
           "par_type": {
             "type": "object",
@@ -136,6 +145,23 @@
             "additionalProperties": {
               "type": "number"
             }
+          },
+          "categories_publiees": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "rt",
+                "esve"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "mention": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Pourquoi une catégorie (et le total) vaut null : non publiée à la source"
           }
         },
         "required": [
@@ -145,14 +171,56 @@
           "rt_eur",
           "esve_eur",
           "par_type",
-          "par_nature"
+          "par_nature",
+          "categories_publiees",
+          "mention"
         ],
         "additionalProperties": false,
         "propertyNames": {
           "not": {
             "pattern": "(?i)pr[eé]nom|responsable|adresse|courriel|telephone|mail"
           }
-        }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "esve_eur": {
+                  "type": "null"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "total_eur": {
+                  "type": "null"
+                },
+                "mention": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "rt_eur": {
+                  "type": "null"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "total_eur": {
+                  "type": "null"
+                },
+                "mention": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
       }
     },
     "regions": {

@@ -116,7 +116,10 @@
                 "minimum": 0
               },
               {
-                "type": "number"
+                "type": [
+                  "number",
+                  "null"
+                ]
               },
               {
                 "type": "integer",
@@ -183,7 +186,10 @@
               "minimum": 0
             },
             "aide_projets_coordonnes_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             }
           },
           "required": [
@@ -215,7 +221,10 @@
               "minimum": 0
             },
             "aide_projets_coordonnes_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "motifs": {
               "type": "object",
@@ -245,7 +254,10 @@
                     "minimum": 0
                   },
                   "aide_projets_coordonnes_eur": {
-                    "type": "number"
+                    "type": [
+                      "number",
+                      "null"
+                    ]
                   },
                   "lignes_sans_montant": {
                     "type": "integer",
@@ -296,7 +308,10 @@
               "minimum": 0
             },
             "aide_projets_coordonnes_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "lignes_sans_montant": {
               "type": "integer",
@@ -349,14 +364,20 @@
               "minimum": 0
             },
             "aide_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "projets_sans_coordinateur": {
               "type": "integer",
               "minimum": 0
             },
             "aide_projets_sans_coordinateur_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             }
           },
           "required": [
@@ -457,7 +478,10 @@
                 "minimum": 0
               },
               {
-                "type": "number"
+                "type": [
+                  "number",
+                  "null"
+                ]
               },
               {
                 "type": "integer",
@@ -524,7 +548,10 @@
               "minimum": 0
             },
             "aide_allouee_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             }
           },
           "required": [
@@ -556,7 +583,10 @@
               "minimum": 0
             },
             "aide_allouee_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "motifs": {
               "type": "object",
@@ -586,7 +616,10 @@
                     "minimum": 0
                   },
                   "aide_allouee_eur": {
-                    "type": "number"
+                    "type": [
+                      "number",
+                      "null"
+                    ]
                   },
                   "lignes_sans_montant": {
                     "type": "integer",
@@ -637,7 +670,10 @@
               "minimum": 0
             },
             "aide_allouee_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "lignes_sans_montant": {
               "type": "integer",
@@ -665,7 +701,10 @@
               "minimum": 0
             },
             "aide_eur": {
-              "type": "number"
+              "type": [
+                "number",
+                "null"
+              ]
             }
           },
           "required": [

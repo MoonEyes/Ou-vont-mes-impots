@@ -216,6 +216,7 @@ FICHIERS = [
     ("education_recherche_lycees.schema.json", "education_recherche/lycees/[0-9]*.json", "existant"),
     ("education_recherche_collectivites_esr.schema.json", "education_recherche/collectivites_esr.json", "existant"),
     ("education_recherche_etudiants.schema.json", "education_recherche/etudiants.json", "existant"),
+    ("education_recherche_compte_education.schema.json", "education_recherche/compte_education.json", "existant"),
     # fonction publique : effectifs Insee, cabinets, conseils extérieurs, barème des élus (pipeline/fonction_publique.py)
     ("fonction_publique_index.schema.json", "fonction_publique/index.json", "existant"),
     ("fonction_publique_effectifs_series.schema.json", "fonction_publique/effectifs_series.json", "existant"),

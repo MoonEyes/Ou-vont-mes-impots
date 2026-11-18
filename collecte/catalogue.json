@@ -3622,6 +3622,17 @@
    "module": "pipeline/education_recherche.py"
   },
   {
+   "id": "edrech_insee_depenses_education",
+   "domaine": "education_recherche",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/8612572/FPORSOC25-F34.xlsx",
+   "titre": "Insee, France portrait social 2025, fiche Depenses d'education : donnees des figures (DEPP, compte de l'education : financement initial par financeur, DIE, depense moyenne par eleve et par niveau)",
+   "licence": "Licence Ouverte 2.0 (Insee, reutilisation libre avec mention de la source)",
+   "producteur": "MEN-MESRE-Depp (compte de l'education), diffuse par l'Insee",
+   "module": "pipeline/education_recherche.py"
+  },
+  {
    "id": "etat_actionnaire_plf25_recettes_bg",
    "domaine": "etat_actionnaire",
    "type": "ods_export",

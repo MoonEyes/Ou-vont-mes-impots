@@ -18,7 +18,7 @@ import sirene  # noqa: E402
 
 DATA = ROOT / "site" / "data" / "education_recherche"
 FICHIERS = ["index.json", "anr_etablissements.json", "anr_projets.json", "collectivites_esr.json", "etudiants.json",
-            "lycees/11.json", "lycees/24.json", "lycees/52.json"]
+            "compte_education.json", "lycees/11.json", "lycees/24.json", "lycees/52.json"]
 
 
 def charger(nom: str) -> dict:
@@ -221,12 +221,102 @@ def test_cout_par_etudiant_calcule_avec_sa_formule():
     assert c["statut"] == "calculé" and "budget_esve_eur / etudiants" in c["formule"]
     v = {r["code"]: r["valeurs"] for r in c["regions"]}
     assert v["52"][0] == {"annee": 2023, "qualite_budget": "définitif", "budget_esve_eur": 1500.0, "etudiants": 150,
-                          "cout_par_etudiant_eur": 10.0, "statut": "calculé"}
+                          "cout_par_etudiant_eur": 10.0, "statut": "calculé", "mention": None}
     assert v["52"][1]["cout_par_etudiant_eur"] is None and v["52"][1]["statut"] is None   # budget absent en 2024
+    assert "non publiée" in v["52"][1]["mention"] and v["52"][0]["mention"] is None
+    # national 2024 : la catégorie « enseignement supérieur » n'est pas publiée : null avec mention, jamais 0
+    n24 = coll["national"][1]
+    assert (n24["esve_eur"], n24["total_eur"], n24["rt_eur"], n24["categories_publiees"]) == (None, None, 80.0, ["rt"])
+    assert "pas 0" in n24["mention"] and coll["national"][0]["mention"] is None
+    nat24 = c["national"][1]
+    assert (nat24["budget_esve_eur"], nat24["cout_par_etudiant_eur"], nat24["statut"]) == (None, None, None)
+    assert nat24["etudiants"] == 120 and nat24["mention"]
     assert v["974"][0]["cout_par_etudiant_eur"] == 3.0                  # La Réunion : R04 rapproché de 974
     assert next(g for g in etu["par_region"] if g["region"] == "52")["etudiants"] == [150, 120]              # composante en double compte exclue
     ligne = next(e for e in etu["etablissements"] if e[0] == "c")
     assert ligne[12] is True and ligne[2] is None
+
+
+def test_aucune_absence_comptee_zero_unitaire():
+    assert er.somme([]) is None and er.somme([None, None]) is None and er.somme([None, 0.0]) == 0.0
+    assert er.ajoute(None, None) is None and er.ajoute(None, 2) == 2 and er.ajoute(1, None) == 1
+    # ANR 2005-2009 : un organisme dont aucune aide n'est publiée a un montant null, pas 0
+    brut = _brut_anr()
+    brut["a_partenaires"].append({"Projet.Code_Decision": "A1", "Projet.Partenaire.Est_coordinateur": "False",
+                                  "Projet.Partenaire.Nom_organisme": "Labo Z",
+                                  "Projet.Partenaire.Categorie_organisme": "EPIC", "Projet.Partenaire.Aide_allouee.ANR": ""})
+    brut["pia_partenaires"].append({"Projet.Code_Decision": "P1", "Action.Edition": "2022",
+                                    "Projet.Partenaire.Est_coordinateur": "False", "Projet.Partenaire.Nom_organisme": "Labo Z",
+                                    "Projet.Partenaire.Categorie_organisme": "EPIC",
+                                    "Projet.Partenaire.Adresse.Region": "Corse"})
+    ratt = {"Université X": {"siren": "222222222", "categorie_juridique": "7383", "denomination": "UNIVERSITE X",
+                             "methode": "denomination_identique"}}
+    etab, proj, _ = er.construire_anr(brut, ratt, None)
+    epic = next(x for x in etab["anr_2005_2009"]["non_nommes"]["par_categorie"] if x["categorie"] == "EPIC")
+    assert epic["aide_allouee_eur"] is None and epic["lignes_sans_montant"] == 1
+    epic_pia = next(x for x in etab["pia_france2030"]["non_nommes"]["par_categorie"] if x["categorie"] == "EPIC")
+    assert epic_pia["aide_projets_coordonnes_eur"] is None and epic_pia["projets_coordonnes"] == 0
+    corse = next(r for r in proj["pia_france2030"]["par_region"] if r["region"] == "Corse")
+    assert corse["aide_projets_coordonnes_eur"] is None
+    # séries : un groupe sans aucune valeur publiée reste null
+    assert er.series([{"k": 1, "m": None}, {"k": 2, "m": 0.0}], "k", ["m"]) == [{"k": 1, "m": None}, {"k": 2, "m": 0.0}]
+    # lycées : une année dont toutes les lignes sont sans montant a un total null, pas 0
+    li = lambda an, m: {"annee": an, "uai": None, "siren": None, "dispositif": "A", "montant": m,  # noqa: E731
+                        "type_tiers": "Commune", "code_commune": None}
+    d = er.construire_lycees("52", [li(2018, 10.0), li(2019, None)], {}, {}, publiable=identite)
+    a2019 = d["par_annee"][1]
+    assert (a2019["total_eur"], a2019["nommes_eur"], a2019["non_nommes_eur"], a2019["lignes_montant_absent"]) == (
+        None, None, None, 1)
+    assert d["lignes_sans_annee"] == {"lignes": 0, "montant_eur": None}
+
+
+def _tableur_compte(menages_2024=7.7):
+    f1 = [("Figure 1 – Dépense intérieure d’éducation",),
+          ("Dépenses d'éducation et structure du financement", 2010, 2023, "2024p"),
+          ("DIE en valeur (en milliards d’euros courants) ", 139.3, 190.3, 197.1),
+          ("DIE en milliards d'euros constants¹ (aux prix 2024)", 173.3, 194.3, 197.1),
+          ("Dépense moyenne en euros courants", 8070, 10510, 10920),
+          ("Dépense moyenne en euros constants (aux prix 2024)", 10040, 10730, 10920),
+          ("État, dont : ", 57.9, 55, 55.2), ("MEN-MESRE²", 52.9, 51.2, 51.6),
+          ("Collectivités territoriales", 23.9, 23, 23),
+          ("Autres administrations publiques et caisses d’allocations familiales", 2.3, 3.8, 3.8),
+          ("Entreprises", 8.3, 10.4, 10.3), ("Ménages", 7.6, 7.9, menages_2024),
+          ("Lecture : En 2024, la dépense moyenne par élève ou étudiant s’élève à 10 920 euros.",),
+          ("Champ : France.",), ("Source\xa0: MEN-MESRE-Depp, Compte de l’éducation.",)]
+    f2 = [("Figure 2",), ("Année", "Part de la DIE dans le PIB (en %)", "DIE (en milliards d’euros 2024)"),
+          (2023, 6.7, 194.3), (2024, 6.8, None)]
+    f3 = [("Figure 3 – Dépense moyenne par élève ou étudiant selon le niveau de formation en 2024",),
+          (None, None, "en euros"), ("Niveau de formation", None, "Dépense moyenne par élève"),
+          ("Premier degré ", "Préélémentaire", 8990), (None, "Ensemble", 9080),
+          ("Second degré¹", "Collège", 10450), (None, "Ensemble", 11660),
+          ("Supérieur¹", "Université", 12460), (None, "Ensemble", 13300)]
+    f4 = [("Figure 4",), (None, None, "en euros constants, prix 2024"),
+          ("Année", "Dépense moyenne par élève", "Dépense moyenne pour un élève du 1er degré",
+           "Dépense moyenne pour un élève du 2nd degré", "Dépense moyenne pour un élève du supérieur"),
+          (2023, 10730, 8660, 11550, 13480), ("2024p", 10920, 9080, 11660, 13300)]
+    return {"figure1": f1, "figure2": f2, "figure3": f3, "figure4": f4}
+
+
+def test_compte_education_familles_entreprises_et_depense_par_eleve():
+    c = er.construire_compte_education(_tableur_compte())
+    fi = c["financement_initial"]
+    assert fi["annees"] == [2010, 2023, 2024] and fi["provisoire"] == [False, False, True]
+    assert fi["familles_et_entreprises"] == dict(fi["familles_et_entreprises"], annee=2024, provisoire=True,
+                                                 menages_pct=7.7, entreprises_pct=10.3)
+    assert [x["somme_pct"] for x in fi["controle_somme"]] == [100.0, 100.1, 100.0]
+    assert next(f for f in fi["financeurs"] if f["id"] == "etat_ministeres_education")["parent"] == "etat"
+    n = c["depense_moyenne_par_niveau"]
+    assert n["annee"] == 2024 and n["provisoire"] is True
+    assert {(x["degre"], x["niveau"]): x["depense_moyenne_eur"] for x in n["niveaux"]}[("second_degre", "Collège")] == 10450
+    assert c["die_serie"]["die_md_eur_constants"] == [194.3, None]          # cellule vide : null, jamais 0
+    assert c["die_serie"]["prix_constants"] == "2024" and c["champ"] == "France"
+    ev = c["depense_moyenne_evolution"]
+    assert [s["id"] for s in ev["series"]] == ["ensemble", "premier_degre", "second_degre", "superieur"]
+    assert ev["provisoire"] == [False, True]
+    # une part absente du tableur reste null, et la somme de contrôle aussi
+    c2 = er.construire_compte_education(_tableur_compte(menages_2024=None))
+    assert c2["financement_initial"]["familles_et_entreprises"]["menages_pct"] is None
+    assert c2["financement_initial"]["controle_somme"][-1]["somme_pct"] is None
 
 
 # --- Données publiées ------------------------------------------------------------------------------------------------
@@ -239,7 +329,7 @@ def test_fichiers_conformes_aux_schemas_et_sous_5_mo():
     import valider_contrat as vc
     js = vc.charger_jsonschema()
     motifs = {m: s for s, m, _ in vc.FICHIERS if m.startswith("education_recherche/")}
-    assert len(motifs) == 6
+    assert len(motifs) == 7
     vus = 0
     for motif, schema in motifs.items():
         for p in sorted((ROOT / "site" / "data").glob(motif)):
@@ -287,18 +377,18 @@ def test_conservation_anr():
         for c in ("participations", "projets_coordonnes"):
             assert b["nommes"][c] + b["non_nommes"][c] == b["total"][c], (bloc, c)
         assert abs(b["nommes"][champ] + b["non_nommes"][champ] - b["total"][champ]) < 1, bloc
-        assert abs(sum(x[champ] for x in b["non_nommes"]["par_categorie"]) - b["non_nommes"][champ]) < 1
+        assert abs(sum(x[champ] or 0 for x in b["non_nommes"]["par_categorie"]) - b["non_nommes"][champ]) < 1
         assert sum(b["non_nommes"]["motifs"].values()) == b["non_nommes"]["participations"]
         i = b["colonnes"].index(champ)
-        assert [(-e[i], -e[5], e[1], e[0]) for e in b["etablissements"]] == sorted(
-            (-e[i], -e[5], e[1], e[0]) for e in b["etablissements"])
+        cle = lambda e: (e[i] is None, -(e[i] or 0), -e[5], e[1], e[0])  # noqa: E731
+        assert [cle(e) for e in b["etablissements"]] == sorted(cle(e) for e in b["etablissements"])
     pia = anr["pia_france2030"]
     # PIA : toute l'aide par projet est rattachée à un coordinateur, nommé ou agrégé
-    assert abs(pia["total"]["aide_projets_coordonnes_eur"] + pia["total_projets"]["aide_projets_sans_coordinateur_eur"]
+    assert abs(pia["total"]["aide_projets_coordonnes_eur"] + (pia["total_projets"]["aide_projets_sans_coordinateur_eur"] or 0)
                - pia["total_projets"]["aide_eur"]) < 1
     proj = charger("anr_projets.json")
     assert abs(sum(a["aide_eur"] for a in proj["pia_france2030"]["par_annee"]) - pia["total_projets"]["aide_eur"]) < 1
-    assert abs(sum(a["aide_eur"] for a in proj["pia_france2030"]["par_action"]) - pia["total_projets"]["aide_eur"]) < 1
+    assert abs(sum(a["aide_eur"] or 0 for a in proj["pia_france2030"]["par_action"]) - pia["total_projets"]["aide_eur"]) < 1
     assert sum(r["participations"] for r in proj["pia_france2030"]["par_region"]) == pia["total"]["participations"]
     anc = proj["anr_2005_2009"]
     assert [a["annee"] for a in anc["par_annee"]] == [2005, 2006, 2007, 2008, 2009]
@@ -357,8 +447,63 @@ def test_cout_par_etudiant_publie_recalcule():
         assert v["etudiants"] == par_region["11"]["etudiants"][etu["annees"].index(v["annee"])]
     assert charger("index.json")["cout_par_etudiant"]["national"] == c["national"]
     for nat in coll["national"]:
+        if nat["total_eur"] is None:
+            assert nat["categories_publiees"] != ["rt", "esve"] and nat["mention"]
+            continue
         assert abs(nat["rt_eur"] + nat["esve_eur"] - nat["total_eur"]) < 1
         assert abs(sum(nat["par_type"].values()) - nat["total_eur"]) < 1
+
+
+@pytestmark_donnees
+def test_aucun_zero_a_la_place_d_une_absence():
+    coll, etu, idx = charger("collectivites_esr.json"), charger("etudiants.json"), charger("index.json")
+    sans_esve = [n["annee"] for n in coll["national"] if "esve" not in n["categories_publiees"]]
+    assert sans_esve == list(range(2006, 2015))          # la source ne publie pas cette catégorie avant 2015
+    for n in coll["national"]:
+        if "esve" not in n["categories_publiees"]:
+            assert n["esve_eur"] is None and n["total_eur"] is None and n["mention"], n["annee"]
+        for k in ("rt_eur", "esve_eur", "total_eur"):
+            assert n[k] != 0, (n["annee"], k)
+    budgets = {n["annee"]: n["esve_eur"] for n in coll["national"]}
+    for liste in (etu["cout_par_etudiant"]["national"], idx["cout_par_etudiant"]["national"]):
+        for v in liste:
+            assert v["budget_esve_eur"] == budgets[v["annee"]]
+            assert v["cout_par_etudiant_eur"] != 0 and v["budget_esve_eur"] != 0, v["annee"]
+            if v["budget_esve_eur"] is None:
+                assert v["cout_par_etudiant_eur"] is None and v["statut"] is None and v["mention"], v["annee"]
+    for r in etu["cout_par_etudiant"]["regions"]:
+        for v in r["valeurs"]:
+            assert (v["cout_par_etudiant_eur"] is None) == bool(v["mention"]), (r["code"], v["annee"])
+    anr = charger("anr_etablissements.json")
+    b = anr["anr_2005_2009"]
+    i, j = b["colonnes"].index("aide_allouee_eur"), b["colonnes"].index("lignes_sans_montant")
+    for e in b["etablissements"]:
+        if e[j] == e[5]:                                   # aucune aide publiée pour l'organisme
+            assert e[i] is None, e[:2]
+    p = anr["pia_france2030"]
+    i = p["colonnes"].index("aide_projets_coordonnes_eur")
+    for e in p["etablissements"]:
+        assert (e[6] == 0) == (e[i] is None), e[:2]       # aucun projet coordonné : aide non publiée, null
+    for code in ("11", "24", "52"):
+        for a in charger(f"lycees/{code}.json")["par_annee"]:
+            if a["lignes"] and a["lignes_montant_absent"] == a["lignes"]:
+                assert a["total_eur"] is None, (code, a["annee"])
+
+
+@pytestmark_donnees
+def test_compte_education_publie():
+    c = charger("compte_education.json")
+    fi = c["financement_initial"]
+    fe = fi["familles_et_entreprises"]
+    assert fe["annee"] == fi["annees"][-1] and fe["menages_pct"] and fe["entreprises_pct"]
+    assert all(x["somme_pct"] is None or abs(x["somme_pct"] - 100) <= 0.3 for x in fi["controle_somme"])
+    degres = {x["degre"] for x in c["depense_moyenne_par_niveau"]["niveaux"] if x["ensemble_du_degre"]}
+    assert degres == {"premier_degre", "second_degre", "superieur"}
+    assert "Depp" in fi["source_citee"] and "insee.fr" in c["source"] and c["licence"] == "Licence Ouverte 2.0"
+    idx = charger("index.json")
+    assert idx["fichiers"]["compte_education"] == "education_recherche/compte_education.json"
+    assert idx["totaux"]["compte_education"]["menages_pct"] == fe["menages_pct"]
+    assert "compte_education" in {s["id"] for s in idx["sources"]}
 
 
 @pytestmark_donnees
@@ -385,7 +530,8 @@ def test_licences_odbl_declarees_et_lien_france2030_sans_copie():
 
 @pytestmark_donnees
 def test_reproduction_identique_si_entrepot_present(tmp_path):
-    sources = [er.BRUT / "edrech_lycees_idf.parquet", er.STOCK_SIRENE, er.RESTREINT / "edrech_anr_pia"]
+    sources = [er.BRUT / "edrech_lycees_idf.parquet", er.STOCK_SIRENE, er.RESTREINT / "edrech_anr_pia",
+               er.FICHIER_COMPTE]
     if not all(p.exists() for p in sources):
         pytest.skip("entrepôt brut absent (data/lake/education_recherche, stock SIRENE)")
     er.produire(tmp_path)
