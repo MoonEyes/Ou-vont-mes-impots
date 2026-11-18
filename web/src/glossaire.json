@@ -1545,6 +1545,62 @@
    ]
   },
   {
+   "id": "feader",
+   "terme": "FEADER",
+   "sigle": "FEADER",
+   "forme": "Fonds européen agricole pour le développement rural",
+   "definition": "Fonds de l’Union européenne qui finance le développement rural, second volet de la politique agricole commune : installation des agriculteurs, investissements, environnement, services en zone rurale.",
+   "source": {
+    "nom": "Commission européenne, « Développement rural »",
+    "url": "https://agriculture.ec.europa.eu/common-agricultural-policy/rural-development_fr"
+   },
+   "voir": [
+    "pac"
+   ]
+  },
+  {
+   "id": "feamp",
+   "terme": "FEAMP",
+   "sigle": "FEAMP",
+   "forme": "Fonds européen pour les affaires maritimes et la pêche",
+   "definition": "Fonds de l’Union européenne pour la pêche, l’aquaculture et l’économie maritime de 2014 à 2020, remplacé en 2021 par le FEAMPA.",
+   "source": {
+    "nom": "Commission européenne, « Fonds européen pour les affaires maritimes, la pêche et l’aquaculture »",
+    "url": "https://oceans-and-fisheries.ec.europa.eu/funding/european-maritime-fisheries-and-aquaculture-fund-emfaf_fr"
+   },
+   "voir": [
+    "feampa"
+   ]
+  },
+  {
+   "id": "feampa",
+   "terme": "FEAMPA",
+   "sigle": "FEAMPA",
+   "forme": "Fonds européen pour les affaires maritimes, la pêche et l’aquaculture",
+   "definition": "Fonds de l’Union européenne pour la pêche, l’aquaculture et l’économie maritime depuis 2021.",
+   "source": {
+    "nom": "Commission européenne, « Fonds européen pour les affaires maritimes, la pêche et l’aquaculture »",
+    "url": "https://oceans-and-fisheries.ec.europa.eu/funding/european-maritime-fisheries-and-aquaculture-fund-emfaf_fr"
+   },
+   "voir": [
+    "feamp"
+   ]
+  },
+  {
+   "id": "feder",
+   "terme": "FEDER",
+   "sigle": "FEDER",
+   "forme": "Fonds européen de développement régional",
+   "definition": "Fonds de l’Union européenne qui finance des investissements dans les régions : recherche et innovation, numérique, entreprises, énergie, environnement, transports. En France, les régions gèrent l’essentiel de ses programmes.",
+   "source": {
+    "nom": "Commission européenne, « Fonds européen de développement régional »",
+    "url": "https://ec.europa.eu/regional_policy/funding/erdf_fr"
+   },
+   "voir": [
+    "ue"
+   ]
+  },
+  {
    "id": "finess",
    "terme": "FINESS",
    "sigle": "FINESS",
@@ -1614,6 +1670,20 @@
    ]
   },
   {
+   "id": "fse",
+   "terme": "FSE",
+   "sigle": "FSE",
+   "forme": "Fonds social européen",
+   "definition": "Fonds de l’Union européenne pour l’emploi, la formation, l’insertion et la lutte contre la pauvreté ; il s’appelle Fonds social européen plus (FSE+) depuis 2021.",
+   "source": {
+    "nom": "Commission européenne, « Fonds social européen plus »",
+    "url": "https://european-social-fund-plus.ec.europa.eu/fr"
+   },
+   "voir": [
+    "iej"
+   ]
+  },
+  {
    "id": "fsv",
    "terme": "FSV",
    "sigle": "FSV",
@@ -1623,6 +1693,20 @@
     "nom": "Légifrance, code de la sécurité sociale (article L. 135-1)",
     "url": "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006073189"
    }
+  },
+  {
+   "id": "ftj",
+   "terme": "FTJ",
+   "sigle": "FTJ",
+   "forme": "Fonds pour une transition juste",
+   "definition": "Fonds de l’Union européenne créé en 2021 pour aider les territoires dont l’économie dépend d’industries très émettrices de gaz à effet de serre : reconversion, formation, nouvelles activités.",
+   "source": {
+    "nom": "Commission européenne, « Fonds pour une transition juste »",
+    "url": "https://ec.europa.eu/regional_policy/funding/just-transition-fund_fr"
+   },
+   "voir": [
+    "feder"
+   ]
   },
   {
    "id": "fts",
@@ -1778,6 +1862,20 @@
    ]
   },
   {
+   "id": "iej",
+   "terme": "IEJ",
+   "sigle": "IEJ",
+   "forme": "Initiative pour l’emploi des jeunes",
+   "definition": "Programme de l’Union européenne de 2014 à 2020 pour l’accompagnement vers l’emploi des jeunes sans emploi ni formation, dans les régions où leur taux de chômage dépassait 25 %.",
+   "source": {
+    "nom": "Commission européenne, « Initiative pour l’emploi des jeunes »",
+    "url": "https://ec.europa.eu/social/main.jsp?catId=1176&langId=fr"
+   },
+   "voir": [
+    "fse"
+   ]
+  },
+  {
    "id": "insee",
    "terme": "Insee",
    "sigle": "Insee",
@@ -1895,6 +1993,20 @@
     "nom": "Légifrance, loi n° 2004-575 du 21 juin 2004",
     "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000801164"
    }
+  },
+  {
+   "id": "leader",
+   "terme": "LEADER",
+   "sigle": "LEADER",
+   "forme": "liaison entre actions de développement de l’économie rurale",
+   "definition": "Méthode de développement rural de l’Union européenne : dans un territoire, un groupe local réunissant élus, associations et entreprises choisit les projets financés par le fonds pour le développement rural.",
+   "source": {
+    "nom": "Commission européenne, « Développement rural »",
+    "url": "https://agriculture.ec.europa.eu/common-agricultural-policy/rural-development_fr"
+   },
+   "voir": [
+    "feader"
+   ]
   },
   {
    "id": "lfi",

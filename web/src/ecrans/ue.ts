@@ -92,6 +92,7 @@ ${
       ? absent('Pas de données pour ce département.')
       : ''
 }
+<p class="liens-sortie"><a href="#/explorer/fonds-europeens">Ce que l’Union européenne finance en France : les fonds européens par fonds, région et thème</a></p>
 <p class="liens-sortie"><a href="#/explorer/etat">Le budget de l’État, dont la contribution européenne</a></p>
 ${partPersonnelle()}`
   cible.querySelector<HTMLSelectElement>('#dep-ue-choix')?.addEventListener('change', (e) => {
