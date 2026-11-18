@@ -1,4 +1,4 @@
-# En-têtes HTTP du site (copié dans web/dist par publier.sh ; lu par Cloudflare, non servi).
+# En-têtes HTTP du site (web/public, copié dans web/dist par Vite ; lu par Cloudflare, non servi).
 # Une règle ne doit pas répéter un en-tête d'une autre règle qui la recouvre : Cloudflare joindrait les valeurs.
 # CSP : identique à la balise <meta> de web/index.html, plus frame-ancestors (ignoré dans une balise meta).
 

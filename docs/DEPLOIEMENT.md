@@ -44,10 +44,10 @@ Si un fichier unique dépasse 25 Mio, la bonne correction est dans le pipeline (
 
 ### En-têtes, cache, compression
 
-- `deploy/cloudflare/_headers` : CSP **identique** à la balise `<meta>` de `web/index.html`, plus `frame-ancestors 'none'` (sans effet dans une balise meta). Aussi `Referrer-Policy: no-referrer`, `nosniff`, `X-Frame-Options: DENY`, COOP et CORP `same-origin`, `Permissions-Policy` restrictive, HSTS un an (sans `includeSubDomains` : ne pas engager les autres sous-domaines du domaine personnel).
+- `web/public/_headers` (copié dans `web/dist` par Vite) : CSP **identique** à la balise `<meta>` de `web/index.html`, plus `frame-ancestors 'none'` (sans effet dans une balise meta). Aussi `Referrer-Policy: no-referrer`, `nosniff`, `X-Frame-Options: DENY`, COOP et CORP `same-origin`, `Permissions-Policy` restrictive, HSTS un an (sans `includeSubDomains` : ne pas engager les autres sous-domaines du domaine personnel).
 - Cache : `index.html` revalidé à chaque visite ; `/assets/*` (noms à empreinte Vite) un an `immutable` ; `/data/*` une heure puis `stale-while-revalidate` un jour (données hebdomadaires, noms stables).
 - Compression : brotli et gzip faits par Cloudflare en bordure pour le JSON, rien à précompresser (vérifié : `Content-Encoding: br` en local).
-- `deploy/cloudflare/_redirects` : `/Ou-vont-mes-impots/*` vers `/:splat` (301), pour les liens copiés depuis l'ancienne adresse GitHub Pages.
+- `web/public/_redirects` (copié dans `web/dist` par Vite) : `/Ou-vont-mes-impots/*` vers `/:splat` (301), pour les liens copiés depuis l'ancienne adresse GitHub Pages.
 - Le site route par fragment (`#/…`) : `not_found_handling = "none"`, une adresse inconnue donne une vraie 404.
 
 Tout cela a été vérifié avec `wrangler dev` (en-têtes présents, `_headers` non servi, redirection 301, 404).
@@ -135,3 +135,13 @@ Installation et stockage : `docs/STOCKAGE.md`. Changements du 17/11/2026 :
 - `shellcheck` : aucun avertissement sur `deploy/*.sh` et `deploy/cloudflare/*.sh`.
 
 À faire sur le VPS après mise à jour du dépôt : `sudo bash /var/lib/ovmi/ou-vont-mes-impots/deploy/installer_vps.sh` (relançable, ne touche pas aux clés), puis traiter l'éventuel avertissement I5.
+
+## Cloudflare Workers Builds (en service depuis le 18/11/2026)
+
+Cloudflare construit et publie le site à chaque push sur `main` (dépôt relié dans le tableau de bord, Workers > ou-vont-mes-impots) :
+
+- commande de build : `cd web && npm ci && npm run build` ;
+- commande de déploiement : `cd deploy/cloudflare && npm ci && npx wrangler deploy` ;
+- variable de build : `NODE_VERSION=22` ; préversions désactivées ; jeton créé et gardé par Cloudflare.
+
+`_headers` et `_redirects` sont dans `web/public/` pour être copiés dans `web/dist` par Vite, sans dépendre de `publier.sh`. GitHub Pages reste publié en secours par `pages.yml`.

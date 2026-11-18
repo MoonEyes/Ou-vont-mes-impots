@@ -1,4 +1,4 @@
-# Redirections (copié dans web/dist par publier.sh). Anciennes adresses GitHub Pages recopiées sur le
+# Redirections (web/public, copié dans web/dist par Vite). Anciennes adresses GitHub Pages recopiées sur le
 # nouveau domaine : /Ou-vont-mes-impots/... renvoie à la racine (le site utilise des chemins relatifs).
 /Ou-vont-mes-impots /  301
 /Ou-vont-mes-impots/* /:splat 301

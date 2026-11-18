@@ -51,8 +51,8 @@ echo "==> wrangler (version figée par deploy/cloudflare/package-lock.json)"
 WRANGLER=$ICI/node_modules/.bin/wrangler
 
 echo "==> fichiers de configuration dans web/dist"
-install -m 644 "$ICI/_headers" "$DIST/_headers"
-install -m 644 "$ICI/_redirects" "$DIST/_redirects"
+install -m 644 "$RACINE/web/public/_headers" "$DIST/_headers"
+install -m 644 "$RACINE/web/public/_redirects" "$DIST/_redirects"
 if (( r2 )); then
     # data/local n'est pas envoyé avec les fichiers statiques : le Worker le lit dans R2 (envoyer-r2.sh)
     printf '%s\n' "data/local" > "$DIST/.assetsignore"
@@ -83,7 +83,7 @@ $trop_gros
   => découper le fichier dans le pipeline, ou le servir depuis R2 (--r2, docs/DEPLOIEMENT.md)"
 (( nb <= MAX_FICHIERS )) || die "$nb fichiers > plafond $MAX_FICHIERS : publier avec --r2 (data/local depuis R2, docs/DEPLOIEMENT.md)"
 (( nb * 100 <= MAX_FICHIERS * SEUIL )) || echo "    AVERTISSEMENT : plus de $SEUIL % du plafond, prévoir --r2 (docs/DEPLOIEMENT.md)"
-lignes_headers=$(grep -c '^/' "$ICI/_headers" || true)
+lignes_headers=$(grep -c '^/' "$RACINE/web/public/_headers" || true)
 (( lignes_headers <= 100 )) || die "_headers : $lignes_headers règles > 100"
 
 if (( verifier )); then

@@ -1750,7 +1750,7 @@
     "data/lake/aides_entreprises/tam"
    ],
    "octets_sources": 7164626,
-   "note": "registre TAM collecté par le module lui-même (pages publiques, par mois) ; relevé à la main le 18/11/2026"
+   "note": "registre TAM lu dans l export officiel de la Commission déposé dans data/lake/aides_entreprises/export_officiel/ (demande par courriel, 100 000 lignes au plus par export) ; relevé à la main le 18/11/2026"
   },
   "logement": {
    "sources": {
