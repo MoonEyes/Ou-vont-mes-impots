@@ -110,6 +110,22 @@
           }
         }
       }
+    },
+    "calculs": {
+      "type": "object",
+      "required": [
+        "calcule_par_le_site",
+        "methode"
+      ],
+      "properties": {
+        "calcule_par_le_site": {
+          "const": true
+        },
+        "methode": {
+          "type": "string",
+          "minLength": 40
+        }
+      }
     }
   },
   "required": [
@@ -119,6 +135,7 @@
     "collecte_le",
     "avertissement",
     "ordre",
-    "ministeres"
+    "ministeres",
+    "calculs"
   ]
 }

@@ -335,6 +335,11 @@ FICHIERS = [
     ("entites_fiches.schema.json", "entites/fiches/*.json", "existant"),
     ("entites_recherche.schema.json", "entites/recherche/*.json", "existant"),
     ("entites_recherche_globale.schema.json", "entites/recherche_globale.json", "existant"),
+    # application des lois : lois, mesures d'application, délais (pipeline/application_lois.py)
+    ("application_lois_index.schema.json", "application_lois/index.json", "existant"),
+    ("application_lois_finances.schema.json", "application_lois/lois_finances.json", "existant"),
+    ("application_lois_lois.schema.json", "application_lois/lois/*.json", "existant"),
+    ("application_lois_mesures.schema.json", "application_lois/mesures/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

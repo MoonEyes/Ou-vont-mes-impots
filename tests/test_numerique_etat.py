@@ -486,3 +486,53 @@ def test_production_reproductible_octet_pour_octet(tmp_path):
     publie = {p.relative_to(DATA).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
               for p in sorted(DATA.rglob("*.json"))}
     assert publie == empreintes[0], "site/data/numerique_etat n'est pas la sortie du pipeline sur cet entrepôt"
+
+
+# --- Suivi édition par édition (écart à l'édition précédente, phase, ministère, programme) --------------------------
+
+
+def test_ecart_precedent_fonction():
+    rang = {"2020-01": 1, "2020-06": 2, "2021-01": 3}
+    a = {"edition": "2020-01", "cout_meur": 40.0, "duree_ans": 3.0}
+    b = {"edition": "2021-01", "cout_meur": 52.5, "duree_ans": None}
+    assert ne.ecart_precedent(a, b, rang) == {"edition_precedente": "2020-01", "cout_meur": 12.5, "duree_ans": None,
+                                              "editions_sans_le_projet_entre_les_deux": 1}
+
+
+def test_suivi_edition_par_edition(projets):
+    assert projets["calculs"]["calcule_par_le_site"] is True and "même projet" in projets["calculs"]["methode"]
+    rang = {e: i for i, e in enumerate(projets["editions"])}
+    for p in projets["projets"]:
+        rel = p["releves"]
+        assert rel[0]["ecart_precedent"] is None, p["id"]
+        for avant, r in zip(rel, rel[1:]):
+            e = r["ecart_precedent"]
+            assert e["edition_precedente"] == avant["edition"]
+            assert e["editions_sans_le_projet_entre_les_deux"] == rang[r["edition"]] - rang[avant["edition"]] - 1
+            for champ in ("cout_meur", "duree_ans"):
+                if avant[champ] is None or r[champ] is None:
+                    assert e[champ] is None, (p["id"], r["edition"], champ)  # jamais 0 à la place d'une absence
+                else:
+                    assert e[champ] == pytest.approx(r[champ] - avant[champ], abs=0.002)
+            assert (r["phase"] is None) == (r["phase_mention"] is not None), (p["id"], r["edition"])
+        for evo in (p["evolution_cout_meur"], p["evolution_duree_ans"]):
+            assert evo is None or evo["calcule_par_le_site"] is True
+
+
+def test_rattachement_ministere_et_programme(projets):
+    prog = lire("panorama/programmes.json")
+    noms = {x["programme"]: x["nom"] for x in prog["programmes"]}
+    for p in projets["projets"]:
+        assert p["ministere_nom"] == p["releves"][-1]["ministere_nom"], p["id"]
+        for x in p["programmes"]:
+            assert x["nom"] == noms.get(x["programme"]), (p["id"], x["programme"])
+            assert (x["nom"] is None) == (not x["dans_arbre"])
+    # éditions sans colonne de phase : mention explicite, jamais une phase inventée
+    sans_phase = {r["edition"] for p in projets["projets"] for r in p["releves"]
+                  if r["phase_mention"] and "absente" in r["phase_mention"]}
+    assert sans_phase and all(e >= "2025-06" for e in sans_phase)
+
+
+def test_sommes_par_edition_signalees(editions):
+    assert editions["calculs"]["calcule_par_le_site"] is True
+    assert lire("panorama/ministeres.json")["calculs"]["calcule_par_le_site"] is True

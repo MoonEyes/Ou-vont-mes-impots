@@ -387,6 +387,7 @@ def lire_panorama(prenoms: set, arbre: dict) -> tuple[list[dict], list[dict]]:
             raise SystemExit(f"{f['chemin'].name} : date de publication illisible")
         ed = sorted(dates.items(), key=lambda kv: (-kv[1], kv[0]))[0][0]
         editions.append({"edition": ed, "url": f["url"], "fichier_source": f["chemin"].name, "lignes": len(bruts)})
+        a_phase = any(n.startswith("Phase du projet") for n in col)
         for nom, r in bruts:
             cout, cout_mention = nombre(champ(r, "Coût estimé"))
             if cout is not None and cout <= 0:
@@ -407,6 +408,8 @@ def lire_panorama(prenoms: set, arbre: dict) -> tuple[list[dict], list[dict]]:
                 "duree_ans": arrondi(duree, 2), "duree_mention": duree_mention,
                 "cout_meur": arrondi(cout, 3), "cout_mention": cout_mention,
                 "tranche": tranche, "phase": propre(champ(r, "Phase du projet")) or None,
+                "phase_mention": None if a_phase and propre(champ(r, "Phase du projet"))
+                else "non publiée" if a_phase else "colonne « Phase du projet en cours » absente de cette édition",
                 "financement": fin[:200] or None, "programmes": programmes_cites(fin, arbre, par_nom),
                 "description": texte(r[desc_col] if desc_col is not None and desc_col < len(r) else None, prenoms, 280),
             })
@@ -487,6 +490,15 @@ def rapprocher(releves: list[dict]) -> tuple[dict, list[dict], list[dict]]:
     return {c: racine(c) for c in par_cle}, appliques, refuses
 
 
+def ecart_precedent(avant: dict, apres: dict, rang: dict) -> dict:
+    """Écart entre deux relevés successifs d'un même projet (calculé par le site) ; null si une valeur manque."""
+    def diff(cle):
+        a, b = avant[cle], apres[cle]
+        return arrondi(b - a, 3) if a is not None and b is not None else None
+    return {"edition_precedente": avant["edition"], "cout_meur": diff("cout_meur"), "duree_ans": diff("duree_ans"),
+            "editions_sans_le_projet_entre_les_deux": rang[apres["edition"]] - rang[avant["edition"]] - 1}
+
+
 def evolution(points: list[tuple[str, float]]) -> dict | None:
     """Première et dernière valeur publiées, écart, minimum et maximum. Null si moins de deux valeurs publiées."""
     if len(points) < 2:
@@ -495,7 +507,7 @@ def evolution(points: list[tuple[str, float]]) -> dict | None:
     vals = [v for _, v in points]
     return {"premiere": {"edition": e0, "valeur": v0}, "derniere": {"edition": e1, "valeur": v1},
             "ecart": arrondi(v1 - v0, 3), "ecart_pct": arrondi((v1 - v0) / v0 * 100, 1) if v0 else None,
-            "minimum": min(vals), "maximum": max(vals), "valeurs_publiees": len(points)}
+            "minimum": min(vals), "maximum": max(vals), "valeurs_publiees": len(points), "calcule_par_le_site": True}
 
 
 def construire_panorama(prenoms: set, arbre: dict, collecte_le: str) -> dict:
@@ -510,6 +522,7 @@ def construire_panorama(prenoms: set, arbre: dict, collecte_le: str) -> dict:
     groupes: dict[str, list[dict]] = defaultdict(list)
     for r in releves:
         groupes[lignees[r["cle"]]].append(r)
+    rang = {e["edition"]: e["numero"] for e in editions}
     projets, ids = [], set()
     for racine_, rs in sorted(groupes.items()):
         rs.sort(key=lambda r: r["edition"])
@@ -524,7 +537,7 @@ def construire_panorama(prenoms: set, arbre: dict, collecte_le: str) -> dict:
         progs = {}
         for r in rs:
             for p in r["programmes"]:
-                progs[p["programme"]] = p
+                progs[p["programme"]] = {**p, "nom": arbre[p["programme"]]["nom"] if p["programme"] in arbre else None}
         projets.append({
             "id": pid, "nom": dern["nom"], "noms_publies": list(dict.fromkeys(r["nom"] for r in rs)),
             "ministere": dern["ministere"], "ministere_nom": dern["ministere_nom"],
@@ -535,10 +548,14 @@ def construire_panorama(prenoms: set, arbre: dict, collecte_le: str) -> dict:
             "debuts_publies": debuts,
             "evolution_cout_meur": evolution(couts), "evolution_duree_ans": evolution(durees),
             "programmes": sorted(progs.values(), key=lambda p: p["programme"]),
-            "releves": [{"edition": r["edition"], "nom": r["nom"], "ministere": r["ministere"], "debut": r["debut"],
+            "releves": [{"edition": r["edition"], "nom": r["nom"], "ministere": r["ministere"],
+                         "ministere_nom": r["ministere_nom"], "debut": r["debut"],
                          "duree_ans": r["duree_ans"], "duree_mention": r["duree_mention"],
                          "cout_meur": r["cout_meur"], "cout_mention": r["cout_mention"], "tranche": r["tranche"],
-                         "phase": r["phase"], "programmes": [p["programme"] for p in r["programmes"]]} for r in rs],
+                         "phase": r["phase"], "phase_mention": r["phase_mention"],
+                         "programmes": [p["programme"] for p in r["programmes"]],
+                         "ecart_precedent": ecart_precedent(rs[i - 1], r, rang) if i else None}
+                        for i, r in enumerate(rs)],
         })
         for r in rs:
             r["projet"] = pid
@@ -558,6 +575,23 @@ def construire_panorama(prenoms: set, arbre: dict, collecte_le: str) -> dict:
                                    "et en pourcentage de la première valeur, minimum et maximum publiés",
             "evolution_duree_ans": "même lecture pour la durée prévisionnelle publiée",
             "debuts_publies": "dates de début publiées au fil des éditions, dans l'ordre de leur première apparition",
+            "ministere_nom": "nom complet du ministère porteur tel que publié dans l'édition (colonne « Ministère nom "
+                             "complet »)",
+            "phase": "phase du projet publiée dans l'édition ; `phase_mention` en donne la raison quand elle manque",
+            "ecart_precedent": "différence entre la valeur publiée dans l'édition et celle de l'édition précédente où "
+                               "le projet figure (calculée par le site)",
+            "programmes.nom": "intitulé du programme du budget de l'État cité (arbre État, exécution 2024) ; null si "
+                              "le programme n'y figure pas",
+        },
+        "calculs": {
+            "calcule_par_le_site": True,
+            "methode": "Pour un même projet (règles R1 et R2), écart = valeur publiée dans l'édition moins valeur "
+                       "publiée dans l'édition précédente où il figure, pour le coût estimé (millions d'euros) et la "
+                       "durée prévue (années), seulement si les deux valeurs sont publiées (sinon null). Les deux "
+                       "valeurs portent sur le même objet : le coût ou la durée de tout le projet, estimés à deux "
+                       "dates. `evolution_*` : même calcul entre la première et la dernière valeur publiées, et en "
+                       "pourcentage de la première. La source ne donne pas la raison d'un écart.",
+            "champs": ["releves[].ecart_precedent", "evolution_cout_meur", "evolution_duree_ans"],
         },
         "methode": {
             "regles": [
@@ -628,6 +662,10 @@ def construire_panorama(prenoms: set, arbre: dict, collecte_le: str) -> dict:
                          "estimés publiés d'une édition n'additionne que les projets dont le coût est publié ; il "
                          "n'est pas une dépense annuelle (les coûts portent sur toute la durée des projets) et deux "
                          "éditions ne s'additionnent pas.",
+        "calculs": {"calcule_par_le_site": True,
+                    "methode": "cout_publie_meur : somme des coûts estimés publiés des projets d'une même édition "
+                               "(même date, même liste de projets), sans les projets dont le coût n'est pas publié, "
+                               "comptés à part dans projets_sans_cout_publie ; idem par ministère porteur."},
         "definitions": {"entrants": "projets présents dans l'édition et absents de la précédente (identifiants de "
                                     "panorama/projets.json) ; null pour la première édition",
                         "sortants": "projets présents dans l'édition précédente et absents de celle-ci",
@@ -640,6 +678,9 @@ def construire_panorama(prenoms: set, arbre: dict, collecte_le: str) -> dict:
         "avertissement": "Ministère porteur tel que publié dans chaque édition (sigle). Les périmètres ministériels "
                          "changent avec les gouvernements : deux sigles successifs ne sont pas rapprochés ici, et la "
                          "série d'un sigle s'arrête quand il n'est plus publié.",
+        "calculs": {"calcule_par_le_site": True,
+                    "methode": "cout_publie_meur : somme des coûts estimés publiés des projets d'un même ministère "
+                               "dans une même édition, sans les projets dont le coût n'est pas publié (comptés à part)."},
         "ordre": {"regle": "Ministères par ordre alphabétique du sigle publié ; éditions croissantes.",
                   "cles": ["ministere", "edition"]},
         "ministeres": [{"ministere": s,

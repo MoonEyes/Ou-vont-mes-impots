@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/application_lois_index.schema.json",
+  "title": "site/data/application_lois/index.json : présentation du baromètre de l'application des lois, sources, définitions, comptes par année de publication des lois (calculés par le site), fichiers",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "collecte_le",
+    "avertissement",
+    "definitions",
+    "sources",
+    "confidentialite",
+    "comptes",
+    "par_annee",
+    "lois_finances",
+    "recherche_publique"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 10
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string",
+      "minLength": 4
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 80
+    },
+    "definitions": {
+      "type": "object",
+      "required": [
+        "mesures_a_appliquer",
+        "mesures_appliquees",
+        "taux_application_publie",
+        "delai_jours"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "titre",
+          "producteur",
+          "licence",
+          "url",
+          "fichier",
+          "url_fichier",
+          "ressource_modifiee_le",
+          "collecte_le"
+        ],
+        "properties": {
+          "fichier": {
+            "enum": [
+              "lois",
+              "mesures"
+            ]
+          },
+          "licence": {
+            "const": "Licence Ouverte 2.0"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://www\\.data\\.gouv\\.fr/"
+          }
+        }
+      }
+    },
+    "confidentialite": {
+      "type": "string",
+      "minLength": 40
+    },
+    "comptes": {
+      "type": "object",
+      "required": [
+        "lois",
+        "mesures",
+        "lois_avec_fichier_mesures",
+        "lois_finances",
+        "etats",
+        "textes_non_repris",
+        "lois_comptes_incoherents",
+        "mesures_sans_loi_connue",
+        "titres_remplaces"
+      ]
+    },
+    "par_annee": {
+      "type": "object",
+      "required": [
+        "calcule_par_le_site",
+        "methode",
+        "annees"
+      ],
+      "properties": {
+        "calcule_par_le_site": {
+          "const": true
+        },
+        "methode": {
+          "type": "string",
+          "minLength": 60
+        },
+        "annees": {
+          "type": "array",
+          "minItems": 20,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "annee",
+              "fichier",
+              "lois",
+              "lois_application_directe",
+              "lois_sans_echeancier",
+              "lois_avec_mesures",
+              "mesures_a_appliquer",
+              "mesures_appliquees",
+              "mesures_en_attente",
+              "mesures_sans_objet"
+            ],
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "fichier": {
+                "type": "string",
+                "pattern": "^application_lois/lois/[0-9]{4}\\.json$"
+              },
+              "lois": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lois_application_directe": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lois_sans_echeancier": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lois_avec_mesures": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "mesures_a_appliquer": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "mesures_appliquees": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "mesures_en_attente": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "mesures_sans_objet": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "lois_finances": {
+      "type": "object",
+      "required": [
+        "fichier",
+        "lois",
+        "categories"
+      ],
+      "properties": {
+        "fichier": {
+          "const": "application_lois/lois_finances.json"
+        },
+        "lois": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "categorie",
+              "libelle",
+              "lois"
+            ],
+            "properties": {
+              "categorie": {
+                "enum": [
+                  "lfss_rectificative",
+                  "lfss",
+                  "approbation_comptes_secu",
+                  "lf_rectificative",
+                  "lf_fin_de_gestion",
+                  "lf_initiale",
+                  "loi_speciale",
+                  "reglement",
+                  "programmation_finances_publiques"
+                ]
+              },
+              "libelle": {
+                "type": "string"
+              },
+              "lois": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "trouvailles"
+      ],
+      "properties": {
+        "trouvailles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "nom",
+              "url",
+              "verdict",
+              "licence",
+              "mise_a_jour"
+            ],
+            "properties": {
+              "verdict": {
+                "enum": [
+                  "réutilisable tel quel",
+                  "à adapter",
+                  "inspiration seulement"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

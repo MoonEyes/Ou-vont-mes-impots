@@ -94,4 +94,8 @@ ${blocEff}
 <div class="actions"><a class="bouton" href="${lien('/beneficiaires', { p })}">Qui reçoit l’argent du programme ${h(p)}</a><a class="bouton" href="${lien('/decisions/realisations', { p })}">Ce qui a été fait (programme ${h(p)})</a><a class="bouton" href="${lien('/decisions/votes', { p })}">Votes et mouvements (programme ${h(p)})</a><a class="bouton" href="${lien('/explorer/operateurs', { p })}">Opérateurs financés par ce programme</a></div>`
   ;(cible.querySelector('#trac') as HTMLElement).innerHTML = await blocTracabilite('programme', p, 'Exécution 2024')
   ;(cible.querySelector('#perf-programme') as HTMLElement).innerHTML = await (await import('./resultats')).blocProgramme(p)
+  // Grands projets numériques dont le financement publié cite ce programme (site/data/numerique_etat, panorama de la DINUM).
+  const ne = await chargerSiPresent<{ programmes: { programme: string; projets: unknown[] }[] }>('numerique_etat/panorama/programmes.json')
+  const neP = ne?.programmes.find((x) => x.programme === p)
+  if (neP?.projets.length) cible.querySelector('.actions')?.insertAdjacentHTML('beforeend', `<a class="bouton" href="${lien('/explorer/numerique-etat', { p })}">Grands projets numériques citant ce programme (${neP.projets.length})</a>`)
 }

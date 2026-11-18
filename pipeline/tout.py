@@ -181,6 +181,7 @@ ETAPES: tuple[Etape, ...] = (
     axe("entites", "Organisations reliées d'une source à l'autre (SIREN, Splink)", ("subventions", "associations",
         "beneficiaires", "marches", "aides_entreprises", "fonds_europeens", "controle", "etat_actionnaire",
         "operateurs", "sante_etablissements", "education_recherche"), collecte=False, duree_s=60),
+    axe("application_lois", "Application des lois : mesures prévues et publiées, délais (baromètre de l'Assemblée nationale et de LexImpact)", ("base",), duree_s=30),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
