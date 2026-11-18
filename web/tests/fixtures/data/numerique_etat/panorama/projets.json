@@ -1,0 +1,2007 @@
+{
+ "millesime": "Éditions 2016-11 à 2025-12 du panorama (22 éditions)",
+ "source": "DINUM, « Panorama des grands projets numériques de l’État », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/582e1e2888ee386b7ac65bb4), 22 éditions de 2016-11 à 2025-12",
+ "unite": "millions d'euros (coût estimé publié par la DINUM) ; durées en années",
+ "collecte_le": "2026-11-17",
+ "avertissement": "Évolution du coût estimé publié : valeurs déclarées par les ministères à la DINUM, reprises telles que publiées dans chaque édition. Un écart entre deux éditions peut venir d'un changement de périmètre, de calendrier ou de méthode d'estimation : la source ne le précise pas. Un coût ou une durée « en cadrage » ou non communiqué est null, jamais 0.",
+ "definitions": {
+  "cout_meur": "coût estimé publié, en millions d'euros (colonne « Coût estimé »)",
+  "duree_ans": "durée prévisionnelle publiée, en années (colonne « Durée prévisionnelle en année »)",
+  "debut": "date de début publiée, ramenée au mois (AAAA-MM)",
+  "evolution_cout_meur": "première et dernière valeur publiées du coût estimé, écart en millions d'euros et en pourcentage de la première valeur, minimum et maximum publiés",
+  "evolution_duree_ans": "même lecture pour la durée prévisionnelle publiée",
+  "debuts_publies": "dates de début publiées au fil des éditions, dans l'ordre de leur première apparition"
+ },
+ "methode": {
+  "regles": [
+   {
+    "id": "R1",
+    "regle": "Deux lignes de deux éditions sont le même projet si leur nom est identique une fois normalisé (majuscules, accents, ponctuation)."
+   },
+   {
+    "id": "R2",
+    "regle": "Un changement de nom déclaré dans le code (pipeline/numerique_etat.py, RENOMMAGES) est appliqué seulement si : aucune édition ne contient les deux noms ; la date de début publiée est la même dans la dernière édition de l'ancien nom et la première du nouveau ; et, quand le nom ajoute ou retire une mention de version, de cycle, de phase ou de périmètre, le coût estimé publié y est le même à 0.1 M€ près."
+   },
+   {
+    "id": "R3",
+    "regle": "Un changement déclaré dont un critère échoue reste non rapproché : les deux noms sont publiés comme deux projets, la raison est donnée dans non_rapproches."
+   }
+  ],
+  "limites": "Les noms voisins non déclarés ne sont pas rapprochés. Un projet absent d'une édition puis de retour sous le même nom reste un seul projet ; ses relevés donnent les éditions où il figure."
+ },
+ "ordre": {
+  "regle": "Projets par ordre alphabétique du dernier nom publié ; relevés par édition croissante.",
+  "cles": [
+   "nom",
+   "edition"
+  ]
+ },
+ "editions": [
+  "2016-11",
+  "2017-02",
+  "2017-06",
+  "2017-11",
+  "2018-02",
+  "2018-06",
+  "2018-11",
+  "2019-03",
+  "2019-07",
+  "2020-01",
+  "2020-05",
+  "2020-10",
+  "2021-06",
+  "2021-11",
+  "2022-06",
+  "2022-12",
+  "2023-06",
+  "2023-12",
+  "2024-06",
+  "2024-12",
+  "2025-06",
+  "2025-12"
+ ],
+ "projets": [
+  {
+   "id": "3-pas-s-dae",
+   "nom": "3-PAS-S_DAE",
+   "noms_publies": [
+    "3PA-S",
+    "3-PAS-S_DAE"
+   ],
+   "ministere": "MCAP",
+   "ministere_nom": "Ministère de l'Action et des Comptes Publics",
+   "interministeriel": true,
+   "description": "La mise en place et la professionnalisation de la fonction achat au sein des entités publiques impliquent de définir et de déployer les organisations achats, les processus métier et de faire évoluer le système d’information existant (SIAE). Dans ce contexte, le projet 3PA-S a pou",
+   "editions": {
+    "nombre": 2,
+    "premiere": "2017-06",
+    "derniere": "2017-11",
+    "dans_la_derniere_edition": false
+   },
+   "debuts_publies": [
+    "2016-01"
+   ],
+   "evolution_cout_meur": null,
+   "evolution_duree_ans": null,
+   "programmes": [
+    {
+     "programme": "218",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    }
+   ],
+   "releves": [
+    {
+     "edition": "2017-06",
+     "nom": "3PA-S",
+     "ministere": "MEF",
+     "debut": "2016-01",
+     "duree_ans": null,
+     "duree_mention": "en cadrage",
+     "cout_meur": null,
+     "cout_mention": "en cadrage",
+     "tranche": "En cadrage",
+     "phase": "Cadrage",
+     "programmes": [
+      "218"
+     ]
+    },
+    {
+     "edition": "2017-11",
+     "nom": "3-PAS-S_DAE",
+     "ministere": "MCAP",
+     "debut": "2016-01",
+     "duree_ans": null,
+     "duree_mention": "non publié",
+     "cout_meur": null,
+     "cout_mention": "non publié",
+     "tranche": null,
+     "phase": "Cadrage",
+     "programmes": [
+      "218"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "allocations-ars",
+   "nom": "Allocations ARS",
+   "noms_publies": [
+    "Allocations ARS"
+   ],
+   "ministere": "MSFAPH",
+   "ministere_nom": "Ministère de la santé, des familles, de l’autonomie et des personnes handicapées",
+   "interministeriel": false,
+   "description": "Le programme STARS vise à optimiser le pilotage stratégique et opérationnel des financements alloués par les ARS (40 Mds d'euros annuels) aux acteurs de la santé et à sécuriser les processus de financement aux bénéficiaires, éviter les risques de sous-consommation des crédits ou ",
+   "editions": {
+    "nombre": 3,
+    "premiere": "2024-12",
+    "derniere": "2025-12",
+    "dans_la_derniere_edition": true
+   },
+   "debuts_publies": [
+    "2022-01"
+   ],
+   "evolution_cout_meur": {
+    "premiere": {
+     "edition": "2024-12",
+     "valeur": 10.866
+    },
+    "derniere": {
+     "edition": "2025-12",
+     "valeur": 11.04
+    },
+    "ecart": 0.174,
+    "ecart_pct": 1.6,
+    "minimum": 10.24,
+    "maximum": 11.04,
+    "valeurs_publiees": 3
+   },
+   "evolution_duree_ans": {
+    "premiere": {
+     "edition": "2024-12",
+     "valeur": 3.92
+    },
+    "derniere": {
+     "edition": "2025-12",
+     "valeur": 5.0
+    },
+    "ecart": 1.08,
+    "ecart_pct": 27.6,
+    "minimum": 3.9,
+    "maximum": 5.0,
+    "valeurs_publiees": 3
+   },
+   "programmes": [
+    {
+     "programme": "155",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    },
+    {
+     "programme": "349",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    },
+    {
+     "programme": "355",
+     "rattachement": "numéro publié",
+     "dans_arbre": false
+    }
+   ],
+   "releves": [
+    {
+     "edition": "2024-12",
+     "nom": "Allocations ARS",
+     "ministere": "MTSS",
+     "debut": "2022-01",
+     "duree_ans": 3.92,
+     "duree_mention": null,
+     "cout_meur": 10.866,
+     "cout_mention": null,
+     "tranche": "entre 9 et 20 M€",
+     "phase": "Déploiement / Bilan intermédiaire",
+     "programmes": []
+    },
+    {
+     "edition": "2025-06",
+     "nom": "Allocations ARS",
+     "ministere": "MSFAPH",
+     "debut": "2022-01",
+     "duree_ans": 3.9,
+     "duree_mention": null,
+     "cout_meur": 10.24,
+     "cout_mention": null,
+     "tranche": "entre 9 et 20 M€",
+     "phase": null,
+     "programmes": [
+      "349",
+      "355"
+     ]
+    },
+    {
+     "edition": "2025-12",
+     "nom": "Allocations ARS",
+     "ministere": "MSFAPH",
+     "debut": "2022-01",
+     "duree_ans": 5.0,
+     "duree_mention": null,
+     "cout_meur": 11.04,
+     "cout_mention": null,
+     "tranche": "entre 9 et 20 M€",
+     "phase": null,
+     "programmes": [
+      "155",
+      "349"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "anef-dec-agdref",
+   "nom": "ANEF DEC AGDREF",
+   "noms_publies": [
+    "ANEF DEC AGDREF"
+   ],
+   "ministere": "MI",
+   "ministere_nom": "Ministère de l'Intérieur",
+   "interministeriel": null,
+   "description": "Décommissionnement de l'application historique AGDREF et transfert des fonctionnalités dans ANEF",
+   "editions": {
+    "nombre": 1,
+    "premiere": "2025-12",
+    "derniere": "2025-12",
+    "dans_la_derniere_edition": true
+   },
+   "debuts_publies": [
+    "2025-01"
+   ],
+   "evolution_cout_meur": null,
+   "evolution_duree_ans": null,
+   "programmes": [
+    {
+     "programme": "303",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    }
+   ],
+   "releves": [
+    {
+     "edition": "2025-12",
+     "nom": "ANEF DEC AGDREF",
+     "ministere": "MI",
+     "debut": "2025-01",
+     "duree_ans": 2.0,
+     "duree_mention": null,
+     "cout_meur": 23.02,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": null,
+     "programmes": [
+      "303"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "astrea",
+   "nom": "ASTREA",
+   "noms_publies": [
+    "ASTREA"
+   ],
+   "ministere": "MJ",
+   "ministere_nom": "Ministère de la Justice",
+   "interministeriel": false,
+   "description": "Refonte du système d'information du Casier judiciaire national et de son interconnexion avec les casiers judiciaires européens (enregistrement des condamnations pénales et de certaines décisions judiciaires, gestion de ces données conformément aux règles légales, délivrance des b",
+   "editions": {
+    "nombre": 22,
+    "premiere": "2016-11",
+    "derniere": "2025-12",
+    "dans_la_derniere_edition": true
+   },
+   "debuts_publies": [
+    "2012-01",
+    "2021-01"
+   ],
+   "evolution_cout_meur": {
+    "premiere": {
+     "edition": "2016-11",
+     "valeur": 20.0
+    },
+    "derniere": {
+     "edition": "2025-12",
+     "valeur": 37.58
+    },
+    "ecart": 17.58,
+    "ecart_pct": 87.9,
+    "minimum": 20.0,
+    "maximum": 77.27,
+    "valeurs_publiees": 22
+   },
+   "evolution_duree_ans": {
+    "premiere": {
+     "edition": "2016-11",
+     "valeur": 7.96
+    },
+    "derniere": {
+     "edition": "2025-12",
+     "valeur": 6.0
+    },
+    "ecart": -1.96,
+    "ecart_pct": -24.6,
+    "minimum": 5.0,
+    "maximum": 14.0,
+    "valeurs_publiees": 22
+   },
+   "programmes": [
+    {
+     "programme": "129",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    },
+    {
+     "programme": "310",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    }
+   ],
+   "releves": [
+    {
+     "edition": "2016-11",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 7.96,
+     "duree_mention": null,
+     "cout_meur": 20.0,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2017-02",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 8.0,
+     "duree_mention": null,
+     "cout_meur": 20.5,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2017-06",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 8.0,
+     "duree_mention": null,
+     "cout_meur": 20.5,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2017-11",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 7.96,
+     "duree_mention": null,
+     "cout_meur": 20.5,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2018-02",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 7.96,
+     "duree_mention": null,
+     "cout_meur": 20.46,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2018-06",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 8.96,
+     "duree_mention": null,
+     "cout_meur": 20.46,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2018-11",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 9.88,
+     "duree_mention": null,
+     "cout_meur": 20.46,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2019-03",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 10.0,
+     "duree_mention": null,
+     "cout_meur": 35.71,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2019-07",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 10.0,
+     "duree_mention": null,
+     "cout_meur": 35.7,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2020-01",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 10.5,
+     "duree_mention": null,
+     "cout_meur": 35.71,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2020-05",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 10.5,
+     "duree_mention": null,
+     "cout_meur": 35.7,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2020-10",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 11.0,
+     "duree_mention": null,
+     "cout_meur": 35.71,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2021-06",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 11.5,
+     "duree_mention": null,
+     "cout_meur": 35.71,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2021-11",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 12.0,
+     "duree_mention": null,
+     "cout_meur": 70.53,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2022-06",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 12.5,
+     "duree_mention": null,
+     "cout_meur": 70.52,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2022-12",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 14.0,
+     "duree_mention": null,
+     "cout_meur": 72.94,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2023-06",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2012-01",
+     "duree_ans": 14.0,
+     "duree_mention": null,
+     "cout_meur": 77.27,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2023-12",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2021-01",
+     "duree_ans": 5.0,
+     "duree_mention": null,
+     "cout_meur": 36.53,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2024-06",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2021-01",
+     "duree_ans": 7.0,
+     "duree_mention": null,
+     "cout_meur": 38.68,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2024-12",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2021-01",
+     "duree_ans": 7.0,
+     "duree_mention": null,
+     "cout_meur": 38.69,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Conception / Réalisation",
+     "programmes": [
+      "310"
+     ]
+    },
+    {
+     "edition": "2025-06",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2021-01",
+     "duree_ans": 6.0,
+     "duree_mention": null,
+     "cout_meur": 37.58,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": null,
+     "programmes": [
+      "129",
+      "310"
+     ]
+    },
+    {
+     "edition": "2025-12",
+     "nom": "ASTREA",
+     "ministere": "MJ",
+     "debut": "2021-01",
+     "duree_ans": 6.0,
+     "duree_mention": null,
+     "cout_meur": 37.58,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": null,
+     "programmes": [
+      "129",
+      "310"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "atigip",
+   "nom": "ATIGIP",
+   "noms_publies": [
+    "ATIGIP"
+   ],
+   "ministere": "MJ",
+   "ministere_nom": "Ministère de la Justice",
+   "interministeriel": false,
+   "description": "Créée en décembre 2018, l’agence du travail d’intérêt général et de l’insertion professionnelle (ATIGIP) contribue au développement de la peine de Travail d’Intérêt Général (TIG), du placement extérieur(PE) et au renforcement de l’insertion professionnelle des personnes placées s",
+   "editions": {
+    "nombre": 8,
+    "premiere": "2022-06",
+    "derniere": "2025-12",
+    "dans_la_derniere_edition": true
+   },
+   "debuts_publies": [
+    "2020-01"
+   ],
+   "evolution_cout_meur": {
+    "premiere": {
+     "edition": "2022-06",
+     "valeur": 32.168
+    },
+    "derniere": {
+     "edition": "2025-12",
+     "valeur": 54.33
+    },
+    "ecart": 22.162,
+    "ecart_pct": 68.9,
+    "minimum": 32.168,
+    "maximum": 54.33,
+    "valeurs_publiees": 8
+   },
+   "evolution_duree_ans": {
+    "premiere": {
+     "edition": "2022-06",
+     "valeur": 4.0
+    },
+    "derniere": {
+     "edition": "2025-12",
+     "valeur": 7.0
+    },
+    "ecart": 3.0,
+    "ecart_pct": 75.0,
+    "minimum": 4.0,
+    "maximum": 7.0,
+    "valeurs_publiees": 8
+   },
+   "programmes": [
+    {
+     "programme": "107",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    },
+    {
+     "programme": "310",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    },
+    {
+     "programme": "349",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    },
+    {
+     "programme": "363",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    },
+    {
+     "programme": "364",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    }
+   ],
+   "releves": [
+    {
+     "edition": "2022-06",
+     "nom": "ATIGIP",
+     "ministere": "MJ",
+     "debut": "2020-01",
+     "duree_ans": 4.0,
+     "duree_mention": null,
+     "cout_meur": 32.168,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Déploiement / Bilan intermédiaire",
+     "programmes": [
+      "310",
+      "349",
+      "364"
+     ]
+    },
+    {
+     "edition": "2022-12",
+     "nom": "ATIGIP",
+     "ministere": "MJ",
+     "debut": "2020-01",
+     "duree_ans": 4.0,
+     "duree_mention": null,
+     "cout_meur": 32.168,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Déploiement / Bilan intermédiaire",
+     "programmes": [
+      "107",
+      "310",
+      "349",
+      "363"
+     ]
+    },
+    {
+     "edition": "2023-06",
+     "nom": "ATIGIP",
+     "ministere": "MJ",
+     "debut": "2020-01",
+     "duree_ans": 4.42,
+     "duree_mention": null,
+     "cout_meur": 43.193,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Déploiement / Bilan intermédiaire",
+     "programmes": [
+      "107",
+      "310",
+      "349",
+      "363"
+     ]
+    },
+    {
+     "edition": "2023-12",
+     "nom": "ATIGIP",
+     "ministere": "MJ",
+     "debut": "2020-01",
+     "duree_ans": 4.42,
+     "duree_mention": null,
+     "cout_meur": 44.19,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Déploiement / Bilan intermédiaire",
+     "programmes": [
+      "107",
+      "310",
+      "349",
+      "363"
+     ]
+    },
+    {
+     "edition": "2024-06",
+     "nom": "ATIGIP",
+     "ministere": "MJ",
+     "debut": "2020-01",
+     "duree_ans": 4.92,
+     "duree_mention": null,
+     "cout_meur": 45.86,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Déploiement / Bilan intermédiaire",
+     "programmes": [
+      "107",
+      "310",
+      "349",
+      "363"
+     ]
+    },
+    {
+     "edition": "2024-12",
+     "nom": "ATIGIP",
+     "ministere": "MJ",
+     "debut": "2020-01",
+     "duree_ans": 6.0,
+     "duree_mention": null,
+     "cout_meur": 45.86,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": "Déploiement / Bilan intermédiaire",
+     "programmes": [
+      "107",
+      "310",
+      "349",
+      "363"
+     ]
+    },
+    {
+     "edition": "2025-06",
+     "nom": "ATIGIP",
+     "ministere": "MJ",
+     "debut": "2020-01",
+     "duree_ans": 7.0,
+     "duree_mention": null,
+     "cout_meur": 50.49,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": null,
+     "programmes": [
+      "107",
+      "310",
+      "349",
+      "363"
+     ]
+    },
+    {
+     "edition": "2025-12",
+     "nom": "ATIGIP",
+     "ministere": "MJ",
+     "debut": "2020-01",
+     "duree_ans": 7.0,
+     "duree_mention": null,
+     "cout_meur": 54.33,
+     "cout_mention": null,
+     "tranche": "entre 20 et 100 M€",
+     "phase": null,
+     "programmes": [
+      "107",
+      "310",
+      "349",
+      "363"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "bd-foret",
+   "nom": "BD FORET",
+   "noms_publies": [
+    "BD FORET"
+   ],
+   "ministere": "MAASA",
+   "ministere_nom": "Ministère de l'agriculture, de l’agro-alimentaire et de la souveraineté alimentaire",
+   "interministeriel": null,
+   "description": "La BD Forêt v3 est une base de données cartographique au format vectoriel détaillant la localisation précise des forêts en France ainsi que leur composition en termes d’essence majoritaire. Elle va remplacer la BD Foret v2 qui devient obsolète.",
+   "editions": {
+    "nombre": 2,
+    "premiere": "2025-06",
+    "derniere": "2025-12",
+    "dans_la_derniere_edition": true
+   },
+   "debuts_publies": [
+    "2021-02"
+   ],
+   "evolution_cout_meur": {
+    "premiere": {
+     "edition": "2025-06",
+     "valeur": 11.79
+    },
+    "derniere": {
+     "edition": "2025-12",
+     "valeur": 11.78
+    },
+    "ecart": -0.01,
+    "ecart_pct": -0.1,
+    "minimum": 11.78,
+    "maximum": 11.79,
+    "valeurs_publiees": 2
+   },
+   "evolution_duree_ans": {
+    "premiere": {
+     "edition": "2025-06",
+     "valeur": 8.4
+    },
+    "derniere": {
+     "edition": "2025-12",
+     "valeur": 8.4
+    },
+    "ecart": 0.0,
+    "ecart_pct": 0.0,
+    "minimum": 8.4,
+    "maximum": 8.4,
+    "valeurs_publiees": 2
+   },
+   "programmes": [
+    {
+     "programme": "149",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    }
+   ],
+   "releves": [
+    {
+     "edition": "2025-06",
+     "nom": "BD FORET",
+     "ministere": "MAASA",
+     "debut": "2021-02",
+     "duree_ans": 8.4,
+     "duree_mention": null,
+     "cout_meur": 11.79,
+     "cout_mention": null,
+     "tranche": "entre 9 et 20 M€",
+     "phase": null,
+     "programmes": [
+      "149"
+     ]
+    },
+    {
+     "edition": "2025-12",
+     "nom": "BD FORET",
+     "ministere": "MAASA",
+     "debut": "2021-02",
+     "duree_ans": 8.4,
+     "duree_mention": null,
+     "cout_meur": 11.78,
+     "cout_mention": null,
+     "tranche": "entre 9 et 20 M€",
+     "phase": null,
+     "programmes": [
+      "149"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "corail",
+   "nom": "CORAIL",
+   "noms_publies": [
+    "CORAIL"
+   ],
+   "ministere": "MA",
+   "ministere_nom": "Ministère des Armées",
+   "interministeriel": null,
+   "description": null,
+   "editions": {
+    "nombre": 2,
+    "premiere": "2025-06",
+    "derniere": "2025-12",
+    "dans_la_derniere_edition": true
+   },
+   "debuts_publies": [
+    "2022-10"
+   ],
+   "evolution_cout_meur": {
+    "premiere": {
+     "edition": "2025-06",
+     "valeur": 12.2
+    },
+    "derniere": {
+     "edition": "2025-12",
+     "valeur": 17.9
+    },
+    "ecart": 5.7,
+    "ecart_pct": 46.7,
+    "minimum": 12.2,
+    "maximum": 17.9,
+    "valeurs_publiees": 2
+   },
+   "evolution_duree_ans": {
+    "premiere": {
+     "edition": "2025-06",
+     "valeur": 6.3
+    },
+    "derniere": {
+     "edition": "2025-12",
+     "valeur": 6.3
+    },
+    "ecart": 0.0,
+    "ecart_pct": 0.0,
+    "minimum": 6.3,
+    "maximum": 6.3,
+    "valeurs_publiees": 2
+   },
+   "programmes": [
+    {
+     "programme": "212",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    }
+   ],
+   "releves": [
+    {
+     "edition": "2025-06",
+     "nom": "CORAIL",
+     "ministere": "MA",
+     "debut": "2022-10",
+     "duree_ans": 6.3,
+     "duree_mention": null,
+     "cout_meur": 12.2,
+     "cout_mention": null,
+     "tranche": "entre 9 et 20 M€",
+     "phase": null,
+     "programmes": [
+      "212"
+     ]
+    },
+    {
+     "edition": "2025-12",
+     "nom": "CORAIL",
+     "ministere": "MA",
+     "debut": "2022-10",
+     "duree_ans": 6.3,
+     "duree_mention": null,
+     "cout_meur": 17.9,
+     "cout_mention": null,
+     "tranche": "entre 9 et 20 M€",
+     "phase": null,
+     "programmes": [
+      "212"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sirhen",
+   "nom": "SIRHEN",
+   "noms_publies": [
+    "SIRHEN"
+   ],
+   "ministere": "MENJ",
+   "ministere_nom": "Ministère de l'Education Nationale",
+   "interministeriel": false,
+   "description": "SIRHEN est un programme stratégique du ministère, qui vise à construire un système d'information (SI) unifié, souple et efficace intégrant la gestion des ressources humaines (RH) et des moyens, à accompagner la modernisation de la gestion RH, à développer sa dimension qualitative",
+   "editions": {
+    "nombre": 10,
+    "premiere": "2016-11",
+    "derniere": "2020-05",
+    "dans_la_derniere_edition": false
+   },
+   "debuts_publies": [
+    "2007-01",
+    "2008-12"
+   ],
+   "evolution_cout_meur": {
+    "premiere": {
+     "edition": "2016-11",
+     "valeur": 496.4
+    },
+    "derniere": {
+     "edition": "2018-06",
+     "valeur": 496.48
+    },
+    "ecart": 0.08,
+    "ecart_pct": 0.0,
+    "minimum": 496.4,
+    "maximum": 496.5,
+    "valeurs_publiees": 6
+   },
+   "evolution_duree_ans": {
+    "premiere": {
+     "edition": "2016-11",
+     "valeur": 14.01
+    },
+    "derniere": {
+     "edition": "2018-06",
+     "valeur": 12.01
+    },
+    "ecart": -2.0,
+    "ecart_pct": -14.3,
+    "minimum": 12.0,
+    "maximum": 14.01,
+    "valeurs_publiees": 6
+   },
+   "programmes": [
+    {
+     "programme": "214",
+     "rattachement": "numéro publié",
+     "dans_arbre": true
+    }
+   ],
+   "releves": [
+    {
+     "edition": "2016-11",
+     "nom": "SIRHEN",
+     "ministere": "MENESR",
+     "debut": "2007-01",
+     "duree_ans": 14.01,
+     "duree_mention": null,
+     "cout_meur": 496.4,
+     "cout_mention": null,
+     "tranche": "> 100 M€",
+     "phase": "Déploiement",
+     "programmes": [
+      "214"
+     ]
+    },
+    {
+     "edition": "2017-02",
+     "nom": "SIRHEN",
+     "ministere": "MENESR",
+     "debut": "2008-12",
+     "duree_ans": 12.0,
+     "duree_mention": null,
+     "cout_meur": 496.5,
+     "cout_mention": null,
+     "tranche": "> 100 M€",
+     "phase": "Expérimentation",
+     "programmes": [
+      "214"
+     ]
+    },
+    {
+     "edition": "2017-06",
+     "nom": "SIRHEN",
+     "ministere": "MEN",
+     "debut": "2008-12",
+     "duree_ans": 12.0,
+     "duree_mention": null,
+     "cout_meur": 496.5,
+     "cout_mention": null,
+     "tranche": "> 100 M€",
+     "phase": "Expérimentation",
+     "programmes": [
+      "214"
+     ]
+    },
+    {
+     "edition": "2017-11",
+     "nom": "SIRHEN",
+     "ministere": "MEN",
+     "debut": "2008-12",
+     "duree_ans": 12.01,
+     "duree_mention": null,
+     "cout_meur": 496.5,
+     "cout_mention": null,
+     "tranche": "> 100 M€",
+     "phase": "Déploiement",
+     "programmes": [
+      "214"
+     ]
+    },
+    {
+     "edition": "2018-02",
+     "nom": "SIRHEN",
+     "ministere": "MEN",
+     "debut": "2008-12",
+     "duree_ans": 12.01,
+     "duree_mention": null,
+     "cout_meur": 496.48,
+     "cout_mention": null,
+     "tranche": "plus de 100 M€",
+     "phase": "Déploiement",
+     "programmes": [
+      "214"
+     ]
+    },
+    {
+     "edition": "2018-06",
+     "nom": "SIRHEN",
+     "ministere": "MEN",
+     "debut": "2008-12",
+     "duree_ans": 12.01,
+     "duree_mention": null,
+     "cout_meur": 496.48,
+     "cout_mention": null,
+     "tranche": "plus de 100 M€",
+     "phase": "Déploiement",
+     "programmes": [
+      "214"
+     ]
+    },
+    {
+     "edition": "2019-03",
+     "nom": "SIRHEN",
+     "ministere": "MEN",
+     "debut": null,
+     "duree_ans": null,
+     "duree_mention": "non publié",
+     "cout_meur": null,
+     "cout_mention": "non publié",
+     "tranche": "plus de 100 M€",
+     "phase": "Les éléments chiffrés des projets en cours d’appel d’offres ou dont la trajectoire est en cours de révision ne sont volontairement pas publiés par la DINSIC afin de ne pas interférer avec les procédures en cours",
+     "programmes": []
+    },
+    {
+     "edition": "2019-07",
+     "nom": "SIRHEN",
+     "ministere": "MENJ",
+     "debut": null,
+     "duree_ans": null,
+     "duree_mention": "non publié",
+     "cout_meur": null,
+     "cout_mention": "non publié",
+     "tranche": null,
+     "phase": "Les éléments chiffrés des projets en cours d’appel d’offres ou dont la trajectoire est en cours de révision ne sont volontairement pas publiés par la DINUM afin de ne pas interférer avec les procédures en cours.",
+     "programmes": []
+    },
+    {
+     "edition": "2020-01",
+     "nom": "SIRHEN",
+     "ministere": "MENJ",
+     "debut": null,
+     "duree_ans": null,
+     "duree_mention": "non publié",
+     "cout_meur": null,
+     "cout_mention": "non publié",
+     "tranche": null,
+     "phase": "Les éléments chiffrés des projets en cours d’appel d’offres ou dont la trajectoire est en cours de révision ne sont volontairement pas publiés par la DINUM afin de ne pas interférer avec les procédures en cours.",
+     "programmes": []
+    },
+    {
+     "edition": "2020-05",
+     "nom": "SIRHEN",
+     "ministere": "MENJ",
+     "debut": null,
+     "duree_ans": null,
+     "duree_mention": "non publié",
+     "cout_meur": null,
+     "cout_mention": "non publié",
+     "tranche": null,
+     "phase": "Les éléments chiffrés des projets en cours d’appel d’offres ou dont la trajectoire est en cours de révision ne sont volontairement pas publiés par la DINUM afin de ne pas interférer avec les procédures en cours.",
+     "programmes": []
+    }
+   ]
+  }
+ ],
+ "rapprochements": [
+  {
+   "regle": "R1",
+   "noms": [
+    "DEPLOIEMENT RenoiRH",
+    "Déploiement RenoiRH"
+   ],
+   "critere": "même nom une fois normalisé (majuscules, accents, ponctuation)"
+  },
+  {
+   "regle": "R1",
+   "noms": [
+    "DSN FPE (CONCENTRATEUR)",
+    "DSN FPE (concentrateur)"
+   ],
+   "critere": "même nom une fois normalisé (majuscules, accents, ponctuation)"
+  },
+  {
+   "regle": "R1",
+   "noms": [
+    "EXPADON 2",
+    "Expadon 2"
+   ],
+   "critere": "même nom une fois normalisé (majuscules, accents, ponctuation)"
+  },
+  {
+   "regle": "R1",
+   "noms": [
+    "GEOPORTAIL",
+    "Géoportail"
+   ],
+   "critere": "même nom une fois normalisé (majuscules, accents, ponctuation)"
+  },
+  {
+   "regle": "R1",
+   "noms": [
+    "GUICHET ENTREPRISE DGE",
+    "Guichet_Entreprise_DGE"
+   ],
+   "critere": "même nom une fois normalisé (majuscules, accents, ponctuation)"
+  },
+  {
+   "regle": "R1",
+   "noms": [
+    "ICONOLAB",
+    "IconoLab",
+    "Iconolab"
+   ],
+   "critere": "même nom une fois normalisé (majuscules, accents, ponctuation)"
+  },
+  {
+   "regle": "R1",
+   "noms": [
+    "MISTRAL",
+    "Mistral"
+   ],
+   "critere": "même nom une fois normalisé (majuscules, accents, ponctuation)"
+  },
+  {
+   "regle": "R1",
+   "noms": [
+    "NEXSIS",
+    "NexSIS"
+   ],
+   "critere": "même nom une fois normalisé (majuscules, accents, ponctuation)"
+  },
+  {
+   "regle": "R1",
+   "noms": [
+    "REGROUP. CENTRES INFO",
+    "Regroup. centres info."
+   ],
+   "critere": "même nom une fois normalisé (majuscules, accents, ponctuation)"
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "3PA-S",
+   "nouveau_nom": "3-PAS-S_DAE",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2016-01",
+    "debut_nouveau": "2016-01",
+    "cout_meur_ancien": null,
+    "cout_meur_nouveau": null
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "CASSIOPEE",
+   "nouveau_nom": "CASSIOPEE V2",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2016-11",
+    "premiere_edition_nouveau_nom": "2017-02",
+    "debut_ancien": "2014-01",
+    "debut_nouveau": "2014-01",
+    "cout_meur_ancien": 9.9,
+    "cout_meur_nouveau": 9.9
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Compte Personnel d'Activité",
+   "nouveau_nom": "CPA",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2015-12",
+    "debut_nouveau": "2015-12",
+    "cout_meur_ancien": 24.0,
+    "cout_meur_nouveau": 24.8
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Concentrateur DSN",
+   "nouveau_nom": "DSN FPE (concentrateur)",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2016-11",
+    "debut_nouveau": "2016-11",
+    "cout_meur_ancien": null,
+    "cout_meur_nouveau": null
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Déploiement de l'application RenoiRH et adaptations liées",
+   "nouveau_nom": "Dépl. PESE, Winpaie, RenoiRH + évol.SI connexes",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2016-11",
+    "premiere_edition_nouveau_nom": "2017-02",
+    "debut_ancien": "2012-01",
+    "debut_nouveau": "2012-01",
+    "cout_meur_ancien": 27.1,
+    "cout_meur_nouveau": 27.1
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Dépl. PESE, Winpaie, RenoiRH + évol.SI connexes",
+   "nouveau_nom": "Déploiement RenoiRH",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2012-01",
+    "debut_nouveau": "2012-01",
+    "cout_meur_ancien": 27.1,
+    "cout_meur_nouveau": 27.1
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Elire – élaboration des listes à partir du répertoire électoral",
+   "nouveau_nom": "ELIRE",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2016-03",
+    "debut_nouveau": "2016-03",
+    "cout_meur_ancien": 5.0,
+    "cout_meur_nouveau": 5.0
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "FRANCECONNECT PHASE II",
+   "nouveau_nom": "FRANCE CONNECT PHASE II",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2017-01",
+    "debut_nouveau": "2017-01",
+    "cout_meur_ancien": 23.9,
+    "cout_meur_nouveau": null
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Généralisation - Equipement numérique mobile du primo-intervenant NEOGEND/NEOPOL",
+   "nouveau_nom": "MOBILITE",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2014-09",
+    "debut_nouveau": "2014-09",
+    "cout_meur_ancien": 81.6,
+    "cout_meur_nouveau": 81.6
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Guichet entreprise",
+   "nouveau_nom": "Guichet_Entreprise_DGE",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2015-04",
+    "debut_nouveau": "2015-04",
+    "cout_meur_ancien": 24.4,
+    "cout_meur_nouveau": 24.4
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "LSU du CP à la 3EME",
+   "nouveau_nom": "LSUN",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2014-06",
+    "debut_nouveau": "2014-06",
+    "cout_meur_ancien": 2.0,
+    "cout_meur_nouveau": 2.0
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "MCIC²",
+   "nouveau_nom": "MCIC-2",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-11",
+    "premiere_edition_nouveau_nom": "2018-02",
+    "debut_ancien": "2015-02",
+    "debut_nouveau": "2015-02",
+    "cout_meur_ancien": 30.8,
+    "cout_meur_nouveau": 30.84
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "MIGRATION SAP CHORUS",
+   "nouveau_nom": "Chorus – Projet S_4HANA",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2022-12",
+    "premiere_edition_nouveau_nom": "2023-06",
+    "debut_ancien": "2022-09",
+    "debut_nouveau": "2022-09",
+    "cout_meur_ancien": 87.03,
+    "cout_meur_nouveau": 87.03
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "PIB/MISTRAL",
+   "nouveau_nom": "MISTR@L",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-02",
+    "premiere_edition_nouveau_nom": "2017-06",
+    "debut_ancien": "2014-06",
+    "debut_nouveau": "2014-06",
+    "cout_meur_ancien": 26.6,
+    "cout_meur_nouveau": 26.6
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "MISTR@L",
+   "nouveau_nom": "Mistral",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2014-06",
+    "debut_nouveau": "2014-06",
+    "cout_meur_ancien": 26.6,
+    "cout_meur_nouveau": 26.6
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Modernisation de l'INPT (projets FH et IP)",
+   "nouveau_nom": "INPT",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2014-06",
+    "debut_nouveau": "2014-06",
+    "cout_meur_ancien": 352.0,
+    "cout_meur_nouveau": 352.0
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Montée de version du SIRH",
+   "nouveau_nom": "MONTEE DE VERSION SIRH",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2018-02",
+    "debut_ancien": "2016-10",
+    "debut_nouveau": "2016-10",
+    "cout_meur_ancien": null,
+    "cout_meur_nouveau": 35.06
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "NEXSIS",
+   "nouveau_nom": "NexSIS Version 1",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2020-01",
+    "premiere_edition_nouveau_nom": "2020-05",
+    "debut_ancien": "2016-02",
+    "debut_nouveau": "2016-02",
+    "cout_meur_ancien": 52.7,
+    "cout_meur_nouveau": 52.7
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "NSTI / DELT@ T",
+   "nouveau_nom": "NSTI",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2014-09",
+    "debut_nouveau": "2014-09",
+    "cout_meur_ancien": 5.6,
+    "cout_meur_nouveau": 5.6
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Paysage : Modernisation iso fonctionnelle de PAY",
+   "nouveau_nom": "PAYSAGE",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2014-10",
+    "debut_nouveau": "2014-10",
+    "cout_meur_ancien": 41.7,
+    "cout_meur_nouveau": 41.7
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "SYSTEME DE NOUVELLE GENERATION DES TECHNIQUES D'ENQUETES NUMERIQUES JUDICIAIRES",
+   "nouveau_nom": "PNIJ NG (ANTENJ)",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2020-05",
+    "premiere_edition_nouveau_nom": "2020-10",
+    "debut_ancien": "2017-12",
+    "debut_nouveau": "2017-12",
+    "cout_meur_ancien": null,
+    "cout_meur_nouveau": null
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "PPNG Plan Préfectures Nouvelle Génération",
+   "nouveau_nom": "PPNG",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2016-03",
+    "debut_nouveau": "2016-03",
+    "cout_meur_ancien": 17.1,
+    "cout_meur_nouveau": 17.1
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "PROJET SOLDE GENDARMERIE",
+   "nouveau_nom": "SOLDE GENDARMERIE",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2014-10",
+    "debut_nouveau": "2014-10",
+    "cout_meur_ancien": 10.3,
+    "cout_meur_nouveau": 10.3
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Regroupement des centres informatiques",
+   "nouveau_nom": "Regroup. centres info.",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2015-01",
+    "debut_nouveau": "2015-01",
+    "cout_meur_ancien": 11.9,
+    "cout_meur_nouveau": 11.9
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Réseau Interministériel de l'Etat",
+   "nouveau_nom": "RIE",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2011-05",
+    "debut_nouveau": "2011-05",
+    "cout_meur_ancien": 59.5,
+    "cout_meur_nouveau": 60.1
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "SÉGUR-FONTENOY",
+   "nouveau_nom": "SEGUR",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2015-01",
+    "debut_nouveau": "2015-01",
+    "cout_meur_ancien": 18.8,
+    "cout_meur_nouveau": 18.8
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "SGIN",
+   "nouveau_nom": "SGIN - France Identité Numérique",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2021-11",
+    "premiere_edition_nouveau_nom": "2022-06",
+    "debut_ancien": "2020-02",
+    "debut_nouveau": "2020-02",
+    "cout_meur_ancien": 51.7,
+    "cout_meur_nouveau": 51.7
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "SI Paie des EPLE (OPERA)",
+   "nouveau_nom": "OPER@",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2015-02",
+    "debut_nouveau": "2015-02",
+    "cout_meur_ancien": 17.1,
+    "cout_meur_nouveau": 17.4
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "SIRENA Cycle 1",
+   "nouveau_nom": "SIRENA",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2015-01",
+    "debut_nouveau": "2015-01",
+    "cout_meur_ancien": 10.1,
+    "cout_meur_nouveau": 10.1
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "SIRH DIALOGUE 2",
+   "nouveau_nom": "DIALOGUE 2",
+   "type": "sigle",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2014-01",
+    "debut_nouveau": "2014-01",
+    "cout_meur_ancien": 38.3,
+    "cout_meur_nouveau": 38.3
+   }
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "SIRHIUS V1",
+   "nouveau_nom": "SIRHIUS",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2007-01",
+    "debut_nouveau": "2007-01",
+    "cout_meur_ancien": 161.7,
+    "cout_meur_nouveau": 161.7
+   }
+  }
+ ],
+ "non_rapproches": [
+  {
+   "regle": "R2",
+   "ancien_nom": "ARCHIPEL-NG",
+   "nouveau_nom": "ARCHIPEL",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-11",
+    "premiere_edition_nouveau_nom": "2018-02",
+    "debut_ancien": "2015-04",
+    "debut_nouveau": "2015-04",
+    "cout_meur_ancien": null,
+    "cout_meur_nouveau": null
+   },
+   "raisons": [
+    "coût estimé non publié à la jonction : même périmètre non vérifiable"
+   ]
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Enrichissement du SI Harmonie et fusion des métiers RH",
+   "nouveau_nom": "HARMONIE",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2014-04",
+    "debut_nouveau": "2014-04",
+    "cout_meur_ancien": 34.2,
+    "cout_meur_nouveau": 38.6
+   },
+   "raisons": [
+    "coûts estimés publiés différents à la jonction (34.2 puis 38.6 M€) : périmètre possiblement différent"
+   ]
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "Espace numérique en Santé (ENS)",
+   "nouveau_nom": "Mon Espace Santé",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2022-12",
+    "premiere_edition_nouveau_nom": "2023-06",
+    "debut_ancien": "2020-01",
+    "debut_nouveau": "2020-01",
+    "cout_meur_ancien": 258.0,
+    "cout_meur_nouveau": 227.4
+   },
+   "raisons": [
+    "coûts estimés publiés différents à la jonction (258.0 puis 227.4 M€) : périmètre possiblement différent"
+   ]
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "FRANCE CONNECT",
+   "nouveau_nom": "FRANCECONNECT PHASE II",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2016-11",
+    "premiere_edition_nouveau_nom": "2017-02",
+    "debut_ancien": "2013-07",
+    "debut_nouveau": "2017-01",
+    "cout_meur_ancien": 7.0,
+    "cout_meur_nouveau": null
+   },
+   "raisons": [
+    "dates de début différentes à la jonction (2013-07 puis 2017-01)",
+    "coût estimé non publié à la jonction : même périmètre non vérifiable"
+   ]
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "GENESIS",
+   "nouveau_nom": "GENESIS V2",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-02",
+    "premiere_edition_nouveau_nom": "2017-06",
+    "debut_ancien": "2007-01",
+    "debut_nouveau": null,
+    "cout_meur_ancien": 47.5,
+    "cout_meur_nouveau": null
+   },
+   "raisons": [
+    "date de début non publiée à la jonction",
+    "coût estimé non publié à la jonction : même périmètre non vérifiable"
+   ]
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "KIOSQUES",
+   "nouveau_nom": "KIOSQUES - PFSF",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2021-11",
+    "premiere_edition_nouveau_nom": "2022-06",
+    "debut_ancien": "2020-04",
+    "debut_nouveau": "2020-04",
+    "cout_meur_ancien": 15.7,
+    "cout_meur_nouveau": 27.8
+   },
+   "raisons": [
+    "coûts estimés publiés différents à la jonction (15.7 puis 27.8 M€) : périmètre possiblement différent"
+   ]
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "PNIJ",
+   "nouveau_nom": "PNIJ NG (ANTENJ)",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2018-02",
+    "premiere_edition_nouveau_nom": "2020-01",
+    "debut_ancien": "2005-03",
+    "debut_nouveau": "2017-12",
+    "cout_meur_ancien": 151.4,
+    "cout_meur_nouveau": null
+   },
+   "raisons": [
+    "dates de début différentes à la jonction (2005-03 puis 2017-12)",
+    "coût estimé non publié à la jonction : même périmètre non vérifiable"
+   ]
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "PORTALIS",
+   "nouveau_nom": "PORTALIS 2",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2024-12",
+    "premiere_edition_nouveau_nom": "2025-06",
+    "debut_ancien": "2022-01",
+    "debut_nouveau": "2024-01",
+    "cout_meur_ancien": 78.31,
+    "cout_meur_nouveau": 94.96
+   },
+   "raisons": [
+    "dates de début différentes à la jonction (2022-01 puis 2024-01)",
+    "coûts estimés publiés différents à la jonction (78.31 puis 94.96 M€) : périmètre possiblement différent"
+   ]
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "RESYTAL CYCLE 1",
+   "nouveau_nom": "RESYTAL",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2012-12",
+    "debut_nouveau": "2012-12",
+    "cout_meur_ancien": 21.6,
+    "cout_meur_nouveau": 25.7
+   },
+   "raisons": [
+    "coûts estimés publiés différents à la jonction (21.6 puis 25.7 M€) : périmètre possiblement différent"
+   ]
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "ROC",
+   "nouveau_nom": "ROC_PR35",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2023-12",
+    "premiere_edition_nouveau_nom": "2024-06",
+    "debut_ancien": "2016-03",
+    "debut_nouveau": "2023-06",
+    "cout_meur_ancien": 15.6,
+    "cout_meur_nouveau": null
+   },
+   "raisons": [
+    "dates de début différentes à la jonction (2016-03 puis 2023-06)",
+    "coût estimé non publié à la jonction : même périmètre non vérifiable"
+   ]
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "SI-Samu (étape \"Construction & Pilote\")",
+   "nouveau_nom": "SI SAMU",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2017-06",
+    "premiere_edition_nouveau_nom": "2017-11",
+    "debut_ancien": "2014-09",
+    "debut_nouveau": "2014-09",
+    "cout_meur_ancien": 75.4,
+    "cout_meur_nouveau": 75.1
+   },
+   "raisons": [
+    "coûts estimés publiés différents à la jonction (75.4 puis 75.1 M€) : périmètre possiblement différent"
+   ]
+  },
+  {
+   "regle": "R2",
+   "ancien_nom": "ANEF",
+   "nouveau_nom": "ANEF DEC AGDREF",
+   "type": "version",
+   "jonction": {
+    "derniere_edition_ancien_nom": "2023-12",
+    "premiere_edition_nouveau_nom": "2025-12",
+    "debut_ancien": "2018-01",
+    "debut_nouveau": "2025-01",
+    "cout_meur_ancien": 55.0,
+    "cout_meur_nouveau": 23.02
+   },
+   "raisons": [
+    "dates de début différentes à la jonction (2018-01 puis 2025-01)",
+    "coûts estimés publiés différents à la jonction (55.0 puis 23.02 M€) : périmètre possiblement différent"
+   ]
+  }
+ ]
+}
