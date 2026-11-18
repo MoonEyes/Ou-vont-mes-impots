@@ -1,0 +1,711 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/assurance_maladie_territoires_ondam.schema.json",
+  "title": "site/data/assurance_maladie_territoires/ondam.json : exécution de l'ONDAM par sous-objectif, objectifs 2026 et 2027 (pipeline/assurance_maladie_territoires.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "definition",
+    "sous_objectifs",
+    "annees",
+    "derniere_annee",
+    "definitions",
+    "constats",
+    "objectifs",
+    "ruptures_de_champ",
+    "controles_arrondis",
+    "liens",
+    "regle"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "definition": {
+      "type": "string"
+    },
+    "sous_objectifs": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "parent",
+          "composition"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "total",
+              "soins_de_ville",
+              "etablissements_sante",
+              "medico_social",
+              "medico_social_personnes_agees",
+              "medico_social_personnes_handicapees",
+              "fir",
+              "autres_prises_en_charge"
+            ]
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "parent": {
+            "enum": [
+              null,
+              "medico_social"
+            ]
+          },
+          "composition": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "derniere_annee": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "constats": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^20[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "source",
+          "document",
+          "valeurs"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "pattern": "^amt_"
+          },
+          "document": {
+            "type": "string"
+          },
+          "valeurs": {
+            "type": "object",
+            "required": [
+              "total",
+              "soins_de_ville",
+              "etablissements_sante",
+              "medico_social",
+              "medico_social_personnes_agees",
+              "medico_social_personnes_handicapees",
+              "fir",
+              "autres_prises_en_charge"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "total": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "objectif_initial",
+                  "objectif_rectifie",
+                  "constat",
+                  "taux_evolution_pct",
+                  "ecart_objectif_initial",
+                  "ecart_objectif_rectifie"
+                ],
+                "properties": {
+                  "base": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "constat": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "taux_evolution_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "soins_de_ville": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "objectif_initial",
+                  "objectif_rectifie",
+                  "constat",
+                  "taux_evolution_pct",
+                  "ecart_objectif_initial",
+                  "ecart_objectif_rectifie"
+                ],
+                "properties": {
+                  "base": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "constat": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "taux_evolution_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "etablissements_sante": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "objectif_initial",
+                  "objectif_rectifie",
+                  "constat",
+                  "taux_evolution_pct",
+                  "ecart_objectif_initial",
+                  "ecart_objectif_rectifie"
+                ],
+                "properties": {
+                  "base": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "constat": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "taux_evolution_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "medico_social": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "objectif_initial",
+                  "objectif_rectifie",
+                  "constat",
+                  "taux_evolution_pct",
+                  "ecart_objectif_initial",
+                  "ecart_objectif_rectifie"
+                ],
+                "properties": {
+                  "base": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "constat": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "taux_evolution_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "medico_social_personnes_agees": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "objectif_initial",
+                  "objectif_rectifie",
+                  "constat",
+                  "taux_evolution_pct",
+                  "ecart_objectif_initial",
+                  "ecart_objectif_rectifie"
+                ],
+                "properties": {
+                  "base": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "constat": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "taux_evolution_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "medico_social_personnes_handicapees": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "objectif_initial",
+                  "objectif_rectifie",
+                  "constat",
+                  "taux_evolution_pct",
+                  "ecart_objectif_initial",
+                  "ecart_objectif_rectifie"
+                ],
+                "properties": {
+                  "base": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "constat": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "taux_evolution_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "fir": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "objectif_initial",
+                  "objectif_rectifie",
+                  "constat",
+                  "taux_evolution_pct",
+                  "ecart_objectif_initial",
+                  "ecart_objectif_rectifie"
+                ],
+                "properties": {
+                  "base": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "constat": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "taux_evolution_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "autres_prises_en_charge": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "objectif_initial",
+                  "objectif_rectifie",
+                  "constat",
+                  "taux_evolution_pct",
+                  "ecart_objectif_initial",
+                  "ecart_objectif_rectifie"
+                ],
+                "properties": {
+                  "base": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "constat": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "taux_evolution_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_initial": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ecart_objectif_rectifie": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "objectifs": {
+      "type": "object",
+      "required": [
+        "2026",
+        "2026_prevision",
+        "2027"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "statut",
+          "valeurs",
+          "source"
+        ],
+        "properties": {
+          "statut": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "valeurs": {
+            "type": "object",
+            "required": [
+              "total",
+              "soins_de_ville",
+              "etablissements_sante",
+              "medico_social",
+              "medico_social_personnes_agees",
+              "medico_social_personnes_handicapees",
+              "fir",
+              "autres_prises_en_charge"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "total": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "soins_de_ville": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "etablissements_sante": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "medico_social": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "medico_social_personnes_agees": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "medico_social_personnes_handicapees": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "fir": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "autres_prises_en_charge": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "ruptures_de_champ": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "sous_objectifs",
+          "note"
+        ]
+      }
+    },
+    "controles_arrondis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "total_publie",
+          "somme_sous_objectifs",
+          "difference_arrondis"
+        ]
+      }
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vue",
+          "fichier",
+          "lecture"
+        ]
+      }
+    },
+    "regle": {
+      "type": "string"
+    }
+  }
+}

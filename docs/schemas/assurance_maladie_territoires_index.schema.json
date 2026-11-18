@@ -1,0 +1,1022 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/assurance_maladie_territoires_index.schema.json",
+  "title": "site/data/assurance_maladie_territoires/index.json : périmètre, nomenclatures, séries nationales, fichiers, liens, sources (pipeline/assurance_maladie_territoires.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "perimetre",
+    "annees",
+    "derniere_annee",
+    "annees_etablissements_prives",
+    "derniere_annee_etablissements_prives_complete",
+    "fichiers",
+    "departements",
+    "ordre",
+    "professions",
+    "postes_prescription",
+    "postes_etablissements_prives",
+    "statuts_etablissements_prives",
+    "correspondance_series_etablissements",
+    "france",
+    "definitions",
+    "comparabilite",
+    "hors_departements_etablissements_prives",
+    "controles_professions",
+    "liens",
+    "regle",
+    "limites",
+    "sources",
+    "sources_inaccessibles",
+    "recherche_publique"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "perimetre": {
+      "type": "string"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "derniere_annee": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+    },
+    "annees_etablissements_prives": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      }
+    },
+    "derniere_annee_etablissements_prives_complete": {
+      "anyOf": [
+        {
+          "$ref": "commun.schema.json#/$defs/annee_entier"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "fichiers": {
+      "type": "object",
+      "required": [
+        "ondam",
+        "departements"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ondam": {
+          "const": "assurance_maladie_territoires/ondam.json"
+        },
+        "departements": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^20[0-9]{2}$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^assurance_maladie_territoires/departements/20[0-9]{2}\\.json$"
+          }
+        }
+      }
+    },
+    "departements": {
+      "type": "array",
+      "minItems": 100,
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "nom"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+          },
+          "nom": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "cles",
+        "regle"
+      ]
+    },
+    "professions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "libelle_source"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "medecins",
+              "medecins_generalistes",
+              "medecins_specialistes",
+              "chirurgiens_dentistes",
+              "sages_femmes",
+              "auxiliaires_medicaux",
+              "infirmiers",
+              "masseurs_kinesitherapeutes",
+              "orthophonistes",
+              "orthoptistes",
+              "pedicures_podologues"
+            ]
+          }
+        }
+      }
+    },
+    "postes_prescription": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "code_source"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "medicaments",
+              "dispositifs_medicaux",
+              "biologie",
+              "soins_infirmiers",
+              "kinesitherapie",
+              "transports",
+              "indemnites_journalieres",
+              "autres",
+              "total"
+            ]
+          }
+        }
+      }
+    },
+    "postes_etablissements_prives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "sejours_mco",
+              "smr",
+              "psychiatrie",
+              "medicaments_dispositifs_en_sus",
+              "dialyse",
+              "hospitalisation_domicile",
+              "medico_social",
+              "imagerie",
+              "autres"
+            ]
+          }
+        }
+      }
+    },
+    "statuts_etablissements_prives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "prive_lucratif",
+              "prive_non_lucratif",
+              "public",
+              "autre"
+            ]
+          }
+        }
+      }
+    },
+    "correspondance_series_etablissements": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "libelle_source",
+          "poste"
+        ],
+        "properties": {
+          "libelle_source": {
+            "type": "string"
+          },
+          "poste": {
+            "enum": [
+              "sejours_mco",
+              "smr",
+              "psychiatrie",
+              "medicaments_dispositifs_en_sus",
+              "dialyse",
+              "hospitalisation_domicile",
+              "medico_social",
+              "imagerie",
+              "autres",
+              null
+            ]
+          }
+        }
+      }
+    },
+    "france": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^20[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "honoraires",
+          "prescriptions_medecins",
+          "etablissements_prives"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "honoraires": {
+            "type": "object",
+            "required": [
+              "medecins",
+              "medecins_generalistes",
+              "medecins_specialistes",
+              "chirurgiens_dentistes",
+              "sages_femmes",
+              "auxiliaires_medicaux",
+              "infirmiers",
+              "masseurs_kinesitherapeutes",
+              "orthophonistes",
+              "orthoptistes",
+              "pedicures_podologues"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "medecins": {
+                "type": "object",
+                "required": [
+                  "sans_depassement",
+                  "depassements"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sans_depassement": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "depassements": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "sans_depassement_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  },
+                  "depassements_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  }
+                }
+              },
+              "medecins_generalistes": {
+                "type": "object",
+                "required": [
+                  "sans_depassement",
+                  "depassements"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sans_depassement": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "depassements": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "sans_depassement_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  },
+                  "depassements_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  }
+                }
+              },
+              "medecins_specialistes": {
+                "type": "object",
+                "required": [
+                  "sans_depassement",
+                  "depassements"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sans_depassement": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "depassements": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "sans_depassement_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  },
+                  "depassements_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  }
+                }
+              },
+              "chirurgiens_dentistes": {
+                "type": "object",
+                "required": [
+                  "sans_depassement",
+                  "depassements"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sans_depassement": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "depassements": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "sans_depassement_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  },
+                  "depassements_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  }
+                }
+              },
+              "sages_femmes": {
+                "type": "object",
+                "required": [
+                  "sans_depassement",
+                  "depassements"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sans_depassement": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "depassements": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "sans_depassement_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  },
+                  "depassements_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  }
+                }
+              },
+              "auxiliaires_medicaux": {
+                "type": "object",
+                "required": [
+                  "sans_depassement",
+                  "depassements"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sans_depassement": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "depassements": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "sans_depassement_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  },
+                  "depassements_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  }
+                }
+              },
+              "infirmiers": {
+                "type": "object",
+                "required": [
+                  "sans_depassement",
+                  "depassements"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sans_depassement": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "depassements": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "sans_depassement_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  },
+                  "depassements_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  }
+                }
+              },
+              "masseurs_kinesitherapeutes": {
+                "type": "object",
+                "required": [
+                  "sans_depassement",
+                  "depassements"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sans_depassement": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "depassements": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "sans_depassement_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  },
+                  "depassements_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  }
+                }
+              },
+              "orthophonistes": {
+                "type": "object",
+                "required": [
+                  "sans_depassement",
+                  "depassements"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sans_depassement": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "depassements": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "sans_depassement_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  },
+                  "depassements_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  }
+                }
+              },
+              "orthoptistes": {
+                "type": "object",
+                "required": [
+                  "sans_depassement",
+                  "depassements"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sans_depassement": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "depassements": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "sans_depassement_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  },
+                  "depassements_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  }
+                }
+              },
+              "pedicures_podologues": {
+                "type": "object",
+                "required": [
+                  "sans_depassement",
+                  "depassements"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sans_depassement": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "depassements": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+                  },
+                  "sans_depassement_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  },
+                  "depassements_absence": {
+                    "enum": [
+                      "secret_statistique",
+                      "non_calcule",
+                      "absent"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "prescriptions_medecins": {
+            "type": "object",
+            "required": [
+              "medicaments",
+              "dispositifs_medicaux",
+              "biologie",
+              "soins_infirmiers",
+              "kinesitherapie",
+              "transports",
+              "indemnites_journalieres",
+              "autres",
+              "total"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "medicaments": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+              },
+              "dispositifs_medicaux": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+              },
+              "biologie": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+              },
+              "soins_infirmiers": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+              },
+              "kinesitherapie": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+              },
+              "transports": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+              },
+              "indemnites_journalieres": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+              },
+              "autres": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+              },
+              "total": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "euros ; null = absent à la source (motif dans <cle>_absence)"
+              },
+              "medicaments_absence": {
+                "enum": [
+                  "secret_statistique",
+                  "non_calcule",
+                  "absent"
+                ]
+              },
+              "dispositifs_medicaux_absence": {
+                "enum": [
+                  "secret_statistique",
+                  "non_calcule",
+                  "absent"
+                ]
+              },
+              "biologie_absence": {
+                "enum": [
+                  "secret_statistique",
+                  "non_calcule",
+                  "absent"
+                ]
+              },
+              "soins_infirmiers_absence": {
+                "enum": [
+                  "secret_statistique",
+                  "non_calcule",
+                  "absent"
+                ]
+              },
+              "kinesitherapie_absence": {
+                "enum": [
+                  "secret_statistique",
+                  "non_calcule",
+                  "absent"
+                ]
+              },
+              "transports_absence": {
+                "enum": [
+                  "secret_statistique",
+                  "non_calcule",
+                  "absent"
+                ]
+              },
+              "indemnites_journalieres_absence": {
+                "enum": [
+                  "secret_statistique",
+                  "non_calcule",
+                  "absent"
+                ]
+              },
+              "autres_absence": {
+                "enum": [
+                  "secret_statistique",
+                  "non_calcule",
+                  "absent"
+                ]
+              },
+              "total_absence": {
+                "enum": [
+                  "secret_statistique",
+                  "non_calcule",
+                  "absent"
+                ]
+              }
+            }
+          },
+          "etablissements_prives": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "total",
+              "postes",
+              "statuts"
+            ],
+            "additionalProperties": false,
+            "description": "montant remboursé par le régime général, euros ; null = année non couverte",
+            "properties": {
+              "total": {
+                "type": "integer"
+              },
+              "postes": {
+                "type": "object",
+                "required": [
+                  "sejours_mco",
+                  "smr",
+                  "psychiatrie",
+                  "medicaments_dispositifs_en_sus",
+                  "dialyse",
+                  "hospitalisation_domicile",
+                  "medico_social",
+                  "imagerie",
+                  "autres"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "sejours_mco": {
+                    "type": "integer"
+                  },
+                  "smr": {
+                    "type": "integer"
+                  },
+                  "psychiatrie": {
+                    "type": "integer"
+                  },
+                  "medicaments_dispositifs_en_sus": {
+                    "type": "integer"
+                  },
+                  "dialyse": {
+                    "type": "integer"
+                  },
+                  "hospitalisation_domicile": {
+                    "type": "integer"
+                  },
+                  "medico_social": {
+                    "type": "integer"
+                  },
+                  "imagerie": {
+                    "type": "integer"
+                  },
+                  "autres": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "statuts": {
+                "type": "object",
+                "required": [
+                  "prive_lucratif",
+                  "prive_non_lucratif",
+                  "public",
+                  "autre"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "prive_lucratif": {
+                    "type": "integer"
+                  },
+                  "prive_non_lucratif": {
+                    "type": "integer"
+                  },
+                  "public": {
+                    "type": "integer"
+                  },
+                  "autre": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "comparabilite": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "elements",
+          "lecture"
+        ]
+      }
+    },
+    "hors_departements_etablissements_prives": {
+      "type": "object"
+    },
+    "controles_professions": {
+      "type": "array"
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vue",
+          "fichier",
+          "lecture"
+        ]
+      }
+    },
+    "regle": {
+      "type": "string"
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "url",
+          "page",
+          "titre",
+          "producteur",
+          "millesime",
+          "licence",
+          "verdict"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "page": {
+            "type": "string",
+            "pattern": "^https://"
+          }
+        }
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "motif"
+        ]
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "conclusion",
+        "trouvailles"
+      ]
+    }
+  }
+}

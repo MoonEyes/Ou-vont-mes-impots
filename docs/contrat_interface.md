@@ -1105,6 +1105,34 @@ data/lake/secu/retraites_* (DREES EACR table A-Cadrage ; DREES emploi intérieur
 
 Règles propres : les effectifs des régimes ne s'additionnent pas (une personne qui perçoit des pensions de plusieurs régimes est comptée dans chacun ; seule la série `tous_regimes`, estimée par la DREES, compte chaque personne une fois) ; aucune masse de pensions n'est recalculée à partir d'un effectif et d'une moyenne ; une valeur absente à la source est null, jamais 0. Non couverts, faute de jeu ouvert (`sources_inaccessibles`) : cotisants des autres régimes, ressources par origine des régimes hors CAS Pensions, exécution du CAS Pensions ; les fichiers du Conseil d'orientation des retraites ne sont pas repris (réutilisation soumise à accord).
 
+### 2.41 Assurance maladie par territoire et ONDAM : `assurance_maladie_territoires/` (pipeline/assurance_maladie_territoires.py)
+
+Dépenses de l'assurance maladie vues de trois façons qui ne s'additionnent jamais : (1) exécution de l'ONDAM par sous-objectif (constats 2019 à 2025, objectif 2026 voté, prévision 2026, objectif 2027 proposé), tous régimes, en Md€ ; (2) par département et par an (2010 à 2025), honoraires des professionnels de santé libéraux par profession et montants prescrits par les médecins libéraux par poste (médicaments, dispositifs, biologie, soins infirmiers, kinésithérapie, transports, indemnités journalières, autres), en base de remboursement ; (3) par département (2024, 2025), montants remboursés par le régime général aux établissements de santé privés, par poste et par statut. L'ONDAM 2024 détaillé reste dans `secu/` (2.16) et les établissements dans `sante_etablissements/` (2.29) : liens seulement. Commandes : `python pipeline/assurance_maladie_territoires.py collecter` (réseau, curl ; un refus 401/403/429 est noté, jamais contourné ; les archives ES_R_<an>.zip sont lues en flux puis supprimées, seul l'agrégat reste dans l'entrepôt), `python pipeline/assurance_maladie_territoires.py produire` (sans réseau ; pdftotext pour revérifier les constats 2019 et 2020). Tests : `pytest tests/test_assurance_maladie_territoires.py`.
+
+```
+data/lake/assurance_maladie_territoires/ (Cnam data.ameli.fr honoraires et prescriptions ; agrégats amt_es_cpam_<an>.csv ;
+                                          classeurs de l'annexe ONDAM des PLFSS 2023 à 2027 ; annexes 7 des PLFSS 2021, 2022)
+     └─> pipeline/assurance_maladie_territoires.py ─> site/data/assurance_maladie_territoires/index.json, ondam.json,
+                                                      departements/<annee>.json
+                                                        └─ liens vers secu/arbre/racine.json, sante_etablissements/, prestations/
+```
+
+| Fichier, champ | Sens |
+|---|---|
+| `index.json`, `departements[]` | 101 départements (`code`, `nom`), ordre des codes (métropole puis outre-mer) ; jamais un classement par montant |
+| `index.json`, `fichiers` | `ondam` et `departements` (`{"2024": "assurance_maladie_territoires/departements/2024.json", ...}`) |
+| `index.json`, `professions[]`, `postes_prescription[]`, `postes_etablissements_prives[]`, `statuts_etablissements_prives[]` | nomenclatures (`id`, `libelle` pour l'affichage) ; `correspondance_series_etablissements` : série de la source vers poste (`null` pour une ligne « dont », sous-total jamais additionné) |
+| `index.json`, `france.<annee>` | même bloc qu'un département, valeurs « France entière » publiées par la Cnam (établissements privés : somme des départements et des codes `hors_departements_etablissements_prives`) |
+| `index.json`, `definitions`, `comparabilite[]`, `limites[]` | textes à afficher près des chiffres : base de remboursement n'est pas montant remboursé ; un même euro peut être à la fois dans les prescriptions d'un médecin et dans les honoraires d'un kinésithérapeute ; localisation au cabinet du professionnel |
+| `departements/<annee>.json`, `departements[]` | `code`, `nom`, `honoraires.<profession>` (`sans_depassement`, `depassements`, euros), `prescriptions_medecins.<poste>` (euros), `etablissements_prives` (`total`, `postes`, `statuts`, euros ; `null` hors 2024 et 2025) ; `etablissements_prives_mois` et `_complet` : mois couverts |
+| valeurs absentes | `null`, jamais 0, avec `<cle>_absence` : `secret_statistique` (« NS », moins de 5 professionnels), `non_calcule` (« NC »), `absent` |
+| `ondam.json`, `sous_objectifs[]` | `id` (`total`, `soins_de_ville`, `etablissements_sante`, `medico_social` et ses deux composantes `medico_social_personnes_agees`, `medico_social_personnes_handicapees` avec `parent`, `fir`, `autres_prises_en_charge`), `libelle`, `composition` |
+| `ondam.json`, `constats.<annee>` | `source`, `document`, `valeurs.<id>` : `base` (si publiée), `objectif_initial`, `objectif_rectifie`, `constat`, `taux_evolution_pct`, `ecart_objectif_initial`, `ecart_objectif_rectifie` (Md€, tels que publiés, sans recalcul) |
+| `ondam.json`, `objectifs` | `2026` (voté), `2026_prevision` (PLFSS 2027), `2027` (proposé, non voté ; total médico-social non publié : null) |
+| `ondam.json`, `ruptures_de_champ[]` | médico-social (champ élargi en 2021), FIR et investissement (2021, 2022), dépenses de crise sanitaire 2020 à 2024 : à signaler sur toute courbe |
+
+Règles propres : l'écran ne doit jamais additionner ONDAM, honoraires, prescriptions et établissements privés, ni rapporter ces montants à la population pour classer les départements (aucune population n'est fournie ici) ; une année d'établissements privés incomplète est signalée par ses mois ; aucun professionnel ni établissement n'est nommé. Non couverts, faute de jeu ouvert (`sources_inaccessibles`) : hôpitaux publics par département, soins de ville remboursés par caisse primaire ; Open DAMIR (13 zones seulement) non intégré ; assurance-maladie.ameli.fr refuse les scripts (403, non contourné). Licence ODbL pour les jeux data.ameli.fr (partage à l'identique).
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.

@@ -1548,6 +1548,44 @@
     "data/lake/sante/sirene_categories_juridiques.json"
    ],
    "octets_sources": 218186285
+  },
+  "assurance_maladie_territoires": {
+   "sources": {
+    "amt_ameli_honoraires": [
+     "data/lake/assurance_maladie_territoires/amt_ameli_honoraires.csv"
+    ],
+    "amt_ameli_prescriptions": [
+     "data/lake/assurance_maladie_territoires/amt_ameli_prescriptions.csv"
+    ],
+    "amt_plfss2027_annexe_ondam": [
+     "data/lake/assurance_maladie_territoires/amt_plfss2027_annexe_ondam.xlsx"
+    ],
+    "amt_plfss2026_annexe_ondam": [
+     "data/lake/assurance_maladie_territoires/amt_plfss2026_annexe_ondam.xlsx"
+    ],
+    "amt_plfss2025_annexe_ondam": [
+     "data/lake/assurance_maladie_territoires/amt_plfss2025_annexe_ondam.xlsx"
+    ],
+    "amt_plfss2024_annexe_ondam": [
+     "data/lake/assurance_maladie_territoires/amt_plfss2024_annexe_ondam.xlsx"
+    ],
+    "amt_plfss2023_annexe_ondam": [
+     "data/lake/assurance_maladie_territoires/amt_plfss2023_annexe_ondam.xlsx"
+    ],
+    "amt_plfss2022_annexe7": [
+     "data/lake/assurance_maladie_territoires/amt_plfss2022_annexe7.pdf"
+    ],
+    "amt_plfss2021_annexe7": [
+     "data/lake/assurance_maladie_territoires/amt_plfss2021_annexe7.pdf"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/assurance_maladie_territoires/amt_es_cpam_2024.csv",
+    "data/lake/assurance_maladie_territoires/amt_es_cpam_2025.csv"
+   ],
+   "octets_sources": 41989470,
+   "note": "relevé à la main (lecture des fichiers ouverts par produire) ; les agrégats amt_es_cpam_<an>.csv sont écrits par la collecte du module à partir des archives ES_R_<an>.zip, supprimées ensuite"
   }
  },
  "urls": {
@@ -1986,6 +2024,17 @@
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2013_81e6d11b.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151646/hospidiag_opendata_2013.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2014_a2ad446d.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151545/hospidiag_opendata_2014.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2015_289b8533.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151239/hospidiag_opendata_2015.xlsx",
-  "data/lake/secu/secu_atih_finances_ebnl.parquet": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/isf-finance-ebnl-public/exports/parquet"
+  "data/lake/secu/secu_atih_finances_ebnl.parquet": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/isf-finance-ebnl-public/exports/parquet",
+  "data/lake/assurance_maladie_territoires/amt_ameli_honoraires.csv": "https://data.ameli.fr/api/explore/v2.1/catalog/datasets/honoraires/exports/csv?delimiter=%3B",
+  "data/lake/assurance_maladie_territoires/amt_ameli_prescriptions.csv": "https://data.ameli.fr/api/explore/v2.1/catalog/datasets/prescriptions/exports/csv?delimiter=%3B&where=profession_sante%3D%27Ensemble%20des%20m%C3%A9decins%27",
+  "data/lake/assurance_maladie_territoires/amt_plfss2027_annexe_ondam.xlsx": "https://www.securite-sociale.fr/files/live/sites/SSFR/files/medias/PLFSS/2027/Annexe-5-Donnees-PLFSS-2027.xlsx",
+  "data/lake/assurance_maladie_territoires/amt_plfss2026_annexe_ondam.xlsx": "https://www.securite-sociale.fr/files/live/sites/SSFR/files/medias/PLFSS/2026/Annexe%205%20Tableaux%20PLFSS%202026%20(1).xlsx",
+  "data/lake/assurance_maladie_territoires/amt_plfss2025_annexe_ondam.xlsx": "https://contrib.securite-sociale.fr/files/live/sites/SSFR/files/medias/PLFSS/2025/Annexe%205%20Tableaux%202025.xlsx",
+  "data/lake/assurance_maladie_territoires/amt_plfss2024_annexe_ondam.xlsx": "https://www.securite-sociale.fr/files/live/sites/SSFR/files/medias/PLFSS/2024/Annexe%205_Donn%c3%a9es.xlsx",
+  "data/lake/assurance_maladie_territoires/amt_plfss2023_annexe_ondam.xlsx": "https://www.securite-sociale.fr/files/live/sites/SSFR/files/medias/PLFSS/2023/Annexe%205_Tableaux.xlsx",
+  "data/lake/assurance_maladie_territoires/amt_plfss2022_annexe7.pdf": "https://www.securite-sociale.fr/files/live/sites/SSFR/files/medias/PLFSS/2022/PLFSS-2022-Annexe%207.pdf",
+  "data/lake/assurance_maladie_territoires/amt_plfss2021_annexe7.pdf": "https://www.securite-sociale.fr/files/live/sites/SSFR/files/medias/PLFSS/2021/PLFSS-2021-ANNEXE%207.pdf",
+  "data/lake/assurance_maladie_territoires/amt_es_cpam_2024.csv": "https://open-data-assurance-maladie.ameli.fr/depenses/download.php?Dir_Rep=ES_Tables_R_Avec_Libelle&Annee=2024",
+  "data/lake/assurance_maladie_territoires/amt_es_cpam_2025.csv": "https://open-data-assurance-maladie.ameli.fr/depenses/download.php?Dir_Rep=ES_Tables_R_Avec_Libelle&Annee=2025"
  }
 }

@@ -252,6 +252,10 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # assurance maladie par territoire : départements, ONDAM par sous-objectif (pipeline/assurance_maladie_territoires.py)
+    ("assurance_maladie_territoires_index.schema.json", "assurance_maladie_territoires/index.json", "existant"),
+    ("assurance_maladie_territoires_ondam.schema.json", "assurance_maladie_territoires/ondam.json", "existant"),
+    ("assurance_maladie_territoires_departements.schema.json", "assurance_maladie_territoires/departements/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
