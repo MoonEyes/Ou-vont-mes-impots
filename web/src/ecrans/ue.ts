@@ -93,6 +93,7 @@ ${
       : ''
 }
 <p class="liens-sortie"><a href="#/explorer/etat">Le budget de l’État, dont la contribution européenne</a></p>
+<p class="liens-sortie"><a href="#/explorer/comparaison-europe">Autre sujet : la dépense publique de la France comparée aux autres pays de l’Union</a></p>
 ${partPersonnelle()}`
   cible.querySelector<HTMLSelectElement>('#dep-ue-choix')?.addEventListener('change', (e) => {
     location.hash = lien('/explorer/ue', { dep: (e.target as HTMLSelectElement).value })

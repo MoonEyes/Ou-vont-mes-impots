@@ -2562,3 +2562,17 @@ td.nombre {
   border-radius: var(--rayon);
   padding: 0.25rem 1.5rem;
 }
+/* comparaison-europe */
+.tableau-comparaison td.barre-cellule {
+  min-width: 6rem;
+  width: 35%;
+}
+.tableau-comparaison td.barre-cellule .barre {
+  display: block;
+  margin: 0;
+}
+/* La France est repérée par un trait (forme), jamais par une couleur propre. */
+.tableau-comparaison tr.repere-france > * {
+  border-top: var(--trait) solid var(--contour);
+  border-bottom: var(--trait) solid var(--contour);
+}
