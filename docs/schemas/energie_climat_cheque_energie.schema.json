@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/energie_climat_cheque_energie.schema.json",
+  "title": "site/data/energie_climat/cheque_energie.json : chèque énergie, crédits nationaux du programme 174 ; départements non publiés (pipeline/energie_climat.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "national",
+    "departements",
+    "departements_mention",
+    "nombre_cheques",
+    "nombre_cheques_mention",
+    "sources_inaccessibles",
+    "note"
+  ],
+  "properties": {
+    "national": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^20[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "nature",
+            "source_plf",
+            "code",
+            "libelle",
+            "eur"
+          ],
+          "properties": {
+            "nature": {
+              "enum": [
+                "execution",
+                "lfi",
+                "plf"
+              ]
+            },
+            "source_plf": {
+              "$ref": "commun.schema.json#/$defs/annee_entier"
+            },
+            "eur": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "departements": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "departements_mention": {
+      "type": "string",
+      "minLength": 10
+    },
+    "nombre_cheques": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "nombre_cheques_mention": {
+      "type": "string"
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "motif"
+        ]
+      }
+    },
+    "note": {
+      "type": "string"
+    }
+  }
+}

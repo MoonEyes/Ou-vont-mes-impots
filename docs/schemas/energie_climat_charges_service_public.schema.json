@@ -1,0 +1,1205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/energie_climat_charges_service_public.schema.json",
+  "title": "site/data/energie_climat/charges_service_public.json : charges de service public de l'énergie par action, délibérations de la CRE (pipeline/energie_climat.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "annees",
+    "nomenclature",
+    "natures",
+    "definitions",
+    "evaluations",
+    "series",
+    "regle"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string",
+      "pattern": "^millions d'euros"
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 4
+    },
+    "nomenclature": {
+      "type": "array",
+      "minItems": 22,
+      "items": {
+        "type": "object",
+        "required": [
+          "cle",
+          "libelle",
+          "parent",
+          "action_programme_345"
+        ],
+        "properties": {
+          "cle": {
+            "enum": [
+              "eolien_terrestre",
+              "eolien_mer",
+              "photovoltaique",
+              "bioenergies",
+              "autres_energies",
+              "enr_electriques",
+              "biomethane",
+              "zni_transition",
+              "zni_solidarite",
+              "zni",
+              "cogeneration",
+              "effacement",
+              "fsl",
+              "afficheur",
+              "autres_sociaux",
+              "dispositifs_sociaux",
+              "frais_gestion",
+              "sous_total_hors_mesures",
+              "mesures_electricite",
+              "mesures_gaz",
+              "mesures_exceptionnelles",
+              "total"
+            ]
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parent": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "action_programme_345": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^345-[0-9]{2}$"
+          }
+        }
+      }
+    },
+    "natures": {
+      "type": "object",
+      "required": [
+        "constatees",
+        "prevision_mise_a_jour",
+        "previsionnelles"
+      ]
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "evaluations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "deliberation",
+          "date",
+          "source",
+          "colonnes",
+          "sous_total_recalcule",
+          "note",
+          "lignes"
+        ],
+        "properties": {
+          "deliberation": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "source": {
+            "type": "string",
+            "pattern": "^cre_cspe_20[0-9]{2}$"
+          },
+          "colonnes": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "required": [
+                "annee",
+                "nature"
+              ],
+              "properties": {
+                "annee": {
+                  "$ref": "commun.schema.json#/$defs/annee_entier"
+                },
+                "nature": {
+                  "enum": [
+                    "constatees",
+                    "prevision_mise_a_jour",
+                    "previsionnelles"
+                  ]
+                }
+              }
+            }
+          },
+          "sous_total_recalcule": {
+            "type": "boolean"
+          },
+          "note": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "lignes": {
+            "type": "object",
+            "required": [
+              "eolien_terrestre",
+              "eolien_mer",
+              "photovoltaique",
+              "bioenergies",
+              "autres_energies",
+              "enr_electriques",
+              "biomethane",
+              "zni_transition",
+              "zni_solidarite",
+              "zni",
+              "cogeneration",
+              "effacement",
+              "fsl",
+              "afficheur",
+              "autres_sociaux",
+              "dispositifs_sociaux",
+              "frais_gestion",
+              "sous_total_hors_mesures",
+              "mesures_electricite",
+              "mesures_gaz",
+              "mesures_exceptionnelles",
+              "total"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "eolien_terrestre": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "eolien_mer": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "photovoltaique": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "bioenergies": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "autres_energies": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "enr_electriques": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "biomethane": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "zni_transition": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "zni_solidarite": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "zni": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "cogeneration": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "effacement": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "fsl": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "afficheur": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "autres_sociaux": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "dispositifs_sociaux": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "frais_gestion": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "sous_total_hors_mesures": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "mesures_electricite": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "mesures_gaz": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "mesures_exceptionnelles": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "total": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "series": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^20[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "derniere_evaluation",
+          "lignes"
+        ],
+        "properties": {
+          "derniere_evaluation": {
+            "type": "object",
+            "required": [
+              "deliberation",
+              "nature"
+            ]
+          },
+          "lignes": {
+            "type": "object",
+            "required": [
+              "eolien_terrestre",
+              "eolien_mer",
+              "photovoltaique",
+              "bioenergies",
+              "autres_energies",
+              "enr_electriques",
+              "biomethane",
+              "zni_transition",
+              "zni_solidarite",
+              "zni",
+              "cogeneration",
+              "effacement",
+              "fsl",
+              "afficheur",
+              "autres_sociaux",
+              "dispositifs_sociaux",
+              "frais_gestion",
+              "sous_total_hors_mesures",
+              "mesures_electricite",
+              "mesures_gaz",
+              "mesures_exceptionnelles",
+              "total"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "eolien_terrestre": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "eolien_mer": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "photovoltaique": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "bioenergies": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "autres_energies": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "enr_electriques": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "biomethane": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "zni_transition": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "zni_solidarite": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "zni": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "cogeneration": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "effacement": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "fsl": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "afficheur": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "autres_sociaux": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "dispositifs_sociaux": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "frais_gestion": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "sous_total_hors_mesures": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "mesures_electricite": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "mesures_gaz": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "mesures_exceptionnelles": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "total": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "deliberation",
+                    "date",
+                    "nature",
+                    "m_eur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "deliberation": {
+                      "type": "string",
+                      "pattern": "^20[0-9]{2}-[0-9]+$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "nature": {
+                      "enum": [
+                        "constatees",
+                        "prevision_mise_a_jour",
+                        "previsionnelles"
+                      ]
+                    },
+                    "m_eur": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "regle": {
+      "type": "string"
+    }
+  }
+}

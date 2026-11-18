@@ -1,0 +1,259 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/energie_climat_boucliers.schema.json",
+  "title": "site/data/energie_climat/boucliers.json : boucliers tarifaires et amortisseurs, CRE et action 345-17 du budget, côte à côte (pipeline/energie_climat.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "perimetre",
+    "cre",
+    "budget_action_345_17",
+    "comparaison",
+    "note",
+    "lecture_ecart"
+  ],
+  "properties": {
+    "cre": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^20[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "electricite",
+          "gaz",
+          "total"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "electricite": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "deliberation",
+                "date",
+                "nature",
+                "m_eur"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "deliberation": {
+                  "type": "string",
+                  "pattern": "^20[0-9]{2}-[0-9]+$"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                "nature": {
+                  "enum": [
+                    "constatees",
+                    "prevision_mise_a_jour",
+                    "previsionnelles"
+                  ]
+                },
+                "m_eur": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "gaz": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "deliberation",
+                "date",
+                "nature",
+                "m_eur"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "deliberation": {
+                  "type": "string",
+                  "pattern": "^20[0-9]{2}-[0-9]+$"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                "nature": {
+                  "enum": [
+                    "constatees",
+                    "prevision_mise_a_jour",
+                    "previsionnelles"
+                  ]
+                },
+                "m_eur": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "total": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "deliberation",
+                "date",
+                "nature",
+                "m_eur"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "deliberation": {
+                  "type": "string",
+                  "pattern": "^20[0-9]{2}-[0-9]+$"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                "nature": {
+                  "enum": [
+                    "constatees",
+                    "prevision_mise_a_jour",
+                    "previsionnelles"
+                  ]
+                },
+                "m_eur": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "budget_action_345_17": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "nature",
+          "source_plf",
+          "lignes",
+          "total_eur",
+          "hors_carburants_eur"
+        ],
+        "properties": {
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "nature": {
+            "enum": [
+              "execution",
+              "lfi",
+              "plf"
+            ]
+          },
+          "source_plf": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "total_eur": {
+            "type": "number"
+          },
+          "hors_carburants_eur": {
+            "type": "number"
+          },
+          "lignes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "libelle",
+                "eur",
+                "champ_cre"
+              ],
+              "properties": {
+                "eur": {
+                  "type": "number"
+                },
+                "champ_cre": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "comparaison": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "cre_m_eur",
+          "cre_deliberation",
+          "cre_nature",
+          "budget_execution_m_eur",
+          "budget_source_plf",
+          "ecart_m_eur",
+          "ecart_pct"
+        ],
+        "properties": {
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "cre_m_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "budget_execution_m_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "ecart_m_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "ecart_pct": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "budget_source_plf": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "perimetre": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "lecture_ecart": {
+      "type": "string"
+    }
+  }
+}

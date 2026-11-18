@@ -4398,6 +4398,66 @@
    "titre": "AFIT France, budgets executes 2022 a 2025 et budget initial 2026 (PDF d'une page, recettes et depenses par mode) (pipeline/transports.py)",
    "licence": "Licence Ouverte (mentions legales du site afit-france.fr)",
    "module": "pipeline/transports.py"
+  },
+  {
+   "id": "energie_climat_budget_vert_plf2024",
+   "domaine": "energie_climat",
+   "type": "url",
+   "format": "json",
+   "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/budgetvert_plf2024_opendata_vf/exports/json?where=numero_programme%3D174%20or%20numero_programme%3D345",
+   "titre": "Direction du budget, budget vert du PLF 2024 (rapport sur l'impact environnemental du budget) : lignes des programmes 174 et 345, colonnes execution 2022, LFI 2023 et PLF 2024 en credits de paiement (pipeline/energie_climat.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/energie_climat.py"
+  },
+  {
+   "id": "energie_climat_budget_vert_plf2025",
+   "domaine": "energie_climat",
+   "type": "url",
+   "format": "json",
+   "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf25-budget-vert/exports/json?where=numero_programme%3D174%20or%20numero_programme%3D345",
+   "titre": "Direction du budget, budget vert du PLF 2025 (rapport sur l'impact environnemental du budget) : lignes des programmes 174 et 345, colonnes execution 2023, LFI 2024 et PLF 2025 en credits de paiement (pipeline/energie_climat.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/energie_climat.py"
+  },
+  {
+   "id": "energie_climat_budget_vert_plf2026",
+   "domaine": "energie_climat",
+   "type": "url",
+   "format": "json",
+   "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf-2026-budget-vert/exports/json?where=numero_programme%3D174%20or%20numero_programme%3D345",
+   "titre": "Direction du budget, budget vert du PLF 2026 (rapport sur l'impact environnemental du budget) : lignes des programmes 174 et 345, colonnes execution 2024, LFI 2025 et PLF 2026 en credits de paiement (pipeline/energie_climat.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/energie_climat.py"
+  },
+  {
+   "id": "energie_climat_cre_cspe_2024",
+   "domaine": "energie_climat",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.cre.fr/fileadmin/Documents/Deliberations/2024/240711_2024-139_CSPE_2024-2025.pdf",
+   "titre": "Commission de regulation de l'energie, deliberation n 2024-139 du 2024-07-11 relative a l'evaluation des charges de service public de l'energie a compenser en 2025 et a leur reevaluation pour 2024 : tableau recapitulatif des charges par action (2022 a 2025) (pipeline/energie_climat.py)",
+   "licence": "document administratif public",
+   "module": "pipeline/energie_climat.py"
+  },
+  {
+   "id": "energie_climat_cre_cspe_2025",
+   "domaine": "energie_climat",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.cre.fr/fileadmin/Documents/Deliberations/2025/250710_2025-180_CSPE_2025-2026.pdf",
+   "titre": "Commission de regulation de l'energie, deliberation n 2025-180 du 2025-07-10 relative a l'evaluation des charges de service public de l'energie a compenser en 2026 et a leur reevaluation pour 2025 : tableau recapitulatif des charges par action (2023 a 2026) (pipeline/energie_climat.py)",
+   "licence": "document administratif public",
+   "module": "pipeline/energie_climat.py"
+  },
+  {
+   "id": "energie_climat_cre_cspe_2026",
+   "domaine": "energie_climat",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.cre.fr/fileadmin/Documents/Deliberations/2026/260715_2026-149_CSPE_2026-2027.pdf",
+   "titre": "Commission de regulation de l'energie, deliberation n 2026-149 du 2026-07-15 relative a l'evaluation des charges de service public de l'energie a compenser en 2027 et a leur reevaluation pour 2026 : tableau recapitulatif des charges par action (2024 a 2027) (pipeline/energie_climat.py)",
+   "licence": "document administratif public",
+   "module": "pipeline/energie_climat.py"
   }
  ],
  "non_collectables": [

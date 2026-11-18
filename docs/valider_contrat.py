@@ -311,6 +311,12 @@ FICHIERS = [
     ("transports_ferroviaire.schema.json", "transports/ferroviaire.json", "existant"),
     ("transports_programmes.schema.json", "transports/programmes.json", "existant"),
     ("transports_versement_mobilite.schema.json", "transports/versement_mobilite.json", "existant"),
+    # énergie et climat : charges de service public (CRE), boucliers, programmes 345 et 174, chèque énergie (pipeline/energie_climat.py)
+    ("energie_climat_index.schema.json", "energie_climat/index.json", "existant"),
+    ("energie_climat_charges_service_public.schema.json", "energie_climat/charges_service_public.json", "existant"),
+    ("energie_climat_boucliers.schema.json", "energie_climat/boucliers.json", "existant"),
+    ("energie_climat_budget.schema.json", "energie_climat/budget.json", "existant"),
+    ("energie_climat_cheque_energie.schema.json", "energie_climat/cheque_energie.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

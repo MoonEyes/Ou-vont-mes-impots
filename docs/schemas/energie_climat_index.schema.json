@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/energie_climat_index.schema.json",
+  "title": "site/data/energie_climat/index.json : énergie et climat, fichiers, chiffres clés, liens, sources (pipeline/energie_climat.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "avertissement",
+    "fichiers",
+    "chiffres_cles",
+    "liens",
+    "cas_transition_energetique",
+    "regle",
+    "limites",
+    "sources",
+    "sources_inaccessibles",
+    "recherche_publique"
+  ],
+  "properties": {
+    "fichiers": {
+      "type": "object",
+      "required": [
+        "charges_service_public",
+        "boucliers",
+        "budget",
+        "cheque_energie"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "charges_service_public": {
+          "const": "energie_climat/charges_service_public.json"
+        },
+        "boucliers": {
+          "const": "energie_climat/boucliers.json"
+        },
+        "budget": {
+          "const": "energie_climat/budget.json"
+        },
+        "cheque_energie": {
+          "const": "energie_climat/cheque_energie.json"
+        }
+      }
+    },
+    "chiffres_cles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "annee",
+          "m_eur",
+          "nature",
+          "deliberation",
+          "libelle"
+        ],
+        "properties": {
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "m_eur": {
+            "type": "number"
+          },
+          "nature": {
+            "enum": [
+              "constatees",
+              "prevision_mise_a_jour",
+              "previsionnelles"
+            ]
+          }
+        }
+      }
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vue",
+          "fichier",
+          "id",
+          "programme",
+          "nom",
+          "lecture"
+        ],
+        "properties": {
+          "vue": {
+            "enum": [
+              "arbre_etat",
+              "programmes",
+              "realisations",
+              "tracabilite"
+            ]
+          },
+          "fichier": {
+            "type": "string",
+            "pattern": "\\.json$"
+          }
+        }
+      }
+    },
+    "cas_transition_energetique": {
+      "type": "object",
+      "required": [
+        "applicable",
+        "lecture"
+      ]
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "entrepot",
+          "url",
+          "page",
+          "titre",
+          "producteur",
+          "millesime",
+          "licence",
+          "verdict"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "page": {
+            "type": "string",
+            "pattern": "^https://"
+          }
+        }
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "motif"
+        ]
+      }
+    },
+    "recherche_publique": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "nom",
+          "url",
+          "licence",
+          "dernier_depot",
+          "verdict"
+        ]
+      }
+    }
+  }
+}
