@@ -41,6 +41,15 @@ from urllib.parse import urlencode
 import requests
 
 ICI = Path(__file__).resolve().parent
+try:
+    from integrite import IntegriteInvalide, verifier_fichier  # collecte/ dans sys.path (script, tests, pipelines)
+except ImportError:  # import par un autre chemin : chargement direct du module voisin
+    import importlib.util as _ilu
+    _spec = _ilu.spec_from_file_location("integrite", ICI / "integrite.py")
+    _integrite = _ilu.module_from_spec(_spec)
+    sys.modules.setdefault("integrite", _integrite)
+    _spec.loader.exec_module(_integrite)
+    IntegriteInvalide, verifier_fichier = _integrite.IntegriteInvalide, _integrite.verifier_fichier
 ROOT = ICI.parent
 LAKE = ROOT / "data" / "lake"
 MANIFEST = LAKE / "manifest.json"
@@ -203,17 +212,39 @@ def _hash_fichier(chemin: Path) -> tuple[hashlib._Hash, int]:
     return h, n
 
 
+def _octets_reseau(r) -> int | None:
+    """Octets reellement lus sur le reseau pour cette reponse (avant decompression), si connus."""
+    brut = getattr(r, "raw", None)
+    try:
+        return int(brut.tell()) if brut is not None and callable(getattr(brut, "tell", None)) else None
+    except Exception:
+        return None
+
+
+def _total_content_range(r) -> int | None:
+    m = re.match(r"bytes \d+-\d+/(\d+)", r.headers.get("Content-Range", ""))
+    return int(m.group(1)) if m else None
+
+
 def telecharger(client: Client, url: str, cible: Path, *, deadline: float | None = None,
-                ancien: dict | None = None, essais_flux: int = 6, max_octets: int | None = None) -> dict:
-    """Telecharge url vers cible (fichier .part puis renommage atomique).
+                ancien: dict | None = None, essais_flux: int = 5, max_octets: int | None = None) -> dict:
+    """Telecharge url vers cible (fichier .part, controle d'integrite, puis renommage atomique).
 
     - requete conditionnelle si `ancien` (entree de fichier du manifeste) porte etag/last_modified
       et que le fichier existe : un 304 renvoie {"inchange": True} sans rien ecrire ;
     - reprise d'un .part interrompu par Range + If-Range (validateur memorise a cote du .part) ;
+    - controle d'integrite avant renommage (collecte/integrite.py) : taille egale a Content-Length
+      (et au total de Content-Range en reprise), format coherent avec l'extension (PDF %PDF/%%EOF,
+      ZIP/XLSX lisible, JSON analysable, CSV a derniere ligne complete, parquet PAR1...) ;
+    - jusqu'a `essais_flux` essais espaces, puis echec explicite (IntegriteInvalide ou RuntimeError) :
+      la version deja presente dans `cible` n'est jamais remplacee par un fichier invalide ;
+    - 401/403 : echec immediat ; 429 : seulement les reprises polies du Client (Retry-After), jamais
+      de contournement ;
     - le budget de temps est verifie a chaque bloc."""
     cible.parent.mkdir(parents=True, exist_ok=True)
     tmp = cible.with_name(cible.name + ".part")
     meta_tmp = cible.with_name(cible.name + ".part.json")
+    motif = None
     for tentative in range(1, essais_flux + 1):
         headers = {}
         if ancien and (cible.exists() or STOCKE_A_DISTANCE) and not tmp.exists():
@@ -238,6 +269,7 @@ def telecharger(client: Client, url: str, cible: Path, *, deadline: float | None
                     mode = "ab"
                 else:
                     h, n, mode = hashlib.sha256(), 0, "wb"
+                debut_requete = n
                 meta_tmp.write_text(json.dumps({"url": url, "validateur": validateur}))
                 with tmp.open(mode) as f:
                     for bloc in r.iter_content(1 << 20):
@@ -249,24 +281,41 @@ def telecharger(client: Client, url: str, cible: Path, *, deadline: float | None
                         if max_octets and n > max_octets:
                             raise TropLourd(f"plus de {max_octets / 1e6:.0f} Mo")
                 attendu = r.headers.get("Content-Length")
-                if attendu and r.status_code == 200 and int(attendu) != n and "gzip" not in r.headers.get("Content-Encoding", ""):
-                    raise requests.exceptions.ChunkedEncodingError(f"transfert tronque {n}/{attendu}")
+                if attendu and attendu.isdigit():
+                    # Content-Length compte les octets du reseau (compresses si Content-Encoding)
+                    lus = _octets_reseau(r)
+                    if lus is None and not r.headers.get("Content-Encoding"):
+                        lus = n - debut_requete
+                    if lus is not None and lus != int(attendu):
+                        raise requests.exceptions.ChunkedEncodingError(f"transfert tronque {lus}/{attendu} octets")
+            total = _total_content_range(r) if r.status_code == 206 and not r.headers.get("Content-Encoding") else None
+            verifier_fichier(tmp, nom=cible.name, octets_attendus=total)
             break
         except TropLourd:
             tmp.unlink(missing_ok=True)
             meta_tmp.unlink(missing_ok=True)
             raise
+        except IntegriteInvalide as exc:
+            # contenu complet selon le reseau mais invalide : on repart de zero (pas de reprise Range)
+            tmp.unlink(missing_ok=True)
+            meta_tmp.unlink(missing_ok=True)
+            motif = exc
+            if tentative == essais_flux:
+                raise IntegriteInvalide(f"fichier incomplet ou invalide apres {essais_flux} essais, "
+                                        f"version precedente conservee : {exc}") from exc
+            if deadline and time.time() + 5 * tentative > deadline:
+                raise DelaiDepasse(f"budget de temps epuise apres fichier invalide ({exc})") from exc
+            time.sleep(5 * tentative)
         except (requests.exceptions.ChunkedEncodingError, requests.exceptions.ConnectionError,
                 requests.exceptions.Timeout) as exc:
+            motif = exc
             if tentative == essais_flux:
-                raise RuntimeError(f"transfert interrompu {essais_flux} fois : {exc}") from exc
+                raise RuntimeError(f"transfert interrompu {essais_flux} fois, version precedente conservee : {exc}") from exc
             if deadline and time.time() + 5 * tentative > deadline:
                 raise DelaiDepasse("budget de temps epuise apres coupure") from exc
             time.sleep(5 * tentative)
-    if n == 0:
-        tmp.unlink(missing_ok=True)
-        meta_tmp.unlink(missing_ok=True)
-        raise RuntimeError("fichier vide")
+    else:  # pragma: no cover (essais_flux < 1)
+        raise RuntimeError(f"aucun essai de telechargement : {motif}")
     tmp.replace(cible)
     meta_tmp.unlink(missing_ok=True)
     return {"octets": n, "sha256": h.hexdigest(), "etag": etag, "last_modified": lm}
@@ -585,8 +634,10 @@ def collecter(client: Client, src: dict, ancien: dict, portails: dict, *, timeou
             except Exception as exc:
                 if len(plan["fichiers"]) == 1:
                     raise
-                # une ressource en echec (lien mort, page web, refus) n'annule pas les autres
+                # une ressource en echec (lien mort, page web, refus, fichier tronque) n'annule pas les autres
                 entree.setdefault("erreurs_fichiers", []).append({"url": spec["url"], "erreur": str(exc)[:300]})
+                if vieux and cible.exists():  # la version precedente (validee) reste en place : on garde sa trace
+                    entree["fichiers"].append({**vieux, "change": False, "donnees_anterieures": True})
                 continue
             if res.get("inchange"):
                 entree["fichiers"].append({**vieux, "change": False, "verifie_le": maintenant(),

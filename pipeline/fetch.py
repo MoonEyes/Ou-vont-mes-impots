@@ -9,6 +9,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -21,36 +22,75 @@ CONFIG = json.loads((Path(__file__).parent / "sources.json").read_text(encoding=
 HEADERS = {"User-Agent": "ou-vont-mes-impots/0.1 (projet citoyen open source)"}
 
 
-def get(url: str, params: dict | None = None, tries: int = 6) -> requests.Response:
-    """GET avec reprises exponentielles (les API publiques coupent parfois)."""
+def _integrite():
+    """collecte/integrite.py, charge par son chemin (pas de collecte/ dans sys.path ici)."""
+    import importlib.util
+    mod = sys.modules.get("integrite")
+    if mod is None:
+        spec = importlib.util.spec_from_file_location("integrite", ROOT / "collecte" / "integrite.py")
+        mod = importlib.util.module_from_spec(spec)
+        sys.modules["integrite"] = mod
+        spec.loader.exec_module(mod)
+    return mod
+
+
+def get(url: str, params: dict | None = None, tries: int = 5, *, controle: str | None = None) -> requests.Response:
+    """GET avec reprises espacees (les API publiques coupent parfois) et controle d'integrite.
+
+    Une reponse n'est acceptee que si son corps a la taille annoncee par Content-Length (hors
+    compression) et, si `controle` donne un format ("json", "csv", "pdf", "zip"...), si elle est
+    complete pour ce format (collecte/integrite.py). Sinon nouvel essai, puis echec explicite :
+    rien n'est ecrit par l'appelant. 401/403 : arret immediat ; 429 : attente (Retry-After)
+    puis nouvel essai, jamais de contournement."""
+    integrite = _integrite()
+    error = None
     for attempt in range(1, tries + 1):
+        wait = min(2 ** attempt, 60)
         try:
             r = requests.get(url, params=params, headers=HEADERS, timeout=120)
-        except (requests.ConnectionError, requests.Timeout) as exc:
+        except (requests.ConnectionError, requests.Timeout, requests.exceptions.ChunkedEncodingError,
+                requests.exceptions.ContentDecodingError) as exc:
             error = exc
         else:
+            if r.status_code in (401, 403):
+                raise SystemExit(f"{url} -> HTTP {r.status_code} : acces refuse, aucun contournement")
             if r.status_code < 400:
-                return r
-            if r.status_code != 429 and r.status_code < 500:
+                attendu = r.headers.get("Content-Length", "")
+                try:
+                    if attendu.isdigit() and not r.headers.get("Content-Encoding") and len(r.content) != int(attendu):
+                        raise integrite.IntegriteInvalide(
+                            f"transfert tronque ({len(r.content)} octets sur {attendu} annonces)")
+                    if controle:
+                        integrite.verifier_octets(r.content, f"reponse.{controle.lstrip('.')}")
+                    return r
+                except integrite.IntegriteInvalide as exc:
+                    error = f"reponse incomplete ou invalide : {exc}"
+            elif r.status_code != 429 and r.status_code < 500:
                 # Erreur client (requete invalide) : inutile de reessayer.
                 raise SystemExit(f"{url} -> HTTP {r.status_code} : {r.text[:300]}")
-            error = f"HTTP {r.status_code}"
+            else:
+                error = f"HTTP {r.status_code}"
+                ra = r.headers.get("Retry-After", "")
+                if r.status_code == 429 and ra.isdigit():
+                    wait = min(max(int(ra), wait), 300)
         if attempt < tries:
-            wait = 2 ** attempt
             print(f"  tentative {attempt} echouee ({error}), nouvel essai dans {wait}s", file=sys.stderr)
             time.sleep(wait)
-    raise SystemExit(f"{url} injoignable apres {tries} tentatives : {error}")
+    raise SystemExit(f"{url} injoignable ou incomplet apres {tries} tentatives : {error}")
 
 
 def write_json(path: Path, obj) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     # Tri des cles et indentation : diffs git lisibles et stables.
-    path.write_text(json.dumps(obj, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    # Ecriture dans un temporaire puis renommage atomique : jamais de fichier a moitie ecrit.
+    tmp = path.with_name(path.name + ".part")
+    tmp.write_text(json.dumps(obj, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    os.replace(tmp, path)
 
 
 def fetch_ods(src: dict) -> None:
     base = f"{CONFIG['ods_base']}/{src['dataset']}"
-    meta = get(base).json()
+    meta = get(base, controle="json").json()
     fields = {f["name"]: f["type"] for f in meta["fields"]}
     wanted = [f.strip("`") for f in src["select"].split(",")]
     missing = [f for f in wanted if f not in fields]
@@ -60,7 +100,8 @@ def fetch_ods(src: dict) -> None:
     where = src.get("where")
     if src.get("latest_of"):
         col = src["latest_of"]
-        groups = get(f"{base}/records", {"select": col, "group_by": col, "order_by": f"{col} desc", "limit": 1}).json()
+        groups = get(f"{base}/records", {"select": col, "group_by": col, "order_by": f"{col} desc", "limit": 1},
+                     controle="json").json()
         latest = groups["results"][0][col]
         where = where.format(latest=latest)
         print(f"  {src['id']} : dernier {col} = {latest}")
@@ -68,7 +109,7 @@ def fetch_ods(src: dict) -> None:
     params = {"select": src["select"]}
     if where:
         params["where"] = where
-    rows = get(f"{base}/exports/json", params).json()
+    rows = get(f"{base}/exports/json", params, controle="json").json()
     if not rows:
         raise SystemExit(f"[{src['id']}] export vide")
     # Ordre deterministe : un diff git n'apparait que si les donnees changent vraiment.
@@ -93,8 +134,8 @@ def decode_csv(contenu: bytes) -> str:
 def fetch_ods_attachment(src: dict) -> None:
     """Piece jointe CSV d'un jeu Opendatasoft (annexes PLRG, series SMB), convertie en lignes JSON."""
     base = f"{CONFIG['ods_base']}/{src['dataset']}"
-    meta = get(base).json()
-    texte = decode_csv(get(f"{base}/attachments/{src['piece_jointe']}").content)
+    meta = get(base, controle="json").json()
+    texte = decode_csv(get(f"{base}/attachments/{src['piece_jointe']}", controle="csv").content)
     lecteur = csv.DictReader(io.StringIO(texte.replace("\r\n", "\n")), delimiter=";")
     colonnes = [c.strip() for c in (lecteur.fieldnames or [])]
     manquantes = [c for c in src["colonnes"] if c not in colonnes]
@@ -115,7 +156,7 @@ def fetch_ods_attachment(src: dict) -> None:
 
 
 def fetch_eurostat(src: dict) -> None:
-    data = get(f"{CONFIG['eurostat_base']}/{src['dataset']}", src["params"]).json()
+    data = get(f"{CONFIG['eurostat_base']}/{src['dataset']}", src["params"], controle="json").json()
     if not data.get("value"):
         raise SystemExit(f"[{src['id']}] reponse Eurostat vide")
     dims = data["id"]
