@@ -23,7 +23,9 @@
     "sources",
     "sources_inaccessibles",
     "limites",
-    "recherche_publique"
+    "recherche_publique",
+    "sources_textes",
+    "citations"
   ],
   "properties": {
     "millesime": {
@@ -57,11 +59,23 @@
     "financement_des_prets": {
       "type": "object",
       "required": [
-        "texte",
-        "producteur",
         "perimetre",
-        "methode"
-      ]
+        "citations"
+      ],
+      "additionalProperties": false,
+      "description": "Financement des prêts de l'AFD : uniquement des renvois vers citations[] (aucun texte rédigé par le site).",
+      "properties": {
+        "perimetre": {
+          "type": "string"
+        },
+        "citations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
     },
     "grandeurs": {
       "type": "array",
@@ -77,7 +91,8 @@
           "perimetre",
           "methode",
           "financement",
-          "fichier"
+          "fichier",
+          "financement_citations"
         ],
         "properties": {
           "id": {
@@ -93,6 +108,16 @@
           "fichier": {
             "type": "string",
             "minLength": 1
+          },
+          "financement": {
+            "type": "null",
+            "description": "Aucun texte non sourcé : voir financement_citations."
+          },
+          "financement_citations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }
@@ -491,6 +516,69 @@
           }
         }
       }
+    },
+    "sources_textes": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "Source de chaque champ texte explicatif (motif de chemin, indices remplacés par *) : « traitement » (règle appliquée par pipeline/aide_developpement.py), identifiant de sources[] d'index.json, « arbre » (budget de l'État) ou « citation:<id> » ; « citation » pour le texte d'une citation.",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string",
+          "pattern": "^(traitement|arbre|citation|citation:[a-z0-9_]+|[a-z0-9_]+)$"
+        }
+      }
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "auteur",
+          "document",
+          "url",
+          "page",
+          "texte",
+          "consulte_le"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "auteur": {
+            "type": "string",
+            "minLength": 3
+          },
+          "document": {
+            "type": "string",
+            "minLength": 3
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "page": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "texte": {
+            "type": "string",
+            "minLength": 10
+          },
+          "consulte_le": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          }
+        }
+      },
+      "description": "Citations mot pour mot de documents primaires (auteur, document, adresse, page, date de consultation). Aucun texte n'y est ajouté."
     }
   }
 }

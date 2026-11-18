@@ -84,10 +84,15 @@ def test_six_grandeurs_decrites_producteur_perimetre_methode():
     ids = [g["id"] for g in INDEX["grandeurs"]]
     assert ids == ["credits_budgetaires", "apd_declaree", "afd", "proparco", "expertise_france", "ocde"]
     for g in INDEX["grandeurs"]:
-        for k in ("producteur", "perimetre", "methode", "unite", "financement"):
+        for k in ("producteur", "perimetre", "methode", "unite"):
             assert len(g[k]) >= 5, (g["id"], k)
         assert (SITE / g["fichier"]).exists(), g["id"]
-    assert "marchés" in INDEX["financement_des_prets"]["texte"] and INDEX["financement_des_prets"]["producteur"]
+        # aucun texte rédigé sur le financement : seulement des renvois vers des citations exactes
+        assert g["financement"] is None, g["id"]
+        assert set(g["financement_citations"]) <= {c["id"] for c in INDEX["citations"]}, g["id"]
+    afd = next(g for g in INDEX["grandeurs"] if g["id"] == "afd")
+    assert afd["financement_citations"] == INDEX["financement_des_prets"]["citations"] == apd.CIT_PRETS_AFD
+    assert set(INDEX["financement_des_prets"]) == {"perimetre", "citations"}
 
 
 def test_lien_avec_la_mission_budgetaire():
@@ -277,3 +282,98 @@ def test_production_reproductible_octet_pour_octet(tmp_path):
     assert empreintes[0] == empreintes[1] and len(empreintes[0]) == len(FICHIERS)
     publie = {f"{n}.json": hashlib.sha256((DATA / f"{n}.json").read_bytes()).hexdigest() for n in FICHIERS}
     assert empreintes[0] == publie, "site/data/aide_developpement n'est pas la sortie de l'entrepôt courant"
+
+
+# ------------------------------------------------------------------ textes explicatifs : une source pour chacun
+
+CLES_TEXTE = re.compile(r"^(avertissement|notes?|explications?|lecture|constat|texte|financement|limites|regle|"
+                        r"regle_personnes|ecarts_note|perimetre\w*|methode|motif|definitions|commentaire|"
+                        r"interpretation|precision)$")
+# affirmations sur le financement de l'aide déjà publiées sans source : interdites hors citation exacte
+AFFIRMATION_SANS_SOURCE = re.compile(
+    r"(?:non|pas|jamais)\s+(?:financ\w+\s+)?(?:par|sur)\s+(?:l['’]|les\s+|des\s+)?(?:imp[ôo]ts?|contribuables?|"
+    r"crédits\s+budgétaires)|ne\s+viennent\s+pas\s+du\s+budget|sans\s+(?:recours\s+à\s+)?l['’]imp[ôo]t|"
+    r"remboursés\s+par\s+les\s+emprunteurs|ressources\s+empruntées", re.I)
+
+
+def _chemins_texte(x, chemin=()):
+    """Réimplémentation indépendante du pipeline : motifs des champs texte explicatifs non vides."""
+    if isinstance(x, dict):
+        for k, v in x.items():
+            if k == "sources_textes":
+                continue
+            c = chemin + (k,)
+            if CLES_TEXTE.match(k):
+                if isinstance(v, str):
+                    if v.strip():
+                        yield "/".join(c)
+                    continue
+                if isinstance(v, list) and all(isinstance(e, str) for e in v):
+                    if any(e.strip() for e in v):
+                        yield "/".join(c + ("*",))
+                    continue
+                if isinstance(v, dict) and all(isinstance(e, str) for e in v.values()):
+                    if any(e.strip() for e in v.values()):
+                        yield "/".join(c + ("*",))
+                    continue
+            yield from _chemins_texte(v, c)
+    elif isinstance(x, list):
+        for v in x:
+            yield from _chemins_texte(v, chemin + ("*",))
+
+
+def _toutes_chaines(x):
+    if isinstance(x, dict):
+        for v in x.values():
+            yield from _toutes_chaines(v)
+    elif isinstance(x, list):
+        for v in x:
+            yield from _toutes_chaines(v)
+    elif isinstance(x, str):
+        yield x
+
+
+def test_chaque_champ_texte_explicatif_a_une_source():
+    """Échoue si un champ texte explicatif de l'axe (avertissement, note, lecture, constat, limites, définitions…)
+    n'a pas de source associée dans sources_textes, ou si cette source n'existe pas."""
+    ids_sources = {s["id"] for s in INDEX["sources"]}
+    ids_citations = {c["id"] for c in INDEX["citations"]}
+    for n, d in DOCS.items():
+        st = d["sources_textes"]
+        chemins = set(_chemins_texte(d))
+        manquants = sorted(chemins - set(st))
+        assert not manquants, (n, "champs texte sans source", manquants)
+        assert set(st) == chemins, (n, "sources déclarées pour des champs absents", sorted(set(st) - chemins))
+        cites_ici = {c["id"] for c in d.get("citations", [])}
+        for chemin, refs in st.items():
+            assert refs, (n, chemin)
+            for r in refs:
+                if r == "citation":
+                    assert chemin == "citations/*/texte", (n, chemin)
+                elif r.startswith("citation:"):
+                    assert r[9:] in ids_citations and (n == "index" or r[9:] in cites_ici), (n, chemin, r)
+                else:
+                    assert r in {"traitement", "arbre"} | ids_sources, (n, chemin, r)
+
+
+def test_citations_exactes_avec_adresse_et_date():
+    assert {c["id"] for c in INDEX["citations"]} == {c["id"] for c in apd.CITATIONS}
+    par_id = {c["id"]: c for c in INDEX["citations"]}
+    for n, d in DOCS.items():
+        for c in d.get("citations", []):
+            assert c == par_id[c["id"]], (n, c["id"])  # même citation partout
+            assert c["url"].startswith("https://") and c["auteur"] and c["document"] and len(c["texte"]) > 20, c
+            assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", c["consulte_le"]), c
+            assert c["page"] is None or (isinstance(c["page"], int) and c["page"] > 0), c
+    # les citations du projet annuel de performances donnent leur page
+    assert all(c["page"] for c in INDEX["citations"] if "PAP2026" in c["url"])
+
+
+def test_aucune_affirmation_non_sourcee_sur_le_financement():
+    textes_cites = {c["texte"] for c in INDEX["citations"]}
+    for n, d in DOCS.items():
+        for t in _toutes_chaines(d):
+            if t in textes_cites:
+                continue
+            assert not AFFIRMATION_SANS_SOURCE.search(t), (n, t[:160])
+    assert not hasattr(apd, "FINANCEMENT_PRETS")

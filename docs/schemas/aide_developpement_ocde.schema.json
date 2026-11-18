@@ -16,7 +16,8 @@
     "licence",
     "versements_par_pays",
     "engagements_par_secteur",
-    "limites"
+    "limites",
+    "sources_textes"
   ],
   "properties": {
     "millesime": {
@@ -422,6 +423,19 @@
       "items": {
         "type": "string",
         "minLength": 20
+      }
+    },
+    "sources_textes": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "Source de chaque champ texte explicatif (motif de chemin, indices remplacés par *) : « traitement » (règle appliquée par pipeline/aide_developpement.py), identifiant de sources[] d'index.json, « arbre » (budget de l'État) ou « citation:<id> » ; « citation » pour le texte d'une citation.",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string",
+          "pattern": "^(traitement|arbre|citation|citation:[a-z0-9_]+|[a-z0-9_]+)$"
+        }
       }
     }
   }

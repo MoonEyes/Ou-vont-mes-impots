@@ -25,7 +25,9 @@
     "methode",
     "couverture",
     "ecartes",
-    "limites"
+    "limites",
+    "sources_textes",
+    "citations"
   ],
   "properties": {
     "millesime": {
@@ -409,6 +411,69 @@
         "type": "string",
         "minLength": 20
       }
+    },
+    "sources_textes": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "Source de chaque champ texte explicatif (motif de chemin, indices remplacés par *) : « traitement » (règle appliquée par pipeline/aide_developpement.py), identifiant de sources[] d'index.json, « arbre » (budget de l'État) ou « citation:<id> » ; « citation » pour le texte d'une citation.",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string",
+          "pattern": "^(traitement|arbre|citation|citation:[a-z0-9_]+|[a-z0-9_]+)$"
+        }
+      }
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "auteur",
+          "document",
+          "url",
+          "page",
+          "texte",
+          "consulte_le"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "auteur": {
+            "type": "string",
+            "minLength": 3
+          },
+          "document": {
+            "type": "string",
+            "minLength": 3
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "page": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "texte": {
+            "type": "string",
+            "minLength": 10
+          },
+          "consulte_le": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          }
+        }
+      },
+      "description": "Citations mot pour mot de documents primaires (auteur, document, adresse, page, date de consultation). Aucun texte n'y est ajouté."
     }
   }
 }

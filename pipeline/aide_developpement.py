@@ -93,11 +93,132 @@ REGLE = ("Les grandeurs de ce dossier ne s'additionnent pas. Crédits budgétair
          "développement déclarée à l'OCDE, concours de l'AFD, financements de Proparco et contrats d'Expertise France "
          "se recouvrent en partie et n'ont ni le même périmètre ni la même unité. Dons et prêts sont toujours donnés "
          "dans des colonnes séparées, sans total commun : un don n'est pas remboursé, un prêt l'est.")
-FINANCEMENT_PRETS = ("Selon l'AFD, ses prêts sont financés pour l'essentiel par des emprunts obligataires sur les "
-                     "marchés financiers et remboursés par les emprunteurs, et non par l'impôt. Le budget de l'État y "
-                     "contribue par des bonifications d'intérêts (programme 110) et par des apports en fonds propres "
-                     "(programme 365). Les dons de l'AFD viennent de crédits budgétaires (programme 209 surtout) ou "
-                     "de fonds délégués par d'autres bailleurs, dont l'Union européenne.")
+# Textes explicatifs : aucune phrase sur le financement de l'aide n'est écrite par le site. Seules des citations mot
+# pour mot de documents primaires sont publiées, avec auteur, document, adresse, page et date de consultation
+# (vérifiées le 18/11/2026 sur les documents téléchargés). Une affirmation sans citation n'est pas publiée.
+CONSULTE_LE = "2026-11-18"
+PAP_2026 = ("Projet annuel de performances 2026 de la mission « Aide publique au développement » (annexe au projet "
+            "de loi de finances pour 2026)")
+URL_PAP_2026 = ("https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1087948/file/"
+                "PAP2026_BG_Aide_publique_developpement_AD.pdf")
+CITATIONS = [
+    {"id": "afd_pret_emprunt", "auteur": "Agence française de développement",
+     "document": "« Le prêt, premier outil financier du groupe AFD », publié le 14 janvier 2026",
+     "url": "https://www.afd.fr/fr/actualites/pret-finance-developpement-afd", "page": None,
+     "texte": "Pour réunir ces sommes, le Groupe emprunte lui-même sur les marchés financiers auprès d’investisseurs "
+              "privés, de fonds de pension et de banques centrales.", "consulte_le": CONSULTE_LE},
+    {"id": "pap2026_programme_110_bonifications", "auteur": "Programme 110 « Aide économique et financière au "
+     "développement »", "document": PAP_2026, "url": URL_PAP_2026, "page": 43,
+     "texte": "Les bonifications d’intérêt versées par l’État permettent d’abaisser le taux d’intérêt des prêts "
+              "octroyés par l’AFD au bénéfice de ses contreparties.", "consulte_le": CONSULTE_LE},
+    {"id": "pap2026_programme_365_capital", "auteur": "Programme 365 « Renforcement des fonds propres de l'Agence "
+     "française de développement »", "document": PAP_2026, "url": URL_PAP_2026, "page": 54,
+     "texte": "Les crédits du programme 365 permettent de doter en capital l’Agence française de développement (AFD).",
+     "consulte_le": CONSULTE_LE},
+    {"id": "afd_iati_accord_contrepartie", "auteur": "Agence française de développement",
+     "document": "description du jeu « Données de l'aide au développement de l'AFD » sur data.gouv.fr",
+     "url": "https://www.data.gouv.fr/datasets/donnees-de-laide-au-developpement-de-lafd-1/", "page": None,
+     "texte": "Ces données peuvent être publiées dès lors que l'accord de la contrepartie a été obtenu.",
+     "consulte_le": CONSULTE_LE},
+    {"id": "proparco_perimetre", "auteur": "Proparco",
+     "document": "description du jeu « Données de l'aide au développement de Proparco » sur opendata.afd.fr",
+     "url": "https://opendata.afd.fr/explore/dataset/donnees-de-laide-au-developpement-de-proparco/", "page": None,
+     "texte": "Les données portent sur les opérations de Proparco, filiale de l'Agence Française de Développement "
+              "dédiée au secteur privé, dans le respect de ses obligations légales en matière de secret bancaire.",
+     "consulte_le": CONSULTE_LE},
+    {"id": "proparco_couverture", "auteur": "Proparco",
+     "document": "description du jeu « Données de l'aide au développement de Proparco » sur opendata.afd.fr",
+     "url": "https://opendata.afd.fr/explore/dataset/donnees-de-laide-au-developpement-de-proparco/", "page": None,
+     "texte": "Les données couvrent l’ensemble des projets signés depuis le 1er janvier 2014 et pour lesquels un accord "
+              "de diffusion du client a été obtenu.", "consulte_le": CONSULTE_LE},
+]
+CIT_PRETS_AFD = ["afd_pret_emprunt", "pap2026_programme_110_bonifications", "pap2026_programme_365_capital"]
+
+
+def _citations(*ids: str) -> list[dict]:
+    par_id = {c["id"]: c for c in CITATIONS}
+    return [par_id[i] for i in ids]
+
+
+# Source de chaque champ texte explicatif, par fichier : « traitement » (règle appliquée par ce pipeline, décrite
+# telle quelle), un identifiant de SOURCES (constat tiré des données ou des métadonnées de cette source), « arbre »
+# (budget de l'État, site/data/arbre) ou « citation:<id> » (citation exacte de CITATIONS). Un champ sans entrée fait
+# échouer la production (et tests/test_aide_developpement.py).
+CLES_TEXTE = re.compile(r"^(avertissement|notes?|explications?|lecture|constat|texte|financement|limites|regle|"
+                        r"regle_personnes|ecarts_note|perimetre\w*|methode|motif|definitions)$")
+_T, _CIT = "traitement", "citation:"
+TEXTES_SOURCES = {
+    "apd_declaree": {
+        "avertissement": ["etat_aide_publique_developpement", _T], "definitions/*": ["etat_aide_publique_developpement", _T],
+        "ordre/regle": [_T], "par_annee/perimetre": [_T], "perimetre_ventilations": [_T],
+        "limites/*": ["etat_aide_publique_developpement", _T]},
+    "afd": {
+        "avertissement": [_CIT + "afd_iati_accord_contrepartie", _T], "definitions/*": ["apd_afd_iati", _T],
+        "ordre/regle": [_T], "methode": [_T], "ecartes/*/motif": ["apd_afd_iati", _T],
+        "couverture/hors_champ/*/motif": ["apd_afd_iati", _T],
+        "limites/*": [_CIT + "afd_iati_accord_contrepartie", _T], "citations/*/texte": ["citation"]},
+    "ocde": {
+        "avertissement": ["apd_ocde_dac2a", "apd_ocde_dac5", _T], "versements_par_pays/ordre/regle": [_T],
+        "versements_par_pays/note": ["apd_ocde_dac2a", _T], "engagements_par_secteur/ordre/regle": [_T],
+        "engagements_par_secteur/note": ["apd_ocde_dac5", _T], "limites/*": [_T]},
+    "expertise_france": {
+        "avertissement": ["apd_expertise_france_contrats", _T], "definitions/*": ["apd_expertise_france_contrats", _T],
+        "regle_personnes": ["apd_expertise_france_contrats", _T], "ordre/regle": [_T],
+        "ecartes/*/motif": ["apd_expertise_france_contrats", _T], "limites/*": ["apd_expertise_france_contrats", _T]},
+    "proparco": {
+        "avertissement": [_CIT + "proparco_perimetre", _T], "definitions/*": ["apd_proparco", _T],
+        "regle_personnes": [_T], "ordre/regle": [_T], "ecartes/*/motif": ["apd_proparco", _T],
+        "limites/*": ["apd_proparco", _T], "citations/*/texte": ["citation"]},
+    "index": {
+        "avertissement": [_T], "regle": [_T], "citations/*/texte": ["citation"],
+        "financement_des_prets/perimetre": [_T],
+        "grandeurs/*/perimetre": [_T, "arbre", "etat_aide_publique_developpement", _CIT + "afd_iati_accord_contrepartie",
+                                  "apd_proparco", "apd_expertise_france_contrats", "apd_ocde_dac2a", "apd_ocde_dac5"],
+        "grandeurs/*/methode": [_T, "arbre", "etat_aide_publique_developpement", "apd_afd_iati", "apd_proparco",
+                                "apd_expertise_france_contrats", "apd_ocde_dac2a", "apd_ocde_dac5"],
+        "credits_budgetaires/lecture": ["arbre", "etat_aide_publique_developpement", _T],
+        "totaux/note": [_T], "totaux/apd_declaree/perimetre": [_T],
+        "totaux/afd/perimetre": [_T], "totaux/ocde/perimetre": [_T],
+        "ecarts/*/lecture": [_CIT + "afd_iati_accord_contrepartie", "etat_aide_publique_developpement",
+                             "apd_ocde_dac2a", _T],
+        "ecarts_note": [_T], "sources_inaccessibles/*/constat": [_T], "limites/*": [_T]},
+}
+
+
+def _chemins_texte(x, chemin=()):
+    """Motifs (indices et entrées de « definitions » remplacés par *) des champs texte explicatifs non vides."""
+    if isinstance(x, dict):
+        for k, v in x.items():
+            if k == "sources_textes":
+                continue
+            c = chemin + (k,)
+            if CLES_TEXTE.match(k):
+                if isinstance(v, str):
+                    if v.strip():
+                        yield "/".join(c)
+                    continue
+                if isinstance(v, list) and all(isinstance(e, str) for e in v):
+                    if any(e.strip() for e in v):
+                        yield "/".join(c + ("*",))
+                    continue
+                if k == "definitions" and isinstance(v, dict) and all(isinstance(e, str) for e in v.values()):
+                    if any(e.strip() for e in v.values()):
+                        yield "/".join(c + ("*",))
+                    continue
+            yield from _chemins_texte(v, c)
+    elif isinstance(x, list):
+        for v in x:
+            yield from _chemins_texte(v, chemin + ("*",))
+
+
+def sources_textes(nom: str, doc: dict) -> dict:
+    """Associe chaque champ texte explicatif à sa source ; échoue si un champ n'en a pas."""
+    table = TEXTES_SOURCES[nom]
+    trouves = sorted(set(_chemins_texte(doc)))
+    manquants = [c for c in trouves if c not in table]
+    if manquants:
+        raise ValueError(f"{nom} : champs texte sans source déclarée : {manquants}")
+    return {c: table[c] for c in trouves}
 
 # ISO 3166-1 : code à deux lettres (fichiers IATI de l'AFD) -> code à trois lettres (DG Trésor, OCDE).
 ISO2_ISO3 = dict(p.split(":") for p in (
@@ -477,8 +598,9 @@ def produire_afd(activites, meta, secteurs, noms, collecte) -> tuple[dict, dict]
         "millesime": f"Engagements et versements {annees[0]} à {annees[-1]} (publication du {meta['genere_le']})",
         "source": f"{SOURCES['apd_afd_iati']['nom']} ({SOURCES['apd_afd_iati']['url']})",
         "unite": "euros courants",
-        "avertissement": "Concours de l'Agence française de développement publiés au standard IATI, avec l'accord des "
-                         "contreparties. " + REGLE + " " + FINANCEMENT_PRETS,
+        "avertissement": "Concours de l'Agence française de développement publiés au standard IATI ; la description "
+                         "du jeu de données est citée dans « citations ». " + REGLE,
+        "citations": _citations("afd_iati_accord_contrepartie"),
         "definitions": {
             "concours": "un financement de l'AFD (don ou prêt) rattaché à un projet ; un projet peut réunir plusieurs "
                         "concours",
@@ -534,10 +656,8 @@ def produire_afd(activites, meta, secteurs, noms, collecte) -> tuple[dict, dict]
              "activites_absentes_des_fichiers_par_pays": meta["ecarte"]["activites_absentes_ailleurs"]},
         ],
         "limites": [
-            "L'AFD publie un projet quand la contrepartie a donné son accord : la publication ne couvre pas tous ses "
-            "financements.",
-            "Les concours financés par des fonds délégués (Union européenne, autres bailleurs) figurent parmi les "
-            "dons : ils ne viennent pas du budget de l'État.",
+            "La description du jeu de données indique que ces données peuvent être publiées dès lors que l'accord "
+            "de la contrepartie a été obtenu : le fichier ne couvre que les concours publiés.",
             "Les années signalées dans annees_partielles sont incomplètes (première année publiée, année en cours).",
             "Aucun nom de bénéficiaire ni de projet n'est repris.",
         ],
@@ -684,11 +804,10 @@ def produire_expertise_france(collecte) -> dict:
         "millesime": f"Contrats entrés en vigueur de {annees[0]} à {annees[-1]}",
         "source": f"{SOURCES['apd_expertise_france_contrats']['nom']} ({SOURCES['apd_expertise_france_contrats']['url']})",
         "unite": "euros hors taxes ; montant initial maximal de chaque contrat",
-        "avertissement": "Contrats de plus de 15 000 euros conclus par Expertise France pour des projets de "
-                         "coopération technique, agrégés par pays et par bailleur. Le montant publié est un montant "
-                         "initial maximal, pas une dépense constatée. Un accord-cadre fixe un plafond : il est compté "
-                         "à part et ne s'ajoute pas aux marchés. La plupart des projets sont financés par des "
-                         "bailleurs autres que l'État (Union européenne, AFD). " + REGLE,
+        "avertissement": "Contrats de plus de 15 000 euros publiés par Expertise France, agrégés par pays et par "
+                         "bailleur. Le montant publié est un montant initial maximal, pas une dépense constatée. Un "
+                         "accord-cadre fixe un plafond : il est compté à part et ne s'ajoute pas aux marchés. Le "
+                         "bailleur de chaque contrat est celui que publie la source (par_bailleur). " + REGLE,
         "licence": LIC_AFD_NP,
         "definitions": {
             "marche": "marché d'achat (services, fournitures, travaux, prestations intellectuelles)",
@@ -778,10 +897,9 @@ def produire_proparco(collecte) -> dict:
         "millesime": f"Financements signés de {annees[0]} à {annees[-1]}",
         "source": f"{SOURCES['apd_proparco']['nom']} ({SOURCES['apd_proparco']['url']})",
         "unite": "euros ; montant du financement signé",
-        "avertissement": "Financements signés par Proparco, filiale du groupe AFD pour le secteur privé, agrégés par "
-                         "année, pays et instrument. Proparco intervient surtout par des prêts, des prises de "
-                         "participation et des garanties, sur ses fonds propres et des ressources empruntées, et non "
-                         "sur des crédits budgétaires. " + REGLE,
+        "avertissement": "Financements signés publiés par Proparco, agrégés par année, pays et instrument ; la "
+                         "description du jeu de données est citée dans « citations ». " + REGLE,
+        "citations": _citations("proparco_perimetre", "proparco_couverture"),
         "licence": LIC_AFD_NP,
         "definitions": {
             "pret": "prêt", "participation": "prise de participation, fonds propres, autres titres",
@@ -836,8 +954,8 @@ def credits_budgetaires() -> dict:
         "source": "site/data/arbre (budget de l'État, pipeline/transform.py)",
         "vues": vues,
         "lecture": "La mission budgétaire ne contient qu'une partie de l'aide publique au développement déclarée : la "
-                   "déclaration à l'OCDE compte aussi des dépenses d'autres missions, des collectivités et les prêts "
-                   "de l'AFD. Les deux montants ne se comparent pas terme à terme et ne s'additionnent pas.",
+                   "déclaration à l'OCDE compte aussi d'autres organismes (autres ministères, collectivités, voir "
+                   "apd_declaree.par_agence) et les prêts de l'AFD. Les deux montants ne se comparent pas terme à terme et ne s'additionnent pas.",
     }
 
 
@@ -862,7 +980,8 @@ def produire(sortie: Path = SORTIE) -> None:
 
     ecarts = []
     lect_afd = ("Deux publications de périmètres différents : la déclaration à l'OCDE couvre toute l'APD de l'AFD ; "
-                "la publication IATI couvre les concours dont la contrepartie a accepté la publication. L'écart est "
+                "la publication IATI, selon la description du jeu, peut comprendre un concours dès lors que "
+                "l'accord de la contrepartie a été obtenu. L'écart est "
                 "publié tel quel.")
     lect_ocde = ("Même déclaration d'origine ; l'OCDE publie en dollars et ajoute ses propres traitements. Montant de "
                  "la DG Trésor : versements bilatéraux d'APD en dollars de son jeu. L'écart est publié tel quel.")
@@ -889,48 +1008,45 @@ def produire(sortie: Path = SORTIE) -> None:
         "unite": "euros, sauf OCDE (millions de dollars courants) et crédits budgétaires (milliards d'euros)",
         "avertissement": REGLE,
         "regle": REGLE,
-        "financement_des_prets": {"texte": FINANCEMENT_PRETS, "producteur": "Agence française de développement",
-                                  "perimetre": "prêts de l'AFD ; les programmes 110, 209 et 365 sont ceux de la "
-                                               "mission « Aide publique au développement »",
-                                  "methode": "description du modèle de financement publiée par l'AFD ; les crédits des "
-                                             "programmes cités sont dans credits_budgetaires"},
+        "citations": CITATIONS,
+        "financement_des_prets": {"perimetre": "prêts de l'AFD : citations mot pour mot de l'AFD et du projet annuel "
+                                               "de performances 2026, sans texte ajouté",
+                                  "citations": CIT_PRETS_AFD},
         "grandeurs": [
             {"id": "credits_budgetaires", "nom": "Crédits budgétaires de la mission « Aide publique au développement »",
              "producteur": "Direction du budget", "unite": "milliards d'euros",
              "perimetre": "budget général de l'État, quatre programmes de la mission",
-             "methode": "comptabilité budgétaire, crédits de paiement", "financement": "impôts et emprunts de l'État",
+             "methode": "comptabilité budgétaire, crédits de paiement", "financement": None, "financement_citations": [],
              "fichier": "arbre/racine.json"},
             {"id": "apd_declaree", "nom": "Aide publique au développement déclarée à l'OCDE",
              "producteur": SOURCES["etat_aide_publique_developpement"]["producteur"], "unite": "euros",
              "perimetre": "tous les organismes publics français, bilatéral et multilatéral",
              "methode": "déclaration annuelle au CAD, activité par activité ; versements et équivalent-don",
-             "financement": "crédits budgétaires de plusieurs missions, ressources de l'AFD et de Proparco, "
-                            "collectivités",
+             "financement": None, "financement_citations": [],
              "fichier": "aide_developpement/apd_declaree.json"},
             {"id": "afd", "nom": "Concours de l'AFD : dons et prêts",
              "producteur": SOURCES["apd_afd_iati"]["producteur"], "unite": "euros",
              "perimetre": "concours publiés avec l'accord des contreparties, APD et autres apports publics",
              "methode": "standard IATI : engagements et versements par concours",
-             "financement": "dons : crédits budgétaires et fonds délégués ; prêts : emprunts de l'AFD sur les marchés, "
-                            "bonifiés pour partie par l'État",
+             "financement": None, "financement_citations": CIT_PRETS_AFD,
              "fichier": "aide_developpement/afd.json"},
             {"id": "proparco", "nom": "Financements signés par Proparco",
              "producteur": SOURCES["apd_proparco"]["producteur"], "unite": "euros",
              "perimetre": "financements au secteur privé publiés par Proparco",
              "methode": "montant signé par financement, agrégé par année, pays et instrument",
-             "financement": "fonds propres et ressources empruntées du groupe AFD",
+             "financement": None, "financement_citations": [],
              "fichier": "aide_developpement/proparco.json"},
             {"id": "expertise_france", "nom": "Contrats d'Expertise France de plus de 15 000 euros",
              "producteur": SOURCES["apd_expertise_france_contrats"]["producteur"], "unite": "euros hors taxes",
              "perimetre": "marchés, subventions et accords-cadres ; experts individuels exclus",
              "methode": "montant initial maximal par contrat ; accords-cadres comptés à part comme plafonds",
-             "financement": "bailleurs des projets : Union européenne, AFD, ministères, autres",
+             "financement": None, "financement_citations": [],
              "fichier": "aide_developpement/expertise_france.json"},
             {"id": "ocde", "nom": "Statistiques du CAD de l'OCDE pour la France",
              "producteur": SOURCES["apd_ocde_dac2a"]["producteur"], "unite": "millions de dollars courants",
              "perimetre": "APD de la France par pays (versements) et par secteur (engagements bilatéraux)",
              "methode": "tables DAC2A et DAC5, à partir des déclarations de la France",
-             "financement": "sans objet : même aide que la grandeur « apd_declaree », vue par l'OCDE",
+             "financement": None, "financement_citations": [],
              "fichier": "aide_developpement/ocde.json"},
         ],
         "credits_budgetaires": budget,
@@ -984,6 +1100,7 @@ def produire(sortie: Path = SORTIE) -> None:
     }
     for nom, doc in (("apd_declaree.json", declaree), ("afd.json", afd), ("ocde.json", ocde),
                      ("expertise_france.json", ef), ("proparco.json", proparco), ("index.json", index)):
+        doc["sources_textes"] = sources_textes(nom.removesuffix(".json"), doc)
         _ecrire(sortie / nom, doc)
 
 
