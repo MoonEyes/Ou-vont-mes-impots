@@ -150,7 +150,11 @@ def collecter() -> None:
             journal[cle] = {"statut": "refus", "motif": f"HTTP {code}, non contourné"}
             print(f"  {cle} : refus HTTP {code} (non contourné)")
             continue
-        (API / f"{cle}.{ext}").write_bytes(corps)
+        dest = API / f"{cle}.{ext}"
+        tmp = dest.with_suffix(dest.suffix + ".part")
+        tmp.write_bytes(corps)
+        import fetch  # contrôle d'intégrité (collecte/integrite.py) avant le renommage atomique
+        fetch.remplacer_si_valide(tmp, dest, nom=dest.name)
         journal[cle] = {"statut": "ok", "octets": len(corps),
                         "date": datetime.now(timezone.utc).isoformat(timespec="seconds")}
         print(f"  {cle} : {len(corps)} octets")

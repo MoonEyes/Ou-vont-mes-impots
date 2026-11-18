@@ -631,7 +631,8 @@ def telecharger(url: str, dest: Path, essais: int = 5) -> str:
                 return "contenu inattendu (page HTML au lieu du fichier) : aucun contournement"
             tmp = dest.with_suffix(dest.suffix + ".part")
             tmp.write_bytes(r.content)
-            tmp.replace(dest)
+            import fetch  # contrôle d'intégrité (collecte/integrite.py) avant le renommage atomique
+            fetch.remplacer_si_valide(tmp, dest, nom=dest.name, octets_attendus=fetch.octets_annonces(r))
             return "ok"
         except Exception as e:  # reprise réseau
             derniere = f"{type(e).__name__}: {e}"[:200]

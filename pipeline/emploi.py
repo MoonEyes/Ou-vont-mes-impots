@@ -909,7 +909,8 @@ def collecter(forcer: bool = False) -> dict:
             if contenu is not None:
                 tmp = dest.with_suffix(dest.suffix + ".part")
                 tmp.write_bytes(contenu)
-                tmp.replace(dest)
+                import fetch  # contrôle d'intégrité (collecte/integrite.py) avant le renommage atomique
+                fetch.remplacer_si_valide(tmp, dest, nom=dest.name)
                 _manifeste(f"emploi__{cle}", {
                     "collecte_le": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00"),
                     "domaine": "emploi", "licence": s["licence"], "origine": "pipeline/emploi.py",
