@@ -259,6 +259,8 @@ FICHIERS = [
     ("solidarites_departements_comptes.schema.json", "solidarites_departements/comptes.json", "existant"),
     ("solidarites_departements_beneficiaires.schema.json", "solidarites_departements/beneficiaires.json", "existant"),
     ("solidarites_departements_ecarts.schema.json", "solidarites_departements/ecarts.json", "existant"),
+    # fraîcheur des données : dernière collecte, millésime, calendrier officiel, statut (pipeline/fraicheur.py)
+    ("fraicheur_index.schema.json", "fraicheur/index.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

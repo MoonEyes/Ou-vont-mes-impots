@@ -161,6 +161,11 @@ ETAPES: tuple[Etape, ...] = (
         ("territoires", "prestations")),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
+    # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
+    # nouvel axe se déclare au-dessus de cette ligne).
+    Etape("fraicheur", "Fraîcheur des données (collecte, millésimes, calendriers officiels)", (TOUTES,),
+          ("site/data/fraicheur",), collecter=(m("fraicheur", "collecter"),),
+          produire=(m("fraicheur", "produire"),), duree_estimee_s=60),
     Etape("datapackage", "Métadonnées de réutilisation (Data Package, DCAT-AP, schema.org)", (TOUTES,),
           ("docs/datapackage",), produire=(m("datapackage"),), duree_estimee_s=30),
 )

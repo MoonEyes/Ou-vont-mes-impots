@@ -1,0 +1,988 @@
+{
+ "millesime": "État des sources au 2026-11-18 (dernière collecte de l'entrepôt)",
+ "source": "collecte/catalogue.json, pipeline/sources.json, pipeline/entrees_lac.json, manifeste de collecte (data/lake/manifest.json), site/data/mise_a_jour.json, en-têtes des fichiers de site/data",
+ "date_reference": "2026-11-18",
+ "date_reference_definition": "date de la dernière collecte enregistrée dans l'entrepôt (pipeline/reproductible.py) : les statuts « en retard » sont établis à cette date",
+ "rapport_passage": {
+  "fichier": "mise_a_jour.json",
+  "genere_le": "2026-11-17T18:10:07Z",
+  "mode": "complet",
+  "note": "Le rapport de passage est écrit après la dernière étape : une étape déjà passée dans le passage en cours prend son statut dans data/lake/_cache/tout/etat.json (statut_passage_origine « passage_en_cours »)."
+ },
+ "mise_a_jour_hebdomadaire": {
+  "fichier": ".github/workflows/data.yml",
+  "cron": "17 4 * * 1",
+  "jour": "lundi",
+  "heure_utc": "04:17",
+  "relecture_mensuelle": true,
+  "budget_s": 16200,
+  "etapes": [
+   {
+    "etape": "base",
+    "titre": "Budget de l'État, Eurostat, communes (data/raw)",
+    "libelle": "Budget de l'État, comptes publics européens et taux des communes"
+   },
+   {
+    "etape": "beneficiaires",
+    "titre": "Nature, effectifs, bénéficiaires par programme",
+    "libelle": "Qui reçoit l'argent : nature, effectifs et bénéficiaires par programme"
+   },
+   {
+    "etape": "operateurs",
+    "titre": "Opérateurs de l'État (jaunes PLF)",
+    "libelle": "Opérateurs de l'État"
+   },
+   {
+    "etape": "vie_politique",
+    "titre": "Vie politique (CNCCFP, programme 232)",
+    "libelle": "Vie politique"
+   },
+   {
+    "etape": "realisations",
+    "titre": "Prévu / dépensé, performance, évaluations",
+    "libelle": "Ce qui a été fait : prévu, dépensé, indicateurs"
+   },
+   {
+    "etape": "decisions",
+    "titre": "Décisions sur les crédits (AN, Sénat, JORF)",
+    "libelle": "Votes, amendements et mouvements de crédits"
+   },
+   {
+    "etape": "prelevements",
+    "titre": "Prélèvements et affectation",
+    "libelle": "Prélèvements et leurs destinataires"
+   },
+   {
+    "etape": "secu",
+    "titre": "Sécurité sociale (OCR des tableaux en image, en cache)",
+    "libelle": "Sécurité sociale et protection sociale"
+   },
+   {
+    "etape": "niches",
+    "titre": "Dépenses fiscales et niches sociales (PDF tome II)",
+    "libelle": "Dépenses fiscales et exonérations de cotisations"
+   },
+   {
+    "etape": "ue",
+    "titre": "Union européenne (Kohesio, FTS, Horizon)",
+    "libelle": "La France et l'Union européenne"
+   },
+   {
+    "etape": "dette",
+    "titre": "Dette publique",
+    "libelle": "Dette publique"
+   },
+   {
+    "etape": "tracabilite",
+    "titre": "Traçabilité de chaque euro",
+    "libelle": "Traçabilité de chaque euro"
+   },
+   {
+    "etape": "local",
+    "titre": "Près de chez moi (OFGL, API géo ; reprenable par passages de 480 s)",
+    "libelle": "Budget de ma commune et collectivités locales"
+   },
+   {
+    "etape": "controle",
+    "titre": "Juridictions financières, lobbying, aides aux entreprises",
+    "libelle": "Contrôle, représentation d'intérêts et aides aux entreprises"
+   },
+   {
+    "etape": "local_fonctions",
+    "titre": "Dépenses par fonction des collectivités (balances DGFiP)",
+    "libelle": "Dépenses des collectivités par fonction"
+   },
+   {
+    "etape": "subventions",
+    "titre": "Subventions par convention (attribuants nationaux)",
+    "libelle": "Subventions par convention"
+   },
+   {
+    "etape": "territoires",
+    "titre": "Territoires : DETR/DSIL/DPV/DSID, SRU, aide sociale départementale",
+    "libelle": "Territoires : dotations d'investissement, logement social, aide sociale"
+   },
+   {
+    "etape": "prestations",
+    "titre": "Prestations sociales (séries nationales et départementales)",
+    "libelle": "Prestations versées aux ménages"
+   },
+   {
+    "etape": "europe_comparaison",
+    "titre": "Comparaison européenne (Eurostat)",
+    "libelle": "La France et ses voisins européens"
+   },
+   {
+    "etape": "aide_developpement",
+    "titre": "Aide publique au développement",
+    "libelle": "Aide publique au développement"
+   },
+   {
+    "etape": "associations",
+    "titre": "Associations subventionnées (RNA, SIRENE)",
+    "libelle": "Associations, fonds et fondations"
+   },
+   {
+    "etape": "education_recherche",
+    "titre": "Éducation et recherche",
+    "libelle": "Éducation et recherche"
+   },
+   {
+    "etape": "etat_actionnaire",
+    "titre": "État actionnaire",
+    "libelle": "L'État actionnaire"
+   },
+   {
+    "etape": "fonction_publique",
+    "titre": "Fonction publique",
+    "libelle": "Fonction publique"
+   },
+   {
+    "etape": "formation",
+    "titre": "Formation professionnelle",
+    "libelle": "Formation professionnelle"
+   },
+   {
+    "etape": "justice_defense",
+    "titre": "Justice et défense",
+    "libelle": "Justice et défense"
+   },
+   {
+    "etape": "local_satellites",
+    "titre": "Satellites des collectivités",
+    "libelle": "Syndicats, action sociale communale, mobilité et eau"
+   },
+   {
+    "etape": "marches",
+    "titre": "Marchés publics",
+    "libelle": "Marchés publics"
+   },
+   {
+    "etape": "numerique_etat",
+    "titre": "Numérique de l'État",
+    "libelle": "Numérique de l'État"
+   },
+   {
+    "etape": "outremer",
+    "titre": "Outre-mer",
+    "libelle": "Collectivités d'outre-mer"
+   },
+   {
+    "etape": "recouvrement",
+    "titre": "Recouvrement",
+    "libelle": "Contrôle et recouvrement des impôts et cotisations"
+   },
+   {
+    "etape": "retraites",
+    "titre": "Retraites par régime",
+    "libelle": "Retraites par régime"
+   },
+   {
+    "etape": "sante_etablissements",
+    "titre": "Établissements de santé",
+    "libelle": "Établissements de santé et médico-sociaux"
+   },
+   {
+    "etape": "fraicheur",
+    "titre": "Fraîcheur des données (collecte, millésimes, calendriers officiels)",
+    "libelle": "Fraîcheur des données"
+   },
+   {
+    "etape": "datapackage",
+    "titre": "Métadonnées de réutilisation (Data Package, DCAT-AP, schema.org)",
+    "libelle": "Métadonnées de réutilisation des données"
+   }
+  ]
+ },
+ "statuts": {
+  "a_jour": {
+   "libelle": "à jour",
+   "definition": "La dernière collecte a abouti et aucune nouvelle édition n'était attendue à la date de référence selon le calendrier officiel connu. Sans calendrier connu, la collecte vérifie que la version utilisée est celle publiée par la source ce jour-là."
+  },
+  "en_retard": {
+   "libelle": "en retard sur le calendrier",
+   "definition": "Une nouvelle édition était attendue avant la date de référence selon un calendrier officiel (loi organique, règlement), ou la source déclare une version plus récente que celle utilisée, et cette édition ne figure pas dans les données collectées. Cela décrit l'état de la collecte, pas la qualité de la source."
+  },
+  "inaccessible": {
+   "libelle": "inaccessible au dernier passage",
+   "definition": "Refus ou indisponibilité de la source constatés lors de la dernière collecte (accès refusé, limite de requêtes, serveur indisponible, délai dépassé, transfert coupé). Rien n'est contourné : la dernière version obtenue reste publiée."
+  },
+  "non_verifiee": {
+   "libelle": "non vérifiée",
+   "definition": "Aucune collecte datée et réussie n'est enregistrée pour cette source (collecte faite par le module de la page sans trace datée, collecte en erreur ou jamais lancée) : le site ne peut pas dire si elle est à jour."
+  }
+ },
+ "calendriers": [
+  {
+   "id": "plf",
+   "libelle": "Projet de loi de finances de l'année et ses annexes",
+   "regle": "dépôt au plus tard le premier mardi d'octobre de l'année qui précède celle du budget",
+   "reference": "Loi organique relative aux lois de finances, article 39 ; Assemblée nationale, fiche de synthèse n° 53 « L'examen des lois de finances » (septembre 2022)",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/telechargement/629134/file/Fiche%2053%20-%20Examen%20LF.pdf",
+   "familles": [
+    {
+     "famille": "budget_vert",
+     "libelle": "Budget vert (crédits par action : exécution, budget voté, projet)",
+     "derniere_edition": 2026
+    },
+    {
+     "famille": "budget_vert_justification",
+     "libelle": "Budget vert, justification des crédits et des taxes affectées",
+     "derniere_edition": 2025
+    },
+    {
+     "famille": "plf_destination_nature",
+     "libelle": "Dépenses du projet de loi de finances par destination et par nature",
+     "derniere_edition": 2025
+    },
+    {
+     "famille": "jaune_operateurs",
+     "libelle": "Annexe « Opérateurs de l'État » (jaune)",
+     "derniere_edition": 2026
+    },
+    {
+     "famille": "jaune_associations",
+     "libelle": "Annexe « Effort financier de l'État en faveur des associations » (jaune)",
+     "derniere_edition": 2025
+    },
+    {
+     "famille": "jaune_cabinets",
+     "libelle": "Annexe « Personnels affectés dans les cabinets ministériels » (jaune)",
+     "derniere_edition": 2026
+    },
+    {
+     "famille": "jaune_conseils",
+     "libelle": "Annexe « Recours aux conseils extérieurs » (jaune)",
+     "derniere_edition": 2026
+    },
+    {
+     "famille": "depenses_fiscales",
+     "libelle": "Évaluation des voies et moyens, tome II (dépenses fiscales)",
+     "derniere_edition": 2026
+    },
+    {
+     "famille": "taxes_affectees",
+     "libelle": "Évaluation des voies et moyens, tome I (taxes affectées)",
+     "derniere_edition": 2024
+    },
+    {
+     "famille": "participations_recettes",
+     "libelle": "Recettes du budget général : produits des participations de l'État",
+     "derniere_edition": 2025
+    },
+    {
+     "famille": "participations_compte",
+     "libelle": "Recettes du compte « Participations financières de l'État »",
+     "derniere_edition": 2025
+    },
+    {
+     "famille": "participations_depenses",
+     "libelle": "Dépenses du compte « Participations financières de l'État »",
+     "derniere_edition": 2025
+    },
+    {
+     "famille": "pensions_recettes",
+     "libelle": "Recettes du compte d'affectation spéciale Pensions",
+     "derniere_edition": 2025
+    },
+    {
+     "famille": "pensions_depenses",
+     "libelle": "Dépenses selon destination (compte Pensions, régimes sociaux et de retraite)",
+     "derniere_edition": 2025
+    }
+   ]
+  },
+  {
+   "id": "plrg",
+   "libelle": "Projet de loi relatif aux résultats de la gestion et portant approbation des comptes de l'année (ancienne loi de règlement) et rapports annuels de performance",
+   "regle": "dépôt avant le 1er mai de l'année qui suit l'exécution du budget (avant le 1er juin jusqu'à l'exécution 2021)",
+   "reference": "Loi organique relative aux lois de finances, articles 46 et 54, modifiés par la loi organique n° 2021-1836 du 28 décembre 2021 ; Assemblée nationale, fiche de synthèse n° 53 (septembre 2022)",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/telechargement/629134/file/Fiche%2053%20-%20Examen%20LF.pdf",
+   "familles": [
+    {
+     "famille": "resultats_gestion",
+     "libelle": "Résultats de la gestion : crédits exécutés par programme (annexes)",
+     "derniere_edition": 2025
+    },
+    {
+     "famille": "performance",
+     "libelle": "Rapports annuels de performance",
+     "derniere_edition": 2025
+    }
+   ]
+  },
+  {
+   "id": "placss",
+   "libelle": "Projet de loi d'approbation des comptes de la sécurité sociale de l'année",
+   "regle": "dépôt avant le 1er juin de l'année qui suit celle des comptes (depuis les comptes 2022)",
+   "reference": "Code de la sécurité sociale, article LO 111-6 (loi organique n° 2022-354 du 14 mars 2022) ; Sénat, rapport n° 789 (2022-2023)",
+   "url": "https://www.senat.fr/rap/l22-789/l22-7898.html",
+   "familles": [
+    {
+     "famille": "placss_texte",
+     "libelle": "Approbation des comptes de la sécurité sociale : texte",
+     "derniere_edition": 2025
+    },
+    {
+     "famille": "placss_annexe1",
+     "libelle": "Approbation des comptes de la sécurité sociale : annexe 1",
+     "derniere_edition": 2024
+    },
+    {
+     "famille": "placss_annexe3",
+     "libelle": "Approbation des comptes de la sécurité sociale : annexe 3",
+     "derniere_edition": 2024
+    },
+    {
+     "famille": "placss_annexe4",
+     "libelle": "Approbation des comptes de la sécurité sociale : annexe 4",
+     "derniere_edition": 2024
+    },
+    {
+     "famille": "placss_annexe7",
+     "libelle": "Approbation des comptes de la sécurité sociale : annexe 7",
+     "derniere_edition": 2024
+    }
+   ]
+  },
+  {
+   "id": "pde",
+   "libelle": "Notification du déficit et de la dette publics à la Commission européenne, publiée par Eurostat",
+   "regle": "publication au plus tard trois semaines après les notifications des États membres, faites avant le 1er avril et avant le 1er octobre",
+   "reference": "Règlement (CE) n° 479/2009 du Conseil, articles 3 et 14",
+   "url": "https://eur-lex.europa.eu/eli/reg/2009/479",
+   "familles": [
+    {
+     "famille": "deficit_dette_ue",
+     "libelle": "Déficit et dette publics notifiés (Eurostat, procédure concernant les déficits excessifs)",
+     "derniere_edition": null
+    }
+   ]
+  }
+ ],
+ "comptes": {
+  "a_jour": 4,
+  "en_retard": 5,
+  "inaccessible": 2,
+  "non_verifiee": 2
+ },
+ "total": 13,
+ "etapes": [
+  {
+   "etape": "base",
+   "titre": "Budget de l'État, Eurostat, communes (data/raw)",
+   "libelle": "Budget de l'État, comptes publics européens et taux des communes",
+   "sorties": [
+    "meta.json",
+    "arbre",
+    "arbre_lfi2025",
+    "arbre_plf2025_nature",
+    "arbre_administrations",
+    "sankey_etat.json",
+    "sankey_etat_lfi2025.json",
+    "nature_etat.json",
+    "programmes",
+    "communes",
+    "cofog.json",
+    "administrations.json",
+    "recettes.json",
+    "deficit.json"
+   ],
+   "statut_passage": "produit",
+   "statut_passage_le": "2026-11-17",
+   "statut_passage_origine": "passage_en_cours",
+   "millesime": "Exécution 2024 ; LFI 2025 ; Etat : Exécution 2024, LFI 2025, Exécution 2025, LFI 2024 ; administrations publiques : 2015-2025 ; PLF 2025 ; Exercice 2025 ; 2024 ; 2005-2025",
+   "fichier_millesime": "arbre/racine.json",
+   "sources": 3,
+   "sources_principales": 3,
+   "par_statut": {
+    "a_jour": 2,
+    "en_retard": 1,
+    "inaccessible": 0,
+    "non_verifiee": 0
+   },
+   "derniere_collecte": "2026-11-18",
+   "premiere_collecte": "2026-11-18",
+   "sources_inaccessibles_passage": [],
+   "signalements": []
+  },
+  {
+   "etape": "beneficiaires",
+   "titre": "Nature, effectifs, bénéficiaires par programme",
+   "libelle": "Qui reçoit l'argent : nature, effectifs et bénéficiaires par programme",
+   "sorties": [
+    "nature",
+    "effectifs",
+    "beneficiaires"
+   ],
+   "statut_passage": "produit",
+   "statut_passage_le": "2026-11-17",
+   "statut_passage_origine": "rapport",
+   "millesime": "voir chaque fichier (associations 2023, opérateurs PLF 2025, France 2030 2021-2025, marchés 2024)",
+   "fichier_millesime": "beneficiaires/index.json",
+   "sources": 2,
+   "sources_principales": 2,
+   "par_statut": {
+    "a_jour": 1,
+    "en_retard": 1,
+    "inaccessible": 0,
+    "non_verifiee": 0
+   },
+   "derniere_collecte": "2026-11-17",
+   "premiere_collecte": "2026-11-17",
+   "sources_inaccessibles_passage": [],
+   "signalements": []
+  },
+  {
+   "etape": "operateurs",
+   "titre": "Opérateurs de l'État (jaunes PLF)",
+   "libelle": "Opérateurs de l'État",
+   "sorties": [
+    "operateurs"
+   ],
+   "statut_passage": "produit",
+   "statut_passage_le": "2026-11-17",
+   "statut_passage_origine": "rapport",
+   "millesime": "Exécution 2020 à 2024, crédits votés 2023 à 2025 (jaunes PLF 2024 à 2026)",
+   "fichier_millesime": "operateurs/index.json",
+   "sources": 2,
+   "sources_principales": 2,
+   "par_statut": {
+    "a_jour": 0,
+    "en_retard": 1,
+    "inaccessible": 0,
+    "non_verifiee": 1
+   },
+   "derniere_collecte": null,
+   "premiere_collecte": null,
+   "sources_inaccessibles_passage": [],
+   "signalements": []
+  },
+  {
+   "etape": "niches",
+   "titre": "Dépenses fiscales et niches sociales (PDF tome II)",
+   "libelle": "Dépenses fiscales et exonérations de cotisations",
+   "sorties": [
+    "niches"
+   ],
+   "statut_passage": "produit",
+   "statut_passage_le": "2026-11-17",
+   "statut_passage_origine": "rapport",
+   "millesime": "PLF 2021 à PLF 2026 : coûts 2019 à 2026 (constaté jusqu'en 2024, estimé 2025 et 2026)",
+   "fichier_millesime": "niches/index.json",
+   "sources": 1,
+   "sources_principales": 1,
+   "par_statut": {
+    "a_jour": 0,
+    "en_retard": 1,
+    "inaccessible": 0,
+    "non_verifiee": 0
+   },
+   "derniere_collecte": null,
+   "premiere_collecte": null,
+   "sources_inaccessibles_passage": [],
+   "signalements": [
+    {
+     "source": "budget.gouv.fr (documents budgétaires, Voies et moyens tome II, classeurs PLF 2024 à 2026)",
+     "constat": "HTTP 403 le 17/11/2026 (protection anti-robots)",
+     "fichier": "niches/index.json"
+    },
+    {
+     "source": "performance-publique.budget.gouv.fr",
+     "constat": "hôte injoignable depuis le proxy de collecte le 17/11/2026",
+     "fichier": "niches/index.json"
+    }
+   ]
+  },
+  {
+   "etape": "associations",
+   "titre": "Associations subventionnées (RNA, SIRENE)",
+   "libelle": "Associations, fonds et fondations",
+   "sorties": [
+    "associations"
+   ],
+   "statut_passage": null,
+   "statut_passage_le": null,
+   "statut_passage_origine": null,
+   "millesime": "Jaunes associations PLF 2012 à 2025 ; RNF au 01/11/2026 ; réserve parlementaire 2013-2017",
+   "fichier_millesime": "associations/index.json",
+   "sources": 1,
+   "sources_principales": 1,
+   "par_statut": {
+    "a_jour": 1,
+    "en_retard": 0,
+    "inaccessible": 0,
+    "non_verifiee": 0
+   },
+   "derniere_collecte": "2026-11-17",
+   "premiere_collecte": "2026-11-17",
+   "sources_inaccessibles_passage": [],
+   "signalements": [
+    {
+     "source": "année 2024",
+     "constat": "Le jeu publié pour le PLF 2024 (data.economie.gouv.fr plf24-donnees-de-l-annexe-jaune-effort-financier-de-l-etat-en-faveur-des-associa, repris sur data.gouv.fr 655d44fd) ne contient qu'une colonne de 111 nombres, sans association ni programme : année non couverte (« nc »).",
+     "fichier": "associations/index.json"
+    }
+   ]
+  },
+  {
+   "etape": "retraites",
+   "titre": "Retraites par régime",
+   "libelle": "Retraites par régime",
+   "sorties": [
+    "retraites"
+   ],
+   "statut_passage": null,
+   "statut_passage_le": null,
+   "statut_passage_origine": null,
+   "millesime": "2004 à 2024 (DREES, EACR) ; PLF 2025 et exécution 2024 (État)",
+   "fichier_millesime": "retraites/index.json",
+   "sources": 1,
+   "sources_principales": 1,
+   "par_statut": {
+    "a_jour": 0,
+    "en_retard": 0,
+    "inaccessible": 0,
+    "non_verifiee": 1
+   },
+   "derniere_collecte": null,
+   "premiere_collecte": null,
+   "sources_inaccessibles_passage": [],
+   "signalements": [
+    {
+     "source": "Conseil d'orientation des retraites (COR), séries du rapport annuel (cotisants, ressources et dépenses par régime, projections)",
+     "constat": "fichiers non repris : leur réutilisation est soumise à l'accord du COR ; aucune valeur du COR n'est publiée ici",
+     "fichier": "retraites/index.json"
+    },
+    {
+     "source": "Cotisants par régime (CNAV, MSA, Agirc-Arrco, fonction publique de l'État, SNCF, RATP, industries électriques et gazières, mines, marins)",
+     "constat": "aucun jeu ouvert annuel trouvé (portails de la DREES, de la DGFiP, de la Caisse des dépôts, data.gouv.fr) ; publiés seulement : actifs de la CNRACL (2014-2022), cotisants de l'Ircantec (2014-2021), emploi intérieur tous régimes (DREES, 2004-2016)",
+     "fichier": "retraites/index.json"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "budget_etat_vert",
+   "titre": "Credits budgetaires de l'Etat par mission > programme > action : execution 2024 et LFI 2025 (CP), retraites au format PLF 2026 par la direction du budget. Base de l'arbre Etat.",
+   "producteur": "data.economie.gouv.fr",
+   "url": "https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+   "origine": "sources.json",
+   "etapes": [
+    "base"
+   ],
+   "derniere_collecte": "2026-11-18",
+   "derniere_verification": "2026-11-18",
+   "collecte_origine": "verification",
+   "statut_collecte": "ok",
+   "millesime_publie": "Exécution 2024 ; LFI 2025",
+   "millesime_origine": "page",
+   "fichier_millesime": "arbre/racine.json",
+   "publication_source": {
+    "date": "2025-11-13",
+    "nature": "date de mise à jour déclarée par la source pour la version utilisée"
+   },
+   "famille": "budget_vert",
+   "edition": 2026,
+   "prochaine_publication": {
+    "date": "2026-10-06",
+    "edition": "projet de loi de finances pour 2027",
+    "calendrier": "plf",
+    "passee": true
+   },
+   "statut": "en_retard",
+   "explication": "Édition « projet de loi de finances pour 2027 » attendue au plus tard le 6 octobre 2026 selon le calendrier officiel : elle ne figure pas dans les données collectées au 18 novembre 2026."
+  },
+  {
+   "id": "cofog_france",
+   "titre": "Depenses publiques par fonction (COFOG niveau 1), France, toutes administrations (S13)",
+   "producteur": "Eurostat",
+   "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_exp/default/table",
+   "origine": "sources.json",
+   "etapes": [
+    "base"
+   ],
+   "derniere_collecte": "2026-11-18",
+   "derniere_verification": "2026-11-18",
+   "collecte_origine": "verification",
+   "statut_collecte": "ok",
+   "millesime_publie": "2024",
+   "millesime_origine": "page",
+   "fichier_millesime": "cofog.json",
+   "publication_source": {
+    "date": "2026-10-21",
+    "nature": "date de mise à jour déclarée par la source pour la version utilisée"
+   },
+   "famille": null,
+   "edition": null,
+   "prochaine_publication": null,
+   "statut": "a_jour",
+   "explication": "Version utilisée identique à celle que publie la source (vérification du 18 novembre 2026) ; aucun calendrier officiel connu pour la prochaine édition."
+  },
+  {
+   "id": "deficit_france",
+   "titre": "Solde public (B9) et dette, France, toutes administrations",
+   "producteur": "Eurostat",
+   "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10dd_edpt1/default/table",
+   "origine": "sources.json",
+   "etapes": [
+    "base"
+   ],
+   "derniere_collecte": "2026-11-18",
+   "derniere_verification": "2026-11-18",
+   "collecte_origine": "verification",
+   "statut_collecte": "ok",
+   "millesime_publie": "Etat : Exécution 2024, LFI 2025, Exécution 2025, LFI 2024 ; administrations publiques : 2015-2025",
+   "millesime_origine": "page",
+   "fichier_millesime": "deficit.json",
+   "publication_source": {
+    "date": "2026-10-21",
+    "nature": "date de mise à jour déclarée par la source pour la version utilisée"
+   },
+   "famille": "deficit_dette_ue",
+   "edition": null,
+   "prochaine_publication": {
+    "date": "2027-04-22",
+    "edition": "notification d'avril 2027",
+    "calendrier": "pde",
+    "passee": false
+   },
+   "statut": "a_jour",
+   "explication": "Version utilisée identique à celle que publie la source (vérification du 18 novembre 2026). Prochaine édition attendue au plus tard le 22 avril 2027."
+  },
+  {
+   "id": "benef_decp",
+   "titre": "Marches publics (DECP consolidees)",
+   "producteur": "data.gouv.fr",
+   "url": "https://www.data.gouv.fr/datasets/608c055b35eb4e6ee20eb325/",
+   "origine": "catalogue",
+   "etapes": [
+    "beneficiaires"
+   ],
+   "derniere_collecte": "2026-11-17",
+   "derniere_verification": "2026-11-17",
+   "collecte_origine": "manifeste",
+   "statut_collecte": "ok",
+   "millesime_publie": "voir chaque fichier (associations 2023, opérateurs PLF 2025, France 2030 2021-2025, marchés 2024)",
+   "millesime_origine": "page",
+   "fichier_millesime": "beneficiaires/index.json",
+   "publication_source": {
+    "date": "2026-11-17",
+    "nature": "date de mise à jour du jeu sur data.gouv.fr"
+   },
+   "famille": null,
+   "edition": null,
+   "prochaine_publication": null,
+   "statut": "a_jour",
+   "explication": "Dernière collecte réussie le 17 novembre 2026 ; aucun calendrier officiel connu pour la prochaine édition."
+  },
+  {
+   "id": "benef_associations_plf25",
+   "titre": "Subventions de l'Etat aux associations (jaune PLF 2025)",
+   "producteur": "data.economie.gouv.fr",
+   "url": "https://data.economie.gouv.fr/explore/dataset/plf25-donnees-de-l-annexe-jaune-effort-financier-de-l-etat-en-faveur-des-associations/",
+   "origine": "catalogue",
+   "etapes": [
+    "beneficiaires"
+   ],
+   "derniere_collecte": "2026-11-17",
+   "derniere_verification": "2026-11-17",
+   "collecte_origine": "manifeste",
+   "statut_collecte": "ok",
+   "millesime_publie": "voir chaque fichier (associations 2023, opérateurs PLF 2025, France 2030 2021-2025, marchés 2024)",
+   "millesime_origine": "page",
+   "fichier_millesime": "beneficiaires/index.json",
+   "publication_source": {
+    "date": "2024-12-23",
+    "nature": "date de modification du jeu déclarée par le portail"
+   },
+   "famille": "jaune_associations",
+   "edition": 2025,
+   "prochaine_publication": {
+    "date": "2025-10-07",
+    "edition": "projet de loi de finances pour 2026",
+    "calendrier": "plf",
+    "passee": true
+   },
+   "statut": "en_retard",
+   "explication": "Édition « projet de loi de finances pour 2026 » attendue au plus tard le 7 octobre 2025 selon le calendrier officiel : elle ne figure pas dans les données collectées au 18 novembre 2026."
+  },
+  {
+   "id": "etat_jaune_operateurs_plf2025",
+   "titre": "Annexe au PLF 2025, Operateurs de l'Etat (jaune), miroir Assemblee nationale",
+   "producteur": "www2.assemblee-nationale.fr",
+   "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Jaunes/22-Jaune_operateurs.pdf",
+   "origine": "catalogue",
+   "etapes": [
+    "operateurs"
+   ],
+   "derniere_collecte": null,
+   "derniere_verification": null,
+   "collecte_origine": null,
+   "statut_collecte": null,
+   "millesime_publie": "Exécution 2020 à 2024, crédits votés 2023 à 2025 (jaunes PLF 2024 à 2026)",
+   "millesime_origine": "page",
+   "fichier_millesime": "operateurs/index.json",
+   "publication_source": null,
+   "famille": "jaune_operateurs",
+   "edition": 2025,
+   "prochaine_publication": null,
+   "statut": "non_verifiee",
+   "explication": "Pas de collecte datée : aucune collecte datée dans le manifeste de l'entrepôt (source collectée par le module de la page ou pas encore collectée). Édition 2025 gardée pour les séries : l'édition 2026 de la même publication est collectée."
+  },
+  {
+   "id": "etat_jaune_operateurs_plf2026",
+   "titre": "Annexe au PLF 2026, Operateurs de l'Etat (jaune), miroir Assemblee nationale",
+   "producteur": "www2.assemblee-nationale.fr",
+   "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2026/22-Jaune2026_Operateurs.pdf",
+   "origine": "catalogue",
+   "etapes": [
+    "operateurs"
+   ],
+   "derniere_collecte": null,
+   "derniere_verification": null,
+   "collecte_origine": null,
+   "statut_collecte": null,
+   "millesime_publie": "Exécution 2020 à 2024, crédits votés 2023 à 2025 (jaunes PLF 2024 à 2026)",
+   "millesime_origine": "page",
+   "fichier_millesime": "operateurs/index.json",
+   "publication_source": null,
+   "famille": "jaune_operateurs",
+   "edition": 2026,
+   "prochaine_publication": {
+    "date": "2026-10-06",
+    "edition": "projet de loi de finances pour 2027",
+    "calendrier": "plf",
+    "passee": true
+   },
+   "statut": "en_retard",
+   "explication": "Édition « projet de loi de finances pour 2027 » attendue au plus tard le 6 octobre 2026 selon le calendrier officiel : elle ne figure pas dans les données collectées au 18 novembre 2026."
+  },
+  {
+   "id": "niches_vm",
+   "titre": "Dépenses fiscales : Évaluation des voies et moyens tome II, PLF 2024 à 2026 (miroirs Assemblée nationale, budget.gouv.fr refusant les scripts), PLFSS 2026 annexe 4 (exonérations de cotisations (souvent appelées niches sociales)), notes du comité d'évaluation 2011",
+   "producteur": "www.assemblee-nationale.fr",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/705208/file/Evaluation%20des%20voies%20et%20moyens%20-%20Tome%20II.pdf",
+   "origine": "catalogue",
+   "etapes": [
+    "niches"
+   ],
+   "derniere_collecte": null,
+   "derniere_verification": null,
+   "collecte_origine": null,
+   "statut_collecte": null,
+   "millesime_publie": "PLF 2021 à PLF 2026 : coûts 2019 à 2026 (constaté jusqu'en 2024, estimé 2025 et 2026)",
+   "millesime_origine": "page",
+   "fichier_millesime": "niches/index.json",
+   "publication_source": null,
+   "famille": "depenses_fiscales",
+   "edition": 2026,
+   "prochaine_publication": {
+    "date": "2026-10-06",
+    "edition": "projet de loi de finances pour 2027",
+    "calendrier": "plf",
+    "passee": true
+   },
+   "statut": "en_retard",
+   "explication": "Édition « projet de loi de finances pour 2027 » attendue au plus tard le 6 octobre 2026 selon le calendrier officiel : elle ne figure pas dans les données collectées au 18 novembre 2026."
+  },
+  {
+   "id": "assoc_jaune_plf2016",
+   "titre": "Jaune « Effort financier de l'Etat en faveur des associations », PLF 2016",
+   "producteur": "data.economie.gouv.fr",
+   "url": "https://data.economie.gouv.fr/explore/dataset/plf-2016-jaune-effort-financier-de-letat-en-faveur-des-associations-/",
+   "origine": "catalogue",
+   "etapes": [
+    "associations"
+   ],
+   "derniere_collecte": "2026-11-17",
+   "derniere_verification": "2026-11-17",
+   "collecte_origine": "manifeste",
+   "statut_collecte": "ok",
+   "millesime_publie": "Jaunes associations PLF 2012 à 2025 ; RNF au 01/11/2026 ; réserve parlementaire 2013-2017",
+   "millesime_origine": "page",
+   "fichier_millesime": "associations/index.json",
+   "publication_source": {
+    "date": "2018-12-13",
+    "nature": "date de modification du jeu déclarée par le portail"
+   },
+   "famille": "jaune_associations",
+   "edition": 2016,
+   "prochaine_publication": null,
+   "statut": "a_jour",
+   "explication": "Dernière collecte réussie le 17 novembre 2026. Édition 2016 gardée pour les séries : l'édition 2025 de la même publication est collectée."
+  },
+  {
+   "id": "retraites_eacr_part1",
+   "titre": "DREES, enquete annuelle aupres des caisses de retraite (EACR), partie 1, 24 Mo",
+   "producteur": "data.drees.solidarites-sante.gouv.fr",
+   "url": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/donnes_eacr/attachments/62_eacr_diffusee_part_1_version_du_26_mai_2026_xlsx",
+   "origine": "catalogue",
+   "etapes": [
+    "retraites"
+   ],
+   "derniere_collecte": null,
+   "derniere_verification": null,
+   "collecte_origine": null,
+   "statut_collecte": null,
+   "millesime_publie": "2004 à 2024",
+   "millesime_origine": "source",
+   "fichier_millesime": "retraites/index.json",
+   "publication_source": null,
+   "famille": null,
+   "edition": null,
+   "prochaine_publication": null,
+   "statut": "non_verifiee",
+   "explication": "Pas de collecte datée : aucune collecte datée dans le manifeste de l'entrepôt (source collectée par le module de la page ou pas encore collectée)."
+  },
+  {
+   "id": "decisions_an_l16_amendements",
+   "titre": "Assemblee nationale, amendements de la 16e legislature",
+   "producteur": "data.assemblee-nationale.fr",
+   "url": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/amendements_div_legis/Amendements.json.zip",
+   "origine": "catalogue",
+   "etapes": [],
+   "derniere_collecte": null,
+   "derniere_verification": "2026-11-16",
+   "collecte_origine": "manifeste",
+   "statut_collecte": "erreur",
+   "millesime_publie": null,
+   "millesime_origine": null,
+   "fichier_millesime": null,
+   "publication_source": null,
+   "famille": null,
+   "edition": null,
+   "prochaine_publication": null,
+   "statut": "inaccessible",
+   "explication": "Dernière tentative de collecte le 16 novembre 2026 : connexion coupée ou transfert interrompu. Rien n'a été contourné ; la dernière version obtenue reste publiée."
+  },
+  {
+   "id": "local_communes",
+   "titre": "Comptes des communes (OFGL)",
+   "producteur": "data.ofgl.fr",
+   "url": "https://data.ofgl.fr/explore/dataset/ofgl-base-communes-consolidee/",
+   "origine": "catalogue",
+   "etapes": [],
+   "derniere_collecte": null,
+   "derniere_verification": "2026-11-15",
+   "collecte_origine": "manifeste",
+   "statut_collecte": "delai_depasse",
+   "millesime_publie": null,
+   "millesime_origine": null,
+   "fichier_millesime": null,
+   "publication_source": {
+    "date": "2026-07-28",
+    "nature": "date de modification du jeu déclarée par le portail"
+   },
+   "famille": null,
+   "edition": null,
+   "prochaine_publication": null,
+   "statut": "inaccessible",
+   "explication": "Dernière tentative de collecte le 15 novembre 2026 : délai dépassé. Rien n'a été contourné ; la dernière version obtenue reste publiée."
+  },
+  {
+   "id": "secu_placss2024_annexe3",
+   "titre": "PLACSS 2024, annexe 3, ONDAM et depenses de sante",
+   "producteur": "www.assemblee-nationale.fr",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/922636/file/PLACSS2024-Annexe3.pdf",
+   "origine": "catalogue",
+   "etapes": [],
+   "derniere_collecte": null,
+   "derniere_verification": null,
+   "collecte_origine": null,
+   "statut_collecte": null,
+   "millesime_publie": null,
+   "millesime_origine": null,
+   "fichier_millesime": null,
+   "publication_source": null,
+   "famille": "placss_annexe3",
+   "edition": 2024,
+   "prochaine_publication": {
+    "date": "2026-05-31",
+    "edition": "approbation des comptes de la sécurité sociale 2025",
+    "calendrier": "placss",
+    "passee": true
+   },
+   "statut": "en_retard",
+   "explication": "Édition « approbation des comptes de la sécurité sociale 2025 » attendue au plus tard le 31 mai 2026 selon le calendrier officiel : elle ne figure pas dans les données collectées au 18 novembre 2026."
+  }
+ ],
+ "non_collectables": [
+  {
+   "source": "Aides d'Etat (TAM, Commission europeenne)",
+   "motif": "session et jeton CSRF, export envoye par courriel"
+  },
+  {
+   "source": "Aides PAC beneficiaires",
+   "motif": "application sans URL stable ; publication legale limitee a 2 ans : exclu"
+  },
+  {
+   "source": "Agence France Tresor (dette negociable)",
+   "motif": "refus d'acces (Cloudflare 403), non contourne"
+  }
+ ],
+ "ordre": {
+  "cles": [
+   "etape",
+   "titre",
+   "id"
+  ],
+  "regle": "Sources rangées par page, dans l'ordre de la mise à jour, puis par titre alphabétique. Aucun classement par statut ni par producteur."
+ },
+ "limites": [
+  "La date de dernière collecte est celle du manifeste de l'entrepôt ; une source collectée par le module d'une page sans trace datée est « non vérifiée », même si la page s'affiche normalement.",
+  "Les calendriers retenus sont des dates limites fixées par des textes (loi organique, règlement) : la mise en ligne en données ouvertes peut suivre le dépôt du document de quelques jours.",
+  "Une source sans calendrier officiel connu n'a pas de prochaine publication (null) : elle ne peut pas être « en retard », seulement à jour à la date de sa dernière collecte.",
+  "Le millésime publié est celui déclaré par la page qui lit la source (en-tête du fichier), ou par la source elle-même quand la page le publie source par source.",
+  "Le rapport de passage (site/data/mise_a_jour.json) est écrit après la dernière étape : les sources inaccessibles qu'il signale sont celles du passage qu'il décrit (date genere_le)."
+ ],
+ "recherche_prealable": {
+  "date": "2026-11-18",
+  "conclusion": "Aucun outil public ne donne une prochaine publication fiable pour ces sources : les dates déclarées par les producteurs sur data.gouv.fr sont antérieures à leur dernière mise à jour. Le module reprend les traces de collecte du dépôt (manifeste, rapport de passage) et les calendriers fixés par les textes officiels ; il est écrit pour le dépôt.",
+  "trouvailles": [
+   {
+    "nom": "API data.gouv.fr (udata 17.26.0) : champs frequency, frequency_date, quality.update_fulfilled_in_time",
+    "url": "https://www.data.gouv.fr/api/1/datasets/",
+    "licence": "MIT (udata, PyPI)",
+    "dernier_commit": "2026-11-13",
+    "verdict": "inspiration seulement : relevé du 18/11/2026 sur les 49 jeux data.gouv.fr du catalogue, la date de prochaine mise à jour déclarée est antérieure à la dernière mise à jour pour 49 jeux sur 49 ; l'indicateur update_fulfilled_in_time ne donne pas de date"
+   },
+   {
+    "nom": "Métadonnées Opendatasoft (metas.default.modified, metas.dcat.accrualperiodicity)",
+    "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/",
+    "licence": "Licence Ouverte 2.0",
+    "dernier_commit": null,
+    "verdict": "réutilisable tel quel : date de modification lue dans la signature du manifeste de collecte et dans data/raw ; la périodicité déclarée n'est pas une date et n'est pas reprise"
+   },
+   {
+    "nom": "Calendrier des publications d'Eurostat (calendrier internet, iCal)",
+    "url": "https://ec.europa.eu/eurostat/news/internet-calendar",
+    "licence": "réutilisation libre avec mention",
+    "dernier_commit": null,
+    "verdict": "à adapter : dates exactes, mais le calendrier de l'année suivante paraît en janvier ; le délai fixé par le règlement (CE) n° 479/2009 est retenu"
+   },
+   {
+    "nom": "OCHA-DAP/hdx-data-freshness (statuts fresh, due, overdue, delinquent selon la fréquence déclarée)",
+    "url": "https://github.com/OCHA-DAP/hdx-data-freshness",
+    "licence": "MIT",
+    "dernier_commit": "2023-05-30 (version 2.0.0 sur PyPI)",
+    "verdict": "inspiration seulement : statuts fondés sur une fréquence déclarée, peu fiable ici ; le site s'appuie sur des calendriers officiels"
+   },
+   {
+    "nom": "dbt-labs/dbt-core, « source freshness » (warn_after, error_after sur une date de chargement)",
+    "url": "https://github.com/dbt-labs/dbt-core",
+    "licence": "Apache-2.0",
+    "dernier_commit": "2026-11-12 (version 1.12.7 sur PyPI)",
+    "verdict": "inspiration seulement : seuils de durée choisis par l'utilisateur, pas de calendrier officiel"
+   },
+   {
+    "nom": "pipeline/datapackage.py (lignée des sources) et pipeline/tout.py (étapes, motifs de refus réseau)",
+    "url": "https://github.com/MoonEyes/Ou-vont-mes-impots",
+    "licence": "MIT",
+    "dernier_commit": "2026-11-17",
+    "verdict": "réutilisable tel quel : étapes, sorties et motifs de refus importés de pipeline/tout.py ; règle d'adresse des jeux reprise de pipeline/datapackage.py"
+   }
+  ]
+ }
+}
