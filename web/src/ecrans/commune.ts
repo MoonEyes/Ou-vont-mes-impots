@@ -138,6 +138,8 @@ ${attente('sec-subventions')}
   <li><a href="#/local">Choisir une autre commune</a></li>
 </ul>
 ${partPersonnelle()}`
+  // Investissement réalisé et délibérations publiées : ajouté par le navigateur seulement (rien au HTML prérendu).
+  if (typeof IntersectionObserver !== 'undefined') void import('./commune_investissement').then((m) => m.brancher(cible, { insee, dep, nom: g.nom, siren: g.siren ?? null, epci: g.epci, nomEpci: epci?.nom ?? null })).catch((e) => console.error(e))
 
   const remplir = (id: string, html: string) => {
     const z = cible.querySelector<HTMLElement>(`#${id}`)

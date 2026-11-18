@@ -343,6 +343,13 @@ FICHIERS = [
     # projets subventionnés par l'État : Fonds vert par commune, badges ACV et PVD, liens vers les dotations (pipeline/projets_subventionnes.py)
     ("projets_subventionnes_index.schema.json", "projets_subventionnes/index.json", "existant"),
     ("projets_subventionnes_departement.schema.json", "projets_subventionnes/[0-9]*.json", "existant"),
+    # investissement réalisé par commune (balances DGFiP) et délibérations publiées au format national
+    # (pipeline/investissement_communes.py, pipeline/deliberations.py)
+    ("investissement_communes_index.schema.json", "investissement_communes/index.json", "existant"),
+    ("investissement_communes_communes.schema.json", "investissement_communes/communes/*.json", "existant"),
+    ("deliberations_index.schema.json", "deliberations/index.json", "existant"),
+    ("deliberations_collectivite.schema.json", "deliberations/collectivites/*.json", "existant"),
+    ("deliberations_budgets.schema.json", "deliberations/budgets.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

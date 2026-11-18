@@ -1,0 +1,122 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/investissement_communes_communes.schema.json",
+ "title": "site/data/investissement_communes/communes/<dep>.json : dépenses d'équipement mandatées par commune et par exercice (balances DGFiP), crédits votés publiés (pipeline/investissement_communes.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "departement",
+  "annees",
+  "colonnes",
+  "unite",
+  "regle_null",
+  "communes"
+ ],
+ "properties": {
+  "departement": {
+   "type": "string",
+   "pattern": "^(\\d{2}|2A|2B|97\\d)$"
+  },
+  "annees": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "pattern": "^\\d{4}$"
+   }
+  },
+  "colonnes": {
+   "const": [
+    "equipement",
+    "c20_hors_204",
+    "c21",
+    "c23",
+    "c204"
+   ]
+  },
+  "unite": {
+   "type": "string"
+  },
+  "regle_null": {
+   "type": "string"
+  },
+  "communes": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^(\\d{5}|2[AB]\\d{3})$"
+   },
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "nom",
+     "siren",
+     "m"
+    ],
+    "properties": {
+     "nom": {
+      "type": "string"
+     },
+     "siren": {
+      "type": "string",
+      "pattern": "^\\d{9}$"
+     },
+     "m": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^\\d{4}$"
+      },
+      "additionalProperties": {
+       "type": "array",
+       "items": {
+        "type": "integer"
+       },
+       "minItems": 5,
+       "maxItems": 5
+      }
+     },
+     "vote": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^\\d{4}$"
+      },
+      "additionalProperties": {
+       "type": "object",
+       "required": [
+        "jeux"
+       ],
+       "properties": {
+        "budget_primitif": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         },
+         "minItems": 5,
+         "maxItems": 5
+        },
+        "credits_ouverts": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         },
+         "minItems": 5,
+         "maxItems": 5
+        },
+        "jeux": {
+         "type": "array",
+         "items": {
+          "type": "string"
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

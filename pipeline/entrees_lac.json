@@ -2101,6 +2101,28 @@
    "hors_catalogue": [],
    "octets_sources": 16317173,
    "note": "entrées relevées dans le manifeste de collecte (python pipeline/projets_subventionnes.py collecter), non relevées sous strace ; lit aussi site/data/local/geo, site/data/territoires et site/data/subventions"
+  },
+  "deliberations": {
+   "sources": {},
+   "caches": [
+    "data/lake/_cache/local/prenoms.json",
+    "data/lake/_cache/local/sirene_unite_legale.parquet",
+    "data/lake/_restreint/deliberations",
+    "data/lake/deliberations"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "entrées collectées par le module lui-même (python pipeline/deliberations.py collecter : jeux au schéma national, contrôle collecte/integrite.py), non relevées sous strace ; lit aussi site/data/local/geo"
+  },
+  "investissement_communes": {
+   "sources": {},
+   "caches": [
+    "data/lake/deliberations",
+    "data/lake/investissement_communes"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "exports agrégés côté serveur collectés par le module lui-même (python pipeline/investissement_communes.py collecter), non relevés sous strace ; lit aussi site/data/local/geo"
   }
  },
  "urls": {
