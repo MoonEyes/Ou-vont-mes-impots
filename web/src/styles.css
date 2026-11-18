@@ -2857,3 +2857,82 @@ fieldset.saisie-groupe {
 /* La France est repérée par un trait (forme), jamais par une couleur propre. */
 .tableau-comparaison tr.repere-france > * {
   border-bottom: var(--trait) solid var(--contour);
+/* recap-partage */
+/* Version imprimable (résultat et Explorer) : thème clair, sans navigation ni boutons, adresse du site en pied. */
+.partage-options {
+@media print {
+  :root {
+    --fond: #ffffff;
+    --papier: #ffffff;
+    --texte: #1e1548;
+    --secondaire: #4b4470;
+    --contour: #1e1548;
+    --filet: #dcd6f2;
+    --principal: #1e1548;
+    --sur-principal: #ffffff;
+    --accent: #4f2fcc;
+    --taupe: #c9b8ff;
+    color-scheme: light;
+  @page {
+    margin: 14mm 12mm;
+  html,
+  body {
+    background: #ffffff;
+    color: #1e1548;
+    font-size: 11pt;
+  /* Les parts colorées du billet et les motifs gardent leurs couleurs : elles ont aussi un contour et un libellé. */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  .evitement,
+  .navigation,
+  .entete-ligne .navigation,
+  .fil-ariane,
+  .voir-aussi,
+  .bascule,
+  .actions,
+  .partage-options,
+  #partage-info,
+  .pied,
+  .chargement,
+  main button {
+    display: none !important;
+  .entete,
+  .bandeau {
+    background: #ffffff;
+    color: #1e1548;
+    border-bottom: var(--trait) solid #1e1548;
+  main {
+    min-height: 0;
+    overflow: visible;
+  main::after {
+    content: 'Où vont mes impôts · site citoyen non officiel · mooneyes.github.io/Ou-vont-mes-impots';
+    display: block;
+    margin-top: 1.5rem;
+    padding-top: 0.5rem;
+    border-top: var(--trait) solid #1e1548;
+    font-size: 9pt;
+  .colonnes {
+    display: block;
+    margin-block: 1rem;
+  .tableau-defile {
+    overflow: visible;
+  a {
+    color: inherit;
+    text-decoration: none;
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  .carte,
+  .recap,
+  .billet,
+  .tuiles a,
+  .cartes li,
+  .lignes li,
+  .postes li,
+  figure,
+  tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
