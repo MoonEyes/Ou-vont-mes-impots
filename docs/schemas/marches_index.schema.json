@@ -516,6 +516,225 @@
         }
       }
     },
+    "series_repetees": {
+      "type": "object",
+      "properties": {
+        "regle": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seuil_eur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "marches_minimum": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "pourquoi": {
+          "type": "string",
+          "minLength": 1
+        },
+        "par_annee": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer",
+                "minimum": 2019,
+                "maximum": 2100
+              },
+              "series": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "marches": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lignes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "montant_declare_eur": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "annee",
+              "series",
+              "marches",
+              "lignes",
+              "montant_declare_eur"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "principales": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer",
+                "minimum": 2019,
+                "maximum": 2100
+              },
+              "siren": {
+                "anyOf": [
+                  {
+                    "$ref": "commun.schema.json#/$defs/siren"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "denomination": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "categorie": {
+                "type": "string",
+                "minLength": 1
+              },
+              "marches": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "montant_unitaire_eur": {
+                "type": "number"
+              },
+              "montant_declare_eur": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "annee",
+              "siren",
+              "denomination",
+              "categorie",
+              "marches",
+              "montant_unitaire_eur",
+              "montant_declare_eur"
+            ],
+            "additionalProperties": false,
+            "propertyNames": {
+              "not": {
+                "pattern": "(?i)pr[eé]nom|adresse|courriel|telephone|dirigeant"
+              }
+            }
+          }
+        },
+        "ordre": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "regle",
+        "seuil_eur",
+        "marches_minimum",
+        "pourquoi",
+        "par_annee",
+        "principales",
+        "ordre"
+      ],
+      "additionalProperties": false
+    },
+    "plus_gros_marches": {
+      "type": "object",
+      "properties": {
+        "note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "marches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer",
+                "minimum": 2019,
+                "maximum": 2100
+              },
+              "acheteur_siren": {
+                "anyOf": [
+                  {
+                    "$ref": "commun.schema.json#/$defs/siren"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "acheteur": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "categorie": {
+                "type": "string",
+                "minLength": 1
+              },
+              "nature": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Travaux",
+                  "Services",
+                  "Fournitures",
+                  "Non catégorisé"
+                ]
+              },
+              "division_cpv": {
+                "type": "string",
+                "pattern": "^\\d{2}$"
+              },
+              "montant_eur": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "annee",
+              "acheteur_siren",
+              "acheteur",
+              "categorie",
+              "nature",
+              "type",
+              "division_cpv",
+              "montant_eur"
+            ],
+            "additionalProperties": false,
+            "propertyNames": {
+              "not": {
+                "pattern": "(?i)pr[eé]nom|adresse|courriel|telephone|dirigeant"
+              }
+            }
+          }
+        },
+        "ordre": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "note",
+        "marches",
+        "ordre"
+      ],
+      "additionalProperties": false
+    },
     "recoupements": {
       "type": "array",
       "items": {
@@ -834,13 +1053,33 @@
         "departement": {
           "type": "string",
           "minLength": 1
+        },
+        "regions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "secteurs": {
+          "type": "string",
+          "minLength": 1
+        },
+        "titulaires": {
+          "type": "string",
+          "minLength": 1
+        },
+        "acheteurs": {
+          "type": "string",
+          "minLength": 1
         }
       },
       "required": [
         "annees",
         "categories",
         "departements",
-        "departement"
+        "departement",
+        "regions",
+        "secteurs",
+        "titulaires",
+        "acheteurs"
       ],
       "additionalProperties": false
     }
@@ -860,6 +1099,8 @@
     "totaux",
     "par_annee",
     "repere_oecp",
+    "series_repetees",
+    "plus_gros_marches",
     "recoupements",
     "centrales_achat",
     "doublons_entre_sources",

@@ -188,6 +188,10 @@ FICHIERS = [
     ("marches_categories.schema.json", "marches/categories.json", "existant"),
     ("marches_departements.schema.json", "marches/departements.json", "existant"),
     ("marches_departement.schema.json", "marches/departements/*.json", "existant"),
+    ("marches_regions.schema.json", "marches/regions.json", "existant"),
+    ("marches_secteurs.schema.json", "marches/secteurs.json", "existant"),
+    ("marches_titulaires.schema.json", "marches/titulaires.json", "existant"),
+    ("marches_acheteurs.schema.json", "marches/acheteurs.json", "existant"),
     # aide au développement : APD déclarée, AFD, OCDE, Expertise France, Proparco (pipeline/aide_developpement.py)
     ("aide_developpement_index.schema.json", "aide_developpement/index.json", "existant"),
     ("aide_developpement_apd_declaree.schema.json", "aide_developpement/apd_declaree.json", "existant"),
