@@ -1,0 +1,221 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/typologies_index.schema.json",
+ "title": "site/data/typologies/index.json : territoires comparables, variables, liste fermée des croisements, facettes, rapports par strate, contrôles et sources (pipeline/typologies.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "date_sources",
+  "presentation",
+  "avertissement",
+  "variables",
+  "croisements",
+  "facettes",
+  "densite_libelles",
+  "aav_categories",
+  "aav_tranches",
+  "strates_ofgl",
+  "motifs",
+  "departements",
+  "couverture",
+  "controles",
+  "methode",
+  "limites",
+  "non_repris",
+  "sources",
+  "sources_inaccessibles",
+  "recherche_publique",
+  "ordre"
+ ],
+ "properties": {
+  "date_sources": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "presentation": {
+   "type": "string"
+  },
+  "avertissement": {
+   "type": "string",
+   "minLength": 20
+  },
+  "variables": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "libelle",
+     "annee",
+     "unite",
+     "definition",
+     "statut",
+     "source",
+     "methode"
+    ],
+    "properties": {
+     "annee": {
+      "type": "integer"
+     },
+     "statut": {
+      "enum": [
+       "tracé",
+       "calculé par le site"
+      ]
+     }
+    }
+   }
+  },
+  "croisements": {
+   "type": "array",
+   "minItems": 6,
+   "maxItems": 10,
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "annee",
+     "x",
+     "y",
+     "titre",
+     "fichier",
+     "communes",
+     "perimetre",
+     "sources"
+    ],
+    "properties": {
+     "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+     },
+     "annee": {
+      "type": "integer"
+     },
+     "fichier": {
+      "type": "string",
+      "pattern": "^croisements/[a-z0-9_]+\\.json$"
+     },
+     "communes": {
+      "type": "integer"
+     }
+    }
+   }
+  },
+  "facettes": {
+   "type": "object",
+   "required": [
+    "densite",
+    "strate",
+    "aav"
+   ],
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "libelle",
+     "source",
+     "cases"
+    ],
+    "properties": {
+     "cases": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "code",
+        "libelle"
+       ]
+      }
+     }
+    }
+   }
+  },
+  "strates_ofgl": {
+   "type": "object",
+   "required": [
+    "statut",
+    "methode",
+    "perimetre",
+    "unite",
+    "lignes"
+   ],
+   "properties": {
+    "statut": {
+     "const": "calculé par le site"
+    },
+    "lignes": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "annee",
+       "agregat",
+       "strate",
+       "communes",
+       "euros_par_habitant"
+      ]
+     }
+    }
+   }
+  },
+  "departements": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "departement",
+     "fichier",
+     "communes"
+    ],
+    "properties": {
+     "fichier": {
+      "type": "string",
+      "pattern": "^communes/[0-9AB]{2,3}\\.json$"
+     }
+    }
+   }
+  },
+  "sources": {
+   "type": "object"
+  },
+  "sources_inaccessibles": {
+   "type": "array"
+  },
+  "recherche_publique": {
+   "type": "object",
+   "required": [
+    "date",
+    "requetes",
+    "trouvailles"
+   ],
+   "properties": {
+    "trouvailles": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "nom",
+       "url",
+       "licence",
+       "derniere_modification",
+       "verdict"
+      ],
+      "properties": {
+       "verdict": {
+        "enum": [
+         "réutilisable tel quel",
+         "à adapter",
+         "inspiration seulement"
+        ]
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

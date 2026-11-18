@@ -1,0 +1,142 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/typologies_communes.schema.json",
+ "title": "site/data/typologies/communes/<dep>.json : typologies de chaque commune (densité, aire d'attraction, strate de l'OFGL) et valeurs des variables des croisements prédéfinis (pipeline/typologies.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "date_sources",
+  "departement",
+  "colonnes",
+  "regle_null",
+  "communes"
+ ],
+ "properties": {
+  "date_sources": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "departement": {
+   "type": "string",
+   "pattern": "^(\\d{2}|2A|2B|97\\d)$"
+  },
+  "colonnes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "minItems": 1
+  },
+  "regle_null": {
+   "type": "string"
+  },
+  "communes": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^(\\d{5}|2[AB]\\d{3})$"
+   },
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "nom",
+     "population",
+     "densite",
+     "aav",
+     "strate",
+     "v"
+    ],
+    "properties": {
+     "nom": {
+      "type": "string"
+     },
+     "population": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "densite": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^[1-7]$"
+     },
+     "densite3": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^[1-3]$"
+     },
+     "densite_aav": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^[1-4]$"
+     },
+     "aav": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "enum": [
+       "11",
+       "12",
+       "13",
+       "20",
+       "30",
+       null
+      ]
+     },
+     "aav_tranche": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^[0-5]$"
+     },
+     "strate": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^(\\d|10)$"
+     },
+     "v": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "motifs": {
+      "type": "object",
+      "additionalProperties": {
+       "enum": [
+        "absente",
+        "perimetre",
+        "non_publie",
+        "secret",
+        "hors_champ",
+        "valeur_manquante",
+        "non_communique",
+        "incomplete"
+       ]
+      }
+     }
+    },
+    "additionalProperties": false
+   }
+  }
+ }
+}

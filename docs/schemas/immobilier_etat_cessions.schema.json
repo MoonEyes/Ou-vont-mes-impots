@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/immobilier_etat_cessions.schema.json",
+  "title": "site/data/immobilier_etat/cessions.json : produits de cessions (outil de suivi des cessions, compte d'affectation spéciale) et cessions 2013 à 2017",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "outil_de_suivi_des_cessions": {
+      "type": "object",
+      "required": [
+        "par_administration_occupante",
+        "par_nature_de_bien"
+      ],
+      "properties": {
+        "par_administration_occupante": {
+          "type": "object",
+          "required": [
+            "annees",
+            "lignes",
+            "total_eur",
+            "ecarts_somme_total"
+          ]
+        }
+      }
+    },
+    "compte_affectation_speciale": {
+      "type": "object",
+      "required": [
+        "par_annee"
+      ],
+      "properties": {
+        "par_annee": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[0-9]{4}$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "evaluation_eur",
+              "execution_eur",
+              "lignes_execution",
+              "source"
+            ],
+            "properties": {
+              "lignes_execution": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "libelle",
+                    "execution_eur"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "historique_2013_2017": {
+      "type": "object",
+      "required": [
+        "par_annee",
+        "total",
+        "par_nature_de_bien",
+        "par_procedure",
+        "par_nature_juridique_acquereur",
+        "par_departement",
+        "note"
+      ]
+    },
+    "ecarts_entre_sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "objet",
+          "valeurs",
+          "lecture"
+        ],
+        "properties": {
+          "valeurs": {
+            "type": "array",
+            "minItems": 2
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 10
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "collecte_le",
+    "outil_de_suivi_des_cessions",
+    "compte_affectation_speciale",
+    "historique_2013_2017",
+    "ecarts_entre_sources"
+  ]
+}

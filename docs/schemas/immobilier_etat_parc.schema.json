@@ -1,0 +1,311 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/immobilier_etat_parc.schema.json",
+  "title": "site/data/immobilier_etat/parc.json : jeux « Parc de l'immobilier de l'État » agrégés (ministère, département, type de bien, type de propriétaire) et séries du document de politique transversale",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "publications": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "fichier_source",
+          "url",
+          "au",
+          "perimetre_publication",
+          "dates_de_reference_inscrites",
+          "total",
+          "par_ministere",
+          "par_departement",
+          "par_region",
+          "par_type_de_bien",
+          "par_type_proprietaire",
+          "par_groupe_proprietaire"
+        ],
+        "properties": {
+          "au": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-12-31$"
+          },
+          "total": {
+            "type": "object",
+            "required": [
+              "biens",
+              "batiments",
+              "surface_batiments_m2",
+              "autres_biens",
+              "surface_autres_biens_m2"
+            ],
+            "properties": {
+              "biens": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "batiments": {
+                "type": "integer"
+              },
+              "surface_batiments_m2": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "autres_biens": {
+                "type": "integer"
+              },
+              "surface_autres_biens_m2": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "par_ministere": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "biens",
+                    "batiments",
+                    "surface_batiments_m2",
+                    "autres_biens",
+                    "surface_autres_biens_m2"
+                  ],
+                  "properties": {
+                    "biens": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "batiments": {
+                      "type": "integer"
+                    },
+                    "surface_batiments_m2": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "autres_biens": {
+                      "type": "integer"
+                    },
+                    "surface_autres_biens_m2": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "ministere",
+                    "departement_non_renseigne",
+                    "par_groupe_proprietaire"
+                  ]
+                }
+              ]
+            }
+          },
+          "par_departement": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "biens",
+                    "batiments",
+                    "surface_batiments_m2",
+                    "autres_biens",
+                    "surface_autres_biens_m2"
+                  ],
+                  "properties": {
+                    "biens": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "batiments": {
+                      "type": "integer"
+                    },
+                    "surface_batiments_m2": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "autres_biens": {
+                      "type": "integer"
+                    },
+                    "surface_autres_biens_m2": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "code",
+                    "region"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "pattern": "^([0-9]{2}|2A|2B|9[78][0-9]|non_renseigne|sans_departement|autre_code)$"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "par_type_proprietaire": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "biens",
+                    "batiments",
+                    "surface_batiments_m2",
+                    "autres_biens",
+                    "surface_autres_biens_m2"
+                  ],
+                  "properties": {
+                    "biens": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "batiments": {
+                      "type": "integer"
+                    },
+                    "surface_batiments_m2": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "autres_biens": {
+                      "type": "integer"
+                    },
+                    "surface_autres_biens_m2": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "type",
+                    "groupe"
+                  ],
+                  "properties": {
+                    "groupe": {
+                      "enum": [
+                        "etat",
+                        "autre_personne_publique",
+                        "prive",
+                        "autre_ou_etranger",
+                        "plusieurs",
+                        "non_renseigne"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "comparaison_publications": {
+      "type": "array"
+    },
+    "inventaire_document_budgetaire": {
+      "type": "object",
+      "required": [
+        "source",
+        "url",
+        "series"
+      ]
+    },
+    "surfaces_document_budgetaire": {
+      "type": "object",
+      "required": [
+        "etat_et_operateurs",
+        "par_type"
+      ]
+    },
+    "ecarts_entre_sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "objet",
+          "valeurs",
+          "lecture"
+        ],
+        "properties": {
+          "valeurs": {
+            "type": "array",
+            "minItems": 2
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 10
+          }
+        }
+      }
+    },
+    "ordre": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "collecte_le",
+    "definitions",
+    "publications",
+    "inventaire_document_budgetaire",
+    "surfaces_document_budgetaire",
+    "ecarts_entre_sources",
+    "ordre"
+  ]
+}

@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/assurance_maladie_territoires_departements.schema.json",
+  "title": "site/data/assurance_maladie_territoires/departements.json : prescriptions des médecins libéraux par poste et honoraires des professionnels libéraux par département et par année (Cnam, data.ameli.fr)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "statut",
+    "producteur",
+    "annees",
+    "postes_prescription",
+    "professions",
+    "departements",
+    "france",
+    "ecarts_somme_france",
+    "masques",
+    "definitions",
+    "perimetre",
+    "ordre"
+  ],
+  "properties": {
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "statut": {
+      "enum": [
+        "tracé",
+        "approché",
+        "non publié"
+      ]
+    },
+    "producteur": {
+      "type": "string",
+      "minLength": 3
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "postes_prescription": {
+      "type": "array",
+      "minItems": 9,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "code_source"
+        ]
+      }
+    },
+    "professions": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "libelle_source"
+        ]
+      }
+    },
+    "departements": {
+      "type": "object",
+      "minProperties": 100,
+      "propertyNames": {
+        "pattern": "^(0[1-9]|1[0-9]|2[1-9]|[3-8][0-9]|9[0-5]|2A|2B|97[1-46])$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "nom",
+          "region",
+          "region_nom",
+          "prescriptions",
+          "honoraires"
+        ],
+        "properties": {
+          "nom": {
+            "type": "string",
+            "minLength": 3
+          },
+          "region": {
+            "type": "string"
+          },
+          "region_nom": {
+            "type": "string",
+            "minLength": 3
+          },
+          "prescriptions": {
+            "type": "object",
+            "minProperties": 9,
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            }
+          },
+          "honoraires": {
+            "type": "object",
+            "minProperties": 4,
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "sans_depassement",
+                "depassements"
+              ],
+              "properties": {
+                "sans_depassement": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "depassements": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "france": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prescriptions",
+        "honoraires"
+      ],
+      "properties": {
+        "prescriptions": {
+          "type": "object",
+          "minProperties": 9,
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        },
+        "honoraires": {
+          "type": "object",
+          "minProperties": 4,
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "sans_depassement",
+              "depassements"
+            ],
+            "properties": {
+              "sans_depassement": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              },
+              "depassements": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ecarts_somme_france": {
+      "type": "object",
+      "required": [
+        "colonnes",
+        "lignes",
+        "lecture_ecart"
+      ],
+      "properties": {
+        "colonnes": {
+          "const": [
+            "grandeur",
+            "annee",
+            "france_eur",
+            "somme_departements_eur",
+            "ecart_eur",
+            "departements_masques"
+          ]
+        },
+        "lignes": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 6,
+            "maxItems": 6
+          }
+        },
+        "lecture_ecart": {
+          "type": "string",
+          "minLength": 3
+        }
+      }
+    },
+    "masques": {
+      "type": "object",
+      "required": [
+        "prescriptions",
+        "honoraires",
+        "regle"
+      ],
+      "properties": {
+        "prescriptions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "honoraires": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "regle": {
+          "type": "string",
+          "minLength": 3
+        }
+      }
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "perimetre": {
+      "type": "string",
+      "minLength": 3
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 3
+    }
+  }
+}

@@ -140,6 +140,7 @@ ${attente('sec-organismes')}
   <li><a href="${lien('/decisions/controle', { dep })}">Les rapports de contrôle dans le département ${h(geo.departement.nom)}</a></li>
   <li><a href="${lien('/explorer/ue', { dep })}">Les fonds européens dans le département ${h(geo.departement.nom)}</a></li>
   <li><a href="${fragmentDepartement(dep, geo.departement.nom)}">Les communes du département ${h(geo.departement.nom)}</a></li>
+  <li><a href="${lien('/local/croiser', { insee })}">Comparer ${h(g.nom)} avec des communes qui se ressemblent</a></li>
   <li><a href="#/local">Choisir une autre commune</a></li>
 </ul>
 ${partPersonnelle()}`

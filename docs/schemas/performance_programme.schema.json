@@ -1,0 +1,413 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/performance_programme.schema.json",
+  "title": "site/data/performance/programmes/<programme>.json : objectifs, indicateurs, cibles et réalisés par année, crédits du programme, correspondance (pipeline/performance.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "programme",
+    "libelle",
+    "mission",
+    "avertissement",
+    "sources",
+    "credits",
+    "credits_lecture",
+    "credits_source",
+    "nombre_indicateurs",
+    "nombre_lignes",
+    "series_sans_valeur_publiee",
+    "lecture",
+    "series",
+    "correspondance",
+    "note"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "programme": {
+      "type": "string",
+      "pattern": "^[0-9]{3}$"
+    },
+    "libelle": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mission": {
+      "type": "string",
+      "minLength": 1
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "credits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "annee",
+          "vote_lfi_eur",
+          "depense_constatee_eur",
+          "source",
+          "trou",
+          "autres_montants_publies"
+        ],
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 1990,
+            "maximum": 2100
+          },
+          "vote_lfi_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "depense_constatee_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "trou": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "autres_montants_publies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "montant_eur",
+                "fichier",
+                "source",
+                "millesime",
+                "perimetre",
+                "precision",
+                "egal_a_la_depense_constatee"
+              ],
+              "properties": {
+                "montant_eur": {
+                  "type": "number"
+                },
+                "fichier": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "millesime": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "perimetre": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "precision": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "egal_a_la_depense_constatee": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "credits_lecture": {
+      "type": "string",
+      "minLength": 1
+    },
+    "credits_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nombre_indicateurs": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "nombre_lignes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "series_sans_valeur_publiee": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lecture": {
+      "type": "string",
+      "minLength": 1
+    },
+    "series": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "serie",
+          "objectif",
+          "indicateur",
+          "sous_indicateur",
+          "unite",
+          "indicateur_de_contexte",
+          "lignes"
+        ],
+        "properties": {
+          "serie": {
+            "type": "string",
+            "pattern": "^[0-9]{3}-[0-9]+$"
+          },
+          "objectif": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "indicateur": {
+            "type": "string"
+          },
+          "sous_indicateur": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "unite": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "indicateur_de_contexte": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "lignes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "annee"
+              ],
+              "additionalProperties": false,
+              "anyOf": [
+                {
+                  "required": [
+                    "cible_publiee"
+                  ]
+                },
+                {
+                  "required": [
+                    "realise_publie"
+                  ]
+                }
+              ],
+              "properties": {
+                "annee": {
+                  "type": "integer",
+                  "minimum": 1990,
+                  "maximum": 2100
+                },
+                "cible": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "cible_publiee": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_cible": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "cible_note": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "realise": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "realise_publie": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_realise": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "dependentRequired": {
+                "cible_publiee": [
+                  "cible",
+                  "source_cible"
+                ],
+                "realise_publie": [
+                  "realise",
+                  "source_realise"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "correspondance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "serie",
+          "code_indicateur",
+          "indicateur",
+          "sous_indicateur",
+          "statuts",
+          "libelles_anterieurs",
+          "derniere_source",
+          "premiere_annee",
+          "derniere_annee",
+          "meme_code_au_rap_2025",
+          "rapprochement"
+        ],
+        "properties": {
+          "serie": {
+            "type": "string",
+            "pattern": "^[0-9]{3}-[0-9]+$"
+          },
+          "code_indicateur": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "indicateur": {
+            "type": "string"
+          },
+          "sous_indicateur": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "statuts": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "libellé modifié",
+                "absent des documents 2025"
+              ]
+            }
+          },
+          "libelles_anterieurs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "derniere_source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "premiere_annee": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "derniere_annee": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "meme_code_au_rap_2025": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "rapprochement": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "cout_par_resultat"
+        ]
+      },
+      {
+        "required": [
+          "note_efficacite"
+        ]
+      },
+      {
+        "required": [
+          "ecart_a_la_cible"
+        ]
+      }
+    ]
+  }
+}

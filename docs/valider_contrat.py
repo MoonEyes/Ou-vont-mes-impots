@@ -359,6 +359,38 @@ FICHIERS = [
     ("pouvoirs_publics_dotations.schema.json", "pouvoirs_publics/dotations.json", "existant"),
     ("pouvoirs_publics_budgets_institutions.schema.json", "pouvoirs_publics/budgets_institutions.json", "existant"),
     ("pouvoirs_publics_indemnites.schema.json", "pouvoirs_publics/indemnites.json", "existant"),
+    # assurance maladie : dépenses remboursées par grand poste, prescriptions et honoraires par département, ONDAM
+    # par sous-objectif (pipeline/assurance_maladie_territoires.py)
+    ("assurance_maladie_territoires_index.schema.json", "assurance_maladie_territoires/index.json", "existant"),
+    ("assurance_maladie_territoires_postes.schema.json", "assurance_maladie_territoires/postes.json", "existant"),
+    ("assurance_maladie_territoires_departements.schema.json", "assurance_maladie_territoires/departements.json", "existant"),
+    ("assurance_maladie_territoires_ondam.schema.json", "assurance_maladie_territoires/ondam.json", "existant"),
+    # fiscalité locale par commune, séries 2010 à aujourd'hui : taux et produits du REI (pipeline/fiscalite_locale_series.py)
+    ("fiscalite_locale_series_index.schema.json", "fiscalite_locale_series/index.json", "existant"),
+    ("fiscalite_locale_series_communes.schema.json", "fiscalite_locale_series/communes/*.json", "existant"),
+    # immobilier de l'État : parc, valeur, cessions, loyers, compte (pipeline/immobilier_etat.py)
+    ("immobilier_etat_index.schema.json", "immobilier_etat/index.json", "existant"),
+    ("immobilier_etat_parc.schema.json", "immobilier_etat/parc.json", "existant"),
+    ("immobilier_etat_valeur.schema.json", "immobilier_etat/valeur.json", "existant"),
+    ("immobilier_etat_cessions.schema.json", "immobilier_etat/cessions.json", "existant"),
+    ("immobilier_etat_loyers.schema.json", "immobilier_etat/loyers.json", "existant"),
+    ("immobilier_etat_compte.schema.json", "immobilier_etat/compte.json", "existant"),
+    # territoires comparables : typologies des communes et croisements prédéfinis (pipeline/typologies.py)
+    ("typologies_index.schema.json", "typologies/index.json", "existant"),
+    ("typologies_croisement.schema.json", "typologies/croisements/*.json", "existant"),
+    ("typologies_communes.schema.json", "typologies/communes/*.json", "existant"),
+    # performance : objectifs, indicateurs, cibles et réalisés par programme reliés aux crédits ; baromètre des
+    # résultats de l'action publique par département (pipeline/performance.py)
+    ("performance_index.schema.json", "performance/index.json", "existant"),
+    ("performance_correspondance.schema.json", "performance/correspondance.json", "existant"),
+    ("performance_programme.schema.json", "performance/programmes/*.json", "existant"),
+    ("performance_barometre_index.schema.json", "performance/barometre/index.json", "existant"),
+    ("performance_barometre_zone.schema.json", "performance/barometre/[0-9F]*.json", "existant"),
+    # organisations reliées d'une source à l'autre : SIREN, Splink, fiches et recherche (pipeline/entites.py)
+    ("entites_index.schema.json", "entites/index.json", "existant"),
+    ("entites_fiches.schema.json", "entites/fiches/*.json", "existant"),
+    ("entites_recherche.schema.json", "entites/recherche/*.json", "existant"),
+    ("entites_recherche_globale.schema.json", "entites/recherche_globale.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

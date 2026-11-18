@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/assurance_maladie_territoires_ondam.schema.json",
+  "title": "site/data/assurance_maladie_territoires/ondam.json : objectif national de dépenses d'assurance maladie par sous-objectif, objectif voté, rectifié et constaté (annexe 3 des PLACSS 2024 et 2025)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "statut",
+    "producteur",
+    "sous_objectifs",
+    "lignes",
+    "controles",
+    "definitions",
+    "limites",
+    "regle",
+    "liens",
+    "ordre"
+  ],
+  "properties": {
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "statut": {
+      "enum": [
+        "tracé",
+        "approché",
+        "non publié"
+      ]
+    },
+    "producteur": {
+      "type": "string",
+      "minLength": 3
+    },
+    "sous_objectifs": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "niveau",
+          "parent"
+        ]
+      }
+    },
+    "lignes": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "niveau",
+          "parent",
+          "annees"
+        ],
+        "properties": {
+          "annees": {
+            "type": "object",
+            "minProperties": 1,
+            "propertyNames": {
+              "pattern": "^[0-9]{4}$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "required": [
+                "objectif_initial_md",
+                "objectif_rectifie_md",
+                "constat_md",
+                "source",
+                "reference"
+              ],
+              "properties": {
+                "objectif_initial_md": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "objectif_rectifie_md": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "constat_md": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "constat_precedent_md": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "revision_constat_md": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "evolution_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "ecart_objectif_initial_md": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "ecart_objectif_rectifie_md": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "source": {
+                  "type": "string",
+                  "minLength": 3
+                },
+                "reference": {
+                  "type": "string",
+                  "minLength": 3
+                },
+                "reference_objectifs": {
+                  "type": "string",
+                  "minLength": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "controles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "grandeur",
+          "total_publie_md",
+          "somme_sous_objectifs_md",
+          "ecart_arrondi_md"
+        ]
+      }
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "limites": {
+      "type": "string",
+      "minLength": 3
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 3
+    },
+    "liens": {
+      "type": "object"
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 3
+    }
+  }
+}
