@@ -140,6 +140,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   cible.innerHTML = `<h1>Qui reçoit l’argent</h1>
 <p>Pour un programme : <a href="${lien('/beneficiaires/programme', { p: p ?? undefined })}">à quoi sert son argent (nature de la dépense, effectifs)</a>${p ? ` · <a href="${lien('/decisions/votes', { p })}">ses votes et mouvements de crédits</a> · <a href="${lien('/decisions/realisations', { p })}">ce qui a été fait</a>` : ''}.</p>
 <p class="chapeau">Les bénéficiaires connus de l’argent de l’État : associations, opérateurs, entreprises soutenues par France 2030, titulaires de marchés publics. Seules des personnes morales sont nommées. Les prestations versées aux personnes (retraites, santé, famille, chômage) ne sont pas nominatives : elles sont présentées par branche dans <a href="#/explorer/secu">Sécurité sociale et protection sociale</a>.</p>
+<p>Toutes les subventions publiées, par année, par ministère et par type de bénéficiaire, avec une recherche par organisme : <a href="${lien('/beneficiaires/subventions')}">Les subventions de l’État et de ses opérateurs</a>.</p>
 <div class="bascule" role="group" aria-label="Catégorie de bénéficiaires">${ONGLETS.map(
     ([k, l]) => `<a class="bouton" href="${lien('/beneficiaires', { onglet: k, p: k === 'programme' ? p : undefined })}"${k === onglet ? ' aria-current="true"' : ''}>${h(l)}</a>`,
   ).join('')}</div>

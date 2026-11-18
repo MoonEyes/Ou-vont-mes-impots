@@ -1,0 +1,110 @@
+{
+ "millesime": "2016 à 2026 selon la source",
+ "source": "voir subventions/index.json (sources) ; Insee, base SIRENE des unités légales (data.gouv.fr, stock du 1er novembre 2026), catégorie juridique",
+ "unite": "euros",
+ "note": "Les totaux toutes sources n'additionnent que les sources marquées `additionne` ; une source qui en détaille une autre (même argent publié deux fois) est publiée à part, sans être ajoutée. Les lignes du Fonds vert instruites par l'ADEME sont retirées (recouvrement possible avec les conventions de l'ADEME).",
+ "regle_personnes": "Seuls les bénéficiaires dont la catégorie juridique SIRENE est une personne morale (2xxx à 9xxx, hors groupements de personnes physiques) sont nommés. Entrepreneurs individuels, identifiants absents, invalides ou absents du stock SIRENE : montants agrégés, jamais nommés. Équipes artistiques (festivals, ADSV) : une dénomination qui contient peut-être un nom de personne (filtre de pipeline/local.py) est agrégée aussi (`dont_nom_de_personne_possible_eur`).",
+ "total_eur": 37443364536.34,
+ "top": [
+  {
+   "siren": "130006372",
+   "denomination": "AGENCE DE SERVICES ET DE PAIEMENT",
+   "categorie_juridique": "7389",
+   "montant_eur": 1976308639.75,
+   "conventions": 79,
+   "sources": [
+    "subv_ademe_aides",
+    "subv_aeap",
+    "subv_culture_scdl"
+   ]
+  },
+  {
+   "siren": "320252489",
+   "denomination": "BPIFRANCE",
+   "categorie_juridique": "5599",
+   "montant_eur": 1532212208.39,
+   "conventions": 21,
+   "sources": [
+    "subv_ademe_aides",
+    "subv_culture_scdl"
+   ]
+  },
+  {
+   "siren": "853318459",
+   "denomination": "PASS CULTURE",
+   "categorie_juridique": "5710",
+   "montant_eur": 969256322.0,
+   "conventions": 33,
+   "sources": [
+    "subv_culture_scdl"
+   ]
+  },
+  {
+   "siren": "775658354",
+   "denomination": "AGENCE FRANCE PRESSE",
+   "categorie_juridique": "6901",
+   "montant_eur": 817313807.0,
+   "conventions": 42,
+   "sources": [
+    "subv_culture_scdl"
+   ]
+  },
+  {
+   "siren": "180046039",
+   "denomination": "CENTRE NATIONAL DU CINEMA ET DE L'IMAGE ANIMEE",
+   "categorie_juridique": "7389",
+   "montant_eur": 427962607.0,
+   "conventions": 28,
+   "sources": [
+    "subv_culture_scdl"
+   ]
+  },
+  {
+   "siren": "882539786",
+   "denomination": "CENTRE NATIONAL DE LA MUSIQUE",
+   "categorie_juridique": "4140",
+   "montant_eur": 377758348.0,
+   "conventions": 92,
+   "sources": [
+    "subv_culture_scdl"
+   ]
+  },
+  {
+   "siren": "775665912",
+   "denomination": "CENTRE NATIONAL D'ETUDES SPATIALES",
+   "categorie_juridique": "4110",
+   "montant_eur": 369164520.0,
+   "conventions": 72,
+   "sources": [
+    "subv_ademe_aides",
+    "subv_culture_scdl"
+   ]
+  },
+  {
+   "siren": "654800689",
+   "denomination": "HEIDELBERG MATERIALS FRANCE CIMENTS",
+   "categorie_juridique": "5710",
+   "montant_eur": 367729124.5,
+   "conventions": 11,
+   "sources": [
+    "subv_ademe_aides"
+   ]
+  }
+ ],
+ "autres_personnes_morales": {
+  "nombre": 89795,
+  "montant_eur": 29823321129.07
+ },
+ "autres_non_verifies": {
+  "nombre": 0,
+  "montant_eur": 0.0,
+  "note": "Aucun : chaque SIREN est vérifié dans le stock SIRENE."
+ },
+ "exclus_personnes_physiques_ou_non_identifies": {
+  "montant_eur": 782337830.63,
+  "lignes": 60340,
+  "dont_personnes_physiques_eur": 73581605.7,
+  "dont_sans_siren_eur": 706038152.53,
+  "dont_siren_introuvable_eur": 2718072.4
+ }
+}

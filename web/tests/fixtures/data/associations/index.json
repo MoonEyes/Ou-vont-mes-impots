@@ -1,0 +1,383 @@
+{
+ "millesime": "Jaunes associations PLF 2012 à 2025 ; RNF au 01/11/2026 ; réserve parlementaire 2013-2017",
+ "source": "pipeline/associations.py ; data.gouv.fr et data.economie.gouv.fr, annexes jaunes « Effort financier de l'État en faveur des associations » des PLF 2012 à 2025 (listes des subventions versées deux ans avant) ; data.gouv.fr, ministère de l'Intérieur, « Fichiers relatifs au Registre national des fonds et fondations (RNF) », données fonds/fondations (csv/zip) du 01/11/2026 ; data.assemblee-nationale.fr, réserve parlementaire (RESERVE_PARLEMENTAIRE/<année>_reserve_parlementaire.csv) ; data.senat.fr, réserve parlementaire (data/reserve/reserve<année>.csv) ; Insee, stock SIRENE des unités légales (data.gouv.fr, catégorie juridique, dénomination et RNA des personnes morales) ; API Recherche d'entreprises (recherche-entreprises.api.gouv.fr), recherche par nom et département",
+ "collecte_le": "2026-11-17",
+ "unite": "euros",
+ "regle": "Seules les personnes morales sont nommées (catégorie juridique SIRENE 2xxx à 9xxx, hors groupements de personnes physiques). Entrepreneurs individuels, lignes sans SIREN valide et bénéficiaires de la réserve non appariés à une personne morale : montants agrégés, jamais nommés. Aucune adresse n'est publiée.",
+ "regle_parlementaires": "Les parlementaires sont nommés dans leur rôle public (attribution de la réserve parlementaire, listes publiées par l'Assemblée nationale et le Sénat), comme les élus et candidats des comptes de campagne : nom, groupe, département, montants. Ni adresse ni autre donnée personnelle. Un parlementaire par ailleurs candidat à un scrutin national n'est pas nommé ici (parlementaires_non_nommes) ; une association de financement de campagne non plus.",
+ "note": "Année = année du projet de loi de finances (PLF) ; les crédits listés ont été versés deux ans avant (annee_credits). Les listes des jaunes ne sont pas homogènes d'une année à l'autre (périmètre, colonnes, programmes renumérotés) : la série juxtapose les montants publiés, sans retraitement.",
+ "annees": [
+  {
+   "annee": 2012,
+   "annee_credits": 2010,
+   "statut": "publie",
+   "total_publie_par_la_source_eur": 1483995024.0,
+   "total_source_eur": 1483995024.0,
+   "nommes_eur": 1476315104.0,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 7679920.0,
+   "dont_personnes_physiques_eur": 487703.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 16845,
+   "lignes_source": 20194,
+   "jeu_datagouv": "53699ccba3a729239d205a72"
+  },
+  {
+   "annee": 2013,
+   "annee_credits": 2011,
+   "statut": "publie",
+   "correction": {
+    "facteur": 0.1,
+    "part_montants_multiples_de_10": 1.0,
+    "comparaison_annees_voisines": {
+     "2012": {
+      "couples": 9298,
+      "rapport_median": 10.0
+     },
+     "2014": {
+      "couples": 12078,
+      "rapport_median": 10.0
+     }
+    },
+    "raison": "Dans l'export publié du PLF 2013, tous les montants sont des multiples de 10 et le rapport médian avec les mêmes association et programme des années voisines vaut 10 (par exemple, un poste FONJEP publié 71 070 € pour un montant unitaire de 7 107 €) : montants divisés par 10. Les montants bruts restent dans l'entrepôt."
+   },
+   "total_source_eur": 1229852765.0,
+   "nommes_eur": 1222165147.0,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 7687618.0,
+   "dont_personnes_physiques_eur": 148047.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 18293,
+   "lignes_source": 21167,
+   "jeu_datagouv": "53699cdaa3a729239d205a9a"
+  },
+  {
+   "annee": 2014,
+   "annee_credits": 2012,
+   "statut": "publie",
+   "total_source_eur": 1855004905.0,
+   "nommes_eur": 1838114352.0,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 16890553.0,
+   "dont_personnes_physiques_eur": 156717.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 26688,
+   "lignes_source": 31851,
+   "jeu_datagouv": "53699ce1a3a729239d205ab2"
+  },
+  {
+   "annee": 2015,
+   "annee_credits": 2013,
+   "statut": "publie",
+   "total_source_eur": 2136754559.0,
+   "nommes_eur": 2101869944.0,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 34884615.0,
+   "dont_personnes_physiques_eur": 257972.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 22698,
+   "lignes_source": 28147,
+   "jeu_datagouv": "5447dad5c751df10d05d0572"
+  },
+  {
+   "annee": 2016,
+   "annee_credits": 2014,
+   "statut": "publie",
+   "total_source_eur": 2110443829.0,
+   "nommes_eur": 2097494609.0,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 12949220.0,
+   "dont_personnes_physiques_eur": 32115.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 24068,
+   "lignes_source": 29717,
+   "jeu_datagouv": "56a8dd2ac751df2657ceae1f"
+  },
+  {
+   "annee": 2017,
+   "annee_credits": 2015,
+   "statut": "publie",
+   "total_source_eur": 2055099250.0,
+   "nommes_eur": 2047856522.0,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 7242728.0,
+   "dont_personnes_physiques_eur": 60352.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 26667,
+   "lignes_source": 33032,
+   "jeu_datagouv": "58078e78c751df2d1a79df72"
+  },
+  {
+   "annee": 2018,
+   "annee_credits": 2016,
+   "statut": "publie",
+   "total_source_eur": 4686867781.94,
+   "nommes_eur": 4678153001.2,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 8714780.74,
+   "dont_personnes_physiques_eur": 0.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 36939,
+   "lignes_source": 56497,
+   "jeu_datagouv": "5a059001c751df32ef55cf4a"
+  },
+  {
+   "annee": 2019,
+   "annee_credits": 2017,
+   "statut": "publie",
+   "total_source_eur": 5322357620.24,
+   "nommes_eur": 5309364643.19,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 12992977.05,
+   "dont_personnes_physiques_eur": 0.0,
+   "dont_denomination_nominative_eur": 765000.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 41200,
+   "lignes_source": 70064,
+   "jeu_datagouv": "5dfc120e06e3e74107fac9cf"
+  },
+  {
+   "annee": 2020,
+   "annee_credits": 2018,
+   "statut": "publie",
+   "total_source_eur": 7240745111.98,
+   "nommes_eur": 7212037769.64,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 28707342.34,
+   "dont_personnes_physiques_eur": 0.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 44731,
+   "lignes_source": 92114,
+   "jeu_datagouv": "5dfc123adee7e76b998c3ede"
+  },
+  {
+   "annee": 2021,
+   "annee_credits": 2019,
+   "statut": "publie",
+   "total_source_eur": 7734537403.82,
+   "nommes_eur": 7702785629.04,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 31751774.78,
+   "dont_personnes_physiques_eur": 0.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 45629,
+   "lignes_source": 96746,
+   "jeu_datagouv": "5fa09eb4558b3893be1963e6"
+  },
+  {
+   "annee": 2022,
+   "annee_credits": 2020,
+   "statut": "publie",
+   "total_source_eur": 8994601274.01,
+   "nommes_eur": 8513970600.92,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 480630673.09,
+   "dont_personnes_physiques_eur": 0.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 46354,
+   "lignes_source": 95820,
+   "jeu_datagouv": "616f5d20176269415b2f28a0"
+  },
+  {
+   "annee": 2023,
+   "annee_credits": 2021,
+   "statut": "publie",
+   "total_source_eur": 10543390140.84,
+   "nommes_eur": 9946652520.03,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 596737620.81,
+   "dont_personnes_physiques_eur": 0.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 50622,
+   "lignes_source": 102619,
+   "jeu_datagouv": "640bc79dfffaae3af367de74"
+  },
+  {
+   "annee": 2024,
+   "annee_credits": 2022,
+   "statut": "nc",
+   "total_source_eur": "nc",
+   "nommes_eur": "nc",
+   "exclus_personnes_physiques_ou_non_identifies_eur": "nc",
+   "non_verifies_eur": "nc",
+   "associations_nommees": "nc",
+   "lignes_source": "nc",
+   "raison": "Le jeu publié pour le PLF 2024 (data.economie.gouv.fr plf24-donnees-de-l-annexe-jaune-effort-financier-de-l-etat-en-faveur-des-associa, repris sur data.gouv.fr 655d44fd) ne contient qu'une colonne de 111 nombres, sans association ni programme : année non couverte (« nc »).",
+   "jeu_datagouv": "655d44fd721472836cd2b6a4"
+  },
+  {
+   "annee": 2025,
+   "annee_credits": 2023,
+   "statut": "publie",
+   "total_source_eur": 11765705475.65,
+   "nommes_eur": 10686877896.04,
+   "exclus_personnes_physiques_ou_non_identifies_eur": 1078827579.61,
+   "dont_personnes_physiques_eur": 0.0,
+   "dont_denomination_nominative_eur": 0.0,
+   "non_verifies_eur": 0.0,
+   "sans_programme_eur": 0.0,
+   "associations_nommees": 55664,
+   "lignes_source": 112722,
+   "jeu_datagouv": "67884ef83b74bb8c78133b6d"
+  }
+ ],
+ "associations_nommees": 139397,
+ "programmes": [
+  {
+   "programme": "101",
+   "libelle": "Accès au droit et à la justice",
+   "fichiers": [
+    "associations/programmes/101.json"
+   ],
+   "associations_nommees": 1030,
+   "totaux_eur": [
+    13795918.0,
+    13207541.0,
+    13113821.0,
+    15504823.0,
+    16166656.0,
+    19435658.0,
+    27007064.92,
+    29443130.9,
+    394209050.39,
+    418719974.38,
+    435184799.64,
+    571788333.98,
+    "nc",
+    664210093.57
+   ]
+  },
+  {
+   "programme": "147",
+   "libelle": "Politique de la ville",
+   "fichiers": [
+    "associations/programmes/147.json"
+   ],
+   "associations_nommees": 20314,
+   "totaux_eur": [
+    10984481.0,
+    11483231.0,
+    3019550.0,
+    2155567.0,
+    1895392.0,
+    100000.0,
+    141646919.5,
+    125826845.84,
+    137595005.76,
+    166288740.76,
+    241585750.71,
+    215591225.38,
+    "nc",
+    234189945.99
+   ]
+  },
+  {
+   "programme": "163",
+   "libelle": "Jeunesse et vie associative",
+   "fichiers": [
+    "associations/programmes/163_1.json",
+    "associations/programmes/163_2.json"
+   ],
+   "associations_nommees": 50505,
+   "totaux_eur": [
+    61492919.0,
+    59372138.0,
+    63159329.0,
+    60471935.0,
+    67907493.0,
+    70073512.0,
+    107547263.71,
+    75622241.63,
+    76922079.25,
+    91538232.57,
+    127135703.44,
+    136256626.58,
+    "nc",
+    227129441.42
+   ]
+  }
+ ],
+ "fonds_fondations": {
+  "fichier": "associations/fonds_fondations.json",
+  "nombre": 4247,
+  "avec_subventions_publiques": 62,
+  "objets_filtres": 746
+ },
+ "reserve": [
+  {
+   "assemblee": "Assemblée nationale",
+   "annee": 2013,
+   "total_eur": 81514813.09,
+   "nommes_eur": 60225253.09,
+   "agreges_eur": 21289560.0,
+   "part_agregee_pct": 26.12,
+   "parlementaires": 584,
+   "parlementaires_non_nommes": 5,
+   "fichier": "associations/reserve/an_2013.json"
+  }
+ ],
+ "sources_inaccessibles": [
+  {
+   "annee": 2024,
+   "constat": "Le jeu publié pour le PLF 2024 (data.economie.gouv.fr plf24-donnees-de-l-annexe-jaune-effort-financier-de-l-etat-en-faveur-des-associa, repris sur data.gouv.fr 655d44fd) ne contient qu'une colonne de 111 nombres, sans association ni programme : année non couverte (« nc »)."
+  }
+ ],
+ "recherche_publique": {
+  "date": "2026-11-17",
+  "trouvailles": [
+   {
+    "nom": "regardscitoyens/reserveparlementaire_parser (GitHub)",
+    "verdict": "inspiration seulement",
+    "licence": "GPL-3.0",
+    "dernier_commit": "2021-01-22",
+    "note": "analyse des pages HTML de l'Assemblée (2013) ; les CSV officiels 2013-2016 suffisent"
+   },
+   {
+    "nom": "Regards Citoyens, réserve parlementaire 2011 et 2013 compilée (data.gouv.fr 541eafe3)",
+    "verdict": "inspiration seulement",
+    "licence": "ODbL",
+    "dernier_commit": "2014-09-21",
+    "note": "licence à partage à l'identique incompatible avec la Licence Ouverte des sorties ; années hors champ"
+   },
+   {
+    "nom": "regardscitoyens/reserveparlementaire_carto (GitHub)",
+    "verdict": "inspiration seulement",
+    "licence": "non précisée",
+    "dernier_commit": "2015-03-18",
+    "note": "cartographie, pas d'appariement"
+   },
+   {
+    "nom": "nigiord/Reserve_parlementaire, KudoL/ReserveParlementaire (GitHub)",
+    "verdict": "inspiration seulement",
+    "licence": "non précisée",
+    "dernier_commit": "2017-02-01",
+    "note": "analyses ponctuelles d'une année"
+   },
+   {
+    "nom": "pipeline/beneficiaires.py, pipeline/sirene.py, pipeline/local.py (ce dépôt)",
+    "verdict": "réutilisable tel quel",
+    "licence": "MIT",
+    "dernier_commit": "2026-11-17",
+    "note": "lecture du jaune PLF 2025, statut personne morale, filtre de noms dans les textes libres, stock SIRENE"
+   },
+   {
+    "nom": "API Recherche d'entreprises (DINUM)",
+    "verdict": "réutilisable tel quel",
+    "licence": "Licence Ouverte 2.0",
+    "dernier_commit": "service en ligne",
+    "note": "appariement des bénéficiaires restants par nom et département"
+   }
+  ]
+ }
+}
