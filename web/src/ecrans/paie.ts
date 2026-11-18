@@ -303,6 +303,7 @@ ${avert}
 ${blocProfil(r)}
 <h2>Ligne par ligne, et qui le reçoit</h2>
 <p class="aide"><a href="#/calcul/bulletin">Ta fiche de paie expliquée</a> : chaque ligne de ton bulletin, ce qu’elle finance, qui la reçoit et où va cet argent.</p>
+<p class="aide"><a href="#/explorer/retraites">Les retraites, régime par régime</a> : qui verse les pensions, combien de personnes les reçoivent et leur montant moyen.</p>
 ${groupes}
 ${csgAbsente ? `<p class="aide">${h(csgAbsente.message)}</p>` : ''}
 ${blocTaxeFonciere()}

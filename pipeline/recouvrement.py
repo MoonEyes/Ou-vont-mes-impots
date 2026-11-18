@@ -214,7 +214,7 @@ SOURCES_INACCESSIBLES = [
               "restitutions le sont. Le montant recouvré par la branche recouvrement est repris de la synthèse du "
               "HCFiPS, sous forme d'ordre de grandeur."},
     {"source": "DGFiP, montants notifiés et encaissés du contrôle fiscal en données ouvertes après 2019",
-     "motif": "les tableaux statistiques 2022 de la DGFiP ne prolongent pas les tableaux CFC ; les années 2016 à "
+     "motif": "les tableaux statistiques 2022 de la DGFiP ne prolongent pas la série publiée jusqu'en 2019 ; les années 2016 à "
               "2024 sont lues dans le tableau du document de politique transversale (PDF)."},
 ]
 

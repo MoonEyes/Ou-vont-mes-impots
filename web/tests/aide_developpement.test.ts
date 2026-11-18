@@ -187,12 +187,14 @@ describe('écran aide publique au développement', () => {
   it('financement des prêts de l’AFD : le texte sans source primaire n’est jamais affiché, les sources primaires sont citées', async () => {
     await ecran(ROUTE)
     const tout = esp(document.body.textContent)
-    expect(tout).not.toContain(esp(brut.financement_des_prets.texte))
+    // Champs vides ou retirés par le pipeline : rien à chercher (esp(null) donne '' et toute chaîne contient '').
+    const jamais = (x: string | null | undefined) => { if (esp(x)) expect(tout).not.toContain(esp(x)) }
+    jamais(brut.financement_des_prets?.texte)
     expect(tout).not.toMatch(/non par l['’]impôt/)
     expect(tout).not.toContain('emprunts obligataires')
-    expect(tout).not.toContain(esp(afd.avertissement))
-    expect(tout).not.toContain(esp(proparco.avertissement))
-    for (const g of brut.grandeurs as { financement: string }[]) expect(tout).not.toContain(esp(g.financement))
+    jamais(afd.avertissement)
+    jamais(proparco.avertissement)
+    for (const g of brut.grandeurs as { financement?: string | null }[]) jamais(g.financement)
     for (const k of ['emprunt', 'bonification', 'fondsPropres'] as const) expect(tout).toContain(`« ${CITATIONS[k].texte} »`)
     expect(main.querySelector(`a[href="${AFD_PRET.url}"]`)).not.toBeNull()
     expect(tout).toContain(`${PAP_2026.titre}, page 43`)

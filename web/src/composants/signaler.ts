@@ -4,7 +4,7 @@
 // Aucune donnée personnelle n'est reprise : ni salaire (jamais dans une adresse), ni saisie, ni identité.
 import { versChemin } from '../chemins'
 import { fichiersLus, lectureEnCache } from '../donnees'
-import { h } from '../util'
+import { enPrerendu, h } from '../util'
 
 export const DEPOT = 'https://github.com/MoonEyes/Ou-vont-mes-impots'
 export const GABARIT = 'erreur-donnee.yml'
@@ -52,7 +52,10 @@ const code = (x: string) => encodeURIComponent(x)
 /** Adresse du nouveau ticket, pré-rempli (les clés reprennent les identifiants des champs du gabarit). */
 export function lienTicket(p: PageSignalee): string {
   const champs = (fichiers: string) =>
-    `${DEPOT}/issues/new?template=${code(GABARIT)}&title=${code(`Erreur sur la page « ${p.titre} »`)}&page=${code(adressePublique(p.adresse))}&fichiers=${code(fichiers)}`
+    `${DEPOT}/issues/new?template=${code(GABARIT)}&title=${code(`Erreur sur la page « ${p.titre} »`)}&page=${code(adressePublique(p.adresse))}${fichiers ? `&fichiers=${code(fichiers)}` : ''}`
+  // HTML prérendu : lien court sans liste de fichiers (poids des pages, docs/PERF.md) ; la liste est ajoutée dans le
+  // navigateur par majSignaler, et le gabarit du ticket laisse le champ à remplir sinon.
+  if (enPrerendu()) return champs('')
   const fichiers = p.fichiers ?? []
   let url = champs(texteFichiers(fichiers))
   // Adresse trop longue (page qui lit beaucoup de fichiers) : la liste est raccourcie, jamais coupée au milieu d'une ligne.
@@ -66,7 +69,7 @@ export function lienTicket(p: PageSignalee): string {
 
 /** Bloc de fin de page : le lien et l'avertissement (ticket public, aucune donnée personnelle). */
 export function blocSignaler(p: PageSignalee): string {
-  return `<aside class="signaler" aria-label="Signaler une erreur"><p><a class="signaler-lien" href="${h(lienTicket(p))}">Signaler une erreur sur cette page</a></p><p class="aide">Le lien ouvre un ticket sur GitHub (compte gratuit nécessaire), pré-rempli avec l’adresse de cette page et les fichiers de données affichés. Ce ticket est public : n’y écris aucune donnée personnelle, ni ton nom, ni ton salaire.</p></aside>`
+  return `<aside class="signaler" aria-label="Signaler une erreur"><p><a class="signaler-lien" href="${h(lienTicket(p))}" rel="noopener noreferrer">Signaler une erreur sur cette page</a></p><p class="aide">Le lien ouvre un ticket sur GitHub (compte gratuit nécessaire), pré-rempli avec l’adresse de cette page et les fichiers de données affichés. Ce ticket est public : n’y écris aucune donnée personnelle, ni ton nom, ni ton salaire.</p></aside>`
 }
 
 /** Fichiers lus par la page affichée, avec le millésime qu'ils déclarent (lus dans le cache, sans nouvelle requête). */
@@ -94,6 +97,7 @@ export async function fichiersAffiches(): Promise<FichierAffiche[]> {
 
 /** Met à jour le lien de la page affichée une fois tout chargé (le bloc est ajouté s'il manque). */
 export async function majSignaler(cible: HTMLElement, p: PageSignalee): Promise<void> {
+  if (enPrerendu()) return
   const fichiers = await fichiersAffiches()
   const lien = cible.querySelector<HTMLAnchorElement>('.signaler-lien')
   const page = { ...p, fichiers }

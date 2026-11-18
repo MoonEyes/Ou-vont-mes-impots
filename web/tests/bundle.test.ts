@@ -56,7 +56,10 @@ describe('bundle', () => {
     const html = readFileSync(join(DIST, 'index.html'), 'utf8')
     expect(html).toContain("default-src 'self'")
     // Le lien canonique et les balises Open Graph nomment l'adresse publique du site : rien n'y est chargé.
-    const chargements = html.replace(/<link rel="canonical"[^>]*>/g, '')
+    // Seule exception : le lien de navigation « Signaler une erreur » (balise <a>, rien n'est chargé) vers le
+    // formulaire de ticket du dépôt public ; tout autre lien ou ressource externe reste refusé.
+    const SIGNALER = /<a class="signaler-lien" href="https:\/\/github\.com\/MoonEyes\/Ou-vont-mes-impots\/issues\/new\?[^"]*"(?: rel="noopener noreferrer")?>/g
+    const chargements = html.replace(/<link rel="canonical"[^>]*>/g, '').replace(SIGNALER, '')
     expect(chargements).not.toMatch(/(?:src|href)=["'](?:https?:)?\/\//)
     expect(html).not.toMatch(/<script[^>]+src=["'](?:https?:)?\/\//)
     for (const f of fichiers(DIST).filter((x) => x.endsWith('.css'))) expect(readFileSync(f, 'utf8')).not.toMatch(/url\(\s*["']?(?:https?:)?\/\//)
@@ -65,10 +68,26 @@ describe('bundle', () => {
   it('premier écran léger : moins de 200 Ko de JS compressé hors ECharts et moteur différé', () => {
     const html = readFileSync(join(DIST, 'index.html'), 'utf8')
     const entree = /src="\.\/(assets\/index-[^"]+\.js)"/.exec(html)![1]
-    const code = readFileSync(join(DIST, entree), 'utf8')
-    // Entrée + écran d'accueil et ses dépendances statiques.
-    const lies = fichiers(join(DIST, 'assets')).filter((f) => f.endsWith('.js') && !/echarts|moteur/.test(f))
-    const total = [code, ...lies.map((f) => readFileSync(f, 'utf8'))].reduce((s, c) => s + gzipSync(c).length, 0)
+    // Entrée + écran d'accueil et leurs dépendances statiques (import … from "./x.js"), hors ECharts et moteur différé.
+    // Les autres écrans sont chargés à la demande (import()) : chacun a son propre budget, plus bas.
+    const ASSETS = join(DIST, 'assets')
+    const accueil = readdirSync(ASSETS).find((f) => /^accueil-[\w-]+\.js$/.test(f))!
+    expect(accueil).toBeTruthy()
+    const vus = new Set<string>()
+    const pile = [entree.replace(/^assets\//, ''), accueil]
+    while (pile.length) {
+      const f = pile.pop()!
+      if (vus.has(f)) continue
+      vus.add(f)
+      for (const m of readFileSync(join(ASSETS, f), 'utf8').matchAll(/import\s*(?:[^'"()]*?from\s*)?["']\.\/([^"']+\.js)["']/g)) if (!/echarts|moteur/.test(m[1])) pile.push(m[1])
+    }
+    const total = [...vus].reduce((s, f) => s + gzipSync(readFileSync(join(ASSETS, f))).length, 0)
     expect(total).toBeLessThan(200 * 1024)
+  })
+
+  it('chaque module chargé à la demande (écran, composant) reste sous 40 Ko compressés, hors ECharts et moteur', () => {
+    for (const f of fichiers(join(DIST, 'assets')).filter((x) => x.endsWith('.js') && !/echarts|moteur/.test(x))) {
+      expect(gzipSync(readFileSync(f)).length, f).toBeLessThan(40 * 1024)
+    }
   })
 })

@@ -6,7 +6,7 @@ import { ouCest } from '../composants/trame'
 import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { lien, type Rendu } from '../routeur'
-import { absent, appliquerLargeurs, badgeStatut, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
+import { AFFICHE_DANS_LE_NAVIGATEUR, absent, appliquerLargeurs, enPrerendu, badgeStatut, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
 import { blocInvestissementCommune, blocOrganismesCommune, blocSruCommune, type Beneficiaire, type FichierCcas, type FichierEau, type FichierMobilite, type FichierSyndicats, type Territoire } from './territoires'
 
 export interface Geo {
@@ -235,6 +235,10 @@ ${dec ? `<p class="aide">${h(dec.limites)}</p>` : ''}`,
   })
   // Données par département (territoires, local_satellites) : projets aidés par l'État, logement social, organismes.
   const territoires = budgets.then(async () => {
+    if (enPrerendu()) {
+      for (const id of ['sec-projets-etat', 'sec-sru', 'sec-organismes']) remplir(id, AFFICHE_DANS_LE_NAVIGATEUR)
+      return
+    }
     const [ter, syn, ccas, mob, eau] = await Promise.all([
       chargerSiPresent<Territoire>(`territoires/${dep}.json`),
       chargerSiPresent<FichierSyndicats>(`local_satellites/syndicats/${dep}.json`),

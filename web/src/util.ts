@@ -164,3 +164,13 @@ export const numeroProgramme = (id: string) => {
   const m = /(?:^|\/)(\d{3})$/.exec(id)
   return m ? m[1] : null
 }
+
+/**
+ * Vrai pendant le prérendu au build (scripts/prerendre.mjs charge les écrans par ssrLoadModule, comme
+ * src/composants/exporter.ts le détecte déjà). Sert à laisser hors du HTML statique les blocs lourds des pages commune
+ * et département (budgets de poids, docs/PERF.md) : ils sont rendus dans le navigateur, à l'ouverture de la page.
+ */
+export const enPrerendu = (): boolean => !!import.meta.env?.SSR
+
+/** Texte du HTML prérendu à la place d'un bloc rendu seulement dans le navigateur. */
+export const AFFICHE_DANS_LE_NAVIGATEUR = '<p class="aide">Ces données s’affichent à l’ouverture de la page dans le navigateur (JavaScript activé).</p>'

@@ -3152,6 +3152,191 @@
    "voir": [
     "cspe"
    ]
+  },
+  {
+   "id": "ase",
+   "terme": "ASE",
+   "sigle": "ASE",
+   "forme": "aide sociale à l’enfance",
+   "definition": "Service du département qui protège les enfants en danger ou en risque de l’être : aides aux familles, accueil hors de la famille (familles d’accueil, établissements), suivi des jeunes majeurs.",
+   "source": {
+    "nom": "DREES, « Les bénéficiaires de l’aide sociale à l’enfance »",
+    "url": "https://data.drees.solidarites-sante.gouv.fr/explore/dataset/les-beneficiaires-de-l-aide-sociale-a-l-enfance/"
+   }
+  },
+  {
+   "id": "fmdi",
+   "terme": "FMDI",
+   "sigle": "FMDI",
+   "forme": "fonds de mobilisation départementale pour l’insertion",
+   "definition": "Fonds versé chaque année par l’État aux départements pour compléter le financement du revenu de solidarité active et des actions d’insertion.",
+   "source": {
+    "nom": "Banque des Territoires, « Nouvelle donne pour le fonds de mobilisation départementale pour l’insertion »",
+    "url": "https://www.banquedesterritoires.fr/nouvelle-donne-pour-le-fonds-de-mobilisation-departementale-pour-linsertion"
+   },
+   "voir": [
+    "rsa"
+   ]
+  },
+  {
+   "id": "actp",
+   "terme": "ACTP",
+   "sigle": "ACTP",
+   "forme": "allocation compensatrice pour tierce personne",
+   "definition": "Allocation versée par le département aux personnes handicapées qui ont besoin de l’aide d’une autre personne ; remplacée par la prestation de compensation du handicap depuis 2006, elle reste versée à celles qui la percevaient déjà.",
+   "source": {
+    "nom": "Mon Parcours Handicap, « ACTP (Allocation compensatrice pour tierce personne) »",
+    "url": "https://www.monparcourshandicap.gouv.fr/glossaire/actp"
+   },
+   "voir": [
+    "pch"
+   ]
+  },
+  {
+   "id": "drom",
+   "terme": "DROM",
+   "sigle": "DROM",
+   "forme": "départements et régions d’outre-mer",
+   "definition": "Guadeloupe, Martinique, Guyane, La Réunion et Mayotte : territoires d’outre-mer qui ont le statut de département et de région, où s’appliquent en principe les mêmes lois qu’en métropole.",
+   "source": {
+    "nom": "Insee, « France (champ statistique) »",
+    "url": "https://www.insee.fr/fr/metadonnees/definition/c1696"
+   }
+  },
+  {
+   "id": "dinum",
+   "terme": "DINUM",
+   "sigle": "DINUM",
+   "forme": "direction interministérielle du numérique",
+   "definition": "Service du Premier ministre chargé de la transformation numérique de l’État ; il publie le panorama des grands projets numériques de l’État.",
+   "source": {
+    "nom": "numerique.gouv.fr, « La direction interministérielle du numérique (DINUM) »",
+    "url": "https://www.numerique.gouv.fr/dinum/"
+   }
+  },
+  {
+   "id": "atigip",
+   "terme": "ATIGIP",
+   "sigle": "ATIGIP",
+   "forme": "Agence du travail d’intérêt général et de l’insertion professionnelle des personnes placées sous main de justice",
+   "definition": "Service du ministère de la Justice chargé du travail d’intérêt général, du travail en détention et de l’insertion professionnelle des personnes condamnées.",
+   "source": {
+    "nom": "Ministère de la Justice, « Agence du travail d’intérêt général et de l’insertion professionnelle »",
+    "url": "https://www.justice.gouv.fr/agence-du-travail-dinteret-general-linsertion-professionnelle"
+   }
+  },
+  {
+   "id": "mtfp",
+   "terme": "MTFP",
+   "sigle": "MTFP",
+   "forme": "ministère de la Transformation et de la Fonction publiques",
+   "definition": "Ministère qui gérait, dans le plan France Relance, l’enveloppe « Mise à niveau numérique de l’État et des territoires ».",
+   "source": {
+    "nom": "data.gouv.fr, « France Relance : lauréats du volet Mise à niveau numérique de l’État et des territoires »",
+    "url": "https://www.data.gouv.fr/datasets/604b41376268c26e7f983c50"
+   }
+  },
+  {
+   "id": "otan",
+   "terme": "OTAN",
+   "sigle": "OTAN",
+   "forme": "Organisation du traité de l’Atlantique Nord",
+   "definition": "Alliance militaire de pays d’Europe et d’Amérique du Nord ; elle publie les dépenses de défense de ses membres selon sa propre définition.",
+   "source": {
+    "nom": "OTAN, site officiel",
+    "url": "https://www.nato.int/cps/fr/natohq/index.htm"
+   }
+  },
+  {
+   "id": "sec",
+   "terme": "SEC",
+   "sigle": "SEC",
+   "forme": "système européen des comptes",
+   "definition": "Règles communes de comptabilité nationale des pays de l’Union européenne (version de 2010, dite SEC 2010) : elles fixent comment mesurer le déficit, la dette, les impôts et les dépenses publiques.",
+   "source": {
+    "nom": "Eurostat, « ESA 2010 » (système européen des comptes)",
+    "url": "https://ec.europa.eu/eurostat/web/esa-2010"
+   }
+  },
+  {
+   "id": "drac",
+   "terme": "DRAC",
+   "sigle": "DRAC",
+   "forme": "direction régionale des affaires culturelles",
+   "definition": "Service du ministère de la Culture dans chaque région : il attribue des aides aux artistes, aux lieux culturels et au patrimoine.",
+   "source": {
+    "nom": "Ministère de la Culture, « Directions régionales des affaires culturelles »",
+    "url": "https://www.culture.gouv.fr/Regions"
+   }
+  },
+  {
+   "id": "dgca",
+   "terme": "DGCA",
+   "sigle": "DGCA",
+   "forme": "direction générale de la création artistique",
+   "definition": "Direction du ministère de la Culture chargée du spectacle vivant et des arts visuels.",
+   "source": {
+    "nom": "Ministère de la Culture, « La direction générale de la création artistique »",
+    "url": "https://www.culture.gouv.fr/Nous-connaitre/Organisation/La-direction-generale-de-la-creation-artistique"
+   }
+  },
+  {
+   "id": "adsv",
+   "terme": "ADSV",
+   "sigle": "ADSV",
+   "forme": "aides déconcentrées au spectacle vivant",
+   "definition": "Aides du ministère de la Culture attribuées par les directions régionales des affaires culturelles aux équipes artistiques et aux lieux du spectacle vivant.",
+   "source": {
+    "nom": "data.gouv.fr, « Les aides déconcentrées au spectacle vivant (ADSV) »",
+    "url": "https://www.data.gouv.fr/datasets/656565de619420d81ca3e3dc"
+   },
+   "voir": [
+    "drac"
+   ]
+  },
+  {
+   "id": "anct",
+   "terme": "ANCT",
+   "sigle": "ANCT",
+   "forme": "Agence nationale de la cohésion des territoires",
+   "definition": "Établissement public de l’État qui accompagne les collectivités dans leurs projets et gère des programmes comme la politique de la ville.",
+   "source": {
+    "nom": "Agence nationale de la cohésion des territoires, site officiel",
+    "url": "https://agence-cohesion-territoires.gouv.fr/"
+   }
+  },
+  {
+   "id": "cpv",
+   "terme": "CPV",
+   "sigle": "CPV",
+   "forme": "vocabulaire commun pour les marchés publics (Common Procurement Vocabulary)",
+   "definition": "Nomenclature européenne de codes qui décrivent l’objet d’un marché public (travaux, fournitures, services) ; l’acheteur choisit le code.",
+   "source": {
+    "nom": "Office des publications de l’Union européenne, guide du vocabulaire commun pour les marchés publics",
+    "url": "https://ted.europa.eu/documents/d/ted/cpv_2008_guide_fr"
+   }
+  },
+  {
+   "id": "aom",
+   "terme": "AOM",
+   "sigle": "AOM",
+   "forme": "autorité organisatrice de la mobilité",
+   "definition": "Collectivité (intercommunalité, syndicat, région) qui organise les transports publics sur son territoire et peut percevoir le versement mobilité.",
+   "source": {
+    "nom": "collectivites-locales.gouv.fr, « La mobilité »",
+    "url": "https://www.collectivites-locales.gouv.fr/competences/la-mobilite"
+   }
+  },
+  {
+   "id": "sispea",
+   "terme": "SISPEA",
+   "sigle": "SISPEA",
+   "forme": "système d’information des services publics d’eau et d’assainissement",
+   "definition": "Base nationale où les services d’eau et d’assainissement déclarent leur prix et leurs indicateurs ; elle est gérée par l’Office français de la biodiversité.",
+   "source": {
+    "nom": "Observatoire des services publics d’eau et d’assainissement",
+    "url": "https://www.services.eaufrance.fr/"
+   }
   }
  ],
  "pas_des_sigles": [
@@ -3302,6 +3487,14 @@
   {
    "mot": "TSA",
    "raison": "nom de société (ex-Thomson SA), écrit tel qu’il est publié"
+  },
+  {
+   "mot": "RENOMMAGES",
+   "raison": "nom d’une table du code (pipeline/numerique_etat.py) cité dans une note de méthode"
+  },
+  {
+   "mot": "VAT",
+   "raison": "mot anglais (value added tax, la TVA) dans le titre cité d’une publication de la Commission européenne"
   }
  ]
 }

@@ -427,7 +427,7 @@ ${source(`${mob.mention} Licence ${mob.licence}`, mob.millesime)}`)
     if (lignes.length)
       parties.push(`<h3>L’eau et l’assainissement</h3>
 <p>Services financés par les factures d’eau des abonnés (budget annexe), et non par les impôts locaux.</p>
-<div class="tableau-defile"><table><caption>Services d’eau et d’assainissement, exercice ${h(eau.exercice)}</caption><thead><tr><th scope="col">Service</th><th scope="col">Collectivité organisatrice</th><th scope="col">Gestion</th><th scope="col" class="nombre">Prix TTC par m³ (120 m³)</th></tr></thead><tbody>${lignes.join('')}</tbody></table></div>
+<div class="tableau-defile"><table><caption>Services d’eau et d’assainissement, exercice ${h(eau.exercice)}</caption><thead><tr><th scope="col">Service</th><th scope="col">Collectivité organisatrice</th><th scope="col">Gestion</th><th scope="col" class="nombre">Prix toutes taxes comprises par m³ (120 m³)</th></tr></thead><tbody>${lignes.join('')}</tbody></table></div>
 <p class="aide">Une collectivité peut avoir plusieurs entités de gestion sur son territoire : le prix applicable à la commune n’est alors pas désigné, l’écart entre les prix publiés est montré.</p>
 ${source('Observatoire des services publics d’eau et d’assainissement (SISPEA, Office français de la biodiversité) ; périmètres BANATIC', eau.millesime)}`)
   }

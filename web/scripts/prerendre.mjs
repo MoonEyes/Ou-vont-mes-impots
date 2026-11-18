@@ -188,6 +188,8 @@ async function prerendre(fragment, { indexable = true, lastmod = dateDonnees } =
   // La CSP interdit les attributs style : les largeurs (data-l, data-g) sont reposées par le script une fois chargé.
   main.querySelectorAll('[style]').forEach((el) => el.removeAttribute('style'))
   main.querySelectorAll('a[href^="#/"]').forEach((a) => a.setAttribute('href', prefixe + versChemin(a.getAttribute('href'))))
+  // Liens vers un fichier de données (« ./data/… », src/ecrans/etat.ts lienDonnee) : relatifs à la page.
+  main.querySelectorAll('a[href^="./data/"]').forEach((a) => a.setAttribute('href', prefixe + a.getAttribute('href').slice(2)))
   main.querySelectorAll('use[href$="#trame-france"]').forEach((u) => {
     if (!trameFrance) throw new Error('dist/assets/trame-france-*.svg absent : le fond de carte partagé n’a pas été construit.')
     u.setAttribute('href', `${prefixe}assets/${trameFrance}#trame-france`)

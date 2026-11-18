@@ -116,7 +116,7 @@ SOURCES = {
         "verdict": "à adapter (historique seulement : jeu non mis à jour depuis le 18/07/2017 ; l'année 2010, "
                    "publiée aussi, n'est pas reprise)"},
     "atih_finances": {
-        "titre": "ISF, données financières des établissements publics ou privés à but non lucratif, agrégées par "
+        "titre": "Indicateurs de suivi financier de l'ATIH, données financières des établissements publics ou privés à but non lucratif, agrégées par "
                  "secteur, catégorie et activité principale, 2020 à 2024",
         "producteur": "ATIH",
         "url": "https://data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public/",
@@ -146,7 +146,7 @@ RECHERCHE_PUBLIQUE = {
          "url": "https://www.data.gouv.fr/datasets/prix-hebergement-et-tarifs-dependance-des-ehpad/"},
         {"nom": "Hospi Diag (ANAP)", "classement": "à adapter", "licence": "Licence Ouverte",
          "derniere_modification": "2017-07-18", "url": SOURCES["hospi_diag"]["url"]},
-        {"nom": "ISF, finances agrégées des établissements publics et EBNL (ATIH)",
+        {"nom": "Indicateurs de suivi financier, finances agrégées des établissements publics et EBNL (ATIH)",
          "classement": "réutilisable tel quel", "licence": "ODbL 1.0", "derniere_modification": "2026-10-01",
          "url": SOURCES["atih_finances"]["url"]},
         {"nom": "Subventions de l'ARS des Pays de la Loire au titre du fonds d'intervention régional",
@@ -861,7 +861,7 @@ def produire(sortie: Path = SORTIE) -> dict:
     an_fin = sorted(totaux_fin)
     dump(sortie / "finances_agregees.json", {
         "millesime": f"Exercices {an_fin[0]} à {an_fin[-1]}",
-        "source": "ATIH, ISF - Données financières des établissements publics ou à but non lucratif "
+        "source": "ATIH, indicateurs de suivi financier : données financières des établissements publics ou à but non lucratif "
                   "(data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public), ODbL 1.0",
         "unite": "euros", "collecte_le": collecte, "licence": "ODbL 1.0",
         "avertissement": "Agrégats par secteur, catégorie et activité principale : aucun établissement n'est "

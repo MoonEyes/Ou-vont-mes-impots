@@ -76,7 +76,7 @@ describe('page commune : projets aidés par l’État, loi SRU, organismes ratta
     expect(t).toContain('Taux en vigueur au 1er janvier 2026')
     expect(t).toContain('versement mobilité : 2,00 %')
     expect(t).toContain('ODbL')
-    expect(t).toContain('Prix TTC par m³ (120 m³)')
+    expect(t).toContain('Prix toutes taxes comprises par m³ (120 m³)')
     expect(t).toContain('Métropole de Lyon (Grand Lyon)')
     // Plusieurs entités de gestion : écart des prix montré, pas de prix désigné.
     expect(t).toContain('de 2,12 € à 2,12 €')

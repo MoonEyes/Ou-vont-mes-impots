@@ -6,7 +6,7 @@ import { partPersonnelle } from '../composants/hub'
 import { ouCest } from '../composants/trame'
 import { chargerSiPresent } from '../donnees'
 import type { Rendu } from '../routeur'
-import { absent, appliquerLargeurs, entier, h, source } from '../util'
+import { AFFICHE_DANS_LE_NAVIGATEUR, absent, appliquerLargeurs, enPrerendu, entier, h, source } from '../util'
 import { blocBudget, clesBudget, type Budgets, type Geo } from './commune'
 import { blocAideSociale, blocInvestissementDepartement, blocOrganismesDepartement, blocSruDepartement, type FichierCcas, type FichierSyndicats, type Territoire } from './territoires'
 
@@ -89,6 +89,10 @@ ${partPersonnelle()}`
   // Données par département : projets aidés par l'État, aide sociale, inventaire SRU (territoires/), syndicats et
   // centres d'action sociale (local_satellites/). Demandées après le budget du département.
   const territoires = budget.then(async () => {
+    if (enPrerendu()) {
+      for (const id of ['sec-projets-etat', 'sec-aide-sociale', 'sec-sru', 'sec-organismes']) remplir(id, AFFICHE_DANS_LE_NAVIGATEUR)
+      return
+    }
     const [ter, syn, ccas] = await Promise.all([
       chargerSiPresent<Territoire>(`territoires/${dep}.json`),
       chargerSiPresent<FichierSyndicats>(`local_satellites/syndicats/${dep}.json`),

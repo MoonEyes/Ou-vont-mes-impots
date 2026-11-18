@@ -6,7 +6,7 @@ import { versChemin } from './chemins'
 import { picto } from './composants/pictos'
 import { marquerSigles } from './composants/sigles'
 import { brancherExports } from './composants/exporter'
-import { annoncer, appliquerLargeurs, h } from './util'
+import { annoncer, appliquerLargeurs, h, enPrerendu } from './util'
 import { blocSignaler, majSignaler } from './composants/signaler'
 import { oublierLectures } from './donnees'
 
@@ -210,7 +210,9 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
       suite = rendu.suite ?? null
     }
     // Sigles : leur première occurrence devient un lien vers le glossaire, une fois l'écran complet (src/composants/sigles.ts).
-    suite = marquerSigles(zone, suite)
+    // Pages commune et département prérendues (plus de 2 300) : liens posés dans le navigateur seulement (budgets de poids,
+    // docs/PERF.md) ; les autres pages les gardent dans leur HTML statique.
+    if (!(enPrerendu() && route.chemin.startsWith('/local/'))) suite = marquerSigles(zone, suite)
     if (prerendu && suite) {
       await suite.catch((e) => console.error(e))
       suite = null

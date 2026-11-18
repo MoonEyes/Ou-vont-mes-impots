@@ -44,6 +44,8 @@ export async function rendreArbre(cible: HTMLElement, params: URLSearchParams, c
   nettoyer?.()
   nettoyer = null
   const vue = cfg.vues.find((v) => v.cle === params.get('m')) ?? cfg.vues[0]
+  // Vue choisie transmise aux pages du programme (m), sauf la vue par défaut (adresse courte).
+  const mVue = vue === cfg.vues[0] ? undefined : vue.cle
   const id = params.get('id') ?? params.get('n') ?? 'racine'
   const NIV = { ...NIVEAUX, ...(cfg.niveaux ?? {}) }
   const { noeud, chemin, racine } = await trouverNoeud(vue.dossier, id)
@@ -109,7 +111,9 @@ ${ariane}
 </div>
 ${
   prog
-    ? `<div class="actions"><a class="bouton" href="${lien('/beneficiaires/programme', { p: prog })}">Le programme ${h(prog)} en détail</a><a class="bouton" href="${lien('/beneficiaires', { p: prog })}">Qui reçoit l’argent du programme ${h(prog)}</a><a class="bouton" href="${lien('/decisions/realisations', { p: prog })}">Ce qui a été fait (programme ${h(prog)})</a><a class="bouton" href="${lien('/decisions/votes', { p: prog })}">Votes et mouvements (programme ${h(prog)})</a></div>`
+    ? `<div class="actions"><a class="bouton" href="${lien('/beneficiaires/programme', { p: prog, m: mVue })}">Le programme ${h(prog)} en détail</a><a class="bouton" href="${lien('/beneficiaires', { p: prog, m: mVue })}">Qui reçoit l’argent du programme ${h(prog)}</a><a class="bouton" href="${lien('/decisions/realisations', { p: prog, m: mVue })}">Ce qui a été fait (programme ${h(prog)})</a><a class="bouton" href="${lien('/decisions/votes', { p: prog, m: mVue })}">Votes et mouvements (programme ${h(prog)})</a></div>${
+        mVue ? `<p class="aide">Ces pages montrent les montants de leur propre millésime, indiqué sur chacune, et non ceux de la vue « ${h(vue.libelle)} ».</p>` : ''
+      }`
     : ''
 }
 <h2>Ce que contient ce bloc</h2>

@@ -4,9 +4,9 @@
 // séparées, les écarts entre sources sont montrés sans être arbitrés, aucun ordre par montant (règle écrite sous chaque tableau).
 // Déjà ailleurs, donc pas refait : le détail des programmes (« Le détail du budget de l'État », « Un programme en détail »),
 // vers lequel la page renvoie.
-// Financement des prêts de l'AFD : le texte « financement_des_prets » d'index.json (repris dans l'avertissement d'afd.json
-// et dans les champs « financement » des grandeurs) n'est pas affiché : une partie de ce texte ne figure dans aucune source
-// primaire. La page cite à la place, mot pour mot, la page de l'AFD et le projet annuel de performances 2026 (CITATIONS,
+// Financement des prêts de l'AFD : le pipeline ne publie plus de texte rédigé à ce sujet (« financement_des_prets »
+// d'index.json ne contient que le périmètre et les identifiants des citations ; les champs « financement » des grandeurs
+// sont vides). La page cite, mot pour mot, la page de l'AFD et le projet annuel de performances 2026 (CITATIONS,
 // documents consultés le 18/11/2026).
 import { parAdministration } from '../calcul/repartition'
 import { partPersonnelle } from '../composants/hub'

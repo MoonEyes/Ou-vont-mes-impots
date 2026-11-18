@@ -104,7 +104,16 @@ describe('L’État actionnaire', () => {
     const lignes = Array.from(table.querySelectorAll('tbody tr'))
     expect(lignes).toHaveLength(ent.dividendes_par_ligne_d_execution.length)
     const attendu = ordreEntites(ent.dividendes_par_ligne_d_execution).map((l) => (l.entite ? l.entite.denomination : l.libelle_source))
-    expect(lignes.map((tr) => espace(tr.querySelector('th')!.childNodes[0].textContent))).toEqual(attendu.map(espace))
+    // Nom = texte avant le <br> (les sigles reliés au glossaire après le rendu découpent ce texte en plusieurs nœuds).
+    const nomLigne = (th: Element) => {
+      let t = ''
+      for (const n of Array.from(th.childNodes)) {
+        if (n.nodeName === 'BR') break
+        t += n.textContent ?? ''
+      }
+      return espace(t)
+    }
+    expect(lignes.map((tr) => nomLigne(tr.querySelector('th')!))).toEqual(attendu.map(espace))
     expect(main.querySelector('[data-regle-ordre]')?.textContent).toBe(REGLE_ENTITES)
     for (const l of ent.dividendes_par_ligne_d_execution) if (l.entite) expect(Number(l.entite.categorie_juridique[0])).toBeGreaterThanOrEqual(2)
     // EDF n'a pas de ligne en 2023 : « – », pas « 0 € »

@@ -141,7 +141,17 @@ describe('écran des retraites', () => {
       ['retraites_droit_direct', 'retraites_tous_droits', 'nouveaux_retraites_droit_direct', 'pension_droit_direct_eur_mois'].some((k) => typeof REG.regimes[id][k][a] === 'number'),
     )
     expect(rangs).toHaveLength(attendus.length)
-    expect(rangs.map((tr) => tr.querySelector('th')!.childNodes[0].textContent)).toEqual(ordreRegimes(attendus, REG.regimes, a).map((id) => REG.regimes[id].nom))
+    // Nom du régime = texte de tête de la cellule ; les sigles reliés au glossaire après le rendu (MSA, CNAV...) découpent
+    // ce texte en plusieurs nœuds : on lit jusqu'au premier élément qui n'est pas un lien de sigle.
+    const nomRegime = (th: Element) => {
+      let t = ''
+      for (const n of Array.from(th.childNodes)) {
+        if (n.nodeType === 1 && !(n as Element).classList.contains('glossaire-sigle')) break
+        t += n.textContent ?? ''
+      }
+      return t
+    }
+    expect(rangs.map((tr) => nomRegime(tr.querySelector('th')!))).toEqual(ordreRegimes(attendus, REG.regimes, a).map((id) => REG.regimes[id].nom))
     expect(rangs[0].querySelector('th')?.textContent).toContain('Tous régimes')
     // Valeur absente à la source : « non publié », jamais 0.
     const cnavpl = rangs.find((tr) => tr.querySelector('th')?.textContent?.startsWith(REG.regimes.cnavpl.nom))!
