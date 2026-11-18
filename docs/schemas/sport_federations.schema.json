@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/sport_federations.schema.json",
+  "title": "site/data/sport/federations.json : subventions du programme 219 aux associations dont la dénomination contient « fédération » (personnes morales), crédits 2010 à 2023 (pipeline/sport.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "fichier": {
+      "const": "associations/programmes/219.json"
+    },
+    "annees_plf": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 1
+    },
+    "annees_credits": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 1
+    },
+    "regle": {
+      "type": "string"
+    },
+    "lecture": {
+      "type": "string"
+    },
+    "ordre": {
+      "type": "object",
+      "properties": {
+        "regle": {
+          "type": "string"
+        },
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "regle",
+        "cles"
+      ],
+      "additionalProperties": false
+    },
+    "par_annee": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "annee_plf": {
+            "type": "integer"
+          },
+          "annee_credits": {
+            "type": "integer"
+          },
+          "statut": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "federations_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "programme_219_total_source_eur": {
+            "type": [
+              "number",
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "annee_plf",
+          "annee_credits",
+          "statut",
+          "federations_eur",
+          "programme_219_total_source_eur"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "federations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "siren": {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          "denomination": {
+            "type": "string"
+          },
+          "categorie_juridique": {
+            "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+          },
+          "total_eur": {
+            "type": "number"
+          },
+          "montants_eur": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "siren",
+          "denomination",
+          "categorie_juridique",
+          "total_eur",
+          "montants_eur"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "non_publie_annees": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "fichier",
+    "annees_plf",
+    "annees_credits",
+    "regle",
+    "lecture",
+    "ordre",
+    "par_annee",
+    "federations",
+    "non_publie_annees"
+  ],
+  "additionalProperties": false
+}

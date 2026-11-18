@@ -2,6 +2,22 @@
  "note": "Fichiers de data/lake lus par la production de chaque étape (python pipeline/tout.py inventorier, sous strace). `sources` : identifiants du catalogue (collecte/collecte.py) et chemins ; `caches` : dossiers remplis par les commandes de collecte des modules ; `hors_catalogue` : fichiers déposés par la collecte d'un module ; `urls` : URL publique de chaque fichier (manifeste), lue par `tout.py entrepot`.",
  "releve_le": "2026-11-17",
  "etapes": {
+  "sport": {
+   "sources": {
+    "sport": [
+     "data/lake/sport/sport/ccomptes_jop2024_rapport.pdf"
+    ],
+    "sport_cnds": [
+     "data/lake/_restreint/sport/sport_cnds/cnds_part_equipement_2015.xlsx",
+     "data/lake/_restreint/sport/sport_cnds/cnds_part_nationale_2015.xlsx",
+     "data/lake/_restreint/sport/sport_cnds/cnds_part_territoriale_2015.xlsx"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "relevé à la main d'après les constantes de pipeline/sport.py (entrées « sport » et « sport_cnds » de collecte/catalogue.json) ; lit aussi site/data/realisations, operateurs, associations et local/geo (versionnés)"
+  },
   "base": {
    "sources": {},
    "caches": [],
@@ -1922,6 +1938,10 @@
   "data/lake/energie_climat/energie_climat_cre_cspe_2024.pdf": "https://www.cre.fr/fileadmin/Documents/Deliberations/2024/240711_2024-139_CSPE_2024-2025.pdf",
   "data/lake/energie_climat/energie_climat_cre_cspe_2025.pdf": "https://www.cre.fr/fileadmin/Documents/Deliberations/2025/250710_2025-180_CSPE_2025-2026.pdf",
   "data/lake/energie_climat/energie_climat_cre_cspe_2026.pdf": "https://www.cre.fr/fileadmin/Documents/Deliberations/2026/260715_2026-149_CSPE_2026-2027.pdf",
+  "data/lake/sport/sport/ccomptes_jop2024_rapport.pdf": "https://www.ccomptes.fr/sites/default/files/2025-09/20240929-rapport-JOP-2024_0.pdf",
+  "data/lake/_restreint/sport/sport_cnds/cnds_part_equipement_2015.xlsx": "https://static.data.gouv.fr/resources/subventions-allouees-en-2015-par-le-centre-national-pour-le-developpement-du-sport-cnds/20161008-180224/SubvCNDS_PartEqu2015.xlsx",
+  "data/lake/_restreint/sport/sport_cnds/cnds_part_nationale_2015.xlsx": "https://static.data.gouv.fr/resources/subventions-allouees-en-2015-par-le-centre-national-pour-le-developpement-du-sport-cnds/20160911-175342/SubvCNDS_PartNat2015.xlsx",
+  "data/lake/_restreint/sport/sport_cnds/cnds_part_territoriale_2015.xlsx": "https://static.data.gouv.fr/resources/subventions-allouees-en-2015-par-le-centre-national-pour-le-developpement-du-sport-cnds/20161008-175511/SubvCNDS_PartTer2015.xlsx",
   "data/lake/_restreint/beneficiaires/benef_decp/decp_11cea8e8.parquet": "https://static.data.gouv.fr/resources/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire/20261117-051110/decp.parquet",
   "data/lake/_restreint/beneficiaires/datagouv__subventions-de-bourges-plus-en-2018-et-2019/subventions-de-bourges-plus-en-2018-et-2019_85c2c379.parquet": "https://data.bourgesplus.fr/api/v2/catalog/datasets/subventions-de-bourges-plus-en-2018-et-2019/exports/parquet",
   "data/lake/_restreint/beneficiaires/ods_laregion__subventions-du-conseil-regional.parquet": "https://data.laregion.fr/api/explore/v2.1/catalog/datasets/subventions-du-conseil-regional/exports/parquet",

@@ -1,0 +1,387 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/sport_budget.schema.json",
+  "title": "site/data/sport/budget.json : programmes 219 et 350 par année (voté, ouvert, dépensé), actions du programme 219, financement de l'Agence nationale du sport par l'État (pipeline/sport.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "lecture": {
+      "type": "string"
+    },
+    "programmes": {
+      "type": "object",
+      "properties": {
+        "219": {
+          "type": "object",
+          "properties": {
+            "programme": {
+              "enum": [
+                "219",
+                "350"
+              ]
+            },
+            "libelle": {
+              "type": "string"
+            },
+            "mission": {
+              "type": "string"
+            },
+            "unite": {
+              "type": "string"
+            },
+            "fichier": {
+              "type": "string",
+              "pattern": "^realisations/(219|350)\\.json$"
+            },
+            "annees": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "annee": {
+                    "type": "integer",
+                    "minimum": 2000
+                  },
+                  "vote_lfi_eur": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ouvert_en_gestion_eur": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "depense_constatee_eur": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "source": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "trou": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "annee",
+                  "vote_lfi_eur",
+                  "ouvert_en_gestion_eur",
+                  "depense_constatee_eur",
+                  "source"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "programme",
+            "libelle",
+            "mission",
+            "unite",
+            "fichier",
+            "annees"
+          ],
+          "additionalProperties": false
+        },
+        "350": {
+          "type": "object",
+          "properties": {
+            "programme": {
+              "enum": [
+                "219",
+                "350"
+              ]
+            },
+            "libelle": {
+              "type": "string"
+            },
+            "mission": {
+              "type": "string"
+            },
+            "unite": {
+              "type": "string"
+            },
+            "fichier": {
+              "type": "string",
+              "pattern": "^realisations/(219|350)\\.json$"
+            },
+            "annees": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "annee": {
+                    "type": "integer",
+                    "minimum": 2000
+                  },
+                  "vote_lfi_eur": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ouvert_en_gestion_eur": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "depense_constatee_eur": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "source": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "trou": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "annee",
+                  "vote_lfi_eur",
+                  "ouvert_en_gestion_eur",
+                  "depense_constatee_eur",
+                  "source"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "programme",
+            "libelle",
+            "mission",
+            "unite",
+            "fichier",
+            "annees"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "219",
+        "350"
+      ],
+      "additionalProperties": false
+    },
+    "actions_219": {
+      "type": "object",
+      "properties": {
+        "millesime": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "unite": {
+          "type": "string"
+        },
+        "avertissement": {
+          "type": "string"
+        },
+        "fichier": {
+          "const": "programmes/219.json"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "nom": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "md": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "code",
+              "nom",
+              "md"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "millesime",
+        "source",
+        "unite",
+        "avertissement",
+        "fichier",
+        "actions"
+      ],
+      "additionalProperties": false
+    },
+    "agence_nationale_du_sport": {
+      "type": "object",
+      "properties": {
+        "nom": {
+          "type": "string"
+        },
+        "siren": {
+          "$ref": "commun.schema.json#/$defs/siren"
+        },
+        "statut": {
+          "type": "string"
+        },
+        "programme_chef_de_file": {
+          "const": "219"
+        },
+        "fichier": {
+          "const": "operateurs/operateurs.json"
+        },
+        "id": {
+          "const": "ans"
+        },
+        "annees": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "nature": {
+                "enum": [
+                  "execution",
+                  "lfi",
+                  null
+                ]
+              },
+              "programmes_financeurs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 0
+              },
+              "financement_etat_scsp_cp_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "financement_etat_transferts_cp_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "financement_etat_total_cp_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "credits_votes_lfi_total_cp_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "taxes_affectees_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "taxes_affectees_prevision_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "sources": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "annee",
+              "nature",
+              "programmes_financeurs",
+              "financement_etat_scsp_cp_eur",
+              "financement_etat_transferts_cp_eur",
+              "financement_etat_total_cp_eur",
+              "credits_votes_lfi_total_cp_eur",
+              "taxes_affectees_eur",
+              "taxes_affectees_prevision_eur",
+              "sources"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "definitions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "nom",
+        "siren",
+        "statut",
+        "programme_chef_de_file",
+        "fichier",
+        "id",
+        "annees",
+        "definitions"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "lecture",
+    "programmes",
+    "actions_219",
+    "agence_nationale_du_sport"
+  ],
+  "additionalProperties": false
+}

@@ -4637,6 +4637,43 @@
    "titre": "CNC, Bilan 2025 (chapitre 7.1 : recettes du fonds de soutien et soutiens du CNC par dispositif, pages 271 et 272), 15 Mo",
    "licence": "document administratif public",
    "module": "pipeline/culture_medias.py"
+  },
+  {
+   "id": "sport",
+   "domaine": "sport",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://www.ccomptes.fr/sites/default/files/2025-09/20240929-rapport-JOP-2024_0.pdf",
+     "nom": "ccomptes_jop2024_rapport.pdf"
+    }
+   ],
+   "titre": "Cour des comptes, « Les Jeux olympiques et paralympiques de Paris 2024 » (rapport au Parlement, septembre 2025) : dépenses publiques liées aux Jeux par poste et par acteur (lu par pipeline/sport.py)",
+   "licence": "publication de la Cour des comptes (réutilisation libre avec mention de la source)",
+   "module": "pipeline/sport.py"
+  },
+  {
+   "id": "sport_cnds",
+   "domaine": "sport",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://static.data.gouv.fr/resources/subventions-allouees-en-2015-par-le-centre-national-pour-le-developpement-du-sport-cnds/20161008-175511/SubvCNDS_PartTer2015.xlsx",
+     "nom": "cnds_part_territoriale_2015.xlsx"
+    },
+    {
+     "url": "https://static.data.gouv.fr/resources/subventions-allouees-en-2015-par-le-centre-national-pour-le-developpement-du-sport-cnds/20160911-175342/SubvCNDS_PartNat2015.xlsx",
+     "nom": "cnds_part_nationale_2015.xlsx"
+    },
+    {
+     "url": "https://static.data.gouv.fr/resources/subventions-allouees-en-2015-par-le-centre-national-pour-le-developpement-du-sport-cnds/20161008-180224/SubvCNDS_PartEqu2015.xlsx",
+     "nom": "cnds_part_equipement_2015.xlsx"
+    }
+   ],
+   "titre": "Ministère chargé des sports, « Subventions allouées en 2015 par le Centre national pour le développement du sport (CNDS) » : parts territoriale, nationale et équipement (data.gouv.fr, jeu 57d579a4c751df4d2a97bae5 ; noms de bénéficiaires sans SIREN : zone restreinte, jamais publiés ; lu par pipeline/sport.py)",
+   "licence": "Licence Ouverte 1.0",
+   "personnes_physiques": true,
+   "module": "pipeline/sport.py"
   }
  ],
  "non_collectables": [

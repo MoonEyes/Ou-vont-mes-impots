@@ -175,6 +175,8 @@ ETAPES: tuple[Etape, ...] = (
     axe("transports", "Transports et mobilité", ("base", "realisations", "local_satellites", "retraites"), duree_s=30),
     axe("energie_climat", "Énergie et climat (charges de service public, boucliers, chèque énergie)", ("base",), duree_s=30),
     axe("culture_medias", "Culture et médias (budget, audiovisuel public, presse, CNC)", ("base",), duree_s=30),
+    axe("sport", "Sport : programmes 219 et 350, Agence nationale du sport, CNDS, coût public des Jeux (Cour des comptes)",
+        ("base", "realisations", "operateurs", "associations", "local"), duree_s=60),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un

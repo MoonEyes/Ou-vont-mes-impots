@@ -1,0 +1,349 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/sport_jop.schema.json",
+  "title": "site/data/sport/jop.json : dépenses publiques liées aux Jeux olympiques et paralympiques de Paris 2024 évaluées par la Cour des comptes (septembre 2025), par poste et par acteur, avec producteur, périmètre et méthode ; crédits du programme 350 à côté (pipeline/sport.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "statut": {
+      "enum": [
+        "publié",
+        "non publié en données ouvertes"
+      ]
+    },
+    "unite": {
+      "type": "string"
+    },
+    "producteur": {
+      "const": "Cour des comptes"
+    },
+    "document": {
+      "type": "object",
+      "properties": {
+        "titre": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "page": {
+          "type": "string"
+        },
+        "page_tableau": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "titre",
+        "date",
+        "url",
+        "page",
+        "page_tableau"
+      ],
+      "additionalProperties": false
+    },
+    "perimetre": {
+      "type": "string"
+    },
+    "methode": {
+      "type": "string"
+    },
+    "controle": {
+      "type": "string"
+    },
+    "motif": {
+      "type": "string"
+    },
+    "fautes_controle": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "citations_non_retrouvees": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "postes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "volet": {
+            "enum": [
+              "organisation",
+              "infrastructures"
+            ]
+          },
+          "poste": {
+            "type": "string"
+          },
+          "montant_meur": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "volet",
+          "poste",
+          "montant_meur"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 2
+    },
+    "totaux_meur": {
+      "type": "object",
+      "properties": {
+        "organisation": {
+          "type": "number"
+        },
+        "infrastructures": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "organisation",
+        "infrastructures"
+      ],
+      "additionalProperties": false
+    },
+    "par_acteur": {
+      "type": "object",
+      "properties": {
+        "lecture": {
+          "type": "string"
+        },
+        "acteurs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "acteur": {
+                "type": "string"
+              },
+              "organisation_meur": {
+                "type": "number"
+              },
+              "infrastructures_meur": {
+                "type": "number"
+              },
+              "citation": {
+                "type": "string",
+                "minLength": 10
+              }
+            },
+            "required": [
+              "id",
+              "acteur",
+              "organisation_meur",
+              "infrastructures_meur",
+              "citation"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "lecture",
+        "acteurs"
+      ],
+      "additionalProperties": false
+    },
+    "autres_montants": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "montant_meur": {
+            "type": "number"
+          },
+          "definition": {
+            "type": "string"
+          },
+          "citation": {
+            "type": "string",
+            "minLength": 10
+          }
+        },
+        "required": [
+          "montant_meur",
+          "definition",
+          "citation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "estimation_anterieure": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string"
+            },
+            "document": {
+              "type": "string"
+            },
+            "organisation_meur": {
+              "type": "number"
+            },
+            "infrastructures_meur": {
+              "type": "number"
+            },
+            "citation": {
+              "type": "string",
+              "minLength": 10
+            },
+            "lecture": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "date",
+            "document",
+            "organisation_meur",
+            "infrastructures_meur",
+            "citation",
+            "lecture"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "note_source": {
+      "type": "string"
+    },
+    "programme_350": {
+      "type": "object",
+      "properties": {
+        "libelle": {
+          "type": "string"
+        },
+        "fichier": {
+          "const": "realisations/350.json"
+        },
+        "unite": {
+          "type": "string"
+        },
+        "lecture": {
+          "type": "string"
+        },
+        "annees": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "vote_lfi_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "depense_constatee_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "source": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "annee",
+              "vote_lfi_eur",
+              "depense_constatee_eur",
+              "source"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "libelle",
+        "fichier",
+        "unite",
+        "lecture",
+        "annees"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "statut",
+    "unite",
+    "producteur",
+    "document",
+    "perimetre",
+    "methode",
+    "controle",
+    "fautes_controle",
+    "citations_non_retrouvees",
+    "programme_350"
+  ],
+  "additionalProperties": false,
+  "if": {
+    "properties": {
+      "statut": {
+        "const": "publié"
+      }
+    }
+  },
+  "then": {
+    "required": [
+      "postes",
+      "totaux_meur",
+      "par_acteur",
+      "autres_montants",
+      "estimation_anterieure",
+      "note_source"
+    ]
+  },
+  "else": {
+    "required": [
+      "motif"
+    ],
+    "not": {
+      "required": [
+        "postes"
+      ]
+    }
+  }
+}

@@ -1,0 +1,506 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/sport_cnds_2015.schema.json",
+  "title": "site/data/sport/cnds_2015.json : subventions du CNDS en 2015, part territoriale par fédération, service instructeur et région, part nationale par type, part équipement par département et région ; agrégats seulement, aucun bénéficiaire nommé (pipeline/sport.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "annee": {
+      "const": 2015
+    },
+    "unite": {
+      "type": "string"
+    },
+    "attribuant": {
+      "type": "string"
+    },
+    "regle": {
+      "type": "string"
+    },
+    "lecture": {
+      "type": "string"
+    },
+    "part_territoriale": {
+      "type": "object",
+      "properties": {
+        "definition": {
+          "type": "string"
+        },
+        "total_eur": {
+          "type": "number"
+        },
+        "lignes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lignes_sans_montant": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "services_non_rattaches": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0
+        },
+        "par_federation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "nom": {
+                "type": "string"
+              },
+              "montant_eur": {
+                "type": "number"
+              },
+              "lignes": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "code",
+              "nom",
+              "montant_eur",
+              "lignes"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "par_service": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "service": {
+                "type": "string"
+              },
+              "niveau": {
+                "enum": [
+                  "régional",
+                  "départemental",
+                  "collectivité d'outre-mer",
+                  null
+                ]
+              },
+              "departement": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "nom": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "nom"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "region": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "nom": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "type": {
+                        "enum": [
+                          "région",
+                          "collectivité d'outre-mer"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "nom",
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "montant_eur": {
+                "type": "number"
+              },
+              "lignes": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "service",
+              "niveau",
+              "departement",
+              "region",
+              "montant_eur",
+              "lignes"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "par_region": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "nom": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "type": {
+                "enum": [
+                  "région",
+                  "collectivité d'outre-mer",
+                  null
+                ]
+              },
+              "montant_eur": {
+                "type": "number"
+              },
+              "lignes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "services_regionaux_eur": {
+                "type": "number"
+              },
+              "services_departementaux_eur": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "code",
+              "nom",
+              "type",
+              "montant_eur",
+              "lignes",
+              "services_regionaux_eur",
+              "services_departementaux_eur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "par_objectif": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objectif": {
+                "type": "string"
+              },
+              "montant_eur": {
+                "type": "number"
+              },
+              "lignes": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "objectif",
+              "montant_eur",
+              "lignes"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "federation_par_region": {
+          "type": "object",
+          "properties": {
+            "lecture": {
+              "type": "string"
+            },
+            "valeurs": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "required": [
+            "lecture",
+            "valeurs"
+          ],
+          "additionalProperties": false
+        },
+        "methode_region": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "definition",
+        "total_eur",
+        "lignes",
+        "lignes_sans_montant",
+        "services_non_rattaches",
+        "par_federation",
+        "par_service",
+        "par_region",
+        "par_objectif",
+        "federation_par_region",
+        "methode_region"
+      ],
+      "additionalProperties": false
+    },
+    "part_nationale": {
+      "type": "object",
+      "properties": {
+        "definition": {
+          "type": "string"
+        },
+        "total_eur": {
+          "type": "number"
+        },
+        "lignes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lignes_sans_montant": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "par_type": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "montant_eur": {
+                "type": "number"
+              },
+              "lignes": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "type",
+              "montant_eur",
+              "lignes"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "definition",
+        "total_eur",
+        "lignes",
+        "lignes_sans_montant",
+        "par_type"
+      ],
+      "additionalProperties": false
+    },
+    "part_equipement": {
+      "type": "object",
+      "properties": {
+        "definition": {
+          "type": "string"
+        },
+        "total_accorde_eur": {
+          "type": "number"
+        },
+        "operations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lignes_sans_montant": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "par_departement": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "nom": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "region_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "operations": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "montant_accorde_eur": {
+                "type": "number"
+              },
+              "montant_operations_eur": {
+                "type": "number"
+              },
+              "operations_sans_montant_total": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "code",
+              "nom",
+              "region_code",
+              "operations",
+              "montant_accorde_eur",
+              "montant_operations_eur",
+              "operations_sans_montant_total"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "par_region": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "nom": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "type": {
+                "enum": [
+                  "région",
+                  "collectivité d'outre-mer",
+                  null
+                ]
+              },
+              "operations": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "montant_accorde_eur": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "code",
+              "nom",
+              "type",
+              "operations",
+              "montant_accorde_eur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "par_objectif": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objectif": {
+                "type": "string"
+              },
+              "operations": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "montant_accorde_eur": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "objectif",
+              "operations",
+              "montant_accorde_eur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "definition",
+        "total_accorde_eur",
+        "operations",
+        "lignes_sans_montant",
+        "par_departement",
+        "par_region",
+        "par_objectif"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "annee",
+    "unite",
+    "attribuant",
+    "regle",
+    "lecture",
+    "part_territoriale",
+    "part_nationale",
+    "part_equipement"
+  ],
+  "additionalProperties": false
+}
