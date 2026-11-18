@@ -1105,6 +1105,37 @@ data/lake/secu/retraites_* (DREES EACR table A-Cadrage ; DREES emploi intérieur
 
 Règles propres : les effectifs des régimes ne s'additionnent pas (une personne qui perçoit des pensions de plusieurs régimes est comptée dans chacun ; seule la série `tous_regimes`, estimée par la DREES, compte chaque personne une fois) ; aucune masse de pensions n'est recalculée à partir d'un effectif et d'une moyenne ; une valeur absente à la source est null, jamais 0. Non couverts, faute de jeu ouvert (`sources_inaccessibles`) : cotisants des autres régimes, ressources par origine des régimes hors CAS Pensions, exécution du CAS Pensions ; les fichiers du Conseil d'orientation des retraites ne sont pas repris (réutilisation soumise à accord).
 
+### 2.41 Énergie et climat : `energie_climat/` (pipeline/energie_climat.py)
+
+Charges de service public de l'énergie évaluées chaque année par la Commission de régulation de l'énergie (soutien aux énergies renouvelables électriques, biométhane, zones non interconnectées dont la péréquation tarifaire, cogénération, effacements, dispositifs sociaux, frais de gestion, boucliers tarifaires et amortisseurs), crédits des programmes 345 « Service public de l'énergie » et 174 « Énergie, climat et après-mines » par ligne de dépense, chèque énergie. Agrégats publiés seulement, aucun opérateur ni fournisseur nommé. Les montants du programme 345 par action dans le budget de l'État restent dans `arbre/` et `programmes/` : cette vue y renvoie par des liens. Le budget vert n'est lu que pour ses colonnes de montants (aucune cotation environnementale reprise ; `realisations/` ne l'utilise que pour l'exécution 2022 par programme). Commandes : `python pipeline/energie_climat.py collecter` (réseau ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/energie_climat.py produire` (sans réseau, `pdftotext` requis). Tests : `pytest tests/test_energie_climat.py`.
+
+```
+data/lake/energie_climat/ (CRE : délibérations n° 2024-139, 2025-180, 2026-149 en PDF ;
+                           budget vert des PLF 2024, 2025, 2026 filtré sur les programmes 174 et 345)
+     └─> pipeline/energie_climat.py ─> site/data/energie_climat/index.json, charges_service_public.json,
+                                         boucliers.json, budget.json, cheque_energie.json
+                                         └─ liens (fichier + id) vers arbre/, programmes/, realisations/, tracabilite/
+```
+
+| Fichier, champ | Sens |
+|---|---|
+| `index.json`, `chiffres_cles[]` | total des charges de la dernière délibération, une entrée par colonne : `annee`, `m_eur`, `nature` (`constatees`, `prevision_mise_a_jour`, `previsionnelles`), `deliberation`, `libelle` prêt à afficher |
+| `index.json`, `liens[]` | `vue` (`arbre_etat`, `programmes`, `realisations`, `tracabilite`), `fichier`, `id`, `programme` (345 ou 174), `lecture` : même argent vu d'une autre vue, jamais additionné |
+| `index.json`, `cas_transition_energetique` | `applicable` faux : compte d'affectation spéciale supprimé au 1er janvier 2021, charges portées depuis par le programme 345 ; exécution 2016-2020 non reprise |
+| `index.json`, `sources`, `sources_inaccessibles`, `recherche_publique`, `limites` | sources avec `verdict` (Règle n° 0), sources examinées sans jeu ouvert, dépôts publics examinés |
+| `charges_service_public.json`, `nomenclature[]` | 22 lignes du tableau récapitulatif de la CRE : `cle`, `libelle`, `parent` (ligne de sous-total), `action_programme_345` (09 à 17) ; sous-totaux : `enr_electriques`, `zni`, `dispositifs_sociaux`, `mesures_exceptionnelles`, `sous_total_hors_mesures`, `total` |
+| `charges_service_public.json`, `evaluations[]` | une entrée par délibération : `deliberation`, `date`, `colonnes[]` (4 années et leur nature), `lignes.<cle>` (4 valeurs en M€ dans l'ordre des colonnes), `sous_total_recalcule` (vrai si la délibération ne publie pas le sous-total hors mesures exceptionnelles : somme des lignes), `note` |
+| `charges_service_public.json`, `series.<annee>.lignes.<cle>[]` | toutes les évaluations d'une même année, de la plus ancienne à la plus récente : `deliberation`, `date`, `nature`, `m_eur` ; `derniere_evaluation` désigne la plus récente sans écarter les autres (révisions visibles côte à côte) |
+| `boucliers.json`, `cre.<annee>` | `electricite`, `gaz`, `total` : évaluations de la CRE (même forme que `series`) |
+| `boucliers.json`, `budget_action_345_17[]` | crédits de l'action 345-17 par `annee` et `nature` (`execution`, `lfi`, `plf`), `source_plf`, `lignes[]` (`code`, `libelle`, `eur`, `champ_cre` faux pour la remise sur les carburants de 2022), `total_eur`, `hors_carburants_eur` |
+| `boucliers.json`, `comparaison[]` | par année : `cre_m_eur` (dernière évaluation), `budget_execution_m_eur` (exécution hors carburants), `ecart_m_eur`, `ecart_pct` (null si une valeur manque) ; `lecture_ecart` : charges au titre d'une année contre crédits payés dans l'année |
+| `budget.json`, `lignes[]` | ligne de dépense du budget vert : `source_plf`, `programme`, `action`, `code`, `action_libelle`, `libelle`, `retraitement` (vrai pour les mesures de périmètre ou de transfert et les fonds de concours), `execution`, `lfi`, `plf` (`annee`, `eur` ou null) |
+| `budget.json`, `totaux[]` | par `programme`, `annee`, `nature` : `hors_retraitements_eur`, `avec_retraitements_eur`, `lignes_null` |
+| `cheque_energie.json`, `national.<annee>[]` | crédits de la ligne « Chèque énergie » du programme 174 : `nature`, `source_plf`, `code`, `libelle`, `eur` |
+| `cheque_energie.json`, `departements`, `nombre_cheques` | null : non publiés en données ouvertes (`departements_mention`, `nombre_cheques_mention`, `sources_inaccessibles`) ; à afficher en motif hachuré « non publié » |
+
+Règles propres : un tableau de la CRE n'est retenu que si ses sous-totaux et son total se recalculent (à 0,15 M€ près, plus 0,05 M€ par terme d'arrondi) ; une charge négative (installations soutenues qui reversent quand les prix de marché dépassent le tarif ou le prix de référence) est publiée telle quelle ; les montants de la CRE (M€, au titre d'une année) et du budget (euros, crédits de l'année) ne sont jamais additionnés ; aucune date du jour n'est écrite (dates des délibérations). Pour l'écran : afficher `nature` à côté de chaque montant de la CRE (constaté, prévision mise à jour, prévision), un montant en pointillé quand il s'agit d'une prévision, et les révisions d'une même année côte à côte.
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.

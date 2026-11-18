@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/energie_climat_budget.schema.json",
+  "title": "site/data/energie_climat/budget.json : crédits des programmes 345 et 174 par ligne de dépense, budget vert des PLF (pipeline/energie_climat.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "annees",
+    "programmes",
+    "lignes",
+    "totaux",
+    "note_perimetre"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string",
+      "pattern": "^euros"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "programmes": {
+      "type": "object",
+      "required": [
+        "345",
+        "174"
+      ]
+    },
+    "lignes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "source_plf",
+          "programme",
+          "action",
+          "code",
+          "action_libelle",
+          "libelle",
+          "retraitement",
+          "execution",
+          "lfi",
+          "plf"
+        ],
+        "properties": {
+          "source_plf": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "programme": {
+            "enum": [
+              "174",
+              "345"
+            ]
+          },
+          "action": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "action_libelle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "libelle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "retraitement": {
+            "type": "boolean"
+          },
+          "execution": {
+            "type": "object",
+            "required": [
+              "annee",
+              "eur"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "annee": {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              "eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "lfi": {
+            "type": "object",
+            "required": [
+              "annee",
+              "eur"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "annee": {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              "eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "plf": {
+            "type": "object",
+            "required": [
+              "annee",
+              "eur"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "annee": {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              "eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "totaux": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "annee",
+          "nature",
+          "source_plf",
+          "hors_retraitements_eur",
+          "avec_retraitements_eur",
+          "lignes_null"
+        ],
+        "properties": {
+          "programme": {
+            "enum": [
+              "174",
+              "345"
+            ]
+          },
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "nature": {
+            "enum": [
+              "execution",
+              "lfi",
+              "plf"
+            ]
+          },
+          "source_plf": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "hors_retraitements_eur": {
+            "type": "number"
+          },
+          "avec_retraitements_eur": {
+            "type": "number"
+          },
+          "lignes_null": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "note_perimetre": {
+      "type": "string"
+    }
+  }
+}
