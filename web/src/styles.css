@@ -2808,3 +2808,15 @@ fieldset.saisie-groupe {
   border-color: var(--contour);
   background: var(--papier);
 }
+
+/* croiser */
+.croiser-grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 1rem; margin: 1rem 0; }
+.croiser-case { margin: 0; padding: 0.75rem; border: var(--trait) solid var(--contour); border-radius: 1rem; background: var(--papier); }
+.croiser-case-propre { border-width: 4px; }
+.croiser-svg { display: block; width: 100%; height: auto; }
+.croiser-cadre { fill: none; stroke: var(--contour); stroke-width: 1; }
+.croiser-bande-large { fill: var(--famille); opacity: 0.35; }
+.croiser-bande-centre { fill: var(--famille); opacity: 0.85; }
+.croiser-mediane { stroke: var(--encre); stroke-width: 2; }
+.croiser-point { fill: var(--encre); stroke: var(--papier); stroke-width: 1.5; }
+.croiser-point-ailleurs { fill: var(--papier); stroke: var(--encre); stroke-width: 2; }

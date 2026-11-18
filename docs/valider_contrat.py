@@ -319,6 +319,10 @@ FICHIERS = [
     ("immobilier_etat_cessions.schema.json", "immobilier_etat/cessions.json", "existant"),
     ("immobilier_etat_loyers.schema.json", "immobilier_etat/loyers.json", "existant"),
     ("immobilier_etat_compte.schema.json", "immobilier_etat/compte.json", "existant"),
+    # territoires comparables : typologies des communes et croisements prédéfinis (pipeline/typologies.py)
+    ("typologies_index.schema.json", "typologies/index.json", "existant"),
+    ("typologies_croisement.schema.json", "typologies/croisements/*.json", "existant"),
+    ("typologies_communes.schema.json", "typologies/communes/*.json", "existant"),
     # performance : objectifs, indicateurs, cibles et réalisés par programme reliés aux crédits ; baromètre des
     # résultats de l'action publique par département (pipeline/performance.py)
     ("performance_index.schema.json", "performance/index.json", "existant"),

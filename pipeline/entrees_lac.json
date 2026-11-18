@@ -2034,6 +2034,26 @@
    "hors_catalogue": [],
    "octets_sources": 4936669,
    "note": "source « performance_ditp_barometre » de collecte/catalogue.json (python pipeline/performance.py collecter) et le RAP 2025 déjà collecté par l'étape realisations ; lit aussi site/data/realisations, site/data/arbre/racine.json et site/data/millesimes/execution2025/racine.json (sorties d'étapes, lecture seule)"
+  },
+  "typologies": {
+   "sources": {
+    "typologies_grille_densite": [
+     "data/lake/typologies/typologies_grille_densite.xlsx"
+    ],
+    "typologies_aav2020": [
+     "data/lake/typologies/typologies_aav2020.zip"
+    ],
+    "typologies_ofgl_communes": [
+     "data/lake/typologies/typologies_ofgl_communes.csv"
+    ],
+    "revenus_communes_passage_cog": [
+     "data/lake/revenus_communes/revenus_communes_passage_cog.zip"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 31467805,
+   "note": "entrées relevées dans le manifeste de collecte (python pipeline/typologies.py collecter), non relevées sous strace ; lit aussi site/data/local et site/data/revenus_communes"
   }
  },
  "urls": {
@@ -2700,6 +2720,9 @@
   "data/lake/performance/performance_ditp_barometre/ind-887.csv": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/data/ind-887.csv",
   "data/lake/performance/performance_ditp_barometre/ind-894.csv": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/data/ind-894.csv",
   "data/lake/performance/performance_ditp_barometre/ind-905.csv": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/data/ind-905.csv",
-  "data/lake/performance/performance_ditp_barometre/ind-957.csv": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/data/ind-957.csv"
+  "data/lake/performance/performance_ditp_barometre/ind-957.csv": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/data/ind-957.csv",
+  "data/lake/typologies/typologies_aav2020.zip": "https://www.insee.fr/fr/statistiques/fichier/4803954/AAV2020_au_01-01-2026.zip",
+  "data/lake/typologies/typologies_grille_densite.xlsx": "https://www.insee.fr/fr/statistiques/fichier/8571524/fichier_diffusion_2026.xlsx",
+  "data/lake/typologies/typologies_ofgl_communes.csv": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/ofgl-base-communes-consolidee/exports/csv?where=exer%3E%3D2023+and+exer%3C%3D2024+and+agregat+in+%28%22D%C3%A9penses+totales%22%2C%22Encours+de+dette%22%2C%22Dotation+globale+de+fonctionnement%22%2C%22Imp%C3%B4ts+locaux%22%2C%22D%C3%A9penses+d%27%C3%A9quipement%22%29&select=exer%2Ccom_code%2Cinsee%2Ctranche_population%2Cagregat%2Cmontant%2Cptot%2Cptot_n%2Ceuros_par_habitant"
  }
 }

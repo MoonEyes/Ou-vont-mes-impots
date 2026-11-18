@@ -1,0 +1,427 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/typologies_croisement.schema.json",
+ "title": "site/data/typologies/croisements/<id>.json : un croisement prédéfini (même année, même périmètre), dispersion des communes par case de densité, de strate de l'OFGL et d'aire d'attraction (pipeline/typologies.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "date_sources",
+  "id",
+  "titre",
+  "annee",
+  "x",
+  "y",
+  "perimetre",
+  "avertissement",
+  "statut",
+  "methode",
+  "quantiles",
+  "n_min",
+  "bandes_bornes",
+  "axes",
+  "communes",
+  "ensemble",
+  "facettes"
+ ],
+ "properties": {
+  "date_sources": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[a-z0-9_]+$"
+  },
+  "titre": {
+   "type": "string"
+  },
+  "annee": {
+   "type": "integer"
+  },
+  "x": {
+   "type": "object",
+   "required": [
+    "variable",
+    "libelle",
+    "unite",
+    "annee",
+    "statut"
+   ],
+   "properties": {
+    "variable": {
+     "type": "string"
+    },
+    "libelle": {
+     "type": "string"
+    },
+    "unite": {
+     "type": "string"
+    },
+    "annee": {
+     "type": "integer"
+    },
+    "statut": {
+     "enum": [
+      "tracé",
+      "calculé par le site"
+     ]
+    }
+   }
+  },
+  "y": {
+   "type": "object",
+   "required": [
+    "variable",
+    "libelle",
+    "unite",
+    "annee",
+    "statut"
+   ],
+   "properties": {
+    "variable": {
+     "type": "string"
+    },
+    "libelle": {
+     "type": "string"
+    },
+    "unite": {
+     "type": "string"
+    },
+    "annee": {
+     "type": "integer"
+    },
+    "statut": {
+     "enum": [
+      "tracé",
+      "calculé par le site"
+     ]
+    }
+   }
+  },
+  "perimetre": {
+   "type": "string"
+  },
+  "avertissement": {
+   "type": "string",
+   "minLength": 20
+  },
+  "statut": {
+   "const": "calculé par le site"
+  },
+  "methode": {
+   "type": "string"
+  },
+  "quantiles": {
+   "const": [
+    10,
+    25,
+    50,
+    75,
+    90
+   ]
+  },
+  "n_min": {
+   "type": "integer"
+  },
+  "bandes_bornes": {
+   "type": "array",
+   "items": {
+    "type": "number"
+   },
+   "minItems": 2
+  },
+  "axes": {
+   "type": "object",
+   "required": [
+    "x",
+    "y"
+   ],
+   "properties": {
+    "x": {
+     "type": "array",
+     "items": {
+      "type": "number"
+     },
+     "minItems": 2,
+     "maxItems": 2
+    },
+    "y": {
+     "type": "array",
+     "items": {
+      "type": "number"
+     },
+     "minItems": 2,
+     "maxItems": 2
+    }
+   }
+  },
+  "communes": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "ensemble": {
+   "type": "object",
+   "required": [
+    "n",
+    "x",
+    "y",
+    "bandes"
+   ],
+   "properties": {
+    "code": {
+     "type": "string"
+    },
+    "n": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "x": {
+     "type": [
+      "object",
+      "null"
+     ],
+     "required": [
+      "q",
+      "moyenne_communes"
+     ],
+     "properties": {
+      "q": {
+       "type": "array",
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "minItems": 5,
+       "maxItems": 5
+      },
+      "moyenne_communes": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "additionalProperties": false
+    },
+    "y": {
+     "type": [
+      "object",
+      "null"
+     ],
+     "required": [
+      "q",
+      "moyenne_communes"
+     ],
+     "properties": {
+      "q": {
+       "type": "array",
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "minItems": 5,
+       "maxItems": 5
+      },
+      "moyenne_communes": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "additionalProperties": false
+    },
+    "motif": {
+     "type": "string"
+    },
+    "bandes": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "n",
+       "y"
+      ],
+      "properties": {
+       "n": {
+        "type": "integer",
+        "minimum": 0
+       },
+       "y": {
+        "anyOf": [
+         {
+          "type": "array",
+          "items": {
+           "type": [
+            "number",
+            "null"
+           ]
+          },
+          "minItems": 5,
+          "maxItems": 5
+         },
+         {
+          "type": "null"
+         }
+        ]
+       }
+      },
+      "additionalProperties": false
+     }
+    }
+   },
+   "additionalProperties": false
+  },
+  "facettes": {
+   "type": "object",
+   "required": [
+    "densite",
+    "strate",
+    "aav"
+   ],
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "cases",
+     "communes_sans_case"
+    ],
+    "properties": {
+     "cases": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "n",
+        "x",
+        "y",
+        "bandes"
+       ],
+       "properties": {
+        "code": {
+         "type": "string"
+        },
+        "n": {
+         "type": "integer",
+         "minimum": 0
+        },
+        "x": {
+         "type": [
+          "object",
+          "null"
+         ],
+         "required": [
+          "q",
+          "moyenne_communes"
+         ],
+         "properties": {
+          "q": {
+           "type": "array",
+           "items": {
+            "type": [
+             "number",
+             "null"
+            ]
+           },
+           "minItems": 5,
+           "maxItems": 5
+          },
+          "moyenne_communes": {
+           "type": [
+            "number",
+            "null"
+           ]
+          }
+         },
+         "additionalProperties": false
+        },
+        "y": {
+         "type": [
+          "object",
+          "null"
+         ],
+         "required": [
+          "q",
+          "moyenne_communes"
+         ],
+         "properties": {
+          "q": {
+           "type": "array",
+           "items": {
+            "type": [
+             "number",
+             "null"
+            ]
+           },
+           "minItems": 5,
+           "maxItems": 5
+          },
+          "moyenne_communes": {
+           "type": [
+            "number",
+            "null"
+           ]
+          }
+         },
+         "additionalProperties": false
+        },
+        "motif": {
+         "type": "string"
+        },
+        "bandes": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "required": [
+           "n",
+           "y"
+          ],
+          "properties": {
+           "n": {
+            "type": "integer",
+            "minimum": 0
+           },
+           "y": {
+            "anyOf": [
+             {
+              "type": "array",
+              "items": {
+               "type": [
+                "number",
+                "null"
+               ]
+              },
+              "minItems": 5,
+              "maxItems": 5
+             },
+             {
+              "type": "null"
+             }
+            ]
+           }
+          },
+          "additionalProperties": false
+         }
+        }
+       },
+       "additionalProperties": false
+      }
+     },
+     "communes_sans_case": {
+      "type": "integer",
+      "minimum": 0
+     }
+    }
+   }
+  }
+ }
+}

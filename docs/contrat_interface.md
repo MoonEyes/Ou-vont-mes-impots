@@ -1583,6 +1583,50 @@ site/data/<11 axes> (lecture seule) + stock SIRENE ─> pipeline/entites.py (joi
 
 **Non relus** (`non_relus`) : `beneficiaires/programme_*.json` (même jaune que `associations/programmes`), `subventions/beneficiaires.json` (somme des sources), `ue/` (hors périmètre de cette version).
 
+### 2.56 Territoires comparables : typologies des communes et croisements prédéfinis : `typologies/` (pipeline/typologies.py)
+
+Pour chaque commune en vigueur (mêmes codes Insee que `local/geo/<dep>.json`, code officiel géographique 2026) : niveau de la grille communale de densité 2025 de l'Insee (7 niveaux, 3 niveaux, rural croisé avec les aires d'attraction), catégorie de la commune dans l'aire d'attraction des villes 2020 et tranche de taille de l'aire (Insee), strate de population de l'OFGL ; puis, pour une liste FERMÉE de huit croisements (ci-dessous), les deux valeurs de la commune et, par case (niveau de densité, strate, catégorie d'aire, ensemble des communes), la dispersion des communes. Aucune droite de régression, aucun coefficient : « mettre deux chiffres côte à côte ne dit pas que l'un explique l'autre ; ce sont des moyennes de communes, pas d'habitants » (`avertissement`). Commandes : `python pipeline/typologies.py collecter` (réseau, par `collecte/collecte.py` et son contrôle d'intégrité : entrées `typologies_grille_densite`, `typologies_aav2020`, `typologies_ofgl_communes` et l'entrée existante `revenus_communes_passage_cog` ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/typologies.py produire [--sortie DOSSIER]` (sans réseau, environ 20 s de calcul ; lit `site/data/local/geo`, `site/data/local/taux` et `site/data/revenus_communes/communes` en lecture seule). Étape `typologies` de `pipeline/tout.py` (dépend de `local` et `revenus_communes`). Tests : `pytest tests/test_typologies.py` ; écran : `web/tests/croiser.test.ts`.
+
+```
+Insee : grille de densité 2025 (xlsx, géographie 2026), aires d'attraction 2020 (zip, géographie 2026) ─┐
+OFGL : comptes consolidés des communes 2023-2024, 5 agrégats (export filtré, csv 27 Mo) ──────────────────┤
+Insee : table de passage annuelle 2026 (entrée de revenus_communes) ──────────────────────────────────────┤
+site/data/local/geo, local/taux, revenus_communes/communes (lecture seule) ───────────────────────────────┴─> pipeline/typologies.py
+     └─> site/data/typologies/index.json, croisements/<id>.json (8 fichiers, < 20 Ko), communes/<dep>.json (101 fichiers, < 220 Ko)
+```
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `typologies/index.json` | `typologies_index` | `presentation`, `avertissement`, `variables` (par variable : `libelle`, `annee`, `unite`, `definition`, `statut`, `source`, `methode`), `croisements[]` (liste fermée : `id`, `annee`, `x`, `y`, `titre`, `fichier`, `communes`, `perimetre`, `sources`), `facettes` (`densite`, `strate`, `aav` : `cases[]` avec `code` et `libelle`, bornes des strates), `densite_libelles`, `aav_categories`, `aav_tranches`, `strates_ofgl` (rapport somme des montants / somme des populations par strate, agrégat et exercice, calculé par le site), `motifs`, `departements[]`, `couverture`, `controles`, `methode`, `limites`, `non_repris`, `sources`, `sources_inaccessibles`, `recherche_publique`, `ordre` |
+| `typologies/croisements/<id>.json` | `typologies_croisement` | `x`, `y` (variable, libellé, unité, année, statut), `annee`, `perimetre`, `avertissement`, `statut` (« calculé par le site »), `methode`, `quantiles` (10, 25, 50, 75, 90), `n_min`, `bandes_bornes` (déciles nationaux de x, mêmes dans toutes les cases), `axes` (1er et 99e centiles nationaux de x et de y), `communes`, `ensemble` (case de toutes les communes), `facettes.<densite|strate|aav>.cases[]` (`code`, `n`, `x` et `y` : `q[5]` et `moyenne_communes`, `bandes[]` : `n` et `y[5]`, `motif`) et `communes_sans_case` |
+| `typologies/communes/<dep>.json` | `typologies_communes` | `colonnes` (variables, ordre de `index.variables`), `communes.<insee>` : `nom`, `population` (municipale, `local/geo`), `densite` (1 à 7), `densite3`, `densite_aav`, `aav` (11, 12, 13, 20, 30), `aav_tranche` (0 à 5), `strate` (0 à 10), `v[]` (valeurs alignées sur `colonnes`), `motifs.<variable>` (raison d'un null) |
+
+**Croisements prédéfinis (liste fermée, règle 13 : même année, même périmètre communal).** Un croisement absent de cette liste n'est ni produit ni affiché (tests Python et vitest).
+
+| `id` | Abscisse (x) | Ordonnée (y) | Année |
+|---|---|---|---|
+| `depenses_niveau_vie_2023` | niveau de vie médian (Insee, Filosofi 2) | dépenses totales par habitant (OFGL) | 2023 |
+| `dette_niveau_vie_2023` | niveau de vie médian | encours de dette par habitant (OFGL) | 2023 |
+| `dgf_niveau_vie_2023` | niveau de vie médian | dotation globale de fonctionnement par habitant (OFGL, comptes) | 2023 |
+| `taux_fb_niveau_vie_2023` | niveau de vie médian | taux communal voté de foncier bâti (DGFiP, REI, `local/taux`) | 2023 |
+| `impots_locaux_rfr_2023` | revenu fiscal de référence moyen par foyer (DGFiP, IRCOM revenus 2023 ; rapport calculé par le site) | impôts locaux par habitant (OFGL) | 2023 |
+| `depenses_taux_fb_2024` | taux communal voté de foncier bâti | dépenses totales par habitant | 2024 |
+| `equipement_dette_2024` | encours de dette par habitant | dépenses d'équipement par habitant | 2024 |
+| `dgf_depenses_2024` | dotation globale de fonctionnement par habitant | dépenses totales par habitant | 2024 |
+
+| Champ | Sens |
+|---|---|
+| `v[k]` | valeur de la variable `colonnes[k]` : montants par habitant = `euros_par_habitant` publié par l'OFGL (tracé) ; niveau de vie médian publié par l'Insee (tracé) ; taux voté publié par la DGFiP (tracé) ; revenu fiscal de référence moyen = `rfr_eur / foyers` de la même ligne IRCOM (calculé par le site) |
+| null et `motifs.<variable>` | `absente` (aucune ligne de la source), `perimetre` (territoire différent entre l'année des données et 2026 : fusion, scission, compte publié sous le code d'une commune nouvelle), `non_publie`, `secret` (Insee), `hors_champ`, `valeur_manquante`, `non_communique`, `incomplete` ; jamais 0 (un 0 est un 0 publié) |
+| `strate` | champ `tranche_population` de l'OFGL (« Strate population 2025 ») : 0 moins de 100 habitants, 1 100 à 199, 2 200 à 499, 3 500 à 1 999, 4 2 000 à 3 499, 5 3 500 à 4 999, 6 5 000 à 9 999, 7 10 000 à 19 999, 8 20 000 à 49 999, 9 50 000 à 99 999, 10 100 000 ou plus ; bornes contrôlées à chaque production sur la population du dernier exercice (`ptot_n`), arrêt si une commune sort de sa strate (`controles.ofgl.bornes_strates_constatees`) |
+| `cases[].x`, `cases[].y` | `q` = quantiles 10, 25, 50, 75, 90 % (interpolation linéaire) et `moyenne_communes` (chaque commune compte pour un) des communes de la case qui ont les deux valeurs ; null sous `n_min` = 10 communes |
+| `cases[].bandes[k]` | communes de la case dont x est dans la tranche k (`bandes_bornes[k]` à `bandes_bornes[k+1]`) : `n` et quantiles de y, null sous 10 communes |
+| `strates_ofgl.lignes[]` | `annee`, `agregat`, `strate`, `communes`, `euros_par_habitant` = somme des montants / somme des populations totales des communes de la strate (calculé par le site) : l'OFGL ne publie pas de moyenne par strate dans ce jeu (catalogue de data.ofgl.fr et ressources de data.gouv.fr consultés le 18/11/2026) |
+
+**Pour l'écran (/local/croiser, web/src/ecrans/croiser.ts).** Phrase d'introduction : `index.presentation` ; avertissement fixe et visible au-dessus de tout graphique : `index.avertissement`. Afficher seulement les croisements de la liste fermée (`CROISEMENTS_AFFICHABLES` dans l'écran, identique à `croisements[].id`). Petits multiples en SVG, une case par niveau de densité, par strate ou par catégorie d'aire, mêmes axes (`axes`) et mêmes tranches (`bandes_bornes`) partout ; la case « toutes les communes » (`ensemble`) toujours à côté de la vue par case (paradoxe de Simpson). Bandes de dispersion (10 à 90 %, 25 à 75 %, médiane) au lieu de points isolés ; aucune droite, aucun coefficient. La commune choisie est repérée dans chaque case (pleine dans la sienne), les communes d'un département dans leur propre case (`communes/<dep>.json`) ; pour une commune de moins de 2 000 habitants (strates 0 à 3), la page dit que la bande de sa case en dit plus que son point. Quantiles, moyennes de communes et rapports par strate portent le badge « calculé par le site » et leur méthode (`methode`). Chaque valeur avec son année et sa source (`sources`). Aucune commune n'est classée. Liens vers l'écran : page commune (`#/local/croiser?insee=<insee>`) ; la page « comparer deux communes » n'existait pas lors de la production (18/11/2026) : lien à ajouter quand elle existera.
+
+**Règles propres.** Une variable n'est croisée que si son territoire est celui de la commune en vigueur : ligne de l'OFGL retenue si le code de la collectivité égale le code commune 2025, seule pour ce code et cet exercice (sinon `perimetre` : 555 lignes d'anciennes communes), puis commune 2025 identique en 2026 (table de passage) ; taux lu sous le code de l'exercice, retenu si la commune est identique en 2026 ; Filosofi 2023 et IRCOM sont déjà en géographie 2026. Contrôles : `euros_par_habitant` publié = montant / population totale à 0,01 € près (0 écart sur 348 665 lignes), bornes des strates, couverture de la grille et des aires sur les 34 875 communes (aucune commune manquante). Non repris (`non_repris`) : grille aux mailles intercommunale, bassin de vie et départementale, comptes 2025, croisements d'années ou de périmètres différents. pynsee (MIT) et uPlot (MIT) examinés, non utilisés (fichiers de l'Insee lus directement ; petits multiples en SVG sans nuage de points interactif, aucune dépendance ajoutée au site). Dates par `pipeline/reproductible.py` (domaine `typologies`) ; tris explicites : deux productions sur le même entrepôt sont identiques octet pour octet.
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.
