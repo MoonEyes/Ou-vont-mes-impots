@@ -235,7 +235,7 @@ def en_cache(nom: str, url: str, params: dict | None = None, rafraichir: bool = 
     r = http_get(url, params)
     tmp = p.with_suffix(p.suffix + ".part")
     tmp.write_bytes(r.content)
-    tmp.replace(p)
+    fetch.remplacer_si_valide(tmp, p, octets_attendus=fetch.octets_annonces(r))  # collecte/integrite.py
     return p
 
 
@@ -784,6 +784,7 @@ def sirene_cj(sirens: set[str]) -> dict:
                 break
             except (requests.ConnectionError, requests.Timeout, requests.exceptions.ChunkedEncodingError):
                 time.sleep(5)
+        fetch._integrite().verifier_fichier(tmp, nom=p.name)  # parquet complet ; sinon .part garde pour reprise
         tmp.replace(p)
     con = ddb()
     con.execute("create temp table q(siren varchar)")

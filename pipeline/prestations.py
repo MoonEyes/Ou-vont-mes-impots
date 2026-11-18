@@ -934,9 +934,10 @@ def telecharger(url: str, dest: Path, essais: int = 5) -> str:
             r.raise_for_status()
             if dest.suffix in (".xlsx", ".parquet") and r.content[:4] not in (b"PK\x03\x04", b"PAR1"):
                 return "contenu inattendu (page HTML au lieu du fichier) : aucun contournement"
+            from fetch import octets_annonces, remplacer_si_valide  # controle collecte/integrite.py
             tmp = dest.with_suffix(dest.suffix + ".part")
             tmp.write_bytes(r.content)
-            tmp.replace(dest)
+            remplacer_si_valide(tmp, dest, octets_attendus=octets_annonces(r))  # invalide : dest conserve
             return "ok"
         except Exception as e:  # reprise réseau
             derniere = f"{type(e).__name__}: {e}"[:200]

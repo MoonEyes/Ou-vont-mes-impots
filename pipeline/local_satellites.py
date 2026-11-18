@@ -1102,7 +1102,8 @@ def telecharger(url: str, dest: Path, params: dict | None = None, essais: int = 
             if dest.suffix in attendu and not debut.startswith(attendu[dest.suffix]):
                 tmp.unlink()
                 return "contenu inattendu (page HTML au lieu du fichier) : aucun contournement"
-            tmp.replace(dest)
+            from fetch import octets_annonces, remplacer_si_valide  # controle collecte/integrite.py
+            remplacer_si_valide(tmp, dest, octets_attendus=octets_annonces(r))  # invalide : dest conserve
             return "ok"
         except Exception as e:  # reprise réseau
             derniere = f"{type(e).__name__}: {e}"[:200]

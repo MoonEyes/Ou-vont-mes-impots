@@ -23,6 +23,7 @@ import csv
 import gzip
 import io
 import json
+import os
 import zipfile
 from pathlib import Path
 from typing import BinaryIO
@@ -229,3 +230,18 @@ def est_valide(chemin: Path, nom: str | Path | None = None) -> bool:
         return True
     except (IntegriteInvalide, OSError):
         return False
+
+
+def remplacer_si_valide(tmp: Path, dest: Path, *, nom: str | Path | None = None,
+                        octets_attendus: int | None = None) -> None:
+    """Controle le temporaire `tmp` puis le renomme atomiquement en `dest`.
+
+    Fichier invalide : `tmp` est supprime, `dest` (version deja presente) reste intact et
+    IntegriteInvalide est levee ; l'appelant la traite comme un echec de transfert (nouvel essai)."""
+    tmp, dest = Path(tmp), Path(dest)
+    try:
+        verifier_fichier(tmp, nom=nom or dest.name, octets_attendus=octets_attendus)
+    except BaseException:
+        tmp.unlink(missing_ok=True)
+        raise
+    os.replace(tmp, dest)

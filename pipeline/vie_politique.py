@@ -94,22 +94,25 @@ def telecharger(url: str, chemin: Path, taille_attendue: int | None = None) -> d
         return {"statut": "deja_present", "octets": chemin.stat().st_size, "sha256": _sha(chemin)}
     chemin.parent.mkdir(parents=True, exist_ok=True)
     tmp = chemin.with_suffix(chemin.suffix + ".part")
-    for tentative in range(1, 6):  # coupures en cours de transfert : on recommence le fichier
+    from fetch import octets_annonces, remplacer_si_valide  # controle collecte/integrite.py
+    for tentative in range(1, 6):  # coupures ou fichier incomplet : on recommence le fichier
         try:
             r = get(url, stream=True, timeout=300)
             ctype = r.headers.get("content-type", "")
             with open(tmp, "wb") as f:
                 for bloc in r.iter_content(1 << 16):
                     f.write(bloc)
+            if "text/html" in ctype and chemin.suffix.lower() in (".pdf", ".csv", ".xlsx", ".ods", ".xls"):
+                tmp.unlink()
+                raise AccesRefuse(f"page HTML recue au lieu d'un fichier ({ctype})")
+            # controle d'integrite puis renommage atomique ; invalide : la version deja presente est conservee
+            remplacer_si_valide(tmp, chemin, octets_attendus=octets_annonces(r))
             break
-        except (requests.exceptions.ChunkedEncodingError, requests.ConnectionError, requests.Timeout) as exc:
+        except (requests.exceptions.ChunkedEncodingError, requests.ConnectionError, requests.Timeout,
+                RuntimeError) as exc:  # RuntimeError : IntegriteInvalide (fichier tronque ou d'un autre format)
             if tentative == 5:
-                raise AccesRefuse(f"transfert interrompu 5 fois : {exc}") from exc
+                raise AccesRefuse(f"transfert interrompu ou incomplet 5 fois : {exc}") from exc
             time.sleep(2 ** tentative)
-    if "text/html" in ctype and chemin.suffix.lower() in (".pdf", ".csv", ".xlsx", ".ods", ".xls"):
-        tmp.unlink()
-        raise AccesRefuse(f"page HTML recue au lieu d'un fichier ({ctype})")
-    tmp.replace(chemin)
     return {"statut": "telecharge", "octets": chemin.stat().st_size, "sha256": _sha(chemin)}
 
 

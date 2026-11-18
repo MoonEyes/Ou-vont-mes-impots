@@ -886,7 +886,10 @@ def collecter() -> None:
         if not r.content.startswith(b"%PDF"):
             raise SystemExit(f"PLF {plf} : réponse non PDF")
         p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_bytes(r.content)
+        from fetch import octets_annonces, remplacer_si_valide  # controle collecte/integrite.py
+        tmp = p.with_name(p.name + ".part")
+        tmp.write_bytes(r.content)
+        remplacer_si_valide(tmp, p, octets_attendus=octets_annonces(r))  # PDF tronque : erreur, rien d'ecrit
         print(f"PLF {plf} : {len(r.content)} octets", file=sys.stderr)
 
 

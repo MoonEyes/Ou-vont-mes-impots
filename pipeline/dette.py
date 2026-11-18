@@ -173,7 +173,15 @@ def collecter() -> None:
             journal[cle] = {"statut": "refus", "motif": f"HTTP {code}, non contourne"}
             print(f"  {cle} : refus HTTP {code} (non contourne)")
             continue
-        cible.write_bytes(corps)
+        from fetch import remplacer_si_valide  # controle collecte/integrite.py avant renommage atomique
+        tmp = cible.with_name(cible.name + ".part")
+        tmp.write_bytes(corps)
+        try:
+            remplacer_si_valide(tmp, cible)
+        except RuntimeError as exc:  # IntegriteInvalide : la version deja presente est conservee
+            journal[cle] = {"statut": "echec", "motif": f"fichier recu invalide : {exc}"[:300]}
+            print(f"  {cle} : ECHEC fichier invalide ({exc})", file=sys.stderr)
+            continue
         journal[cle] = {"statut": "ok", "octets": len(corps), "date": datetime.now(timezone.utc).isoformat(timespec="seconds")}
         print(f"  {cle} : {len(corps)} octets")
     (API / "_journal.json").write_text(json.dumps(journal, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

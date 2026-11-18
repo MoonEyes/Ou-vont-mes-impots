@@ -486,6 +486,7 @@ def entrepot(a: argparse.Namespace) -> int:
     « conservée ». La taille réelle de data/lake est bornée (--plafond-go)."""
     import fcntl
     import requests
+    from fetch import _integrite as fetch_integrite
     entrees = json.loads(ENTREES.read_text(encoding="utf-8"))
     ids = [s for s in (a.etapes or "").split(",") if s] or list(entrees["etapes"])
     fichiers = {}   # chemin -> identifiant de source
@@ -517,6 +518,7 @@ def entrepot(a: argparse.Namespace) -> int:
         cible = ROOT / c
         part = cible.with_name(cible.name + ".part")
         cible.parent.mkdir(parents=True, exist_ok=True)
+        integrite = fetch_integrite()   # invalide : nouvel essai, puis refus ; la version présente est conservée
         h, octets, erreur = hashlib.sha256(), 0, None
         for essai in range(4):
             try:
@@ -534,9 +536,10 @@ def entrepot(a: argparse.Namespace) -> int:
                             octets += len(bloc)
                 if attendu and octets != attendu:   # transfert tronqué : on recommence, rien n'est publié
                     raise requests.ConnectionError(f"transfert tronqué ({octets} octets sur {attendu})")
+                integrite.verifier_fichier(part, nom=cible.name)   # format complet (collecte/integrite.py)
                 erreur = None
                 break
-            except requests.RequestException as exc:
+            except (requests.RequestException, integrite.IntegriteInvalide) as exc:
                 erreur = f"{type(exc).__name__} : {str(exc)[:200]}"
                 time.sleep(2 ** (essai + 1))
         if erreur:

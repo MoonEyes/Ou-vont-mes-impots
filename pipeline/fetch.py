@@ -34,6 +34,19 @@ def _integrite():
     return mod
 
 
+def remplacer_si_valide(tmp: Path, dest: Path, *, nom: str | Path | None = None,
+                        octets_attendus: int | None = None) -> None:
+    """Pour les pipelines qui telechargent eux-memes : controle d'integrite du temporaire, puis renommage
+    atomique ; invalide -> temporaire supprime, version deja presente conservee, IntegriteInvalide levee."""
+    _integrite().remplacer_si_valide(tmp, dest, nom=nom, octets_attendus=octets_attendus)
+
+
+def octets_annonces(r) -> int | None:
+    """Taille annoncee par Content-Length quand le corps n'est pas compresse en transit (sinon None)."""
+    cl = r.headers.get("Content-Length", "")
+    return int(cl) if cl.isdigit() and not r.headers.get("Content-Encoding") else None
+
+
 def get(url: str, params: dict | None = None, tries: int = 5, *, controle: str | None = None) -> requests.Response:
     """GET avec reprises espacees (les API publiques coupent parfois) et controle d'integrite.
 

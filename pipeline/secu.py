@@ -858,9 +858,10 @@ def telecharger(url: str, dest: Path, essais: int = 4, budget: float = 600.0) ->
             r.raise_for_status()
             if dest.suffix == ".pdf" and not r.content.startswith(b"%PDF"):
                 return "page de refus ou HTML renvoyé à la place du PDF : aucun contournement"
+            from fetch import octets_annonces, remplacer_si_valide  # controle collecte/integrite.py
             tmp = dest.with_suffix(dest.suffix + ".part")
             tmp.write_bytes(r.content)
-            tmp.replace(dest)
+            remplacer_si_valide(tmp, dest, octets_attendus=octets_annonces(r))  # invalide : dest conserve
             return "ok"
         except Exception as e:  # reprise réseau
             derniere = f"{type(e).__name__}: {e}"[:200]

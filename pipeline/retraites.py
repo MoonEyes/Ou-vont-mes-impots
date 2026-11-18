@@ -1000,9 +1000,10 @@ def telecharger(url: str, dest: Path, essais: int = 5) -> str:
             if (dest.suffix == ".xlsx" and debut != b"PK\x03\x04") or (dest.suffix == ".json" and debut[:1] != b"[") \
                     or (dest.suffix == ".csv" and b"<html" in r.content[:200].lower()):
                 return "contenu inattendu (page HTML au lieu du fichier) : aucun contournement"
+            from fetch import octets_annonces, remplacer_si_valide  # controle collecte/integrite.py
             tmp = dest.with_suffix(dest.suffix + ".part")
             tmp.write_bytes(r.content)
-            tmp.replace(dest)
+            remplacer_si_valide(tmp, dest, octets_attendus=octets_annonces(r))  # invalide : dest conserve
             return "ok"
         except Exception as e:  # reprise réseau
             derniere = f"{type(e).__name__}: {e}"[:200]
