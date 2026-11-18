@@ -5,6 +5,7 @@ import { partPersonnelle } from '../composants/hub'
 import { ouCest } from '../composants/trame'
 import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
+import { brancherProjets } from './projets'
 import { lien, type Rendu } from '../routeur'
 import { AFFICHE_DANS_LE_NAVIGATEUR, absent, appliquerLargeurs, enPrerendu, badgeStatut, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
 import { blocInvestissementCommune, blocOrganismesCommune, blocSruCommune, type Beneficiaire, type FichierCcas, type FichierEau, type FichierMobilite, type FichierSyndicats, type Territoire } from './territoires'
@@ -144,6 +145,8 @@ ${attente('sec-organismes')}
   <li><a href="#/local">Choisir une autre commune</a></li>
 </ul>
 ${partPersonnelle()}`
+  // Investissement réalisé et délibérations publiées : ajouté par le navigateur seulement (rien au HTML prérendu).
+  if (typeof IntersectionObserver !== 'undefined') void import('./commune_investissement').then((m) => m.brancher(cible, { insee, dep, nom: g.nom, siren: g.siren ?? null, epci: g.epci, nomEpci: epci?.nom ?? null })).catch((e) => console.error(e))
 
   const remplir = (id: string, html: string) => {
     const z = cible.querySelector<HTMLElement>(`#${id}`)
@@ -234,6 +237,7 @@ ${
 ${dec ? `<p class="aide">${h(dec.limites)}</p>` : ''}`,
     )
   })
+  brancherProjets(cible, { insee, nom: g.nom })
   // Données par département (territoires, local_satellites) : projets aidés par l'État, logement social, organismes.
   const territoires = budgets.then(async () => {
     if (enPrerendu()) {

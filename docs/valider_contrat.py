@@ -391,6 +391,21 @@ FICHIERS = [
     ("performance_programme.schema.json", "performance/programmes/*.json", "existant"),
     ("performance_barometre_index.schema.json", "performance/barometre/index.json", "existant"),
     ("performance_barometre_zone.schema.json", "performance/barometre/[0-9F]*.json", "existant"),
+    # application des lois : lois, mesures d'application, délais (pipeline/application_lois.py)
+    ("application_lois_index.schema.json", "application_lois/index.json", "existant"),
+    ("application_lois_finances.schema.json", "application_lois/lois_finances.json", "existant"),
+    ("application_lois_lois.schema.json", "application_lois/lois/*.json", "existant"),
+    ("application_lois_mesures.schema.json", "application_lois/mesures/*.json", "existant"),
+    # projets subventionnés par l'État : Fonds vert par commune, badges ACV et PVD, liens vers les dotations (pipeline/projets_subventionnes.py)
+    ("projets_subventionnes_index.schema.json", "projets_subventionnes/index.json", "existant"),
+    ("projets_subventionnes_departement.schema.json", "projets_subventionnes/[0-9]*.json", "existant"),
+    # investissement réalisé par commune (balances DGFiP) et délibérations publiées au format national
+    # (pipeline/investissement_communes.py, pipeline/deliberations.py)
+    ("investissement_communes_index.schema.json", "investissement_communes/index.json", "existant"),
+    ("investissement_communes_communes.schema.json", "investissement_communes/communes/*.json", "existant"),
+    ("deliberations_index.schema.json", "deliberations/index.json", "existant"),
+    ("deliberations_collectivite.schema.json", "deliberations/collectivites/*.json", "existant"),
+    ("deliberations_budgets.schema.json", "deliberations/budgets.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

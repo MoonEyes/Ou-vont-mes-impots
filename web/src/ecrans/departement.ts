@@ -9,6 +9,7 @@ import type { Rendu } from '../routeur'
 import { AFFICHE_DANS_LE_NAVIGATEUR, absent, appliquerLargeurs, enPrerendu, entier, h, source } from '../util'
 import { blocBudget, clesBudget, type Budgets, type Geo } from './commune'
 import { blocAideSociale, blocInvestissementDepartement, blocOrganismesDepartement, blocSruDepartement, type FichierCcas, type FichierSyndicats, type Territoire } from './territoires'
+import { brancherProjets } from './projets'
 
 export const titreDepartement = (nom: string, code: string) => `${nom} (${code}) : budget des communes, dépenses, dotations, taux`
 
@@ -72,6 +73,7 @@ ${source(geo.source, geo.millesime)}
 </ul>
 ${partPersonnelle()}`
 
+  brancherProjets(cible, { dep, nom })
   const remplir = (id: string, html: string) => {
     const z = cible.querySelector<HTMLElement>(`#${id}`)
     if (!z) return
