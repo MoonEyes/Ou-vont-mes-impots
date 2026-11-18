@@ -1,0 +1,7 @@
+Lis en entier coordination/REGLES.md (dans le dossier de coordination indiqué par ton coordinateur) avant d'agir : il s'impose à toi.
+
+Ta mission (agent de données « fiscalite-locale-series ») : nouvel axe pipeline/fiscalite_locale_series.py → site/data/fiscalite_locale_series/, avec tests/test_fiscalite_locale_series.py, docs/schemas/fiscalite_locale_series_*.schema.json, section du contrat, catalogue, branchement dans tout.py et entrees_lac.json (sous flock). Contenu visé : séries longues des taux d'imposition locaux votés par commune (taxe foncière sur les propriétés bâties et non bâties, cotisation foncière des entreprises, taxe d'enlèvement des ordures ménagères, taxe d'habitation sur les résidences secondaires et ex-taxe d'habitation jusqu'à sa suppression) et des produits, de 2010 à la dernière année publiée (fichiers REI de la DGFiP). Lis d'abord pipeline/local.py et site/data/local/ : n'ajoute que les séries, ne duplique pas l'année déjà présente. Les fichiers REI sont lourds : traite-les année par année et supprime chaque brut après traitement ; découpe la sortie par département (< 1 Mo par fichier).
+
+Règle n°0 : cherche d'abord les jeux officiels et les dépôts publics existants. Pas d'écran web dans ta mission (un autre agent l'affichera) : documente bien la section du contrat pour lui.
+
+Termine par le rapport final du brief.

@@ -1,0 +1,7 @@
+Lis en entier coordination/REGLES.md (dans le dossier de coordination indiqué par ton coordinateur) avant d'agir : il s'impose à toi.
+
+Ta mission (agent « pwa-hors-ligne ») : rendre le site consultable hors ligne pour les pages déjà vues, sans en faire une application : manifeste web (nom, icônes à partir des éléments graphiques existants, couleurs du thème), service worker (app shell en cache-first versionné par build, données en network-first avec repli sur le cache, aucune requête externe, purge des anciens caches), enregistrement dans web/src/main.ts par insertion sous flock, compatible avec le chemin de base de GitHub Pages et avec le prérendu. Rien ne doit casser si le service worker est refusé. Pas d'invite d'installation intrusive. Le service worker ne doit jamais servir une page de données périmée sans indiquer son millésime.
+
+Fichiers à toi : web/public/manifest.webmanifest, web/public/sw.js (ou web/src/sw.ts avec sa configuration de build par insertion sous flock), web/tests/pwa.test.ts. Tu ne lances pas le build complet : vérifie avec tes tests et, si nécessaire, une seule construction sous `flock /tmp/ovmi-build.lock coordination/lourd.sh bash -c 'cd web && npx vite build'`.
+
+Termine par le rapport final du brief.

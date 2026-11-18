@@ -1,0 +1,7 @@
+Lis en entier coordination/REGLES.md (dans le dossier de coordination indiqué par ton coordinateur) avant d'agir : il s'impose à toi.
+
+Ta mission (agent « series-longues ») : créer l'écran /explorer/series (web/src/ecrans/series.ts, parent '/explorer') : l'évolution sur longue période (2005 à la dernière année publiée) des grandes masses : recettes par grand impôt, dépenses par administration (État, Sécurité sociale, collectivités) et par fonction, dette, déficit, intérêts. En euros courants ET en euros constants (choix de la personne), et en part du PIB. Pour les euros constants et le PIB, crée un petit axe à toi : pipeline/series.py → site/data/series/ (indice des prix Insee et PIB Insee, avec source et millésime ; tests, schéma, section du contrat, branchement dans tout.py sous flock). Réutilise les données existantes (recettes.json, deficit.json, cofog.json, dette/) sans les modifier. Graphiques accessibles : chaque graphique a son tableau équivalent et une phrase de lecture factuelle ; ruptures de série signalées.
+
+Fichiers à toi : web/src/ecrans/series.ts, web/tests/series.test.ts, tes fixtures, pipeline/series.py, tests/test_series.py, docs/schemas/series_*.schema.json, site/data/series/.
+
+Termine par le rapport final du brief.

@@ -1,0 +1,5 @@
+Lis en entier coordination/REGLES.md (dans le dossier de coordination indiqué par ton coordinateur) avant d'agir : il s'impose à toi.
+
+Ta mission (agent « performance-prerendu ») : le HTML prérendu est passé de 59 à 99 Mo (dist/ 527 Mo) parce que la trame de la France est inlinée dans 2 352 pages département et commune. Réduis ce poids sans perte d'accessibilité ni de rendu sans JavaScript : par exemple trame en asset SVG partagé mis en cache (symbole <use href>), ou carte simplifiée par département. Mesure avant et après (taille HTML, dist, poids transféré d'une page commune), vérifie les budgets de docs/PERF.md et mets-les à jour. Fichiers à toi : web/src/composants/trame.ts, web/scripts/prerendre.mjs, docs/PERF.md, web/tests/performance.test.ts. Exception au brief : tu peux lancer le build complet, au plus 3 fois, uniquement sous `flock /tmp/ovmi-build.lock coordination/lourd.sh bash -c 'cd web && npm run build'` ; supprime web/dist ensuite. Ne touche ni à departement.ts ni à commune.ts (agent territoires) : si un changement d'appel est nécessaire, fais-le par insertion sous flock et préviens dans ton rapport.
+
+Termine par le rapport final du brief.

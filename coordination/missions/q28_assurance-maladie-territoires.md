@@ -1,0 +1,7 @@
+Lis en entier coordination/REGLES.md (dans le dossier de coordination indiqué par ton coordinateur) avant d'agir : il s'impose à toi.
+
+Ta mission (agent de données « assurance-maladie-territoires ») : nouvel axe pipeline/assurance_maladie_territoires.py → site/data/assurance_maladie_territoires/, avec tests/test_assurance_maladie_territoires.py, docs/schemas/assurance_maladie_territoires_*.schema.json, section du contrat, catalogue, branchement dans tout.py et entrees_lac.json (sous flock). Contenu visé : dépenses remboursées par l'assurance maladie par grand poste de soins (médecins, médicaments, hôpital, indemnités journalières…) et par département, par année (open data de l'Assurance maladie : données agrégées type Open Damir ou dépenses par département), et l'exécution de l'objectif national de dépenses d'assurance maladie (ONDAM) par sous-objectif. Lis d'abord pipeline/secu.py et pipeline/sante_etablissements.py : ne duplique pas. Les fichiers Open Damir sont très lourds : préfère les agrégats publiés, sinon traite en flux mois par mois et supprime chaque brut.
+
+Règle n°0 : cherche d'abord les jeux officiels et les dépôts publics existants. Pas d'écran web dans ta mission (un autre agent l'affichera) : documente bien la section du contrat pour lui.
+
+Termine par le rapport final du brief.
