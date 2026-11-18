@@ -1806,6 +1806,26 @@
    "hors_catalogue": [],
    "octets_sources": 7837257,
    "note": "sources du domaine « agriculture » de collecte/catalogue.json, collectées par `python pipeline/agriculture.py collecter` ; lit aussi, en lecture seule, site/data/realisations, arbre, niches et ue"
+  },
+  "transports": {
+   "sources": {
+    "transports_sdes_bilan_2024_activite": [
+     "data/lake/transports/transports_sdes_bilan_2024_activite.xlsx"
+    ],
+    "transports_afitf_budgets": [
+     "data/lake/transports/transports_afitf_budgets/budget_execute_2022.pdf",
+     "data/lake/transports/transports_afitf_budgets/budget_execute_2023.pdf",
+     "data/lake/transports/transports_afitf_budgets/budget_execute_2024.pdf",
+     "data/lake/transports/transports_afitf_budgets/budget_execute_2025.pdf",
+     "data/lake/transports/transports_afitf_budgets/budget_initial_2026.pdf"
+    ],
+    "etat_budget_vert_2026": [
+     "data/lake/etat/etat_budget_vert_2026.parquet"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 1576861
   }
  },
  "urls": {
@@ -2327,6 +2347,12 @@
   "data/lake/agriculture/agriculture_feader_2014_2020_fr.json": "https://cohesiondata.ec.europa.eu/resource/99js-gm52.json?%24limit=50000&ms=FR&fund=EAFRD",
   "data/lake/agriculture/agriculture_feader_paiements_2023_2027.json": "https://cohesiondata.ec.europa.eu/resource/7wr2-9vpr.json",
   "data/lake/agriculture/agriculture_feaga_paiements_2023_2027.json": "https://cohesiondata.ec.europa.eu/resource/qgpc-e9qr.json",
-  "data/lake/agriculture/agriculture_pac_departements_2005_2009/9cca7586-9643-4595-8886-df68fc171706_9cca7586.csv": "https://static.data.gouv.fr/52/9810eab537f437b490ba43afa032a8c605e58c7edd11a8f1f24c35f003e124.csv"
+  "data/lake/agriculture/agriculture_pac_departements_2005_2009/9cca7586-9643-4595-8886-df68fc171706_9cca7586.csv": "https://static.data.gouv.fr/52/9810eab537f437b490ba43afa032a8c605e58c7edd11a8f1f24c35f003e124.csv",
+  "data/lake/transports/transports_sdes_bilan_2024_activite.xlsx": "https://www.statistiques.developpement-durable.gouv.fr/media/8861/download?inline",
+  "data/lake/transports/transports_afitf_budgets/budget_execute_2022.pdf": "https://www.afit-france.fr/sites/default/files/2023-03/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202022.pdf",
+  "data/lake/transports/transports_afitf_budgets/budget_execute_2023.pdf": "https://www.afit-france.fr/sites/default/files/2024-02/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202023.pdf",
+  "data/lake/transports/transports_afitf_budgets/budget_execute_2024.pdf": "https://www.afit-france.fr/sites/default/files/2025-07/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202024.pdf",
+  "data/lake/transports/transports_afitf_budgets/budget_execute_2025.pdf": "https://www.afit-france.fr/sites/default/files/2026-02/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202025.pdf",
+  "data/lake/transports/transports_afitf_budgets/budget_initial_2026.pdf": "https://www.afit-france.fr/sites/default/files/2025-12/Budget%20initial%20de%20l%27ann%C3%A9e%202026.pdf"
  }
 }

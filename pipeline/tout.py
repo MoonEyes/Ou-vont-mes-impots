@@ -172,6 +172,7 @@ ETAPES: tuple[Etape, ...] = (
     axe("series", "Séries longues : indice des prix, PIB, dépenses par fonction depuis 2005", ("base",), duree_s=30),
     axe("agriculture", "Agriculture : PAC par département, développement rural, budget de l'État",
         ("realisations", "niches", "ue"), duree_s=30),
+    axe("transports", "Transports et mobilité", ("base", "realisations", "local_satellites", "retraites"), duree_s=30),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un

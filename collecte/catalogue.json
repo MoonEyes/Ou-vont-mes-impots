@@ -4358,6 +4358,46 @@
    "licence": "CC0 1.0 (Commission europeenne)",
    "producteur": "Commission europeenne (DG AGRI)",
    "module": "pipeline/agriculture.py"
+  },
+  {
+   "id": "transports_sdes_bilan_2024_activite",
+   "domaine": "transports",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://www.statistiques.developpement-durable.gouv.fr/media/8861/download?inline",
+   "titre": "SDES, Bilan annuel des transports en 2024, donnees A Transports et activite economique (depenses des administrations publiques, AFITF, SNCF Reseau, TER, versement transport) (pipeline/transports.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/transports.py"
+  },
+  {
+   "id": "transports_afitf_budgets",
+   "domaine": "transports",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://www.afit-france.fr/sites/default/files/2023-03/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202022.pdf",
+     "nom": "budget_execute_2022.pdf"
+    },
+    {
+     "url": "https://www.afit-france.fr/sites/default/files/2024-02/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202023.pdf",
+     "nom": "budget_execute_2023.pdf"
+    },
+    {
+     "url": "https://www.afit-france.fr/sites/default/files/2025-07/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202024.pdf",
+     "nom": "budget_execute_2024.pdf"
+    },
+    {
+     "url": "https://www.afit-france.fr/sites/default/files/2026-02/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202025.pdf",
+     "nom": "budget_execute_2025.pdf"
+    },
+    {
+     "url": "https://www.afit-france.fr/sites/default/files/2025-12/Budget%20initial%20de%20l%27ann%C3%A9e%202026.pdf",
+     "nom": "budget_initial_2026.pdf"
+    }
+   ],
+   "titre": "AFIT France, budgets executes 2022 a 2025 et budget initial 2026 (PDF d'une page, recettes et depenses par mode) (pipeline/transports.py)",
+   "licence": "Licence Ouverte (mentions legales du site afit-france.fr)",
+   "module": "pipeline/transports.py"
   }
  ],
  "non_collectables": [
