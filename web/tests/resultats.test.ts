@@ -128,6 +128,16 @@ describe('/decisions/resultats', () => {
     lexiqueNeutre('programme 102')
   })
 
+  it('programme : grands projets numériques qui citent le programme, coût publié par édition, sans total', async () => {
+    await ecran(`#${CHEMIN}?p=102`)
+    const h2 = [...main.querySelectorAll('h2')].find((x) => /Grands projets numériques/.test(x.textContent ?? ''))
+    expect(h2).toBeTruthy()
+    const t = main.textContent ?? ''
+    expect(t).toContain('NSIE')
+    expect(t).toMatch(/jamais un montant dépensé dans l’année|jamais un montant dépensé dans l'année/)
+    expect(t).not.toMatch(/coût total des projets|par euro/i)
+  })
+
   it('programme : afficher tous les indicateurs', async () => {
     await ecran(`#${CHEMIN}?p=102`)
     const caches = main.querySelectorAll('details[data-plus][hidden]').length

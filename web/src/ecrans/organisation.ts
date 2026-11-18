@@ -10,7 +10,7 @@ import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent, urlDonnee } from '../donnees'
 import { lien, type Rendu } from '../routeur'
 import { ROUTES } from '../routes'
-import { absent, badgeStatut, entier, eur, eur2, h, legendeStatuts, source, surligne, badgeCalcule } from '../util'
+import { AFFICHE_DANS_LE_NAVIGATEUR, absent, badgeStatut, enPrerendu, entier, eur, eur2, h, legendeStatuts, source, surligne, badgeCalcule } from '../util'
 
 type Valeur = [number | string | null, number | null]
 interface Serie {
@@ -32,7 +32,7 @@ interface Probable {
   canal: string
   notion: string
   nom_publie: string
-  departement: string
+  departement: string | null
   score: number
   decision: 'probable'
   precision: string
@@ -226,11 +226,11 @@ function sectionProbables(idx: Index, f: Fiche): string {
   const p = f.probables ?? []
   if (!p.length) return ''
   return `<h2>Rapprochements probables, non fusionnés</h2>
-<p class="carte carte-contour" data-probables>Ces lignes sont publiées <strong>sans SIREN</strong>. Le site les rattache à cette organisation <strong>à titre probable</strong>, d’après le nom et le département, avec le score de vraisemblance ci-dessous (au moins ${h(String(idx.methode.splink.seuil_probable).replace('.', ','))} sur 1). Elles ne sont ni fusionnées avec les lignes reliées par le SIREN, ni additionnées.</p>
+<p class="carte carte-contour" data-probables>Ces lignes sont publiées <strong>sans SIREN</strong>. Le site les rattache à cette organisation <strong>à titre probable</strong>, d’après le nom et le département (le nom seul pour une source nationale publiée sans département), avec le score de vraisemblance ci-dessous (au moins ${h(String(idx.methode.splink.seuil_probable).replace('.', ','))} sur 1). Elles ne sont ni fusionnées avec les lignes reliées par le SIREN, ni additionnées.</p>
 <div class="tableau-defile"><table id="org-probables"><caption>Lignes publiées sans SIREN, rattachées à titre probable</caption><thead><tr><th scope="col">Source</th><th scope="col">Nom publié</th><th scope="col">Département</th><th scope="col">Année</th><th scope="col">Précision</th><th scope="col" class="nombre">Score</th><th scope="col">Statut</th></tr></thead><tbody>${p
     .map(
       (x) =>
-        `<tr><th scope="row">${h(canalDe(idx, x.canal)?.titre ?? x.canal)}</th><td>${h(x.nom_publie)}</td><td>${h(x.departement)}</td><td>${h(x.annee ? String(x.annee) : 'non publiée')}</td><td>${h(x.precision)}${lienLigne(x.lien, 'voir')}</td><td class="nombre">${h(x.score.toFixed(2).replace('.', ','))}</td><td>${badgeStatut('approche')}</td></tr>`,
+        `<tr><th scope="row">${h(canalDe(idx, x.canal)?.titre ?? x.canal)}</th><td>${h(x.nom_publie)}</td><td>${h(x.departement ?? 'source nationale, sans département')}</td><td>${h(x.annee ? String(x.annee) : 'non publiée')}</td><td>${h(x.precision)}${lienLigne(x.lien, 'voir')}</td><td class="nombre">${h(x.score.toFixed(2).replace('.', ','))}</td><td>${badgeStatut('approche')}</td></tr>`,
     )
     .join('')}</tbody></table></div>`
 }
@@ -272,7 +272,7 @@ function renduRecherche(idx: Index, q: string): string {
   const c = idx.comptes
   return `
 <h1>Une organisation dans toutes les sources</h1>
-<p class="chapeau">Cherche une association, une entreprise, une commune ou un établissement public par son nom ou son SIREN : sa fiche réunit ce qu’elle reçoit de l’argent public dans toutes les sources du site (subventions, crédits aux associations, marchés publics, aides aux entreprises, fonds européens, opérateurs, hôpitaux, recherche), source par source et année par année. Elle ne fait pas de total toutes sources confondues, et ne montre que ce qui est publié en données ouvertes. Seules les personnes morales sont nommées.</p>
+<p class="chapeau">Cherche une association, une entreprise, une commune ou un établissement public par son nom ou son SIREN : sa fiche réunit ce qu’elle reçoit de l’argent public dans toutes les sources du site (subventions, crédits aux associations, marchés publics, aides aux entreprises, fonds européens, projets des collectivités, opérateurs, hôpitaux, recherche), source par source et année par année. Elle ne fait pas de total toutes sources confondues, et ne montre que ce qui est publié en données ouvertes. Seules les personnes morales sont nommées.</p>
 <div class="carte" data-cle>
   <p class="grand-chiffre">${surligne(entier(c.organisations_avec_fiche))}</p>
   <p class="sous-chiffre">organisations ont une fiche : elles figurent dans au moins deux sources du site (ou dans une source et un rapprochement probable). ${h(entier(c.organisations_reliees_par_siren))} organisations au total sont reliées par leur SIREN ; celles qui ne figurent que dans une source sont sur la page de cette source.</p>
@@ -285,12 +285,12 @@ function renduRecherche(idx: Index, q: string): string {
 <p id="org-statut" class="aide" aria-live="polite"></p>
 <div id="org-resultats"><p>Écris au moins trois lettres d’un mot du nom, ou les 9 chiffres du SIREN.</p></div>
 <h2>Les sources reliées</h2>
-<div class="tableau-defile"><table id="org-canaux"><caption>Sources du site relues pour relier les organisations</caption><thead><tr><th scope="col">Source</th><th scope="col" class="nombre">Organisations reliées</th><th scope="col" class="nombre">dont avec une fiche</th><th scope="col">Page du site</th></tr></thead><tbody>${idx.canaux
+${enPrerendu() ? AFFICHE_DANS_LE_NAVIGATEUR : `<div class="tableau-defile"><table id="org-canaux"><caption>Sources du site relues pour relier les organisations</caption><thead><tr><th scope="col">Source</th><th scope="col" class="nombre">Organisations reliées</th><th scope="col" class="nombre">dont avec une fiche</th><th scope="col">Page du site</th></tr></thead><tbody>${idx.canaux
     .map((k) => {
       const p = pageSiExiste(k.page)
       return `<tr><th scope="row">${h(k.titre)}</th><td class="nombre">${h(entier(k.organisations))}</td><td class="nombre">${h(entier(k.organisations_avec_fiche))}</td><td>${p ? `<a href="${h(p)}">${h(ROUTES.find((r) => r.chemin === k.page)?.court ?? 'voir')}</a>` : 'pas encore de page'}</td></tr>`
     })
-    .join('')}</tbody></table></div>
+    .join('')}</tbody></table></div>`}
 <p class="aide">Ordre des sources : celui de l’index publié (familles de sources), sans classement.</p>
 <h2>Comment les organisations sont reliées</h2>
 <p>${h(idx.avertissement)}</p>

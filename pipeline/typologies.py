@@ -2,8 +2,9 @@
 
 Pour chaque commune du code officiel géographique en vigueur (mêmes codes que site/data/local/geo) : niveau de la
 grille communale de densité 2025 de l'Insee (7 niveaux et 3 niveaux), catégorie et tranche de l'aire d'attraction des
-villes 2020 (Insee), strate de population de l'OFGL ; puis, pour une liste FERMÉE de croisements (CROISEMENTS, huit
-paires de grandeurs d'une même année et d'un même périmètre communal), les deux valeurs de la commune et, par case
+villes 2020 (Insee), strate de population de l'OFGL ; puis, pour une liste FERMÉE de croisements (CROISEMENTS, douze
+paires de grandeurs d'une même année et d'un même périmètre communal ; CROISEMENTS_DEP, une paire entre départements,
+facette : tranche de population), les deux valeurs de la commune et, par case
 (niveau de densité, strate, catégorie d'aire, ensemble), la dispersion des communes : quantiles et bandes par tranche
 de la grandeur en abscisse. Aucun coefficient, aucune droite de régression : deux chiffres côte à côte ne disent pas
 que l'un explique l'autre, et ce sont des moyennes de communes, pas d'habitants.
@@ -13,7 +14,10 @@ Entrées (data/lake, collectées par collecte/collecte.py ; identifiants déclar
   typologies/typologies_aav2020.zip                  Insee, aires d'attraction des villes 2020, géographie 2026
   typologies/typologies_ofgl_communes.csv            OFGL, comptes consolidés des communes 2023 et 2024 (5 agrégats)
   revenus_communes/revenus_communes_passage_cog.zip  Insee, table de passage annuelle 2026 (entrée existante, lue)
-  lecture seule : site/data/local/geo/<dep>.json, site/data/local/taux/<dep>.json, site/data/revenus_communes/communes
+  lecture seule : site/data/local/geo/<dep>.json, site/data/local/taux/<dep>.json, site/data/revenus_communes/communes,
+                  site/data/investissement_communes/communes, site/data/territoires/<dep>.json (dotations DGCL,
+                  aide sociale DREES), site/data/fiscalite_locale_series/communes, site/data/solidarites_departements/
+                  comptes.json (population OFGL), site/data/assurance_maladie_territoires/departements.json
 Sorties (site/data/typologies/, chaque fichier < 1 Mo, avec `millesime` et `source`) :
   index.json                 variables, croisements prédéfinis, facettes (cases), strates de l'OFGL, contrôles, sources
   croisements/<id>.json      par facette et par case : effectif, quantiles, bandes ; axes communs à toutes les cases
@@ -57,6 +61,11 @@ SITE = ROOT / "site" / "data"
 GEO = SITE / "local" / "geo"
 TAUX = SITE / "local" / "taux"
 REVENUS = SITE / "revenus_communes" / "communes"
+INVESTISSEMENT = SITE / "investissement_communes" / "communes"
+TERRITOIRES = SITE / "territoires"
+REI_SERIES = SITE / "fiscalite_locale_series" / "communes"
+SOLIDARITES = SITE / "solidarites_departements" / "comptes.json"
+ASSURANCE_MALADIE = SITE / "assurance_maladie_territoires" / "departements.json"
 SORTIE_DEFAUT = SITE / "typologies"
 MAX_OCTETS = 1_000_000
 COG = 2026
@@ -72,6 +81,7 @@ F_PASSAGE = LAKE / "revenus_communes" / f"{ID_PASSAGE}.zip"
 
 N_MIN = 10            # effectif minimal d'une case ou d'une bande pour publier des quantiles
 N_BANDES = 10         # tranches de la grandeur en abscisse (déciles nationaux, mêmes bornes dans toutes les cases)
+N_BANDES_DEP = 4      # départements : quatre tranches (quartiles nationaux), une centaine de points seulement
 QUANTILES = (0.10, 0.25, 0.50, 0.75, 0.90)
 STATUT_TRACE = "tracé"
 STATUT_CALCULE = "calculé par le site"
@@ -83,6 +93,8 @@ URL_OFGL_API = "https://data.ofgl.fr/explore/dataset/ofgl-base-communes-consolid
 
 AVERTISSEMENT = ("Mettre deux chiffres côte à côte ne dit pas que l'un explique l'autre ; ce sont des moyennes de "
                  "communes, pas d'habitants.")
+AVERTISSEMENT_DEP = ("Mettre deux chiffres côte à côte ne dit pas que l'un explique l'autre ; ce sont des moyennes de "
+                     "départements, pas d'habitants.")
 
 # --- Variables ----------------------------------------------------------------------------------------------------
 
@@ -139,6 +151,48 @@ def _variables() -> dict:
         "methode": "rfr_eur / foyers de la même ligne IRCOM (revenus 2023, même commune), arrondi à l'euro ; null "
                    "si l'un des deux termes est null",
     }
+    v["impot_revenu_moyen_foyer_2023"] = {
+        "libelle": "impôt sur le revenu net moyen par foyer fiscal", "annee": 2023, "unite": "euros par foyer",
+        "definition": "impôt sur le revenu net de l'ensemble des foyers fiscaux de la commune divisé par leur nombre "
+                      "(DGFiP, IRCOM, revenus 2023 ; un impôt net peut être négatif : crédits d'impôt restitués)",
+        "statut": STATUT_CALCULE, "source": "ircom_2023",
+        "methode": "impot_net_eur / foyers de la même ligne IRCOM (revenus 2023, même commune), arrondi à l'euro ; "
+                   "null si l'un des deux termes est null",
+    }
+    v["equipement_paye_hab_2023"] = {
+        "libelle": "investissement payé par la commune par habitant", "annee": 2023, "unite": "euros par habitant",
+        "definition": "dépenses d'équipement réellement mandatées par la commune en 2023 (comptes 20 hors 204, 21 et "
+                      "23, budget principal, balance comptable de la DGFiP), divisées par la population totale de "
+                      "l'exercice 2023 publiée par l'OFGL",
+        "statut": STATUT_CALCULE, "source": "investissement",
+        "methode": "équipement 2023 de site/data/investissement_communes (somme publiée par l'axe) / population totale "
+                   "2023 de l'OFGL pour la même commune, arrondi à 0,1 € ; null si la balance 2023 n'est pas publiée "
+                   "sous le SIREN de la commune, si la population manque ou si la commune a changé de territoire",
+    }
+    v["dotations_etat_hab_2024"] = {
+        "libelle": "subventions d'investissement attribuées par l'État à la commune, par habitant", "annee": 2024,
+        "unite": "euros par habitant",
+        "definition": "somme des subventions attribuées à la commune elle-même au titre de la DETR, de la DSIL, de la "
+                      "DPV et de la DSID pour l'exercice 2024 (listes de la DGCL ; projets de l'intercommunalité non "
+                      "compris), divisée par la population totale 2024 publiée par l'OFGL ; 0 si aucun projet de la "
+                      "commune n'est publié pour 2024 ; montant attribué, pas un montant payé",
+        "statut": STATUT_CALCULE, "source": "dotations",
+        "methode": "somme des subventions des projets de l'exercice 2024 du bénéficiaire de type commune portant ce "
+                   "code Insee (site/data/territoires, même liste, même exercice) / population totale 2024 de l'OFGL, "
+                   "arrondi à 0,1 € ; aucun projet de 2024 n'est publié sans bénéficiaire nommé (contrôle "
+                   "`dotations_non_nommees_2024`)",
+    }
+    v["produit_fb_commune_hab_2023"] = {
+        "libelle": "foncier bâti émis au profit de la commune, par habitant", "annee": 2023,
+        "unite": "euros par habitant",
+        "definition": "montant de taxe foncière sur les propriétés bâties émis en 2023 au profit de la commune sur son "
+                      "territoire (DGFiP, REI, montant réel, avant dégrèvements pris en charge par l'État), divisé "
+                      "par la population totale 2023 publiée par l'OFGL",
+        "statut": STATUT_CALCULE, "source": "rei_series",
+        "methode": "produit tfb_commune 2023 de site/data/fiscalite_locale_series / population totale 2023 de l'OFGL "
+                   "pour la même commune, arrondi à 0,1 € ; null si l'un des deux manque ou si la commune a changé de "
+                   "territoire",
+    }
     for a in (2023, 2024):
         v[f"taux_fb_commune_{a}"] = {
             "libelle": "taux communal voté de taxe foncière sur les propriétés bâties", "annee": a, "unite": "%",
@@ -170,7 +224,68 @@ CROISEMENTS = [
      "titre": "Dépenses d'équipement par habitant et dette par habitant, 2024"},
     {"id": "dgf_depenses_2024", "annee": 2024, "x": "dgf_hab_2024", "y": "depenses_totales_hab_2024",
      "titre": "Dotation globale de fonctionnement par habitant et dépenses par habitant, 2024"},
+    {"id": "equipement_paye_niveau_vie_2023", "annee": 2023, "x": "niveau_vie_median_2023",
+     "y": "equipement_paye_hab_2023",
+     "titre": "Investissement payé par la commune par habitant et niveau de vie médian des habitants, 2023"},
+    {"id": "dotations_etat_equipement_2024", "annee": 2024, "x": "depenses_equipement_hab_2024",
+     "y": "dotations_etat_hab_2024",
+     "titre": "Subventions d'investissement attribuées par l'État par habitant et dépenses d'équipement par "
+              "habitant, 2024"},
+    {"id": "impot_revenu_impots_locaux_2023", "annee": 2023, "x": "impot_revenu_moyen_foyer_2023",
+     "y": "impots_locaux_hab_2023",
+     "titre": "Impôts locaux par habitant et impôt sur le revenu moyen par foyer, 2023"},
+    {"id": "produit_fb_niveau_vie_2023", "annee": 2023, "x": "niveau_vie_median_2023",
+     "y": "produit_fb_commune_hab_2023",
+     "titre": "Foncier bâti émis au profit de la commune par habitant et niveau de vie médian, 2023"},
 ]
+
+# Croisements entre départements (même liste fermée ; points : départements, facette : tranche de population).
+VARIABLES_DEP = {
+    "aide_sociale_nette_hab_2024": {
+        "libelle": "dépenses nettes d'aide sociale du département par habitant", "annee": 2024,
+        "unite": "euros par habitant", "niveau": "departement",
+        "definition": "dépenses nettes d'aide sociale de la collectivité départementale (personnes âgées, personnes "
+                      "handicapées, enfance, insertion), par habitant, telles que publiées par la DREES (enquête Aide "
+                      "sociale)",
+        "statut": STATUT_TRACE, "source": "drees_aide_sociale",
+        "methode": "valeur eur_hab publiée par la DREES pour 2024, reprise telle quelle (site/data/territoires, "
+                   "aide_sociale) ; null si non publiée",
+    },
+    "prescriptions_hab_2024": {
+        "libelle": "prescriptions des médecins libéraux du département par habitant", "annee": 2024,
+        "unite": "euros par habitant", "niveau": "departement",
+        "definition": "montant des prescriptions des médecins libéraux exerçant dans le département (médicaments, "
+                      "arrêts de travail indemnisés, analyses, soins, transports ; Cnam, SNDS), divisé par la "
+                      "population totale 2024 de la collectivité départementale publiée par l'OFGL",
+        "statut": STATUT_CALCULE, "source": "cnam_prescriptions",
+        "methode": "prescriptions 2024 (site/data/assurance_maladie_territoires) / population totale 2024 de l'OFGL "
+                   "(site/data/solidarites_departements), même département, arrondi à 0,1 € ; null si le territoire "
+                   "du département ne correspond pas à une seule collectivité départementale publiée par l'OFGL "
+                   "(Rhône et Métropole de Lyon, Corse, Alsace)",
+    },
+}
+CROISEMENTS_DEP = [
+    {"id": "aide_sociale_prescriptions_2024", "annee": 2024, "niveau": "departement",
+     "x": "aide_sociale_nette_hab_2024", "y": "prescriptions_hab_2024",
+     "titre": "Dépenses d'assurance maladie (prescriptions des médecins libéraux) par habitant et dépenses nettes "
+              "d'aide sociale du département par habitant, 2024"},
+]
+PERIMETRE_DEP = ("le département : collectivité départementale pour l'aide sociale, territoire du département pour les "
+                 "prescriptions ; un département dont le territoire ne correspond pas à une seule collectivité "
+                 "départementale publiée par l'OFGL (Rhône et Métropole de Lyon, Corse, Alsace) n'est pas croisé "
+                 "(motif `perimetre`)")
+STRATES_DEP = {  # tranches de population totale fixées par le site pour les départements (aucune strate officielle lue)
+    "1": (0, 249999), "2": (250000, 499999), "3": (500000, 999999), "4": (1000000, None),
+}
+
+
+def libelle_strate_dep(code: str) -> str:
+    de, a = STRATES_DEP[code]
+    if de == 0:
+        return f"moins de {a + 1:,} habitants".replace(",", " ")
+    if a is None:
+        return f"{de:,} habitants ou plus".replace(",", " ")
+    return f"{de:,} à {a:,} habitants".replace(",", " ")
 
 PERIMETRE = ("la commune, dans ses limites de l'année des données ; une commune dont le territoire a changé entre "
              "cette année et le code officiel géographique 2026 (fusion, scission) n'est pas croisée (motif "
@@ -242,6 +357,32 @@ SOURCES = {
              "titre": "DGFiP, recensement des éléments d'imposition (REI) : taux votés de foncier bâti par commune, exercices 2023 et 2024",
              "lecture": "site/data/local/taux (pipeline/local.py)", "millesime": "exercices 2023 et 2024",
              "verdict": "réutilisable tel quel"},
+    "investissement": {"producteur": "DGFiP (via pipeline/investissement_communes.py)", "licence": "Licence Ouverte 2.0",
+                       "page": "site/data/investissement_communes/index.json",
+                       "titre": "DGFiP, balances comptables des communes 2023 : dépenses d'équipement mandatées (budget "
+                                "principal), site/data/investissement_communes",
+                       "millesime": "exercice 2023", "verdict": "réutilisable tel quel"},
+    "dotations": {"producteur": "DGCL (via pipeline/territoires.py)", "licence": "Licence Ouverte 2.0",
+                  "page": "site/data/projets_subventionnes/index.json",
+                  "titre": "DGCL, projets financés par les dotations de soutien à l'investissement (DETR, DSIL, DPV, "
+                           "DSID), exercice 2024, site/data/territoires (relié par site/data/projets_subventionnes)",
+                  "millesime": "exercice 2024", "verdict": "réutilisable tel quel"},
+    "rei_series": {"producteur": "DGFiP (via pipeline/fiscalite_locale_series.py)", "licence": "Licence Ouverte 2.0",
+                   "page": "site/data/fiscalite_locale_series/index.json",
+                   "titre": "DGFiP, recensement des éléments d'imposition (REI) 2023 : montant de foncier bâti émis au "
+                            "profit de la commune, site/data/fiscalite_locale_series",
+                   "millesime": "REI 2023", "verdict": "réutilisable tel quel"},
+    "drees_aide_sociale": {"producteur": "DREES (via pipeline/territoires.py)", "licence": "Licence Ouverte 2.0",
+                           "page": "site/data/territoires/index.json",
+                           "titre": "DREES, enquête Aide sociale : dépenses nettes d'aide sociale des départements par "
+                                    "habitant, 2024, site/data/territoires (aide_sociale)",
+                           "millesime": "2024", "verdict": "réutilisable tel quel"},
+    "cnam_prescriptions": {"producteur": "Cnam (via pipeline/assurance_maladie_territoires.py) ; OFGL (via "
+                                         "pipeline/solidarites_departements.py)", "licence": "Licence Ouverte 2.0",
+                           "page": "site/data/assurance_maladie_territoires/index.json",
+                           "titre": "Cnam, prescriptions des médecins libéraux par département, 2024 ; OFGL, population "
+                                    "totale 2024 des départements",
+                           "millesime": "2024", "verdict": "réutilisable tel quel"},
     "geo": {"producteur": "pipeline/local.py", "licence": "Licence Ouverte 2.0", "page": "site/data/local/index.json",
             "titre": "site/data/local/geo : communes en vigueur, noms officiels, population municipale (geo.api.gouv.fr)",
             "millesime": "code officiel géographique en vigueur", "verdict": "réutilisable tel quel"},
@@ -306,6 +447,13 @@ LIMITES = [
     "commune : deux communes de même strate n'exercent pas forcément les mêmes compétences.",
     "Niveau de vie (Insee, ménages, revenu disponible) et revenu fiscal de référence (DGFiP, foyers fiscaux) ne "
     "mesurent pas la même chose ; ils ne sont jamais comparés entre eux.",
+    "Investissement payé : budget principal de la commune (balance de la DGFiP) ; dépenses d'équipement de l'OFGL : "
+    "budgets principal et annexes consolidés. Les deux ne sont jamais comparés entre eux.",
+    "Subventions d'investissement de l'État : montants attribués à la commune elle-même (DETR, DSIL, DPV, DSID), pas "
+    "les montants payés, ni ceux attribués à son intercommunalité, ni le Fonds vert (montant engagé, autre "
+    "dispositif) ; une commune sans projet publié en 2024 compte pour 0.",
+    "Départements : la dépense d'aide sociale est celle de la collectivité départementale ; les prescriptions sont "
+    "celles des médecins libéraux qui exercent dans le département, quel que soit le lieu de vie du patient.",
 ]
 
 METHODE = {
@@ -327,6 +475,16 @@ METHODE = {
                       "publiant pas de moyenne par strate dans ce jeu)",
     "axes": "bornes d'affichage communes à toutes les cases : 1er et 99e centiles nationaux de chaque grandeur ; une "
             "commune au-delà est dessinée au bord avec une marque",
+    "quantiles_dep": "départements : quantiles par interpolation linéaire entre valeurs triées (p = 10, 25, 50, 75, "
+                     f"90 %), calculés par le site sur les départements de la case qui ont les deux valeurs ; publiés à "
+                     f"partir de {N_MIN} départements",
+    "bandes_dep": f"départements : abscisse découpée en {N_BANDES_DEP} tranches aux quartiles nationaux (mêmes bornes "
+                  "dans toutes les cases) ; dans chaque tranche, quantiles de la grandeur en ordonnée si la tranche "
+                  f"compte au moins {N_MIN} départements de la case",
+    "axes_dep": "départements : bornes d'affichage communes à toutes les cases, valeurs nationales la plus basse et "
+                "la plus haute ; chaque département croisé est publié avec ses deux valeurs (`territoires`)",
+    "par_habitant": "montant de l'année divisé par la population totale du même exercice publiée par l'OFGL, même "
+                    "commune ou même département, calculé par le site (règle 13 : même année, même périmètre)",
 }
 
 
@@ -578,14 +736,16 @@ def lire_taux() -> dict:
     return out
 
 
-def lire_revenus() -> tuple[dict, dict]:
-    """(niveau de vie médian 2023 ou motif, (rfr, foyers) des revenus 2023 ou motif) par commune 2026."""
-    nv, rfr = {}, {}
+def lire_revenus() -> tuple[dict, dict, dict]:
+    """(niveau de vie médian 2023 ou motif, rfr moyen des revenus 2023 ou motif, impôt net moyen des revenus 2023 ou
+    motif) par commune 2026."""
+    nv, rfr, impot = {}, {}, {}
     for f in sorted(REVENUS.glob("*.json")):
         d = json.loads(f.read_text(encoding="utf-8"))
         kf = d["filosofi_millesimes"].index(2023)
         ka = d["annees"].index(2023)
         cf, cr = d["colonnes"].index("foyers"), d["colonnes"].index("rfr_eur")
+        ci = d["colonnes"].index("impot_net_eur")
         for c, v in d["communes"].items():
             fl = (v.get("filosofi") or [None] * (kf + 1))[kf]
             if fl and fl[2] == "publie" and fl[0] is not None:
@@ -597,7 +757,61 @@ def lire_revenus() -> tuple[dict, dict]:
                 rfr[c] = (round(ligne[cr] / ligne[cf]), None)
             else:
                 rfr[c] = (None, (v.get("etat") or {}).get("2023") or "non_communique")
-    return nv, rfr
+            if ligne and ligne[cf] and ligne[ci] is not None:
+                impot[c] = (round(ligne[ci] / ligne[cf]), None)
+            else:
+                impot[c] = (None, (v.get("etat") or {}).get("2023") or "non_communique")
+    return nv, rfr, impot
+
+
+def lire_investissement(annee: int = 2023) -> dict:
+    """Dépenses d'équipement mandatées de l'exercice (budget principal) par commune en vigueur ; absente : pas de clé."""
+    out = {}
+    for f in sorted(INVESTISSEMENT.glob("*.json")):
+        d = json.loads(f.read_text(encoding="utf-8"))
+        j = d["colonnes"].index("equipement")
+        for c, v in d["communes"].items():
+            ligne = (v.get("m") or {}).get(str(annee))
+            if ligne and ligne[j] is not None:
+                out[c] = ligne[j]
+    return out
+
+
+def lire_dotations(annee: int = 2024) -> tuple[dict, dict]:
+    """Somme des subventions attribuées (DETR, DSIL, DPV, DSID) de l'exercice aux bénéficiaires de type commune, par
+    code Insee ; contrôle : projets de l'exercice publiés sans bénéficiaire nommé."""
+    out, ctrl = defaultdict(float), {"fichiers": 0, "projets_communes": 0, "non_nommes": 0}
+    for f in sorted(TERRITOIRES.glob("*.json")):
+        if f.stem == "index":
+            continue
+        ie = json.loads(f.read_text(encoding="utf-8")).get("investissement_etat") or {}
+        fmt = ie.get("format_projet") or []
+        if not fmt:
+            continue
+        ctrl["fichiers"] += 1
+        ke, ks = fmt.index("exercice"), fmt.index("subvention_eur")
+        ctrl["non_nommes"] += ((ie.get("totaux") or {}).get(str(annee)) or {}).get("non_nommes", {}).get("projets", 0)
+        for b in ie.get("beneficiaires", []):
+            if b.get("type") != "commune" or not b.get("insee"):
+                continue
+            for pr in b.get("projets", []):
+                if pr[ke] == annee and pr[ks] is not None:
+                    out[b["insee"]] += pr[ks]
+                    ctrl["projets_communes"] += 1
+    return dict(out), ctrl
+
+
+def lire_rei_fb(annee: int = 2023) -> dict:
+    """Montant de foncier bâti émis au profit de la commune (REI) pour l'année, par commune."""
+    out = {}
+    for f in sorted(REI_SERIES.glob("*.json")):
+        d = json.loads(f.read_text(encoding="utf-8"))
+        k = d["annees"].index(str(annee))
+        for c, v in d["communes"].items():
+            serie = (v.get("produits") or {}).get("tfb_commune") or []
+            if k < len(serie) and serie[k] is not None:
+                out[c] = serie[k]
+    return out
 
 
 # --- Statistiques ---------------------------------------------------------------------------------------------------
@@ -631,33 +845,139 @@ def resume(valeurs: list[float], unite: str) -> dict | None:
             "moyenne_communes": arrondi(sum(t) / len(t), unite)}
 
 
-def bornes_bandes(xs: list[float]) -> list[float]:
+def bornes_bandes(xs: list[float], n: int = N_BANDES) -> list[float]:
     t = sorted(xs)
-    return [quantile(t, k / N_BANDES) for k in range(N_BANDES + 1)]
+    return [quantile(t, k / n) for k in range(n + 1)]
 
 
 def bande_de(x: float, bornes: list[float]) -> int:
-    for k in range(N_BANDES):
+    n = len(bornes) - 1
+    for k in range(n):
         if x <= bornes[k + 1]:
             return k
-    return N_BANDES - 1
+    return n - 1
 
 
-def case_stats(paires: list[tuple[float, float]], bornes: list[float], ux: str, uy: str) -> dict:
+def case_stats(paires: list[tuple[float, float]], bornes: list[float], ux: str, uy: str,
+               unite_points: str = "communes") -> dict:
     n = len(paires)
     out = {"n": n, "x": resume([p[0] for p in paires], ux), "y": resume([p[1] for p in paires], uy)}
     bandes = []
     par = defaultdict(list)
     for x, y in paires:
         par[bande_de(x, bornes)].append(y)
-    for k in range(N_BANDES):
+    for k in range(len(bornes) - 1):
         ys = par.get(k, [])
         r = resume(ys, uy)
         bandes.append({"n": len(ys), "y": r["q"] if r else None})
     out["bandes"] = bandes
     if n < N_MIN:
-        out["motif"] = f"moins de {N_MIN} communes : quantiles non publiés"
+        out["motif"] = f"moins de {N_MIN} {unite_points} : quantiles non publiés"
     return out
+
+
+# --- Départements ---------------------------------------------------------------------------------------------------
+
+def valeurs_departements() -> tuple[dict, dict]:
+    """Valeurs des variables départementales par département (valeur, motif) et nom ; tranche de population 2024."""
+    comptes = json.loads(SOLIDARITES.read_text(encoding="utf-8"))["collectivites"]
+    am = json.loads(ASSURANCE_MALADIE.read_text(encoding="utf-8"))
+    k24 = am["annees"].index(2024)
+    couvre = defaultdict(list)   # département -> collectivités de l'OFGL qui le couvrent avec une population 2024
+    for code, c in sorted(comptes.items()):
+        if (c.get("population") or {}).get("2024"):
+            for d in c["departements"]:
+                couvre[d].append(code)
+    out, info = {}, {}
+    for d, x in sorted(am["departements"].items()):
+        v = {}
+        colls = couvre.get(d, [])
+        pop = comptes[colls[0]]["population"]["2024"] if colls == [d] and comptes[d]["departements"] == [d] else None
+        presc = (x.get("prescriptions") or {}).get("total") or []
+        p24 = presc[k24] if k24 < len(presc) else None
+        if pop is None:
+            v["prescriptions_hab_2024"] = (None, "perimetre")
+        elif p24 is None:
+            v["prescriptions_hab_2024"] = (None, "non_publie")
+        else:
+            v["prescriptions_hab_2024"] = (round(p24 / pop, 1), None)
+        f = TERRITOIRES / f"{d}.json"
+        asoc = json.loads(f.read_text(encoding="utf-8")).get("aide_sociale") if f.exists() else None
+        lignes = [c for c in (asoc or {}).get("collectivites", []) if c.get("code") == d]
+        if pop is None:
+            v["aide_sociale_nette_hab_2024"] = (None, "perimetre")
+        elif not lignes:
+            v["aide_sociale_nette_hab_2024"] = (None, "absente")
+        else:
+            eh = ((((lignes[0].get("postes") or {}).get("total") or {}).get("nette") or {}).get("eur_hab") or {})
+            val = eh.get("2024")
+            v["aide_sociale_nette_hab_2024"] = (val, None) if val is not None else (None, "non_publie")
+        strate_ = None
+        if pop is not None:
+            strate_ = next(k for k, (de, a) in STRATES_DEP.items() if pop >= de and (a is None or pop <= a))
+        out[d] = v
+        info[d] = {"nom": x.get("nom"), "population_2024": pop, "strate": strate_}
+    return out, info
+
+
+def produire_departements(sortie: Path, date: str) -> tuple[list[dict], dict]:
+    vals, info = valeurs_departements()
+    facette = {"libelle": "tranche de population totale du département (2024, OFGL ; tranches fixées par le site)",
+               "source": "cnam_prescriptions",
+               "cases": [{"code": k, "libelle": libelle_strate_dep(k), "bornes": list(STRATES_DEP[k])}
+                         for k in sorted(STRATES_DEP, key=int)]}
+    resumes = []
+    for cr in CROISEMENTS_DEP:
+        vx, vy = VARIABLES_DEP[cr["x"]], VARIABLES_DEP[cr["y"]]
+        assert vx["annee"] == vy["annee"] == cr["annee"], cr["id"]   # règle 13 : même année
+        paires = {d: (v[cr["x"]][0], v[cr["y"]][0]) for d, v in vals.items()
+                  if v[cr["x"]][0] is not None and v[cr["y"]][0] is not None}
+        xs, ys = [p[0] for p in paires.values()], [p[1] for p in paires.values()]
+        bornes = bornes_bandes(xs, N_BANDES_DEP)
+        tx, ty = sorted(xs), sorted(ys)
+        axes = {"x": [arrondi(tx[0], vx["unite"]), arrondi(tx[-1], vx["unite"])],
+                "y": [arrondi(ty[0], vy["unite"]), arrondi(ty[-1], vy["unite"])]}
+        groupes, sans_case = defaultdict(list), 0
+        for d, p_ in paires.items():
+            k = info[d]["strate"]
+            if k is None:
+                sans_case += 1
+            else:
+                groupes[k].append(p_)
+        territoires = {}
+        for d in sorted(vals):
+            t = {"nom": info[d]["nom"], "strate": info[d]["strate"], "x": vals[d][cr["x"]][0], "y": vals[d][cr["y"]][0]}
+            m = {var: vals[d][var][1] for var in (cr["x"], cr["y"]) if vals[d][var][1]}
+            if m:
+                t["motifs"] = m
+            territoires[d] = t
+        doc = {
+            "millesime": f"{cr['annee']}", "source": f"{SOURCES[vx['source']]['titre']} ; {SOURCES[vy['source']]['titre']}",
+            "date_sources": date, "id": cr["id"], "titre": cr["titre"], "annee": cr["annee"],
+            "niveau": "departement", "unite_points": "départements",
+            "x": {"variable": cr["x"], **{k: vx[k] for k in ("libelle", "unite", "annee", "statut")}},
+            "y": {"variable": cr["y"], **{k: vy[k] for k in ("libelle", "unite", "annee", "statut")}},
+            "perimetre": PERIMETRE_DEP, "avertissement": AVERTISSEMENT_DEP,
+            "statut": STATUT_CALCULE,
+            "methode": METHODE["quantiles_dep"] + ". " + METHODE["bandes_dep"] + ". " + METHODE["axes_dep"] + ".",
+            "quantiles": [int(p * 100) for p in QUANTILES], "n_min": N_MIN,
+            "bandes_bornes": [arrondi(b, vx["unite"]) for b in bornes], "axes": axes,
+            "communes": 0, "territoires_croises": len(paires),
+            "ensemble": case_stats(list(paires.values()), bornes, vx["unite"], vy["unite"], "départements"),
+            "facettes": {"strate_departement": {
+                "cases": [{"code": cs["code"], **case_stats(groupes.get(cs["code"], []), bornes, vx["unite"],
+                                                            vy["unite"], "départements")}
+                          for cs in facette["cases"]],
+                "communes_sans_case": sans_case}},
+            "territoires": territoires,
+            "regle_null": "null : valeur non publiée par la source ou non croisable ; motif dans `motifs` (voir "
+                          "`motifs` de typologies/index.json). Jamais 0.",
+        }
+        dump(sortie / "croisements" / f"{cr['id']}.json", doc)
+        resumes.append({**cr, "fichier": f"croisements/{cr['id']}.json", "communes": 0,
+                        "territoires_croises": len(paires), "perimetre": PERIMETRE_DEP,
+                        "sources": [vx["source"], vy["source"]]})
+    return resumes, facette
 
 
 # --- Production -----------------------------------------------------------------------------------------------------
@@ -671,7 +991,16 @@ def dump(path: Path, obj) -> int:
     return len(txt.encode("utf-8"))
 
 
-def valeurs_communes(geo, grille, aav, ofgl, strate, passage, taux, nv, rfr) -> tuple[dict, Counter]:
+def par_habitant(montant, ligne_ofgl: dict) -> float | None:
+    """montant / population totale de l'exercice publiée par l'OFGL (même commune, même exercice)."""
+    pops = [v[2] for k, v in sorted(ligne_ofgl.items()) if k != "_perimetre" and v[2]]
+    if montant is None or not pops:
+        return None
+    return round(montant / pops[0], 1)
+
+
+def valeurs_communes(geo, grille, aav, ofgl, strate, passage, taux, nv, rfr, impot=None, equip=None, dot=None,
+                     fb=None) -> tuple[dict, Counter]:
     """Valeur de chaque variable pour chaque commune en vigueur : (valeur, motif)."""
     out, motifs = {}, Counter()
     for c in sorted(geo):
@@ -692,6 +1021,20 @@ def valeurs_communes(geo, grille, aav, ofgl, strate, passage, taux, nv, rfr) -> 
                     v[var] = (None, "absente")
         v["niveau_vie_median_2023"] = nv.get(c, (None, "absente"))
         v["rfr_moyen_foyer_2023"] = rfr.get(c, (None, "absente"))
+        v["impot_revenu_moyen_foyer_2023"] = (impot or {}).get(c, (None, "absente"))
+        for var, a, source_, defaut in (("equipement_paye_hab_2023", 2023, equip or {}, None),
+                                        ("dotations_etat_hab_2024", 2024, dot or {}, 0.0),
+                                        ("produit_fb_commune_hab_2023", 2023, fb or {}, None)):
+            ligne = ofgl.get((a, c), {})
+            montant = source_.get(c, defaut)
+            if not (passage.stable(2025, c) and passage.stable(a, c)) or ligne.get("_perimetre"):
+                v[var] = (None, "perimetre")
+            elif montant is None:
+                v[var] = (None, "absente")
+            elif par_habitant(montant, ligne) is None:
+                v[var] = (None, "non_publie")
+            else:
+                v[var] = (par_habitant(montant, ligne), None)
         for a in (2023, 2024):
             var = f"taux_fb_commune_{a}"
             if not passage.stable(a, c):
@@ -715,10 +1058,16 @@ def produire(sortie: Path = SORTIE_DEFAUT) -> dict:
     hors_bornes = verifier_strates(ctrl_ofgl["bornes_strates_constatees"])
     if hors_bornes:
         raise SystemExit("strates de l'OFGL : " + " ; ".join(hors_bornes))
-    passage = lire_passage()
+    passage = lire_passage((2023, 2024, 2025))
     taux = lire_taux()
-    nv, rfr = lire_revenus()
-    vals, motifs = valeurs_communes(geo, grille, aav, ofgl, strate, passage, taux, nv, rfr)
+    nv, rfr, impot = lire_revenus()
+    equip = lire_investissement(2023)
+    dot, ctrl_dot = lire_dotations(2024)
+    if ctrl_dot["non_nommes"]:
+        raise SystemExit(f"dotations 2024 : {ctrl_dot['non_nommes']} projets sans bénéficiaire nommé ; le 0 d'une "
+                         "commune sans projet ne serait plus sûr")
+    fb = lire_rei_fb(2023)
+    vals, motifs = valeurs_communes(geo, grille, aav, ofgl, strate, passage, taux, nv, rfr, impot, equip, dot, fb)
 
     facettes = {
         "densite": {"libelle": "niveau de densité (grille communale de densité 2025, Insee, 7 niveaux)",
@@ -788,6 +1137,10 @@ def produire(sortie: Path = SORTIE_DEFAUT) -> dict:
         resume_croisements.append({**cr, "fichier": f"croisements/{cr['id']}.json", "communes": len(paires),
                                    "perimetre": PERIMETRE,
                                    "sources": [VARIABLES[cr["x"]]["source"], VARIABLES[cr["y"]]["source"]]})
+
+    res_dep, facette_dep = produire_departements(sortie, date)
+    resume_croisements += res_dep
+    facettes["strate_departement"] = facette_dep
 
     # Rapports par strate (calcul du site, sommes des montants / sommes des populations)
     rapports = defaultdict(lambda: defaultdict(lambda: [0, 0.0, 0.0]))
@@ -860,11 +1213,14 @@ def produire(sortie: Path = SORTIE_DEFAUT) -> dict:
                   "communes, " + URL_OFGL + ") ; DGFiP (REI, IRCOM) ; Insee (Filosofi 2)",
         "date_sources": date,
         "presentation": "Des communes qui se ressemblent (même niveau de densité, même strate de population, même "
-                        "place dans l'aire d'attraction d'une ville) et, pour huit paires de chiffres choisies "
+                        "place dans l'aire d'attraction d'une ville) et, pour quelques paires de chiffres choisies "
                         "d'avance, comment ces chiffres se répartissent entre elles. La page ne dit pas pourquoi une "
                         "commune dépense, s'endette ou taxe plus ou moins qu'une autre.",
         "avertissement": AVERTISSEMENT,
-        "variables": VARIABLES, "croisements": resume_croisements, "facettes": facettes,
+        "variables": {**VARIABLES, **VARIABLES_DEP}, "croisements": resume_croisements, "facettes": facettes,
+        "strates_departements": {"source": "population totale 2024 de l'OFGL (site/data/solidarites_departements)",
+                                 "regle": "tranches fixées par le site ; aucune strate officielle de département "
+                                          "n'est lue", "tranches": {k: list(v) for k, v in STRATES_DEP.items()}},
         "densite_libelles": libelles, "aav_categories": CATEGORIES_AAV, "aav_tranches": TRANCHES_AAV,
         "strates_ofgl": strates_ofgl,
         "motifs": {"absente": "aucune ligne de la source pour cette commune et cette année",
@@ -877,7 +1233,8 @@ def produire(sortie: Path = SORTIE_DEFAUT) -> dict:
                    "non_communique": "valeur non communiquée par la DGFiP",
                    "incomplete": "anciennes communes incomplètes dans l'IRCOM (voir revenus_communes)"},
         "departements": deps, "couverture": couverture,
-        "controles": {"ofgl": ctrl_ofgl, "grille": meta_grille, "strates_hors_bornes": hors_bornes},
+        "controles": {"ofgl": ctrl_ofgl, "grille": meta_grille, "strates_hors_bornes": hors_bornes,
+                      "dotations_2024": ctrl_dot},
         "methode": METHODE, "limites": LIMITES, "non_repris": NON_REPRIS, "sources": SOURCES,
         "sources_inaccessibles": [], "recherche_publique": RECHERCHE_PUBLIQUE,
         "ordre": "communes par code Insee ; cases dans l'ordre des nomenclatures de l'Insee et de l'OFGL ; aucune "

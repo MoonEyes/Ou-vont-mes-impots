@@ -74,7 +74,7 @@
   "croisements": {
    "type": "array",
    "minItems": 6,
-   "maxItems": 10,
+   "maxItems": 14,
    "items": {
     "type": "object",
     "required": [
@@ -216,6 +216,14 @@
      }
     }
    }
+  },
+  "strates_departements": {
+   "type": "object",
+   "required": [
+    "source",
+    "regle",
+    "tranches"
+   ]
   }
  }
 }

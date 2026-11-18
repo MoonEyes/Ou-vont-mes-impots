@@ -14190,7 +14190,7 @@
    "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
    "sources": [
     {
-     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
+     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche, projets_subventionnes (Fonds vert), territoires (dotations de la DGCL), deliberations, culture_medias (aides à la presse), numerique_etat (France Relance ITN7) ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
      "licence": "voir la source citée",
      "licence_normalisee": "non-precisee"
     }
@@ -14202,13 +14202,13 @@
     "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
    ],
    "sources_declarees": [
-    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
+    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche, projets_subventionnes (Fonds vert), territoires (dotations de la DGCL), deliberations, culture_medias (aides à la presse), numerique_etat (France Relance ITN7) ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
    ]
   },
   {
    "name": "entites-fiches",
    "title": "fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py)",
-   "description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 619 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 608 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/005.json",
    "format": "json",
    "mediatype": "application/json",
@@ -14224,25 +14224,25 @@
    "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
    "sources": [
     {
-     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
+     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche, projets_subventionnes (Fonds vert), territoires (dotations de la DGCL), deliberations, culture_medias (aides à la presse), numerique_etat (France Relance ITN7) ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
      "licence": "voir la source citée",
      "licence_normalisee": "non-precisee"
     }
    ],
    "motif": "site/data/entites/fiches/*.json",
-   "nombre_fichiers": 619,
+   "nombre_fichiers": 608,
    "etape_pipeline": "entites",
    "millesimes": [
     "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
    ],
    "sources_declarees": [
-    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
+    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche, projets_subventionnes (Fonds vert), territoires (dotations de la DGCL), deliberations, culture_medias (aides à la presse), numerique_etat (France Relance ITN7) ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
    ]
   },
   {
    "name": "entites-recherche",
    "title": "organisations dont un mot du nom commence par la clé (pipeline/entites.py)",
-   "description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 652 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 651 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/00.json",
    "format": "json",
    "mediatype": "application/json",
@@ -14258,19 +14258,19 @@
    "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
    "sources": [
     {
-     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
+     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche, projets_subventionnes (Fonds vert), territoires (dotations de la DGCL), deliberations, culture_medias (aides à la presse), numerique_etat (France Relance ITN7) ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
      "licence": "voir la source citée",
      "licence_normalisee": "non-precisee"
     }
    ],
    "motif": "site/data/entites/recherche/*.json",
-   "nombre_fichiers": 652,
+   "nombre_fichiers": 651,
    "etape_pipeline": "entites",
    "millesimes": [
     "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
    ],
    "sources_declarees": [
-    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
+    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche, projets_subventionnes (Fonds vert), territoires (dotations de la DGCL), deliberations, culture_medias (aides à la presse), numerique_etat (France Relance ITN7) ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
    ]
   },
   {
@@ -14292,7 +14292,7 @@
    "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
    "sources": [
     {
-     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
+     "title": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche, projets_subventionnes (Fonds vert), territoires (dotations de la DGCL), deliberations, culture_medias (aides à la presse), numerique_etat (France Relance ITN7) ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)",
      "licence": "voir la source citée",
      "licence_normalisee": "non-precisee"
     }
@@ -14304,7 +14304,7 @@
     "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
    ],
    "sources_declarees": [
-    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
+    "site/data : fichiers des axes subventions, associations, beneficiaires, marches, aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, sante_etablissements, education_recherche, projets_subventionnes (Fonds vert), territoires (dotations de la DGCL), deliberations, culture_medias (aides à la presse), numerique_etat (France Relance ITN7) ; Insee, stock SIRENE des unités légales (catégorie juridique, dénomination)"
    ]
   },
   {

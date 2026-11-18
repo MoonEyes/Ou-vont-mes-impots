@@ -63,6 +63,32 @@ export interface Programme {
   series: Serie[]
   correspondance: Correspondance[]
   note: string | null
+  grands_projets_numeriques?: GrandsProjets | null
+}
+interface GrandsProjets {
+  lecture: string
+  unite: string
+  source: string
+  millesime: string
+  page?: string
+  projets: { id: string; nom: string; ministere: string | null; rattachement: string | null; editions: { annee: number; edition: string; cout_meur: number | null; cout_mention: string | null; phase: string | null }[] }[]
+}
+
+/** Grands projets numériques dont le financement publié cite le programme : coût estimé publié par édition, sans total. */
+function tableGrandsProjets(g: GrandsProjets | null | undefined): string {
+  if (!g || !g.projets.length) return ''
+  const mio = (e: { cout_meur: number | null; cout_mention: string | null }) =>
+    e.cout_meur === null ? `<span class="absent">${h(e.cout_mention ?? 'non publié')}</span>` : `${h(new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 1 }).format(e.cout_meur))} M€`
+  return `<h2>Grands projets numériques dont le financement cite ce programme</h2>
+<p class="avertissement">${h(g.lecture)}</p>
+<div class="tableau-defile"><table><caption>Coût estimé publié par la DINUM, dernière édition de chaque année</caption><thead><tr><th scope="col">Projet</th><th scope="col">Ministère</th><th scope="col">Éditions (coût estimé publié)</th></tr></thead><tbody>${g.projets
+    .map(
+      (p) =>
+        `<tr><th scope="row">${h(p.nom)}${p.rattachement && p.rattachement !== 'numéro publié' ? ` <span class="aide">(${h(p.rattachement)})</span>` : ''}</th><td>${h(p.ministere ?? 'non publié')}</td><td>${p.editions.map((e) => `${h(e.edition)} : ${mio(e)}`).join(' ; ')}</td></tr>`,
+    )
+    .join('')}</tbody></table></div>
+${g.page ? `<p><a href="${lien(g.page)}">Les grands projets numériques de l’État</a></p>` : ''}
+${source(g.source, g.millesime)}`
 }
 interface Index {
   millesime: string
@@ -201,6 +227,7 @@ ${d.series.length > 15 ? `<button type="button" id="plus-perf">Afficher les ${h(
     : absent(d.note ?? 'Aucun indicateur publié pour ce programme.')
 }
 ${tableCorrespondance(d.correspondance)}
+${tableGrandsProjets(d.grands_projets_numeriques)}
 ${source(Object.entries(d.sources).map(([k, v]) => `${k} : ${v}`).join(' ; ') || d.source, d.millesime)}
 <div class="actions"><a class="bouton" href="${lien('/decisions/realisations', { p })}">Ce qui a été fait (programme ${h(p)})</a><a class="bouton" href="${lien('/beneficiaires/programme', { p })}">Le programme ${h(p)} en détail</a></div>`
   cible.querySelector('#plus-perf')?.addEventListener('click', (e) => {

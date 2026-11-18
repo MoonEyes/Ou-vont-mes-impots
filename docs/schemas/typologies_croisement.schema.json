@@ -5,6 +5,47 @@
  "allOf": [
   {
    "$ref": "commun.schema.json#/$defs/entete"
+  },
+  {
+   "if": {
+    "required": [
+     "niveau"
+    ]
+   },
+   "then": {
+    "required": [
+     "territoires",
+     "territoires_croises",
+     "unite_points"
+    ]
+   }
+  },
+  {
+   "if": {
+    "required": [
+     "niveau"
+    ]
+   },
+   "then": {
+    "properties": {
+     "facettes": {
+      "required": [
+       "strate_departement"
+      ]
+     }
+    }
+   },
+   "else": {
+    "properties": {
+     "facettes": {
+      "required": [
+       "densite",
+       "strate",
+       "aav"
+      ]
+     }
+    }
+   }
   }
  ],
  "type": "object",
@@ -284,11 +325,6 @@
   },
   "facettes": {
    "type": "object",
-   "required": [
-    "densite",
-    "strate",
-    "aav"
-   ],
    "additionalProperties": {
     "type": "object",
     "required": [
@@ -422,6 +458,67 @@
      }
     }
    }
+  },
+  "niveau": {
+   "const": "departement"
+  },
+  "territoires_croises": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "unite_points": {
+   "type": "string"
+  },
+  "territoires": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^(\\d{2,3}|2[AB])$"
+   },
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "nom",
+     "strate",
+     "x",
+     "y"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "nom": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "strate": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "x": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "y": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "motifs": {
+      "type": "object",
+      "additionalProperties": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "regle_null": {
+   "type": "string"
   }
  }
 }

@@ -179,6 +179,25 @@
     "ordre": {
       "type": "string",
       "minLength": 1
+    },
+    "liens_par_programme": {
+      "type": "object",
+      "required": [
+        "grands_projets_numeriques",
+        "application_des_lois_de_finances"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "fichier",
+          "relie"
+        ],
+        "properties": {
+          "relie": {
+            "type": "boolean"
+          }
+        }
+      }
     }
   }
 }

@@ -180,3 +180,25 @@ def test_barometre_departements_et_france():
             dates = [x[0] for x in i[cle]]
             assert dates == sorted(dates)
             assert all(isinstance(x[1], (int, float)) for x in i[cle])
+
+
+def test_grands_projets_numeriques_relies_sans_total_ni_ratio():
+    import re
+    d = DOSSIER
+    if not (d / "index.json").exists():
+        pytest.skip("site/data/performance absent")
+    idx = json.loads((d / "index.json").read_text(encoding="utf-8"))
+    liens = idx["liens_par_programme"]
+    assert liens["application_des_lois_de_finances"]["relie"] is False   # publié par loi, jamais par programme
+    n = 0
+    for f in sorted((d / "programmes").glob("*.json")):
+        g = json.loads(f.read_text(encoding="utf-8")).get("grands_projets_numeriques")
+        if not g:
+            continue
+        n += 1
+        assert not {k for k in g if re.search(r"total|ratio|somme|par_euro", k)}
+        for pr in g["projets"]:
+            assert pr["editions"] == sorted(pr["editions"], key=lambda e: e["annee"])
+            for e in pr["editions"]:
+                assert e["edition"].startswith(str(e["annee"]))
+    assert n == liens["grands_projets_numeriques"]["programmes"]

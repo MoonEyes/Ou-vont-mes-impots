@@ -79,7 +79,7 @@ describe('écran des territoires comparables', () => {
     expect(ids).not.toContain('intrus_2023')
     expect(ids.every((id) => (CROISEMENTS_AFFICHABLES as readonly string[]).includes(id))).toBe(true)
     expect(CROISEMENTS_AFFICHABLES.length).toBeGreaterThanOrEqual(6)
-    expect(CROISEMENTS_AFFICHABLES.length).toBeLessThanOrEqual(10)
+    expect(CROISEMENTS_AFFICHABLES.length).toBeLessThanOrEqual(14)
     await ecran('#/local/croiser?c=intrus_2023')
     expect(texte()).not.toContain('intrus')
     expect(requetes.some((u) => u.includes('intrus'))).toBe(false)
@@ -165,5 +165,33 @@ describe('écran des territoires comparables', () => {
     expect(main.querySelector('#croiser-avertissement')).not.toBeNull()
     absents = null
     for (const u of requetes) expect(u).not.toMatch(/^[a-z]+:|^\/\//i)
+  })
+
+  it('croisement entre départements : vue d’ensemble et vue par tranche, département repéré, sans droite ni coefficient', async () => {
+    await ecran('#/local/croiser?c=aide_sociale_prescriptions_2024&dep=44')
+    const t = texte()
+    expect(t).toContain('Tous les départements')
+    expect(t).toContain('Loire-Atlantique (44)')
+    expect(t).toContain(AVERTISSEMENT)
+    const grilles = main.querySelectorAll('.croiser-grille')
+    expect(grilles).toHaveLength(2)
+    expect(grilles[1].querySelectorAll('figure')).toHaveLength(IDX.facettes.strate_departement.cases.length)
+    expect(main.querySelectorAll('.croiser-case-propre')).toHaveLength(1)
+    expect(main.querySelectorAll('svg polyline, svg .croiser-droite')).toHaveLength(0)
+    expect(t).not.toMatch(/coefficient de corrélation|r² =|droite de régression/i)
+    verifierLexique(main.textContent ?? '', 'départements')
+  })
+
+  it('département hors périmètre : motif en mots, jamais 0', async () => {
+    await ecran('#/local/croiser?c=aide_sociale_prescriptions_2024&dep=69')
+    const t = texte()
+    expect(t).toContain('territoire du département différent')
+    expect(main.querySelectorAll('.croiser-point')).toHaveLength(0)
+  })
+
+  it('prérendu : les croisements ajoutés ne sont pas dans le HTML statique', () => {
+    const ids = croisementsAffiches(IDX, true).map((c) => c.id)
+    expect(ids).not.toContain('aide_sociale_prescriptions_2024')
+    expect(croisementsAffiches(IDX, false).map((c) => c.id)).toContain('aide_sociale_prescriptions_2024')
   })
 })

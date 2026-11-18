@@ -7,7 +7,7 @@ import { fragmentCommune } from '../chemins'
 import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { lien, type Rendu } from '../routeur'
-import { absent, entier, h, source, badgeCalcule } from '../util'
+import { absent, entier, enPrerendu, h, source, badgeCalcule } from '../util'
 
 export const TITRE = 'Comparer des communes qui se ressemblent'
 export const AVERTISSEMENT = 'Mettre deux chiffres côte à côte ne dit pas que l’un explique l’autre ; ce sont des moyennes de communes, pas d’habitants.'
@@ -21,9 +21,18 @@ export const CROISEMENTS_AFFICHABLES = [
   'depenses_taux_fb_2024',
   'equipement_dette_2024',
   'dgf_depenses_2024',
+  'equipement_paye_niveau_vie_2023',
+  'dotations_etat_equipement_2024',
+  'impot_revenu_impots_locaux_2023',
+  'produit_fb_niveau_vie_2023',
+  'aide_sociale_prescriptions_2024',
 ] as const
+/** Croisements ajoutés après la première liste : rendus dans le navigateur seulement (rien de plus dans le HTML prérendu). */
+const AJOUTES_HORS_PRERENDU: readonly string[] = ['equipement_paye_niveau_vie_2023', 'dotations_etat_equipement_2024', 'impot_revenu_impots_locaux_2023', 'produit_fb_niveau_vie_2023', 'aide_sociale_prescriptions_2024']
 export const FACETTES = { densite: 'par niveau de densité', strate: 'par strate de population', aav: 'par place dans l’aire d’attraction d’une ville' } as const
 type Facette = keyof typeof FACETTES
+/** Facette unique des croisements entre départements (tranche de population fixée par le site). */
+const FACETTE_DEP = 'strate_departement'
 /** Strates de l'OFGL jusqu'à 1 999 habitants : la bande de la case est mise en avant plutôt que le point. */
 const STRATE_PETITE_MAX = 3
 
@@ -33,13 +42,18 @@ interface Case { code?: string; n: number; x: Resume | null; y: Resume | null; b
 interface Croisement {
   millesime: string; source: string; id: string; titre: string; annee: number; x: Axe; y: Axe; perimetre: string; methode: string
   n_min: number; bandes_bornes: number[]; axes: { x: [number, number]; y: [number, number] }; communes: number; ensemble: Case
-  facettes: Record<Facette, { cases: Case[]; communes_sans_case: number }>
+  facettes: Record<string, { cases: Case[]; communes_sans_case: number }>
+  /** Croisement entre départements : points = départements, valeurs publiées par département. */
+  niveau?: 'departement'
+  avertissement?: string
+  territoires_croises?: number
+  territoires?: Record<string, { nom: string; strate: string | null; x: number | null; y: number | null; motifs?: Record<string, string> }>
 }
 interface Index {
   millesime: string; source: string; presentation: string; avertissement: string
   variables: Record<string, { libelle: string; annee: number; unite: string; statut: string; source: string; methode: string; definition: string }>
-  croisements: { id: string; titre: string; annee: number; x: string; y: string; fichier: string; communes: number }[]
-  facettes: Record<Facette, { libelle: string; cases: { code: string; libelle: string }[] }>
+  croisements: { id: string; titre: string; annee: number; x: string; y: string; fichier: string; communes: number; niveau?: string }[]
+  facettes: Record<string, { libelle: string; cases: { code: string; libelle: string }[] }>
   sources: Record<string, { titre: string; millesime?: string; page?: string }>
   limites: string[]
 }
@@ -111,15 +125,18 @@ export function caseSvg(c: Croisement, cs: Case, etiquette: string, reperes: Rep
   return `<svg class="croiser-svg" viewBox="0 0 ${L} ${H}" role="img" aria-label="${h(etiquette)}" focusable="false">${formes.join('')}</svg>`
 }
 
+/** Mot des points d'un croisement : communes, ou départements pour un croisement entre départements. */
+const points = (c: Pick<Croisement, 'niveau'>, n = 2) => (c.niveau === 'departement' ? (n > 1 ? 'départements' : 'département') : n > 1 ? 'communes' : 'commune')
+
 function phraseCase(c: Croisement, cs: Case): string {
-  if (!cs.y || !cs.x || cs.n < c.n_min) return `<p class="absent">${h(entier(cs.n))} commune${cs.n > 1 ? 's' : ''} : moins de ${h(c.n_min)} communes, dispersion non publiée.</p>`
+  if (!cs.y || !cs.x || cs.n < c.n_min) return `<p class="absent">${h(entier(cs.n))} ${points(c, cs.n)} : moins de ${h(c.n_min)} ${points(c)}, dispersion non publiée.</p>`
   const [, y25, y50, y75] = cs.y.q
-  return `<p class="aide">${h(entier(cs.n))} communes. ${h(c.y.libelle[0].toUpperCase() + c.y.libelle.slice(1))} : la moitié des communes entre ${h(valeur(y25, c.y.unite))} et ${h(valeur(y75, c.y.unite))}, médiane ${h(valeur(y50, c.y.unite))}.</p>`
+  return `<p class="aide">${h(entier(cs.n))} ${points(c)}. ${h(c.y.libelle[0].toUpperCase() + c.y.libelle.slice(1))} : la moitié des ${points(c)} entre ${h(valeur(y25, c.y.unite))} et ${h(valeur(y75, c.y.unite))}, médiane ${h(valeur(y50, c.y.unite))}.</p>`
 }
 
 function tableau(c: Croisement, cases: { libelle: string; cs: Case }[], legende: string): string {
   const q = (r: Resume | null, k: number, u: string) => (r ? h(valeur(r.q[k], u)) : 'non publié')
-  return `<details><summary>Les chiffres de chaque case, en tableau</summary><div class="tableau-defile"><table><caption>${h(legende)}</caption><thead><tr><th scope="col">Case</th><th scope="col" class="nombre">Communes</th><th scope="col" class="nombre">${h(c.x.libelle)} : médiane</th><th scope="col" class="nombre">${h(c.y.libelle)} : 1er quart</th><th scope="col" class="nombre">médiane</th><th scope="col" class="nombre">3e quart</th><th scope="col" class="nombre">moyenne des communes</th></tr></thead><tbody>${cases
+  return `<details><summary>Les chiffres de chaque case, en tableau</summary><div class="tableau-defile"><table><caption>${h(legende)}</caption><thead><tr><th scope="col">Case</th><th scope="col" class="nombre">${points(c)[0].toUpperCase() + points(c).slice(1)}</th><th scope="col" class="nombre">${h(c.x.libelle)} : médiane</th><th scope="col" class="nombre">${h(c.y.libelle)} : 1er quart</th><th scope="col" class="nombre">médiane</th><th scope="col" class="nombre">3e quart</th><th scope="col" class="nombre">moyenne des ${points(c)}</th></tr></thead><tbody>${cases
     .map(
       ({ libelle, cs }) =>
         `<tr><th scope="row">${h(libelle)}</th><td class="nombre">${h(entier(cs.n))}</td><td class="nombre">${q(cs.x, 2, c.x.unite)}</td><td class="nombre">${q(cs.y, 1, c.y.unite)}</td><td class="nombre">${q(cs.y, 2, c.y.unite)}</td><td class="nombre">${q(cs.y, 3, c.y.unite)}</td><td class="nombre">${cs.y ? h(valeur(cs.y.moyenne_communes, c.y.unite)) : 'non publié'}</td></tr>`,
@@ -128,8 +145,8 @@ function tableau(c: Croisement, cases: { libelle: string; cs: Case }[], legende:
 }
 
 /** Identifiants affichés : ceux de l'index qui sont aussi dans la liste fermée de l'écran, dans l'ordre de l'index. */
-export const croisementsAffiches = (idx: Pick<Index, 'croisements'>) =>
-  idx.croisements.filter((c) => (CROISEMENTS_AFFICHABLES as readonly string[]).includes(c.id) && /^[a-z0-9_]+$/.test(c.id))
+export const croisementsAffiches = (idx: Pick<Index, 'croisements'>, prerendu = enPrerendu()) =>
+  idx.croisements.filter((c) => (CROISEMENTS_AFFICHABLES as readonly string[]).includes(c.id) && /^[a-z0-9_]+$/.test(c.id) && !(prerendu && AJOUTES_HORS_PRERENDU.includes(c.id)))
 
 export async function rendre(cible: HTMLElement, params: URLSearchParams): Promise<Rendu | void> {
   const idx = await chargerSiPresent<Index>('typologies/index.json')
@@ -157,7 +174,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
   }
   const [cr, communes] = await Promise.all([
     chargerSiPresent<Croisement>(`typologies/${choisi.fichier}`),
-    dep ? chargerSiPresent<Communes>(`typologies/communes/${dep}.json`) : Promise.resolve(null),
+    dep && choisi.niveau !== 'departement' ? chargerSiPresent<Communes>(`typologies/communes/${dep}.json`) : Promise.resolve(null),
   ])
   const garde = { insee: insee || undefined, dep: !insee && depDemande ? depDemande : undefined }
   const menuCroisements = `<nav aria-label="Paires de chiffres"><h2>Choisis deux chiffres</h2><ul class="liens-sortie">${liste
@@ -173,6 +190,11 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
 
   if (!cr) {
     cible.innerHTML = `${intro}${menuCroisements}${absent('Ce croisement n’est pas disponible.')}${sorties}`
+    return
+  }
+  if (cr.niveau === 'departement') {
+    cible.innerHTML = renduDepartements(idx, cr, dep, { intro, menuCroisements, formulaire, sorties })
+    brancherFormulaire(cible, choisi.id, facette)
     return
   }
   // Repères : la commune choisie dans chaque case, ou les communes du département dans leur propre case.
@@ -259,13 +281,7 @@ ${tableau(cr, [{ libelle: 'Toutes les communes', cs: cr.ensemble }, ...cases], `
 ${source(idx.source, idx.millesime)}
 ${sorties}`
 
-  cible.querySelector<HTMLFormElement>('#croiser-lieu')?.addEventListener('submit', (e) => {
-    e.preventDefault()
-    const f = e.target as HTMLFormElement
-    const i = (f.querySelector<HTMLInputElement>('#croiser-insee')?.value ?? '').trim().toUpperCase()
-    const d = (f.querySelector<HTMLInputElement>('#croiser-dep')?.value ?? '').trim().toUpperCase()
-    location.hash = lien('/local/croiser', { c: choisi.id, f: facette, insee: /^(\d{5}|2[AB]\d{3})$/.test(i) ? i : undefined, dep: !i && /^(\d{2,3}|2[AB])$/.test(d) ? d : undefined })
-  })
+  brancherFormulaire(cible, choisi.id, facette)
   // Sans commune choisie : titre et description de la table des routes (page prérendue et partagée).
   return ligne
     ? {
@@ -273,4 +289,80 @@ ${sorties}`
         description: `${cr.titre} : dispersion entre communes ${FACETTES[facette]}, mêmes axes dans toutes les cases, sans droite ni coefficient.`,
       }
     : {}
+}
+
+function brancherFormulaire(cible: HTMLElement, id: string, facette: Facette): void {
+  cible.querySelector<HTMLFormElement>('#croiser-lieu')?.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const f = e.target as HTMLFormElement
+    const i = (f.querySelector<HTMLInputElement>('#croiser-insee')?.value ?? '').trim().toUpperCase()
+    const d = (f.querySelector<HTMLInputElement>('#croiser-dep')?.value ?? '').trim().toUpperCase()
+    location.hash = lien('/local/croiser', { c: id, f: facette, insee: /^(\d{5}|2[AB]\d{3})$/.test(i) ? i : undefined, dep: !i && /^(\d{2,3}|2[AB])$/.test(d) ? d : undefined })
+  })
+}
+
+/** Croisement entre départements : une seule facette (tranche de population), le département repéré dans sa case. */
+export function renduDepartements(
+  idx: Index,
+  cr: Croisement,
+  dep: string,
+  morceaux: { intro: string; menuCroisements: string; formulaire: string; sorties: string },
+): string {
+  const t = dep ? cr.territoires?.[dep] : undefined
+  const fac = idx.facettes[FACETTE_DEP]
+  const libCases = new Map((fac?.cases ?? []).map((c) => [c.code, c.libelle]))
+  const cases = (cr.facettes[FACETTE_DEP]?.cases ?? []).map((cs) => ({ libelle: libCases.get(cs.code ?? '') ?? cs.code ?? '', cs }))
+  const p = t && t.x !== null && t.y !== null ? { x: t.x, y: t.y } : null
+  const reperes = (code: string | null): Repere[] => (t && p ? [{ nom: t.nom, ...p, propre: code === null || t.strate === code }] : [])
+  const vignette = (titre: string, cs: Case, code: string | null, propre: boolean) => {
+    const rep = reperes(code)
+    const etiquette = `${titre} : bandes de dispersion de ${cr.y.libelle} selon ${cr.x.libelle}, ${cr.annee}${rep.length ? `, ${rep[0].nom} repéré` : ''}`
+    return `<figure class="croiser-case${propre ? ' croiser-case-propre' : ''}"><figcaption><strong>${h(titre)}</strong>${propre && t ? ` <span class="aide">(case de ${h(t.nom)})</span>` : ''}</figcaption>${caseSvg(cr, cs, etiquette, rep)}${phraseCase(cr, cs)}</figure>`
+  }
+  let blocLieu = ''
+  if (dep && t) {
+    const motifs: Record<string, string> = { ...MOTIFS, perimetre: 'territoire du département différent de celui d’une seule collectivité départementale publiée par l’OFGL' }
+    const motif = (v: string) => motifs[t.motifs?.[v] ?? ''] ?? 'non publié'
+    blocLieu = `<section aria-labelledby="croiser-ton-departement"><h2 id="croiser-ton-departement">${h(t.nom)} (${h(dep)})</h2>
+<ul>
+<li>${h(cr.x.libelle)} (${h(cr.x.annee)}) : ${h(t.x === null ? motif(cr.x.variable) : valeur(t.x, cr.x.unite))}</li>
+<li>${h(cr.y.libelle)} (${h(cr.y.annee)}) : ${h(t.y === null ? motif(cr.y.variable) : valeur(t.y, cr.y.unite))}</li>
+</ul>
+${!p ? '<p class="aide">Les deux chiffres de la même année ne sont pas tous deux publiés pour ce département : il n’est pas repéré dans les cases.</p>' : ''}
+<p class="actions"><a href="${lien('/local/departement', { dep })}">Les communes du département ${h(dep)}</a></p></section>`
+  } else if (dep) {
+    blocLieu = absent('Département introuvable dans ce croisement.')
+  }
+  const sources = [cr.x, cr.y]
+    .map((a) => {
+      const v = idx.variables[a.variable]
+      const s = v ? idx.sources[v.source] : undefined
+      return `<li><strong>${h(a.libelle)}</strong> (${h(a.annee)}) : ${h(v?.definition ?? '')}. ${a.statut === 'calculé par le site' && v?.methode ? badgeCalcule(v.methode) : ''}${source(s?.titre ?? cr.source, String(a.annee))}</li>`
+    })
+    .join('')
+  return `${morceaux.intro}
+${morceaux.menuCroisements}
+<p class="aide">Ce croisement compare des départements, pas des communes : ils sont regroupés ${h(fac?.libelle ?? 'par tranche de population')}. ${h(cr.avertissement ?? '')}</p>
+${morceaux.formulaire}
+${blocLieu}
+<section aria-labelledby="croiser-titre"><h2 id="croiser-titre">${h(cr.titre)}</h2>
+<p>En abscisse (de gauche à droite) : ${h(cr.x.libelle)}, de ${h(court(cr.axes.x[0], cr.x.unite))} à ${h(court(cr.axes.x[1], cr.x.unite))}. En ordonnée (de bas en haut) : ${h(cr.y.libelle)}, de ${h(court(cr.axes.y[0], cr.y.unite))} à ${h(court(cr.axes.y[1], cr.y.unite))}. Mêmes axes dans toutes les cases. Chaque bande est une tranche de départements : la partie claire va de 10 à 90 % des départements, la partie foncée de 25 à 75 %, le trait est la médiane ; une tranche de moins de ${h(cr.n_min)} départements n’a pas de bande. ${h(entier(cr.territoires_croises ?? 0))} départements ont les deux chiffres.</p>
+<p class="aide">Dispersion ${badgeCalcule(cr.methode)}</p>
+<div class="croiser-grille">
+${vignette('Tous les départements', cr.ensemble, null, false)}
+</div>
+<h3>${h((fac?.libelle ?? 'par tranche de population')[0].toUpperCase() + (fac?.libelle ?? 'par tranche de population').slice(1))}</h3>
+<p class="aide">La vue d’ensemble reste à côté de la vue par case : une tendance visible sur tous les départements peut disparaître ou s’inverser à l’intérieur de chaque case.</p>
+<div class="croiser-grille">
+${cases.map(({ libelle, cs }) => vignette(libelle, cs, cs.code ?? '', !!t && t.strate === cs.code)).join('')}
+</div>
+${tableau(cr, [{ libelle: 'Tous les départements', cs: cr.ensemble }, ...cases], `${cr.titre}, par tranche de population, dispersion par case`)}
+</section>
+<h2>D’où viennent ces chiffres</h2>
+<ul>${sources}</ul>
+<p class="aide">Périmètre : ${h(cr.perimetre)}.</p>
+<h2>Ce que la page ne montre pas</h2>
+<ul>${idx.limites.map((l) => `<li>${h(l)}</li>`).join('')}</ul>
+${source(idx.source, idx.millesime)}
+${morceaux.sorties}`
 }

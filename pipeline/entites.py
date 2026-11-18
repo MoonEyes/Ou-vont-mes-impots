@@ -63,6 +63,8 @@ SEUIL_PROBABLE = 0.9            # probabilité de Splink à partir de laquelle u
 SEUIL_INCERTAIN = 0.5           # en dessous : « différent »
 RECHERCHE_GLOBALE_MAX = 400     # organisations ajoutées à la recherche du site (plusieurs canaux)
 MIN_CANAUX = 2                  # une fiche relie au moins deux canaux
+ANNEE_MIN_DELIBERATIONS = 1990  # première année des séries du site (schéma des fiches)
+MOTS_MIN_NATIONAL = 2           # mots du nom normalisé exigés pour un rapprochement probable sans département
 
 COLONNES_VALEUR = ["annee_ou_periode", "montant_eur"]
 
@@ -150,6 +152,23 @@ NOTIONS = {
     "effectifs_etudiants": {
         "libelle": "inscriptions principales d'étudiants publiées pour l'établissement", "sens": "mention",
         "somme_canal": False, "cumulable": None},
+    "fonds_vert_engage": {
+        "libelle": "montant engagé par l'État pour un projet du Fonds vert dont elle est bénéficiaire (année de la "
+                   "liste publiée ; pas un montant payé)", "sens": "recoit", "somme_canal": True, "cumulable": None},
+    "dotation_investissement_attribuee": {
+        "libelle": "subvention attribuée par l'État au titre des dotations de soutien à l'investissement des "
+                   "collectivités (DETR, DSIL, DPV, DSID), exercice de l'attribution", "sens": "recoit",
+        "somme_canal": True, "cumulable": None},
+    "deliberations_publiees": {
+        "libelle": "délibérations publiées en données ouvertes par la collectivité (métadonnées : date, matière, "
+                   "objet ; nombre par année)", "sens": "mention", "somme_canal": False, "cumulable": None},
+    "aides_presse_groupe": {
+        "libelle": "total des aides à la presse versées au groupe ou à la société éditrice, publié par le ministère "
+                   "de la Culture pour l'année", "sens": "recoit", "somme_canal": False, "cumulable": None},
+    "financement_itn7": {
+        "libelle": "montant financé à la collectivité par le fonds France Relance de transformation numérique des "
+                   "territoires (ITN7, volet 1, projets 2021 et 2022)", "sens": "recoit", "somme_canal": False,
+        "cumulable": None},
 }
 
 # --- Canaux (une source du site) ------------------------------------------------------------------------------------
@@ -171,8 +190,8 @@ CANAUX = {
                           "axe": "marches"},
     "marches_acheteur": {"titre": "Marchés publics de tous les acheteurs, comme acheteur",
                          "fichiers": "marches/departements/*.json", "page": None, "axe": "marches"},
-    "aides_registre_europeen": {"titre": "Registre européen de transparence des aides d'État (50 premiers "
-                                         "bénéficiaires)", "fichiers": "aides_entreprises/tam.json", "page": None,
+    "aides_registre_europeen": {"titre": "Registre européen de transparence des aides d'État, export officiel de la "
+                                         "Commission (50 premiers bénéficiaires)", "fichiers": "aides_entreprises/tam.json", "page": None,
                                 "axe": "aides_entreprises"},
     "france_relance": {"titre": "France Relance, lauréats industriels", "fichiers": "aides_entreprises/france_relance.json",
                        "page": None, "axe": "aides_entreprises"},
@@ -204,6 +223,20 @@ CANAUX = {
     "etudiants": {"titre": "Effectifs étudiants par établissement d'enseignement supérieur",
                   "fichiers": "education_recherche/etudiants.json", "page": "/explorer/education-recherche",
                   "axe": "education_recherche"},
+    "fonds_vert": {"titre": "Fonds vert, projets engagés par bénéficiaire (listes 2023 à 2025)",
+                   "fichiers": "projets_subventionnes/[0-9]*.json", "page": "/local/projets",
+                   "axe": "projets_subventionnes"},
+    "dotations_investissement": {"titre": "Dotations de soutien à l'investissement des collectivités (DETR, DSIL, DPV, "
+                                          "DSID), projets 2018 à 2025",
+                                 "fichiers": "territoires/[0-9]*.json", "page": "/local/projets",
+                                 "axe": "projets_subventionnes"},
+    "deliberations": {"titre": "Délibérations publiées en données ouvertes par les collectivités",
+                      "fichiers": "deliberations/collectivites/*.json", "page": None, "axe": "deliberations"},
+    "presse_groupes": {"titre": "Aides à la presse, principaux groupes et sociétés éditrices aidés (2016 à 2019)",
+                       "fichiers": "culture_medias/presse.json", "page": None, "axe": "culture_medias"},
+    "ditp_itn7": {"titre": "France Relance, transformation numérique des collectivités (ITN7, volet 1)",
+                  "fichiers": "numerique_etat/fonds/ditp_itn7/*.json", "page": "/explorer/numerique-etat",
+                  "axe": "numerique_etat"},
 }
 
 # Fichier volontairement non relu : il reprend une source déjà relue (jamais deux fois la même ligne).
@@ -214,9 +247,39 @@ NON_RELUS = [
      "subventions : les sources sont relues une à une"},
     {"chemins_source": "ue/", "raison": "hors du périmètre demandé pour cette version (bénéficiaires Kohesio, FTS, Horizon "
      "Europe) ; à relier dans une version suivante"},
+    {"chemins_source": "subventions/attribuants/subv_fonds_vert.json", "raison": "50 premiers bénéficiaires du Fonds "
+     "vert, cumulés sur la période : les mêmes listes sont relues projet par projet par le canal fonds_vert"},
+    {"chemins_source": "sport/federations.json", "raison": "fédérations sportives du programme 219 : extrait de "
+     "associations/programmes/219.json, relu par le canal associations_jaunes"},
+    {"chemins_source": "sport/cnds_2015.json, sport/budget.json, sport/jop.json", "raison": "aucun bénéficiaire publié "
+     "avec un SIREN (subventions du CNDS 2015 agrégées par fédération, service et région ; budget et Jeux olympiques "
+     "par poste)"},
+    {"chemins_source": "culture_medias/presse.json (classement des titres), culture_medias/audiovisuel.json, "
+     "culture_medias/cnc.json, culture_medias/budget.json", "raison": "un titre de presse n'est pas une personne "
+     "morale ; audiovisuel, cinéma et budget publiés par poste, sans SIREN (les groupes et sociétés éditrices de "
+     "presse.json sont relus par le canal presse_groupes)"},
+    {"chemins_source": "agriculture/", "raison": "aucun bénéficiaire individuel des aides de la PAC n'est publié par le "
+     "site : montants par département, par mesure et par programme"},
+    {"chemins_source": "logement/, emploi/, immobilier_etat/, transports/", "raison": "montants agrégés (par aide, par "
+     "département, par financeur, par mode ou par type de propriétaire) : aucune organisation publiée avec un SIREN"},
+    {"chemins_source": "eau_environnement/", "raison": "agences de l'eau, ADEME et Fonds vert publiés par agence, "
+     "région, dispositif ou instructeur, sans SIREN ; les projets du Fonds vert sont relus par le canal fonds_vert"},
+    {"chemins_source": "aides_entreprises/pge.json, aides_entreprises/france2030.json", "raison": "agrégats par "
+     "secteur, région et année : les bénéficiaires nommés sont relus par les canaux aides_registre_europeen, "
+     "france_relance et france2030"},
+    {"chemins_source": "projets_subventionnes/ (Action cœur de ville, Petites villes de demain)", "raison": "listes de "
+     "communes sans montant ni SIREN publiés avec la liste"},
+    {"chemins_source": "numerique_etat/fonds/france_relance/", "raison": "enveloppe France Relance du ministère de la "
+     "Transformation publique : recoupe en partie les lignes ITN7 relues par le canal ditp_itn7 (avertissement de la "
+     "source), jamais deux fois la même ligne"},
+    {"chemins_source": "numerique_etat/fonds/ditp.json (FITN8), ftap.json, fast.json, numerique_etat/panorama/",
+     "raison": "projets des ministères et des opérateurs de l'État, publiés sans SIREN ni département"},
+    {"chemins_source": "performance/", "raison": "objectifs et indicateurs par programme budgétaire : aucune "
+     "organisation bénéficiaire"},
 ]
 
-ROUTES_CONNUES = {"/beneficiaires", "/beneficiaires/programme", "/explorer/fonds-europeens", "/decisions/controle",
+ROUTES_CONNUES = {"/local/projets", "/explorer/numerique-etat",
+                  "/beneficiaires", "/beneficiaires/programme", "/explorer/fonds-europeens", "/decisions/controle",
                   "/explorer/etat-actionnaire", "/explorer/operateurs", "/explorer/hopitaux",
                   "/explorer/education-recherche"}
 
@@ -355,6 +418,8 @@ def lire_reserve(stats):
 
 def lire_subventions(stats):
     for rel in fichiers(CANAUX["subventions"]["fichiers"]):
+        if Path(rel).stem == "subv_fonds_vert" and fichiers(CANAUX["fonds_vert"]["fichiers"]):
+            continue  # relu projet par projet par le canal fonds_vert (NON_RELUS)
         d = lire(rel)
         b = d.get("beneficiaires")
         if not isinstance(b, dict):
@@ -643,6 +708,119 @@ def lire_etudiants(stats, sans_siren):
                                "precision": prec, "lien": None, "cle": l[i["id_paysage"]]})
 
 
+def lire_fonds_vert(stats):
+    """Fonds vert : une ligne par projet (bénéficiaire par SIREN, catégorie du stock SIRENE publiée par l'axe)."""
+    for rel in fichiers(CANAUX["fonds_vert"]["fichiers"]):
+        d = lire(rel)
+        fmt = d.get("format_fonds_vert") or []
+        if not fmt:
+            continue
+        i = {c: fmt.index(c) for c in fmt}
+        dem = d.get("demarches") or []
+        benef = d.get("beneficiaires") or {}
+        dep = (d.get("departement") or {}).get("code")
+        lots = [(c, v.get("nom"), v.get("fonds_vert") or []) for c, v in sorted((d.get("communes") or {}).items())]
+        lots += [(c, None, ls) for c, ls in sorted((d.get("communes_hors_cog") or {}).items())]
+        for insee, nom_commune, lignes in lots:
+            for l in lignes:
+                s = siren_de(l[i["beneficiaire_siren"]])
+                if not s:
+                    stats["fonds_vert_sans_siren"] += 1
+                    continue
+                b = benef.get(s) or {}
+                k = l[i["demarche"]]
+                demarche = dem[k] if isinstance(k, int) and 0 <= k < len(dem) else "démarche non publiée"
+                lieu = f"{nom_commune} ({insee})" if nom_commune else f"commune {insee}"
+                yield A(s, b.get("nom"), b.get("categorie_juridique"), "fonds_vert", "fonds_vert_engage", rel,
+                        annee=l[i["annee"]], montant=l[i["montant_engage_eur"]],
+                        precision=f"programme {l[i['programme']]}, {demarche} ; projet situé à {lieu}",
+                        lien=f"/local/projets?insee={insee}", groupe=f"programme {l[i['programme']]}",
+                        departement=dep)
+
+
+def lire_dotations(stats):
+    """Dotations de soutien à l'investissement (DGCL) : une ligne par projet, bénéficiaire par SIREN."""
+    for rel in fichiers(CANAUX["dotations_investissement"]["fichiers"]):
+        d = lire(rel)
+        ie = d.get("investissement_etat") or {}
+        fmt = ie.get("format_projet") or []
+        if not fmt:
+            continue
+        i = {c: fmt.index(c) for c in fmt}
+        dep = (d.get("departement") or {}).get("code")
+        for b in ie.get("beneficiaires", []):
+            s = siren_de(b.get("siren"))
+            if not s:
+                stats["dotations_sans_siren"] += 1
+                continue
+            lien = f"/local/projets?insee={b['insee']}" if b.get("insee") else f"/local/projets?dep={dep}"
+            for pr in b.get("projets", []):
+                yield A(s, None, None, "dotations_investissement", "dotation_investissement_attribuee", rel,
+                        annee=pr[i["exercice"]], montant=pr[i["subvention_eur"]],
+                        precision=f"{pr[i['dispositif']]}, département {dep}", lien=lien,
+                        groupe=pr[i["dispositif"]], departement=dep)
+
+
+def lire_deliberations(stats):
+    """Délibérations publiées : nombre par année (métadonnées seulement), collectivité par SIREN."""
+    for rel in fichiers(CANAUX["deliberations"]["fichiers"]):
+        d = lire(rel)
+        s = siren_de(d.get("siren"))
+        if not s:
+            stats["deliberations_sans_siren"] += 1
+            continue
+        code = str(d.get("code") or "")
+        dep = (code[:3] if code.startswith("97") else code[:2]) if code else None
+        for an, par in sorted((d.get("comptes") or {}).items()):
+            n = sum(v for v in par.values() if isinstance(v, int))
+            if n and int(an) < ANNEE_MIN_DELIBERATIONS:  # actes anciens publiés (archives) : comptés, non repris
+                stats["deliberations_anterieures_1990"] += n
+                continue
+            if n:
+                yield A(s, None, None, "deliberations", "deliberations_publiees", rel, annee=int(an),
+                        precision=f"{n} délibération{'s' if n > 1 else ''} publiée{'s' if n > 1 else ''} "
+                                  "(métadonnées)", departement=dep)
+
+
+def montant_texte(m) -> str:
+    return f"{round(m):,} €".replace(",", " ")
+
+
+def lire_presse(stats, sans_siren):
+    """Groupes et sociétés éditrices de presse aidés : publiés sans SIREN ni département (source nationale)."""
+    rel = CANAUX["presse_groupes"]["fichiers"]
+    d = lire(rel)
+    for l in (d.get("groupes") or {}).get("lignes", []):
+        nom = re.sub(r"\s*\([^)]*\)\s*", " ", l.get("groupe") or "").strip()
+        if l.get("groupe_masque") or not nom:
+            stats["presse_groupes_masques"] += 1
+            continue
+        m = l.get("total_aides_eur")
+        prec = f"total des aides publié pour l'année : {montant_texte(m)}" if isinstance(m, (int, float)) \
+            else "total des aides non publié"
+        sans_siren.append({"canal": "presse_groupes", "notion": "aides_presse_groupe", "fichier": rel, "nom": nom,
+                           "departement": None, "national": True, "annee": l.get("annee"), "precision": prec,
+                           "lien": None, "cle": f"{l.get('annee')}|{nom}"})
+
+
+def lire_ditp(stats, sans_siren):
+    """France Relance ITN7 (DITP) : collectivités publiées par nom et commune, sans SIREN."""
+    for rel in fichiers(CANAUX["ditp_itn7"]["fichiers"]):
+        d = lire(rel)
+        dep = (d.get("departement") or {}).get("code")
+        for k, pr in enumerate(d.get("projets", [])):
+            nom = pr.get("collectivite")
+            if not nom:
+                stats["ditp_porteurs_non_publies"] += 1
+                continue
+            m = pr.get("montant_eur")
+            prec = (f"{pr.get('type') or 'type non publié'} ; montant financé publié : "
+                    f"{montant_texte(m) if isinstance(m, (int, float)) else 'non publié'} (projets 2021 et 2022)")
+            sans_siren.append({"canal": "ditp_itn7", "notion": "financement_itn7", "fichier": rel, "nom": nom,
+                               "departement": dep, "annee": None, "precision": prec,
+                               "lien": "/explorer/numerique-etat", "cle": f"{dep}|{pr.get('projet')}|{k}"})
+
+
 # --- Référentiel SIRENE ----------------------------------------------------------------------------------------------
 
 def referentiel_sirene(sirens: set[str]) -> dict[str, dict]:
@@ -668,7 +846,8 @@ def referentiel_sirene(sirens: set[str]) -> dict[str, dict]:
 
 PARAMETRES_SPLINK = {
     "probabilite_a_priori": 1 / 300,
-    "blocage": "même département",
+    "blocage": "même département ; pour une source nationale publiée sans département, même premier mot du nom "
+               "normalisé",
     "niveaux": [
         {"niveau": "nom normalisé identique", "m": 0.60, "u": 0.0001},
         {"niveau": "mêmes mots du nom, dans un autre ordre", "m": 0.10, "u": 0.0002},
@@ -707,7 +886,7 @@ def rapprocher(gauche: list[dict], droite: list[dict]) -> list[dict]:
 
     def table(lignes):
         return pd.DataFrame([{"unique_id": x["id"], "nom": x["nom_norm"], "nom_tri": " ".join(sorted(x["nom_norm"].split())),
-                              "departement": x["departement"]} for x in lignes])
+                              "departement": x.get("bloc") or x["departement"]} for x in lignes])
     db = DuckDBAPI()
     db.duckdb_con.execute("set threads=1")
     linker = Linker([db.register(table(gauche), dataset_display_name="sans_siren"),
@@ -741,7 +920,8 @@ def taille(obj) -> int:
 
 LECTEURS = [lire_associations, lire_reserve, lire_subventions, lire_france2030, lire_marches_etat, lire_marches,
             lire_tam, lire_france_relance, lire_fonds_europeens, lire_representants, lire_etat_actionnaire,
-            lire_operateurs, lire_hospi, lire_finess, lire_anr, lire_lycees]
+            lire_operateurs, lire_hospi, lire_finess, lire_anr, lire_lycees, lire_fonds_vert, lire_dotations,
+            lire_deliberations]
 
 
 def collecter_apparitions():
@@ -754,9 +934,9 @@ def collecter_apparitions():
             app.extend(lecteur(stats))
         except FileNotFoundError as e:
             absents.append(str(Path(e.filename).relative_to(SITE)) if e.filename else lecteur.__name__)
-    for lecteur in (lire_chambres, lire_etudiants):
+    for lecteur in (lire_chambres, lire_etudiants, lire_presse, lire_ditp):
         try:
-            app.extend(lecteur(stats, sans_siren))
+            app.extend(lecteur(stats, sans_siren) or [])
         except FileNotFoundError as e:
             absents.append(str(Path(e.filename).relative_to(SITE)) if e.filename else lecteur.__name__)
     return app, sans_siren, stats, absents
@@ -903,15 +1083,24 @@ def produire(sortie: Path = SORTIE) -> dict:
     for s, o in orgs.items():
         for dep in o["departements"]:
             droite.append({"id": f"{s}|{dep}", "nom_norm": normaliser(o["denomination"]), "departement": dep})
+    if any(x.get("national") for x in sans_siren):
+        # source nationale sans département : blocage sur le premier mot du nom normalisé (une ligne par organisation)
+        for s, o in orgs.items():
+            nn = normaliser(o["denomination"])
+            if nn:
+                droite.append({"id": f"{s}|*", "nom_norm": nn, "departement": None, "bloc": "mot:" + nn.split()[0]})
     gauche = []
     non_rapprochables = 0
     for k, x in enumerate(sans_siren):
         x["id"] = f"g{k:05d}"
-        if not x.get("departement") or contient_nom_de_personne(x["nom"], liste_prenoms):
+        nn = normaliser(x["nom"])
+        if not (x.get("departement") or (x.get("national") and nn)) or contient_nom_de_personne(x["nom"], liste_prenoms):
             non_rapprochables += 1
             x["decision"] = "non_rapprochable"
             continue
-        x["nom_norm"] = normaliser(x["nom"])
+        x["nom_norm"] = nn
+        if not x.get("departement"):
+            x["bloc"] = "mot:" + nn.split()[0]
         gauche.append(x)
     paires = rapprocher(gauche, droite)
     cand = defaultdict(list)
@@ -922,7 +1111,9 @@ def produire(sortie: Path = SORTIE) -> dict:
     for x in gauche:
         c = cand.get(x["id"], [])
         forts = [p for p in c if p["probabilite"] >= SEUIL_PROBABLE]
-        if len({p["cle_d"].split("|")[0] for p in forts}) == 1:
+        # source nationale : nom d'au moins deux mots exigé (un sigle seul a trop d'homonymes dans le pays)
+        nom_suffisant = not x.get("national") or len(x["nom_norm"].split()) >= MOTS_MIN_NATIONAL
+        if nom_suffisant and len({p["cle_d"].split("|")[0] for p in forts}) == 1:
             p = forts[0]
             s = p["cle_d"].split("|")[0]
             x["decision"] = "probable"
@@ -943,8 +1134,10 @@ def produire(sortie: Path = SORTIE) -> dict:
                            f"ligne)",
               "source": "site/data : fichiers des axes subventions, associations, beneficiaires, marches, "
                         "aides_entreprises, fonds_europeens, controle, etat_actionnaire, operateurs, "
-                        "sante_etablissements, education_recherche ; Insee, stock SIRENE des unités légales "
-                        "(catégorie juridique, dénomination)"}
+                        "sante_etablissements, education_recherche, projets_subventionnes (Fonds vert), territoires "
+                        "(dotations de la DGCL), deliberations, culture_medias (aides à la presse), numerique_etat "
+                        "(France Relance ITN7) ; Insee, stock SIRENE des unités légales (catégorie juridique, "
+                        "dénomination)"}
     fiches = {}
     toutes = {}
     for s, o in orgs.items():
@@ -1064,10 +1257,14 @@ def produire(sortie: Path = SORTIE) -> dict:
             "etapes": [
                 "1. Jointure exacte par SIREN (un SIRET est ramené à son SIREN) : décision « même ».",
                 "2. Lignes publiées sans SIREN, avec un nom et un département (rapports des chambres régionales et "
-                "territoriales des comptes, établissements d'enseignement supérieur) : nom normalisé (majuscules sans "
-                "accents, mots vides retirés, abréviations courantes développées) comparé, dans le même département, "
-                "aux organisations déjà reliées par SIREN, par Splink (modèle de Fellegi et Sunter à paramètres "
-                "fixés, publiés ci-dessous, sans apprentissage).",
+                "territoriales des comptes, établissements d'enseignement supérieur, collectivités lauréates de "
+                "France Relance ITN7) : nom normalisé (majuscules sans accents, mots vides retirés, abréviations "
+                "courantes développées) comparé, dans le même département, aux organisations déjà reliées par SIREN, "
+                "par Splink (modèle de Fellegi et Sunter à paramètres fixés, publiés ci-dessous, sans "
+                "apprentissage). Source nationale publiée sans département (groupes et sociétés éditrices de presse "
+                "aidés) : comparaison aux organisations dont le nom normalisé commence par le même mot, avec les "
+                f"mêmes paramètres ; un nom d'au moins {MOTS_MIN_NATIONAL} mots est exigé pour un rapprochement "
+                "probable.",
                 f"3. Décision : « probable » si la probabilité est au moins {str(SEUIL_PROBABLE).replace('.', ',')} et "
                 f"qu'un seul SIREN l'atteint ; « incertain » entre {str(SEUIL_INCERTAIN).replace('.', ',')} et ce seuil ou si plusieurs SIREN l'atteignent ; "
                 "« différent » en dessous. Un rapprochement probable est affiché à part sur la fiche, avec son score, "
@@ -1134,7 +1331,12 @@ def produire(sortie: Path = SORTIE) -> dict:
             "marché des services de l'État aussi compté parmi les marchés de tous les acheteurs, réserve "
             "parlementaire aussi comptée dans les jaunes budgétaires).",
             "Le rapprochement probable repose sur le nom et le département : un homonyme du même département peut "
-            "être retenu à tort ; c'est pourquoi il n'est jamais fusionné.",
+            "être retenu à tort ; c'est pourquoi il n'est jamais fusionné. Pour une source nationale sans "
+            "département, il repose sur le nom seul : le risque d'homonymie est plus grand.",
+            "Fonds vert (montant engagé) et dotations de la DGCL (subvention attribuée) sont deux dispositifs et deux "
+            "notions de montant : ils sont montrés côte à côte, jamais additionnés ; aucun ne dit ce qui a été payé.",
+            "Les délibérations publiées sont comptées, sans montant : leur nombre dépend de ce que chaque collectivité "
+            "choisit de publier en données ouvertes.",
         ],
         "recherche_publique": RECHERCHE_PUBLIQUE,
     }

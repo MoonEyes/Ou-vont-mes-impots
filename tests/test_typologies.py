@@ -119,12 +119,15 @@ def test_lecture_xlsx_sans_feuille_de_styles():
 
 
 def test_croisements_predefinis_meme_annee():
-    """Règle 13 : chaque croisement porte sur deux grandeurs de la même année ; liste fermée de 6 à 10."""
-    assert 6 <= len(ty.CROISEMENTS) <= 10
-    ids = [c["id"] for c in ty.CROISEMENTS]
+    """Règle 13 : chaque croisement porte sur deux grandeurs de la même année ; liste fermée de 6 à 14 (huit de la
+    première liste, au plus six ajoutés)."""
+    tous = ty.CROISEMENTS + ty.CROISEMENTS_DEP
+    assert 6 <= len(tous) <= 14
+    ids = [c["id"] for c in tous]
     assert len(set(ids)) == len(ids)
-    for c in ty.CROISEMENTS:
-        vx, vy = ty.VARIABLES[c["x"]], ty.VARIABLES[c["y"]]
+    variables = {**ty.VARIABLES, **ty.VARIABLES_DEP}
+    for c in tous:
+        vx, vy = variables[c["x"]], variables[c["y"]]
         assert vx["annee"] == vy["annee"] == c["annee"], c["id"]
         assert c["x"] != c["y"]
         assert str(c["annee"]) in c["titre"]
@@ -147,9 +150,10 @@ def _index():
 
 def test_index_liste_fermee_et_fichiers():
     idx = _index()
-    assert [c["id"] for c in idx["croisements"]] == [c["id"] for c in ty.CROISEMENTS]
+    tous = ty.CROISEMENTS + ty.CROISEMENTS_DEP
+    assert [c["id"] for c in idx["croisements"]] == [c["id"] for c in tous]
     publies = sorted(p.stem for p in (DOSSIER / "croisements").glob("*.json"))
-    assert publies == sorted(c["id"] for c in ty.CROISEMENTS)      # aucun croisement hors de la liste
+    assert publies == sorted(c["id"] for c in tous)      # aucun croisement hors de la liste
     assert idx["avertissement"] == ty.AVERTISSEMENT
     assert "ne dit pas que l'un explique l'autre" in idx["avertissement"]
     assert "moyennes de communes, pas d'habitants" in idx["avertissement"]
@@ -170,12 +174,22 @@ def test_croisements_publies():
     for c in idx["croisements"]:
         d = json.loads((DOSSIER / c["fichier"]).read_text(encoding="utf-8"))
         assert d["x"]["annee"] == d["y"]["annee"] == d["annee"] == c["annee"]
-        assert d["statut"] == "calculé par le site" and d["methode"] and d["avertissement"] == ty.AVERTISSEMENT
+        dep = d.get("niveau") == "departement"
+        assert d["statut"] == "calculé par le site" and d["methode"]
+        assert d["avertissement"] == (ty.AVERTISSEMENT_DEP if dep else ty.AVERTISSEMENT)
         assert not {k for k in _cles(d) if re.search(r"coef|regress|correl|pente|r2", k)}
-        assert set(d["facettes"]) == {"densite", "strate", "aav"}     # vue par case toujours avec l'ensemble
-        assert d["ensemble"]["n"] == d["communes"]
+        # vue par case toujours avec l'ensemble
+        assert set(d["facettes"]) == ({"strate_departement"} if dep else {"densite", "strate", "aav"})
+        n = d["territoires_croises"] if dep else d["communes"]
+        assert d["ensemble"]["n"] == n
+        if dep:
+            croises = {k for k, t in d["territoires"].items() if t["x"] is not None and t["y"] is not None}
+            assert len(croises) == n
+            for k, t in d["territoires"].items():
+                for axe in ("x", "y"):
+                    assert (t[axe] is None) == bool(t.get("motifs", {}).get(d[axe]["variable"])), (k, axe)
         for fac in d["facettes"].values():
-            assert sum(cs["n"] for cs in fac["cases"]) + fac["communes_sans_case"] == d["communes"]
+            assert sum(cs["n"] for cs in fac["cases"]) + fac["communes_sans_case"] == n
             for cs in fac["cases"]:
                 if cs["n"] < d["n_min"]:
                     assert cs["x"] is None and cs["y"] is None
@@ -183,7 +197,8 @@ def test_croisements_publies():
                     assert (b["y"] is None) == (b["n"] < d["n_min"])
                     if b["y"]:
                         assert b["y"] == sorted(b["y"])
-        assert len(d["bandes_bornes"]) == ty.N_BANDES + 1 and d["bandes_bornes"] == sorted(d["bandes_bornes"])
+        assert len(d["bandes_bornes"]) == (ty.N_BANDES_DEP if dep else ty.N_BANDES) + 1
+        assert d["bandes_bornes"] == sorted(d["bandes_bornes"])
 
 
 def test_communes_null_avec_motif():
@@ -208,3 +223,21 @@ def test_strates_controlees():
     assert idx["controles"]["ofgl"]["ecarts_euros_par_habitant"]["nombre"] == 0
     assert idx["strates_ofgl"]["statut"] == "calculé par le site"
     assert {c["code"] for c in idx["facettes"]["strate"]["cases"]} == set(ty.STRATES_OFGL)
+
+
+def test_par_habitant_meme_annee_population_de_l_exercice():
+    ligne = {"depenses_totales": (100.0, 1000.0, 10.0), "dgf": (5.0, 50.0, 10.0)}
+    assert ty.par_habitant(250.0, ligne) == 25.0
+    assert ty.par_habitant(None, ligne) is None
+    assert ty.par_habitant(250.0, {}) is None
+
+
+def test_nouvelles_variables_documentees():
+    for v in ("equipement_paye_hab_2023", "dotations_etat_hab_2024", "impot_revenu_moyen_foyer_2023",
+              "produit_fb_commune_hab_2023"):
+        x = ty.VARIABLES[v]
+        assert x["statut"] == ty.STATUT_CALCULE and x["methode"] and x["source"] in ty.SOURCES
+    for v in ty.VARIABLES_DEP.values():
+        assert v["niveau"] == "departement" and v["source"] in ty.SOURCES
+    idx = _index()
+    assert idx["controles"]["dotations_2024"]["non_nommes"] == 0   # le 0 d'une commune sans projet est sûr

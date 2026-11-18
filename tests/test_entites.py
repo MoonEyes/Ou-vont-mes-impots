@@ -76,6 +76,35 @@ def test_rapprochement_splink_probable_seulement_si_nom_identique():
     assert not [x for x in p if x["cle_g"] == "g3"]  # autre département : jamais comparé
 
 
+def test_rapprochement_national_par_premier_mot_jamais_avec_un_departement():
+    pytest.importorskip("splink")
+    nn = entites.normaliser
+    g = [{"id": "n1", "nom_norm": nn("SOCIETE EDITRICE DU MONDE"), "departement": None,
+          "bloc": "mot:" + nn("SOCIETE EDITRICE DU MONDE").split()[0]},
+         {"id": "n2", "nom_norm": nn("SIPA"), "departement": None, "bloc": "mot:SIPA"},
+         {"id": "d1", "nom_norm": nn("SIPA"), "departement": "35"}]
+    d = [{"id": "433891850|*", "nom_norm": nn("SOCIETE EDITRICE DU MONDE"), "departement": None,
+          "bloc": "mot:SOCIETE"},
+         {"id": "111111111|*", "nom_norm": nn("SIPA"), "departement": None, "bloc": "mot:SIPA"},
+         {"id": "222222222|75", "nom_norm": nn("SOCIETE EDITRICE DU MONDE"), "departement": "75"}]
+    p = entites.rapprocher(g, d)
+    paires = {(x["cle_g"], x["cle_d"]) for x in p if x["probabilite"] >= entites.SEUIL_PROBABLE}
+    assert paires == {("n1", "433891850|*"), ("n2", "111111111|*")}
+    # un sigle d'un seul mot n'est jamais retenu comme probable pour une source nationale (règle de produire)
+    assert len(g[1]["nom_norm"].split()) < entites.MOTS_MIN_NATIONAL
+    assert not [x for x in p if x["cle_g"] == "d1"]  # ligne avec département : jamais comparée au blocage national
+
+
+def test_nouvelles_sources_decrites():
+    for c in ("fonds_vert", "dotations_investissement", "deliberations", "presse_groupes", "ditp_itn7"):
+        assert c in entites.CANAUX
+        assert entites.CANAUX[c]["page"] in entites.ROUTES_CONNUES | {None}
+    assert entites.NOTIONS["deliberations_publiees"]["sens"] == "mention"
+    relus = " ".join(x["chemins_source"] for x in entites.NON_RELUS)
+    for chemin in ("subv_fonds_vert", "sport/federations.json", "agriculture/", "performance/"):
+        assert chemin in relus
+
+
 # --- Fichiers publiés --------------------------------------------------------------------------------------------
 
 if not (DOSSIER / "index.json").exists():
@@ -161,7 +190,9 @@ def test_recherche_retrouve_chaque_fiche():
     for s, f in sorted(FICHES.items())[::97]:  # échantillon régulier
         mots = [m for m in entites.mots_recherche(f["denomination"]) if len(m) >= 2 and m.upper() not in entites.MOTS_VIDES
                 and m not in frequents]
-        assert mots, s
+        if not mots:  # nom sans mot de deux lettres (« E.M.A ») : fiche trouvée par son SIREN
+            assert not [m for m in entites.mots_recherche(f["denomination"]) if len(m) >= 2], s
+            continue
         rel = fichier_de(mots[0])
         assert rel, (s, mots[0])
         if rel not in contenus:
@@ -179,3 +210,25 @@ def test_recherche_globale_sous_ensemble():
     assert len(g["entrees"]) <= entites.RECHERCHE_GLOBALE_MAX
     for s, nom, n in g["entrees"]:
         assert s in FICHES and FICHES[s]["denomination"] == nom and len(FICHES[s]["canaux"]) == n >= 2
+
+
+def test_fonds_vert_jamais_relu_deux_fois():
+    canaux = {c["id"]: c for c in INDEX["canaux"]}
+    if not canaux["fonds_vert"]["lignes"]:
+        pytest.skip("Fonds vert absent")
+    for f in FICHES.values():
+        for b in f["recoit"]:
+            if b["canal"] == "subventions":
+                assert all("subv_fonds_vert" not in x for x in b["fichiers"])
+
+
+def test_mentions_sans_montant_et_probables_nationaux_sans_departement():
+    for s, f in FICHES.items():
+        for b in f["autres"]:
+            if b["notion"] == "deliberations_publiees":
+                assert all(v[1] is None for x in b["series"] for v in x["valeurs"]), s
+        for p in f.get("probables", []):
+            if p["canal"] == "presse_groupes":
+                assert p["departement"] is None and len(entites.normaliser(p["nom_publie"]).split()) >= 2, s
+            else:
+                assert p["departement"], s

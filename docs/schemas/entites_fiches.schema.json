@@ -32,7 +32,7 @@
     "probable": {"type": "object",
       "properties": {
         "canal": {"type": "string"}, "notion": {"type": "string"}, "nom_publie": {"type": "string"},
-        "departement": {"type": "string"}, "score": {"type": "number", "minimum": 0, "maximum": 1},
+        "departement": {"type": ["string", "null"]}, "score": {"type": "number", "minimum": 0, "maximum": 1},
         "decision": {"const": "probable"}, "precision": {"type": "string"},
         "lien": {"type": ["string", "null"]}, "annee": {"type": ["integer", "null"]}},
       "required": ["canal", "notion", "nom_publie", "departement", "score", "decision", "precision"], "additionalProperties": false},

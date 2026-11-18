@@ -27,6 +27,9 @@ Entrées :
       publiés au RAP 2025 sous le code d'un indicateur absent des documents 2025
   data/lake/performance/performance_ditp_barometre/ : meta_indicateurs.csv, meta_chantiers.csv, dict-territoires.csv,
       ind-<n>.csv (un fichier par indicateur)
+  site/data/numerique_etat/panorama/projets.json (étape numerique_etat, lecture seule) : grands projets numériques dont
+      le financement publié cite un programme, reliés à la fiche du programme (coût estimé publié, sans total ni
+      rapport) ; site/data/application_lois/lois_finances.json n'est pas relié : publié par loi, jamais par programme
 
 Sorties (site/data/performance/, contrat docs/contrat_interface.md, schémas docs/schemas/performance_*) :
   index.json                      présentation, sources, missions et programmes, règles, limites
@@ -310,6 +313,40 @@ CORR_METHODE = (
     "y a remplacement. `rapprochement` compte les lignes rattachées par chaque méthode.")
 
 
+NUMERIQUE = SITE / "numerique_etat" / "panorama" / "projets.json"
+LOIS_FINANCES = SITE / "application_lois" / "lois_finances.json"
+LECTURE_NUMERIQUE = (
+    "Grands projets numériques de l'État dont le financement publié par la DINUM cite ce programme (panorama des "
+    "grands projets numériques), édition par édition : coût estimé total du projet tel que publié (toutes années et "
+    "tous financeurs confondus), jamais un montant dépensé dans l'année. Un projet financé par plusieurs programmes "
+    "figure sous chacun avec son coût entier : la source ne le répartit pas. Aucun total, aucun rapport aux crédits "
+    "ni aux indicateurs.")
+
+
+def grands_projets_par_programme() -> tuple[dict[str, list[dict]], dict]:
+    """Projets du panorama de la DINUM qui citent chaque programme, avec la dernière édition de chaque année où le
+    programme est cité et le coût estimé publié dans cette édition (null avec sa mention, jamais 0)."""
+    if not NUMERIQUE.exists():
+        return {}, {}
+    d = lire_json(NUMERIQUE)
+    out: dict[str, list[dict]] = {}
+    for pr in sorted(d.get("projets", []), key=lambda x: x["id"]):
+        ratt = {x["programme"]: x.get("rattachement") for x in pr.get("programmes") or []}
+        par_prog: dict[str, dict[int, dict]] = {}
+        for r in sorted(pr.get("releves", []), key=lambda r: r["edition"]):
+            for prog in r.get("programmes") or []:
+                an = int(r["edition"][:4])
+                par_prog.setdefault(prog, {})[an] = {"annee": an, "edition": r["edition"], "cout_meur": r.get("cout_meur"),
+                                                     "cout_mention": r.get("cout_mention"), "phase": r.get("phase")}
+        for prog, ans in par_prog.items():
+            out.setdefault(prog, []).append({
+                "id": pr["id"], "nom": pr["nom"], "ministere": pr.get("ministere_nom"),
+                "rattachement": ratt.get(prog), "editions": [ans[a] for a in sorted(ans)]})
+    meta = {"source": d.get("source"), "millesime": d.get("millesime"), "fichier": "numerique_etat/panorama/projets.json",
+            "page": "/explorer/numerique-etat", "avertissement": d.get("avertissement")}
+    return out, meta
+
+
 def construire_programmes(collecte_le: str) -> tuple[dict, dict, dict]:
     """(fichiers programmes, correspondance (résumé), résumé pour l'index)."""
     idx = lire_json(SITE / "realisations" / "index.json")
@@ -318,6 +355,7 @@ def construire_programmes(collecte_le: str) -> tuple[dict, dict, dict]:
     url_par_lib = {v["libelle"]: url_source(v["source"]) for v in sources_perf.values()}
     autres = autres_credits()
     rap = rap2025_par_code()
+    projets_num, meta_num = grands_projets_par_programme()
     fichiers, resume, par_prog = {}, [], []
     comptes = {"series": 0, "libelle_modifie": 0, "absent_des_documents_2025": 0, "code_encore_au_rap_2025": 0}
     for prog in sorted(idx["programmes"]):
@@ -359,6 +397,10 @@ def construire_programmes(collecte_le: str) -> tuple[dict, dict, dict]:
                         "rien de publié pour cette année."),
             "series": series,
             "correspondance": corr,
+            "grands_projets_numeriques": ({"lecture": LECTURE_NUMERIQUE, "unite": "millions d'euros (coût estimé "
+                                           "publié)", "source": meta_num["source"], "millesime": meta_num["millesime"],
+                                           "fichier": meta_num["fichier"], "page": meta_num["page"],
+                                           "projets": projets_num[prog]} if projets_num.get(prog) else None),
             "note": None if inds else (r["resultats_mesures"].get("note") or
                                         "Aucun indicateur de performance publié pour ce programme."),
         }
@@ -387,7 +429,9 @@ def construire_programmes(collecte_le: str) -> tuple[dict, dict, dict]:
         "programmes": par_prog,
     }
     return fichiers, correspondance, {"programmes": resume, "sources": url_par_lib, "ordre_sources": ordre,
-                                      "comptes": comptes}
+                                      "comptes": comptes,
+                                      "comptes_numerique": sum(1 for f in fichiers.values()
+                                                               if f["grands_projets_numeriques"])}
 
 
 # --- baromètre de la DITP ------------------------------------------------------------------------------------------
@@ -510,6 +554,19 @@ def construire_index(res: dict, corr: dict, baro: dict, collecte_le: str) -> dic
         "regles": REGLES, "limites": LIMITES, "recherche_publique": RECHERCHE_PUBLIQUE,
         "sources_performance": res["sources"],
         "miroirs_data_gouv": {"RAP 2025": URL_RAP2025_DG, "PAP 2025": URL_PAP2025_DG},
+        "liens_par_programme": {
+            "grands_projets_numeriques": {
+                "fichier": "numerique_etat/panorama/projets.json", "relie": True,
+                "regle": "relié quand le financement publié d'un projet cite le numéro du programme (ou son intitulé "
+                         "exact), édition par édition : champ `grands_projets_numeriques` de "
+                         "performance/programmes/<programme>.json ; coût estimé publié, sans total ni rapport",
+                "programmes": res["comptes_numerique"]},
+            "application_des_lois_de_finances": {
+                "fichier": "application_lois/lois_finances.json", "page": "/decisions/application-des-lois",
+                "relie": False,
+                "motif": "le baromètre de l'application des lois publie ses mesures par loi et par article, jamais "
+                         "par programme du budget : rattacher une loi de finances à un programme serait une "
+                         "attribution par déduction (règle du chiffre calculé), non publiée"}},
         "non_exploites": [
             {"source": "Rapports d'évaluation des politiques de sécurité sociale (REPSS)", "url": URL_REPSS,
              "motif": "rapports en PDF ; données des graphiques en classeurs (un onglet par graphique, sans colonnes "
