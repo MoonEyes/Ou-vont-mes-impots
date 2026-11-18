@@ -1,0 +1,549 @@
+{
+ "millesime": "Code officiel geographique en vigueur (geo.api.gouv.fr), population municipale INSEE",
+ "source": "geo.api.gouv.fr (INSEE, COG et populations legales ; rattachement communes > EPCI > departement > region)",
+ "departement": {
+  "code": "69",
+  "nom": "Rhône"
+ },
+ "region": {
+  "code": "84",
+  "nom": "Auvergne-Rhône-Alpes"
+ },
+ "communes": {
+  "69001": {
+   "nom": "Affoux",
+   "population": 398,
+   "siren": "216900019",
+   "epci": "200040566",
+   "departement": "69",
+   "region": "84"
+  },
+  "69029": {
+   "nom": "Bron",
+   "population": 42982,
+   "siren": "216900290",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69123": {
+   "nom": "Lyon",
+   "population": 519127,
+   "siren": "216901231",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69180": {
+   "nom": "Saint-André-la-Côte",
+   "population": 269,
+   "siren": "216901801",
+   "epci": "246900740",
+   "departement": "69",
+   "region": "84"
+  },
+  "69181": {
+   "nom": "Saint-Appolinaire",
+   "population": 236,
+   "siren": "216901819",
+   "epci": "200040566",
+   "departement": "69",
+   "region": "84"
+  },
+  "69182": {
+   "nom": "Saint-Bonnet-des-Bruyères",
+   "population": 368,
+   "siren": "216901827",
+   "epci": "200067817",
+   "departement": "69",
+   "region": "84"
+  },
+  "69183": {
+   "nom": "Saint-Bonnet-le-Troncy",
+   "population": 307,
+   "siren": "216901835",
+   "epci": "200040566",
+   "departement": "69",
+   "region": "84"
+  },
+  "69184": {
+   "nom": "Sainte-Catherine",
+   "population": 969,
+   "siren": "216901843",
+   "epci": "200066587",
+   "departement": "69",
+   "region": "84"
+  },
+  "69186": {
+   "nom": "Saint-Clément-de-Vers",
+   "population": 206,
+   "siren": "216901868",
+   "epci": "200067817",
+   "departement": "69",
+   "region": "84"
+  },
+  "69187": {
+   "nom": "Saint-Clément-les-Places",
+   "population": 684,
+   "siren": "216901876",
+   "epci": "200066587",
+   "departement": "69",
+   "region": "84"
+  },
+  "69188": {
+   "nom": "Saint-Clément-sur-Valsonne",
+   "population": 900,
+   "siren": "216901884",
+   "epci": "200040566",
+   "departement": "69",
+   "region": "84"
+  },
+  "69189": {
+   "nom": "Sainte-Colombe",
+   "population": 2036,
+   "siren": "216901892",
+   "epci": "200077014",
+   "departement": "69",
+   "region": "84"
+  },
+  "69190": {
+   "nom": "Sainte-Consorce",
+   "population": 2154,
+   "siren": "216901900",
+   "epci": "246900724",
+   "departement": "69",
+   "region": "84"
+  },
+  "69191": {
+   "nom": "Saint-Cyr-au-Mont-d'Or",
+   "population": 6327,
+   "siren": "216901918",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69192": {
+   "nom": "Saint-Cyr-le-Chatoux",
+   "population": 154,
+   "siren": "216901926",
+   "epci": "200040590",
+   "departement": "69",
+   "region": "84"
+  },
+  "69193": {
+   "nom": "Saint-Cyr-sur-le-Rhône",
+   "population": 1286,
+   "siren": "216901934",
+   "epci": "200077014",
+   "departement": "69",
+   "region": "84"
+  },
+  "69194": {
+   "nom": "Saint-Didier-au-Mont-d'Or",
+   "population": 7435,
+   "siren": "216901942",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69196": {
+   "nom": "Saint-Didier-sur-Beaujeu",
+   "population": 603,
+   "siren": "216901967",
+   "epci": "200067817",
+   "departement": "69",
+   "region": "84"
+  },
+  "69197": {
+   "nom": "Saint-Étienne-des-Oullières",
+   "population": 2264,
+   "siren": "216901975",
+   "epci": "200040590",
+   "departement": "69",
+   "region": "84"
+  },
+  "69198": {
+   "nom": "Saint-Étienne-la-Varenne",
+   "population": 784,
+   "siren": "216901983",
+   "epci": "200067817",
+   "departement": "69",
+   "region": "84"
+  },
+  "69199": {
+   "nom": "Saint-Fons",
+   "population": 19285,
+   "siren": "216901991",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69200": {
+   "nom": "Saint-Forgeux",
+   "population": 1544,
+   "siren": "216902007",
+   "epci": "200040566",
+   "departement": "69",
+   "region": "84"
+  },
+  "69201": {
+   "nom": "Sainte-Foy-l'Argentière",
+   "population": 1312,
+   "siren": "216902015",
+   "epci": "200066587",
+   "departement": "69",
+   "region": "84"
+  },
+  "69202": {
+   "nom": "Sainte-Foy-lès-Lyon",
+   "population": 21692,
+   "siren": "216902023",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69203": {
+   "nom": "Saint-Genis-l'Argentière",
+   "population": 986,
+   "siren": "216902031",
+   "epci": "200066587",
+   "departement": "69",
+   "region": "84"
+  },
+  "69204": {
+   "nom": "Saint-Genis-Laval",
+   "population": 21212,
+   "siren": "216902049",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69205": {
+   "nom": "Saint-Genis-les-Ollières",
+   "population": 5439,
+   "siren": "216902056",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69206": {
+   "nom": "Saint-Georges-de-Reneins",
+   "population": 4677,
+   "siren": "216902064",
+   "epci": "200067817",
+   "departement": "69",
+   "region": "84"
+  },
+  "69207": {
+   "nom": "Saint-Germain-au-Mont-d'Or",
+   "population": 3124,
+   "siren": "216902072",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69208": {
+   "nom": "Saint-Germain-Nuelles",
+   "population": 2246,
+   "siren": "200034346",
+   "epci": "246900625",
+   "departement": "69",
+   "region": "84"
+  },
+  "69209": {
+   "nom": "Saint-Igny-de-Vers",
+   "population": 593,
+   "siren": "216902098",
+   "epci": "200067817",
+   "departement": "69",
+   "region": "84"
+  },
+  "69212": {
+   "nom": "Saint-Jean-des-Vignes",
+   "population": 486,
+   "siren": "216902122",
+   "epci": "200040574",
+   "departement": "69",
+   "region": "84"
+  },
+  "69214": {
+   "nom": "Saint-Jean-la-Bussière",
+   "population": 1163,
+   "siren": "216902148",
+   "epci": "200040566",
+   "departement": "69",
+   "region": "84"
+  },
+  "69215": {
+   "nom": "Saint-Julien",
+   "population": 969,
+   "siren": "216902155",
+   "epci": "200040590",
+   "departement": "69",
+   "region": "84"
+  },
+  "69216": {
+   "nom": "Saint-Julien-sur-Bibost",
+   "population": 622,
+   "siren": "216902163",
+   "epci": "246900625",
+   "departement": "69",
+   "region": "84"
+  },
+  "69217": {
+   "nom": "Saint-Just-d'Avray",
+   "population": 741,
+   "siren": "216902171",
+   "epci": "200040566",
+   "departement": "69",
+   "region": "84"
+  },
+  "69218": {
+   "nom": "Saint-Lager",
+   "population": 1056,
+   "siren": "216902189",
+   "epci": "200067817",
+   "departement": "69",
+   "region": "84"
+  },
+  "69219": {
+   "nom": "Saint-Laurent-d'Agny",
+   "population": 2111,
+   "siren": "216902197",
+   "epci": "246900740",
+   "departement": "69",
+   "region": "84"
+  },
+  "69220": {
+   "nom": "Saint-Laurent-de-Chamousset",
+   "population": 2017,
+   "siren": "216902205",
+   "epci": "200066587",
+   "departement": "69",
+   "region": "84"
+  },
+  "69225": {
+   "nom": "Saint-Marcel-l'Éclairé",
+   "population": 575,
+   "siren": "216902254",
+   "epci": "200040566",
+   "departement": "69",
+   "region": "84"
+  },
+  "69227": {
+   "nom": "Saint-Martin-en-Haut",
+   "population": 3942,
+   "siren": "216902270",
+   "epci": "200066587",
+   "departement": "69",
+   "region": "84"
+  },
+  "69229": {
+   "nom": "Saint-Nizier-d'Azergues",
+   "population": 774,
+   "siren": "216902296",
+   "epci": "200040566",
+   "departement": "69",
+   "region": "84"
+  },
+  "69230": {
+   "nom": "Sainte-Paule",
+   "population": 338,
+   "siren": "216902304",
+   "epci": "200040574",
+   "departement": "69",
+   "region": "84"
+  },
+  "69231": {
+   "nom": "Saint-Pierre-la-Palud",
+   "population": 2616,
+   "siren": "216902312",
+   "epci": "246900625",
+   "departement": "69",
+   "region": "84"
+  },
+  "69233": {
+   "nom": "Saint-Romain-au-Mont-d'Or",
+   "population": 1247,
+   "siren": "216902338",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69234": {
+   "nom": "Saint-Romain-de-Popey",
+   "population": 1725,
+   "siren": "216902346",
+   "epci": "200040566",
+   "departement": "69",
+   "region": "84"
+  },
+  "69235": {
+   "nom": "Saint-Romain-en-Gal",
+   "population": 2001,
+   "siren": "216902353",
+   "epci": "200077014",
+   "departement": "69",
+   "region": "84"
+  },
+  "69236": {
+   "nom": "Saint-Romain-en-Gier",
+   "population": 600,
+   "siren": "216902361",
+   "epci": "200077014",
+   "departement": "69",
+   "region": "84"
+  },
+  "69238": {
+   "nom": "Saint-Symphorien-sur-Coise",
+   "population": 3785,
+   "siren": "216902387",
+   "epci": "200066587",
+   "departement": "69",
+   "region": "84"
+  },
+  "69239": {
+   "nom": "Saint-Vérand",
+   "population": 1164,
+   "siren": "216902395",
+   "epci": "200040574",
+   "departement": "69",
+   "region": "84"
+  },
+  "69240": {
+   "nom": "Saint-Vincent-de-Reins",
+   "population": 635,
+   "siren": "216902403",
+   "epci": "200040566",
+   "departement": "69",
+   "region": "84"
+  },
+  "69259": {
+   "nom": "Vénissieux",
+   "population": 65502,
+   "siren": "216902593",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69266": {
+   "nom": "Villeurbanne",
+   "population": 163684,
+   "siren": "216902668",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69286": {
+   "nom": "Rillieux-la-Pape",
+   "population": 31389,
+   "siren": "216902866",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69287": {
+   "nom": "Saint-Bonnet-de-Mure",
+   "population": 6984,
+   "siren": "216902874",
+   "epci": "246900575",
+   "departement": "69",
+   "region": "84"
+  },
+  "69288": {
+   "nom": "Saint-Laurent-de-Mure",
+   "population": 5791,
+   "siren": "216902882",
+   "epci": "246900575",
+   "departement": "69",
+   "region": "84"
+  },
+  "69289": {
+   "nom": "Saint-Pierre-de-Chandieu",
+   "population": 4616,
+   "siren": "216902890",
+   "epci": "246900575",
+   "departement": "69",
+   "region": "84"
+  },
+  "69290": {
+   "nom": "Saint-Priest",
+   "population": 49229,
+   "siren": "216902908",
+   "epci": "200046977",
+   "departement": "69",
+   "region": "84"
+  },
+  "69291": {
+   "nom": "Saint-Symphorien-d'Ozon",
+   "population": 6186,
+   "siren": "216902916",
+   "epci": "246900765",
+   "departement": "69",
+   "region": "84"
+  }
+ },
+ "epci": {
+  "200040566": {
+   "nom": "CA de l'Ouest Rhodanien",
+   "population": 50935,
+   "departement_siege": "69"
+  },
+  "200040574": {
+   "nom": "CC Beaujolais Pierres Dorées",
+   "population": 56155,
+   "departement_siege": "69"
+  },
+  "200040590": {
+   "nom": "CA Villefranche Beaujolais Saône",
+   "population": 73717,
+   "departement_siege": "01,69"
+  },
+  "200046977": {
+   "nom": "Métropole de Lyon",
+   "population": 1433613,
+   "departement_siege": "69"
+  },
+  "200066587": {
+   "nom": "CC des Monts du Lyonnais",
+   "population": 35237,
+   "departement_siege": "42,69"
+  },
+  "200067817": {
+   "nom": "CC Saône-Beaujolais",
+   "population": 45642,
+   "departement_siege": "69"
+  },
+  "200077014": {
+   "nom": "CA Vienne Condrieu",
+   "population": 94864,
+   "departement_siege": "38,69"
+  },
+  "246900575": {
+   "nom": "CC de l'Est Lyonnais (CCEL)",
+   "population": 42457,
+   "departement_siege": "69"
+  },
+  "246900625": {
+   "nom": "CC du Pays de l'Arbresle (CCPA)",
+   "population": 38945,
+   "departement_siege": "69"
+  },
+  "246900724": {
+   "nom": "CC des Vallons du Lyonnais (CCVL)",
+   "population": 32088,
+   "departement_siege": "69"
+  },
+  "246900740": {
+   "nom": "CC du Pays Mornantais (COPAMO)",
+   "population": 29758,
+   "departement_siege": "69"
+  },
+  "246900765": {
+   "nom": "CC du Pays de l'Ozon",
+   "population": 27623,
+   "departement_siege": "69"
+  }
+ },
+ "note": "Extrait de site/data/local/geo/69.json (communes « Saint- » et quelques autres) pour les tests de la recherche."
+}

@@ -117,7 +117,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const missions = [...new Set(ops.map((o) => o.mission_chef_de_file).filter((x): x is string => !!x))].sort((a, b) => a.localeCompare(b, 'fr'))
   const statuts = [...new Set(ops.map((o) => o.statut).filter((x): x is string => !!x))].sort()
   const p = params.get('p') ?? ''
-  const etat = { mission: params.get('mission') ?? '', categorie: params.get('categorie') ?? '', q: '', tri: 'scsp', page: 1 }
+  const etat = { mission: params.get('mission') ?? '', categorie: params.get('categorie') ?? '', q: params.get('q') ?? '', tri: 'scsp', page: 1 }
 
   cible.innerHTML = `
 <h1>Les opérateurs de l’État</h1>
@@ -136,7 +136,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 <form id="filtres-op" class="carte">
   ${p ? `<p>Opérateurs financés par le programme ${h(p)} · <a href="${lien('/explorer/operateurs')}">voir tous les opérateurs</a></p>` : ''}
   <label for="op-q">Chercher un opérateur</label>
-  <input id="op-q" type="search" autocomplete="off" />
+  <input id="op-q" type="search" autocomplete="off" value="${h(etat.q)}" />
   <label for="op-mission">Mission</label>
   <select id="op-mission"><option value="">Toutes</option>${missions.map((m) => `<option${m === etat.mission ? ' selected' : ''}>${h(m)}</option>`).join('')}</select>
   <label for="op-categorie">Catégorie</label>

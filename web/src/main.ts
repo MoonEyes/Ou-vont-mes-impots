@@ -32,6 +32,8 @@ function demarrer() {
     const vers = (e as FocusEvent).relatedTarget as Node | null
     if (vers && !document.getElementById('navigation')!.contains(vers)) fermer()
   })
+  // Champ « Rechercher » de l'en-tête : suggestions et page de résultats (src/composants/recherche.ts, chargé à part).
+  import('./composants/recherche').then((m) => m.brancherEntete()).catch((e) => console.error(e))
   // Tableaux insérés après le rendu (fiches dépliées, pagination) : rendus atteignables au clavier.
   if (typeof MutationObserver !== 'undefined') new MutationObserver(() => rendreDefilables(main)).observe(main, { childList: true, subtree: true })
   const racine = document.documentElement.dataset.racine

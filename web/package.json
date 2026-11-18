@@ -5,7 +5,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "copier-donnees": "node scripts/copier-donnees.mjs",
+    "copier-donnees": "node scripts/copier-donnees.mjs && node scripts/index-recherche.mjs",
     "dev": "npm run copier-donnees && vite",
     "build": "npm run copier-donnees && tsc --noEmit && vite build && node scripts/prerendre.mjs",
     "prerendre": "node scripts/prerendre.mjs",
