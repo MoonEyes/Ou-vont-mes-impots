@@ -82,7 +82,8 @@ ${
     : ''
 }
 ${n.id === 'racine' && r.avertissement ? `<p class="avertissement">${h(r.avertissement)}</p>` : ''}
-<p class="aide">Deux comptabilités, jamais additionnées : les comptes des organismes (droits constatés) et les comptes de la protection sociale de la DREES (prestations, tous financeurs).</p>`
+<p class="aide">Deux comptabilités, jamais additionnées : les comptes des organismes (droits constatés) et les comptes de la protection sociale de la DREES (prestations, tous financeurs).</p>
+<p class="liens-sortie"><a href="#/explorer/prestations">Les prestations versées aux ménages : montants par an, foyers, financeurs et départements</a></p>`
 }
 
 export function rendre(cible: HTMLElement, params: URLSearchParams) {
