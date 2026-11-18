@@ -7,10 +7,10 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { viderCache } from '../src/donnees'
-import { glossaire, lisible, nomRapport, premiereAnneeEsve, universitaire } from '../src/ecrans/education_recherche'
+import { glossaire, lisible, nomNiveau, nomRapport, premiereAnneeEsve, universitaire } from '../src/ecrans/education_recherche'
 import { afficher } from '../src/routeur'
 import { ROUTES } from '../src/routes'
-import { entier, eur, eurLisible, md, sur100 } from '../src/util'
+import { entier, eur, eurLisible, md, pct, sur100 } from '../src/util'
 import { attendreQue, monterPage } from './aide-dom'
 
 const RACINE = process.cwd()
@@ -76,7 +76,9 @@ describe('écran éducation et recherche', () => {
     expect(n(main.querySelector('h1')?.textContent)).toBe('L’éducation et la recherche')
     expect(main.querySelector('h1 .picto')).not.toBeNull()
     expect(main.querySelector('.fil-ariane [aria-current=page]')?.getAttribute('href')).toBe(PAGE)
-    expect(texte()).toContain('Ce que versent les familles et les entreprises n’est pas dans les données reprises ici')
+    expect(texte()).toContain('Tu vois aussi la part que paient au départ les familles et les entreprises, et la dépense moyenne par élève ou étudiant')
+    expect(texte()).toContain('La page ne montre pas ce que paie une famille en particulier')
+    expect(texte()).not.toContain('Ce que versent les familles et les entreprises n’est pas dans les données')
     const cofog = lire('cofog.json')
     const gf09 = cofog.fonctions.find((f: { code: string }) => f.code === 'GF09')
     const surlignes = main.querySelectorAll('.surligne')
@@ -107,7 +109,7 @@ describe('écran éducation et recherche', () => {
     expect(texte()).toContain('Les colonnes ne s’additionnent pas')
     expect(texte()).toContain('Les dépenses d’enseignement publiées sont celles de l’État et ses organismes (dont les universités) et des collectivités locales')
     // Chiffres clés par administration : montant, « sur 100 € » de ses dépenses, statut.
-    const cles = Array.from(main.querySelectorAll('.cles li')).map((li) => n(li.textContent))
+    const cles = Array.from(main.querySelectorAll('ul.cles[aria-label="Chiffres clés de l’éducation"] li')).map((li) => n(li.textContent))
     const etat = adm.enfants.find((a: { id: string }) => a.id === 'S1311')
     expect(cles[0]).toContain(n(`${md(fonction('S1311').md)}pour l’enseignement par l’État et ses organismes en ${adm.millesime}, soit ${sur100((fonction('S1311').md / etat.md) * 100)} sur 100 € de leurs dépenses`))
     expect(cles[cles.length - 1]).toContain(n(entier(lire('education_recherche/index.json').totaux.etudiants.etudiants_hors_cpge)))
@@ -124,11 +126,15 @@ describe('écran éducation et recherche', () => {
     expect(texte()).not.toContain('R & D')
   })
 
-  it('collectivités : série par année ; avant la première année publiée, la part enseignement supérieur est « non publié », jamais 0 €', async () => {
+  it('collectivités : série par année ; avant la première année publiée, la part enseignement supérieur et le total sont « non publié », jamais 0 €', async () => {
     await ecran()
     const esr = lire('education_recherche/collectivites_esr.json')
     const debut = premiereAnneeEsve(esr)!
     expect(debut).toBe(2015)
+    // Les données publient l'absence en null (correctif du 18/11/2026), plus en 0.
+    const absentes = esr.national.filter((p: { esve_eur: number | null }) => p.esve_eur === null)
+    expect(absentes.map((p: { annee: number }) => p.annee)).toEqual(esr.national.filter((p: { annee: number }) => p.annee < debut).map((p: { annee: number }) => p.annee))
+    expect(absentes.every((p: { total_eur: number | null }) => p.total_eur === null)).toBe(true)
     const t = tableau('Budgets des collectivités pour la recherche et l’enseignement supérieur')
     expect(t.querySelectorAll('tbody tr')).toHaveLength(esr.national.length)
     for (const p of esr.national) {
@@ -136,9 +142,10 @@ describe('écran éducation et recherche', () => {
       expect(n(cellules[0].textContent)).toBe(p.qualite)
       expect(n(cellules[1].textContent)).toBe(n(eurLisible(p.rt_eur)))
       if (p.annee < debut) {
-        expect(n(cellules[2].textContent), String(p.annee)).toBe('non publié')
-        expect(cellules[2].querySelector('.motif-nonpub')).not.toBeNull()
-        expect(n(cellules[3].textContent)).toBe('–')
+        for (const k of [2, 3]) {
+          expect(n(cellules[k].textContent), `${p.annee} colonne ${k}`).toBe('non publié')
+          expect(cellules[k].querySelector('.motif-nonpub')).not.toBeNull()
+        }
       } else {
         expect(n(cellules[2].textContent)).toBe(n(eurLisible(p.esve_eur)))
         expect(n(cellules[3].textContent)).toBe(n(eurLisible(p.total_eur)))
@@ -148,6 +155,62 @@ describe('écran éducation et recherche', () => {
     expect(texte()).toContain(n(`En ${der.annee} (montants ${der.qualite}s) : ${eurLisible(der.total_eur)}`))
     const types = Array.from(main.querySelectorAll('.barres[aria-label^="Montants"] .nom')).map((x) => n(x.textContent))
     expect(types.sort()).toEqual(Object.values(esr.types_collectivite as Record<string, string>).sort())
+  })
+
+  it('compte de l’éducation : familles et entreprises (parts publiées séparément), dépense intérieure, dépense moyenne par niveau, année provisoire signalée, statut et source', async () => {
+    await ecran()
+    const idx = lire('education_recherche/index.json')
+    const ce = lire('education_recherche/compte_education.json')
+    expect(idx.fichiers.compte_education).toBe('education_recherche/compte_education.json')
+    const t0 = idx.totaux.compte_education
+    // Chiffres attendus du tableur de l'Insee (France, portrait social 2025), 2024 provisoire.
+    expect([t0.annee, t0.provisoire, t0.menages_pct, t0.entreprises_pct, t0.die_md_eur_courants]).toEqual([2024, true, 7.7, 10.3, 197.1])
+    const bloc = main.querySelector('#er-compte')!
+    expect(bloc).not.toBeNull()
+    expect(n(bloc.querySelector('h2')?.textContent)).toBe('Toute la dépense d’éducation, familles et entreprises comprises')
+    expect(n(bloc.textContent)).toContain(n(`En 2024 (provisoire), cette dépense intérieure d’éducation est de ${md(197.1)}, soit ${pct(6.8)} de la richesse produite`))
+    const cles = Array.from(bloc.querySelectorAll('ul.cles li'))
+    expect(cles).toHaveLength(3)
+    expect(n(cles[0].querySelector('strong')?.textContent)).toBe(n(sur100(t0.menages_pct)))
+    expect(n(cles[0].textContent)).toContain('payés au départ par les familles en 2024 (provisoire)')
+    expect(n(cles[1].querySelector('strong')?.textContent)).toBe(n(sur100(t0.entreprises_pct)))
+    expect(n(cles[1].textContent)).toContain('par les entreprises en 2024 (provisoire)')
+    expect(n(cles[2].querySelector('strong')?.textContent)).toBe(n(eur(t0.depense_moyenne_eur)))
+    for (const li of cles) expect(li.querySelector('.badge')?.textContent).toBe('Tracé')
+    // Les deux parts ne sont jamais additionnées.
+    expect(n(bloc.textContent)).not.toContain(n(sur100(t0.menages_pct + t0.entreprises_pct)))
+    expect(n(bloc.textContent)).toContain('le site ne les additionne pas')
+    // Financement initial : une colonne par année publiée, la dernière marquée provisoire ; ligne « dont » présente.
+    const fin = tableau('Part de chaque financeur dans la dépense intérieure d’éducation')
+    const entetes = Array.from(fin.querySelectorAll('thead th')).map((th) => n(th.textContent))
+    expect(entetes).toEqual(['Financeur', ...ce.financement_initial.annees.map((a: number, i: number) => (ce.financement_initial.provisoire[i] ? `${a} (provisoire)` : String(a)))])
+    expect(entetes[entetes.length - 1]).toBe('2024 (provisoire)')
+    const menages = Array.from(ligne(fin, 'Ménages (familles)').querySelectorAll('td')).map((td) => n(td.textContent))
+    expect(menages[menages.length - 1]).toBe(n(pct(7.7)))
+    expect(n(ligne(fin, 'Entreprises').querySelector('td:last-child')?.textContent)).toBe(n(pct(10.3)))
+    expect(ligne(fin, 'dont ministères')).toBeDefined()
+    expect(n(fin.closest('.tableau-defile')!.nextElementSibling?.textContent)).not.toMatch(/controle_somme/)
+    // Dépense moyenne par niveau : chiffres publiés, sigles en toutes lettres.
+    const niv = tableau('Dépense moyenne par élève ou étudiant en 2024 (provisoire)')
+    const val = (debut: string) => n(ligne(niv, debut).querySelector('td')?.textContent)
+    expect(val('Ensemble : premier degré (école)')).toBe(n(eur(9080)))
+    expect(val('Collège')).toBe(n(eur(10450)))
+    expect(val('Lycée général et technologique')).toBe(n(eur(13020)))
+    expect(val('Ensemble : second degré')).toBe(n(eur(11660)))
+    expect(val('Sections de technicien supérieur')).toBe(n(eur(17220)))
+    expect(n(niv.textContent)).not.toMatch(/STS|CPGE|²|³/)
+    expect(niv.querySelectorAll('tbody tr')).toHaveLength(ce.depense_moyenne_par_niveau.niveaux.length)
+    expect(n(bloc.textContent)).toContain('ils ne se comparent pas au montant par étudiant calculé plus bas par le site')
+    // Série 1980-2024 en euros constants, année provisoire signalée.
+    const evo = tableau('Dépense intérieure d’éducation et dépense moyenne par élève ou étudiant, 1980 à 2024')
+    expect(evo.querySelectorAll('tbody tr')).toHaveLength(ce.depense_moyenne_evolution.annees.length)
+    expect(n(evo.querySelector('tbody th')?.textContent)).toBe('2024 (provisoire)')
+    expect(Array.from(ligne(evo, '1980').querySelectorAll('td')).map((td) => n(td.textContent))).toEqual(
+      [n(md(90)), n(pct(6.6)), n(eur(3810)), n(eur(6910)), n(eur(9840)), n(eur(5520))],
+    )
+    expect(n(bloc.querySelector('.source')?.textContent)).toContain('Insee, France, portrait social')
+    expect(n(bloc.querySelector('.source')?.textContent)).toContain('Licence Ouverte 2.0')
+    expect(n(bloc.textContent)).not.toMatch(/(^|\s)0 €/)
   })
 
   it('montant par étudiant : calcul du site signalé (statut approché), formule et limites publiées, rien avant la première année publiée', async () => {
@@ -197,7 +260,7 @@ describe('écran éducation et recherche', () => {
     expect(items[0].querySelector('a')?.getAttribute('href')).toBe('#/decisions/realisations?p=143')
     expect(items[1].querySelector('a')?.getAttribute('href')).toBe('#/decisions/realisations?p=142')
     expect(texte()).not.toMatch(/\b(RAP|PAP|PLR) \d{4}/)
-    expect(texte()).toContain('Pour l’école, le collège, le lycée et l’université, aucun montant par élève ou par étudiant ne figure dans les données reprises par le site.')
+    expect(texte()).toContain('Pour l’école, le collège, le lycée et l’université, les rapports de performances repris par le site ne publient pas de dépense de l’État par élève ou par étudiant. La dépense moyenne de tous les financeurs par élève ou étudiant est donnée plus haut (compte de l’éducation).')
   })
 
   it('lycées : région par défaut, nature des montants, personnes morales seules nommées, liste paginée, non nommés agrégés avec leur motif', async () => {
@@ -270,9 +333,20 @@ describe('écran éducation et recherche', () => {
     expect(noms[0]).toBe(b.etablissements[0][b.colonnes.indexOf('denomination')])
     expect(n(pia.textContent)).toContain('ce montant n’est pas la somme reçue par l’organisme')
     expect(n(pia.textContent)).not.toContain('aide_projets_coordonnes_eur')
+    expect(n(pia.textContent)).toContain('montants non publiés en dernier')
+    expect(n(pia.textContent)).not.toMatch(/\bnull\b/)
     expect(pia.querySelector('.badge')?.textContent).toBe('Approché')
     const cat = Array.from(pia.querySelectorAll('table tbody tr'))
     expect(cat).toHaveLength(b.non_nommes.par_categorie.length)
+    // Catégorie sans projet coordonné : montant null dans les données, « non publié » à l'écran, jamais 0 €, en fin de tableau.
+    const sansMontant = b.non_nommes.par_categorie.filter((k: { aide_projets_coordonnes_eur: number | null }) => k.aide_projets_coordonnes_eur === null)
+    expect(sansMontant.length).toBeGreaterThan(0)
+    for (const k of sansMontant) {
+      const tr = cat.find((x) => n(x.querySelector('th')?.textContent) === k.categorie)!
+      expect(n(tr.querySelector('td:last-child')?.textContent), k.categorie).toBe('non publié')
+      expect(tr.querySelector('td:last-child .motif-nonpub')).not.toBeNull()
+    }
+    expect(n(cat[cat.length - 1].querySelector('td:last-child')?.textContent)).toBe('non publié')
     expect(n(pia.textContent)).toContain('EPIC : établissement public à caractère industriel et commercial')
     expect(n(pia.textContent)).toContain('EPST : établissement public à caractère scientifique et technologique')
     // 2005-2009 : aide par partenaire publiée, statut tracé.
@@ -358,6 +432,7 @@ describe('écran éducation et recherche', () => {
     expect(main.querySelector('.en-cours')).not.toBeNull()
     expect(main.querySelector('.erreur')).toBeNull()
     expect(main.querySelector('a[href^="#/explorer/etat/detail"]')).not.toBeNull()
+    expect(main.querySelector('#er-compte')).toBeNull()
     // Situation des fixtures communes : l'arbre des administrations seul.
     absents = /^data\/(education_recherche\/|cofog\.json)/
     viderCache()
@@ -366,6 +441,7 @@ describe('écran éducation et recherche', () => {
     expect(main.querySelector('.erreur')).toBeNull()
     expect(main.querySelector('.en-cours')).not.toBeNull()
     tableau('Dépenses d’enseignement par niveau et par administration')
+    expect(texte()).toContain('Ce que versent les familles et les entreprises n’est pas dans les données reprises ici')
     absents = null
     viderCache()
   })
@@ -379,7 +455,12 @@ describe('écran éducation et recherche', () => {
     expect(glossaire(['Organismes de type EPST'])).toContain('EPST : ')
     expect(glossaire(['Organismes de type EPST'])).not.toContain('EPS : ')
     expect(glossaire(['Aucun sigle ici'])).toBe('')
+    expect(nomNiveau('STS²')).toBe('Sections de technicien supérieur')
+    expect(nomNiveau('CPGE³')).toBe('Classes préparatoires aux grandes écoles')
+    expect(nomNiveau('Collège')).toBe('Collège')
     expect(lisible('montant (etudiants.json) ; voir beneficiaires/france2030.json')).toBe('montant ; voir France 2030 par bénéficiaire')
     expect(lisible('Valeur null quand le budget manque')).toBe('Valeur absente quand le budget manque')
+    expect(lisible('montant décroissant (montants null en dernier)')).toBe('montant décroissant (montants non publiés en dernier)')
+    expect(lisible('reprises du tableur (compte_education.json). Suite')).toBe('reprises du tableur. Suite')
   })
 })

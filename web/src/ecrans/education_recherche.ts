@@ -1,7 +1,9 @@
 // Éducation et recherche : qui dépense pour chaque niveau d'enseignement et pour la recherche (comptes publics
 // d'Eurostat par fonction), budgets des collectivités pour l'enseignement supérieur et la recherche, montant par
-// étudiant (calcul du site, toujours signalé comme tel), montants par élève publiés par l'État, lycées de trois
-// régions et projets de l'Agence nationale de la recherche (site/data/education_recherche/).
+// étudiant (calcul du site, toujours signalé comme tel), montants par élève publiés par l'État, compte de l'éducation
+// (part des familles et des entreprises, dépense moyenne par élève et par niveau), lycées de trois régions et projets
+// de l'Agence nationale de la recherche (site/data/education_recherche/). Une absence publiée (null) s'affiche
+// « non publié », jamais 0.
 // Deux sources ne sont jamais additionnées. Seuls les organismes que le pipeline a classés personnes morales sont
 // nommés ; les autres restent agrégés. Aucune année n'est écrite ici : elles sont lues dans les fichiers.
 import { partPersonnelle } from '../composants/hub'
@@ -40,11 +42,11 @@ interface SourceEr {
 interface Ecart {
   objet: string
   source: string
-  montant: number
+  montant: number | null
   autre_source: string
-  autre_montant: number
-  ecart: number
-  ecart_pct: number
+  autre_montant: number | null
+  ecart: number | null
+  ecart_pct: number | null
   lecture: string
 }
 interface PointCout {
@@ -57,9 +59,9 @@ interface PointCout {
 interface TotalLycees {
   region: string
   annees: number[]
-  total_eur: number
-  nommes: { nombre: number; montant_eur: number }
-  non_nommes: { nombre: number; montant_eur: number; part_pct: number }
+  total_eur: number | null
+  nommes: { nombre: number; montant_eur: number | null }
+  non_nommes: { nombre: number; montant_eur: number | null; part_pct: number | null }
   nature_des_montants: string
   fichier: string
 }
@@ -67,10 +69,11 @@ interface Index {
   millesime: string
   source: string
   sources: SourceEr[]
+  fichiers?: { compte_education?: string }
   licences?: { note?: string; odbl?: { producteur: string; url_licence: string }[] }
   totaux: {
-    anr_pia_france2030?: { projets: number; aide_eur: number; participations: number }
-    anr_2005_2009?: { projets: number; aide_projets_eur: number; participations: number; aide_partenaires_eur: number }
+    anr_pia_france2030?: { projets: number; aide_eur: number | null; participations: number }
+    anr_2005_2009?: { projets: number; aide_projets_eur: number | null; participations: number; aide_partenaires_eur: number | null }
     lycees?: Record<string, TotalLycees>
     etudiants?: { annee: number; annee_universitaire: string; etudiants_hors_cpge: number }
   }
@@ -85,7 +88,7 @@ interface CollectivitesEsr {
   annees: number[]
   categories: Record<string, string>
   types_collectivite: Record<string, string>
-  national: { annee: number; qualite: string; total_eur: number; rt_eur: number; esve_eur: number; par_type: Record<string, number> }[]
+  national: { annee: number; qualite: string; total_eur: number | null; rt_eur: number | null; esve_eur: number | null; par_type: Record<string, number | null> }[]
   regions: { code: string; nom: string; esve_eur: (number | null)[] }[]
   note?: string
 }
@@ -103,7 +106,7 @@ interface BlocAnrProjets {
   millesime: string
   source: string
   note?: string
-  par_annee: { annee: number; projets: number; aide_eur?: number; aide_projets_eur?: number; aide_partenaires_eur?: number }[]
+  par_annee: { annee: number; projets: number; aide_eur?: number | null; aide_projets_eur?: number | null; aide_partenaires_eur?: number | null }[]
 }
 interface AnrProjets {
   pia_france2030?: BlocAnrProjets
@@ -122,9 +125,9 @@ interface BlocAnrEtab {
     organismes: number
     participations: number
     motifs?: Record<string, number>
-    par_categorie: { categorie: string; organismes: number; participations: number; aide_projets_coordonnes_eur?: number; aide_allouee_eur?: number }[]
+    par_categorie: { categorie: string; organismes: number; participations: number; aide_projets_coordonnes_eur?: number | null; aide_allouee_eur?: number | null }[]
   }
-  total: Record<string, number>
+  total: Record<string, number | null>
 }
 interface AnrEtab {
   pia_france2030?: BlocAnrEtab
@@ -140,12 +143,12 @@ interface Lycees {
   colonnes: string[]
   etablissements: Ligne[]
   ordre?: { regle: string }
-  nommes: { nombre: number; montant_eur: number }
-  non_nommes: { nombre: number; montant_eur: number; motifs?: Record<string, { nombre: number; montant_eur: number }> }
-  par_annee: { annee: number; total_eur: number; beneficiaires: number; lignes: number; lignes_montant_zero: number }[]
-  par_dispositif: { dispositif: string; total_eur: number }[]
-  total_eur: number
-  controles?: { annee: number; somme_des_dotations_eur: number; total_publie_eur: number; ecart_eur: number }[]
+  nommes: { nombre: number; montant_eur: number | null }
+  non_nommes: { nombre: number; montant_eur: number | null; motifs?: Record<string, { nombre: number; montant_eur: number | null }> }
+  par_annee: { annee: number; total_eur: number | null; beneficiaires: number; lignes: number; lignes_montant_zero: number }[]
+  par_dispositif: { dispositif: string; total_eur: number | null }[]
+  total_eur: number | null
+  controles?: { annee: number; somme_des_dotations_eur: number | null; total_publie_eur: number | null; ecart_eur: number | null; lignes_total_absent?: number }[]
 }
 interface Indicateur {
   id: string
@@ -159,6 +162,35 @@ interface Realisations {
   libelle: string
   source: string
   resultats_mesures?: { indicateurs?: Indicateur[] }
+}
+/** Compte de l'éducation (DEPP), tableur de l'Insee : valeurs publiées, sans calcul du site. */
+interface CompteEducation {
+  millesime: string
+  source: string
+  licence: string
+  producteur: string
+  annees_provisoires: number[]
+  financement_initial: {
+    annees: number[]
+    provisoire: boolean[]
+    financeurs: { id: string; libelle: string; parent: string | null; part_pct: (number | null)[] }[]
+    familles_et_entreprises: { annee: number; provisoire: boolean; menages_pct: number | null; entreprises_pct: number | null; lecture: string }
+    lecture: string
+  }
+  die: { annees: number[]; provisoire: boolean[]; die_md_eur_courants: (number | null)[]; depense_moyenne_eur_courants: (number | null)[]; lecture: string }
+  die_serie: { annees: number[]; part_pib_pct: (number | null)[]; die_md_eur_constants: (number | null)[]; prix_constants: string }
+  depense_moyenne_par_niveau: {
+    annee: number
+    provisoire: boolean
+    niveaux: { degre: string; libelle_degre: string; niveau: string; ensemble_du_degre: boolean; depense_moyenne_eur: number | null }[]
+    lecture: string
+  }
+  depense_moyenne_evolution: {
+    annees: number[]
+    provisoire: boolean[]
+    prix_constants: string
+    series: { id: string; libelle_source: string; eur_constants: (number | null)[] }[]
+  }
 }
 
 // ---------- Libellés en langage courant ----------
@@ -225,6 +257,8 @@ function jeuDuRapport(sourceFichier: string, sourceValeur: string): string | nul
   return sourceFichier.split(' ; ').find((x) => new RegExp(`${type}[- ]${an}(?!\\d)`, 'i').test(x)) ?? null
 }
 const nonPublie = (texte = 'non publié') => `${traitStatut('nonpub')}${h(texte)}`
+/** Montant en HTML : la valeur publiée, ou « non publié » (motif hachuré) quand la source n'en publie pas. Jamais 0. */
+const montantOuNonPublie = (x: number | null | undefined, format: (v: number) => string = eurLisible) => (typeof x === 'number' ? h(format(x)) : nonPublie())
 /** Fichiers du site cités dans des textes de données : nommés par ce qu'ils montrent. */
 const FICHIERS_LISIBLES: Record<string, string> = { 'beneficiaires/france2030.json': 'France 2030 par bénéficiaire' }
 /** Texte de données affiché tel quel, sans les termes techniques (chemin de fichier, « null », nom de champ). */
@@ -232,6 +266,7 @@ export function lisible(t: string): string {
   return t
     .replace(/\s*\((?:[a-z0-9_]+\/)*[a-z0-9_]+\.json\)/g, '')
     .replace(/(?:[a-z0-9_]+\/)*[a-z0-9_]+\.json/g, (f) => FICHIERS_LISIBLES[f] ?? 'fichier du site')
+    .replace(/\bmontants null\b/g, 'montants non publiés')
     .replace(/\bnull\b/g, 'absente')
     .replace(/ ; le rapprochement est écrit dans [a-z_]+/g, ' ; le site rapproche les deux codes')
 }
@@ -358,6 +393,82 @@ ${source(adm.source, adm.millesime)}
 <p class="liens-sortie"><a href="${lien('/explorer/operateurs', { mission: 'Recherche et enseignement supérieur' })}">Universités et organismes de recherche : ce que l’État leur verse</a></p>`
 }
 
+// ---------- Toute la dépense d'éducation : compte de l'éducation (familles et entreprises comprises) ----------
+/** Année suivie de « (provisoire) » quand la source la marque ainsi. */
+const anneeP = (a: number, provisoire: boolean) => `${a}${provisoire ? ' (provisoire)' : ''}`
+/** Niveaux publiés avec un appel de note et un sigle : écrits en toutes lettres. */
+const NIVEAUX_COMPTE: Record<string, string> = { STS: 'Sections de technicien supérieur', CPGE: 'Classes préparatoires aux grandes écoles' }
+export const nomNiveau = (n: string) => {
+  const sans = n.replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]+$/u, '').trim()
+  return NIVEAUX_COMPTE[sans] ?? sans
+}
+const pctOuNonPublie = (x: number | null | undefined) => montantOuNonPublie(x, (v) => pct(v))
+const sur100OuNonPublie = (x: number | null | undefined) => montantOuNonPublie(x, sur100)
+
+export function blocCompte(ce: CompteEducation | null): string {
+  if (!ce) return ''
+  const fi = ce.financement_initial
+  const fe = fi.familles_et_entreprises
+  const die = ce.die
+  const iDie = die.annees.length - 1
+  const anDie = die.annees[iDie]
+  const iPib = ce.die_serie.annees.indexOf(anDie)
+  const pib = iPib >= 0 ? ce.die_serie.part_pib_pct[iPib] : null
+  const nv = ce.depense_moyenne_par_niveau
+  const ev = ce.depense_moyenne_evolution
+  const serie = (id: string) => ev.series.find((x) => x.id === id)
+  const colonnesEv = [
+    { id: 'premier_degre', nom: 'Premier degré (école)' },
+    { id: 'second_degre', nom: 'Second degré (collège et lycée)' },
+    { id: 'superieur', nom: 'Enseignement supérieur' },
+    { id: 'ensemble', nom: 'Tous niveaux' },
+  ].filter((c) => serie(c.id))
+  const lecture = (t: string) => lisible(t).replace(/\s*\([a-z]+_[a-z_]+\)/g, '')
+  const lignesNiveaux = nv.niveaux.map(
+    (x) =>
+      `<tr><th scope="row">${x.ensemble_du_degre ? `Ensemble : ${h(x.libelle_degre.charAt(0).toLowerCase() + x.libelle_degre.slice(1))}` : `${h(nomNiveau(x.niveau))} <span class="aide">(${h(x.libelle_degre.toLowerCase())})</span>`}</th><td class="nombre">${montantOuNonPublie(x.depense_moyenne_eur, eur)}</td></tr>`,
+  )
+  return `<section id="er-compte" aria-labelledby="er-compte-titre">
+<h2 id="er-compte-titre">Toute la dépense d’éducation, familles et entreprises comprises</h2>
+<p>Le compte de l’éducation, tenu par le service statistique du ministère de l’Éducation nationale, rassemble ce que dépensent pour l’éducation en France l’État, les collectivités, les autres administrations, les entreprises et les familles. En ${h(anneeP(anDie, die.provisoire[iDie]))}, cette dépense intérieure d’éducation est de ${montantOuNonPublie(die.die_md_eur_courants[iDie], md)}${typeof pib === 'number' ? `, soit ${h(pct(pib))} de la richesse produite dans l’année (produit intérieur brut)` : ''}. ${badgeStatut('trace')}</p>
+<ul class="cles" aria-label="Compte de l’éducation : chiffres clés">
+  <li><strong>${sur100OuNonPublie(fe.menages_pct)}</strong><span>sur 100 € de dépense d’éducation payés au départ par les familles en ${h(anneeP(fe.annee, fe.provisoire))} (cantine, internat, fournitures, cours, droits d’inscription)</span>${badgeStatut('trace')}</li>
+  <li><strong>${sur100OuNonPublie(fe.entreprises_pct)}</strong><span>sur 100 € payés au départ par les entreprises en ${h(anneeP(fe.annee, fe.provisoire))} (dont taxe d’apprentissage et formation des apprentis)</span>${badgeStatut('trace')}</li>
+  <li><strong>${montantOuNonPublie(die.depense_moyenne_eur_courants[iDie], eur)}</strong><span>de dépense moyenne par élève, apprenti ou étudiant en ${h(anneeP(anDie, die.provisoire[iDie]))}, tous niveaux et tous financeurs</span>${badgeStatut('trace')}</li>
+</ul>
+<p class="aide">Les parts des familles et des entreprises sont publiées séparément ; le site ne les additionne pas.</p>
+<h3>Qui paie au départ</h3>
+<div class="tableau-defile"><table><caption>Part de chaque financeur dans la dépense intérieure d’éducation (financement initial), en pourcentage</caption><thead><tr><th scope="col">Financeur</th>${fi.annees
+    .map((a, i) => `<th scope="col" class="nombre">${h(anneeP(a, fi.provisoire[i]))}</th>`)
+    .join('')}</tr></thead><tbody>${fi.financeurs
+    .map(
+      (f) =>
+        `<tr><th scope="row">${f.parent ? `<span class="aide">${h(f.libelle)}</span>` : h(f.libelle)}</th>${f.part_pct.map((v) => `<td class="nombre">${pctOuNonPublie(v)}</td>`).join('')}</tr>`,
+    )
+    .join('')}</tbody></table></div>
+<p class="aide">${h(lecture(fi.lecture))}</p>
+<h3>Dépense moyenne par élève ou étudiant, selon le niveau</h3>
+<div class="tableau-defile"><table><caption>Dépense moyenne par élève ou étudiant en ${h(anneeP(nv.annee, nv.provisoire))}, tous financeurs, en euros</caption><thead><tr><th scope="col">Niveau</th><th scope="col" class="nombre">Dépense moyenne</th></tr></thead><tbody>${lignesNiveaux.join('')}</tbody></table></div>
+<p class="aide">${h(lecture(nv.lecture))} Ces montants couvrent toute la dépense d’éducation : ils ne se comparent pas au montant par étudiant calculé plus bas par le site, qui ne compte que les dépenses des collectivités, et ne s’y ajoutent pas.</p>
+<details><summary>Évolution depuis ${h(ev.annees[0])}, en euros constants de ${h(ev.prix_constants)}</summary>
+<div class="tableau-defile"><table><caption>Dépense intérieure d’éducation et dépense moyenne par élève ou étudiant, ${h(ev.annees[0])} à ${h(ev.annees[ev.annees.length - 1])}, en euros constants de ${h(ev.prix_constants)}</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Dépense intérieure d’éducation</th><th scope="col" class="nombre">Part du produit intérieur brut</th>${colonnesEv
+    .map((c) => `<th scope="col" class="nombre">Par élève : ${h(c.nom.charAt(0).toLowerCase() + c.nom.slice(1))}</th>`)
+    .join('')}</tr></thead><tbody>${[...ev.annees.keys()]
+    .reverse()
+    .map((i) => {
+      const a = ev.annees[i]
+      const j = ce.die_serie.annees.indexOf(a)
+      return `<tr><th scope="row">${h(anneeP(a, ev.provisoire[i]))}</th><td class="nombre">${montantOuNonPublie(j >= 0 ? ce.die_serie.die_md_eur_constants[j] : null, md)}</td><td class="nombre">${pctOuNonPublie(j >= 0 ? ce.die_serie.part_pib_pct[j] : null)}</td>${colonnesEv
+        .map((c) => `<td class="nombre">${montantOuNonPublie(serie(c.id)!.eur_constants[i], eur)}</td>`)
+        .join('')}</tr>`
+    })
+    .join('')}</tbody></table></div>
+<p class="aide">Euros constants : montants corrigés de la hausse des prix, pour comparer les années entre elles.</p>
+</details>
+${source(`${ce.source} ; producteur : ${ce.producteur} ; licence ${ce.licence}`, ce.millesime)}
+</section>`
+}
+
 // ---------- Collectivités : enseignement supérieur, vie étudiante, recherche ----------
 /** Première année où la source publie au moins une ligne « enseignement supérieur et vie étudiante » (null = pas de ligne). */
 export function premiereAnneeEsve(esr: CollectivitesEsr | null): number | null {
@@ -369,16 +480,22 @@ export function premiereAnneeEsve(esr: CollectivitesEsr | null): number | null {
 function blocCollectivites(esr: CollectivitesEsr | null, debutEsve: number | null): string {
   if (!esr?.national.length) return `<h2>Les collectivités, l’enseignement supérieur et la recherche</h2>${absent('Budgets des collectivités non disponibles.')}`
   const der = esr.national[esr.national.length - 1]
-  const esvePublie = (a: number) => debutEsve !== null && a >= debutEsve
   const rt = esr.categories.rt ?? 'Recherche et transfert de technologie'
   const esve = esr.categories.esve ?? 'Enseignement supérieur et vie étudiante'
+  const parType = (t: string) => der.par_type[t] as number
   const types = Object.keys(esr.types_collectivite)
     .filter((t) => typeof der.par_type[t] === 'number')
-    .sort((a, b) => der.par_type[b] - der.par_type[a])
+    .sort((a, b) => parType(b) - parType(a))
+  const total = der.total_eur
   return `<h2>Les collectivités, l’enseignement supérieur et la recherche</h2>
-<p>Les régions, les départements, les communes et les intercommunalités déclarent chaque année ce qu’elles consacrent à la recherche et à l’enseignement supérieur. En ${h(der.annee)} (montants ${h(der.qualite)}s) : ${h(eurLisible(der.total_eur))}, dont ${h(eurLisible(der.rt_eur))} pour la recherche et le transfert de technologie et ${h(eurLisible(der.esve_eur))} pour l’enseignement supérieur et la vie étudiante. ${badgeStatut('trace')}</p>
+<p>Les régions, les départements, les communes et les intercommunalités déclarent chaque année ce qu’elles consacrent à la recherche et à l’enseignement supérieur. En ${h(der.annee)} (montants ${h(der.qualite)}s) : ${montantOuNonPublie(total)}, dont ${montantOuNonPublie(der.rt_eur)} pour la recherche et le transfert de technologie et ${montantOuNonPublie(der.esve_eur)} pour l’enseignement supérieur et la vie étudiante. ${badgeStatut('trace')}</p>
 ${barres(
-  types.map((t) => ({ nom: esr.types_collectivite[t], valeur: der.par_type[t], texte: eurLisible(der.par_type[t]), detail: `${sur100((der.par_type[t] / der.total_eur) * 100)} sur 100 € de ce total` })),
+  types.map((t) => ({
+    nom: esr.types_collectivite[t],
+    valeur: parType(t),
+    texte: eurLisible(parType(t)),
+    detail: typeof total === 'number' && total > 0 ? `${sur100((parType(t) / total) * 100)} sur 100 € de ce total` : undefined,
+  })),
   undefined,
   `Montants ${der.annee} par type de collectivité`,
 )}
@@ -386,10 +503,10 @@ ${barres(
     .reverse()
     .map(
       (n) =>
-        `<tr><th scope="row">${h(n.annee)}</th><td>${h(n.qualite)}</td><td class="nombre">${h(eurLisible(n.rt_eur))}</td><td class="nombre">${esvePublie(n.annee) ? h(eurLisible(n.esve_eur)) : nonPublie()}</td><td class="nombre">${esvePublie(n.annee) ? h(eurLisible(n.total_eur)) : '–'}</td></tr>`,
+        `<tr><th scope="row">${h(n.annee)}</th><td>${h(n.qualite)}</td><td class="nombre">${montantOuNonPublie(n.rt_eur)}</td><td class="nombre">${montantOuNonPublie(n.esve_eur)}</td><td class="nombre">${montantOuNonPublie(n.total_eur)}</td></tr>`,
     )
     .join('')}</tbody></table></div>
-<p class="aide">${debutEsve !== null ? `La source ne publie la part « ${h(esve.toLowerCase())} » qu’à partir de ${h(debutEsve)} : avant, le total n’est pas affiché. ` : ''}Montants semi-définitifs et prévisionnels révisés ensuite par le producteur.</p>
+<p class="aide">${debutEsve !== null ? `La source ne publie la part « ${h(esve.toLowerCase())} » qu’à partir de ${h(debutEsve)} : avant, cette part et le total sont non publiés (et non pas nuls). ` : ''}Montants semi-définitifs et prévisionnels révisés ensuite par le producteur.</p>
 ${source(esr.source, esr.millesime)}`
 }
 
@@ -420,7 +537,7 @@ ${debutEsve !== null ? `<p class="aide">Avant ${h(debutEsve)}, la dépense des c
 <div id="er-couts-publies"><p class="chargement">Chargement des rapports de performances…</p></div>`
 }
 
-function blocCoutsPublies(rs: (Realisations | null)[]): string {
+function blocCoutsPublies(rs: (Realisations | null)[], avecCompte: boolean): string {
   const items: string[] = []
   const jeux = new Set<string>()
   for (const r of rs) {
@@ -445,7 +562,7 @@ function blocCoutsPublies(rs: (Realisations | null)[]): string {
     items.length
       ? `<p>Les rapports annuels de performances de l’État publient une dépense par élève ou par étudiant pour l’enseignement agricole :</p><ul class="lignes" aria-label="Montants par élève ou par étudiant publiés par l’État">${items.join('')}</ul>${jeux.size ? source(nomRapport(`Rapports annuels de performances de l’État : ${[...jeux].join(' ; ')}`)) : ''}`
       : ''
-  }<p>${badgeStatut('nonpub')} Pour l’école, le collège, le lycée et l’université, aucun montant par élève ou par étudiant ne figure dans les données reprises par le site.</p>`
+  }<p>${badgeStatut('nonpub')} Pour l’école, le collège, le lycée et l’université, les rapports de performances repris par le site ne publient pas de dépense de l’État par élève ou par étudiant.${avecCompte ? ' La dépense moyenne de tous les financeurs par élève ou étudiant est donnée plus haut (compte de l’éducation).' : ''}</p>`
 }
 
 function blocCoutRegions(etu: Etudiants | null): { limites: string; regions: string } {
@@ -487,7 +604,7 @@ function lignesLycees(d: Lycees): string[] {
       .filter(Boolean)
       .join(' ; ')
     const secteur = e[c('secteur')] ? String(e[c('secteur')]).toLowerCase() : ''
-    return `<li><span>${h(e[c('nom')])}</span><span class="montant">${h(montantEur(e[c('total_eur')] as number | null))}</span><span class="dest">${[
+    return `<li><span>${h(e[c('nom')])}</span><span class="montant">${montantOuNonPublie(e[c('total_eur')] as number | null)}</span><span class="dest">${[
       secteur && h(secteur),
       dep && h(`${NOMS_DEP.get(dep) ?? 'département'} (${dep})`),
       h(parAn),
@@ -499,27 +616,30 @@ function lignesLycees(d: Lycees): string[] {
 
 function blocRegion(d: Lycees): string {
   const motifs = Object.entries(d.non_nommes.motifs ?? {})
-  const dispositifs = [...d.par_dispositif].sort((a, b) => b.total_eur - a.total_eur).slice(0, 5)
+  const dispositifs = d.par_dispositif
+    .filter((x): x is { dispositif: string; total_eur: number } => typeof x.total_eur === 'number')
+    .sort((a, b) => b.total_eur - a.total_eur)
+    .slice(0, 5)
   const premier = d.annees[0]
   const dernier = d.annees[d.annees.length - 1]
   return `<h3>${h(d.region.nom)}</h3>
 <p><strong>Nature des montants :</strong> ${h(d.nature_des_montants)}.</p>
-<p>${badgeStatut('trace')} De ${h(premier)} à ${h(dernier)} : ${h(eurLisible(d.total_eur))} au total. ${h(entier(d.nommes.nombre))} bénéficiaires sont nommés (personnes morales) pour ${h(eurLisible(d.nommes.montant_eur))}${
+<p>${badgeStatut('trace')} De ${h(premier)} à ${h(dernier)} : ${montantOuNonPublie(d.total_eur)} au total. ${h(entier(d.nommes.nombre))} bénéficiaires sont nommés (personnes morales) pour ${montantOuNonPublie(d.nommes.montant_eur)}${
     d.non_nommes.nombre
-      ? ` ; ${h(entier(d.non_nommes.nombre))} restent agrégés pour ${h(eurLisible(d.non_nommes.montant_eur))}${motifs.length ? ` (${motifs.map(([k, v]) => `${h(MOTIFS[k] ?? k)} : ${h(entier(v.nombre))}`).join(' ; ')})` : ''}`
+      ? ` ; ${h(entier(d.non_nommes.nombre))} restent agrégés pour ${montantOuNonPublie(d.non_nommes.montant_eur)}${motifs.length ? ` (${motifs.map(([k, v]) => `${h(MOTIFS[k] ?? k)} : ${h(entier(v.nombre))}`).join(' ; ')})` : ''}`
       : ''
   }.</p>
 <div class="tableau-defile"><table><caption>${h(d.region.nom)} : montants versés aux lycées par année</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Montant</th><th scope="col" class="nombre">Bénéficiaires</th></tr></thead><tbody>${d.par_annee
     .map(
       (p) =>
-        `<tr><th scope="row">${h(p.annee)}</th><td class="nombre">${h(eurLisible(p.total_eur))}${p.total_eur === 0 && p.lignes > 0 && p.lignes_montant_zero === p.lignes ? ' <span class="aide">(montants publiés à 0)</span>' : ''}</td><td class="nombre">${h(entier(p.beneficiaires))}</td></tr>`,
+        `<tr><th scope="row">${h(p.annee)}</th><td class="nombre">${montantOuNonPublie(p.total_eur)}${p.total_eur === 0 && p.lignes > 0 && p.lignes_montant_zero === p.lignes ? ' <span class="aide">(montants publiés à 0)</span>' : ''}</td><td class="nombre">${h(entier(p.beneficiaires))}</td></tr>`,
     )
     .join('')}</tbody></table></div>
-${(d.controles ?? []).map((k) => `<p class="aide">Contrôle ${h(k.annee)} : somme des dotations ${h(eurLisible(k.somme_des_dotations_eur))}, total publié ${h(eurLisible(k.total_publie_eur))}, écart ${h(eur(k.ecart_eur))}.</p>`).join('')}
+${(d.controles ?? []).map((k) => `<p class="aide">Contrôle ${h(k.annee)} : somme des dotations ${montantOuNonPublie(k.somme_des_dotations_eur)}, total publié ${montantOuNonPublie(k.total_publie_eur)}, écart ${montantOuNonPublie(k.ecart_eur, eur)}${k.lignes_total_absent ? ` (${h(entier(k.lignes_total_absent))} ${k.lignes_total_absent > 1 ? 'totaux publiés absents' : 'total publié absent'})` : ''}.</p>`).join('')}
 ${
   dispositifs.length
     ? `<h4>Les cinq dispositifs aux montants les plus élevés</h4>${barres(
-        dispositifs.map((x) => ({ nom: x.dispositif, valeur: x.total_eur, texte: eurLisible(x.total_eur), detail: d.total_eur > 0 ? `${sur100((x.total_eur / d.total_eur) * 100)} sur 100 € versés de ${premier} à ${dernier}` : undefined })),
+        dispositifs.map((x) => ({ nom: x.dispositif, valeur: x.total_eur, texte: eurLisible(x.total_eur), detail: typeof d.total_eur === 'number' && d.total_eur > 0 ? `${sur100((x.total_eur / d.total_eur) * 100)} sur 100 € versés de ${premier} à ${dernier}` : undefined })),
         undefined,
         `${d.region.nom} : dispositifs`,
       )}<p class="aide">Libellés tels que publiés par la région.</p>${glossaire(dispositifs.map((x) => x.dispositif))}`
@@ -527,7 +647,7 @@ ${
 }
 <h4>Les lycées nommés</h4>
 ${liste('er-lycees-noms', lignesLycees(d), `${d.region.nom} : lycées nommés`)}
-<p class="aide">Ordre : ${h(d.ordre?.regle ?? 'montant total décroissant')}. Montant total de ${h(premier)} à ${h(dernier)}, puis le détail par année.</p>
+<p class="aide">Ordre : ${h(lisible(d.ordre?.regle ?? 'montant total décroissant'))}. Montant total de ${h(premier)} à ${h(dernier)}, puis le détail par année.</p>
 ${source(`${d.source} ; licence ${d.licence}`, d.millesime)}`
 }
 
@@ -552,14 +672,14 @@ function blocAnr(idx: Index | null, anr: AnrProjets | null): string {
   if (!pia && !ancien) return ''
   const tableau = (b: BlocAnrProjets, legende: string, cle: 'aide_eur' | 'aide_projets_eur') =>
     `<div class="tableau-defile"><table><caption>${h(legende)}</caption><thead><tr><th scope="col">Édition</th><th scope="col" class="nombre">Projets</th><th scope="col" class="nombre">Aide allouée</th></tr></thead><tbody>${b.par_annee
-      .map((p) => `<tr><th scope="row">${h(p.annee)}</th><td class="nombre">${h(entier(p.projets))}</td><td class="nombre">${h(montantEur(p[cle]))}</td></tr>`)
+      .map((p) => `<tr><th scope="row">${h(p.annee)}</th><td class="nombre">${h(entier(p.projets))}</td><td class="nombre">${montantOuNonPublie(p[cle])}</td></tr>`)
       .join('')}</tbody></table></div>`
   return `<h2>La recherche sur projets : l’Agence nationale de la recherche</h2>
 <p>L’Agence nationale de la recherche (ANR) finance des projets choisis sur appel à projets. Elle gère aussi une partie des programmes d’investissements d’avenir et de France 2030.</p>
 ${
   pia
     ? `<h3>Programmes d’investissements d’avenir et France 2030 gérés par l’agence</h3>
-${tp ? `<p>${badgeStatut('trace')} ${h(eurLisible(tp.aide_eur))} d’aide allouée à ${h(entier(tp.projets))} projets (${h(entier(tp.participations))} participations d’organismes), ${h(pia.millesime)}.</p>` : ''}
+${tp ? `<p>${badgeStatut('trace')} ${montantOuNonPublie(tp.aide_eur)} d’aide allouée à ${h(entier(tp.projets))} projets (${h(entier(tp.participations))} participations d’organismes), ${h(pia.millesime)}.</p>` : ''}
 ${tableau(pia, 'Aide allouée par édition de l’action', 'aide_eur')}
 <p class="aide">Année : édition de l’action, telle que publiée par l’agence. Les montants sont l’aide allouée à chaque projet.</p>
 <div id="er-anr-pia"></div>
@@ -570,7 +690,7 @@ ${source(pia.source)}`
 ${
   ancien
     ? `<h3>Projets financés de 2005 à 2009</h3>
-${ta ? `<p>${badgeStatut('trace')} ${h(eurLisible(ta.aide_projets_eur))} d’aide allouée à ${h(entier(ta.projets))} projets, ${h(ancien.millesime)}. Pour cette période, l’aide est aussi publiée par partenaire.</p>` : ''}
+${ta ? `<p>${badgeStatut('trace')} ${montantOuNonPublie(ta.aide_projets_eur)} d’aide allouée à ${h(entier(ta.projets))} projets, ${h(ancien.millesime)}. Pour cette période, l’aide est aussi publiée par partenaire.</p>` : ''}
 ${tableau(ancien, 'Aide allouée par édition de l’appel à projets, 2005 à 2009', 'aide_projets_eur')}
 <p class="aide">Année : édition de l’appel à projets. La source ne publie pas de répartition par territoire pour cette période.</p>
 <div id="er-anr-ancien"></div>
@@ -583,7 +703,7 @@ function lignesAnr(b: BlocAnrEtab, cleMontant: string): string[] {
   const c = (n: string) => b.colonnes.indexOf(n)
   return b.etablissements.map((e) => {
     const sans = Number(e[c('lignes_sans_montant')] ?? 0)
-    return `<li><span>${h(e[c('denomination')])}</span><span class="montant">${h(montantEur(e[c(cleMontant)] as number | null))}</span><span class="dest">${h(entier(Number(e[c('participations')] ?? 0)))} participations, dont ${h(
+    return `<li><span>${h(e[c('denomination')])}</span><span class="montant">${montantOuNonPublie(e[c(cleMontant)] as number | null)}</span><span class="dest">${h(entier(Number(e[c('participations')] ?? 0)))} participations, dont ${h(
       entier(Number(e[c('projets_coordonnes')] ?? 0)),
     )} projets coordonnés · éditions ${h(e[c('premiere_edition')])} à ${h(e[c('derniere_edition')])}${sans ? ` · ${h(entier(sans))} participations sans aide publiée` : ''}${e[c('lien_france2030')] === true ? ' · aussi nommé parmi les bénéficiaires de France 2030' : ''}</span></li>`
   })
@@ -593,7 +713,7 @@ function blocAnrNoms(b: BlocAnrEtab, id: string, cleMontant: 'aide_projets_coord
   const statut = cleMontant === 'aide_allouee_eur' ? 'trace' : 'approche'
   const nn = b.non_nommes
   const motifs = Object.entries(nn.motifs ?? {})
-  const categories = [...nn.par_categorie].sort((x, y) => (y[cleMontant] ?? 0) - (x[cleMontant] ?? 0) || x.categorie.localeCompare(y.categorie, 'fr'))
+  const categories = [...nn.par_categorie].sort((x, y) => (y[cleMontant] ?? -1) - (x[cleMontant] ?? -1) || x.categorie.localeCompare(y.categorie, 'fr'))
   return `<h4>Les organismes nommés</h4>
 <p>${badgeStatut(statut)} ${
     cleMontant === 'aide_allouee_eur'
@@ -601,12 +721,12 @@ function blocAnrNoms(b: BlocAnrEtab, id: string, cleMontant: 'aide_projets_coord
       : 'Montant affiché : l’aide allouée aux projets que l’organisme coordonne. L’agence publie l’aide par projet, pas sa répartition entre partenaires : ce montant n’est pas la somme reçue par l’organisme.'
   }</p>
 ${liste(id, lignesAnr(b, cleMontant), 'Organismes nommés')}
-<p class="aide">Ordre : ${h(b.ordre?.regle ?? 'montant décroissant')}. Seules les personnes morales retrouvées dans le répertoire des entreprises (SIRENE) sont nommées, sous leur dénomination officielle : ${h(entier(b.nommes.nombre))} organismes.</p>
+<p class="aide">Ordre : ${h(lisible(b.ordre?.regle ?? 'montant décroissant'))}. Seules les personnes morales retrouvées dans le répertoire des entreprises (SIRENE) sont nommées, sous leur dénomination officielle : ${h(entier(b.nommes.nombre))} organismes.</p>
 <details><summary>Les ${h(entier(nn.organismes))} organismes non nommés, regroupés par catégorie</summary>
 <div class="tableau-defile"><table><caption>Organismes non nommés par catégorie publiée par l’agence</caption><thead><tr><th scope="col">Catégorie</th><th scope="col" class="nombre">Organismes</th><th scope="col" class="nombre">Participations</th><th scope="col" class="nombre">${
     cleMontant === 'aide_allouee_eur' ? 'Aide allouée' : 'Aide des projets coordonnés'
   }</th></tr></thead><tbody>${categories
-    .map((k) => `<tr><th scope="row">${h(k.categorie)}</th><td class="nombre">${h(entier(k.organismes))}</td><td class="nombre">${h(entier(k.participations))}</td><td class="nombre">${h(montantEur(k[cleMontant]))}</td></tr>`)
+    .map((k) => `<tr><th scope="row">${h(k.categorie)}</th><td class="nombre">${h(entier(k.organismes))}</td><td class="nombre">${h(entier(k.participations))}</td><td class="nombre">${montantOuNonPublie(k[cleMontant])}</td></tr>`)
     .join('')}</tbody></table></div>
 ${glossaire(categories.map((k) => k.categorie))}
 ${motifs.length ? `<p class="aide">Raisons du regroupement, en nombre de participations : ${motifs.map(([k, v]) => `${h(MOTIFS[k] ?? k)} : ${h(entier(v))}`).join(' ; ')}.</p>` : ''}
@@ -622,20 +742,24 @@ function blocEcarts(idx: Index | null): string {
 <div class="tableau-defile"><table><caption>Montants publiés par deux sources pour le même objet</caption><thead><tr><th scope="col">Objet</th><th scope="col" class="nombre">Montant</th><th scope="col" class="nombre">Autre montant</th><th scope="col" class="nombre">Écart</th></tr></thead><tbody>${e
     .map(
       (x) =>
-        `<tr><th scope="row">${h(x.objet)}<br><span class="aide">${h(lisible(x.lecture))}</span></th><td class="nombre">${h(eurLisible(x.montant))}<br><span class="aide">${h(lisible(x.source))}</span></td><td class="nombre">${h(eurLisible(x.autre_montant))}<br><span class="aide">${h(lisible(x.autre_source))}</span></td><td class="nombre">${h(eurLisible(x.ecart))} (${h(pct(x.ecart_pct, 2))})</td></tr>`,
+        `<tr><th scope="row">${h(x.objet)}<br><span class="aide">${h(lisible(x.lecture))}</span></th><td class="nombre">${montantOuNonPublie(x.montant)}<br><span class="aide">${h(lisible(x.source))}</span></td><td class="nombre">${montantOuNonPublie(x.autre_montant)}<br><span class="aide">${h(lisible(x.autre_source))}</span></td><td class="nombre">${montantOuNonPublie(x.ecart)}${typeof x.ecart_pct === 'number' ? ` (${h(pct(x.ecart_pct, 2))})` : ''}</td></tr>`,
     )
     .join('')}</tbody></table></div>`
 }
 
-function blocLimites(idx: Index | null): string {
+function blocLimites(idx: Index | null, avecCompte: boolean): string {
   const l = idx?.limites ?? []
   const s = idx?.sources_inaccessibles ?? []
   return `<h2>Ce que ces données ne disent pas</h2>
 <ul class="limites">
-  <li>${traitStatut('nonpub')}<span>Ce que versent les familles et les entreprises pour l’éducation n’est pas dans les données reprises par le site.</span></li>
+  <li>${traitStatut('nonpub')}<span>${
+    avecCompte
+      ? 'Ce que paie une famille en particulier, et le détail du financement après les transferts entre financeurs (bourses, par exemple), ne sont pas dans les données reprises par le site.'
+      : 'Ce que versent les familles et les entreprises pour l’éducation n’est pas dans les données reprises par le site.'
+  }</span></li>
 </ul>
 ${l.length ? `<ul>${l.map((x) => `<li>${h(lisible(x))}</li>`).join('')}</ul>` : ''}
-${s.length ? `<details><summary>Sources non reprises</summary><ul>${s.map((x) => `<li>${h(x.source)} : ${h(x.motif)}.</li>`).join('')}</ul></details>` : ''}`
+${s.length ? `<details><summary>Sources non reprises</summary><ul>${s.map((x) => `<li>${h(lisible(x.source))} : ${h(lisible(x.motif))}.</li>`).join('')}</ul></details>` : ''}`
 }
 
 function blocSources(idx: Index | null): string {
@@ -671,7 +795,7 @@ async function completer(cible: HTMLElement, idx: Index | null, region: string |
   const cout = blocCoutRegions(etu)
   poser('#er-cout-limites', cout.limites)
   poser('#er-cout-regions', cout.regions)
-  poser('#er-couts-publies', blocCoutsPublies(rs))
+  poser('#er-couts-publies', blocCoutsPublies(rs, !!cible.querySelector('#er-compte')))
   if (anrEtab?.pia_france2030) {
     poser('#er-anr-pia', blocAnrNoms(anrEtab.pia_france2030, 'er-anr-pia-noms', 'aide_projets_coordonnes_eur'))
     brancherListe(cible, 'er-anr-pia-noms', lignesAnr(anrEtab.pia_france2030, 'aide_projets_coordonnes_eur'))
@@ -688,12 +812,13 @@ async function completer(cible: HTMLElement, idx: Index | null, region: string |
 }
 
 export async function rendre(cible: HTMLElement, params: URLSearchParams): Promise<Rendu | void> {
-  const [idx, cofog, adm, esr, anr] = await Promise.all([
+  const [idx, cofog, adm, esr, anr, compte] = await Promise.all([
     chargerSiPresent<Index>('education_recherche/index.json'),
     chargerSiPresent<Cofog>('cofog.json'),
     chargerSiPresent<ArbreAdm>('arbre_administrations/racine.json'),
     chargerSiPresent<CollectivitesEsr>('education_recherche/collectivites_esr.json'),
     chargerSiPresent<AnrProjets>('education_recherche/anr_projets.json'),
+    chargerSiPresent<CompteEducation>('education_recherche/compte_education.json'),
   ])
   if (!idx && !adm && !cofog) {
     cible.innerHTML = `${enCours('L’éducation et la recherche', 'Dépenses d’enseignement par niveau, budgets des collectivités, lycées, projets de recherche.')}${SORTIES}${partPersonnelle()}`
@@ -705,13 +830,18 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
   const debutEsve = premiereAnneeEsve(esr)
   cible.innerHTML = `
 <h1>L’éducation et la recherche</h1>
-<p class="chapeau">Tu vois ici ce que les administrations publiques dépensent pour l’école, le collège, le lycée, l’enseignement supérieur et la recherche, qui dépense (l’État, les collectivités locales), et à qui vont certains de ces montants : les lycées de trois régions et les organismes de recherche soutenus par l’Agence nationale de la recherche. Ce que versent les familles et les entreprises n’est pas dans les données reprises ici, pas plus qu’un montant moyen par élève de l’école, du collège ou du lycée.</p>
+<p class="chapeau">Tu vois ici ce que les administrations publiques dépensent pour l’école, le collège, le lycée, l’enseignement supérieur et la recherche, qui dépense (l’État, les collectivités locales), et à qui vont certains de ces montants : les lycées de trois régions et les organismes de recherche soutenus par l’Agence nationale de la recherche. ${
+  compte
+    ? 'Tu vois aussi la part que paient au départ les familles et les entreprises, et la dépense moyenne par élève ou étudiant, de l’école à l’université (compte de l’éducation). La page ne montre pas ce que paie une famille en particulier, ni une dépense par élève lycée par lycée.'
+    : 'Ce que versent les familles et les entreprises n’est pas dans les données reprises ici, pas plus qu’un montant moyen par élève de l’école, du collège ou du lycée.'
+}</p>
 <p>Chaque montant porte son année, sa source et son statut :</p>
 ${legendeStatuts()}
 ${blocCle(cofog)}
 ${blocCles(adm, idx)}
 ${blocNiveaux(adm, cofog)}
 ${blocRecherche(adm)}
+${blocCompte(compte)}
 ${
   idx
     ? `${blocCollectivites(esr, debutEsve)}
@@ -721,7 +851,7 @@ ${blocAnr(idx, anr)}
 ${blocEcarts(idx)}`
     : `<div class="en-cours"><p><strong>Données en cours d’intégration.</strong> Budgets des collectivités pour l’enseignement supérieur, lycées de trois régions, projets de l’Agence nationale de la recherche.</p></div>`
 }
-${blocLimites(idx)}
+${blocLimites(idx, !!compte)}
 ${blocSources(idx)}
 <h2>Pour aller plus loin</h2>
 ${SORTIES}
