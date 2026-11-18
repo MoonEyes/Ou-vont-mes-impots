@@ -1,0 +1,347 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/douanes_accises_affectation.schema.json",
+  "title": "site/data/douanes_accises/affectation.json : à qui va le produit de l'accise sur les produits énergétiques, des tabacs, des alcools et des droits de douane",
+  "description": "Écrit par pipeline/douanes_accises.py. Éditions successives des voies et moyens publiées telles quelles ; clés de la sécurité sociale 2018 à 2026 (PLFSS 2026, annexe 3) ; frais de perception des droits de douane (ligne 2301). La ventilation 2025 déjà publiée (prelevements/affectation.json) est désignée par `deja_dans_le_site`.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "required": [
+    "millesime",
+    "source",
+    "notion",
+    "methode",
+    "destinataires",
+    "energie",
+    "tabacs",
+    "alcools",
+    "montants_plfss",
+    "droits_de_douane"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notion": {
+      "const": "affecte"
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "destinataires": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "nom",
+          "administration"
+        ]
+      }
+    },
+    "energie": {
+      "type": "object",
+      "required": [
+        "libelle",
+        "unite",
+        "editions",
+        "executions",
+        "deja_dans_le_site",
+        "lecture_signes"
+      ],
+      "properties": {
+        "editions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "document",
+              "page_pdf",
+              "annees",
+              "statuts",
+              "lignes"
+            ],
+            "properties": {
+              "annees": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1990,
+                  "maximum": 2100
+                }
+              },
+              "statuts": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "execution",
+                    "prevision",
+                    "prevision_revisee"
+                  ]
+                }
+              },
+              "lignes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "libelle_source",
+                    "valeurs_md"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "libelle_source": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "destinataire": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "valeurs_md": {
+                      "type": "array",
+                      "minItems": 3,
+                      "maxItems": 3,
+                      "items": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "executions": {
+          "type": "object",
+          "required": [
+            "annees",
+            "lignes",
+            "source_par_annee"
+          ]
+        },
+        "deja_dans_le_site": {
+          "type": "object",
+          "required": [
+            "fichier",
+            "cle",
+            "annee"
+          ]
+        }
+      }
+    },
+    "tabacs": {
+      "type": "object",
+      "required": [
+        "libelle",
+        "document",
+        "cles",
+        "lecture",
+        "deja_dans_le_site"
+      ],
+      "properties": {
+        "cles": {
+          "type": "object",
+          "required": [
+            "annees",
+            "parts"
+          ],
+          "properties": {
+            "annees": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1990,
+                "maximum": 2100
+              }
+            },
+            "parts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "destinataire",
+                  "pct"
+                ],
+                "properties": {
+                  "destinataire": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "pct": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deja_dans_le_site": {
+          "type": "object",
+          "required": [
+            "fichier",
+            "cle",
+            "annee"
+          ]
+        }
+      }
+    },
+    "alcools": {
+      "type": "object",
+      "required": [
+        "libelle",
+        "document",
+        "cles",
+        "lecture",
+        "deja_dans_le_site"
+      ],
+      "properties": {
+        "cles": {
+          "type": "object",
+          "required": [
+            "annees",
+            "parts"
+          ],
+          "properties": {
+            "annees": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1990,
+                "maximum": 2100
+              }
+            },
+            "parts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "destinataire",
+                  "pct"
+                ],
+                "properties": {
+                  "destinataire": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "pct": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deja_dans_le_site": {
+          "type": "object",
+          "required": [
+            "fichier",
+            "cle",
+            "annee"
+          ]
+        }
+      }
+    },
+    "montants_plfss": {
+      "type": "object",
+      "required": [
+        "unite",
+        "lignes"
+      ],
+      "properties": {
+        "lignes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "libelle_source",
+              "recouvrement",
+              "prevision_2025_m",
+              "prevision_2026_m"
+            ]
+          }
+        }
+      }
+    },
+    "droits_de_douane": {
+      "type": "object",
+      "required": [
+        "libelle",
+        "regle",
+        "destinataires",
+        "frais_perception",
+        "lecture"
+      ],
+      "properties": {
+        "frais_perception": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "annee",
+              "frais_perception_etat_m",
+              "statut",
+              "document",
+              "page_pdf",
+              "citation"
+            ],
+            "properties": {
+              "annee": {
+                "type": "integer",
+                "minimum": 1990,
+                "maximum": 2100
+              },
+              "frais_perception_etat_m": {
+                "type": "number"
+              },
+              "statut": {
+                "enum": [
+                  "execution",
+                  "prevision",
+                  "prevision_revisee"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date_collecte": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

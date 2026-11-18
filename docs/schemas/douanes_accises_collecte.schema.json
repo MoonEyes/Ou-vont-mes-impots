@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/douanes_accises_collecte.schema.json",
+  "title": "site/data/douanes_accises/collecte.json : recettes perçues par la douane par poste (DGDDI) et destination d'ensemble",
+  "description": "Écrit par pipeline/douanes_accises.py. Millions d'euros, valeurs alignées sur `annees` (années publiées seulement) ; null avec sa raison dans `null_raisons` ; cohérence total / groupes publiée.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "notion",
+    "perimetre",
+    "methode",
+    "annees",
+    "editions",
+    "postes",
+    "coherence",
+    "coherence_lecture",
+    "destination",
+    "destinataires"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "producteur": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "const": "millions d'euros"
+    },
+    "notion": {
+      "const": "percu_douane"
+    },
+    "perimetre": {
+      "type": "string",
+      "minLength": 1
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "annees": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "integer",
+        "minimum": 1990,
+        "maximum": 2100
+      }
+    },
+    "editions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "document",
+          "annees"
+        ],
+        "properties": {
+          "document": {
+            "type": "string",
+            "minLength": 1
+          },
+          "annees": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1990,
+              "maximum": 2100
+            }
+          },
+          "page_pdf": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "postes": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "groupe",
+          "valeurs_m"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z_]+$"
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "groupe": {
+            "enum": [
+              "dedouanement",
+              "energie_environnement",
+              "contributions_indirectes",
+              "octroi_mer_maritime",
+              "tsvr",
+              "autres",
+              "total"
+            ]
+          },
+          "valeurs_m": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "null_raisons": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^\\d{4}$"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "calculs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "poste",
+          "annees",
+          "formule"
+        ]
+      }
+    },
+    "coherence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "total_publie_m",
+          "somme_groupes_m",
+          "ecart_m"
+        ]
+      }
+    },
+    "coherence_lecture": {
+      "type": "string",
+      "minLength": 1
+    },
+    "destination": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "document",
+          "parts",
+          "statut",
+          "lecture"
+        ],
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 1990,
+            "maximum": 2100
+          },
+          "document": {
+            "type": "string",
+            "minLength": 1
+          },
+          "page_pdf": {
+            "type": "integer"
+          },
+          "statut": {
+            "enum": [
+              "trace",
+              "approche",
+              "non_publie"
+            ]
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parts": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "destinataire",
+                "pct"
+              ],
+              "properties": {
+                "destinataire": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "pct": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "destinataires": {
+      "type": "object"
+    },
+    "groupes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date_collecte": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/douanes_accises_index.schema.json",
+  "title": "site/data/douanes_accises/index.json : douane et accises, présentation, écarts entre sources, ruptures, sources",
+  "description": "Écrit par pipeline/douanes_accises.py. Trois notions séparées (produit, perçu par la douane, affecté) ; écarts entre sources montrés côte à côte, jamais tranchés ; renvois vers recettes.json et prelevements/affectation.json au lieu de recopier leurs totaux.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "required": [
+    "millesime",
+    "source",
+    "presentation",
+    "notions",
+    "fichiers",
+    "renvois",
+    "ecarts_entre_sources",
+    "lecture_ecart",
+    "ruptures",
+    "sources",
+    "sources_inaccessibles",
+    "recherche_publique",
+    "confidentialite",
+    "limites",
+    "verification_documents",
+    "ordre"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "presentation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notions": {
+      "type": "object",
+      "required": [
+        "produit",
+        "percu_douane",
+        "affecte"
+      ],
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "fichiers": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "fichier",
+          "contenu"
+        ],
+        "properties": {
+          "fichier": {
+            "type": "string",
+            "pattern": "^douanes_accises/[a-z_]+\\.json$"
+          },
+          "contenu": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "renvois": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "fichier",
+          "objet"
+        ],
+        "properties": {
+          "fichier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "objet": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "ecarts_entre_sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "produit_insee",
+          "poste_douane",
+          "lignes"
+        ],
+        "properties": {
+          "produit_insee": {
+            "type": "string",
+            "minLength": 1
+          },
+          "poste_douane": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lignes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "annee",
+                "comptes_nationaux_md",
+                "percu_douane_md",
+                "ecart_md"
+              ],
+              "properties": {
+                "annee": {
+                  "type": "integer",
+                  "minimum": 1990,
+                  "maximum": 2100
+                },
+                "comptes_nationaux_md": {
+                  "type": "number"
+                },
+                "percu_douane_md": {
+                  "type": "number"
+                },
+                "ecart_md": {
+                  "type": "number"
+                },
+                "voies_et_moyens_brute_totale_md": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+    },
+    "lecture_ecart": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ruptures": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "annees",
+          "postes",
+          "constat",
+          "lecture",
+          "documents"
+        ],
+        "properties": {
+          "annees": {
+            "type": "string",
+            "minLength": 1
+          },
+          "postes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "constat": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 1
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "chiffres_cles": {
+      "type": "object"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "titre",
+          "producteur",
+          "url",
+          "licence",
+          "verdict",
+          "fichier_collecte"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "titre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "producteur": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "licence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "verdict": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fichier_collecte": {
+            "type": "string",
+            "minLength": 1
+          },
+          "page": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "motif"
+        ]
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "verdict",
+        "trouvailles"
+      ],
+      "properties": {
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "verdict": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trouvailles": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "nom",
+              "url",
+              "classement",
+              "licence",
+              "derniere_mise_a_jour"
+            ]
+          }
+        }
+      }
+    },
+    "confidentialite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "verification_documents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "statut",
+          "motifs",
+          "manquants"
+        ],
+        "properties": {
+          "statut": {
+            "const": "vérifié"
+          },
+          "motifs": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "manquants": {
+            "type": "array",
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date_collecte": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+ "millesime": "dotations 2010 à 2026 ; budgets des institutions 2023 à 2026 ; barèmes 2026",
+ "collecte_le": "2026-11-18",
+ "source": "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026) : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf ; data.economie.gouv.fr (lois de finances) ; Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026) : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf ; Sénat, recueil des textes relatifs aux pouvoirs publics : décret n° 2012-983 du 23 août 2012 et décret n° 2014-425 du 25 avril 2014 : https://www.senat.fr/reglement/pouvoirs_publics22.html",
+ "presentation": "Ce que reçoivent la Présidence de la République, l'Assemblée nationale, le Sénat, les chaînes parlementaires, le Conseil constitutionnel et la Cour de justice de la République sur le budget de l'État, comment chacun l'emploie (grandes masses de son budget) et les barèmes des indemnités par fonction. Aucun montant versé à une personne nommée.",
+ "fichiers": [
+  {
+   "fichier": "pouvoirs_publics/dotations.json",
+   "contenu": "dotations par programme et par année (2010 à 2026) : budget voté, projet, dépense constatée, total de la mission"
+  },
+  {
+   "fichier": "pouvoirs_publics/budgets_institutions.json",
+   "contenu": "budgets propres des institutions (dépenses, recettes propres, dotation, prélèvements sur réserves, solde), lus et contrôlés"
+  },
+  {
+   "fichier": "pouvoirs_publics/indemnites.json",
+   "contenu": "barèmes mensuels par fonction : parlementaires, indemnités spéciales, moyens du mandat, membres du Gouvernement ; renvoi au barème des élus locaux"
+  }
+ ],
+ "reperes": {
+  "mission_lfi": {
+   "annee": 2025,
+   "eur": 1137842143.0,
+   "statut": "tracé"
+  },
+  "mission_plf": {
+   "annee": 2026,
+   "eur": 1140179221.0,
+   "statut": "tracé"
+  },
+  "depute_brut_mensuel_eur": 7637.39,
+  "president_brut_mensuel_eur": 16038.5,
+  "president_statut": "approché"
+ },
+ "regles": [
+  "La dotation inscrite au budget de l'État et le budget propre d'une institution sont deux grandeurs différentes : jamais additionnées (la dotation est une ressource du budget propre).",
+  "Montants par programme et par institution ; aucun classement entre institutions.",
+  "Valeur absente : null, jamais 0."
+ ],
+ "ecarts_entre_sources": [],
+ "regle_personnes": "Barèmes par fonction : aucun montant versé à une personne nommée, aucun nom lu.",
+ "recherche_prealable": [
+  {
+   "trouvaille": "site/data/realisations/<programme>.json (dépôt, étape realisations) : voté et dépensé 2010-2025",
+   "classement": "réutilisable tel quel",
+   "licence": "Licence Ouverte 2.0 (données) ; code du dépôt",
+   "dernier_commit": "dépôt courant",
+   "usage": "base de la série longue, jamais recalculée"
+  },
+  {
+   "trouvaille": "site/data/fonction_publique/indemnites_elus.json (dépôt) : barème des élus locaux",
+   "classement": "réutilisable tel quel",
+   "licence": "document administratif public",
+   "dernier_commit": "dépôt courant",
+   "usage": "renvoi dans indemnites.json, sans recopie"
+  },
+  {
+   "trouvaille": "data.economie.gouv.fr, jeux PLF et LFI (2016, 2021, 2022, budget vert 2026)",
+   "classement": "réutilisable tel quel",
+   "licence": "Licence Ouverte 2.0",
+   "dernier_commit": "jeux publiés de 2016 à 2025",
+   "usage": "compléments de la série (LFI 2015 et 2016, PLF 2021, 2022 et 2026)"
+  },
+  {
+   "trouvaille": "Projet et rapport annuels de performances « Pouvoirs publics » (PDF, budget.gouv.fr, miroir AN)",
+   "classement": "à adapter",
+   "licence": "documents administratifs publics",
+   "dernier_commit": "PAP octobre 2025, RAP 2026",
+   "usage": "grandes masses des budgets des institutions, lues par motifs et contrôlées"
+  },
+  {
+   "trouvaille": "Assemblée nationale, fiche n° 7 « situation matérielle du député »",
+   "classement": "à adapter",
+   "licence": "document administratif public",
+   "dernier_commit": "actualisée le 8 janvier 2026",
+   "usage": "barème des indemnités parlementaires et indemnités spéciales"
+  },
+  {
+   "trouvaille": "Sénat, recueil des textes relatifs aux pouvoirs publics (décrets 2012-983 et 2014-425)",
+   "classement": "à adapter",
+   "licence": "document administratif public",
+   "dernier_commit": "page en ligne en 2026",
+   "usage": "coefficients du traitement des membres du Gouvernement"
+  },
+  {
+   "trouvaille": "data.assemblee-nationale.fr et data.senat.fr (données ouvertes des assemblées)",
+   "classement": "inspiration seulement",
+   "licence": "Licence Ouverte",
+   "dernier_commit": "mises à jour continues",
+   "usage": "aucun jeu de comptes ou de barèmes trouvé ; activité parlementaire seulement"
+  },
+  {
+   "trouvaille": "Regards citoyens (NosDéputés.fr, dépôts GitHub regardscitoyens)",
+   "classement": "inspiration seulement",
+   "licence": "AGPL (code), ODbL (données)",
+   "dernier_commit": "activité réduite depuis 2023",
+   "usage": "données nominatives sur les parlementaires : hors périmètre (aucune personne nommée)"
+  }
+ ],
+ "limites": [
+  "Série des dotations, années sans valeur dans les jeux collectés (null) : budget voté 2010, 2017, 2018, 2021, 2022 ; dépense constatée 2015, 2016, 2017, 2021.",
+  "Haute Cour (programme 532) : aucune dotation publiée.",
+  "Budgets propres : grandes masses des documents budgétaires de l'État ; comptes certifiés détaillés des assemblées et rapport de la Cour des comptes sur la Présidence non lus.",
+  "Indemnités spéciales du Sénat (président, questeurs, etc.) non publiées dans les documents collectés.",
+  "Membres du Gouvernement : barème calculé à partir des décrets, pas lu dans un tableau officiel ; un montant peut différer de quelques centimes d'un bulletin réel (arrondis).",
+  "Montants bruts avant impôt sur le revenu ; seul le net du député est publié par la source."
+ ]
+}

@@ -349,6 +349,16 @@ FICHIERS = [
     ("securite_interieure_budget.schema.json", "securite_interieure/budget.json", "existant"),
     ("securite_interieure_effectifs.schema.json", "securite_interieure/effectifs.json", "existant"),
     ("securite_interieure_amendes.schema.json", "securite_interieure/amendes.json", "existant"),
+    # douane et accises : produit par accise, recettes perçues par la douane, affectation (pipeline/douanes_accises.py)
+    ("douanes_accises_index.schema.json", "douanes_accises/index.json", "existant"),
+    ("douanes_accises_produits.schema.json", "douanes_accises/produits.json", "existant"),
+    ("douanes_accises_collecte.schema.json", "douanes_accises/collecte.json", "existant"),
+    ("douanes_accises_affectation.schema.json", "douanes_accises/affectation.json", "existant"),
+    # pouvoirs publics : dotations de la mission, budgets des institutions, barèmes par fonction (pipeline/pouvoirs_publics.py)
+    ("pouvoirs_publics_index.schema.json", "pouvoirs_publics/index.json", "existant"),
+    ("pouvoirs_publics_dotations.schema.json", "pouvoirs_publics/dotations.json", "existant"),
+    ("pouvoirs_publics_budgets_institutions.schema.json", "pouvoirs_publics/budgets_institutions.json", "existant"),
+    ("pouvoirs_publics_indemnites.schema.json", "pouvoirs_publics/indemnites.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

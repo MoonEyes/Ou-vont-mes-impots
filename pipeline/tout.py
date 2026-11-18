@@ -182,6 +182,9 @@ ETAPES: tuple[Etape, ...] = (
     axe("petite_enfance", "Accueil du jeune enfant", ("secu", "prestations"), duree_s=30),
     axe("eau_environnement", "Eau et environnement (agences de l'eau, ADEME, Fonds vert)", ("local",)),
     axe("securite_interieure", "Sécurité intérieure (police, gendarmerie, sécurité civile, amendes)", ("realisations",)),
+    axe("douanes_accises", "Douane et accises : produit par accise, recettes perçues par la douane, affectation", ("base", "prelevements", "ue"), duree_s=60),
+    axe("pouvoirs_publics", "Pouvoirs publics : dotations de la mission, budgets des assemblées et de la Présidence, barèmes d'indemnités par fonction",
+        ("base", "realisations"), duree_s=30),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un

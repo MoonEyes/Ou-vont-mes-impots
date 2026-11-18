@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/pouvoirs_publics_dotations.schema.json",
+  "title": "site/data/pouvoirs_publics/dotations.json : dotations de la mission Pouvoirs publics par programme et par année (pipeline/pouvoirs_publics.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "unite",
+    "definition",
+    "natures",
+    "annees",
+    "series",
+    "mission",
+    "ecarts_entre_sources",
+    "lecture"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "unite": {
+      "const": "euros (crédits de paiement)"
+    },
+    "definition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lecture": {
+      "type": "string",
+      "minLength": 1
+    },
+    "natures": {
+      "type": "object",
+      "required": [
+        "lfi",
+        "plf",
+        "execution"
+      ],
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 10
+    },
+    "series": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "libelle",
+          "institution",
+          "annees"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^5[0-9]{2}$"
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "institution": {
+            "type": "string",
+            "pattern": "^[a-z_]+$"
+          },
+          "annees": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "annee",
+                "lfi_eur",
+                "plf_eur",
+                "execution_eur",
+                "lfi_sources",
+                "plf_sources",
+                "execution_sources"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "annee": {
+                  "type": "integer",
+                  "minimum": 2000,
+                  "maximum": 2100
+                },
+                "lfi_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "plf_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "execution_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "lfi_sources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "plf_sources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "execution_sources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "mission": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "lfi_eur",
+          "plf_eur",
+          "execution_eur"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "annee": {
+            "type": "integer"
+          },
+          "lfi_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "plf_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "execution_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "lfi_programmes_manquants": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^5[0-9]{2}$"
+            }
+          },
+          "plf_programmes_manquants": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^5[0-9]{2}$"
+            }
+          },
+          "execution_programmes_manquants": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^5[0-9]{2}$"
+            }
+          }
+        }
+      }
+    },
+    "ecarts_entre_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "annee",
+          "nature",
+          "valeurs",
+          "lecture"
+        ],
+        "properties": {
+          "valeurs": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "eur",
+                "source"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

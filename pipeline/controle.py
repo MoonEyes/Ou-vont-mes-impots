@@ -236,6 +236,15 @@ def extraire_page(url: str, t: str) -> dict:
     return out
 
 
+def _ecrire_atomique(chemin: Path, texte: str) -> None:
+    """Écriture dans un fichier temporaire puis renommage : une coupure ne laisse jamais un fichier tronqué."""
+    import os
+    chemin.parent.mkdir(parents=True, exist_ok=True)
+    tmp = chemin.with_name(chemin.name + ".part")
+    tmp.write_text(texte, encoding="utf-8")
+    os.replace(tmp, chemin)
+
+
 def urls_sitemap(rafraichir: bool = False, age_max_s: float = 0) -> list[tuple[str, str]]:
     """(adresse, lastmod) des pages publications. `rafraichir` relit le plan du site, sauf si la copie locale a moins
     de `age_max_s` secondes (une reprise dans la journée ne retélécharge pas 13 Mo)."""
@@ -244,12 +253,15 @@ def urls_sitemap(rafraichir: bool = False, age_max_s: float = 0) -> list[tuple[s
     if rafraichir or not SITEMAP.exists():
         try:
             r = http_get(f"{CC}/sitemap_publication/sitemap.xml", tries=2, timeout=120)
-            ok = r.status_code == 200 and "<urlset" in r.text[:2000]
+            # intégrité : réponse complète (balise fermante, taille annoncée) et jamais une page HTML
+            ok = (r.status_code == 200 and "<urlset" in r.text[:2000] and r.text.rstrip().endswith("</urlset>")
+                  and (not r.headers.get("Content-Length") or "gzip" in r.headers.get("Content-Encoding", "")
+                       or int(r.headers["Content-Length"]) == len(r.content)))
         except RuntimeError:
             ok = False
         if ok:
             SITEMAP.parent.mkdir(parents=True, exist_ok=True)
-            SITEMAP.write_text(r.text, encoding="utf-8")
+            _ecrire_atomique(SITEMAP, r.text)
         elif not SITEMAP.exists():
             raise RuntimeError("plan du site ccomptes.fr indisponible (non contourné)")
     t = SITEMAP.read_text(encoding="utf-8")
@@ -437,11 +449,10 @@ def _collecter_ccomptes(budget_s, paralleles, pause_s, depuis, anciennes, max_ec
              "a_lire_au_depart": len(a_faire), "lues": etat["lues"], "restantes": restantes,
              "codes_http": {str(k): v for k, v in sorted(etat["codes"].items(), key=lambda kv: str(kv[0]))},
              "arret": etat["arret"]}
-    ETAT_COLLECTE.write_text(json.dumps(bilan, ensure_ascii=False, indent=1), encoding="utf-8")
+    _ecrire_atomique(ETAT_COLLECTE, json.dumps(bilan, ensure_ascii=False, indent=1))
     if etat["arret"]:
         print(f"  {etat['arret']}", file=sys.stderr)
-        REFUS.write_text(json.dumps({"motif": etat["arret"], "le": bilan["le"]}, ensure_ascii=False),
-                         encoding="utf-8")
+        _ecrire_atomique(REFUS, json.dumps({"motif": etat["arret"], "le": bilan["le"]}, ensure_ascii=False))
     elif REFUS.exists():  # passage sans incident : le refus précédent n'est plus d'actualité
         REFUS.unlink()
     print(f"  ccomptes.fr : {len(lues)} pages en cache, {restantes} restent à lire", file=sys.stderr)
@@ -1324,12 +1335,11 @@ def resoudre_siren_rod(budget_s: float, pause_s: float = PAUSE_S) -> dict:
         cache[cle] = {**_choisir_siren(r, res), "le": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
         faites += 1
         if faites % 50 == 0:
-            CACHE_ROD_SIREN.write_text(json.dumps(cache, ensure_ascii=False, sort_keys=True), encoding="utf-8")
-    CACHE_ROD_SIREN.parent.mkdir(parents=True, exist_ok=True)
-    CACHE_ROD_SIREN.write_text(json.dumps(cache, ensure_ascii=False, sort_keys=True), encoding="utf-8")
+            _ecrire_atomique(CACHE_ROD_SIREN, json.dumps(cache, ensure_ascii=False, sort_keys=True))
+    _ecrire_atomique(CACHE_ROD_SIREN, json.dumps(cache, ensure_ascii=False, sort_keys=True))
     bilan = {"le": datetime.now(timezone.utc).isoformat(timespec="seconds"), "faites": faites,
              "en_cache": len(cache), "restantes": len([c for c in reqs if c not in cache]), "arret": arret}
-    CACHE_ROD_SIREN.with_suffix(".etat.json").write_text(json.dumps(bilan, ensure_ascii=False), encoding="utf-8")
+    _ecrire_atomique(CACHE_ROD_SIREN.with_suffix(".etat.json"), json.dumps(bilan, ensure_ascii=False))
     if arret:
         print(f"  {arret}", file=sys.stderr)
     print(f"  SIREN des organismes contrôlés : {faites} recherches faites, {len(cache)} en cache", file=sys.stderr)

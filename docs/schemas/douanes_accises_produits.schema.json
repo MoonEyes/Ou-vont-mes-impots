@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/douanes_accises_produits.schema.json",
+  "title": "site/data/douanes_accises/produits.json : produit de chaque accise et des droits de douane (Insee, tableau 3.217)",
+  "description": "Écrit par pipeline/douanes_accises.py. Comptabilité nationale, toutes administrations : valeurs alignées sur `annees`, null = « N.D. » ou case vide.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "notion",
+    "perimetre",
+    "methode",
+    "annees",
+    "produits",
+    "familles",
+    "renvoi_agregats"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "producteur": {
+      "type": "string",
+      "minLength": 1
+    },
+    "titre_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unite": {
+      "const": "milliards d'euros"
+    },
+    "notion": {
+      "const": "produit"
+    },
+    "perimetre": {
+      "type": "string",
+      "minLength": 1
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "annees": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "integer",
+        "minimum": 1990,
+        "maximum": 2100
+      }
+    },
+    "produits": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "libelle_source",
+          "famille",
+          "valeurs_md",
+          "statut"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z_]+$"
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "libelle_source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "famille": {
+            "enum": [
+              "energie",
+              "tabacs",
+              "alcools_boissons",
+              "douane_union_europeenne",
+              "outre_mer",
+              "environnement"
+            ]
+          },
+          "valeurs_md": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "statut": {
+            "enum": [
+              "trace",
+              "approche",
+              "non_publie"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "notes_source": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "familles": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "renvoi_agregats": {
+      "type": "object",
+      "required": [
+        "fichier",
+        "cles",
+        "note"
+      ]
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 1
+    },
+    "statut": {
+      "enum": [
+        "trace",
+        "approche",
+        "non_publie"
+      ]
+    },
+    "date_collecte": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

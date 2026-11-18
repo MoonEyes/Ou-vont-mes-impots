@@ -1,0 +1,1832 @@
+{
+ "millesime": "lois de finances 2010 à 2026",
+ "collecte_le": "2026-11-18",
+ "source": "Lois de finances et documents budgétaires (data.economie.gouv.fr ; projet annuel de performances 2026 de la mission : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf) ; voté et dépensé 2010 à 2025 repris de site/data/realisations",
+ "unite": "euros (crédits de paiement)",
+ "definition": "Dotation de chaque pouvoir public inscrite au budget de l'État. « lfi » : budget voté (loi de finances initiale) ; « plf » : projet de loi de finances, avant le vote ; « execution » : dépense constatée. La dotation est intégralement versée à l'institution (autonomie financière) : la dépense constatée est égale aux crédits ouverts, dotations complémentaires de fin d'année comprises (par exemple Assemblée nationale 2024).",
+ "natures": {
+  "lfi": "budget voté (loi de finances initiale)",
+  "plf": "projet de loi de finances (avant le vote)",
+  "execution": "dépense constatée (exécution)"
+ },
+ "annees": [
+  2010,
+  2011,
+  2012,
+  2013,
+  2014,
+  2015,
+  2016,
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025,
+  2026
+ ],
+ "series": [
+  {
+   "programme": "501",
+   "libelle": "Présidence de la République",
+   "institution": "presidence",
+   "annees": [
+    {
+     "annee": 2010,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 112533700.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/execution-2010-du-budget-general-en-cp (budget général, exécution 2010 en CP)"
+     ]
+    },
+    {
+     "annee": 2011,
+     "lfi_eur": 112298700.0,
+     "lfi_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 110052726.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2012,
+     "lfi_eur": 108929739.0,
+     "lfi_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 102899893.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2013,
+     "lfi_eur": 103483252.0,
+     "lfi_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 101233252.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2014,
+     "lfi_eur": 101660000.0,
+     "lfi_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 100000000.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2015,
+     "lfi_eur": 100000000.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2016,
+     "lfi_eur": 100000000.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": 100000000.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2017,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2018,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 103000000.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls (consommation 2018)"
+     ]
+    },
+    {
+     "annee": 2019,
+     "lfi_eur": 103000000.0,
+     "lfi_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 103000000.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ]
+    },
+    {
+     "annee": 2020,
+     "lfi_eur": 105316000.0,
+     "lfi_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 105316000.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ]
+    },
+    {
+     "annee": 2021,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 105300000.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2021 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2022,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 105300000.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2022 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": 105300000.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/budgetvert_plf2024_opendata_vf (PLF 2024, budget vert : exécution 2022 en CP)"
+     ]
+    },
+    {
+     "annee": 2023,
+     "lfi_eur": 110459700.0,
+     "lfi_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 110459700.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ]
+    },
+    {
+     "annee": 2024,
+     "lfi_eur": 122563852.0,
+     "lfi_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 122563852.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/"
+     ]
+    },
+    {
+     "annee": 2025,
+     "lfi_eur": 122563852.0,
+     "lfi_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 122563852.0,
+     "execution_sources": [
+      "site/data/realisations/501.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)"
+     ]
+    },
+    {
+     "annee": 2026,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 122563852.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    }
+   ]
+  },
+  {
+   "programme": "511",
+   "libelle": "Assemblée nationale",
+   "institution": "assemblee_nationale",
+   "annees": [
+    {
+     "annee": 2010,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 533910000.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/execution-2010-du-budget-general-en-cp (budget général, exécution 2010 en CP)"
+     ]
+    },
+    {
+     "annee": 2011,
+     "lfi_eur": 533910000.0,
+     "lfi_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 533910000.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2012,
+     "lfi_eur": 517890000.0,
+     "lfi_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 517890000.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2013,
+     "lfi_eur": 517890000.0,
+     "lfi_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 517890000.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2014,
+     "lfi_eur": 517890000.0,
+     "lfi_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 517890000.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2015,
+     "lfi_eur": 517890000.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2016,
+     "lfi_eur": 517890000.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": 517890000.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2017,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2018,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 517890000.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls (consommation 2018)"
+     ]
+    },
+    {
+     "annee": 2019,
+     "lfi_eur": 517890000.0,
+     "lfi_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 517890000.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ]
+    },
+    {
+     "annee": 2020,
+     "lfi_eur": 517890000.0,
+     "lfi_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 517890000.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ]
+    },
+    {
+     "annee": 2021,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 517890000.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2021 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2022,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 552490000.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2022 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": 552490000.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/budgetvert_plf2024_opendata_vf (PLF 2024, budget vert : exécution 2022 en CP)"
+     ]
+    },
+    {
+     "annee": 2023,
+     "lfi_eur": 571005584.0,
+     "lfi_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 571005584.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ]
+    },
+    {
+     "annee": 2024,
+     "lfi_eur": 607647569.0,
+     "lfi_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 627181842.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/"
+     ]
+    },
+    {
+     "annee": 2025,
+     "lfi_eur": 607647569.0,
+     "lfi_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 607647569.0,
+     "execution_sources": [
+      "site/data/realisations/511.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)"
+     ]
+    },
+    {
+     "annee": 2026,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 607647569.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    }
+   ]
+  },
+  {
+   "programme": "521",
+   "libelle": "Sénat",
+   "institution": "senat",
+   "annees": [
+    {
+     "annee": 2010,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 327694000.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/execution-2010-du-budget-general-en-cp (budget général, exécution 2010 en CP)"
+     ]
+    },
+    {
+     "annee": 2011,
+     "lfi_eur": 327694000.0,
+     "lfi_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 327694000.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2012,
+     "lfi_eur": 323584600.0,
+     "lfi_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 323584600.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2013,
+     "lfi_eur": 323584600.0,
+     "lfi_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 323584600.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2014,
+     "lfi_eur": 323584600.0,
+     "lfi_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 323584600.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2015,
+     "lfi_eur": 323584600.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2016,
+     "lfi_eur": 323584600.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": 323584600.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2017,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2018,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 323584600.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls (consommation 2018)"
+     ]
+    },
+    {
+     "annee": 2019,
+     "lfi_eur": 323584600.0,
+     "lfi_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 323584600.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ]
+    },
+    {
+     "annee": 2020,
+     "lfi_eur": 323584600.0,
+     "lfi_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 323584600.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ]
+    },
+    {
+     "annee": 2021,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 323584600.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2021 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2022,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 338584600.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2022 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": 338584600.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/budgetvert_plf2024_opendata_vf (PLF 2024, budget vert : exécution 2022 en CP)"
+     ]
+    },
+    {
+     "annee": 2023,
+     "lfi_eur": 346294600.0,
+     "lfi_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 346294600.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ]
+    },
+    {
+     "annee": 2024,
+     "lfi_eur": 353470900.0,
+     "lfi_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 353470900.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/"
+     ]
+    },
+    {
+     "annee": 2025,
+     "lfi_eur": 353470900.0,
+     "lfi_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 353470900.0,
+     "execution_sources": [
+      "site/data/realisations/521.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)"
+     ]
+    },
+    {
+     "annee": 2026,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 353470900.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    }
+   ]
+  },
+  {
+   "programme": "541",
+   "libelle": "La Chaîne parlementaire",
+   "institution": "chaines_parlementaires",
+   "annees": [
+    {
+     "annee": 2010,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 30935000.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/execution-2010-du-budget-general-en-cp (budget général, exécution 2010 en CP)"
+     ]
+    },
+    {
+     "annee": 2011,
+     "lfi_eur": 32125000.0,
+     "lfi_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 32125000.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2012,
+     "lfi_eur": 35037514.0,
+     "lfi_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 35037514.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2013,
+     "lfi_eur": 34498162.0,
+     "lfi_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 34498162.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2014,
+     "lfi_eur": 35210162.0,
+     "lfi_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 35210162.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2015,
+     "lfi_eur": 35489162.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2016,
+     "lfi_eur": 35489162.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": 35489162.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2017,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2018,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 34687162.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls (consommation 2018)"
+     ]
+    },
+    {
+     "annee": 2019,
+     "lfi_eur": 34289162.0,
+     "lfi_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 34289162.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ]
+    },
+    {
+     "annee": 2020,
+     "lfi_eur": 34289162.0,
+     "lfi_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 34289162.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ]
+    },
+    {
+     "annee": 2021,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 34289162.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2021 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2022,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 34289162.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2022 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": 34289162.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/budgetvert_plf2024_opendata_vf (PLF 2024, budget vert : exécution 2022 en CP)"
+     ]
+    },
+    {
+     "annee": 2023,
+     "lfi_eur": 34495822.0,
+     "lfi_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 34495822.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ]
+    },
+    {
+     "annee": 2024,
+     "lfi_eur": 35245822.0,
+     "lfi_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 35245822.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/"
+     ]
+    },
+    {
+     "annee": 2025,
+     "lfi_eur": 35245822.0,
+     "lfi_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 35245822.0,
+     "execution_sources": [
+      "site/data/realisations/541.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)"
+     ]
+    },
+    {
+     "annee": 2026,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 35596900.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    }
+   ]
+  },
+  {
+   "programme": "531",
+   "libelle": "Conseil constitutionnel",
+   "institution": "conseil_constitutionnel",
+   "annees": [
+    {
+     "annee": 2010,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 11633400.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/execution-2010-du-budget-general-en-cp (budget général, exécution 2010 en CP)"
+     ]
+    },
+    {
+     "annee": 2011,
+     "lfi_eur": 11070000.0,
+     "lfi_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 11070000.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2012,
+     "lfi_eur": 10998000.0,
+     "lfi_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 10998000.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2013,
+     "lfi_eur": 10888000.0,
+     "lfi_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 10888000.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2014,
+     "lfi_eur": 10776000.0,
+     "lfi_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 10776000.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2015,
+     "lfi_eur": 10190000.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2016,
+     "lfi_eur": 9920462.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": 9920462.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2017,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2018,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 11719229.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls (consommation 2018)"
+     ]
+    },
+    {
+     "annee": 2019,
+     "lfi_eur": 11719229.0,
+     "lfi_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 11719229.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ]
+    },
+    {
+     "annee": 2020,
+     "lfi_eur": 12504229.0,
+     "lfi_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 12504229.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ]
+    },
+    {
+     "annee": 2021,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 12019229.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2021 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2022,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 15963000.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2022 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": 15963000.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/budgetvert_plf2024_opendata_vf (PLF 2024, budget vert : exécution 2022 en CP)"
+     ]
+    },
+    {
+     "annee": 2023,
+     "lfi_eur": 13295000.0,
+     "lfi_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 13295000.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ]
+    },
+    {
+     "annee": 2024,
+     "lfi_eur": 17930000.0,
+     "lfi_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 17930000.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/"
+     ]
+    },
+    {
+     "annee": 2025,
+     "lfi_eur": 17930000.0,
+     "lfi_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 17930000.0,
+     "execution_sources": [
+      "site/data/realisations/531.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)"
+     ]
+    },
+    {
+     "annee": 2026,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 20000000.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    }
+   ]
+  },
+  {
+   "programme": "532",
+   "libelle": "Haute Cour",
+   "institution": "haute_cour",
+   "annees": [
+    {
+     "annee": 2010,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2011,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2012,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2013,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2014,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2015,
+     "lfi_eur": 0.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2016,
+     "lfi_eur": 0.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": 0.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2017,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2018,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2019,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2020,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2021,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2022,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2023,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2024,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2025,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2026,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    }
+   ]
+  },
+  {
+   "programme": "533",
+   "libelle": "Cour de justice de la République",
+   "institution": "cour_de_justice_de_la_republique",
+   "annees": [
+    {
+     "annee": 2010,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 763037.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/execution-2010-du-budget-general-en-cp (budget général, exécution 2010 en CP)"
+     ]
+    },
+    {
+     "annee": 2011,
+     "lfi_eur": 817450.0,
+     "lfi_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 817450.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/execution-2011-du-budget-general-en-cp (budget général, exécution 2011 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2011, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2012,
+     "lfi_eur": 817450.0,
+     "lfi_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 817450.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/execution-2012-du-budget-de-letat-en-cp-suivant-la-nomenclature-mission-programm (budget général, exécution 2012 en CP) ; data.economie.gouv.fr/lfi-2012-dotation-bg-en-ae-cp-par-mission-programme-action-et-titre (LFI 2012, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2013,
+     "lfi_eur": 921725.0,
+     "lfi_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 921725.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/execution-2013-du-budget-de-letat-en-cp-et-ae- (budget général, exécution 2013 en CP) ; data.economie.gouv.fr/lfi-2013-dotation-bg-en-ae-cp-par-mission-programme-action-et-categorie (LFI 2013, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2014,
+     "lfi_eur": 866600.0,
+     "lfi_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 866600.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/plr-2014-donnees-de-lexecution-2015-publiees-dans-les-annexes-rap-du-projet-de-l (budget général, exécution 2014 en CP) ; data.economie.gouv.fr/lfi-2014-dotation-bg-en-ae-cp-par-action-titre (LFI 2014, budget général, CP)"
+     ]
+    },
+    {
+     "annee": 2015,
+     "lfi_eur": 861500.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2016,
+     "lfi_eur": 861500.0,
+     "lfi_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "plf_eur": 861500.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, projet de loi de finances pour 2016, budget général par mission et destination (colonnes CP LFI 2015, CP PLF et CP LFI 2016) : https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2017,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2018,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 861500.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls (consommation 2018)"
+     ]
+    },
+    {
+     "annee": 2019,
+     "lfi_eur": 861500.0,
+     "lfi_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 861500.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2019-plr-20192, RAP_synthese_2019.xls"
+     ]
+    },
+    {
+     "annee": 2020,
+     "lfi_eur": 871500.0,
+     "lfi_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 871500.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-de-reglement-2020-plr-2020, RAP2020_synthese.xls"
+     ]
+    },
+    {
+     "annee": 2021,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 871500.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2021 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    },
+    {
+     "annee": 2022,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 984000.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, données du projet de loi de finances pour 2022 (crédits de paiement, mission PB) : https://data.economie.gouv.fr/explore/dataset/projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/"
+     ],
+     "execution_eur": 984000.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/budgetvert_plf2024_opendata_vf (PLF 2024, budget vert : exécution 2022 en CP)"
+     ]
+    },
+    {
+     "annee": 2023,
+     "lfi_eur": 984000.0,
+     "lfi_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 984000.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023, annexe 1 « état CP » 2023 (PLRG 2023)"
+     ]
+    },
+    {
+     "annee": 2024,
+     "lfi_eur": 984000.0,
+     "lfi_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 984000.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/plrg-2024, annexe 1 « état CP » 2024 (PLRG 2024)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/"
+     ]
+    },
+    {
+     "annee": 2025,
+     "lfi_eur": 984000.0,
+     "lfi_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)",
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "plf_eur": null,
+     "plf_sources": [],
+     "execution_eur": 984000.0,
+     "execution_sources": [
+      "site/data/realisations/533.json (étape « realisations ») : data.economie.gouv.fr/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025, annexe 1 « état CP » 2025 (PLRG 2025)"
+     ]
+    },
+    {
+     "annee": 2026,
+     "lfi_eur": null,
+     "lfi_sources": [],
+     "plf_eur": 900000.0,
+     "plf_sources": [
+      "data.economie.gouv.fr, budget vert du PLF 2026 (crédits budgétaires : exécution 2024, LFI 2025, PLF 2026, crédits de paiement) : https://data.economie.gouv.fr/explore/dataset/plf-2026-budget-vert/",
+      "Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026), page 7 : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf (récapitulation des crédits, crédits de paiement)"
+     ],
+     "execution_eur": null,
+     "execution_sources": []
+    }
+   ]
+  }
+ ],
+ "mission": [
+  {
+   "annee": 2010,
+   "lfi_eur": null,
+   "lfi_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": 1017469137.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2011,
+   "lfi_eur": 1017915150.0,
+   "lfi_programmes_manquants": [],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": 1015669176.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2012,
+   "lfi_eur": 997257303.0,
+   "lfi_programmes_manquants": [],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": 991227457.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2013,
+   "lfi_eur": 991265739.0,
+   "lfi_programmes_manquants": [],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": 989015739.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2014,
+   "lfi_eur": 989987362.0,
+   "lfi_programmes_manquants": [],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": 988327362.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2015,
+   "lfi_eur": 988015262.0,
+   "lfi_programmes_manquants": [],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": null,
+   "execution_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ]
+  },
+  {
+   "annee": 2016,
+   "lfi_eur": 987745724.0,
+   "lfi_programmes_manquants": [],
+   "plf_eur": 987745724.0,
+   "plf_programmes_manquants": [],
+   "execution_eur": null,
+   "execution_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ]
+  },
+  {
+   "annee": 2017,
+   "lfi_eur": null,
+   "lfi_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": null,
+   "execution_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ]
+  },
+  {
+   "annee": 2018,
+   "lfi_eur": null,
+   "lfi_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": 991742491.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2019,
+   "lfi_eur": 991344491.0,
+   "lfi_programmes_manquants": [],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": 991344491.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2020,
+   "lfi_eur": 994455491.0,
+   "lfi_programmes_manquants": [],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": 994455491.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2021,
+   "lfi_eur": null,
+   "lfi_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "plf_eur": 993954491.0,
+   "plf_programmes_manquants": [],
+   "execution_eur": null,
+   "execution_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ]
+  },
+  {
+   "annee": 2022,
+   "lfi_eur": null,
+   "lfi_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "plf_eur": 1047610762.0,
+   "plf_programmes_manquants": [],
+   "execution_eur": 1047610762.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2023,
+   "lfi_eur": 1076534706.0,
+   "lfi_programmes_manquants": [],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": 1076534706.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2024,
+   "lfi_eur": 1137842143.0,
+   "lfi_programmes_manquants": [],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": 1157376416.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2025,
+   "lfi_eur": 1137842143.0,
+   "lfi_programmes_manquants": [],
+   "plf_eur": null,
+   "plf_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "execution_eur": 1137842143.0,
+   "execution_programmes_manquants": []
+  },
+  {
+   "annee": 2026,
+   "lfi_eur": null,
+   "lfi_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ],
+   "plf_eur": 1140179221.0,
+   "plf_programmes_manquants": [],
+   "execution_eur": null,
+   "execution_programmes_manquants": [
+    "501",
+    "511",
+    "521",
+    "541",
+    "531",
+    "533"
+   ]
+  }
+ ],
+ "ecarts_entre_sources": [],
+ "lecture": "Chaque montant porte la liste de ses sources. Une valeur est null quand aucune source collectée ne la publie ; le total de la mission est null tant qu'un programme manque (Haute Cour exceptée, sans dotation publiée)."
+}

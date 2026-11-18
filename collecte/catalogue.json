@@ -5012,6 +5012,157 @@
    "titre": "LFI 2020, 2021 et 2022, emplois (ETPT) par programme et categorie d'emploi, pieces jointes CSV (lu par pipeline/securite_interieure.py)",
    "licence": "Licence Ouverte 2.0",
    "module": "pipeline/securite_interieure.py"
+  },
+  {
+   "id": "douanes_insee_t3217",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://www.insee.fr/fr/statistiques/fichier/8988845/t_3217_fr.xlsx",
+   "titre": "Comptes nationaux annuels, base 2020 : tableau 3.217 « Principaux impôts par catégorie » (1995 à 2025), publication « Dépenses et recettes des administrations publiques en 2025 »",
+   "licence": "Licence Ouverte 2.0",
+   "producteur": "Insee",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_dgddi_recettes_2010_2015",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "xls",
+   "url": "https://www.douane.gouv.fr/sites/default/files/openData/files/dgddi-2010-2015-recettes-fiscales-montants-redresses.xls",
+   "titre": "DGDDI, données ouvertes : « Recettes fiscales perçues et montants redressés 2010-2015 » (feuille « recettes douanieres »)",
+   "licence": "Licence Ouverte",
+   "producteur": "Direction générale des douanes et droits indirects (DGDDI)",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_bilan_2020",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.douane.gouv.fr/sites/default/files/2021-04/02/Bilan-annuel-de-la-douane-2020.pdf",
+   "titre": "Bilan annuel de la douane 2020, « Recettes douanières en millions d'euros (détail) », 2019 et 2020",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "DGDDI",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_bilan_2022",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://Douane.gouv.fr/sites/default/files/2023-02/22/bilan-annuel-de-la-douane-2022.pdf",
+   "titre": "Bilan annuel de la douane 2022, « Recettes douanières en millions d'euros (détail) », 2021 et 2022",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "DGDDI",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_bilan_2023",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://Douane.gouv.fr/sites/default/files/2024-05/09/bilan-annuel-de-la-douane-2023.pdf",
+   "titre": "Bilan annuel de la douane 2023, « Évolution des recettes douanières en millions d'euros (détail) », 2023",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "DGDDI",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_bilan_2024",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://douane.gouv.fr/sites/default/files/2025-03/24/Bilan_DGDDI_2024.pdf",
+   "titre": "Bilan de la douane 2024, « Recettes douanières en millions d'euros (détail) » et chiffres clés (destination des recettes)",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "DGDDI",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_bilan_2025",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.douane.gouv.fr/sites/default/files/2026-02/19/Bilan_Douane_2025.pdf",
+   "titre": "Bilan de la douane 2025, « Recettes douanières en millions d'euros (détail) » et chiffres clés (destination et provenance des recettes), 19 février 2026",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "DGDDI",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_vm1_plf2024",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://questions.assemblee-nationale.fr/dyn/contenu/visualisation/705205/file/Evaluation%20des%20voies%20et%20moyens%20-%20Tome%20I",
+   "titre": "PLF 2024, Évaluation des voies et moyens tome I : TICPE nette (p. 29), ligne 2301 (p. 50)",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "Direction du budget / DGFiP",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_vm1_plf2025",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2025/Voies_et_moyens_Tome_1_2025.pdf",
+   "titre": "PLF 2025, Évaluation des voies et moyens tome I : TICPE nette (p. 27), ligne 2301 (p. 48)",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "Direction du budget / DGFiP",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_vm1_plf2026",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1087930/file/PLF%202026%20-%20V%26M%20TI%20-%20Evaluations%20des%20recettes.pdf",
+   "titre": "PLF 2026, Évaluation des voies et moyens tome I : accise sur les produits énergétiques (p. 28), ligne 2301 (p. 54), octobre 2025",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "Direction du budget / DGFiP",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "douanes_plfss2026_annexe3",
+   "domaine": "douanes_accises",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1089896/file/PLFSS2026-Annexe3-20251015-103900-55-4.pdf",
+   "titre": "PLFSS 2026, annexe 3, tableau 31 « Répartition des impositions affectées à la sécurité sociale entre 2018 et 2025 » (p. 44), octobre 2025",
+   "licence": "document administratif public (CRPA L. 321-1)",
+   "producteur": "Direction de la sécurité sociale",
+   "module": "pipeline/douanes_accises.py"
+  },
+  {
+   "id": "pouvoirs_publics_documents",
+   "domaine": "pouvoirs_publics",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf",
+     "nom": "pap2026_pouvoirs_publics.pdf"
+    },
+    {
+     "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1109910/file/Pouvoirs_publics_PB.pdf",
+     "nom": "rap2025_pouvoirs_publics.pdf"
+    },
+    {
+     "url": "https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf",
+     "nom": "an_fiche7_situation_materielle_depute.pdf"
+    },
+    {
+     "url": "https://www.senat.fr/reglement/pouvoirs_publics22.html",
+     "nom": "senat_recueil_pouvoirs_publics_traitement_gouvernement.html"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv",
+     "nom": "plf2016_bg_msn_dest.csv"
+    }
+   ],
+   "titre": "Pouvoirs publics : projet annuel de performances 2026 et rapport annuel de performances 2025 de la mission (miroir Assemblee nationale, PDF), fiche n 7 de l'Assemblee nationale sur la situation materielle du depute (baremes des indemnites, janvier 2026), recueil du Senat des textes relatifs aux pouvoirs publics (decrets 2012-983 et 2014-425 sur le traitement du President de la Republique et des membres du Gouvernement), PLF 2016 budget general par mission et destination (LFI 2015 et 2016) ; aucun montant par personne nommee (lu par pipeline/pouvoirs_publics.py)",
+   "licence": "documents administratifs publics ; Licence Ouverte 2.0 (data.economie.gouv.fr)",
+   "module": "pipeline/pouvoirs_publics.py"
   }
  ],
  "non_collectables": [

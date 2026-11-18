@@ -1,0 +1,711 @@
+{
+ "alcools": {
+  "cles": {
+   "annees": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "parts": [
+    {
+     "destinataire": "msa_maladie",
+     "pct": [
+      55.77,
+      53.08,
+      46.6,
+      46.6,
+      46.6,
+      46.6,
+      46.6,
+      46.6,
+      46.6
+     ]
+    },
+    {
+     "destinataire": "msa_vieillesse",
+     "pct": [
+      40.05,
+      40.05,
+      39.59,
+      39.59,
+      26.67,
+      26.02,
+      24.51,
+      24.51,
+      24.51
+     ]
+    },
+    {
+     "destinataire": "msa_rco",
+     "pct": [
+      4.18,
+      6.87,
+      13.81,
+      13.81,
+      26.73,
+      27.38,
+      28.89,
+      28.89,
+      28.89
+     ]
+    }
+   ]
+  },
+  "deja_dans_le_site": {
+   "annee": 2025,
+   "cle": "prelevements.alcool",
+   "fichier": "prelevements/affectation.json"
+  },
+  "document": "douanes_plfss2026_annexe3",
+  "lecture": "Part du droit de consommation attribuée à chaque branche de la MSA des non-salariés agricoles, en pourcentage ; la cotisation sur les alcools de plus de 18°, les droits de circulation sur les bières et sur les vins et le droit sur les produits intermédiaires vont à la MSA vieillesse (cellule fusionnée du tableau, même lecture que prelevements/affectation.json).",
+  "libelle": "Droit de consommation sur les alcools",
+  "page_pdf": 44
+ },
+ "date_collecte": "2026-11-18",
+ "destinataires": {
+  "afitf": {
+   "administration": "Etat",
+   "nom": "Agence de financement des infrastructures de transport de France (AFITF)"
+  },
+  "autres": {
+   "administration": null,
+   "nom": "Autres (ligne « Autres » de la source)"
+  },
+  "cnam": {
+   "administration": "Securite sociale",
+   "nom": "Assurance maladie (CNAM)"
+  },
+  "collectivites_et_organismes_sociaux": {
+   "administration": null,
+   "nom": "Collectivités locales et organismes sociaux (regroupés par la source)"
+  },
+  "collectivites_territoriales": {
+   "administration": "Collectivites locales",
+   "nom": "Collectivités territoriales (régions, départements)"
+  },
+  "etat": {
+   "administration": "Etat",
+   "nom": "État (budget général)"
+  },
+  "idfm": {
+   "administration": "Collectivites locales",
+   "nom": "Île-de-France Mobilités"
+  },
+  "msa_maladie": {
+   "administration": "Securite sociale",
+   "nom": "MSA, non-salariés agricoles, maladie"
+  },
+  "msa_rco": {
+   "administration": "Securite sociale",
+   "nom": "MSA, retraite complémentaire obligatoire des non-salariés agricoles"
+  },
+  "msa_vieillesse": {
+   "administration": "Securite sociale",
+   "nom": "MSA, non-salariés agricoles, vieillesse"
+  },
+  "ravgdt": {
+   "administration": "Securite sociale",
+   "nom": "Régime d'allocations viagères des gérants de débits de tabac (RAVGDT)"
+  },
+  "union_europeenne": {
+   "administration": "Union europeenne",
+   "nom": "Union européenne (ressources propres traditionnelles)"
+  },
+  "zni_cspe": {
+   "administration": "Etat",
+   "nom": "Fractions ZNI et CSPE (péréquation tarifaire, énergies renouvelables)"
+  }
+ },
+ "droits_de_douane": {
+  "destinataires": [
+   "union_europeenne",
+   "etat"
+  ],
+  "frais_perception": [
+   {
+    "annee": 2021,
+    "citation": "L'exécution 2021 s'établissait à 595 M€.",
+    "document": "douanes_vm1_plf2024",
+    "frais_perception_etat_m": 595,
+    "page_pdf": 50,
+    "statut": "execution"
+   },
+   {
+    "annee": 2022,
+    "citation": "Finalement, l'exécution 2022 s'établit à 760 M€.",
+    "document": "douanes_vm1_plf2024",
+    "frais_perception_etat_m": 760,
+    "page_pdf": 50,
+    "statut": "execution"
+   },
+   {
+    "annee": 2023,
+    "citation": "Finalement, l'exécution 2023 s'établit à 654 M€.",
+    "document": "douanes_vm1_plf2025",
+    "frais_perception_etat_m": 654,
+    "page_pdf": 48,
+    "statut": "execution"
+   },
+   {
+    "annee": 2024,
+    "citation": "Finalement, l'exécution 2024 s'établit à 665 M€.",
+    "document": "douanes_vm1_plf2026",
+    "frais_perception_etat_m": 665,
+    "page_pdf": 54,
+    "statut": "execution"
+   },
+   {
+    "annee": 2025,
+    "citation": "Le PLF pour 2026 révise cette prévision à 657 M€",
+    "document": "douanes_vm1_plf2026",
+    "frais_perception_etat_m": 657,
+    "page_pdf": 54,
+    "statut": "prevision_revisee"
+   },
+   {
+    "annee": 2026,
+    "citation": "prévoit un montant de 677 M€",
+    "document": "douanes_vm1_plf2026",
+    "frais_perception_etat_m": 677,
+    "page_pdf": 54,
+    "statut": "prevision"
+   }
+  ],
+  "lecture": "Les droits de douane appartiennent au budget de l'Union européenne ; l'État en conserve une part au titre des frais de perception (ligne 2301 de ses recettes non fiscales). Ces montants ne transitent pas par le prélèvement sur recettes au profit de l'Union (site/data/ue/). Les droits perçus par la douane (collecte.json) et les frais de perception (année de rattachement des voies et moyens) ne sont pas rapprochés ici : leurs calendriers diffèrent.",
+  "libelle": "Droits de douane (ressources propres traditionnelles de l'Union européenne)",
+  "regle": {
+   "citations": [
+    "Chaque État membre bénéficie du remboursement des frais de perception des ressources propres traditionnelles qu'il recouvre au profit de l'Union européenne (droits de douane uniquement à compter de 2018, les cotisations sur le sucre étant supprimées à cette date).",
+    "le taux de remboursement était fixé à 20 % du produit collecté. Ce taux a été réhaussé à 25 % par la décision du Conseil du 14 décembre 2020",
+    "Depuis la loi de finances pour 2010, le PSR-UE n'intègre plus les ressources propres traditionnelles."
+   ],
+   "document": "douanes_vm1_plf2026",
+   "pages_pdf": [
+    54,
+    89
+   ],
+   "taux_frais_perception": [
+    {
+     "a": 2020,
+     "de": 2014,
+     "pct": 20
+    },
+    {
+     "a": null,
+     "de": 2021,
+     "pct": 25
+    }
+   ]
+  }
+ },
+ "energie": {
+  "deja_dans_le_site": {
+   "annee": 2025,
+   "cle": "prelevements.ticpe",
+   "fichier": "prelevements/affectation.json",
+   "note": "La colonne 2025 du PLF 2026 (prévision révisée) est la ventilation 2025 déjà publiée par le site : elle n'est pas reprise dans « executions »."
+  },
+  "editions": [
+   {
+    "annees": [
+     2022,
+     2023,
+     2024
+    ],
+    "document": "douanes_vm1_plf2024",
+    "lignes": [
+     {
+      "id": "brute_totale",
+      "libelle_source": "TICPE brute totale",
+      "valeurs_md": [
+       32.5,
+       31.4,
+       31.7
+      ]
+     },
+     {
+      "destinataire": "collectivites_territoriales",
+      "id": "collectivites_territoriales",
+      "libelle_source": "Transfert aux collectivités territoriales",
+      "valeurs_md": [
+       -11.3,
+       -11.1,
+       -11.1
+      ]
+     },
+     {
+      "destinataire": "afitf",
+      "id": "afitf",
+      "libelle_source": "Transfert à l'AFITF",
+      "valeurs_md": [
+       -1.2,
+       -1.9,
+       -2.1
+      ]
+     },
+     {
+      "destinataire": "idfm",
+      "id": "idfm",
+      "libelle_source": "Transfert Île-de-France Mobilités (ex-STIF)",
+      "valeurs_md": [
+       -0.1,
+       -0.1,
+       -0.1
+      ]
+     },
+     {
+      "destinataire": "autres",
+      "id": "autres",
+      "libelle_source": "Autres",
+      "valeurs_md": [
+       0.2,
+       null,
+       null
+      ]
+     },
+     {
+      "destinataire": "etat",
+      "id": "brute_etat",
+      "libelle_source": "TICPE brute État",
+      "valeurs_md": [
+       20.1,
+       18.3,
+       18.4
+      ]
+     },
+     {
+      "id": "remboursements",
+      "libelle_source": "Remboursements et dégrèvements de TICPE",
+      "valeurs_md": [
+       -2.2,
+       -1.9,
+       -2.0
+      ]
+     },
+     {
+      "id": "nette_etat",
+      "libelle_source": "TICPE nette État",
+      "valeurs_md": [
+       18.0,
+       16.4,
+       16.4
+      ]
+     }
+    ],
+    "page_pdf": 29,
+    "statuts": [
+     "execution",
+     "prevision",
+     "prevision"
+    ]
+   },
+   {
+    "annees": [
+     2023,
+     2024,
+     2025
+    ],
+    "document": "douanes_vm1_plf2025",
+    "lignes": [
+     {
+      "id": "brute_totale",
+      "libelle_source": "TICPE brute totale",
+      "valeurs_md": [
+       31.7,
+       31.5,
+       31.2
+      ]
+     },
+     {
+      "destinataire": "collectivites_territoriales",
+      "id": "collectivites_territoriales",
+      "libelle_source": "Transfert aux collectivités territoriales",
+      "valeurs_md": [
+       -11.2,
+       -12.2,
+       -12.2
+      ]
+     },
+     {
+      "destinataire": "afitf",
+      "id": "afitf",
+      "libelle_source": "Transfert à l'AFITF",
+      "valeurs_md": [
+       -1.9,
+       -2.0,
+       -1.3
+      ]
+     },
+     {
+      "destinataire": "idfm",
+      "id": "idfm",
+      "libelle_source": "Transfert Île-de-France Mobilités (ex-STIF)",
+      "valeurs_md": [
+       -0.1,
+       -0.1,
+       -0.1
+      ]
+     },
+     {
+      "destinataire": "autres",
+      "id": "autres",
+      "libelle_source": "Autres",
+      "valeurs_md": [
+       0.2,
+       0.4,
+       0.4
+      ]
+     },
+     {
+      "destinataire": "etat",
+      "id": "brute_etat",
+      "libelle_source": "TICPE brute État",
+      "valeurs_md": [
+       18.7,
+       17.6,
+       18.1
+      ]
+     },
+     {
+      "id": "remboursements",
+      "libelle_source": "Remboursements et dégrèvements de TICPE",
+      "valeurs_md": [
+       -1.9,
+       -2.1,
+       -1.6
+      ]
+     },
+     {
+      "id": "nette_etat",
+      "libelle_source": "TICPE nette État",
+      "valeurs_md": [
+       16.8,
+       15.5,
+       16.5
+      ]
+     }
+    ],
+    "page_pdf": 27,
+    "statuts": [
+     "execution",
+     "prevision",
+     "prevision"
+    ]
+   },
+   {
+    "annees": [
+     2024,
+     2025,
+     2026
+    ],
+    "document": "douanes_vm1_plf2026",
+    "lignes": [
+     {
+      "id": "brute_totale",
+      "libelle_source": "Accise sur les produits énergétiques (ex-TICPE) brute totale",
+      "valeurs_md": [
+       31.6,
+       31.4,
+       31.5
+      ]
+     },
+     {
+      "destinataire": "collectivites_territoriales",
+      "id": "collectivites_territoriales",
+      "libelle_source": "Transfert aux collectivités territoriales",
+      "valeurs_md": [
+       -11.9,
+       -12.0,
+       -11.7
+      ]
+     },
+     {
+      "destinataire": "afitf",
+      "id": "afitf",
+      "libelle_source": "Transfert à l'AFITF",
+      "valeurs_md": [
+       -1.7,
+       -1.2,
+       -1.6
+      ]
+     },
+     {
+      "destinataire": "idfm",
+      "id": "idfm",
+      "libelle_source": "Transfert Île-de-France Mobilités (ex-STIF)",
+      "valeurs_md": [
+       -0.1,
+       -0.1,
+       null
+      ]
+     },
+     {
+      "destinataire": "zni_cspe",
+      "id": "zni_cspe",
+      "libelle_source": "Fraction ZNI & Fraction CSPE",
+      "valeurs_md": [
+       null,
+       -0.1,
+       -1.6
+      ]
+     },
+     {
+      "destinataire": "autres",
+      "id": "autres",
+      "libelle_source": "Autres",
+      "valeurs_md": [
+       0.0,
+       0.2,
+       0.2
+      ]
+     },
+     {
+      "destinataire": "etat",
+      "id": "brute_etat",
+      "libelle_source": "Accise sur les produits énergétiques (ex-TICPE) brute État",
+      "valeurs_md": [
+       18.1,
+       18.1,
+       16.8
+      ]
+     },
+     {
+      "id": "remboursements",
+      "libelle_source": "Remboursements et dégrèvements de l'ex-TICPE",
+      "valeurs_md": [
+       -2.0,
+       -1.6,
+       -1.5
+      ]
+     },
+     {
+      "id": "nette_etat",
+      "libelle_source": "Accise sur les produits énergétiques (ex-TICPE) nette État",
+      "valeurs_md": [
+       16.0,
+       16.5,
+       15.3
+      ]
+     }
+    ],
+    "page_pdf": 28,
+    "statuts": [
+     "execution",
+     "prevision_revisee",
+     "prevision"
+    ]
+   }
+  ],
+  "executions": {
+   "annees": [
+    2022,
+    2023,
+    2024
+   ],
+   "lignes": [
+    {
+     "id": "brute_totale",
+     "valeurs_md": [
+      32.5,
+      31.7,
+      31.6
+     ]
+    },
+    {
+     "id": "collectivites_territoriales",
+     "valeurs_md": [
+      -11.3,
+      -11.2,
+      -11.9
+     ]
+    },
+    {
+     "id": "afitf",
+     "valeurs_md": [
+      -1.2,
+      -1.9,
+      -1.7
+     ]
+    },
+    {
+     "id": "idfm",
+     "valeurs_md": [
+      -0.1,
+      -0.1,
+      -0.1
+     ]
+    },
+    {
+     "id": "autres",
+     "valeurs_md": [
+      0.2,
+      0.2,
+      0.0
+     ]
+    },
+    {
+     "id": "brute_etat",
+     "valeurs_md": [
+      20.1,
+      18.7,
+      18.1
+     ]
+    },
+    {
+     "id": "remboursements",
+     "valeurs_md": [
+      -2.2,
+      -1.9,
+      -2.0
+     ]
+    },
+    {
+     "id": "nette_etat",
+     "valeurs_md": [
+      18.0,
+      16.8,
+      16.0
+     ]
+    },
+    {
+     "id": "zni_cspe",
+     "valeurs_md": [
+      null,
+      null,
+      null
+     ]
+    }
+   ],
+   "source_par_annee": {
+    "2022": "douanes_vm1_plf2024",
+    "2023": "douanes_vm1_plf2025",
+    "2024": "douanes_vm1_plf2026"
+   }
+  },
+  "lecture_signes": "Signe de la source : un transfert vers un affectataire est négatif (il diminue la part de l'État), « brute État » = brute totale moins les transferts ; « nette État » = brute État moins les remboursements et dégrèvements.",
+  "libelle": "Accise sur les produits énergétiques (ex-TICPE)",
+  "unite": "milliards d'euros"
+ },
+ "methode": "Chaque montant ou clé est lu dans le tableau de la source et retrouvé dans le texte du document collecté à chaque production. Les éditions successives des voies et moyens sont toutes publiées (une prévision puis l'exécution de la même année) ; « executions » ne retient que la colonne « Exécution » de chaque édition.",
+ "millesime": "2018-2026 (clés de la sécurité sociale) ; exécutions 2022 à 2024 et prévisions 2025-2026 (accise sur les produits énergétiques) ; frais de perception 2021 à 2026",
+ "montants_plfss": {
+  "document": "douanes_plfss2026_annexe3",
+  "lignes": [
+   {
+    "id": "tabacs_droit_consommation",
+    "libelle_source": "Droit de consommation sur les tabacs (art. 575 CGI)",
+    "prevision_2025_m": 12086,
+    "prevision_2026_m": 11423,
+    "recouvrement": "DGDDI/DGFIP"
+   },
+   {
+    "id": "tabacs_droit_licence",
+    "libelle_source": "Droit de licence sur la rémunération des débitants de tabacs (art. 568 CGI)",
+    "prevision_2025_m": 340,
+    "prevision_2026_m": 330,
+    "recouvrement": "DGDDI/DGFIP"
+   },
+   {
+    "id": "alcools_droit_consommation",
+    "libelle_source": "Droit de consommation sur les alcools (art. 403 CGI)",
+    "prevision_2025_m": 2175,
+    "prevision_2026_m": 2173,
+    "recouvrement": "DGDDI"
+   },
+   {
+    "id": "alcools_circulation_vins",
+    "libelle_source": "Droit de circulation sur les vins, poirés, cidres et hydromels (art. 438 CGI)",
+    "prevision_2025_m": 101,
+    "prevision_2026_m": 98,
+    "recouvrement": "DGDDI"
+   },
+   {
+    "id": "alcools_cotisation_18",
+    "libelle_source": "Cotisation sur les alcools de plus de 18° (art. L 245-7 à L 245-11 CSS)",
+    "prevision_2025_m": 732,
+    "prevision_2026_m": 734,
+    "recouvrement": "DGDDI"
+   },
+   {
+    "id": "alcools_circulation_bieres",
+    "libelle_source": "Droit de circulation sur les bières",
+    "prevision_2025_m": 1067,
+    "prevision_2026_m": 1081,
+    "recouvrement": "DGDDI"
+   },
+   {
+    "id": "alcools_produits_intermediaires",
+    "libelle_source": "Droit de consommation sur les produits intermédiaires (art. 402 bis CGI)",
+    "prevision_2025_m": 56,
+    "prevision_2026_m": 54,
+    "recouvrement": "DGDDI"
+   }
+  ],
+  "note": "Montants des prévisions 2025 et 2026 écrits dans le tableau 31 ; le montant 2025 du droit sur les tabacs et des droits sur les alcools sert déjà à prelevements/affectation.json.",
+  "unite": "millions d'euros"
+ },
+ "notion": "affecte",
+ "ordre": "Produits : énergie, tabacs, alcools, droits de douane ; années croissantes.",
+ "source": "https://questions.assemblee-nationale.fr/dyn/contenu/visualisation/705205/file/Evaluation%20des%20voies%20et%20moyens%20-%20Tome%20I ; https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2025/Voies_et_moyens_Tome_1_2025.pdf ; https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1087930/file/PLF%202026%20-%20V%26M%20TI%20-%20Evaluations%20des%20recettes.pdf ; https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1089896/file/PLFSS2026-Annexe3-20251015-103900-55-4.pdf",
+ "tabacs": {
+  "autres_droits": "Droit de licence sur la rémunération des débitants de tabacs : CNAM toutes les années (CNAMTS en 2018).",
+  "cles": {
+   "annees": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "parts": [
+    {
+     "destinataire": "cnam",
+     "pct": [
+      99.75,
+      99.56,
+      99.3,
+      99.5,
+      99.5,
+      99.5,
+      99.5,
+      100,
+      100
+     ]
+    },
+    {
+     "destinataire": "ravgdt",
+     "pct": [
+      0.25,
+      0.44,
+      0.7,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      null,
+      null
+     ]
+    }
+   ]
+  },
+  "deja_dans_le_site": {
+   "annee": 2025,
+   "cle": "prelevements.tabac",
+   "fichier": "prelevements/affectation.json"
+  },
+  "document": "douanes_plfss2026_annexe3",
+  "lecture": "Part du produit attribuée à chaque organisme, en pourcentage, telle que l'écrit le tableau 31. En 2025 et 2026 la case du RAVGDT est vide (null) et le tableau écrit « CNAM : 100% ».",
+  "libelle": "Droit de consommation sur les tabacs",
+  "page_pdf": 44
+ }
+}
