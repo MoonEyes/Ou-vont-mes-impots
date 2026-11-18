@@ -231,6 +231,7 @@ ${blocTaxeFonciere()}
 </section>
 <p class="source">Calcul sur ton appareil avec modele-social ${h(r.moteur.version)} (règles de l’Urssaf, licence MIT) et publicodes ${h(r.moteur.publicodes ?? '')}, législation ${h(r.annee_legislation)}. Vérifié sur 20 cas types face à OpenFisca : écart inférieur à 1 % sur le brut, les cotisations salariales, la CSG, la CRDS et l’impôt (voir <a href="#/methode">méthode</a>).</p>
 <div class="actions"><a class="bouton" href="#/calcul">Modifier ma saisie</a></div>
+<p><a href="#/calcul/et-si">Et si ton salaire changeait ? Ce que tu verserais avec un autre salaire</a></p>
 <h2>Et maintenant ?</h2>
 <ul class="cartes par-3">
   <li><a href="#/explorer/etat"><strong>Où va l’argent de l’État</strong><span>Les grands postes du budget, jusqu’à la ligne votée.</span></a></li>

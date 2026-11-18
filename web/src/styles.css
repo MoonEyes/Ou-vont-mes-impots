@@ -2562,3 +2562,14 @@ td.nombre {
   border-radius: var(--rayon);
   padding: 0.25rem 1.5rem;
 }
+
+/* et_si : curseur du simulateur « Et si mon salaire changeait ? » (/calcul/et-si), pleine largeur et cible tactile de 44 px */
+.et-si-curseur {
+  display: block;
+  width: 100%;
+  max-width: 26rem;
+  min-height: 44px;
+  margin: 0.25rem 0 0.5rem;
+  accent-color: var(--principal);
+  cursor: pointer;
+}
