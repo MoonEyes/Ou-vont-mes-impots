@@ -1,0 +1,635 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/culture_medias_presse.schema.json",
+  "title": "site/data/culture_medias/presse.json : aides à la presse par titre, par groupe et par dispositif (ministère de la Culture)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "colonnes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "classement_titres": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "par_annee": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "titres": {
+                "type": "integer"
+              },
+              "aides_directes_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_pluralisme_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_exemplaire_porte_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_exemplaire_poste_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_fsdp_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_fseip_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_filiere_distribution_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_exceptionnelle_papier_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_modernisation_sociale_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_exceptionnelle_editeurs_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_exceptionnelle_ultramarins_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "total_aides_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "statut": {
+                "type": "string",
+                "enum": [
+                  "calculé"
+                ]
+              }
+            },
+            "required": [
+              "aide_exceptionnelle_editeurs_eur",
+              "aide_exceptionnelle_papier_eur",
+              "aide_exceptionnelle_ultramarins_eur",
+              "aide_filiere_distribution_eur",
+              "aide_modernisation_sociale_eur",
+              "aides_directes_eur",
+              "annee",
+              "dont_exemplaire_porte_eur",
+              "dont_exemplaire_poste_eur",
+              "dont_fsdp_eur",
+              "dont_fseip_eur",
+              "dont_pluralisme_eur",
+              "statut",
+              "titres",
+              "total_aides_eur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "derniere_annee": {
+          "type": "integer"
+        },
+        "titres": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "titre": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "titre_masque": {
+                "type": "boolean"
+              },
+              "groupe": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "groupe_masque": {
+                "type": "boolean"
+              },
+              "aides_directes_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_pluralisme_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_exemplaire_porte_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_exemplaire_poste_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_fsdp_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_fseip_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_filiere_distribution_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_exceptionnelle_papier_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_modernisation_sociale_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_exceptionnelle_editeurs_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_exceptionnelle_ultramarins_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "total_aides_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "diffusion_annuelle": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_par_exemplaire_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "aide_exceptionnelle_editeurs_eur",
+              "aide_exceptionnelle_papier_eur",
+              "aide_exceptionnelle_ultramarins_eur",
+              "aide_filiere_distribution_eur",
+              "aide_modernisation_sociale_eur",
+              "aide_par_exemplaire_eur",
+              "aides_directes_eur",
+              "diffusion_annuelle",
+              "dont_exemplaire_porte_eur",
+              "dont_exemplaire_poste_eur",
+              "dont_fsdp_eur",
+              "dont_fseip_eur",
+              "dont_pluralisme_eur",
+              "groupe",
+              "groupe_masque",
+              "titre",
+              "titre_masque",
+              "total_aides_eur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "titres_masques": {
+          "type": "integer"
+        },
+        "lecture": {
+          "type": "string",
+          "minLength": 20
+        },
+        "regle_personnes": {
+          "type": "string",
+          "minLength": 20
+        }
+      },
+      "required": [
+        "derniere_annee",
+        "lecture",
+        "par_annee",
+        "regle_personnes",
+        "source",
+        "titres",
+        "titres_masques"
+      ],
+      "additionalProperties": false
+    },
+    "groupes": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lignes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "groupe": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "groupe_masque": {
+                "type": "boolean"
+              },
+              "aides_directes_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_pluralisme_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_portage_titres_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_portage_reseaux_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_fsdp_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "dont_fseip_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_filiere_distribution_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "aide_modernisation_sociale_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "total_aides_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "aide_filiere_distribution_eur",
+              "aide_modernisation_sociale_eur",
+              "aides_directes_eur",
+              "annee",
+              "dont_fsdp_eur",
+              "dont_fseip_eur",
+              "dont_pluralisme_eur",
+              "dont_portage_reseaux_eur",
+              "dont_portage_titres_eur",
+              "groupe",
+              "groupe_masque",
+              "total_aides_eur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "lecture": {
+          "type": "string",
+          "minLength": 20
+        }
+      },
+      "required": [
+        "lecture",
+        "lignes",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "dispositifs": {
+      "type": "object",
+      "properties": {
+        "lignes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z_]+$"
+              },
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "pattern": "^https://"
+              },
+              "par_annee": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "annee": {
+                      "type": "integer"
+                    },
+                    "lignes": {
+                      "type": "integer"
+                    },
+                    "montant_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "statut": {
+                      "type": "string",
+                      "enum": [
+                        "calculé"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "annee",
+                    "lignes",
+                    "montant_eur",
+                    "statut"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1
+              },
+              "lignes_sans_montant": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "id",
+              "libelle",
+              "lignes_sans_montant",
+              "par_annee",
+              "source"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 10
+        },
+        "lecture": {
+          "type": "string",
+          "minLength": 20
+        }
+      },
+      "required": [
+        "lecture",
+        "lignes"
+      ],
+      "additionalProperties": false
+    },
+    "budget_programme_180": {
+      "type": "object",
+      "properties": {
+        "lecture": {
+          "type": "string",
+          "minLength": 20
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "pattern": "^[0-9]{3}-[0-9]{2}$"
+              },
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "execution_2024_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "lfi_2025_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "plf_2026_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "lignes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "code_depense": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "libelle": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "execution_2024_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "lfi_2025_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "plf_2026_eur": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code_depense",
+                    "execution_2024_eur",
+                    "lfi_2025_eur",
+                    "libelle",
+                    "plf_2026_eur"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 2
+              },
+              "statut": {
+                "type": "string",
+                "enum": [
+                  "calculé"
+                ]
+              },
+              "methode": {
+                "type": "string",
+                "minLength": 20
+              }
+            },
+            "required": [
+              "code",
+              "execution_2024_eur",
+              "lfi_2025_eur",
+              "libelle",
+              "plf_2026_eur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "actions",
+        "lecture"
+      ],
+      "additionalProperties": false
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 20
+    }
+  },
+  "required": [
+    "avertissement",
+    "budget_programme_180",
+    "classement_titres",
+    "colonnes",
+    "date_sources",
+    "dispositifs",
+    "groupes",
+    "millesime",
+    "ordre",
+    "source",
+    "unite"
+  ]
+}

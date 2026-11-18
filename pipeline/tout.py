@@ -157,6 +157,7 @@ ETAPES: tuple[Etape, ...] = (
     axe("recouvrement", "Recouvrement", ("base",), collecte=False),
     axe("retraites", "Retraites par régime", ("base", "secu", "prestations"), duree_s=30),
     axe("sante_etablissements", "Établissements de santé", ("secu", "subventions")),
+    axe("culture_medias", "Culture et médias (budget, audiovisuel public, presse, CNC)", ("base",), duree_s=30),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     Etape("datapackage", "Métadonnées de réutilisation (Data Package, DCAT-AP, schema.org)", (TOUTES,),

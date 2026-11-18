@@ -252,6 +252,12 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # culture et médias : budget par action, audiovisuel public, aides à la presse, CNC (pipeline/culture_medias.py)
+    ("culture_medias_index.schema.json", "culture_medias/index.json", "existant"),
+    ("culture_medias_budget.schema.json", "culture_medias/budget.json", "existant"),
+    ("culture_medias_audiovisuel.schema.json", "culture_medias/audiovisuel.json", "existant"),
+    ("culture_medias_presse.schema.json", "culture_medias/presse.json", "existant"),
+    ("culture_medias_cnc.schema.json", "culture_medias/cnc.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

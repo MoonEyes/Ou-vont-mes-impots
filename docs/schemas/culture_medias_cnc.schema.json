@@ -1,0 +1,348 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/culture_medias_cnc.schema.json",
+  "title": "site/data/culture_medias/cnc.json : soutiens du Centre national du cinéma et de l'image animée par secteur et dispositif, recettes de son fonds de soutien (Bilan annuel)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "producteur": {
+      "type": "string",
+      "minLength": 1
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 20
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 20
+      }
+    },
+    "soutiens": {
+      "type": "object",
+      "properties": {
+        "annee": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "total_meur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "automatiques_meur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "selectifs_meur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "secteurs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "secteur": {
+                "type": "string",
+                "minLength": 1
+              },
+              "total_meur": {
+                "type": "number",
+                "minimum": 0
+              },
+              "automatiques": {
+                "type": "object",
+                "properties": {
+                  "total_meur": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "dispositifs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "dispositif": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "montant_meur": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "dispositif",
+                        "montant_meur"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "dispositifs",
+                  "total_meur"
+                ],
+                "additionalProperties": false
+              },
+              "selectifs": {
+                "type": "object",
+                "properties": {
+                  "total_meur": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "dispositifs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "dispositif": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "montant_meur": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "dispositif",
+                        "montant_meur"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "dispositifs",
+                  "total_meur"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "automatiques",
+              "secteur",
+              "selectifs",
+              "total_meur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 3
+        },
+        "dont": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "montant_meur": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "libelle",
+              "montant_meur"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "annee",
+        "automatiques_meur",
+        "dont",
+        "page",
+        "secteurs",
+        "selectifs_meur",
+        "total_meur"
+      ],
+      "additionalProperties": false
+    },
+    "dispositifs_autofinances": {
+      "type": "object",
+      "properties": {
+        "total_meur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "lignes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "montant_meur": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "libelle",
+              "montant_meur"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "lecture": {
+          "type": "string",
+          "minLength": 20
+        }
+      },
+      "required": [
+        "lecture",
+        "lignes",
+        "total_meur"
+      ],
+      "additionalProperties": false
+    },
+    "recettes_fonds_de_soutien": {
+      "type": "object",
+      "properties": {
+        "annee": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "taxes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "taxe": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sigle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "montant_meur": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "montant_meur",
+              "sigle",
+              "taxe"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "produit_brut_meur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "prelevement_budget_de_gestion_meur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "total_net_meur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "lecture": {
+          "type": "string",
+          "minLength": 20
+        }
+      },
+      "required": [
+        "annee",
+        "lecture",
+        "page",
+        "prelevement_budget_de_gestion_meur",
+        "produit_brut_meur",
+        "taxes",
+        "total_net_meur"
+      ],
+      "additionalProperties": false
+    },
+    "controles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "niveau": {
+            "type": "string",
+            "minLength": 1
+          },
+          "somme_meur": {
+            "type": "number"
+          },
+          "publie_meur": {
+            "type": "number"
+          },
+          "ecart_meur": {
+            "type": "number",
+            "minimum": -0.15,
+            "maximum": 0.15
+          }
+        },
+        "required": [
+          "ecart_meur",
+          "niveau",
+          "publie_meur",
+          "somme_meur"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "avertissement",
+    "controles",
+    "date_sources",
+    "definitions",
+    "dispositifs_autofinances",
+    "methode",
+    "millesime",
+    "producteur",
+    "recettes_fonds_de_soutien",
+    "source",
+    "soutiens",
+    "unite"
+  ]
+}
