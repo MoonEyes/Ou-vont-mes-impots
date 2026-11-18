@@ -103,6 +103,9 @@ const CAISSES: Caisse[] = [
   },
 ]
 
+/** Chemins des pages ouvertes par les tuiles : le hub « Explorer » ne les répète pas dans ses rubriques par thème. */
+export const CHEMINS_CAISSES: string[] = CAISSES.map((c) => c.lien.replace(/^#/, ''))
+
 /** Mini-visuel : des carrés (ou des points) tous à la même échelle ; le dernier est entamé au prorata. */
 function visuel(c: Caisse, valeur: number): string {
   const n = valeur / c.visuel.pas

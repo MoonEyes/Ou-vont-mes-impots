@@ -2587,3 +2587,41 @@ fieldset.saisie-groupe {
   accent-color: var(--principal);
   cursor: pointer;
 }
+
+/* hub : rubriques par thème sous les tuiles et les formulaires des hubs (composants/hub.ts) */
+.hub-rubriques {
+  margin: 2rem 0;
+}
+.hub-rubriques > h2 {
+  margin-bottom: 0.5rem;
+}
+.hub-rubrique {
+  margin: 1.75rem 0 0;
+  padding-top: 1.25rem;
+  border-top: var(--trait) solid var(--contour);
+}
+.hub-rubrique > h2,
+.hub-rubrique > h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  margin: 0 0 0.25rem;
+}
+.hub-compte {
+  font-family: var(--texte-police);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0;
+  color: var(--secondaire);
+}
+.hub-rubrique > .aide {
+  margin: 0;
+}
+.hub-rubriques .cartes {
+  margin: 1rem 0 0;
+}
+.hub-rubriques .cartes li[class^='f-'] .picto {
+  background: var(--famille);
+  color: var(--sur-famille);
+}
