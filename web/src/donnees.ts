@@ -28,6 +28,7 @@ function cheminSur(chemin: string): string {
 }
 
 export function charger<T = any>(chemin: string): Promise<T> {
+  if (!lus.includes(chemin)) lus.push(chemin)
   const deja = cache.get(chemin)
   if (deja) return deja as Promise<T>
   const p = (async () => {
@@ -85,6 +86,13 @@ export function verifierContrat(meta: { version_contrat?: string } | null) {
 export function viderCache() {
   cache.clear()
 }
+
+// Fichiers lus pour la page affichée (lien « Signaler une erreur sur cette page », src/composants/signaler.ts).
+const lus: string[] = []
+export const fichiersLus = (): string[] => lus.slice()
+export const oublierLectures = () => void (lus.length = 0)
+/** Lecture déjà en cache (ou en cours) d'un fichier, sans nouvelle requête ; undefined si absent. */
+export const lectureEnCache = (chemin: string) => cache.get(chemin)
 
 // Arbres de l'État disponibles : dossier et millésime.
 export interface VueArbre {

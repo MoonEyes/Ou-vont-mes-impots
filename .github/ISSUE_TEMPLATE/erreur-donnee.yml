@@ -1,0 +1,59 @@
+name: Erreur sur une donnée ou une page
+description: Signaler un chiffre, un libellé ou une source faux sur une page du site, avec la source qui le montre.
+title: "Erreur sur la page "
+labels: ["erreur-donnee"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de prendre le temps de signaler une erreur.
+
+        **Ce ticket est public** : tout le monde peut le lire. N’y écris aucune donnée personnelle : ni ton nom, ni ton adresse, ni ton salaire, ni ta situation fiscale ou familiale. Le site ne garde rien de ce que tu y saisis, et ce ticket n’en a pas besoin : une erreur se vérifie à partir de la page et d’une source publique.
+
+        Le lien « Signaler une erreur sur cette page » remplit pour toi l’adresse de la page et les fichiers de données qu’elle affiche.
+  - type: input
+    id: page
+    attributes:
+      label: Page concernée
+      description: Adresse de la page où tu as vu l’erreur.
+      placeholder: https://mooneyes.github.io/Ou-vont-mes-impots/explorer/etat/
+    validations:
+      required: true
+  - type: textarea
+    id: fichiers
+    attributes:
+      label: Fichiers de données affichés par la page
+      description: Rempli automatiquement par le lien du site (fichiers et millésimes). Tu peux le laisser tel quel.
+      render: text
+    validations:
+      required: false
+  - type: textarea
+    id: constat
+    attributes:
+      label: Ce qui est faux
+      description: Le chiffre, le libellé ou la source affichés, tels que tu les lis sur la page.
+      placeholder: "Exemple : la page indique 12,3 Md€ pour ce programme en 2024."
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: La source qui le montre
+      description: Lien vers un document ou un jeu de données public (avec la page, le tableau ou la ligne si possible), et sa date.
+      placeholder: "Exemple : https://www.data.gouv.fr/..., tableau 3, ligne « ... », publié en mars 2025."
+    validations:
+      required: true
+  - type: textarea
+    id: attendu
+    attributes:
+      label: Ce que la source indique
+      description: La valeur ou le libellé que la source donne, si tu l’as.
+    validations:
+      required: false
+  - type: checkboxes
+    id: confidentialite
+    attributes:
+      label: Confidentialité
+      options:
+        - label: Je n’ai écrit aucune donnée personnelle dans ce ticket (nom, adresse, salaire, situation fiscale ou familiale).
+          required: true

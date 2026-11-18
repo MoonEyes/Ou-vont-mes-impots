@@ -5,6 +5,8 @@
 import { versChemin } from './chemins'
 import { picto } from './composants/pictos'
 import { annoncer, appliquerLargeurs, h } from './util'
+import { blocSignaler, majSignaler } from './composants/signaler'
+import { oublierLectures } from './donnees'
 
 /**
  * Un écran remplit cible. Il peut rendre la main avant d'avoir tout chargé en renvoyant { suite } :
@@ -182,6 +184,7 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
   const { chemin, params } = lireFragment(fragment)
   const route = routes.find((r) => r.chemin === chemin) ?? ROUTE_INTROUVABLE
   const moi = ++jeton
+  oublierLectures()
   let suite: Promise<void> | null = null
   let propre: Rendu = {}
   cible.setAttribute('aria-busy', 'true')
@@ -218,12 +221,14 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
       }
     }
     zone.insertAdjacentHTML('beforeend', voirAussi(routes, route))
+    zone.insertAdjacentHTML('beforeend', blocSignaler({ titre: propre.titre ?? route.titre, adresse: fragment }))
     appliquerLargeurs(zone)
     cible.replaceChildren(zone)
   } catch (e) {
     if (moi !== jeton) return
     console.error(e)
     cible.innerHTML = `${filAriane(maillons(routes, route))}<h1>${h(route.titre)}</h1><p class="erreur">Cette page n’a pas pu s’afficher : une donnée est manquante ou illisible. Le reste du site reste disponible.</p><p><a href="#/explorer">Explorer les dépenses publiques</a></p>`
+    cible.insertAdjacentHTML('beforeend', blocSignaler({ titre: route.titre, adresse: fragment }))
   } finally {
     if (moi === jeton) cible.removeAttribute('aria-busy')
   }
@@ -254,5 +259,6 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
       console.error(e)
     }
   }
+  if (moi === jeton) await majSignaler(cible, { titre: propre.titre ?? route.titre, adresse: fragment }).catch((e) => console.error(e))
   return page
 }

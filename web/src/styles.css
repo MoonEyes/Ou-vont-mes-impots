@@ -2562,3 +2562,15 @@ td.nombre {
   border-radius: var(--rayon);
   padding: 0.25rem 1.5rem;
 }
+/* signaler */
+.signaler {
+  margin-top: 2rem;
+}
+.signaler p {
+  margin: 0;
+}
+.signaler-lien {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
