@@ -219,9 +219,31 @@ describe('prérendu', () => {
     if (nantes) {
       expect(nantes.titre).toBe('Budget de Nantes (Loire-Atlantique) : dépenses, dotations, taux · Où vont mes impôts')
       expect(contenu(page('local/44-loire-atlantique/')).includes('href="../../local/44109-nantes/"')).toBe(true)
-      // Commune sous le seuil : pas de page propre, lien vers la page commune générique.
-      expect(contenu(page('local/44-loire-atlantique/')).includes('href="../../local/commune/?insee=44001"')).toBe(true)
+      // Communes sous le seuil : pas de page propre ; leur liste (vers la page générique, lue avec JavaScript) n'est
+      // rendue que dans le navigateur, le HTML prérendu en donne le nombre.
+      const dep = contenu(page('local/44-loire-atlantique/'))
+      expect(dep.includes('href="../../local/commune/?insee=44001"')).toBe(false)
+      expect(/[\d ]+ communes de 5 000 habitants ou moins : leur liste/.test(texte(page('local/44-loire-atlantique/')))).toBe(true)
+      expect(/<ul class="cles" aria-label="Chiffres clés de Loire-Atlantique">/.test(dep)).toBe(true)
     }
+  })
+
+  it('pages commune allégées : l’essentiel reste dans le HTML, le détail se rend dans le navigateur', () => {
+    const communes = pages.filter((p) => /^local\/(\d{5}|2[AB]\d{3})-/.test(p.chemin))
+    if (!communes.length) return
+    for (const p of communes) {
+      const c = contenu(p)
+      // Titre, introduction, chiffres clés, budget de la commune et sa source, liens vers les fichiers de données.
+      expect(/<h1[ >]/.test(c), p.chemin).toBe(true)
+      expect(/<p class="chapeau">[\d\s\u00a0\u202f]+ habitants/.test(c), p.chemin).toBe(true)
+      expect(/<p class="source">/.test(c), p.chemin).toBe(true)
+      expect(/href="\.\.\/\.\.\/data\/local\/budgets\/communes\/(\d{2,3}|2[AB])\.json"/.test(c), `${p.chemin} : lien vers les données`).toBe(true)
+      // Blocs repris d'une page à l'autre (intercommunalité, département, région) et tableaux du détail : absents.
+      expect(/Le département&nbsp;:|La région&nbsp;:|<table/.test(c), p.chemin).toBe(false)
+      expect(c.includes('s’affichent aussi'), p.chemin).toBe(true)
+    }
+    const nantes = page('local/44109-nantes/')
+    if (nantes) expect(/<ul class="cles" aria-label="Chiffres clés de Nantes">/.test(contenu(nantes))).toBe(true)
   })
 
   it('nombre de fichiers sous la limite Cloudflare (20 000)', () => {

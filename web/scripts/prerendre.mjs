@@ -115,6 +115,9 @@ function jeuDeDonnees(defaut) {
 }
 const ldSource = JSON.parse(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(gabarit)[1])
 const siteLd = { ...ldSource['@graph'].find((x) => x['@type'] === 'WebSite'), '@id': `${SITE}#site`, url: SITE }
+// Pages autres que l'accueil : le site n'est décrit qu'une fois (accueil) ; ailleurs, son nom, son adresse et son
+// identifiant suffisent à le relier (2 352 pages locales, budgets de poids, docs/PERF.md).
+const siteLdCourt = { '@type': 'WebSite', '@id': siteLd['@id'], name: siteLd.name, url: SITE }
 const jeuLd = jeuDeDonnees(ldSource['@graph'].find((x) => x['@type'] === 'Dataset'))
 
 // Polices du premier écran (texte courant et titres), préchargées : elles arrivent avec la feuille de style, avant le
@@ -134,7 +137,7 @@ function composer({ chemin, titre, description, fil, contenu, indexable, racine 
   const prefixe = racine ?? prefixeRacine(chemin)
   const url = SITE + chemin
   const rel = (fragment) => prefixe + versChemin(fragment)
-  const graphe = [siteLd]
+  const graphe = [chemin ? siteLdCourt : siteLd]
   if (!chemin) graphe.push(jeuLd)
   else
     graphe.push(
@@ -170,7 +173,10 @@ function composer({ chemin, titre, description, fil, contenu, indexable, racine 
     (_, a, b) =>
       `${a}\n<noscript><p class="avertissement">Sans JavaScript, les pages se lisent telles quelles. Le calcul à partir du salaire et les choix (année, commune, programme) ont besoin de JavaScript, exécuté sur ton appareil sans rien envoyer.</p></noscript>\n${contenu}\n    ${b}`,
   )
-  return html
+  // Indentation entre les balises (gabarit et écrans) : un saut de ligne suffit, le rendu est identique (aucun
+  // <pre> ni <textarea> dans les pages prérendues ; un blanc reste un blanc). Environ 2 Ko par page.
+  if (/<(pre|textarea)\b/.test(html)) return html
+  return html.replace(/>\n[ \t]+</g, '>\n<')
 }
 
 /** Rend une adresse interne avec le routeur du site et écrit sa page. */

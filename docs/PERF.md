@@ -56,6 +56,19 @@ Ce qui a changé (`web/src/composants/trame.ts`) :
 - Accessibilité : le nom de la carte, le département mis en avant et la légende « Ton département » sont inchangés. Les 100 autres liens (100 arrêts de tabulation avant le contenu de la page) sont remplacés par un lien vers la carte complète de la page « Chez moi », qui garde un lien par département, et par le fil d'Ariane.
 - `dist/prerendu.json` donne aussi `octets_page_commune_max` et `octets_page_departement_max`.
 
+### Allègement des pages locales (18/11/2026)
+
+Les blocs ajoutés depuis avaient ramené le HTML à 69,9 Mo pour un budget de 70 Mo. Mesure (Nantes, 28,4 Ko) : en-tête HTML et habillage 11,8 Ko, contenu 18,0 Ko, dont 7,5 Ko de cartes recopiées dans chaque commune d'un même département ou d'une même intercommunalité (bloc communal, département, région) et 5,5 Ko de tableaux et d'attentes du détail.
+
+| Mesure | Avant | Après | Budget (après + 10 %) |
+|---|---|---|---|
+| HTML prérendu, total | 69,9 Mo | 43,2 Mo | < 47,5 Mo |
+| Page commune, brute (médiane / max) | 28,2 Ko / 29,0 Ko | 17,0 Ko / 17,6 Ko | max < 19,4 Ko |
+| Page commune, transférée (médiane / max) | 6,7 Ko / 6,9 Ko | 5,0 Ko / 5,0 Ko | < 5,5 Ko |
+| Page département, brute (médiane / max) | 40,4 Ko / 81,1 Ko | 18,2 Ko / 28,4 Ko | max < 31,2 Ko |
+
+Ce qui reste dans le HTML (référencement, lecture sans JavaScript) : titre, description, fil d'Ariane, introduction (population, intercommunalité, département, région), chiffres clés, budget de la commune (ou du département) avec sa source, liens vers les fichiers de données, liens de sortie, liste des communes qui ont leur page. Ce qui est rendu dans le navigateur, à partir des mêmes fichiers JSON déjà publiés et mis en cache : budgets de l'intercommunalité, du département et de la région ; dotations, taux, subventions, projets, loi SRU, organismes ; sur la page département, la liste des communes de 5 000 habitants ou moins (leur page générique ne se lit qu'avec JavaScript). Le HTML prérendu les annonce dans une liste « s'affichent aussi ». Un nouveau bloc s'ajoute à `DETAIL_COMMUNE` (`web/src/ecrans/commune.ts`) ou `DETAIL_DEPARTEMENT` (`departement.ts`) : une ligne de plus dans le HTML. Le prérendu ne garde de l'objet `WebSite` (JSON-LD) que son nom, son adresse et son identifiant hors de l'accueil, et ramène l'indentation entre balises à un saut de ligne. Avec JavaScript, la page affichée est inchangée (même structure, 14 titres de section à Nantes) ; axe-core sans erreur avec et sans JavaScript, 390 et 1 280 px ; décalage de mise en page nul.
+
 ## Déjà fait côté site (sans changement de format)
 
 - Commune : titre, population et liens affichés dès la géographie (environ 7 Ko compressés) ; budgets ensuite, puis dotations, taux et subventions demandés seulement après les budgets.
