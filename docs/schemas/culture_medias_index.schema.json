@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/culture_medias_index.schema.json",
+  "title": "site/data/culture_medias/index.json : fichiers, repères, sources, sources inaccessibles, limites, recherche publique",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "fichiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fichier": {
+            "type": "string",
+            "pattern": "^culture_medias/[a-z_]+\\.json$"
+          },
+          "contenu": {
+            "type": "string",
+            "minLength": 1
+          },
+          "octets": {
+            "type": "integer",
+            "maximum": 1000000
+          }
+        },
+        "required": [
+          "contenu",
+          "fichier",
+          "octets"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 4
+    },
+    "reperes": {
+      "type": "object",
+      "properties": {
+        "budget": {
+          "type": "object"
+        },
+        "audiovisuel": {
+          "type": "object"
+        },
+        "presse": {
+          "type": "object"
+        },
+        "cnc": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "audiovisuel",
+        "budget",
+        "cnc",
+        "presse"
+      ],
+      "additionalProperties": false
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 20
+      },
+      "minItems": 1
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "id_catalogue": {
+            "type": "string",
+            "pattern": "^culture_medias_[a-z0-9_]+$"
+          },
+          "titre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "page": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "licence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "collecte_le": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "cle",
+          "collecte_le",
+          "id_catalogue",
+          "licence",
+          "page",
+          "titre"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 5
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "constat": {
+            "type": "string",
+            "minLength": 20
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          }
+        },
+        "required": [
+          "constat",
+          "date",
+          "source",
+          "url"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "conclusion": {
+          "type": "string",
+          "minLength": 20
+        },
+        "trouvailles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "nom": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": "string",
+                "minLength": 1
+              },
+              "verdict": {
+                "enum": [
+                  "réutilisable tel quel",
+                  "à adapter",
+                  "inspiration seulement"
+                ]
+              },
+              "licence": {
+                "type": "string",
+                "minLength": 1
+              },
+              "mise_a_jour": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "licence",
+              "mise_a_jour",
+              "nom",
+              "url",
+              "verdict"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 3
+        }
+      },
+      "required": [
+        "conclusion",
+        "date",
+        "trouvailles"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "avertissement",
+    "date_sources",
+    "fichiers",
+    "limites",
+    "millesime",
+    "recherche_publique",
+    "reperes",
+    "source",
+    "sources",
+    "sources_inaccessibles",
+    "unite"
+  ]
+}

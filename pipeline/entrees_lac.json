@@ -1852,6 +1852,67 @@
    "caches": [],
    "hors_catalogue": [],
    "octets_sources": 1576861
+  },
+  "culture_medias": {
+   "sources": {
+    "culture_medias_budget_vert_plf2026": [
+     "data/lake/culture_medias/culture_medias_budget_vert_plf2026.csv"
+    ],
+    "culture_medias_cnc_bilan_2025": [
+     "data/lake/culture_medias/culture_medias_cnc_bilan_2025.pdf"
+    ],
+    "culture_medias_plrg_annexes": [
+     "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2023_cs_cp.csv",
+     "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2023_cs_recouvrements.csv",
+     "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2024_cs_cp.csv",
+     "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2024_cs_recouvrements.csv",
+     "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2025_bg_cp.csv",
+     "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2025_cs_cp.csv",
+     "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2025_cs_recouvrements.csv"
+    ],
+    "culture_medias_presse_distribution_pqn": [
+     "data/lake/culture_medias/culture_medias_presse_distribution_pqn/aide-a-la-distribution-de-la-presse-quotidienne-nationale_20_58065ce0.csv"
+    ],
+    "culture_medias_presse_exemplaire_porte": [
+     "data/lake/culture_medias/culture_medias_presse_exemplaire_porte/aide-au-portage-de-la-presse_2025_81de0b56.csv"
+    ],
+    "culture_medias_presse_exemplaire_poste": [
+     "data/lake/culture_medias/culture_medias_presse_exemplaire_poste/aide-a-l-exemplaire-des-titres-de-presse-postes_2025_dba1f9a9.csv"
+    ],
+    "culture_medias_presse_fsdp": [
+     "data/lake/culture_medias/culture_medias_presse_fsdp/fonds-strategique-pour-le-developpement-de-la-presse-fsdp_801735a1.csv"
+    ],
+    "culture_medias_presse_fseip": [
+     "data/lake/culture_medias/culture_medias_presse_fseip/fonds-de-soutien-a-lemergence-et-a-linnovation-dans-la-press_b4c8722e.csv"
+    ],
+    "culture_medias_presse_groupes": [
+     "data/lake/culture_medias/culture_medias_presse_groupes/aides-a-la-presse-classement-des-principaux-groupes-de-press_cb9de9c9.csv"
+    ],
+    "culture_medias_presse_pluralisme_en_ligne": [
+     "data/lake/culture_medias/culture_medias_presse_pluralisme_en_ligne/aide-au-pluralisme-des-services-de-presse-tout-en-ligne_2025_58300293.csv"
+    ],
+    "culture_medias_presse_pluralisme_regionale": [
+     "data/lake/culture_medias/culture_medias_presse_pluralisme_regionale/aide-au-pluralisme-de-la-presse-periodique-regionale-et-loca_9af88bf7.csv"
+    ],
+    "culture_medias_presse_pluralisme_ultramarins": [
+     "data/lake/culture_medias/culture_medias_presse_pluralisme_ultramarins/aide-au-pluralisme-des-titres-ultramarins_2025_64ad7473.csv"
+    ],
+    "culture_medias_presse_publications_faibles_ressources_pub": [
+     "data/lake/culture_medias/culture_medias_presse_publications_faibles_ressources_pub/aides-aux-publications-nationales-a-faibles-ressources-publi_3be0c144.csv"
+    ],
+    "culture_medias_presse_quotidiens_faibles_ressources_pa": [
+     "data/lake/culture_medias/culture_medias_presse_quotidiens_faibles_ressources_pa/aide-aux-quotidiens-regionaux-departementaux-et-locaux-a-fai_7ba8071d.csv"
+    ],
+    "culture_medias_presse_titres": [
+     "data/lake/culture_medias/culture_medias_presse_titres/aides-a-la-presse-classement-des-titres-de-presse-aides_fdbf8702.csv"
+    ]
+   },
+   "caches": [
+    "data/lake/_cache/local/prenoms.json"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": 16968628,
+   "note": "sources du domaine « culture_medias » de collecte/catalogue.json, collectées par `python pipeline/culture_medias.py collecter` ; chemins relevés le 2026-11-18 d'après data/lake/manifest.json (relevé manuel, pas sous strace) ; le cache des prénoms (pipeline/local.py) est lu s'il existe"
   }
  },
  "urls": {
@@ -2385,6 +2446,27 @@
   "data/lake/transports/transports_afitf_budgets/budget_execute_2023.pdf": "https://www.afit-france.fr/sites/default/files/2024-02/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202023.pdf",
   "data/lake/transports/transports_afitf_budgets/budget_execute_2024.pdf": "https://www.afit-france.fr/sites/default/files/2025-07/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202024.pdf",
   "data/lake/transports/transports_afitf_budgets/budget_execute_2025.pdf": "https://www.afit-france.fr/sites/default/files/2026-02/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202025.pdf",
-  "data/lake/transports/transports_afitf_budgets/budget_initial_2026.pdf": "https://www.afit-france.fr/sites/default/files/2025-12/Budget%20initial%20de%20l%27ann%C3%A9e%202026.pdf"
+  "data/lake/transports/transports_afitf_budgets/budget_initial_2026.pdf": "https://www.afit-france.fr/sites/default/files/2025-12/Budget%20initial%20de%20l%27ann%C3%A9e%202026.pdf",
+  "data/lake/culture_medias/culture_medias_budget_vert_plf2026.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf-2026-budget-vert/exports/csv",
+  "data/lake/culture_medias/culture_medias_cnc_bilan_2025.pdf": "https://www.cnc.fr/documents/36995/2559242/Bilan+2025+du+CNC.pdf/1611bc6c-9fe2-6706-2dd7-1febe12a05aa?t=1792077261957",
+  "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2023_cs_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_cp_2023_csv",
+  "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2023_cs_recouvrements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_recouvt_2023_csv",
+  "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2024_cs_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_cp_2024_csv",
+  "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2024_cs_recouvrements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_recouvt_2024_csv",
+  "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2025_bg_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe1_etat_cp_2025csv",
+  "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2025_cs_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_cp_2025csv",
+  "data/lake/culture_medias/culture_medias_plrg_annexes/plrg_2025_cs_recouvrements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_recouvt_2025csv",
+  "data/lake/culture_medias/culture_medias_presse_distribution_pqn/aide-a-la-distribution-de-la-presse-quotidienne-nationale_20_58065ce0.csv": "https://static.data.gouv.fr/resources/aide-a-la-distribution-de-la-presse-quotidienne-nationale-2/20261106-204754/aide-a-la-distribution-de-la-presse-quotidienne-nationale.csv",
+  "data/lake/culture_medias/culture_medias_presse_exemplaire_porte/aide-au-portage-de-la-presse_2025_81de0b56.csv": "https://static.data.gouv.fr/resources/aide-au-portage-de-la-presse-2/20261106-204406/aide-au-portage-de-la-presse.csv",
+  "data/lake/culture_medias/culture_medias_presse_exemplaire_poste/aide-a-l-exemplaire-des-titres-de-presse-postes_2025_dba1f9a9.csv": "https://static.data.gouv.fr/resources/aide-a-lexemplaire-des-titres-de-presse-postes/20261106-204837/aide-a-l-exemplaire-des-titres-de-presse-postes.csv",
+  "data/lake/culture_medias/culture_medias_presse_fsdp/fonds-strategique-pour-le-developpement-de-la-presse-fsdp_801735a1.csv": "https://static.data.gouv.fr/resources/fonds-strategique-pour-le-developpement-de-la-presse-fsdp-1/20261106-203909/fonds-strategique-pour-le-developpement-de-la-presse-fsdp.csv",
+  "data/lake/culture_medias/culture_medias_presse_fseip/fonds-de-soutien-a-lemergence-et-a-linnovation-dans-la-press_b4c8722e.csv": "https://static.data.gouv.fr/resources/fonds-de-soutien-a-lemergence-et-a-linnovation-dans-la-presse-1/20261106-204037/fonds-de-soutien-a-lemergence-et-a-linnovation-dans-la-presse.csv",
+  "data/lake/culture_medias/culture_medias_presse_groupes/aides-a-la-presse-classement-des-principaux-groupes-de-press_cb9de9c9.csv": "https://static.data.gouv.fr/resources/aides-a-la-presse-classement-des-principaux-groupes-de-presse-aides/20250827-130734/aides-a-la-presse-classement-des-principaux-groupes-de-presse-aides.csv",
+  "data/lake/culture_medias/culture_medias_presse_pluralisme_en_ligne/aide-au-pluralisme-des-services-de-presse-tout-en-ligne_2025_58300293.csv": "https://static.data.gouv.fr/resources/aide-au-pluralisme-des-services-de-presse-tout-en-ligne/20261106-204550/aide-au-pluralisme-des-services-de-presse-tout-en-ligne.csv",
+  "data/lake/culture_medias/culture_medias_presse_pluralisme_regionale/aide-au-pluralisme-de-la-presse-periodique-regionale-et-loca_9af88bf7.csv": "https://static.data.gouv.fr/resources/aide-au-pluralisme-de-la-presse-periodique-regionale-et-locale-2/20261106-204703/aide-au-pluralisme-de-la-presse-periodique-regionale-et-locale.csv",
+  "data/lake/culture_medias/culture_medias_presse_pluralisme_ultramarins/aide-au-pluralisme-des-titres-ultramarins_2025_64ad7473.csv": "https://static.data.gouv.fr/resources/aide-au-pluralisme-des-titres-ultramarins/20261106-204451/aide-au-pluralisme-des-titres-ultramarins.csv",
+  "data/lake/culture_medias/culture_medias_presse_publications_faibles_ressources_pub/aides-aux-publications-nationales-a-faibles-ressources-publi_3be0c144.csv": "https://static.data.gouv.fr/resources/aides-aux-publications-nationales-a-faibles-ressources-publicitaires-2/20261106-204136/aides-aux-publications-nationales-a-faibles-ressources-publicitaires.csv",
+  "data/lake/culture_medias/culture_medias_presse_quotidiens_faibles_ressources_pa/aide-aux-quotidiens-regionaux-departementaux-et-locaux-a-fai_7ba8071d.csv": "https://static.data.gouv.fr/resources/aide-aux-quotidiens-regionaux-departementaux-et-locaux-a-faibles-ressources-de-petites-annonces-2/20261106-204250/aide-aux-quotidiens-regionaux-departementaux-et-locaux-a-faibles-ressources-de-p.csv",
+  "data/lake/culture_medias/culture_medias_presse_titres/aides-a-la-presse-classement-des-titres-de-presse-aides_fdbf8702.csv": "https://static.data.gouv.fr/resources/aides-a-la-presse-classement-des-titres-de-presse-aides/20250827-130747/aides-a-la-presse-classement-des-titres-de-presse-aides.csv"
  }
 }
