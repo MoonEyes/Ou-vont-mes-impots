@@ -1502,6 +1502,15 @@
    "hors_catalogue": [],
    "octets_sources": 24826525
   },
+  "series": {
+   "sources": {},
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/series/_api"
+   ],
+   "octets_sources": 24098,
+   "note": "entrées collectées par le module lui-même (python pipeline/series.py collecter) ; non relevées sous strace"
+  },
   "retraites": {
    "sources": {},
    "caches": [],

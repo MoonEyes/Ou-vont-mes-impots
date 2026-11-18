@@ -1,0 +1,377 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/series_index.schema.json",
+  "title": "site/data/series/index.json : indice des prix, PIB, ruptures de série (séries longues)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "annee_debut",
+    "annee_reference",
+    "prix",
+    "pib",
+    "fichiers",
+    "ruptures",
+    "sources_inaccessibles",
+    "recherche_publique"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "annee_debut": {
+      "$ref": "commun.schema.json#/$defs/annee"
+    },
+    "annee_reference": {
+      "$ref": "commun.schema.json#/$defs/annee"
+    },
+    "prix": {
+      "type": "object",
+      "required": [
+        "source",
+        "base",
+        "annee_reference",
+        "indice",
+        "coefficient",
+        "methode"
+      ],
+      "properties": {
+        "source": {
+          "type": "object",
+          "required": [
+            "titre",
+            "url",
+            "licence",
+            "maj"
+          ],
+          "properties": {
+            "titre": {
+              "type": "string",
+              "minLength": 5
+            },
+            "url": {
+              "type": "string",
+              "pattern": "^https://"
+            },
+            "licence": {
+              "type": "string",
+              "minLength": 3
+            },
+            "maj": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+            },
+            "idbank": {
+              "type": "string",
+              "pattern": "^[0-9]{9}$"
+            },
+            "intitule_source": {
+              "type": "string"
+            }
+          }
+        },
+        "base": {
+          "type": "string"
+        },
+        "annee_reference": {
+          "$ref": "commun.schema.json#/$defs/annee"
+        },
+        "indice": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        "coefficient": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        "methode": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
+    "pib": {
+      "type": "object",
+      "required": [
+        "source",
+        "definition",
+        "md",
+        "comparaison",
+        "methode",
+        "annees_baisse"
+      ],
+      "properties": {
+        "source": {
+          "type": "object",
+          "required": [
+            "titre",
+            "url",
+            "licence",
+            "maj"
+          ],
+          "properties": {
+            "titre": {
+              "type": "string",
+              "minLength": 5
+            },
+            "url": {
+              "type": "string",
+              "pattern": "^https://"
+            },
+            "licence": {
+              "type": "string",
+              "minLength": 3
+            },
+            "maj": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+            },
+            "idbank": {
+              "type": "string",
+              "pattern": "^[0-9]{9}$"
+            },
+            "intitule_source": {
+              "type": "string"
+            }
+          }
+        },
+        "definition": {
+          "type": "string"
+        },
+        "md": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        "comparaison": {
+          "type": "object",
+          "required": [
+            "source",
+            "md",
+            "ecarts"
+          ],
+          "properties": {
+            "source": {
+              "type": "object",
+              "required": [
+                "titre",
+                "url",
+                "licence",
+                "maj"
+              ],
+              "properties": {
+                "titre": {
+                  "type": "string",
+                  "minLength": 5
+                },
+                "url": {
+                  "type": "string",
+                  "pattern": "^https://"
+                },
+                "licence": {
+                  "type": "string",
+                  "minLength": 3
+                },
+                "maj": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                "idbank": {
+                  "type": "string",
+                  "pattern": "^[0-9]{9}$"
+                },
+                "intitule_source": {
+                  "type": "string"
+                }
+              }
+            },
+            "md": {
+              "type": "object",
+              "propertyNames": {
+                "$ref": "commun.schema.json#/$defs/annee"
+              },
+              "additionalProperties": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "ecarts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "annee",
+                  "ecart_md",
+                  "explication"
+                ],
+                "properties": {
+                  "annee": {
+                    "$ref": "commun.schema.json#/$defs/annee"
+                  },
+                  "ecart_md": {
+                    "type": "number"
+                  },
+                  "explication": {
+                    "type": "string",
+                    "minLength": 20
+                  }
+                }
+              }
+            }
+          }
+        },
+        "methode": {
+          "type": "string",
+          "minLength": 20
+        },
+        "annees_baisse": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "annee",
+              "variation_pct"
+            ],
+            "properties": {
+              "annee": {
+                "$ref": "commun.schema.json#/$defs/annee"
+              },
+              "variation_pct": {
+                "type": "number",
+                "maximum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "fichiers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-z_/]+\\.json$"
+      }
+    },
+    "ruptures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "serie",
+          "annee",
+          "type",
+          "lecture"
+        ],
+        "properties": {
+          "serie": {
+            "enum": [
+              "prix",
+              "pib",
+              "comptes",
+              "depenses_administration",
+              "fonctions",
+              "recettes",
+              "dette",
+              "interets"
+            ]
+          },
+          "annee": {
+            "oneOf": [
+              {
+                "$ref": "commun.schema.json#/$defs/annee"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "type": {
+            "type": "string"
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 20
+          }
+        }
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "motif"
+        ]
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "trouvailles"
+      ],
+      "properties": {
+        "trouvailles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "nom",
+              "url",
+              "verdict",
+              "licence",
+              "mise_a_jour"
+            ],
+            "properties": {
+              "verdict": {
+                "enum": [
+                  "réutilisable tel quel",
+                  "à adapter",
+                  "inspiration seulement"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

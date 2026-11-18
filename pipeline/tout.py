@@ -169,6 +169,7 @@ ETAPES: tuple[Etape, ...] = (
         ("base", "local", "operateurs", "realisations", "niches", "prestations", "europe_comparaison"), duree_s=90),
     axe("millesimes", "Millésimes : exécution 2025 préparée, éditions attendues vérifiées", ("base",), collecte=False, duree_s=30),
     axe("revenus_communes", "Revenus et impôt sur le revenu par commune (IRCOM, Filosofi)", ("local",), duree_s=300),
+    axe("series", "Séries longues : indice des prix, PIB, dépenses par fonction depuis 2005", ("base",), duree_s=30),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un

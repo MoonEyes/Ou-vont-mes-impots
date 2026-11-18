@@ -2943,3 +2943,57 @@ fieldset.saisie-groupe {
 @media (min-width: 900px) {
   .comparer-paires {
     grid-template-columns: 1fr 1fr;
+/* series */
+.sl-figure {
+.sl-figure figcaption {
+.sl-courbe {
+  height: auto;
+  overflow: visible;
+.sl-trait {
+  fill: none;
+  stroke: var(--texte);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+.sl-provisoire {
+  stroke-dasharray: 2 5;
+.sl-point {
+  fill: var(--famille);
+  stroke: var(--texte);
+  stroke-width: 1.2;
+.sl-grille {
+  stroke: var(--filet);
+  stroke-width: 1;
+.sl-zero {
+  stroke: var(--texte);
+  stroke-width: 1.5;
+.sl-etiquette {
+  fill: var(--secondaire);
+  font-size: 12px;
+.sl-grand .sl-etiquette {
+  font-size: 13px;
+.sl-multiples {
+  margin: 0.75rem 0;
+  grid-template-columns: 1fr;
+.sl-multiples > li {
+  padding: 0.875rem 1rem;
+.sl-nom {
+.sl-lecture {
+  font-size: 0.9375rem;
+.sl-notes {
+  font-size: 0.9375rem;
+.sl-legende {
+  gap: 0.5rem 1.5rem;
+  font-size: 0.9375rem;
+.sl-legende li {
+.sl-motif {
+  display: inline-block;
+  width: 2rem;
+  border-top: 2.5px solid var(--texte);
+.sl-motif-provisoire {
+  border-top-style: dotted;
+@media (min-width: 720px) {
+  .sl-multiples {
+    grid-template-columns: repeat(2, 1fr);
+@media (min-width: 1100px) {
+  .sl-multiples {
+    grid-template-columns: repeat(3, 1fr);

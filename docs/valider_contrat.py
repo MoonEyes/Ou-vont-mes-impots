@@ -297,6 +297,9 @@ FICHIERS = [
     ("revenus_communes_index.schema.json", "revenus_communes/index.json", "existant"),
     ("revenus_communes_communes.schema.json", "revenus_communes/communes/*.json", "existant"),
     ("revenus_communes_tranches.schema.json", "revenus_communes/tranches/*/*.json", "existant"),
+    # séries longues : indice des prix, PIB, dépenses par fonction depuis 2005 (pipeline/series.py)
+    ("series_index.schema.json", "series/index.json", "existant"),
+    ("series_fonctions.schema.json", "series/fonctions.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
