@@ -286,6 +286,9 @@ FICHIERS = [
     ("logement_aides_personnelles.schema.json", "logement/aides_personnelles/*.json", "existant"),
     ("logement_maprimerenov.schema.json", "logement/maprimerenov.json", "existant"),
     ("logement_ptz.schema.json", "logement/ptz.json", "existant"),
+    # millésimes : exécution 2025 préparée, vérification des éditions attendues (pipeline/millesimes.py)
+    ("millesimes_index.schema.json", "millesimes/index.json", "existant"),
+    ("arbre_etat.schema.json", "millesimes/execution2025/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

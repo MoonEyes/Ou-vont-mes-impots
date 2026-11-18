@@ -110,6 +110,16 @@
    "licence": "Licence Ouverte 2.0"
   },
   {
+   "id": "etat_plrg_2024",
+   "domaine": "etat",
+   "type": "ods_pieces_jointes",
+   "portail": "economie",
+   "dataset": "plrg-2024",
+   "titre": "Exécution réelle (PLRG 2024), pièces jointes CSV ; lue par pipeline/millesimes.py (annexe 2 : avances à l'audiovisuel public, même méthode que l'exécution 2025)",
+   "module": "pipeline/millesimes.py",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
    "id": "etat_plr_2018",
    "domaine": "etat",
    "type": "ods_export",
@@ -2284,6 +2294,33 @@
    "format": "pdf",
    "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/922288/file/Annexe%207",
    "titre": "PLACSS 2024, annexe 7, comptes definitifs du FSV, de la CADES et du FRR",
+   "licence": "document administratif public"
+  },
+  {
+   "id": "secu_placss2025_annexe3",
+   "domaine": "secu",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1112982/file/PLACSS2025-Annexe%203.pdf",
+   "titre": "PLACSS 2025, annexe 3, ONDAM et dépenses de santé",
+   "licence": "document administratif public"
+  },
+  {
+   "id": "secu_placss2025_annexe4",
+   "domaine": "secu",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1112985/file/PLACSS2025_Annexe%204.pdf",
+   "titre": "PLACSS 2025, annexe 4, assurance chômage et retraites complémentaires",
+   "licence": "document administratif public"
+  },
+  {
+   "id": "secu_placss2025_annexe7",
+   "domaine": "secu",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1112991/file/PLACSS2025_Annexe%207.pdf",
+   "titre": "PLACSS 2025, annexe 7, comptes définitifs du FSV, de la CADES et du FRR",
    "licence": "document administratif public"
   },
   {

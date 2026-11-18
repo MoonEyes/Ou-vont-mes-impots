@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/millesimes_index.schema.json",
+  "title": "site/data/millesimes/index.json : exécution 2025 préparée, vérification des éditions attendues, dossier de bascule",
+  "description": "Écrit par pipeline/millesimes.py. Ne change pas la vue par défaut du site (exécution 2024). Comparaison 2024 / 2025 avec la même méthode (PLRG) ; l'exécution 2024 affichée n'est montrée qu'avec son écart de méthode. Constats de publication datés.",
+  "type": "object",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "$defs": {
+    "jour": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "eur": {"type": ["integer", "null"]},
+    "texte": {"type": "string", "minLength": 1},
+    "controle": {
+      "type": "object",
+      "required": ["annee", "budget_general_hors_remboursements_eur", "depenses_nettes_budget_general_situation_eur",
+                   "ecart_budget_general_eur", "remboursements_et_degrevements_retires_eur",
+                   "prelevements_sur_recettes_eur", "prelevements_sur_recettes_situation_eur", "hors_perimetre_eur",
+                   "lecture"],
+      "properties": {
+        "annee": {"type": "integer", "minimum": 2024},
+        "budget_general_hors_remboursements_eur": {"$ref": "#/$defs/eur"},
+        "depenses_nettes_budget_general_situation_eur": {"$ref": "#/$defs/eur"},
+        "ecart_budget_general_eur": {"$ref": "#/$defs/eur"},
+        "remboursements_et_degrevements_retires_eur": {"$ref": "#/$defs/eur"},
+        "prelevements_sur_recettes_eur": {"$ref": "#/$defs/eur"},
+        "prelevements_sur_recettes_situation_eur": {"$ref": "#/$defs/eur"},
+        "hors_perimetre_eur": {"type": "object", "additionalProperties": {"$ref": "#/$defs/eur"}},
+        "lecture": {"$ref": "#/$defs/texte"}
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": ["id", "famille", "axes", "edition_attendue", "publication", "constat", "url", "constat_le", "suite",
+                   "nouvelle_source", "effet"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/texte"},
+        "famille": {"$ref": "#/$defs/texte"},
+        "axes": {"type": "array", "items": {"type": "string"}},
+        "edition_attendue": {"$ref": "#/$defs/texte"},
+        "publication": {"enum": ["publié en données ouvertes", "publié en PDF seulement",
+                                 "non publié en données ouvertes", "non localisé"]},
+        "constat": {"$ref": "#/$defs/texte"},
+        "url": {"type": "string", "pattern": "^https://"},
+        "constat_le": {"$ref": "#/$defs/jour"},
+        "suite": {"enum": ["rattrapé", "à intégrer", "axe en cours chez un autre agent", "en attente du producteur"]},
+        "nouvelle_source": {"type": ["string", "null"]},
+        "effet": {"$ref": "#/$defs/texte"}
+      }
+    }
+  },
+  "required": ["millesime", "source", "unite", "presentation", "collecte_le", "vue_par_defaut", "execution_2025",
+               "controles", "comparaison", "bascule", "verification", "sources", "recherche_prealable", "limites",
+               "ordre"],
+  "properties": {
+    "presentation": {"$ref": "#/$defs/texte"},
+    "collecte_le": {"$ref": "#/$defs/jour"},
+    "vue_par_defaut": {
+      "type": "object",
+      "required": ["actuelle", "preparee", "statut"],
+      "properties": {"actuelle": {"const": "Exécution 2024"}, "preparee": {"type": "string"},
+                     "statut": {"type": "string"}}
+    },
+    "execution_2025": {
+      "type": "object",
+      "required": ["fichier", "niveaux", "total_eur", "arbre", "perimetre", "methode", "publie_le"],
+      "properties": {
+        "fichier": {"const": "millesimes/execution2025/racine.json"},
+        "niveaux": {"type": "array", "items": {"enum": ["grand_poste", "mission", "programme", "action"]}},
+        "total_eur": {"type": "integer"},
+        "arbre": {"type": "object"},
+        "perimetre": {"$ref": "#/$defs/texte"},
+        "methode": {"$ref": "#/$defs/texte"},
+        "publie_le": {"$ref": "#/$defs/jour"}
+      }
+    },
+    "controles": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/controle"}},
+    "comparaison": {
+      "type": "object",
+      "required": ["colonnes", "definitions", "lignes", "totaux", "lecture"],
+      "properties": {
+        "colonnes": {"const": ["grand_poste", "execution_2024_affichee_eur", "execution_2024_plrg_eur",
+                               "execution_2025_plrg_eur", "variation_plrg_eur", "variation_plrg_pct",
+                               "ecart_methode_2024_eur"]},
+        "definitions": {"type": "object", "additionalProperties": {"type": "string"}},
+        "lignes": {
+          "type": "array", "minItems": 1,
+          "items": {"type": "array", "minItems": 7, "maxItems": 7,
+                    "prefixItems": [{"type": "string"}, {"$ref": "#/$defs/eur"}, {"$ref": "#/$defs/eur"},
+                                    {"$ref": "#/$defs/eur"}, {"$ref": "#/$defs/eur"}, {"type": ["number", "null"]},
+                                    {"$ref": "#/$defs/eur"}]}
+        },
+        "totaux": {"type": "object"},
+        "lecture": {"$ref": "#/$defs/texte"}
+      }
+    },
+    "bascule": {
+      "type": "object",
+      "required": ["decision", "donnees_pretes", "ecrans", "pipelines", "missions_libelles_differents",
+                   "missions_absentes_2025", "missions_nouvelles_2025", "impacts", "etapes_proposees"],
+      "properties": {
+        "ecrans": {"type": "array", "items": {"type": "object", "required": ["fichier", "motifs"],
+                                              "properties": {"fichier": {"type": "string", "pattern": "^web/src/"},
+                                                             "motifs": {"type": "array", "minItems": 1}}}},
+        "pipelines": {"type": "array", "items": {"type": "string", "pattern": "^pipeline/[a-z_]+\\.py$"}},
+        "impacts": {"type": "array", "minItems": 1,
+                    "items": {"type": "object", "required": ["sujet", "constat"]}},
+        "etapes_proposees": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": ["date_reference", "origine", "nombre", "par_suite", "sources"],
+      "properties": {
+        "date_reference": {"$ref": "#/$defs/jour"},
+        "nombre": {"type": "integer", "minimum": 1},
+        "par_suite": {"type": "object", "additionalProperties": {"type": "integer"}},
+        "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/verification"}}
+      }
+    },
+    "sources": {
+      "type": "array", "minItems": 1,
+      "items": {"type": "object", "required": ["id", "titre", "url", "licence", "publie_le", "entrepot"]}
+    },
+    "recherche_prealable": {"type": "object", "required": ["verdict", "trouvailles"]},
+    "limites": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "ordre": {"type": "object"}
+  }
+}

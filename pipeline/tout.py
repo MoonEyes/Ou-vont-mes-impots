@@ -167,6 +167,7 @@ ETAPES: tuple[Etape, ...] = (
           produire=(m("aides_entreprises", "produire"),), duree_estimee_s=1900),
     axe("logement", "Logement : aides personnelles, MaPrimeRénov', prêts à taux zéro",
         ("base", "local", "operateurs", "realisations", "niches", "prestations", "europe_comparaison"), duree_s=90),
+    axe("millesimes", "Millésimes : exécution 2025 préparée, éditions attendues vérifiées", ("base",), collecte=False, duree_s=30),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
