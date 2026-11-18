@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonds_europeens_regions.schema.json",
+  "title": "site/data/fonds_europeens/regions.json : par région et groupe de programmes, par période, fonds et année",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "ordre",
+    "regions"
+  ],
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "ordre": {
+      "$ref": "fonds_europeens_commun.schema.json#/$defs/ordre"
+    },
+    "regions": {
+      "type": "array",
+      "minItems": 18,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "nom",
+          "type",
+          "programmes",
+          "periodes"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^(0[1-6]|[1-9][0-9]|977|national|interregional|non_rattache)$"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "région",
+              "collectivité d'outre-mer",
+              "groupe de programmes"
+            ]
+          },
+          "programmes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "periodes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "periode",
+                "par_fonds",
+                "total",
+                "annees"
+              ],
+              "properties": {
+                "periode": {
+                  "$ref": "fonds_europeens_commun.schema.json#/$defs/periode"
+                },
+                "par_fonds": {
+                  "$ref": "fonds_europeens_commun.schema.json#/$defs/par_fonds"
+                },
+                "total": {
+                  "$ref": "fonds_europeens_commun.schema.json#/$defs/bloc"
+                },
+                "annees": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "annee",
+                      "decide_cumule_eur",
+                      "depense_cumulee_eur",
+                      "paye_ue_cumule_eur"
+                    ],
+                    "properties": {
+                      "annee": {
+                        "$ref": "commun.schema.json#/$defs/annee_entier"
+                      },
+                      "decide_cumule_eur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "depense_cumulee_eur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "paye_ue_cumule_eur": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)pr[eé]nom|adresse|courriel|t[eé]l[eé]phone|dirigeant"
+    }
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonds_europeens_programmes.schema.json",
+  "title": "site/data/fonds_europeens/programmes.json : un programme par ligne, prévu, décidé, dépensé, payé par fonds",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "ordre",
+    "programmes"
+  ],
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "ordre": {
+      "$ref": "fonds_europeens_commun.schema.json#/$defs/ordre"
+    },
+    "programmes": {
+      "type": "array",
+      "minItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cci",
+          "periode",
+          "titre",
+          "portee",
+          "region",
+          "groupe",
+          "territoire",
+          "fonds",
+          "total",
+          "par_fonds",
+          "execution",
+          "paiements"
+        ],
+        "properties": {
+          "cci": {
+            "type": "string",
+            "pattern": "^20(14|21|23)[A-Z]{2}[0-9]{2}[A-Z0-9]{4}[0-9]{3}$"
+          },
+          "periode": {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/periode"
+          },
+          "titre": {
+            "type": "string",
+            "minLength": 3
+          },
+          "portee": {
+            "enum": [
+              "régional",
+              "national",
+              "interrégional",
+              "non rattaché"
+            ]
+          },
+          "region": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^(0[1-6]|[1-9][0-9]|977)$"
+          },
+          "groupe": {
+            "type": "string"
+          },
+          "territoire": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fonds": {
+            "type": "array",
+            "items": {
+              "$ref": "fonds_europeens_commun.schema.json#/$defs/fonds"
+            },
+            "minItems": 1
+          },
+          "total": {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/bloc"
+          },
+          "par_fonds": {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/par_fonds"
+          },
+          "execution": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "date_reference",
+              "prevu_total_eur"
+            ],
+            "properties": {
+              "date_reference": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "prevu_total_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "paiements": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "annee",
+              "prevu_ue_eur",
+              "prefinancement_net_eur",
+              "paiements_intermediaires_nets_eur",
+              "total_net_eur"
+            ],
+            "properties": {
+              "annee": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "prevu_ue_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "prefinancement_net_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "paiements_intermediaires_nets_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "total_net_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)pr[eé]nom|adresse|courriel|t[eé]l[eé]phone|dirigeant"
+    }
+  }
+}

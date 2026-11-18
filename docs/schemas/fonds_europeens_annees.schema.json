@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonds_europeens_annees.schema.json",
+  "title": "site/data/fonds_europeens/annees.json : engagements annuels, paiements et exécution cumulés par année",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "periodes",
+    "frr"
+  ],
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "periodes": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "periode",
+          "engagements_ue",
+          "paiements_ue",
+          "execution"
+        ],
+        "properties": {
+          "periode": {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/periode"
+          },
+          "engagements_ue": {
+            "type": "object",
+            "required": [
+              "annees",
+              "par_fonds_eur",
+              "total_eur"
+            ],
+            "properties": {
+              "par_fonds_eur": {
+                "$ref": "fonds_europeens_commun.schema.json#/$defs/serie_par_fonds"
+              },
+              "total_eur": {
+                "$ref": "fonds_europeens_commun.schema.json#/$defs/serie"
+              }
+            }
+          },
+          "paiements_ue": {
+            "type": "object",
+            "required": [
+              "annees",
+              "annee_partielle",
+              "cumul_par_fonds_eur",
+              "cumul_total_eur",
+              "annuel_total_eur",
+              "annuel_par_fonds_eur"
+            ],
+            "properties": {
+              "cumul_par_fonds_eur": {
+                "$ref": "fonds_europeens_commun.schema.json#/$defs/serie_par_fonds"
+              },
+              "cumul_total_eur": {
+                "$ref": "fonds_europeens_commun.schema.json#/$defs/serie"
+              },
+              "annuel_total_eur": {
+                "$ref": "fonds_europeens_commun.schema.json#/$defs/serie"
+              },
+              "annuel_par_fonds_eur": {
+                "$ref": "fonds_europeens_commun.schema.json#/$defs/serie_par_fonds"
+              }
+            }
+          },
+          "execution": {
+            "type": "object",
+            "required": [
+              "annees",
+              "decide_cumule_par_fonds_eur",
+              "depense_cumulee_par_fonds_eur"
+            ],
+            "properties": {
+              "decide_cumule_par_fonds_eur": {
+                "$ref": "fonds_europeens_commun.schema.json#/$defs/serie_par_fonds"
+              },
+              "depense_cumulee_par_fonds_eur": {
+                "$ref": "fonds_europeens_commun.schema.json#/$defs/serie_par_fonds"
+              }
+            }
+          }
+        }
+      }
+    },
+    "frr": {
+      "type": "object",
+      "required": [
+        "annees",
+        "fonds_recus_eur",
+        "fichier"
+      ],
+      "properties": {
+        "fichier": {
+          "const": "fonds_europeens/frr.json"
+        }
+      }
+    }
+  },
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)pr[eé]nom|adresse|courriel|t[eé]l[eé]phone|dirigeant"
+    }
+  }
+}

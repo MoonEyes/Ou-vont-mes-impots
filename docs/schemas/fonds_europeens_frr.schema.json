@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonds_europeens_frr.schema.json",
+  "title": "site/data/fonds_europeens/frr.json : facilité pour la reprise et la résilience, fonds reçus et emploi (Eurostat)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "annees",
+    "fonds_recus",
+    "emplois",
+    "liens"
+  ],
+  "properties": {
+    "source": {
+      "type": "string",
+      "pattern": "Eurostat"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "fonds_recus": {
+      "type": "object",
+      "required": [
+        "total_eur",
+        "subventions_eur",
+        "prets_eur",
+        "dont_paiements_anticipes_eur",
+        "pct_pib",
+        "cumul_eur",
+        "cumul_methode"
+      ],
+      "properties": {
+        "total_eur": {
+          "$ref": "fonds_europeens_commun.schema.json#/$defs/serie"
+        },
+        "subventions_eur": {
+          "$ref": "fonds_europeens_commun.schema.json#/$defs/serie"
+        },
+        "prets_eur": {
+          "$ref": "fonds_europeens_commun.schema.json#/$defs/serie"
+        },
+        "cumul_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "emplois": {
+      "type": "object",
+      "required": [
+        "categories",
+        "lecture"
+      ],
+      "properties": {
+        "categories": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "libelle",
+              "parent",
+              "montants_eur",
+              "pct_pib"
+            ],
+            "properties": {
+              "montants_eur": {
+                "$ref": "fonds_europeens_commun.schema.json#/$defs/serie"
+              },
+              "pct_pib": {
+                "$ref": "fonds_europeens_commun.schema.json#/$defs/serie"
+              }
+            }
+          }
+        }
+      }
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "$ref": "fonds_europeens_commun.schema.json#/$defs/lien"
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "$ref": "fonds_europeens_commun.schema.json#/$defs/inaccessible"
+      }
+    }
+  },
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)pr[eé]nom|adresse|courriel|t[eé]l[eé]phone|dirigeant"
+    }
+  }
+}

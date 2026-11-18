@@ -1,0 +1,385 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonds_europeens_commun.schema.json",
+  "title": "Définitions communes de l'axe fonds_europeens (pipeline/fonds_europeens.py)",
+  "$defs": {
+    "montant": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "periode": {
+      "enum": [
+        "2014-2020",
+        "2021-2027",
+        "2023-2027"
+      ]
+    },
+    "fonds": {
+      "enum": [
+        "FEDER",
+        "FSE",
+        "FSE+",
+        "IEJ",
+        "FTJ",
+        "FEADER",
+        "FEAMP",
+        "FEAMPA",
+        "FC"
+      ]
+    },
+    "bloc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prevu_ue_eur",
+        "prevu_national_eur",
+        "prevu_total_eur",
+        "decide_eur",
+        "depense_eur",
+        "paye_ue_eur"
+      ],
+      "properties": {
+        "prevu_ue_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "prevu_national_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "prevu_total_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "decide_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "depense_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "paye_ue_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "bloc_theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prevu_ue_eur",
+        "prevu_national_eur",
+        "prevu_total_eur",
+        "decide_eur",
+        "depense_eur"
+      ],
+      "properties": {
+        "prevu_ue_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "prevu_national_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "prevu_total_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "decide_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "depense_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "par_fonds": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "FEDER",
+          "FSE",
+          "FSE+",
+          "IEJ",
+          "FTJ",
+          "FEADER",
+          "FEAMP",
+          "FEAMPA",
+          "FC"
+        ]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prevu_ue_eur",
+          "prevu_national_eur",
+          "prevu_total_eur",
+          "decide_eur",
+          "depense_eur",
+          "paye_ue_eur"
+        ],
+        "properties": {
+          "prevu_ue_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "prevu_national_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "prevu_total_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "decide_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "depense_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "paye_ue_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "par_fonds_theme": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "FEDER",
+          "FSE",
+          "FSE+",
+          "IEJ",
+          "FTJ",
+          "FEADER",
+          "FEAMP",
+          "FEAMPA",
+          "FC"
+        ]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prevu_ue_eur",
+          "prevu_national_eur",
+          "prevu_total_eur",
+          "decide_eur",
+          "depense_eur"
+        ],
+        "properties": {
+          "prevu_ue_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "prevu_national_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "prevu_total_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "decide_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "depense_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "regle",
+        "cles"
+      ],
+      "properties": {
+        "regle": {
+          "type": "string",
+          "minLength": 20
+        },
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "lien": {
+      "type": "object",
+      "required": [
+        "fichier",
+        "lecture"
+      ],
+      "properties": {
+        "fichier": {
+          "type": "string",
+          "pattern": "\\.json$"
+        },
+        "lecture": {
+          "type": "string"
+        }
+      }
+    },
+    "inaccessible": {
+      "type": "object",
+      "required": [
+        "source",
+        "url",
+        "constat",
+        "effet"
+      ],
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "constat": {
+          "type": "string"
+        },
+        "effet": {
+          "type": "string"
+        }
+      }
+    },
+    "ecart": {
+      "type": "object",
+      "required": [
+        "source",
+        "montant_eur",
+        "autre_source",
+        "autre_montant_eur",
+        "ecart_eur",
+        "lecture_ecart"
+      ],
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "montant_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "autre_source": {
+          "type": "string"
+        },
+        "autre_montant_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "ecart_eur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "lecture_ecart": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
+    "serie": {
+      "type": "array",
+      "items": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    },
+    "serie_par_fonds": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "FEDER",
+          "FSE",
+          "FSE+",
+          "IEJ",
+          "FTJ",
+          "FEADER",
+          "FEAMP",
+          "FEAMPA",
+          "FC"
+        ]
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

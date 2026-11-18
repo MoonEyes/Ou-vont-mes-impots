@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonds_europeens_themes.schema.json",
+  "title": "site/data/fonds_europeens/themes.json : objectifs thématiques, mesures du FEADER, objectifs stratégiques et spécifiques, domaines d'intervention",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "ordre",
+    "periodes"
+  ],
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "ordre": {
+      "$ref": "fonds_europeens_commun.schema.json#/$defs/ordre"
+    },
+    "periodes": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "periode",
+          "nomenclature",
+          "themes"
+        ],
+        "properties": {
+          "periode": {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/periode"
+          },
+          "nomenclature": {
+            "type": "string"
+          },
+          "themes": {
+            "type": "array",
+            "minItems": 3,
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "libelle",
+                    "libelle_source",
+                    "par_fonds",
+                    "total"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "libelle": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "libelle_source": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "par_fonds": {
+                      "$ref": "fonds_europeens_commun.schema.json#/$defs/par_fonds_theme"
+                    },
+                    "total": {
+                      "$ref": "fonds_europeens_commun.schema.json#/$defs/bloc_theme"
+                    }
+                  }
+                }
+              ],
+              "properties": {
+                "objectifs_specifiques": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "code",
+                      "libelle",
+                      "libelle_source",
+                      "par_fonds",
+                      "total"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "libelle": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "libelle_source": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "par_fonds": {
+                        "$ref": "fonds_europeens_commun.schema.json#/$defs/par_fonds_theme"
+                      },
+                      "total": {
+                        "$ref": "fonds_europeens_commun.schema.json#/$defs/bloc_theme"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "mesures_feader": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "libelle",
+                "libelle_source",
+                "prevu_ue_eur",
+                "prevu_national_eur",
+                "prevu_total_eur",
+                "decide_eur",
+                "depense_eur"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "pattern": "^M[0-9]{2}$"
+                }
+              }
+            }
+          },
+          "domaines_intervention": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "fonds",
+                "code",
+                "libelle_source",
+                "prevu_ue_eur",
+                "prevu_total_eur",
+                "decide_eur",
+                "depense_eur",
+                "operations"
+              ],
+              "properties": {
+                "fonds": {
+                  "$ref": "fonds_europeens_commun.schema.json#/$defs/fonds"
+                },
+                "prevu_ue_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "prevu_total_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "decide_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "depense_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "operations": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)pr[eé]nom|adresse|courriel|t[eé]l[eé]phone|dirigeant"
+    }
+  }
+}

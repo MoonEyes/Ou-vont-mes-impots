@@ -1,0 +1,304 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonds_europeens_index.schema.json",
+  "title": "site/data/fonds_europeens/index.json : totaux par période et par fonds, périmètre, écarts entre sources, sources, recherche publique (pipeline/fonds_europeens.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "avertissement",
+    "collecte_le",
+    "periodes",
+    "fonds",
+    "definitions",
+    "perimetre",
+    "totaux",
+    "frr",
+    "operations",
+    "ecarts",
+    "fichiers",
+    "liens",
+    "sources",
+    "sources_inaccessibles",
+    "recherche_publique",
+    "limites",
+    "confidentialite",
+    "ordre"
+  ],
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "periodes": {
+      "type": "array",
+      "items": {
+        "$ref": "fonds_europeens_commun.schema.json#/$defs/periode"
+      },
+      "minItems": 2
+    },
+    "fonds": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "libelle",
+          "code_source"
+        ],
+        "properties": {
+          "code": {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/fonds"
+          }
+        }
+      }
+    },
+    "definitions": {
+      "type": "object",
+      "required": [
+        "prevu_ue_eur",
+        "prevu_national_eur",
+        "prevu_total_eur",
+        "decide_eur",
+        "depense_eur",
+        "paye_ue_eur"
+      ]
+    },
+    "perimetre": {
+      "type": "object",
+      "required": [
+        "fonds_retenus",
+        "hors_perimetre",
+        "interreg",
+        "feader",
+        "frr"
+      ],
+      "properties": {
+        "hors_perimetre": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "periode",
+              "fonds",
+              "libelle",
+              "raison",
+              "prevu_ue_eur",
+              "paye_ue_eur"
+            ],
+            "properties": {
+              "prevu_ue_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "paye_ue_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "totaux": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "periode",
+          "par_fonds",
+          "total",
+          "date_execution",
+          "annee_paiements"
+        ],
+        "properties": {
+          "periode": {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/periode"
+          },
+          "par_fonds": {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/par_fonds"
+          },
+          "total": {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/bloc"
+          },
+          "date_execution": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "annee_paiements": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "feader_psp_2023_2027": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "frr": {
+      "type": "object",
+      "required": [
+        "fichier",
+        "annees",
+        "fonds_recus_cumul_eur"
+      ],
+      "properties": {
+        "fichier": {
+          "const": "fonds_europeens/frr.json"
+        }
+      }
+    },
+    "operations": {
+      "type": "object",
+      "required": [
+        "fichier",
+        "listes",
+        "operations",
+        "operations_nommees"
+      ],
+      "properties": {
+        "fichier": {
+          "const": "fonds_europeens/operations.json"
+        }
+      }
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/ecart"
+          }
+        ],
+        "type": "object",
+        "required": [
+          "periode",
+          "fonds",
+          "grandeur"
+        ]
+      }
+    },
+    "fichiers": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "required": [
+          "fichier",
+          "contenu"
+        ]
+      }
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "$ref": "fonds_europeens_commun.schema.json#/$defs/lien"
+      },
+      "minItems": 3
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "titre",
+          "producteur",
+          "url",
+          "licence",
+          "collecte_le"
+        ]
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "$ref": "fonds_europeens_commun.schema.json#/$defs/inaccessible"
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "trouvailles"
+      ],
+      "properties": {
+        "trouvailles": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "nom",
+              "url",
+              "verdict",
+              "licence",
+              "mise_a_jour"
+            ],
+            "properties": {
+              "verdict": {
+                "enum": [
+                  "réutilisable tel quel",
+                  "à adapter",
+                  "inspiration seulement"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "confidentialite": {
+      "type": "string"
+    },
+    "ordre": {
+      "$ref": "fonds_europeens_commun.schema.json#/$defs/ordre"
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "licences_cohesiondata",
+        "programmes_non_rattaches"
+      ]
+    }
+  },
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)pr[eé]nom|adresse|courriel|t[eé]l[eé]phone|dirigeant"
+    }
+  }
+}

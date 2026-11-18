@@ -261,6 +261,16 @@ FICHIERS = [
     ("solidarites_departements_ecarts.schema.json", "solidarites_departements/ecarts.json", "existant"),
     # fraîcheur des données : dernière collecte, millésime, calendrier officiel, statut (pipeline/fraicheur.py)
     ("fraicheur_index.schema.json", "fraicheur/index.json", "existant"),
+    # fonds européens structurels et d'investissement : programmes, régions, thèmes, années, FRR, listes d'opérations
+    # (pipeline/fonds_europeens.py)
+    ("fonds_europeens_index.schema.json", "fonds_europeens/index.json", "existant"),
+    ("fonds_europeens_programmes.schema.json", "fonds_europeens/programmes.json", "existant"),
+    ("fonds_europeens_regions.schema.json", "fonds_europeens/regions.json", "existant"),
+    ("fonds_europeens_themes.schema.json", "fonds_europeens/themes.json", "existant"),
+    ("fonds_europeens_annees.schema.json", "fonds_europeens/annees.json", "existant"),
+    ("fonds_europeens_frr.schema.json", "fonds_europeens/frr.json", "existant"),
+    ("fonds_europeens_operations_index.schema.json", "fonds_europeens/operations.json", "existant"),
+    ("fonds_europeens_operations.schema.json", "fonds_europeens/operations/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

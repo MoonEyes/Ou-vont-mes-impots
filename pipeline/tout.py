@@ -159,6 +159,8 @@ ETAPES: tuple[Etape, ...] = (
     axe("sante_etablissements", "Établissements de santé", ("secu", "subventions")),
     axe("solidarites_departements", "Solidarités des départements (allocations, recettes rattachées, bénéficiaires)",
         ("territoires", "prestations")),
+    axe("fonds_europeens", "Fonds européens structurels et d'investissement (cohesiondata, Eurostat FRR, listes d'opérations)",
+        ("base",), duree_s=240),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un

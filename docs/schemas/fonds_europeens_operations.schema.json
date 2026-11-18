@@ -1,0 +1,371 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/fonds_europeens_operations.schema.json",
+  "title": "site/data/fonds_europeens/operations/<liste>.json : opérations d'une liste d'autorité de gestion, bénéficiaires nommés (personnes morales) et agrégats des autres",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "autorite_de_gestion",
+    "region",
+    "url",
+    "licence",
+    "programmes",
+    "regle_personnes_physiques",
+    "colonnes",
+    "definitions",
+    "montant_ue_mode",
+    "operations",
+    "non_nommes",
+    "totaux",
+    "comparaison_commission",
+    "controles",
+    "ordre"
+  ],
+  "properties": {
+    "unite": {
+      "const": "euros"
+    },
+    "autorite_de_gestion": {
+      "type": "string"
+    },
+    "region": {
+      "type": "object",
+      "required": [
+        "code",
+        "nom"
+      ]
+    },
+    "url": {
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "licence": {
+      "type": "string"
+    },
+    "collecte_le": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "programmes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "periode",
+          "cci",
+          "titre"
+        ]
+      }
+    },
+    "regle_personnes_physiques": {
+      "type": "string",
+      "minLength": 40
+    },
+    "colonnes": {
+      "enum": [
+        [
+          "id",
+          "periode",
+          "fonds",
+          "annee_debut",
+          "date_fin",
+          "siren",
+          "denomination",
+          "categorie_juridique",
+          "intitule",
+          "departement",
+          "commune_insee",
+          "theme",
+          "cout_total_eur",
+          "montant_ue_eur",
+          "hors_ue_eur",
+          "taux_ue"
+        ],
+        [
+          "id",
+          "periode",
+          "fonds",
+          "annee_debut",
+          "date_fin",
+          "siren",
+          "denomination",
+          "categorie_juridique",
+          "intitule",
+          "departement",
+          "commune_insee",
+          "theme",
+          "cout_total_eur",
+          "montant_ue_eur",
+          "hors_ue_eur",
+          "taux_ue",
+          "etat_eur",
+          "region_eur",
+          "departement_eur",
+          "prives_eur",
+          "autofinancement_eur"
+        ]
+      ]
+    },
+    "definitions": {
+      "type": "object",
+      "required": [
+        "cout_total_eur",
+        "montant_ue_eur",
+        "hors_ue_eur",
+        "taux_ue"
+      ]
+    },
+    "montant_ue_mode": {
+      "type": "string"
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/periode"
+          },
+          {
+            "enum": [
+              "FEDER",
+              "FSE",
+              "FSE+",
+              "IEJ",
+              "FTJ",
+              "FEADER",
+              "FEAMP",
+              "FEAMPA",
+              "FC",
+              "non précisé"
+            ]
+          },
+          {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1990,
+            "maximum": 2100
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9]{4}-[0-9]{2}(-[0-9]{2})?$"
+          },
+          {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          },
+          {
+            "allOf": [
+              {
+                "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+              },
+              {
+                "not": {
+                  "enum": [
+                    "2110",
+                    "2210",
+                    "2310",
+                    "2385"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^([0-9]{2}|2[AB]|97[0-9])$"
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^([0-9]{5}|2[AB][0-9]{3})$"
+          },
+          {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          }
+        ],
+        "minItems": 16,
+        "maxItems": 21,
+        "items": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "non_nommes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "periode",
+          "fonds",
+          "annee_debut",
+          "motif",
+          "nombre",
+          "cout_total_eur",
+          "montant_ue_eur"
+        ],
+        "properties": {
+          "periode": {
+            "type": "string"
+          },
+          "fonds": {
+            "type": "string"
+          },
+          "annee_debut": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "motif": {
+            "enum": [
+              "personne_physique",
+              "siren_inconnu",
+              "sans_nom",
+              "nom_de_personne_possible",
+              "non_rapproche",
+              "ambigu"
+            ]
+          },
+          "nombre": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "cout_total_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "montant_ue_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "motifs": {
+      "type": "object"
+    },
+    "totaux": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "periode",
+          "fonds",
+          "operations",
+          "cout_total_eur",
+          "montant_ue_eur",
+          "operations_nommees",
+          "cout_total_nomme_eur",
+          "montant_ue_nomme_eur"
+        ]
+      }
+    },
+    "comparaison_commission": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "fonds_europeens_commun.schema.json#/$defs/ecart"
+          }
+        ],
+        "type": "object",
+        "required": [
+          "periode",
+          "fonds",
+          "cci",
+          "date_reference"
+        ]
+      }
+    },
+    "controles": {
+      "type": "object",
+      "required": [
+        "lignes_source",
+        "operations",
+        "nommees",
+        "par_motif"
+      ]
+    },
+    "ordre": {
+      "$ref": "fonds_europeens_commun.schema.json#/$defs/ordre"
+    }
+  },
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)pr[eé]nom|adresse|courriel|t[eé]l[eé]phone|dirigeant"
+    }
+  }
+}
