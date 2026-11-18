@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/securite_interieure_effectifs.schema.json",
+  "title": "site/data/securite_interieure/effectifs.json : plafonds d'emplois votés (ETPT) par programme et dépenses de personnel",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 1
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "ordre": {
+      "type": "object",
+      "properties": {
+        "regle": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "required": [
+        "regle"
+      ],
+      "additionalProperties": false
+    },
+    "programmes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "etpt_lfi": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "annee": {
+                  "type": "integer"
+                },
+                "etpt": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "nature": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "annee",
+                "etpt",
+                "nature"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1
+          },
+          "evolution_etpt": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "de": {
+                  "type": "integer"
+                },
+                "a": {
+                  "type": "integer"
+                },
+                "etpt": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "de",
+                "a",
+                "etpt"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "categories_lfi_2023": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "categorie_emploi": {
+                  "type": "string"
+                },
+                "etpt": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "categorie_emploi",
+                "etpt"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "depenses_personnel": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "annee": {
+                  "type": "integer"
+                },
+                "depenses_constatees_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "lfi_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "annee",
+                "depenses_constatees_eur",
+                "lfi_eur"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "programme",
+          "libelle",
+          "etpt_lfi",
+          "evolution_etpt",
+          "categories_lfi_2023",
+          "depenses_personnel"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 4
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "avertissement",
+    "definitions",
+    "annees",
+    "limites",
+    "ordre",
+    "programmes"
+  ],
+  "additionalProperties": false
+}

@@ -4874,6 +4874,144 @@
    "titre": "Annexe au PLF 2025, Agences de l'eau (jaune), miroir Assemblee nationale : edition precedente, comparee a l'edition 2026 (pipeline/eau_environnement.py)",
    "licence": "document administratif public",
    "module": "pipeline/eau_environnement.py"
+  },
+  {
+   "id": "securite_interieure_plrg_annexes",
+   "domaine": "securite_interieure",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe1_etat_cp_2023_csv",
+     "nom": "plrg_2023_bg_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe1_etat_titre_cat_2023_csv",
+     "nom": "plrg_2023_bg_titre_categorie.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_cp_2023_csv",
+     "nom": "plrg_2023_cs_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_recouvt_2023_csv",
+     "nom": "plrg_2023_cs_recouvrements.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_comptable_2023_csv",
+     "nom": "plrg_2023_cs_comptable.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe1_etat_cp_2024_csv",
+     "nom": "plrg_2024_bg_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe1_etat_titre_cat_2024_csv",
+     "nom": "plrg_2024_bg_titre_categorie.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_cp_2024_csv",
+     "nom": "plrg_2024_cs_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_recouvt_2024_csv",
+     "nom": "plrg_2024_cs_recouvrements.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_comptable_2024_csv",
+     "nom": "plrg_2024_cs_comptable.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe1_etat_cp_2025csv",
+     "nom": "plrg_2025_bg_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe1_etat_titre_cat_2025csv",
+     "nom": "plrg_2025_bg_titre_categorie.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_cp_2025csv",
+     "nom": "plrg_2025_cs_cp.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_recouvt_2025csv",
+     "nom": "plrg_2025_cs_recouvrements.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_comptable_2025csv",
+     "nom": "plrg_2025_cs_comptable.csv"
+    }
+   ],
+   "titre": "PLRG 2023, 2024 et 2025, annexes CSV : depenses du budget general par programme et titre, par titre et categorie, depenses des comptes speciaux, recouvrements et situation comptable des comptes speciaux (lu par pipeline/securite_interieure.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/securite_interieure.py"
+  },
+  {
+   "id": "securite_interieure_budget_vert_2026",
+   "domaine": "securite_interieure",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "plf-2026-budget-vert",
+   "format_export": "csv",
+   "where": "numero_programme in (176,152,161,207,751,753,754,755)",
+   "titre": "PLF 2026, budget vert : credits par sous-action, execution 2024, LFI 2025 et PLF 2026 (programmes 176, 152, 161, 207 et compte Controle de la circulation ; lu par pipeline/securite_interieure.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/securite_interieure.py"
+  },
+  {
+   "id": "securite_interieure_plf25_destination_nature",
+   "domaine": "securite_interieure",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "plf25-depenses-2025-du-bg-et-des-ba-selon-nomenclatures-destination-et-nature",
+   "format_export": "csv",
+   "where": "programme in (176,152,161,207)",
+   "titre": "PLF 2025, depenses par sous-action, titre et categorie (programmes 176, 152, 161 et 207 ; lu par pipeline/securite_interieure.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/securite_interieure.py"
+  },
+  {
+   "id": "securite_interieure_etpt_lfi_2019",
+   "domaine": "securite_interieure",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "loi-de-finances-initiale-pour-2019-lfi-2019",
+   "format_export": "csv",
+   "titre": "LFI 2019, credits et plafonds d'emplois (ETPT) par programme (lu par pipeline/securite_interieure.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/securite_interieure.py"
+  },
+  {
+   "id": "securite_interieure_etpt_lfi_2023",
+   "domaine": "securite_interieure",
+   "type": "ods_export",
+   "portail": "economie",
+   "dataset": "etpt-par-ministere-mission-programme-pour-le-bg-et-les-ba-lfi-2023",
+   "format_export": "csv",
+   "titre": "LFI 2023, plafonds d'emplois (ETPT) par programme et categorie d'emploi (lu par pipeline/securite_interieure.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/securite_interieure.py"
+  },
+  {
+   "id": "securite_interieure_etpt_lfi_2020_2022",
+   "domaine": "securite_interieure",
+   "type": "urls",
+   "urls": [
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-initiale-pour-2020-lfi-2020/attachments/lfi2020_emplois_csv",
+     "nom": "lfi_2020_emplois.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-initiale-pour-2021-lfi-2021/attachments/lfi2021_emplois_csv",
+     "nom": "lfi_2021_emplois.csv"
+    },
+    {
+     "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-initiale-pour-2022-lfi-2022/attachments/lfi2022_emplois_csv",
+     "nom": "lfi_2022_emplois.csv"
+    }
+   ],
+   "titre": "LFI 2020, 2021 et 2022, emplois (ETPT) par programme et categorie d'emploi, pieces jointes CSV (lu par pipeline/securite_interieure.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/securite_interieure.py"
   }
  ],
  "non_collectables": [
@@ -4965,6 +5103,10 @@
   {
    "source": "Dares, series mensuelles de l'activite partielle (dares.travail-emploi.gouv.fr)",
    "motif": "page de verification anti-robot constatee le 18/11/2026 : non collecte, non contourne (pipeline/emploi.py)"
+  },
+  {
+   "source": "budget.gouv.fr (projets et rapports annuels de performances 2026 de la mission Securites, PDF)",
+   "motif": "page de protection contre les robots (Incapsula) constatee le 18/11/2026 : non contourne ; credits et emplois lus dans les jeux de data.economie.gouv.fr (pipeline/securite_interieure.py)"
   }
  ]
 }

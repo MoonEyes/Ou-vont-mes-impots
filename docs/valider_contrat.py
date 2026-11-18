@@ -344,6 +344,11 @@ FICHIERS = [
     ("eau_environnement_agences_eau.schema.json", "eau_environnement/agences_eau.json", "existant"),
     ("eau_environnement_ademe.schema.json", "eau_environnement/ademe.json", "existant"),
     ("eau_environnement_fonds_vert.schema.json", "eau_environnement/fonds_vert.json", "existant"),
+    # sécurité intérieure : police, gendarmerie, sécurité civile, sécurité routière, compte des amendes (pipeline/securite_interieure.py)
+    ("securite_interieure_index.schema.json", "securite_interieure/index.json", "existant"),
+    ("securite_interieure_budget.schema.json", "securite_interieure/budget.json", "existant"),
+    ("securite_interieure_effectifs.schema.json", "securite_interieure/effectifs.json", "existant"),
+    ("securite_interieure_amendes.schema.json", "securite_interieure/amendes.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

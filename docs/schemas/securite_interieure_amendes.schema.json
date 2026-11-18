@@ -1,0 +1,512 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/securite_interieure_amendes.schema.json",
+  "title": "site/data/securite_interieure/amendes.json : compte d'affectation spéciale Contrôle de la circulation et du stationnement routiers (recettes des amendes, dépenses par programme, solde)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "unite": {
+      "type": "string"
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 40
+    },
+    "compte": {
+      "const": "Contrôle de la circulation et du stationnement routiers"
+    },
+    "structure": {
+      "type": "object",
+      "properties": {
+        "texte": {
+          "type": "string"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "section": {
+                "type": "string"
+              },
+              "libelle": {
+                "type": "string"
+              },
+              "programmes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "section",
+              "libelle",
+              "programmes"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2
+        },
+        "lecture": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "texte",
+        "sections",
+        "lecture"
+      ],
+      "additionalProperties": false
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "programmes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "programme": {
+            "type": "string"
+          },
+          "libelle": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "programme",
+          "libelle"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 4
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "annee": {
+            "type": "integer"
+          },
+          "recettes": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "section": {
+                      "type": "string"
+                    },
+                    "ligne": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "libelle": {
+                      "type": "string"
+                    },
+                    "niveau": {
+                      "const": "prevision"
+                    },
+                    "evaluation_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "recouvrement_publie_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "section",
+                    "ligne",
+                    "libelle",
+                    "niveau",
+                    "evaluation_eur",
+                    "recouvrement_publie_eur"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "section": {
+                      "type": "string"
+                    },
+                    "ligne": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "ligne_prevision": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "libelle": {
+                      "type": "string"
+                    },
+                    "niveau": {
+                      "const": "execution"
+                    },
+                    "evaluation_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "recouvrement_eur": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "section",
+                    "ligne",
+                    "ligne_prevision",
+                    "libelle",
+                    "niveau",
+                    "evaluation_eur",
+                    "recouvrement_eur"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "minItems": 1
+          },
+          "recettes_par_section": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "section": {
+                  "type": "string"
+                },
+                "libelle": {
+                  "type": "string"
+                },
+                "programmes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1
+                },
+                "evaluation_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "recouvrement_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "depenses_constatees_programmes_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "section",
+                "libelle",
+                "programmes",
+                "evaluation_eur",
+                "recouvrement_eur",
+                "depenses_constatees_programmes_eur"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 2
+          },
+          "recouvrements_total_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "depenses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "programme": {
+                  "enum": [
+                    "751",
+                    "753",
+                    "754",
+                    "755"
+                  ]
+                },
+                "libelle": {
+                  "type": "string"
+                },
+                "lfi_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "lfr_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "credits_ouverts_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "depenses_constatees_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "part_depenses_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "programme",
+                "libelle",
+                "lfi_eur",
+                "lfr_eur",
+                "credits_ouverts_eur",
+                "depenses_constatees_eur",
+                "part_depenses_pct"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 4
+          },
+          "depenses_total_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "situation": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer"
+              },
+              "solde_entree_eur": {
+                "type": "number"
+              },
+              "recettes_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "depenses_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "solde_sortie_eur": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "annee",
+              "solde_entree_eur",
+              "recettes_eur",
+              "depenses_eur",
+              "solde_sortie_eur"
+            ],
+            "additionalProperties": false
+          },
+          "controles": {
+            "type": "object",
+            "properties": {
+              "recettes_lignes_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "recettes_situation_comptable_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "ecart_recettes_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "depenses_programmes_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "depenses_situation_comptable_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "ecart_depenses_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "recettes_lignes_eur",
+              "recettes_situation_comptable_eur",
+              "ecart_recettes_eur",
+              "depenses_programmes_eur",
+              "depenses_situation_comptable_eur",
+              "ecart_depenses_eur"
+            ],
+            "additionalProperties": false
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "annee",
+          "recettes",
+          "recettes_par_section",
+          "recouvrements_total_eur",
+          "depenses",
+          "depenses_total_eur",
+          "situation",
+          "controles",
+          "source"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "actions_budget_vert": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "programme": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "execution_2024_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "lfi_2025_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "plf_2026_eur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "programme",
+          "code",
+          "libelle",
+          "execution_2024_eur",
+          "lfi_2025_eur",
+          "plf_2026_eur"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "ordre": {
+      "type": "object",
+      "properties": {
+        "regle": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "required": [
+        "regle"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "avertissement",
+    "compte",
+    "structure",
+    "definitions",
+    "programmes",
+    "annees",
+    "actions_budget_vert",
+    "limites",
+    "ordre"
+  ],
+  "additionalProperties": false
+}
