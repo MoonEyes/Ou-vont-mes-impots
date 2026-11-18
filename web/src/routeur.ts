@@ -51,6 +51,8 @@ export interface Route {
   famille?: string
   /** picto du thème, posé devant le titre de la page (src/composants/pictos.ts) */
   picto?: string
+  /** rubrique de la page dans le hub de son parent (clé de THEMES, src/composants/hub.ts) ; sans thème : rubrique « Autres pages » */
+  theme?: string
 }
 
 /** Adresse inconnue : page « introuvable » (elle n'est ni dans la table des routes ni dans le plan du site). */

@@ -1,6 +1,6 @@
 // Hub « Chez moi » : choisir sa commune (fichiers par département, chargés à la demande).
 import { fragmentCommune, fragmentDepartement } from '../chemins'
-import { partPersonnelle } from '../composants/hub'
+import { cartesRayons, partPersonnelle } from '../composants/hub'
 import { trame } from '../composants/trame'
 import { TOUS_DEPARTEMENTS, departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
@@ -37,6 +37,7 @@ export async function rendre(cible: HTMLElement) {
 </div>
 <h2>Par département</h2>
 <ul class="liste-colonnes">${TOUS_DEPARTEMENTS.map(([c, n]) => `<li><a href="${fragmentDepartement(c, n)}">${h(n)} (${c})</a></li>`).join('')}</ul>
+${cartesRayons('/local')}
 ${partPersonnelle()}`
   const dep = cible.querySelector<HTMLSelectElement>('#dep-local')!
   const com = cible.querySelector<HTMLSelectElement>('#com-local')!
