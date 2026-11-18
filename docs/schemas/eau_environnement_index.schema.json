@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/eau_environnement_index.schema.json",
+  "title": "site/data/eau_environnement/index.json : sources, liens vers les autres vues, chiffres repères, limites (pipeline/eau_environnement.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "fichiers",
+    "chiffres",
+    "sources",
+    "liens",
+    "sources_inaccessibles",
+    "recherche_publique",
+    "limites",
+    "regle"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string"
+    },
+    "fichiers": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "fichier",
+          "lecture"
+        ]
+      }
+    },
+    "chiffres": {
+      "type": "object",
+      "required": [
+        "annee_agences",
+        "redevances_encaissees_meur",
+        "ecretement_meur",
+        "plafond_redevances_meur",
+        "contribution_operateurs_meur",
+        "ademe_total_eur",
+        "fonds_vert_total_eur",
+        "note"
+      ],
+      "properties": {
+        "annee_agences": {
+          "type": "integer",
+          "minimum": 2000,
+          "maximum": 2100
+        },
+        "redevances_encaissees_meur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "ecretement_meur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "plafond_redevances_meur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "contribution_operateurs_meur": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "ademe_total_eur": {
+          "type": "number"
+        },
+        "fonds_vert_total_eur": {
+          "type": "number"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "titre",
+          "producteur",
+          "url",
+          "page",
+          "millesime",
+          "licence",
+          "verdict"
+        ],
+        "properties": {
+          "titre": {
+            "type": "string"
+          },
+          "producteur": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "page": {
+            "type": "string"
+          },
+          "millesime": {
+            "type": "string"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string"
+          }
+        }
+      },
+      "minProperties": 4
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vue",
+          "fichier",
+          "id",
+          "lecture"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "vue": {
+            "type": "string"
+          },
+          "fichier": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lecture": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "motif"
+        ]
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "conclusion",
+        "trouvailles"
+      ],
+      "properties": {
+        "trouvailles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "nom",
+              "url",
+              "licence",
+              "verdict"
+            ],
+            "properties": {
+              "verdict": {
+                "type": "string",
+                "pattern": "^(réutilisable tel quel|à adapter|inspiration seulement|aucun dépôt pertinent)"
+              }
+            }
+          }
+        }
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "regle": {
+      "type": "string"
+    }
+  }
+}

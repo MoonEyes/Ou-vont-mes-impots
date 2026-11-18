@@ -2,6 +2,30 @@
  "note": "Fichiers de data/lake lus par la production de chaque étape (python pipeline/tout.py inventorier, sous strace). `sources` : identifiants du catalogue (collecte/collecte.py) et chemins ; `caches` : dossiers remplis par les commandes de collecte des modules ; `hors_catalogue` : fichiers déposés par la collecte d'un module ; `urls` : URL publique de chaque fichier (manifeste), lue par `tout.py entrepot`.",
  "releve_le": "2026-11-17",
  "etapes": {
+  "eau_environnement": {
+   "sources": {
+    "eau_jaune_agences_eau_plf2025": [
+     "data/lake/eau_environnement/eau_jaune_agences_eau_plf2025.pdf"
+    ],
+    "eau_jaune_agences_eau_plf2026": [
+     "data/lake/eau_environnement/eau_jaune_agences_eau_plf2026.pdf"
+    ],
+    "subv_ademe_aides": [
+     "data/lake/_restreint/subventions/subv_ademe_aides.csv"
+    ],
+    "subv_fonds_vert": [
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2023-export_ac2da594.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2024-export_1fdc94e1.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2025-export_b5d38c64.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2024-export_558ace5f.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2025-export_df1c6fc7.csv"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 42457339,
+   "note": "relevé à la main sur le manifeste de collecte (pipeline/eau_environnement.py collecter) ; lit aussi site/data/local/geo (versionné)"
+  },
   "base": {
    "sources": {},
    "caches": [],
@@ -1551,6 +1575,14 @@
   }
  },
  "urls": {
+  "data/lake/_restreint/subventions/subv_ademe_aides.csv": "https://data.ademe.fr/data-fair/api/v1/datasets/les-aides-financieres-de-l%27ademe/full",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2023-export_ac2da594.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes-en-2023/20240731-110636/fonds-vert-2023-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2024-export_1fdc94e1.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20250731-095516/fonds-vert-2024-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2025-export_b5d38c64.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20260622-085623/fonds-vert-2025-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2024-export_558ace5f.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20250731-100849/fonds-vert-p113-2024-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2025-export_df1c6fc7.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20260728-085038/fonds-vert-p113-2025-export.csv.csv",
+  "data/lake/eau_environnement/eau_jaune_agences_eau_plf2025.pdf": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Jaunes/01-Jaune_Agences_eau.pdf",
+  "data/lake/eau_environnement/eau_jaune_agences_eau_plf2026.pdf": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1089974/file/1-Jaune2026_Agences_Eau.pdf",
   "data/lake/_restreint/beneficiaires/benef_decp/decp_11cea8e8.parquet": "https://static.data.gouv.fr/resources/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire/20261117-051110/decp.parquet",
   "data/lake/_restreint/beneficiaires/datagouv__subventions-de-bourges-plus-en-2018-et-2019/subventions-de-bourges-plus-en-2018-et-2019_85c2c379.parquet": "https://data.bourgesplus.fr/api/v2/catalog/datasets/subventions-de-bourges-plus-en-2018-et-2019/exports/parquet",
   "data/lake/_restreint/beneficiaires/ods_laregion__subventions-du-conseil-regional.parquet": "https://data.laregion.fr/api/explore/v2.1/catalog/datasets/subventions-du-conseil-regional/exports/parquet",

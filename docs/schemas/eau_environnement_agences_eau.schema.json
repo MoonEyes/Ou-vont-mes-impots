@@ -1,0 +1,394 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/eau_environnement_agences_eau.schema.json",
+  "title": "site/data/eau_environnement/agences_eau.json : redevances et autorisations d'engagement des six agences de l'eau, d'après les annexes au PLF « Agences de l'eau » (pipeline/eau_environnement.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "source_url",
+    "collecte_le",
+    "unite",
+    "definitions",
+    "plafond_redevances",
+    "agences",
+    "controles",
+    "somme_six_agences",
+    "ecarts_editions",
+    "valeurs_comparees_editions",
+    "regle_ecarts"
+  ],
+  "properties": {
+    "source_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "collecte_le": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string"
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "plafond_redevances": {
+      "type": "object",
+      "required": [
+        "valeurs_meur",
+        "citation",
+        "source",
+        "lecture"
+      ],
+      "properties": {
+        "valeurs_meur": {
+          "type": "object",
+          "patternProperties": {
+            "^20[0-9]{2}$": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "citation": {
+          "type": "string",
+          "minLength": 40
+        },
+        "source": {
+          "type": "string"
+        },
+        "lecture": {
+          "type": "string"
+        }
+      }
+    },
+    "agences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "nom",
+          "redevances",
+          "ecretement_meur",
+          "contribution_operateurs_meur",
+          "autorisations_engagement"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "enum": [
+              "ensemble",
+              "adour_garonne",
+              "artois_picardie",
+              "loire_bretagne",
+              "rhin_meuse",
+              "rhone_mediterranee_corse",
+              "seine_normandie"
+            ]
+          },
+          "nom": {
+            "type": "string"
+          },
+          "redevances": {
+            "type": "object",
+            "required": [
+              "annees",
+              "lignes"
+            ],
+            "properties": {
+              "annees": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 2000,
+                  "maximum": 2100
+                },
+                "minItems": 5
+              },
+              "lignes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "libelle",
+                    "niveau",
+                    "parent",
+                    "valeurs_meur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "libelle": {
+                      "type": "string"
+                    },
+                    "niveau": {
+                      "enum": [
+                        "detail",
+                        "categorie",
+                        "total"
+                      ]
+                    },
+                    "parent": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "valeurs_meur": {
+                      "type": "object",
+                      "patternProperties": {
+                        "^20[0-9]{2}$": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "minItems": 20
+              }
+            }
+          },
+          "ecretement_meur": {
+            "type": "object",
+            "patternProperties": {
+              "^20[0-9]{2}$": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "contribution_operateurs_meur": {
+            "oneOf": [
+              {
+                "type": "object",
+                "patternProperties": {
+                  "^20[0-9]{2}$": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "autorisations_engagement": {
+            "type": "object",
+            "required": [
+              "annees",
+              "lignes"
+            ],
+            "properties": {
+              "annees": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 2000,
+                  "maximum": 2100
+                }
+              },
+              "lignes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "code",
+                    "libelle",
+                    "type",
+                    "bloc",
+                    "valeurs_meur"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "libelle": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "enum": [
+                        "ligne",
+                        "detail",
+                        "dont",
+                        "total_domaine",
+                        "total"
+                      ]
+                    },
+                    "bloc": {
+                      "enum": [
+                        "sous_plafond",
+                        "hors_plafond",
+                        "total"
+                      ]
+                    },
+                    "valeurs_meur": {
+                      "type": "object",
+                      "patternProperties": {
+                        "^20[0-9]{2}$": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "minItems": 25
+              }
+            }
+          }
+        }
+      },
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "controles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "agence",
+          "annee",
+          "controle",
+          "calcule_meur",
+          "publie_meur",
+          "ecart_meur"
+        ],
+        "properties": {
+          "agence": {
+            "type": "string"
+          },
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "controle": {
+            "type": "string"
+          },
+          "calcule_meur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "publie_meur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "ecart_meur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "somme_six_agences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "ligne",
+          "annee",
+          "somme_six_agences_meur",
+          "ensemble_publie_meur",
+          "ecart_meur"
+        ]
+      }
+    },
+    "ecarts_editions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "agence",
+          "tableau",
+          "ligne",
+          "libelle",
+          "annee",
+          "edition_2026_meur",
+          "edition_2025_meur",
+          "ecart_meur"
+        ],
+        "properties": {
+          "agence": {
+            "type": "string"
+          },
+          "tableau": {
+            "enum": [
+              "redevances",
+              "autorisations_engagement"
+            ]
+          },
+          "ligne": {
+            "type": "string"
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "edition_2026_meur": {
+            "type": "number"
+          },
+          "edition_2025_meur": {
+            "type": "number"
+          },
+          "ecart_meur": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "valeurs_comparees_editions": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "regle_ecarts": {
+      "type": "string"
+    }
+  }
+}

@@ -252,6 +252,11 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # eau et environnement : agences de l'eau, ADEME, Fonds vert (pipeline/eau_environnement.py)
+    ("eau_environnement_index.schema.json", "eau_environnement/index.json", "existant"),
+    ("eau_environnement_agences_eau.schema.json", "eau_environnement/agences_eau.json", "existant"),
+    ("eau_environnement_ademe.schema.json", "eau_environnement/ademe.json", "existant"),
+    ("eau_environnement_fonds_vert.schema.json", "eau_environnement/fonds_vert.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

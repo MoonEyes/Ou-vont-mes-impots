@@ -1,0 +1,502 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/eau_environnement_fonds_vert.schema.json",
+  "title": "site/data/eau_environnement/fonds_vert.json : Fonds vert par année, programme, région, service instructeur, forme juridique et démarche (pipeline/eau_environnement.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "source_url",
+    "collecte_le",
+    "unite",
+    "total",
+    "par_annee",
+    "par_region",
+    "par_instructeur",
+    "par_forme_juridique",
+    "par_demarche",
+    "agences_eau",
+    "laureats",
+    "liens",
+    "region_non_publiee"
+  ],
+  "properties": {
+    "total": {
+      "type": "object",
+      "required": [
+        "montant_eur",
+        "projets",
+        "lignes_montant_non_communique"
+      ],
+      "properties": {
+        "montant_eur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "projets": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lignes_montant_non_communique": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "par_annee": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "montant_eur",
+              "projets",
+              "lignes_montant_non_communique"
+            ],
+            "properties": {
+              "montant_eur": {
+                "type": "number",
+                "minimum": 0
+              },
+              "projets": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lignes_montant_non_communique": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        ],
+        "type": "object",
+        "required": [
+          "annee",
+          "programme"
+        ],
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "programme": {
+            "enum": [
+              "380",
+              "113"
+            ]
+          }
+        }
+      }
+    },
+    "par_region": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "montant_eur",
+              "projets",
+              "lignes_montant_non_communique"
+            ],
+            "properties": {
+              "montant_eur": {
+                "type": "number",
+                "minimum": 0
+              },
+              "projets": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lignes_montant_non_communique": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        ],
+        "type": "object",
+        "required": [
+          "nom",
+          "region",
+          "par_annee"
+        ],
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "region": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "par_annee": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "montant_eur",
+                    "projets",
+                    "lignes_montant_non_communique"
+                  ],
+                  "properties": {
+                    "montant_eur": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "projets": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "lignes_montant_non_communique": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                }
+              ],
+              "type": "object",
+              "required": [
+                "annee"
+              ],
+              "properties": {
+                "annee": {
+                  "type": "integer",
+                  "minimum": 2000,
+                  "maximum": 2100
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "par_instructeur": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "publie",
+          "non_renseigne",
+          "instructeurs"
+        ],
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "publie": {
+            "type": "boolean"
+          },
+          "non_renseigne": {
+            "type": "object",
+            "required": [
+              "montant_eur",
+              "projets",
+              "lignes_montant_non_communique"
+            ],
+            "properties": {
+              "montant_eur": {
+                "type": "number",
+                "minimum": 0
+              },
+              "projets": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lignes_montant_non_communique": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "instructeurs": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "montant_eur",
+                    "projets",
+                    "lignes_montant_non_communique"
+                  ],
+                  "properties": {
+                    "montant_eur": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "projets": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "lignes_montant_non_communique": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                }
+              ],
+              "type": "object",
+              "required": [
+                "id",
+                "nom"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "par_forme_juridique": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "programme",
+          "publie",
+          "formes"
+        ],
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "programme": {
+            "enum": [
+              "380",
+              "113"
+            ]
+          },
+          "publie": {
+            "type": "boolean"
+          },
+          "formes": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "montant_eur",
+                    "projets",
+                    "lignes_montant_non_communique"
+                  ],
+                  "properties": {
+                    "montant_eur": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "projets": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "lignes_montant_non_communique": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                }
+              ],
+              "type": "object",
+              "required": [
+                "forme_juridique"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "par_demarche": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "annee",
+          "demarches"
+        ],
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "demarches": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "montant_eur",
+                    "projets",
+                    "lignes_montant_non_communique"
+                  ],
+                  "properties": {
+                    "montant_eur": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "projets": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "lignes_montant_non_communique": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                }
+              ],
+              "type": "object",
+              "required": [
+                "demarche"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "agences_eau": {
+      "type": "object",
+      "required": [
+        "comparaison",
+        "lecture"
+      ],
+      "properties": {
+        "lecture": {
+          "type": "string"
+        },
+        "comparaison": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "agence",
+              "annee",
+              "colonne_operateur_publiee",
+              "liste_fonds_vert_eur",
+              "liste_projets",
+              "jaune_ae_fonds_vert_meur"
+            ],
+            "properties": {
+              "agence": {
+                "type": "string"
+              },
+              "annee": {
+                "type": "integer",
+                "minimum": 2000,
+                "maximum": 2100
+              },
+              "colonne_operateur_publiee": {
+                "type": "boolean"
+              },
+              "liste_fonds_vert_eur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "liste_projets": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "jaune_ae_fonds_vert_meur": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "laureats": {
+      "type": "object",
+      "required": [
+        "fichier",
+        "chemin",
+        "lecture"
+      ],
+      "properties": {
+        "fichier": {
+          "type": "string"
+        },
+        "chemin": {
+          "type": "string"
+        },
+        "lecture": {
+          "type": "string"
+        }
+      }
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vue",
+          "fichier",
+          "id",
+          "lecture"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "vue": {
+            "type": "string"
+          },
+          "fichier": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lecture": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "region_non_publiee": {
+      "type": "object",
+      "required": [
+        "montant_eur",
+        "projets",
+        "lignes_montant_non_communique"
+      ],
+      "properties": {
+        "montant_eur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "projets": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lignes_montant_non_communique": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}
