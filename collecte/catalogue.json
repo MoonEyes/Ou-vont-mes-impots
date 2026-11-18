@@ -4410,7 +4410,8 @@
    "licence": "document administratif public (CRPA L. 321-1)",
    "producteur": "Direction de la sécurité sociale",
    "module": "pipeline/douanes_accises.py"
-  }
+  },
+  {"id": "pouvoirs_publics_documents", "domaine": "pouvoirs_publics", "type": "urls", "urls": [{"url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf", "nom": "pap2026_pouvoirs_publics.pdf"}, {"url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1109910/file/Pouvoirs_publics_PB.pdf", "nom": "rap2025_pouvoirs_publics.pdf"}, {"url": "https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf", "nom": "an_fiche7_situation_materielle_depute.pdf"}, {"url": "https://www.senat.fr/reglement/pouvoirs_publics22.html", "nom": "senat_recueil_pouvoirs_publics_traitement_gouvernement.html"}, {"url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv", "nom": "plf2016_bg_msn_dest.csv"}], "titre": "Pouvoirs publics : projet annuel de performances 2026 et rapport annuel de performances 2025 de la mission (miroir Assemblee nationale, PDF), fiche n 7 de l'Assemblee nationale sur la situation materielle du depute (baremes des indemnites, janvier 2026), recueil du Senat des textes relatifs aux pouvoirs publics (decrets 2012-983 et 2014-425 sur le traitement du President de la Republique et des membres du Gouvernement), PLF 2016 budget general par mission et destination (LFI 2015 et 2016) ; aucun montant par personne nommee (lu par pipeline/pouvoirs_publics.py)", "licence": "documents administratifs publics ; Licence Ouverte 2.0 (data.economie.gouv.fr)", "module": "pipeline/pouvoirs_publics.py"}
  ],
  "non_collectables": [
   {

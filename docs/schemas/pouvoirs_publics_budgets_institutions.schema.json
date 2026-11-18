@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/pouvoirs_publics_budgets_institutions.schema.json",
+  "title": "site/data/pouvoirs_publics/budgets_institutions.json : grandes masses des budgets propres des institutions (pipeline/pouvoirs_publics.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "unite",
+    "definition",
+    "institutions",
+    "grandeurs",
+    "faits",
+    "resultats_budgetaires",
+    "controles",
+    "lecture",
+    "limites"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "unite": {
+      "const": "euros"
+    },
+    "definition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lecture": {
+      "type": "string",
+      "minLength": 1
+    },
+    "institutions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "grandeurs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "faits": {
+      "type": "array",
+      "minItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "institution",
+          "annee",
+          "nature",
+          "grandeur",
+          "libelle",
+          "valeur_eur",
+          "precision",
+          "statut",
+          "methode",
+          "extrait",
+          "source"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "institution": {
+            "type": "string"
+          },
+          "annee": {
+            "type": "integer"
+          },
+          "nature": {
+            "enum": [
+              "exécution",
+              "budget initial",
+              "budget révisé",
+              "budget réparti",
+              "projet de budget",
+              "prévision d'exécution (été 2025)"
+            ]
+          },
+          "grandeur": {
+            "type": "string"
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valeur_eur": {
+            "type": "number"
+          },
+          "precision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "statut": {
+            "enum": [
+              "tracé",
+              "approché",
+              "non publié"
+            ]
+          },
+          "methode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "extrait": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "type": "string",
+            "pattern": "https://"
+          }
+        }
+      }
+    },
+    "resultats_budgetaires": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "institution",
+          "grandeur",
+          "annees",
+          "source"
+        ],
+        "properties": {
+          "annees": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "annee",
+                "budget_initial_eur",
+                "execution_eur"
+              ],
+              "properties": {
+                "annee": {
+                  "type": "integer"
+                },
+                "budget_initial_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "execution_eur": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "controles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "controle",
+          "ecart_eur",
+          "tolerance_eur",
+          "ok"
+        ],
+        "properties": {
+          "ok": {
+            "const": true
+          }
+        }
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

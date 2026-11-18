@@ -1,0 +1,183 @@
+{
+ "millesime": "barèmes en vigueur depuis le 1er janvier 2024 (valeur du point d'indice inchangée), fiche actualisée le 8 janvier 2026",
+ "collecte_le": "2026-11-18",
+ "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026) : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf ; Sénat, recueil des textes relatifs aux pouvoirs publics : décret n° 2012-983 du 23 août 2012 et décret n° 2014-425 du 25 avril 2014 : https://www.senat.fr/reglement/pouvoirs_publics22.html",
+ "unite": "euros par mois",
+ "regle_personnes": "Barèmes par fonction : aucun montant versé à une personne nommée, aucun nom lu.",
+ "definition": "Indemnité des membres du Parlement : indemnité de base égale à la moyenne du traitement le plus bas et du plus élevé des fonctionnaires « hors échelle », indemnité de résidence de 3 % et indemnité de fonction de 25 %. Traitement du Président de la République et des membres du Gouvernement : multiple de cette même moyenne fixé par décret.",
+ "moyenne_hors_echelle_mensuelle_eur": 5931.95,
+ "parlementaires": [
+  {
+   "fonction": "Député",
+   "element": "indemnité parlementaire de base",
+   "montant_brut_mensuel_eur": 5931.95,
+   "statut": "tracé",
+   "base_legale": "ordonnance n° 58-1210 du 13 décembre 1958 portant loi organique relative à l'indemnité des membres du Parlement",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 1 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  },
+  {
+   "fonction": "Député",
+   "element": "indemnité de résidence (3 %)",
+   "montant_brut_mensuel_eur": 177.96,
+   "statut": "tracé",
+   "base_legale": "ordonnance n° 58-1210 du 13 décembre 1958 portant loi organique relative à l'indemnité des membres du Parlement",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 1 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  },
+  {
+   "fonction": "Député",
+   "element": "indemnité de fonction (25 %)",
+   "montant_brut_mensuel_eur": 1527.48,
+   "statut": "tracé",
+   "base_legale": "ordonnance n° 58-1210 du 13 décembre 1958 portant loi organique relative à l'indemnité des membres du Parlement",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 1 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  },
+  {
+   "fonction": "Député",
+   "element": "total brut mensuel",
+   "montant_brut_mensuel_eur": 7637.39,
+   "statut": "tracé",
+   "base_legale": "ordonnance n° 58-1210 du 13 décembre 1958 portant loi organique relative à l'indemnité des membres du Parlement",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 1 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  },
+  {
+   "fonction": "Député",
+   "element": "total net mensuel (après cotisations, CSG et CRDS)",
+   "montant_brut_mensuel_eur": null,
+   "montant_net_mensuel_eur": 5953.34,
+   "statut": "tracé",
+   "base_legale": null,
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 2 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  },
+  {
+   "fonction": "Sénateur",
+   "element": "total brut mensuel (indemnités de base, de résidence et de fonction)",
+   "montant_brut_mensuel_eur": 7637.39,
+   "statut": "approché",
+   "base_legale": "ordonnance n° 58-1210 du 13 décembre 1958 (même texte pour les deux assemblées)",
+   "methode": "montant de l'Assemblée nationale repris : l'ordonnance fixe la même indemnité pour tous les membres du Parlement ; le Sénat ne publie pas de barème chiffré dans les documents collectés.",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 1 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf ; Projet annuel de performances 2026, mission « Pouvoirs publics » (annexe au projet de loi de finances pour 2026) : https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf"
+  }
+ ],
+ "indemnites_speciales": [
+  {
+   "fonction": "Président de l'Assemblée nationale",
+   "assemblee": "Assemblée nationale",
+   "montant_brut_mensuel_eur": 7698.5,
+   "statut": "tracé",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 2 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  },
+  {
+   "fonction": "Questeur",
+   "assemblee": "Assemblée nationale",
+   "montant_brut_mensuel_eur": 5300.36,
+   "statut": "tracé",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 2 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  },
+  {
+   "fonction": "Vice-président",
+   "assemblee": "Assemblée nationale",
+   "montant_brut_mensuel_eur": 1099.79,
+   "statut": "tracé",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 2 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  },
+  {
+   "fonction": "Président de commission, rapporteur général (finances, affaires sociales)",
+   "assemblee": "Assemblée nationale",
+   "montant_brut_mensuel_eur": 931.76,
+   "statut": "tracé",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 2 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  },
+  {
+   "fonction": "Secrétaire du Bureau",
+   "assemblee": "Assemblée nationale",
+   "montant_brut_mensuel_eur": 733.19,
+   "statut": "tracé",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 2 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  }
+ ],
+ "moyens_du_mandat": [
+  {
+   "libelle": "Dotation de fonctionnement parlementaire (frais de mandat, député élu en métropole)",
+   "montant_mensuel_eur": 7238.04,
+   "statut": "tracé",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 3 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  },
+  {
+   "libelle": "Crédit affecté à la rémunération des collaborateurs",
+   "montant_mensuel_eur": 11463.0,
+   "statut": "tracé",
+   "source": "Assemblée nationale, fiche n° 7 « La situation matérielle du député » (actualisée le 8 janvier 2026), page 3 : https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf"
+  }
+ ],
+ "moyens_du_mandat_lecture": "Moyens versés pour exercer le mandat (frais, rémunération des collaborateurs) : ce ne sont pas des revenus personnels, ils ne s'ajoutent pas à l'indemnité.",
+ "gouvernement": [
+  {
+   "fonction": "Président de la République",
+   "coefficient_moyenne_hors_echelle": 2.0,
+   "majoration_pct": 5.0,
+   "traitement_brut_mensuel_eur": 12457.09,
+   "indemnite_residence_eur": 373.71,
+   "indemnite_fonction_eur": 3207.7,
+   "total_brut_mensuel_eur": 16038.5,
+   "base_legale": "décret n° 2012-983, articles 1er et 3 : double de la moyenne hors échelle, majoré de 5 %",
+   "statut": "approché",
+   "methode": "calculé par le site : moyenne hors échelle x coefficient ; résidence 3 % ; fonction 25 % de (traitement + résidence) ; majoration éventuelle sur les trois éléments ; arrondi au centime. Aucun barème chiffré officiel n'a été trouvé en données ouvertes."
+  },
+  {
+   "fonction": "Premier ministre",
+   "coefficient_moyenne_hors_echelle": 2.0,
+   "majoration_pct": 5.0,
+   "traitement_brut_mensuel_eur": 12457.09,
+   "indemnite_residence_eur": 373.71,
+   "indemnite_fonction_eur": 3207.7,
+   "total_brut_mensuel_eur": 16038.5,
+   "base_legale": "décret n° 2012-983, articles 1er et 3 : double de la moyenne hors échelle, majoré de 5 %",
+   "statut": "approché",
+   "methode": "calculé par le site : moyenne hors échelle x coefficient ; résidence 3 % ; fonction 25 % de (traitement + résidence) ; majoration éventuelle sur les trois éléments ; arrondi au centime. Aucun barème chiffré officiel n'a été trouvé en données ouvertes."
+  },
+  {
+   "fonction": "Ministre et ministre délégué",
+   "coefficient_moyenne_hors_echelle": 1.4,
+   "majoration_pct": 0.0,
+   "traitement_brut_mensuel_eur": 8304.73,
+   "indemnite_residence_eur": 249.14,
+   "indemnite_fonction_eur": 2138.47,
+   "total_brut_mensuel_eur": 10692.34,
+   "base_legale": "décret n° 2012-983, article 2 : 1,4 fois la moyenne hors échelle",
+   "statut": "approché",
+   "methode": "calculé par le site : moyenne hors échelle x coefficient ; résidence 3 % ; fonction 25 % de (traitement + résidence) ; majoration éventuelle sur les trois éléments ; arrondi au centime. Aucun barème chiffré officiel n'a été trouvé en données ouvertes."
+  },
+  {
+   "fonction": "Secrétaire d'État",
+   "coefficient_moyenne_hors_echelle": 1.33,
+   "majoration_pct": 0.0,
+   "traitement_brut_mensuel_eur": 7889.49,
+   "indemnite_residence_eur": 236.68,
+   "indemnite_fonction_eur": 2031.54,
+   "total_brut_mensuel_eur": 10157.71,
+   "base_legale": "décret n° 2014-425, article 2 : 1,33 fois la moyenne hors échelle",
+   "statut": "approché",
+   "methode": "calculé par le site : moyenne hors échelle x coefficient ; résidence 3 % ; fonction 25 % de (traitement + résidence) ; majoration éventuelle sur les trois éléments ; arrondi au centime. Aucun barème chiffré officiel n'a été trouvé en données ouvertes."
+  }
+ ],
+ "coefficients_decrets": {
+  "coef_president_pm": 2.0,
+  "coef_ministre": 1.4,
+  "majoration_pct": 5.0,
+  "coef_secretaire_etat": 1.33,
+  "residence_pct": 3.0,
+  "fonction_pct": 25.0
+ },
+ "elus_locaux": {
+  "fichier": "fonction_publique/indemnites_elus.json",
+  "millesime": "valeur du point d'indice au 1er janvier 2024",
+  "nombre_de_lignes": 95,
+  "unite": "euros bruts par mois (plafond légal)",
+  "lecture": "Barème légal des élus locaux (maires, adjoints, conseillers, présidents) publié par l'axe fonction publique : non recopié ici."
+ },
+ "limites": [
+  "Indemnités spéciales du Sénat (président, questeurs, etc.) non publiées dans les documents collectés.",
+  "Membres du Gouvernement : barème calculé à partir des décrets, pas lu dans un tableau officiel ; un montant peut différer de quelques centimes d'un bulletin réel (arrondis).",
+  "Montants bruts avant impôt sur le revenu ; seul le net du député est publié par la source."
+ ]
+}

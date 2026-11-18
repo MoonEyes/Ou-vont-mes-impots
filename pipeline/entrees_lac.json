@@ -1817,6 +1817,30 @@
    "caches": [],
    "hors_catalogue": [],
    "octets_sources": 106909095
+  },
+  "pouvoirs_publics": {
+   "sources": {
+    "pouvoirs_publics_documents": [
+     "data/lake/pouvoirs_publics/pouvoirs_publics_documents/pap2026_pouvoirs_publics.pdf",
+     "data/lake/pouvoirs_publics/pouvoirs_publics_documents/rap2025_pouvoirs_publics.pdf",
+     "data/lake/pouvoirs_publics/pouvoirs_publics_documents/an_fiche7_situation_materielle_depute.pdf",
+     "data/lake/pouvoirs_publics/pouvoirs_publics_documents/senat_recueil_pouvoirs_publics_traitement_gouvernement.html",
+     "data/lake/pouvoirs_publics/pouvoirs_publics_documents/plf2016_bg_msn_dest.csv"
+    ],
+    "etat_budget_vert_2026": [
+     "data/lake/etat/etat_budget_vert_2026.parquet"
+    ],
+    "economie__projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje": [
+     "data/lake/etat/economie__projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/PLF_2021_credits.csv"
+    ],
+    "economie__projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje": [
+     "data/lake/etat/economie__projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/PLF_2022_Credits_Destination_Nature.csv"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 4017740,
+   "note": "source « pouvoirs_publics_documents » de collecte/catalogue.json (python pipeline/pouvoirs_publics.py collecter) et trois jeux de data/lake/etat déjà collectés par d'autres étapes ; lit aussi site/data/realisations/5xx.json et site/data/fonction_publique/indemnites_elus.json (sorties d'étapes, lecture seule)"
   }
  },
  "urls": {
@@ -2345,6 +2369,11 @@
   "data/lake/douanes_accises/douanes_vm1_plf2024.pdf": "https://questions.assemblee-nationale.fr/dyn/contenu/visualisation/705205/file/Evaluation%20des%20voies%20et%20moyens%20-%20Tome%20I",
   "data/lake/douanes_accises/douanes_vm1_plf2025.pdf": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2025/Voies_et_moyens_Tome_1_2025.pdf",
   "data/lake/douanes_accises/douanes_vm1_plf2026.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1087930/file/PLF%202026%20-%20V%26M%20TI%20-%20Evaluations%20des%20recettes.pdf",
-  "data/lake/douanes_accises/douanes_plfss2026_annexe3.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1089896/file/PLFSS2026-Annexe3-20251015-103900-55-4.pdf"
+  "data/lake/douanes_accises/douanes_plfss2026_annexe3.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1089896/file/PLFSS2026-Annexe3-20251015-103900-55-4.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_documents/pap2026_pouvoirs_publics.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088014/file/PAP2026_BG_Pouvoirs_publics_PB.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_documents/rap2025_pouvoirs_publics.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1109910/file/Pouvoirs_publics_PB.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_documents/an_fiche7_situation_materielle_depute.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_documents/senat_recueil_pouvoirs_publics_traitement_gouvernement.html": "https://www.senat.fr/reglement/pouvoirs_publics22.html",
+  "data/lake/pouvoirs_publics/pouvoirs_publics_documents/plf2016_bg_msn_dest.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
  }
 }

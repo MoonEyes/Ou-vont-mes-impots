@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/pouvoirs_publics_index.schema.json",
+  "title": "site/data/pouvoirs_publics/index.json : présentation, fichiers, repères, règles, écarts, recherche préalable (pipeline/pouvoirs_publics.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "collecte_le",
+    "presentation",
+    "fichiers",
+    "reperes",
+    "regles",
+    "ecarts_entre_sources",
+    "regle_personnes",
+    "recherche_prealable",
+    "limites"
+  ],
+  "properties": {
+    "collecte_le": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "presentation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fichiers": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "fichier",
+          "contenu"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "fichier": {
+            "type": "string",
+            "pattern": "^pouvoirs_publics/[a-z_]+\\.json$"
+          },
+          "contenu": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "reperes": {
+      "type": "object",
+      "required": [
+        "mission_lfi",
+        "mission_plf",
+        "depute_brut_mensuel_eur",
+        "president_brut_mensuel_eur",
+        "president_statut"
+      ]
+    },
+    "regles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "ecarts_entre_sources": {
+      "type": "array"
+    },
+    "regle_personnes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recherche_prealable": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "trouvaille",
+          "classement",
+          "licence",
+          "dernier_commit",
+          "usage"
+        ],
+        "properties": {
+          "classement": {
+            "enum": [
+              "réutilisable tel quel",
+              "à adapter",
+              "inspiration seulement"
+            ]
+          }
+        }
+      }
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

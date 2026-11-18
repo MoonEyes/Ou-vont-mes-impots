@@ -170,6 +170,8 @@ ETAPES: tuple[Etape, ...] = (
     axe("millesimes", "Millésimes : exécution 2025 préparée, éditions attendues vérifiées", ("base",), collecte=False, duree_s=30),
     axe("revenus_communes", "Revenus et impôt sur le revenu par commune (IRCOM, Filosofi)", ("local",), duree_s=300),
     axe("douanes_accises", "Douane et accises : produit par accise, recettes perçues par la douane, affectation", ("base", "prelevements", "ue"), duree_s=60),
+    axe("pouvoirs_publics", "Pouvoirs publics : dotations de la mission, budgets des assemblées et de la Présidence, barèmes d'indemnités par fonction",
+        ("base", "realisations"), duree_s=30),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
