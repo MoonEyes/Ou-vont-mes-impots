@@ -35,6 +35,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import functools
 import io
 import json
 import re
@@ -426,7 +427,8 @@ def extrait_sirene(sirens: set[str]) -> dict:
     return ext
 
 
-def prenoms() -> set:
+@functools.lru_cache(maxsize=1)
+def prenoms() -> frozenset:
     """Prénoms fréquents (au moins 300 entrepreneurs individuels dans SIRENE), pour le filtre de noms (cache)."""
     import local
     c = lire_cache("prenoms.json")
@@ -441,7 +443,7 @@ def prenoms() -> set:
             sauver_cache("prenoms.json", {"prenoms": sorted(liste), "source": SOURCE_SIRENE})
     else:
         liste = set(c["prenoms"])
-    return {x for x in liste if len(x) >= 3} - local.NON_PRENOMS - local.MOTS_OUTILS
+    return frozenset({x for x in liste if len(x) >= 3} - local.NON_PRENOMS - local.MOTS_OUTILS)
 
 
 ADRESSE_RE = re.compile(r"\b\d{1,4}\s*(?:bis|ter)?\s*,?\s+(?:rue|avenue|av\.?|bd|boulevard|place|chemin|route|all[ée]e|"
@@ -497,10 +499,36 @@ def cite_candidat(texte) -> bool:
     return any(" ".join(t[i:i + n]) in noms for n in range(2, 6) for i in range(len(t) - n + 1))
 
 
+# Mots qui désignent un organisme : une dénomination qui en contient un n'est pas un nom de personne seul.
+MOTS_ORGANISME = frozenset("""
+ASSOCIATION ASSOC ASSO FONDATION FOUNDATION FONDS ENDOWMENT COMITE CLUB AMIS AMICALE INSTITUT ACADEMIE ECOLE CENTRE
+FEDERATION UNION SOCIETE OFFICE GROUPE GROUPEMENT COMPAGNIE CIE THEATRE MUSEE MAISON FOYER CERCLE ENSEMBLE ORCHESTRE
+CHOEUR CHORALE LYCEE COLLEGE UNIVERSITE SYNDICAT MUTUELLE COOPERATIVE CAISSE HOPITAL CLINIQUE RESIDENCE ATELIER
+ATELIERS STUDIO FESTIVAL PRODUCTIONS PRODUCTION FILMS EDITIONS GALERIE OEUVRE OEUVRES ACTION AIDE SECOURS MECENAT
+SOLIDARITE SPORT SPORTS SPORTIF SPORTIVE RUGBY FOOTBALL BASKET TENNIS HANDBALL VOLLEY JUDO CYCLISTE OLYMPIQUE ETOILE
+AVENIR ENTENTE RESEAU COLLECTIF PROJET COMPANY ORCHESTRA FESTIVAL
+""".split())
+
+
+def nom_de_personne_seul(nom) -> bool:
+    """Dénomination faite d'un prénom fréquent suivi d'un nom (deux ou trois mots, aucun mot d'organisme), par exemple
+    « Prénom Nom » ou « Prénom Nom, président » : elle désigne peut-être une personne physique. Prudence : non publiée,
+    le montant reste dans les totaux (filtre de prénoms de pipeline/local.py, comme pour les textes libres)."""
+    if not nom:
+        return False
+    import local
+    mots = re.findall(r"[A-Z]+", unicodedata.normalize("NFKD", str(nom).upper()).encode("ascii", "ignore").decode())
+    if not 2 <= len(mots) <= 3 or any(m in MOTS_ORGANISME for m in mots):
+        return False
+    liste = prenoms()
+    return mots[0] in liste and local.contient_nom_de_personne(str(nom), liste)
+
+
 def denomination_nominative(nom) -> bool:
     """Dénomination jamais publiée : association de financement ou mandataire d'une campagne électorale (elle porte
-    le nom du candidat), ou nom d'un candidat national."""
-    return bool(nom) and (bool(FINANCEMENT_ELECTORAL_RE.search(norm(nom))) or cite_candidat(nom))
+    le nom du candidat), nom d'un candidat national, ou nom de personne seul (nom_de_personne_seul)."""
+    return bool(nom) and (bool(FINANCEMENT_ELECTORAL_RE.search(norm(nom))) or cite_candidat(nom)
+                          or nom_de_personne_seul(nom))
 
 
 # --- 3. Série par association x programme x année ---------------------------------------------------------------------
