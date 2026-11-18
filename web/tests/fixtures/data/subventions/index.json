@@ -1,0 +1,526 @@
+{
+ "millesime": "2016 à 2026 selon la source",
+ "source": "data.gouv.fr et data.ademe.fr (sources ci-dessous) ; Insee, base SIRENE des unités légales (data.gouv.fr, stock du 1er novembre 2026), catégorie juridique",
+ "unite": "euros",
+ "collecte_le": "2026-11-17",
+ "regle_personnes": "Seuls les bénéficiaires dont la catégorie juridique SIRENE est une personne morale (2xxx à 9xxx, hors groupements de personnes physiques) sont nommés. Entrepreneurs individuels, identifiants absents, invalides ou absents du stock SIRENE : montants agrégés, jamais nommés. Équipes artistiques (festivals, ADSV) : une dénomination qui contient peut-être un nom de personne (filtre de pipeline/local.py) est agrégée aussi (`dont_nom_de_personne_possible_eur`).",
+ "regle_titres": "Les aides à la presse sont publiées par titre (publication), sans SIREN : un titre est nommé s'il ne contient aucun prénom fréquent suivi d'un nom ni civilité (filtre de pipeline/local.py) ; sinon son montant est agrégé dans `titres_non_nommes`.",
+ "note": "Les totaux toutes sources n'additionnent que les sources marquées `additionne` ; une source qui en détaille une autre (même argent publié deux fois) est publiée à part, sans être ajoutée.",
+ "limites": [
+  "Montants engagés ou attribués selon la source (pas les paiements) : une convention pluriannuelle est comptée l'année de sa signature ou de son engagement.",
+  "Une ligne sans montant publié est comptée dans `lignes_montant_non_communique`, jamais comme 0.",
+  "Le département est celui du bénéficiaire (ADEME, Culture, Fonds vert, festivals) ou du service attribuant (politique de la ville) ; l'agence Artois-Picardie, les ADSV, le FIR et la presse ne le publient pas.",
+  "Politique de la ville 2021 : les identifiants des bénéficiaires sont publiés en notation scientifique (« 1,30002E+13 ») ; ils ne permettent pas de retrouver le SIREN, les montants sont agrégés.",
+  "Fonds vert, programme 113, 2024 : le fichier ne publie pas de SIRET ; les montants sont agrégés.",
+  "Festivals : environ la moitié des lignes n'ont pas de SIRET ; les montants sont agrégés."
+ ],
+ "totaux": {
+  "total_additionne_eur": 37443364536.34,
+  "nommes_additionnes": {
+   "nombre": 89803,
+   "montant_eur": 36661026705.71
+  },
+  "agrege_confidentialite": {
+   "montant_eur": 782337830.63,
+   "part_pct": 2.09
+  }
+ },
+ "sources": [
+  {
+   "id": "subv_ademe_aides",
+   "titre": "ADEME, « Les aides financières de l'ADEME » (conventions de subvention au format SCDL)",
+   "attribuant": "ADEME (Agence de l'environnement et de la maîtrise de l'énergie)",
+   "producteur": "ADEME",
+   "page": "https://data.ademe.fr/datasets/les-aides-financieres-de-l'ademe",
+   "licence": "Licence Ouverte 2.0",
+   "millesime": "Conventions signées de 2021 à 2026",
+   "rattachement": {
+    "type": "operateur",
+    "operateur": "ADEME",
+    "siren": "385290309",
+    "programme_chef_de_file": "181",
+    "fichier": "operateurs/operateurs.json",
+    "id": "ademe"
+   },
+   "additionne": true,
+   "inclus_dans": null,
+   "annees": [
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "conventions": 40561,
+   "lignes_montant_non_communique": 0,
+   "total_eur": 12142177866.86,
+   "montant_retire_des_totaux_eur": 0.0,
+   "nommes": {
+    "nombre": 22070,
+    "montant_eur": 12078335761.08
+   },
+   "agrege_confidentialite": {
+    "montant_eur": 63842105.78,
+    "part_pct": 0.53
+   },
+   "fichier": "subventions/attribuants/subv_ademe_aides.json"
+  },
+  {
+   "id": "subv_fonds_vert",
+   "titre": "Ministère de la Transition écologique, « Fonds vert : liste des projets subventionnés »",
+   "attribuant": "État, Fonds d'accélération de la transition écologique dans les territoires (Fonds vert)",
+   "producteur": "Ministère de la Transition écologique",
+   "page": "https://www.data.gouv.fr/datasets/66a215a463a9da4fb801b8cf",
+   "licence": "Licence Ouverte 2.0",
+   "millesime": "Montants engagés en 2023, 2024 et 2025",
+   "rattachement": {
+    "type": "programme_dispositif",
+    "programmes": [
+     "380",
+     "113"
+    ],
+    "note": "Fichiers « fonds-vert-<année> » : programme 380 ; fichiers « fonds-vert-p113-<année> » : programme 113 (titre des fichiers publiés)."
+   },
+   "additionne": true,
+   "inclus_dans": null,
+   "annees": [
+    2023,
+    2024,
+    2025
+   ],
+   "conventions": 26747,
+   "lignes_montant_non_communique": 7,
+   "total_eur": 4588649382.16,
+   "montant_retire_des_totaux_eur": 193780577.4,
+   "nommes": {
+    "nombre": 12997,
+    "montant_eur": 4456265412.67
+   },
+   "agrege_confidentialite": {
+    "montant_eur": 132383969.49,
+    "part_pct": 2.89
+   },
+   "fichier": "subventions/attribuants/subv_fonds_vert.json"
+  },
+  {
+   "id": "subv_aeap",
+   "titre": "Agence de l'eau Artois-Picardie, « Conventions de subvention signées » (format SCDL)",
+   "attribuant": "Agence de l'eau Artois-Picardie",
+   "producteur": "Agence de l'eau Artois-Picardie",
+   "page": "https://www.data.gouv.fr/datasets/5b9249d2634f411b8339f194",
+   "licence": "Licence Ouverte 2.0",
+   "millesime": "Conventions signées de 2017 à 2026 (10e, 11e et 12e programmes d'intervention)",
+   "rattachement": {
+    "type": "operateur",
+    "operateur": "Agences de l'eau",
+    "programme_chef_de_file": "113",
+    "fichier": "operateurs/operateurs.json",
+    "id": "agencesdeleau"
+   },
+   "additionne": true,
+   "inclus_dans": null,
+   "annees": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "conventions": 9731,
+   "lignes_montant_non_communique": 0,
+   "total_eur": 1071229296.0,
+   "montant_retire_des_totaux_eur": 0.0,
+   "nommes": {
+    "nombre": 1691,
+    "montant_eur": 1070495142.0
+   },
+   "agrege_confidentialite": {
+    "montant_eur": 734154.0,
+    "part_pct": 0.07
+   },
+   "fichier": "subventions/attribuants/subv_aeap.json"
+  },
+  {
+   "id": "subv_culture_scdl",
+   "titre": "Ministère de la Culture, « Données essentielles des conventions de subvention »",
+   "attribuant": "Ministère de la Culture (administration centrale et DRAC)",
+   "producteur": "Ministère de la Culture",
+   "page": "https://www.data.gouv.fr/datasets/donnees-essentielles-des-conventions-de-subvention-5",
+   "licence": "Licence Ouverte 2.0",
+   "millesime": "Montants engagés de 2019 à 2025",
+   "rattachement": {
+    "type": "programme_source",
+    "colonne": "programme_code"
+   },
+   "additionne": true,
+   "inclus_dans": null,
+   "annees": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "conventions": 324953,
+   "lignes_montant_non_communique": 244,
+   "total_eur": 16213017720.0,
+   "montant_retire_des_totaux_eur": 0.0,
+   "nommes": {
+    "nombre": 42580,
+    "montant_eur": 15995251098.0
+   },
+   "agrege_confidentialite": {
+    "montant_eur": 217766622.0,
+    "part_pct": 1.34
+   },
+   "fichier": "subventions/attribuants/subv_culture_scdl.json"
+  },
+  {
+   "id": "subv_culture_festivals_p131",
+   "titre": "Ministère de la Culture, « Festivals financés au titre du programme 131 : Création »",
+   "attribuant": "Ministère de la Culture (programme 131)",
+   "producteur": "Ministère de la Culture",
+   "page": "https://www.data.gouv.fr/datasets/695b8b6f6bf16db672fa28df",
+   "licence": "Licence Ouverte 2.0",
+   "millesime": "Aides 2023 et 2024",
+   "rattachement": {
+    "type": "programme_dispositif",
+    "programmes": [
+     "131"
+    ]
+   },
+   "additionne": false,
+   "inclus_dans": "subv_culture_scdl",
+   "annees": [
+    2023,
+    2024
+   ],
+   "conventions": 1602,
+   "lignes_montant_non_communique": 0,
+   "total_eur": 63478543.0,
+   "montant_retire_des_totaux_eur": 0.0,
+   "nommes": {
+    "nombre": 772,
+    "montant_eur": 31335848.0
+   },
+   "agrege_confidentialite": {
+    "montant_eur": 32142695.0,
+    "part_pct": 50.64
+   },
+   "fichier": "subventions/attribuants/subv_culture_festivals_p131.json"
+  },
+  {
+   "id": "subv_culture_adsv",
+   "titre": "Ministère de la Culture, « Les aides déconcentrées au spectacle vivant (ADSV) »",
+   "attribuant": "Ministère de la Culture (DRAC et DGCA, programme 131)",
+   "producteur": "Ministère de la Culture",
+   "page": "https://www.data.gouv.fr/datasets/656565de619420d81ca3e3dc",
+   "licence": "Licence Ouverte 2.0",
+   "millesime": "Aides 2022 à 2024",
+   "rattachement": {
+    "type": "programme_dispositif",
+    "programmes": [
+     "131"
+    ]
+   },
+   "additionne": false,
+   "inclus_dans": "subv_culture_scdl",
+   "annees": [
+    2022,
+    2023,
+    2024
+   ],
+   "conventions": 4589,
+   "lignes_montant_non_communique": 1,
+   "total_eur": 192717980.0,
+   "montant_retire_des_totaux_eur": 0.0,
+   "nommes": {
+    "nombre": 2231,
+    "montant_eur": 119692003.0
+   },
+   "agrege_confidentialite": {
+    "montant_eur": 73025977.0,
+    "part_pct": 37.89
+   },
+   "fichier": "subventions/attribuants/subv_culture_adsv.json"
+  },
+  {
+   "id": "subv_politique_ville_p147",
+   "titre": "ANCT, « Subventions politique de la ville » (programme 147, format SCDL)",
+   "attribuant": "État, politique de la ville (ANCT, services déconcentrés)",
+   "producteur": "Agence nationale de la cohésion des territoires",
+   "page": "https://www.data.gouv.fr/datasets/5a69f47e88ee385c0c053a21",
+   "licence": "Licence Ouverte 2.0",
+   "millesime": "Dossiers engagés de 2016 à 2025",
+   "rattachement": {
+    "type": "programme_dispositif",
+    "programmes": [
+     "147"
+    ]
+   },
+   "additionne": true,
+   "inclus_dans": null,
+   "annees": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "conventions": 266975,
+   "lignes_montant_non_communique": 0,
+   "total_eur": 3366971396.66,
+   "montant_retire_des_totaux_eur": 0.0,
+   "nommes": {
+    "nombre": 28086,
+    "montant_eur": 2999887817.3
+   },
+   "agrege_confidentialite": {
+    "montant_eur": 367083579.36,
+    "part_pct": 10.9
+   },
+   "fichier": "subventions/attribuants/subv_politique_ville_p147.json"
+  },
+  {
+   "id": "subv_ars_pdl_fir",
+   "titre": "ARS Pays de la Loire, « Subventions au titre du Fonds d'intervention régional (FIR) 2025 »",
+   "attribuant": "Agence régionale de santé des Pays de la Loire (FIR)",
+   "producteur": "ARS Pays de la Loire",
+   "page": "https://www.data.gouv.fr/datasets/subventions-de-lars-des-pays-de-la-loire-au-titre-du-fonds-dintervention-regional-fir-2025",
+   "licence": "Licence Ouverte 2.0",
+   "millesime": "Conventions 2025",
+   "rattachement": {
+    "type": "hors_budget_etat",
+    "note": "Le FIR est un fonds des agences régionales de santé, financé principalement par l'assurance maladie : la source ne donne pas de programme LOLF."
+   },
+   "additionne": true,
+   "inclus_dans": null,
+   "annees": [
+    2025
+   ],
+   "conventions": 1904,
+   "lignes_montant_non_communique": 0,
+   "total_eur": 255099452.06,
+   "montant_retire_des_totaux_eur": 0.0,
+   "nommes": {
+    "nombre": 694,
+    "montant_eur": 254572052.06
+   },
+   "agrege_confidentialite": {
+    "montant_eur": 527400.0,
+    "part_pct": 0.21
+   },
+   "fichier": "subventions/attribuants/subv_ars_pdl_fir.json"
+  },
+  {
+   "id": "subv_presse_titres",
+   "titre": "Ministère de la Culture, « Aides à la presse : classement des titres de presse aidés »",
+   "attribuant": "Ministère de la Culture (aides à la presse, programme 180)",
+   "producteur": "Ministère de la Culture",
+   "page": "https://www.data.gouv.fr/datasets/aides-a-la-presse-classement-des-titres-de-presse-aides",
+   "licence": "Licence Ouverte 2.0",
+   "millesime": "Aides 2015 à 2023",
+   "rattachement": {
+    "type": "programme_dispositif",
+    "programmes": [
+     "180"
+    ]
+   },
+   "additionne": false,
+   "inclus_dans": "subv_culture_scdl",
+   "annees": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+   ],
+   "conventions": 3988,
+   "lignes_montant_non_communique": 0,
+   "total_eur": 876495275.0,
+   "montant_retire_des_totaux_eur": 0.0,
+   "nommes": {
+    "nombre": 1197,
+    "montant_eur": 866195080.0
+   },
+   "agrege_confidentialite": {
+    "montant_eur": 10300195.0,
+    "part_pct": 1.18
+   },
+   "fichier": "subventions/attribuants/subv_presse_titres.json"
+  },
+  {
+   "id": "subv_presse_dispositifs",
+   "titre": "Ministère de la Culture, aides à la presse par dispositif (jeux listés par « Aides à la presse »)",
+   "attribuant": "Ministère de la Culture (aides à la presse, programme 180)",
+   "producteur": "Ministère de la Culture",
+   "page": "https://www.data.gouv.fr/datasets/aides-a-la-presse-1",
+   "licence": "Licence Ouverte 2.0",
+   "millesime": "Aides 2012 à 2025",
+   "rattachement": {
+    "type": "programme_dispositif",
+    "programmes": [
+     "180"
+    ]
+   },
+   "additionne": false,
+   "inclus_dans": "subv_presse_titres",
+   "annees": [
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2025
+   ],
+   "conventions": 7718,
+   "lignes_montant_non_communique": 0,
+   "total_eur": 1292801985.63,
+   "montant_retire_des_totaux_eur": 0.0,
+   "nommes": {
+    "nombre": 3345,
+    "montant_eur": 1282757608.38
+   },
+   "agrege_confidentialite": {
+    "montant_eur": 10044377.25,
+    "part_pct": 0.78
+   },
+   "fichier": "subventions/attribuants/subv_presse_dispositifs.json"
+  }
+ ],
+ "recouvrements": [
+  {
+   "source": "subv_culture_festivals_p131",
+   "autre_source": "subv_culture_scdl",
+   "lecture": "Les festivals du programme 131 sont des conventions du ministère de la Culture : ils figurent aussi dans les données essentielles du ministère (programme 131). Publiés à part, jamais additionnés."
+  },
+  {
+   "source": "subv_culture_adsv",
+   "autre_source": "subv_culture_scdl",
+   "lecture": "Les aides déconcentrées au spectacle vivant sont versées sur le programme 131 par les DRAC et la DGCA : elles figurent aussi dans les données essentielles du ministère. Publiées à part, jamais additionnées."
+  },
+  {
+   "source": "subv_presse_titres",
+   "autre_source": "subv_culture_scdl",
+   "lecture": "Les aides à la presse relèvent du programme 180, présent dans les données essentielles du ministère de 2019 à 2025 (mêmes éditeurs). Publiées à part par titre, jamais additionnées."
+  },
+  {
+   "source": "subv_presse_dispositifs",
+   "autre_source": "subv_presse_titres",
+   "lecture": "Chaque dispositif est une composante du total par titre du classement (2015 à 2023). Publiés à part, jamais additionnés."
+  },
+  {
+   "source": "subv_fonds_vert",
+   "autre_source": "subv_ademe_aides",
+   "lecture": "Une partie des projets du Fonds vert est instruite par l'ADEME (colonne « opérateur ») et peut figurer dans les conventions de l'ADEME. Ces lignes sont retirées des totaux toutes sources (`montant_retire_des_totaux_eur`) et restent dans le fichier de la source."
+  },
+  {
+   "source": "subv_fonds_vert",
+   "autre_source": "subv_aeap",
+   "lecture": "Des projets du Fonds vert sont instruits par les agences de l'eau ; la source ne nomme pas toujours l'agence (« Agence de l'eau »). Recouvrement possible avec l'agence Artois-Picardie, non chiffrable avec les données publiées."
+  }
+ ],
+ "sources_inaccessibles": [],
+ "fichiers": [
+  "subventions/annees.json",
+  "subventions/departements.json",
+  "subventions/beneficiaires.json",
+  "subventions/programmes.json",
+  "subventions/attribuants/subv_ademe_aides.json",
+  "subventions/attribuants/subv_culture_scdl.json"
+ ],
+ "recherche_publique": {
+  "date": "2026-11-17",
+  "trouvailles": [
+   {
+    "nom": "Schéma SCDL « subventions » (données essentielles des conventions de subvention), version 2.1.2",
+    "url": "https://schema.data.gouv.fr/scdl/subventions/",
+    "depot": "https://gitlab.com/opendatafrance/scdl/subventions",
+    "licence": "Licence Ouverte 2.0 (copie GitHub OpenDataFrance/subventions : Unlicense)",
+    "derniere_mise_a_jour": "2026-11-02",
+    "verdict": "à adapter",
+    "usage": "noms de champs repris comme pivot (nomAttribuant, dateConvention, idBeneficiaire, montant, dispositifAide) ; chaque source garde son lecteur car seules l'ADEME, l'agence Artois-Picardie et l'ARS Pays de la Loire suivent le schéma"
+   },
+   {
+    "nom": "Validata (validation de fichiers contre un schéma Table Schema)",
+    "url": "https://gitlab.com/validata-table/validata-table",
+    "licence": "AGPL-3.0",
+    "derniere_mise_a_jour": "2026-11-03",
+    "verdict": "inspiration seulement",
+    "usage": "les sources s'écartent du schéma (colonnes, séparateurs, encodages) : on contrôle les colonnes lues par chaque lecteur plutôt que la conformité complète"
+   },
+   {
+    "nom": "Data.Subvention (betagouv/api-subventions-asso)",
+    "url": "https://github.com/betagouv/api-subventions-asso",
+    "licence": "MIT",
+    "derniere_mise_a_jour": "2026-10 (environ un mois avant la recherche)",
+    "verdict": "inspiration seulement",
+    "usage": "agrégateur des subventions aux associations réservé aux agents publics : pas de données ouvertes réutilisables ici"
+   },
+   {
+    "nom": "betagouv/SCDL-subventions-DataSubvention",
+    "url": "https://github.com/betagouv/SCDL-subventions-DataSubvention",
+    "licence": "Unlicense",
+    "derniere_mise_a_jour": "plus d'un an avant la recherche",
+    "verdict": "inspiration seulement",
+    "usage": "copie du schéma SCDL"
+   },
+   {
+    "nom": "brunocpu/fonds-vert-paca-carto",
+    "url": "https://github.com/brunocpu/fonds-vert-paca-carto",
+    "licence": "non précisée",
+    "derniere_mise_a_jour": "2026-09-27",
+    "verdict": "inspiration seulement",
+    "usage": "cartographie du Fonds vert pour une région ; pas de traitement national ni de filtre SIRENE"
+   },
+   {
+    "nom": "pipeline/local.py (sirene_cj, contient_nom_de_personne)",
+    "url": "pipeline/local.py",
+    "licence": "MIT (ce dépôt)",
+    "derniere_mise_a_jour": "2026-11-17",
+    "verdict": "réutilisable tel quel",
+    "usage": "stock SIRENE des unités légales (catégorie juridique, dénomination) et filtre de noms de personnes"
+   },
+   {
+    "nom": "pipeline/sirene.py (personne_morale)",
+    "url": "pipeline/sirene.py",
+    "licence": "MIT (ce dépôt)",
+    "derniere_mise_a_jour": "2026-11-17",
+    "verdict": "réutilisable tel quel",
+    "usage": "règle des personnes morales commune au site"
+   },
+   {
+    "nom": "collecte/collecte.py (types url et datagouv_ressources)",
+    "url": "collecte/collecte.py",
+    "licence": "MIT (ce dépôt)",
+    "derniere_mise_a_jour": "2026-11-17",
+    "verdict": "réutilisable tel quel",
+    "usage": "collecte reprenable, manifeste et zone restreinte"
+   }
+  ]
+ }
+}

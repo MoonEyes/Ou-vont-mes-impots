@@ -1,0 +1,418 @@
+{
+ "millesime": "Conventions signées de 2021 à 2026",
+ "source": "ADEME, « Les aides financières de l'ADEME » (conventions de subvention au format SCDL), https://data.ademe.fr/datasets/les-aides-financieres-de-l'ademe",
+ "unite": "euros",
+ "id": "subv_ademe_aides",
+ "attribuant": "ADEME (Agence de l'environnement et de la maîtrise de l'énergie)",
+ "producteur": "ADEME",
+ "licence": "Licence Ouverte 2.0",
+ "collecte_le": "2026-11-17",
+ "rattachement": {
+  "type": "operateur",
+  "operateur": "ADEME",
+  "siren": "385290309",
+  "programme_chef_de_file": "181",
+  "fichier": "operateurs/operateurs.json",
+  "id": "ademe"
+ },
+ "additionne": true,
+ "inclus_dans": null,
+ "total_eur": 12142177866.86,
+ "conventions": 40561,
+ "lignes_montant_non_communique": 0,
+ "conventions_sans_annee": 0,
+ "montant_retire_des_totaux_eur": 0.0,
+ "par_annee": [
+  {
+   "annee": 2021,
+   "montant_eur": 1385679410.56,
+   "conventions": 7880,
+   "lignes_montant_non_communique": 0,
+   "montant_nomme_eur": 1380043042.88
+  },
+  {
+   "annee": 2022,
+   "montant_eur": 1677827249.56,
+   "conventions": 8210,
+   "lignes_montant_non_communique": 0,
+   "montant_nomme_eur": 1668572208.48
+  },
+  {
+   "annee": 2023,
+   "montant_eur": 2206689578.34,
+   "conventions": 6457,
+   "lignes_montant_non_communique": 0,
+   "montant_nomme_eur": 2199769215.63
+  },
+  {
+   "annee": 2024,
+   "montant_eur": 2214684899.7,
+   "conventions": 8551,
+   "lignes_montant_non_communique": 0,
+   "montant_nomme_eur": 2193449479.99
+  },
+  {
+   "annee": 2025,
+   "montant_eur": 2359602703.26,
+   "conventions": 6792,
+   "lignes_montant_non_communique": 0,
+   "montant_nomme_eur": 2344687858.32
+  },
+  {
+   "annee": 2026,
+   "montant_eur": 2297694025.44,
+   "conventions": 2671,
+   "lignes_montant_non_communique": 0,
+   "montant_nomme_eur": 2291813955.78
+  }
+ ],
+ "par_departement": [
+  {
+   "departement": "01",
+   "nom": "Ain",
+   "montant_eur": 72677442.3,
+   "conventions": 347
+  },
+  {
+   "departement": "02",
+   "nom": "Aisne",
+   "montant_eur": 31092102.31,
+   "conventions": 204
+  },
+  {
+   "departement": "03",
+   "nom": "Allier",
+   "montant_eur": 20335849.96,
+   "conventions": 143
+  }
+ ],
+ "par_programme": [],
+ "par_dispositif": [
+  {
+   "dispositif": "Appel d’offres - Grands Projets Industriels de Décarbonation 2024",
+   "montant_eur": 720508233.0,
+   "conventions": 5
+  },
+  {
+   "dispositif": "Extension et création de réseaux de chaleur ou de froid",
+   "montant_eur": 602948815.84,
+   "conventions": 119
+  },
+  {
+   "dispositif": "AAP DECARB IND (PDR-FDI)",
+   "montant_eur": 359341779.72,
+   "conventions": 115
+  },
+  {
+   "dispositif": "Contrat Chaleur Renouvelable",
+   "montant_eur": 348143132.55,
+   "conventions": 208
+  },
+  {
+   "dispositif": "Investissements de réseaux de chaleur ou de froid",
+   "montant_eur": 342791925.69,
+   "conventions": 59
+  },
+  {
+   "dispositif": "Réalisation d'installations de production de chaleur biomasse/bois",
+   "montant_eur": 276737431.88,
+   "conventions": 182
+  },
+  {
+   "dispositif": "Décarbonation de l'industrie - DECARB IND+",
+   "montant_eur": 264375037.0,
+   "conventions": 2
+  },
+  {
+   "dispositif": "Infrastructures portuaires métropolitaines pour l’industrie de l’éolien flottant",
+   "montant_eur": 258685693.0,
+   "conventions": 5
+  },
+  {
+   "dispositif": "Ecosystèmes territoriaux Hydrogène",
+   "montant_eur": 222784009.33,
+   "conventions": 90
+  },
+  {
+   "dispositif": "Installations de production de chaleur à partir de géothermie profonde",
+   "montant_eur": 215929662.61,
+   "conventions": 21
+  },
+  {
+   "dispositif": "Biomasse Chaleur pour l’Industrie du Bois (BCIB)",
+   "montant_eur": 206350492.4,
+   "conventions": 56
+  },
+  {
+   "dispositif": "Appel à projets - Industrialisation de Produits et Systèmes Constructifs bois et autres biosourcés (SCB)",
+   "montant_eur": 197579494.17,
+   "conventions": 80
+  },
+  {
+   "dispositif": "BCIAT 2021 - session 2",
+   "montant_eur": 158573619.5,
+   "conventions": 35
+  },
+  {
+   "dispositif": "Développement de briques technologiques et démonstrateurs pour les systèmes énergétiques",
+   "montant_eur": 158403287.46,
+   "conventions": 131
+  },
+  {
+   "dispositif": "BCIAT 2023 - Biomasse chaleur pour l'industrie, l'agriculture et le tertiaire",
+   "montant_eur": 136862896.0,
+   "conventions": 33
+  },
+  {
+   "dispositif": "Appel à projets national « Recyclage des plastiques, composites et élastomères »",
+   "montant_eur": 123159587.07,
+   "conventions": 37
+  },
+  {
+   "dispositif": "Aide à l’installation de production de chaleur biomasse/bois",
+   "montant_eur": 121110982.9,
+   "conventions": 98
+  },
+  {
+   "dispositif": "Industrialisation Performante des Produits Bois (IPPB)",
+   "montant_eur": 120638510.35,
+   "conventions": 96
+  },
+  {
+   "dispositif": "Appel à projets - BCIAT 2022",
+   "montant_eur": 119551605.2,
+   "conventions": 38
+  },
+  {
+   "dispositif": "Solutions innovantes pour l’amélioration de la recyclabilité, du recyclage et de la réincorporation des matériaux (RRR)",
+   "montant_eur": 110334774.7,
+   "conventions": 95
+  },
+  {
+   "dispositif": "AAP Systèmes énergétiques - Villes et Territoires Durables",
+   "montant_eur": 109951197.08,
+   "conventions": 40
+  },
+  {
+   "dispositif": "Réalisation d'installations de récupération de chaleur fatale",
+   "montant_eur": 107695923.52,
+   "conventions": 62
+  },
+  {
+   "dispositif": "Décarbonation de l'industrie - DECARB IND",
+   "montant_eur": 103834756.68,
+   "conventions": 25
+  },
+  {
+   "dispositif": "Renouvellement Forestier",
+   "montant_eur": 103076729.77,
+   "conventions": 1978
+  },
+  {
+   "dispositif": "Développement d’une filière de production française de carburants aéronautiques durables - Soutien aux études d'ingénierie d'avant-projet (FEED)",
+   "montant_eur": 99450039.0,
+   "conventions": 6
+  },
+  {
+   "dispositif": "Contrat de développement des énergies renouvelables thermiques",
+   "montant_eur": 98799611.86,
+   "conventions": 51
+  },
+  {
+   "dispositif": "AMI Digitalisation et Décarbonation du Transport",
+   "montant_eur": 95588830.55,
+   "conventions": 54
+  },
+  {
+   "dispositif": "Appel à projets national « Produits biosourcés et biotechnologies industrielles »",
+   "montant_eur": 94638784.37,
+   "conventions": 12
+  },
+  {
+   "dispositif": "BCIAT 2021 - session 1",
+   "montant_eur": 86872174.95,
+   "conventions": 16
+  },
+  {
+   "dispositif": "Décarbonation de l'industrie - DECARB IND 25",
+   "montant_eur": 86821139.68,
+   "conventions": 22
+  },
+  {
+   "dispositif": "Soutien au déploiement de stations de recharge pour les véhicules électriques légers et poids-lourds",
+   "montant_eur": 86778287.69,
+   "conventions": 38
+  },
+  {
+   "dispositif": "Fonds vert - Territoires d’industrie en transition écologique",
+   "montant_eur": 85515056.4,
+   "conventions": 300
+  },
+  {
+   "dispositif": "Appel à projets - Briques technologiques et démonstrateurs hydrogène",
+   "montant_eur": 83948813.89,
+   "conventions": 68
+  },
+  {
+   "dispositif": "Installations de production de chaleur et de froid renouvelable à partir de géothermie de surface et d'aérothermie",
+   "montant_eur": 77463799.16,
+   "conventions": 223
+  },
+  {
+   "dispositif": "AAP Logistique 4.0",
+   "montant_eur": 62652587.0,
+   "conventions": 76
+  },
+  {
+   "dispositif": "Appel à projets - Industrie Zéro Fossile Volet 2 (DECARB IND)",
+   "montant_eur": 61568522.66,
+   "conventions": 24
+  },
+  {
+   "dispositif": "Ecosystèmes des véhicules lourds électriques",
+   "montant_eur": 59165836.15,
+   "conventions": 30
+  },
+  {
+   "dispositif": "Écosystèmes territoriaux hydrogène - EcosysH₂",
+   "montant_eur": 57781409.0,
+   "conventions": 45
+  },
+  {
+   "dispositif": "Soutenir le tri à la source et la valorisation des biodéchets",
+   "montant_eur": 56842073.34,
+   "conventions": 181
+  },
+  {
+   "dispositif": "Produits biosourcés et biotechnologies industrielles",
+   "montant_eur": 56009344.0,
+   "conventions": 32
+  },
+  {
+   "dispositif": "Innov Eau",
+   "montant_eur": 55748939.21,
+   "conventions": 105
+  },
+  {
+   "dispositif": "Appel à projets - Véhicules lourds électriques 2024 - Programme CEE E-Trans",
+   "montant_eur": 54126222.47,
+   "conventions": 258
+  },
+  {
+   "dispositif": "Résorption des décharges littorales historiques à risque de relargage des déchets en mer",
+   "montant_eur": 53274882.73,
+   "conventions": 36
+  },
+  {
+   "dispositif": "AAP IndusEE (PDR - FDI)",
+   "montant_eur": 50133800.59,
+   "conventions": 25
+  },
+  {
+   "dispositif": "Études et travaux de dépollution d'une friche - Fonds vert",
+   "montant_eur": 48841494.62,
+   "conventions": 133
+  },
+  {
+   "dispositif": "AMI Aide à l'émergence de la mobilité hydrogène dans le secteur ferroviaire",
+   "montant_eur": 46999680.0,
+   "conventions": 4
+  },
+  {
+   "dispositif": "Écosystèmes des véhicules lourds électriques 2023",
+   "montant_eur": 46876549.05,
+   "conventions": 147
+  },
+  {
+   "dispositif": "Création, extension ou modernisation d’un centre de tri de déchets et valorisation de la matière",
+   "montant_eur": 46012284.85,
+   "conventions": 30
+  },
+  {
+   "dispositif": "Aides aux relais",
+   "montant_eur": 45786056.34,
+   "conventions": 357
+  },
+  {
+   "dispositif": "PDR - AAP ORPLAST 3",
+   "montant_eur": 45674971.57,
+   "conventions": 201
+  }
+ ],
+ "par_dispositif_autres": {
+  "nombre": 458,
+  "montant_eur": 2145351238.69
+ },
+ "beneficiaires": {
+  "total_eur": 12142177866.86,
+  "top": [
+   {
+    "siren": "130006372",
+    "denomination": "AGENCE DE SERVICES ET DE PAIEMENT",
+    "categorie_juridique": "7389",
+    "montant_eur": 730582690.75,
+    "conventions": 2
+   },
+   {
+    "siren": "654800689",
+    "denomination": "HEIDELBERG MATERIALS FRANCE CIMENTS",
+    "categorie_juridique": "5710",
+    "montant_eur": 367729124.5,
+    "conventions": 11
+   },
+   {
+    "siren": "421174038",
+    "denomination": "ARCELORMITTAL MEDITERRANEE",
+    "categorie_juridique": "5710",
+    "montant_eur": 238687104.02,
+    "conventions": 4
+   },
+   {
+    "siren": "057505539",
+    "denomination": "VICAT",
+    "categorie_juridique": "5599",
+    "montant_eur": 208863490.53,
+    "conventions": 6
+   },
+   {
+    "siren": "302135561",
+    "denomination": "LAFARGE CIMENTS",
+    "categorie_juridique": "5599",
+    "montant_eur": 193259737.12,
+    "conventions": 7
+   },
+   {
+    "siren": "552046955",
+    "denomination": "ENGIE ENERGIE SERVICES",
+    "categorie_juridique": "5599",
+    "montant_eur": 126635900.18,
+    "conventions": 70
+   }
+  ],
+  "autres_personnes_morales": {
+   "nombre": 22064,
+   "montant_eur": 10212577713.98
+  },
+  "autres_non_verifies": {
+   "nombre": 0,
+   "montant_eur": 0.0,
+   "note": "Aucun : chaque SIREN est vérifié dans le stock SIRENE."
+  },
+  "exclus_personnes_physiques_ou_non_identifies": {
+   "montant_eur": 63842105.78,
+   "lignes": 2046,
+   "dont_personnes_physiques_eur": 37853425.43,
+   "dont_sans_siren_eur": 25546890.35,
+   "dont_siren_introuvable_eur": 441790.0
+  }
+ },
+ "regle_personnes": "Seuls les bénéficiaires dont la catégorie juridique SIRENE est une personne morale (2xxx à 9xxx, hors groupements de personnes physiques) sont nommés. Entrepreneurs individuels, identifiants absents, invalides ou absents du stock SIRENE : montants agrégés, jamais nommés. Équipes artistiques (festivals, ADSV) : une dénomination qui contient peut-être un nom de personne (filtre de pipeline/local.py) est agrégée aussi (`dont_nom_de_personne_possible_eur`).",
+ "nommes": {
+  "nombre": 22070,
+  "montant_eur": 12078335761.08
+ },
+ "agrege_confidentialite": {
+  "montant_eur": 63842105.78,
+  "part_pct": 0.53
+ }
+}

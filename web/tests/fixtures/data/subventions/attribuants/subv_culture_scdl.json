@@ -1,0 +1,392 @@
+{
+ "millesime": "Montants engagés de 2019 à 2025",
+ "source": "Ministère de la Culture, « Données essentielles des conventions de subvention », https://www.data.gouv.fr/datasets/donnees-essentielles-des-conventions-de-subvention-5",
+ "unite": "euros",
+ "id": "subv_culture_scdl",
+ "attribuant": "Ministère de la Culture (administration centrale et DRAC)",
+ "producteur": "Ministère de la Culture",
+ "licence": "Licence Ouverte 2.0",
+ "collecte_le": "2026-11-17",
+ "rattachement": {
+  "type": "programme_source",
+  "colonne": "programme_code"
+ },
+ "additionne": true,
+ "inclus_dans": null,
+ "total_eur": 16213017720.0,
+ "conventions": 324953,
+ "lignes_montant_non_communique": 244,
+ "conventions_sans_annee": 0,
+ "montant_retire_des_totaux_eur": 0.0,
+ "par_annee": [
+  {
+   "annee": 2019,
+   "montant_eur": 1271274953.0,
+   "conventions": 37482,
+   "lignes_montant_non_communique": 13,
+   "montant_nomme_eur": 1245074515.0
+  },
+  {
+   "annee": 2020,
+   "montant_eur": 1881847900.0,
+   "conventions": 41118,
+   "lignes_montant_non_communique": 37,
+   "montant_nomme_eur": 1852618552.0
+  },
+  {
+   "annee": 2021,
+   "montant_eur": 5499596208.0,
+   "conventions": 58334,
+   "lignes_montant_non_communique": 86,
+   "montant_nomme_eur": 5461945180.0
+  },
+  {
+   "annee": 2022,
+   "montant_eur": 2189410526.0,
+   "conventions": 60467,
+   "lignes_montant_non_communique": 92,
+   "montant_nomme_eur": 2156498408.0
+  },
+  {
+   "annee": 2023,
+   "montant_eur": 1880031008.0,
+   "conventions": 42861,
+   "lignes_montant_non_communique": 7,
+   "montant_nomme_eur": 1848479053.0
+  },
+  {
+   "annee": 2024,
+   "montant_eur": 1790200029.0,
+   "conventions": 43789,
+   "lignes_montant_non_communique": 2,
+   "montant_nomme_eur": 1758813445.0
+  },
+  {
+   "annee": 2025,
+   "montant_eur": 1700657096.0,
+   "conventions": 40902,
+   "lignes_montant_non_communique": 7,
+   "montant_nomme_eur": 1671821945.0
+  }
+ ],
+ "par_departement": [
+  {
+   "departement": "01",
+   "nom": "Ain",
+   "montant_eur": 28922180.0,
+   "conventions": 1997
+  },
+  {
+   "departement": "02",
+   "nom": "Aisne",
+   "montant_eur": 44278843.0,
+   "conventions": 2315
+  },
+  {
+   "departement": "03",
+   "nom": "Allier",
+   "montant_eur": 60178125.0,
+   "conventions": 2737
+  }
+ ],
+ "par_programme": [
+  {
+   "programme": "131",
+   "par_annee": [
+    {
+     "annee": 2019,
+     "montant_eur": 442535738.0
+    },
+    {
+     "annee": 2020,
+     "montant_eur": 587875622.0
+    },
+    {
+     "annee": 2021,
+     "montant_eur": 659206427.0
+    },
+    {
+     "annee": 2022,
+     "montant_eur": 632946830.0
+    },
+    {
+     "annee": 2023,
+     "montant_eur": 623672713.0
+    },
+    {
+     "annee": 2024,
+     "montant_eur": 590166554.0
+    },
+    {
+     "annee": 2025,
+     "montant_eur": 592013297.0
+    }
+   ],
+   "montant_eur": 4128417181.0
+  },
+  {
+   "programme": "175",
+   "par_annee": [
+    {
+     "annee": 2019,
+     "montant_eur": 252996550.0
+    },
+    {
+     "annee": 2020,
+     "montant_eur": 254341961.0
+    },
+    {
+     "annee": 2021,
+     "montant_eur": 285725846.0
+    },
+    {
+     "annee": 2022,
+     "montant_eur": 278711296.0
+    },
+    {
+     "annee": 2023,
+     "montant_eur": 291195149.0
+    },
+    {
+     "annee": 2024,
+     "montant_eur": 313026611.0
+    },
+    {
+     "annee": 2025,
+     "montant_eur": 295580209.0
+    }
+   ],
+   "montant_eur": 1971577622.0
+  },
+  {
+   "programme": "180",
+   "par_annee": [
+    {
+     "annee": 2019,
+     "montant_eur": 255915092.0
+    },
+    {
+     "annee": 2020,
+     "montant_eur": 396663381.0
+    },
+    {
+     "annee": 2021,
+     "montant_eur": 258580013.0
+    },
+    {
+     "annee": 2022,
+     "montant_eur": 252927010.0
+    },
+    {
+     "annee": 2023,
+     "montant_eur": 375972716.0
+    },
+    {
+     "annee": 2024,
+     "montant_eur": 343908158.0
+    },
+    {
+     "annee": 2025,
+     "montant_eur": 327195361.0
+    }
+   ],
+   "montant_eur": 2211161731.0
+  },
+  {
+   "programme": "224",
+   "par_annee": [
+    {
+     "annee": 2019,
+     "montant_eur": 289621654.0
+    },
+    {
+     "annee": 2020,
+     "montant_eur": 280370673.0
+    },
+    {
+     "annee": 2021,
+     "montant_eur": 7637207.0
+    },
+    {
+     "annee": 2022,
+     "montant_eur": 10486821.0
+    },
+    {
+     "annee": 2023,
+     "montant_eur": 12353544.0
+    },
+    {
+     "annee": 2024,
+     "montant_eur": 13596146.0
+    },
+    {
+     "annee": 2025,
+     "montant_eur": 13300073.0
+    }
+   ],
+   "montant_eur": 627366118.0
+  },
+  {
+   "programme": "334",
+   "par_annee": [
+    {
+     "annee": 2019,
+     "montant_eur": 30205919.0
+    },
+    {
+     "annee": 2020,
+     "montant_eur": 362596263.0
+    },
+    {
+     "annee": 2021,
+     "montant_eur": 174429515.0
+    },
+    {
+     "annee": 2022,
+     "montant_eur": 21524881.0
+    },
+    {
+     "annee": 2023,
+     "montant_eur": 18726622.0
+    },
+    {
+     "annee": 2024,
+     "montant_eur": 22328457.0
+    },
+    {
+     "annee": 2025,
+     "montant_eur": 24764065.0
+    }
+   ],
+   "montant_eur": 654575722.0
+  },
+  {
+   "programme": "361",
+   "par_annee": [
+    {
+     "annee": 2021,
+     "montant_eur": 331909287.0
+    },
+    {
+     "annee": 2022,
+     "montant_eur": 485099289.0
+    },
+    {
+     "annee": 2023,
+     "montant_eur": 558110264.0
+    },
+    {
+     "annee": 2024,
+     "montant_eur": 507174103.0
+    },
+    {
+     "annee": 2025,
+     "montant_eur": 447804091.0
+    }
+   ],
+   "montant_eur": 2330097034.0
+  },
+  {
+   "programme": "363",
+   "par_annee": [
+    {
+     "annee": 2021,
+     "montant_eur": 3782107913.0
+    },
+    {
+     "annee": 2022,
+     "montant_eur": 507714399.0
+    }
+   ],
+   "montant_eur": 4289822312.0
+  }
+ ],
+ "par_dispositif": [
+  {
+   "dispositif": "AC",
+   "montant_eur": 9966664780.0,
+   "conventions": 56666
+  },
+  {
+   "dispositif": "DRAC",
+   "montant_eur": 6246352940.0,
+   "conventions": 268287
+  }
+ ],
+ "par_dispositif_autres": {
+  "nombre": 0,
+  "montant_eur": 0.0
+ },
+ "beneficiaires": {
+  "total_eur": 16213017720.0,
+  "top": [
+   {
+    "siren": "320252489",
+    "denomination": "BPIFRANCE",
+    "categorie_juridique": "5599",
+    "montant_eur": 1529841474.0,
+    "conventions": 11
+   },
+   {
+    "siren": "130006372",
+    "denomination": "AGENCE DE SERVICES ET DE PAIEMENT",
+    "categorie_juridique": "7389",
+    "montant_eur": 1205772833.0,
+    "conventions": 50
+   },
+   {
+    "siren": "853318459",
+    "denomination": "PASS CULTURE",
+    "categorie_juridique": "5710",
+    "montant_eur": 969256322.0,
+    "conventions": 33
+   },
+   {
+    "siren": "775658354",
+    "denomination": "AGENCE FRANCE PRESSE",
+    "categorie_juridique": "6901",
+    "montant_eur": 817313807.0,
+    "conventions": 42
+   },
+   {
+    "siren": "180046039",
+    "denomination": "CENTRE NATIONAL DU CINEMA ET DE L'IMAGE ANIMEE",
+    "categorie_juridique": "7389",
+    "montant_eur": 427962607.0,
+    "conventions": 28
+   },
+   {
+    "siren": "882539786",
+    "denomination": "CENTRE NATIONAL DE LA MUSIQUE",
+    "categorie_juridique": "4140",
+    "montant_eur": 377758348.0,
+    "conventions": 92
+   }
+  ],
+  "autres_personnes_morales": {
+   "nombre": 42574,
+   "montant_eur": 10667345707.0
+  },
+  "autres_non_verifies": {
+   "nombre": 0,
+   "montant_eur": 0.0,
+   "note": "Aucun : chaque SIREN est vérifié dans le stock SIRENE."
+  },
+  "exclus_personnes_physiques_ou_non_identifies": {
+   "montant_eur": 217766622.0,
+   "lignes": 29188,
+   "dont_personnes_physiques_eur": 33337211.0,
+   "dont_sans_siren_eur": 184089933.0,
+   "dont_siren_introuvable_eur": 339478.0
+  }
+ },
+ "regle_personnes": "Seuls les bénéficiaires dont la catégorie juridique SIRENE est une personne morale (2xxx à 9xxx, hors groupements de personnes physiques) sont nommés. Entrepreneurs individuels, identifiants absents, invalides ou absents du stock SIRENE : montants agrégés, jamais nommés. Équipes artistiques (festivals, ADSV) : une dénomination qui contient peut-être un nom de personne (filtre de pipeline/local.py) est agrégée aussi (`dont_nom_de_personne_possible_eur`).",
+ "nommes": {
+  "nombre": 42580,
+  "montant_eur": 15995251098.0
+ },
+ "agrege_confidentialite": {
+  "montant_eur": 217766622.0,
+  "part_pct": 1.34
+ }
+}
