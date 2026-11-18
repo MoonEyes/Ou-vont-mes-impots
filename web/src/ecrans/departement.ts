@@ -51,6 +51,9 @@ ${
     : ''
 }
 ${source(geo.source, geo.millesime)}
+<h2>Les solidarités du département</h2>
+<p>Ce que le département verse pour le revenu de solidarité active, l’allocation personnalisée d’autonomie, la prestation de compensation du handicap et l’aide sociale à l’enfance, combien de personnes les reçoivent et les recettes qu’il reçoit pour ces allocations, de 2012 à 2025.</p>
+<p class="liens-sortie"><a href="#/explorer/solidarites-departements?dep=${h(dep)}">Ce que verse le département ${h(nom)} pour les solidarités</a></p>
 <h2>Pour aller plus loin</h2>
 <ul class="liens-sortie">
   <li><a href="#/explorer/collectivites">Les collectivités locales en France</a></li>
