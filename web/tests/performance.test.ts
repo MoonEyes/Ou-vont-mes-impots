@@ -14,12 +14,17 @@ const RACINE = process.cwd()
 const DIST = join(RACINE, 'dist')
 const FICHIER = join(RACINE, 'src', 'composants', 'trame-france.svg')
 
-/** Budgets (octets), docs/PERF.md. Mesures du 18/11/2026 : avant 99,3 Mo de HTML, 42 Ko par page commune. */
+/**
+ * Budgets (octets), docs/PERF.md : mesure du 18/11/2026 plus 10 %. Avant la trame partagée 99,3 Mo de HTML ; avant
+ * l'allègement des pages locales 69,9 Mo ; après 43,2 Mo (commune 17,6 Ko au plus, 5,0 Ko transférés ; département
+ * 28,4 Ko au plus). Un nouveau bloc des pages commune ou département se rend dans le navigateur (DETAIL_COMMUNE,
+ * DETAIL_DEPARTEMENT), le HTML prérendu n'en garde qu'une ligne.
+ */
 const BUDGET = {
-  html_total: 70e6,
-  page_commune: 30e3,
-  page_commune_gzip: 7e3,
-  page_departement: 85e3,
+  html_total: 47.5e6,
+  page_commune: 19.4e3,
+  page_commune_gzip: 5.5e3,
+  page_departement: 31.2e3,
   encadre_ou_cest: 1500,
   fond_partage: 12e3,
 }

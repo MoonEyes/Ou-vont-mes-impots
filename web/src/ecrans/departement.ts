@@ -6,10 +6,18 @@ import { partPersonnelle } from '../composants/hub'
 import { ouCest } from '../composants/trame'
 import { chargerSiPresent } from '../donnees'
 import type { Rendu } from '../routeur'
-import { AFFICHE_DANS_LE_NAVIGATEUR, absent, appliquerLargeurs, enPrerendu, entier, h, source } from '../util'
+import { absent, appliquerLargeurs, enPrerendu, entier, h, source } from '../util'
 import { blocBudget, clesBudget, type Budgets, type Geo } from './commune'
 import { blocAideSociale, blocInvestissementDepartement, blocOrganismesDepartement, blocSruDepartement, type FichierCcas, type FichierSyndicats, type Territoire } from './territoires'
 import { brancherProjets } from './projets'
+
+/** Sections du détail de la page département, rendues dans le navigateur seulement : identifiant, titre. */
+const DETAIL_DEPARTEMENT: [string, string][] = [
+  ['sec-projets-etat', 'Les projets aidés par l’État dans le département'],
+  ['sec-aide-sociale', 'L’aide sociale du département'],
+  ['sec-sru', 'Logement social : les communes de la loi SRU'],
+  ['sec-organismes', 'Syndicats et organismes départementaux'],
+]
 
 export const titreDepartement = (nom: string, code: string) => `${nom} (${code}) : budget des communes, dépenses, dotations, taux`
 
@@ -27,6 +35,15 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
   const item = ([insee, c]: (typeof communes)[number], avecPopulation: boolean) =>
     `<li><a href="${fragmentCommune(insee, c.nom, c.population)}">${h(c.nom)}</a>${avecPopulation ? ` <span class="aide">${h(entier(c.population))} habitants</span>` : ''}</li>`
   const nom = geo.departement.nom
+  // HTML prérendu (budgets de poids, docs/PERF.md) : titre, introduction, chiffres clés et budget du département,
+  // communes qui ont leur page ; les blocs du détail et la liste des petites communes (dont la page générique ne se
+  // lit qu'avec JavaScript) sont rendus dans le navigateur. Tout nouveau bloc va dans DETAIL_DEPARTEMENT.
+  const prerendu = enPrerendu()
+  const detail = prerendu
+    ? `<h2>Le détail : projets, aide sociale, logement social, organismes</h2>
+<p class="aide">À l’ouverture de la page dans le navigateur (JavaScript activé) s’affichent aussi :</p>
+<ul>${DETAIL_DEPARTEMENT.map(([, titre]) => `<li>${h(titre.charAt(0).toLowerCase() + titre.slice(1))}</li>`).join('')}</ul>`
+    : DETAIL_DEPARTEMENT.map(([id, titre]) => `<h2>${h(titre)}</h2>\n<div id="${id}" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>`).join('\n')
   cible.innerHTML = `
 <div class="entete-local">
   <div>
@@ -38,14 +55,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
   ${ouCest(dep, nom)}
 </div>
 <div id="sec-budget-dep" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>
-<h2>Les projets aidés par l’État dans le département</h2>
-<div id="sec-projets-etat" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>
-<h2>L’aide sociale du département</h2>
-<div id="sec-aide-sociale" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>
-<h2>Logement social : les communes de la loi SRU</h2>
-<div id="sec-sru" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>
-<h2>Syndicats et organismes départementaux</h2>
-<div id="sec-organismes" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>
+${detail}
 ${
   grandes.length
     ? `<h2>Communes de plus de ${h(entier(SEUIL_PAGE_COMMUNE))} habitants</h2>
@@ -54,11 +64,14 @@ ${
     : ''
 }
 ${
-  autres.length
+  autres.length && prerendu
     ? `<h2>${grandes.length ? 'Les autres communes' : 'Les communes'}</h2>
+<p class="aide">${h(entier(autres.length))} commune${autres.length > 1 ? 's' : ''}${grandes.length ? ` de ${h(entier(SEUIL_PAGE_COMMUNE))} habitants ou moins` : ''} : leur liste, en ordre alphabétique, s’affiche à l’ouverture de la page dans le navigateur (JavaScript activé), comme leur budget.</p>`
+    : autres.length
+      ? `<h2>${grandes.length ? 'Les autres communes' : 'Les communes'}</h2>
 <p class="aide">Ordre alphabétique.</p>
 <ul class="liste-colonnes">${autres.map((c) => item(c, false)).join('')}</ul>`
-    : ''
+      : ''
 }
 ${source(geo.source, geo.millesime)}
 <h2>Les solidarités du département</h2>
@@ -92,10 +105,7 @@ ${partPersonnelle()}`
   // Données par département : projets aidés par l'État, aide sociale, inventaire SRU (territoires/), syndicats et
   // centres d'action sociale (local_satellites/). Demandées après le budget du département.
   const territoires = budget.then(async () => {
-    if (enPrerendu()) {
-      for (const id of ['sec-projets-etat', 'sec-aide-sociale', 'sec-sru', 'sec-organismes']) remplir(id, AFFICHE_DANS_LE_NAVIGATEUR)
-      return
-    }
+    if (prerendu) return
     const [ter, syn, ccas] = await Promise.all([
       chargerSiPresent<Territoire>(`territoires/${dep}.json`),
       chargerSiPresent<FichierSyndicats>(`local_satellites/syndicats/${dep}.json`),

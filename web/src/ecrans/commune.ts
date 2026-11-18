@@ -4,10 +4,10 @@ import { fragmentCommune, fragmentDepartement } from '../chemins'
 import { partPersonnelle } from '../composants/hub'
 import { ouCest } from '../composants/trame'
 import { departementDe } from '../departements'
-import { chargerSiPresent } from '../donnees'
+import { chargerSiPresent, urlDonnee } from '../donnees'
 import { brancherProjets } from './projets'
 import { lien, type Rendu } from '../routeur'
-import { AFFICHE_DANS_LE_NAVIGATEUR, absent, appliquerLargeurs, enPrerendu, badgeStatut, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
+import { absent, appliquerLargeurs, enPrerendu, badgeStatut, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
 import { blocInvestissementCommune, blocOrganismesCommune, blocSruCommune, type Beneficiaire, type FichierCcas, type FichierEau, type FichierMobilite, type FichierSyndicats, type Territoire } from './territoires'
 
 export interface Geo {
@@ -34,6 +34,25 @@ const DEPENSES: [string, string][] = [
   ['charges_financieres', 'Intérêts de la dette'],
   ['depenses_equipement', 'Équipements (travaux, bâtiments)'],
   ['remboursement_dette', 'Remboursement d’emprunts'],
+]
+
+/** Lien vers un fichier de données publié (« ./data/… » au prérendu, relatif à la page ensuite). */
+const lienDonnee = (chemin: string) => {
+  const u = urlDonnee(chemin)
+  return u.startsWith('/') ? u : `./${u}`
+}
+
+/**
+ * Sections du détail de la page commune, rendues dans le navigateur seulement (absentes du HTML prérendu, où une
+ * liste les annonce) : identifiant de la zone, titre.
+ */
+const DETAIL_COMMUNE: [string, string][] = [
+  ['sec-dotations', 'Ce que l’État verse à la commune'],
+  ['sec-taux', 'Les taux d’impôts locaux votés'],
+  ['sec-subventions', 'Subventions votées et publiées'],
+  ['sec-projets-etat', 'Les projets aidés par l’État, de la commune et de son intercommunalité'],
+  ['sec-sru', 'Logement social : la loi SRU'],
+  ['sec-organismes', 'Syndicats, action sociale, transports, eau : les organismes rattachés'],
 ]
 
 function lire(b: Budgets, eur: Record<string, (number | null)[]>, an: string, k: string): number | null {
@@ -110,6 +129,17 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
   const epci = g.epci ? geo.epci[g.epci] : null
   const attente = (id: string, classe = '') => `<div id="${id}" class="section-donnees${classe}" aria-busy="true"><p class="chargement">Chargement…</p></div>`
 
+  // Fichiers de données de la page (liens « ./data/… », relatifs à la page une fois prérendue).
+  const fichiers = `<p class="aide">Les fichiers de données de cette page (JSON, département ${h(dep)}) : <a href="${h(lienDonnee(`local/budgets/communes/${dep}.json`))}">budgets</a>, <a href="${h(lienDonnee(`local/dotations/communes/${dep}.json`))}">dotations</a>, <a href="${h(lienDonnee(`local/taux/${dep}.json`))}">taux votés</a>.</p>`
+  // HTML prérendu (2 251 pages, budgets de poids, docs/PERF.md) : titre, introduction, chiffres clés et budget de la
+  // commune, liens ; les blocs repris de page en page (intercommunalité, département, région) et les tableaux du
+  // détail sont rendus dans le navigateur, à l'ouverture de la page. Tout nouveau bloc va dans DETAIL_COMMUNE.
+  const detail = enPrerendu()
+    ? `<h2>Le détail : autres budgets, dotations, taux, subventions</h2>
+<p class="aide">À l’ouverture de la page dans le navigateur (JavaScript activé) s’affichent aussi :</p>
+<ul>${[`les budgets ${epci ? `de l’intercommunalité (${h(epci.nom)}), ` : ''}du département (${h(geo.departement.nom)}) et de la région (${h(geo.region.nom)})`, ...DETAIL_COMMUNE.map(([, titre]) => h(titre.charAt(0).toLowerCase() + titre.slice(1)))].map((x) => `<li>${x}</li>`).join('')}</ul>`
+    : DETAIL_COMMUNE.map(([id, titre]) => `<h2>${h(titre)}</h2>\n${attente(id)}`).join('\n')
+
   // Rendu progressif (recette perf, docs/RECETTE.md) : le titre et les liens s'affichent dès la géographie
   // chargée (environ 100 Ko) ; les budgets puis les dotations, taux et subventions arrivent ensuite.
   cible.innerHTML = `
@@ -123,18 +153,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
   ${ouCest(dep, geo.departement.nom)}
 </div>
 ${attente('sec-budgets', ' section-attente')}
-<h2>Ce que l’État verse à la commune</h2>
-${attente('sec-dotations')}
-<h2>Les taux d’impôts locaux votés</h2>
-${attente('sec-taux')}
-<h2>Subventions votées et publiées</h2>
-${attente('sec-subventions')}
-<h2>Les projets aidés par l’État, de la commune et de son intercommunalité</h2>
-${attente('sec-projets-etat')}
-<h2>Logement social : la loi SRU</h2>
-${attente('sec-sru')}
-<h2>Syndicats, action sociale, transports, eau : les organismes rattachés</h2>
-${attente('sec-organismes')}
+${detail}
 <h2>Pour aller plus loin</h2>
 <ul class="liens-sortie">
   <li><a href="#/explorer/collectivites">Les collectivités locales en France</a></li>
@@ -144,6 +163,7 @@ ${attente('sec-organismes')}
   <li><a href="${lien('/local/croiser', { insee })}">Comparer ${h(g.nom)} avec des communes qui se ressemblent</a></li>
   <li><a href="#/local">Choisir une autre commune</a></li>
 </ul>
+${fichiers}
 ${partPersonnelle()}`
   // Investissement réalisé et délibérations publiées : ajouté par le navigateur seulement (rien au HTML prérendu).
   if (typeof IntersectionObserver !== 'undefined') void import('./commune_investissement').then((m) => m.brancher(cible, { insee, dep, nom: g.nom, siren: g.siren ?? null, epci: g.epci, nomEpci: epci?.nom ?? null })).catch((e) => console.error(e))
@@ -158,11 +178,12 @@ ${partPersonnelle()}`
   }
 
   const budgets = (async () => {
+    const seule = enPrerendu()
     const [bc, be, bd, br] = await Promise.all([
       chargerSiPresent<Budgets>(`local/budgets/communes/${dep}.json`),
-      epci ? chargerSiPresent<Budgets>(`local/budgets/epci/${epci.departement_siege}.json`) : Promise.resolve(null),
-      chargerSiPresent<Budgets>('local/budgets/departements.json'),
-      chargerSiPresent<Budgets>('local/budgets/regions.json'),
+      epci && !seule ? chargerSiPresent<Budgets>(`local/budgets/epci/${epci.departement_siege}.json`) : Promise.resolve(null),
+      seule ? Promise.resolve(null) : chargerSiPresent<Budgets>('local/budgets/departements.json'),
+      seule ? Promise.resolve(null) : chargerSiPresent<Budgets>('local/budgets/regions.json'),
     ])
     const commune = bc?.collectivites[insee]
     const ep = g.epci && be ? be.collectivites[g.epci] : null
@@ -180,6 +201,7 @@ ${reg && br ? blocBudget(br, reg, `La région : ${reg.nom}`, false) : ''}`,
 
   // Fichiers plus bas dans la page : demandés après les budgets pour ne pas leur prendre la bande passante.
   const locales = budgets.then(async () => {
+    if (enPrerendu()) return
     const [dot, taux, dec] = await Promise.all([
       chargerSiPresent<{ source: string; millesime: string; annees: string[]; communes: Record<string, { eur: Record<string, Record<string, number>> }>; investissement_etat: Record<string, Record<string, { total: number; nb_projets: number; projets: [string, string | null, number, number][] }>> }>(`local/dotations/communes/${dep}.json`),
       chargerSiPresent<{ source: string; colonnes: string[]; communes: Record<string, Record<string, number[]>> }>(`local/taux/${dep}.json`),
@@ -240,10 +262,7 @@ ${dec ? `<p class="aide">${h(dec.limites)}</p>` : ''}`,
   brancherProjets(cible, { insee, nom: g.nom })
   // Données par département (territoires, local_satellites) : projets aidés par l'État, logement social, organismes.
   const territoires = budgets.then(async () => {
-    if (enPrerendu()) {
-      for (const id of ['sec-projets-etat', 'sec-sru', 'sec-organismes']) remplir(id, AFFICHE_DANS_LE_NAVIGATEUR)
-      return
-    }
+    if (enPrerendu()) return
     const [ter, syn, ccas, mob, eau] = await Promise.all([
       chargerSiPresent<Territoire>(`territoires/${dep}.json`),
       chargerSiPresent<FichierSyndicats>(`local_satellites/syndicats/${dep}.json`),
