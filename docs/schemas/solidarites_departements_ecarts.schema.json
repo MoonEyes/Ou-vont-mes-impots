@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/solidarites_departements_ecarts.schema.json",
+  "title": "site/data/solidarites_departements/ecarts.json : écarts par collectivité entre sources (comptes de l'OFGL contre enquête Aide sociale de la DREES ; deux publications de la DREES ; DREES contre CNAF), jamais tranchés (pipeline/solidarites_departements.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "colonnes",
+    "grandeurs",
+    "sources_ecarts",
+    "methode",
+    "lignes",
+    "regle",
+    "ordre"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string",
+      "minLength": 3
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "colonnes": {
+      "const": [
+        "grandeur",
+        "code",
+        "annee",
+        "valeur",
+        "autre_valeur",
+        "ecart",
+        "ecart_pct"
+      ]
+    },
+    "grandeurs": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/grandeur"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source",
+          "autre_source",
+          "lecture_ecart",
+          "lignes"
+        ],
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "autre_source": {
+            "type": "string"
+          },
+          "lecture_ecart": {
+            "type": "string",
+            "minLength": 10
+          },
+          "lignes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "sources_ecarts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 5
+      }
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 10
+    },
+    "lignes": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "$ref": "#/$defs/grandeur"
+          },
+          {
+            "type": "string",
+            "pattern": "^([0-9]{2,3}|2A|2B|6AE|69D|69M|20R)$"
+          },
+          {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        ],
+        "minItems": 7,
+        "maxItems": 7
+      }
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 10
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "cles",
+        "regle"
+      ]
+    }
+  },
+  "$defs": {
+    "grandeur": {
+      "enum": [
+        "allocations_apa",
+        "allocations_pch",
+        "allocations_rsa",
+        "beneficiaires_apa_domicile",
+        "beneficiaires_pch_payes",
+        "beneficiaires_rsa"
+      ]
+    }
+  }
+}

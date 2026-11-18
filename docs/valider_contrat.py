@@ -252,6 +252,12 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # solidarités des départements : allocations et recettes rattachées (comptes OFGL), reste à charge calculé,
+    # bénéficiaires de l'aide sociale départementale (DREES), écarts (pipeline/solidarites_departements.py)
+    ("solidarites_departements_index.schema.json", "solidarites_departements/index.json", "existant"),
+    ("solidarites_departements_comptes.schema.json", "solidarites_departements/comptes.json", "existant"),
+    ("solidarites_departements_beneficiaires.schema.json", "solidarites_departements/beneficiaires.json", "existant"),
+    ("solidarites_departements_ecarts.schema.json", "solidarites_departements/ecarts.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

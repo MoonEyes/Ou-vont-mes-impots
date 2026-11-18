@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/solidarites_departements_beneficiaires.schema.json",
+  "title": "site/data/solidarites_departements/beneficiaires.json : bénéficiaires de l'aide sociale départementale (personnes âgées, personnes handicapées, enfance) et allocataires du RSA par collectivité, séries de la DREES (pipeline/solidarites_departements.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "groupes",
+    "series",
+    "format",
+    "collectivites",
+    "totaux",
+    "regle",
+    "ordre"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string",
+      "minLength": 3
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "groupes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "series": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "groupe",
+          "libelle",
+          "definition",
+          "titre_source",
+          "source",
+          "onglet",
+          "champ",
+          "annees"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "groupe": {
+            "enum": [
+              "personnes_agees",
+              "personnes_handicapees",
+              "enfance",
+              "insertion"
+            ]
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 3
+          },
+          "definition": {
+            "type": "string",
+            "minLength": 5
+          },
+          "titre_source": {
+            "type": "string",
+            "minLength": 5
+          },
+          "source": {
+            "enum": [
+              "drees_paph",
+              "drees_ase",
+              "drees_minima"
+            ]
+          },
+          "onglet": {
+            "type": "string",
+            "minLength": 2
+          },
+          "champ": {
+            "type": "string",
+            "minLength": 5
+          },
+          "annees": {
+            "type": "array",
+            "items": {
+              "$ref": "commun.schema.json#/$defs/annee_entier"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "rupture": {
+            "type": "string",
+            "minLength": 10
+          },
+          "marques_source": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "format": {
+      "type": "string"
+    },
+    "collectivites": {
+      "type": "object",
+      "minProperties": 95,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^([0-9]{2,3}|2A|2B|6AE|69D|69M|20R)$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "nom",
+          "departements",
+          "valeurs"
+        ],
+        "properties": {
+          "nom": {
+            "type": "string",
+            "minLength": 2
+          },
+          "departements": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^([0-9]{2,3}|2A|2B)$"
+            },
+            "minItems": 1
+          },
+          "valeurs": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^[a-z0-9_]+$"
+            },
+            "additionalProperties": {
+              "$ref": "#/$defs/serie"
+            }
+          },
+          "perimetre": {
+            "type": "string",
+            "minLength": 10
+          },
+          "rsa_2016_ancien_systeme": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "totaux": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "france",
+          "metropole",
+          "drom"
+        ]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/$defs/serie"
+        }
+      }
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 10
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "cles",
+        "regle"
+      ]
+    }
+  },
+  "$defs": {
+    "serie": {
+      "type": "array",
+      "items": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "minimum": 0
+      }
+    }
+  }
+}

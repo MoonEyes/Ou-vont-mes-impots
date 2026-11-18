@@ -1,0 +1,358 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/solidarites_departements_comptes.schema.json",
+  "title": "site/data/solidarites_departements/comptes.json : allocations individuelles de solidarité, frais d'hébergement et recettes rattachées dans les comptes des départements (OFGL), reste à charge calculé (pipeline/solidarites_departements.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "annees",
+    "colonnes",
+    "roles",
+    "libelles_ofgl",
+    "definitions",
+    "formules_ofgl",
+    "lecture",
+    "colonnes_reste_a_charge",
+    "reste_a_charge",
+    "format",
+    "financeur_rsa",
+    "collectivites",
+    "regle",
+    "ordre"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string",
+      "minLength": 3
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "colonnes": {
+      "const": [
+        "allocations_rsa",
+        "allocations_apa",
+        "allocations_pch",
+        "frais_hebergement",
+        "ticpe",
+        "fmdi",
+        "cnsa"
+      ]
+    },
+    "roles": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "allocation",
+          "depense",
+          "recette"
+        ]
+      }
+    },
+    "libelles_ofgl": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 2
+      }
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 10
+      }
+    },
+    "formules_ofgl": {
+      "type": "object",
+      "description": "Formules publiées par l'OFGL pour chaque colonne (vide si l'extrait de méthodologie est absent de l'entrepôt)",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "collectivites",
+            "nomenclature",
+            "formule",
+            "annees"
+          ],
+          "properties": {
+            "collectivites": {
+              "enum": [
+                "Départements",
+                "Régions"
+              ]
+            },
+            "nomenclature": {
+              "type": "string"
+            },
+            "formule": {
+              "type": "string",
+              "minLength": 3
+            },
+            "annees": {
+              "type": "array",
+              "items": {
+                "$ref": "commun.schema.json#/$defs/annee_entier"
+              },
+              "minItems": 1
+            }
+          }
+        }
+      }
+    },
+    "lecture": {
+      "type": "string",
+      "minLength": 10
+    },
+    "colonnes_reste_a_charge": {
+      "const": [
+        "rsa",
+        "apa_pch"
+      ]
+    },
+    "reste_a_charge": {
+      "$ref": "#/$defs/reste_a_charge"
+    },
+    "format": {
+      "type": "string"
+    },
+    "financeur_rsa": {
+      "type": "string"
+    },
+    "collectivites": {
+      "type": "object",
+      "minProperties": 95,
+      "propertyNames": {
+        "$ref": "#/$defs/code"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/collectivite"
+      }
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 10
+    },
+    "ordre": {
+      "$ref": "#/$defs/ordre"
+    }
+  },
+  "$defs": {
+    "code": {
+      "type": "string",
+      "pattern": "^([0-9]{2,3}|2A|2B|6AE|69D|69M|20R)$"
+    },
+    "code_departement": {
+      "type": "string",
+      "pattern": "^([0-9]{2,3}|2A|2B)$"
+    },
+    "par_annee": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      }
+    },
+    "collectivite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nom",
+        "departements",
+        "sirens",
+        "population",
+        "eur",
+        "eur_hab",
+        "reste_a_charge_calcule_eur"
+      ],
+      "properties": {
+        "nom": {
+          "type": "string",
+          "minLength": 2
+        },
+        "departements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/code_departement"
+          },
+          "minItems": 1
+        },
+        "sirens": {
+          "type": "array",
+          "items": {
+            "$ref": "commun.schema.json#/$defs/siren"
+          },
+          "minItems": 1
+        },
+        "population": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/par_annee"
+            }
+          ],
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "eur": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/par_annee"
+            }
+          ],
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 7,
+            "maxItems": 7,
+            "items": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        },
+        "eur_hab": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/par_annee"
+            }
+          ],
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 7,
+            "maxItems": 7,
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        },
+        "reste_a_charge_calcule_eur": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/par_annee"
+            }
+          ],
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        },
+        "financeur_rsa": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/par_annee"
+            }
+          ],
+          "additionalProperties": {
+            "enum": [
+              "departement",
+              "etat",
+              "departement_puis_etat"
+            ]
+          }
+        },
+        "perimetre": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    },
+    "reste_a_charge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statut",
+        "producteur",
+        "formules",
+        "perimetre",
+        "methode",
+        "limites"
+      ],
+      "properties": {
+        "statut": {
+          "const": "calculé"
+        },
+        "producteur": {
+          "type": "string",
+          "minLength": 10
+        },
+        "formules": {
+          "type": "object",
+          "required": [
+            "rsa",
+            "apa_pch"
+          ],
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "perimetre": {
+          "type": "string",
+          "minLength": 10
+        },
+        "methode": {
+          "type": "string",
+          "minLength": 10
+        },
+        "limites": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 10
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "ordre": {
+      "type": "object",
+      "required": [
+        "cles",
+        "regle"
+      ],
+      "properties": {
+        "cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "regle": {
+          "type": "string",
+          "minLength": 5
+        }
+      }
+    }
+  }
+}

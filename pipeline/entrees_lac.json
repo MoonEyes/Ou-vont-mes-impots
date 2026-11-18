@@ -1549,6 +1549,32 @@
     "data/lake/sante/sirene_categories_juridiques.json"
    ],
    "octets_sources": 218186285
+  },
+  "solidarites_departements": {
+   "sources": {
+    "local_departements": [
+     "data/lake/collectivites/local_departements.parquet"
+    ],
+    "local_regions": [
+     "data/lake/collectivites/local_regions.parquet"
+    ],
+    "solidarites_drees_paph": [
+     "data/lake/solidarites_departements/solidarites_drees_paph.xlsx"
+    ],
+    "solidarites_drees_ase": [
+     "data/lake/solidarites_departements/solidarites_drees_ase.xlsx"
+    ],
+    "solidarites_drees_minima_dep": [
+     "data/lake/solidarites_departements/solidarites_drees_minima_dep.xlsx"
+    ],
+    "solidarites_ofgl_formules": [
+     "data/lake/solidarites_departements/solidarites_ofgl_formules.parquet"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 11418827,
+   "note": "relevé à la lecture du module (pas sous strace) ; lit aussi site/data/territoires et site/data/prestations (étapes précédentes)"
   }
  },
  "urls": {
@@ -1987,6 +2013,10 @@
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2013_81e6d11b.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151646/hospidiag_opendata_2013.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2014_a2ad446d.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151545/hospidiag_opendata_2014.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2015_289b8533.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151239/hospidiag_opendata_2015.xlsx",
-  "data/lake/secu/secu_atih_finances_ebnl.parquet": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/isf-finance-ebnl-public/exports/parquet"
+  "data/lake/secu/secu_atih_finances_ebnl.parquet": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/isf-finance-ebnl-public/exports/parquet",
+  "data/lake/solidarites_departements/solidarites_drees_ase.xlsx": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/les-beneficiaires-de-l-aide-sociale-a-l-enfance/attachments/les_beneficiaires_de_l_aide_sociale_a_l_enfance_series_longues_1996_2024_xlsx",
+  "data/lake/solidarites_departements/solidarites_drees_minima_dep.xlsx": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/336_minima-sociaux-rsa-et-prime-d-activite/attachments/minima_sociaux_donnees_departementales_par_dispositif_xlsx",
+  "data/lake/solidarites_departements/solidarites_drees_paph.xlsx": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/les-beneficiaires-de-l-aide-sociale-departementale-aux-personnes-agees-ou-handic/attachments/paph_les_beneficiaires_de_l_aide_sociale_departementale_series_longues_1996_2024_xlsx",
+  "data/lake/solidarites_departements/solidarites_ofgl_formules.parquet": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/methodologie-ofgl-formules-des-agregats-financiers/exports/parquet?where=type_collectivite+in+%28%22D%C3%A9partements%22%2C+%22R%C3%A9gions%22%29+and+agregat+in+%28%22Allocations+RSA%22%2C+%22Allocations+APA%22%2C+%22Allocations+PCH%22%2C+%22Frais+d%27h%C3%A9bergement%22%2C+%22TICPE%22%2C+%22FMDI%22%2C+%22CNSA%22%29&select=agregat%2Ctype_collectivite%2Cannee%2Cnomenclatures%2Cformule%2Cformule_avec_libelle"
  }
 }
