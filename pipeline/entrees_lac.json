@@ -1936,6 +1936,56 @@
    "hors_catalogue": [],
    "octets_sources": null,
    "note": "entrées collectées par le module lui-même (pipeline/emploi.py collecter, data/lake/emploi/) ; non relevées sous strace"
+  },
+  "petite_enfance": {
+   "sources": {
+    "pe_caf_action_sociale_dep": [
+     "data/lake/petite_enfance/pe_caf_action_sociale_dep.parquet"
+    ],
+    "pe_caf_action_sociale_nat": [
+     "data/lake/petite_enfance/pe_caf_action_sociale_nat.parquet"
+    ],
+    "pe_caf_cmg_dep": [
+     "data/lake/petite_enfance/pe_caf_cmg_dep.parquet"
+    ],
+    "pe_caf_couverture_dep": [
+     "data/lake/petite_enfance/pe_caf_couverture_dep.parquet"
+    ],
+    "pe_caf_couverture_dep_hist": [
+     "data/lake/petite_enfance/pe_caf_couverture_dep_hist.parquet"
+    ],
+    "pe_caf_couverture_nat": [
+     "data/lake/petite_enfance/pe_caf_couverture_nat.parquet"
+    ],
+    "pe_caf_couverture_nat_hist": [
+     "data/lake/petite_enfance/pe_caf_couverture_nat_hist.parquet"
+    ],
+    "pe_caf_depenses_nat": [
+     "data/lake/petite_enfance/pe_caf_depenses_nat.parquet"
+    ],
+    "pe_caf_places_dep": [
+     "data/lake/petite_enfance/pe_caf_places_dep.parquet"
+    ],
+    "pe_caf_places_dep_hist": [
+     "data/lake/petite_enfance/pe_caf_places_dep_hist.parquet"
+    ],
+    "pe_caf_places_nat": [
+     "data/lake/petite_enfance/pe_caf_places_nat.parquet"
+    ],
+    "pe_caf_places_nat_hist": [
+     "data/lake/petite_enfance/pe_caf_places_nat_hist.parquet"
+    ],
+    "pe_drees_offre_accueil_2024": [
+     "data/lake/petite_enfance/pe_drees_offre_accueil_2024.xlsx"
+    ],
+    "secu_caf_s_ben_dep": [
+     "data/lake/secu/secu_caf_s_ben_dep.parquet"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 6304808,
+   "note": "sources du domaine « petite_enfance » de collecte/catalogue.json et secu_caf_s_ben_dep, collectées par `python pipeline/petite_enfance.py collecter` ; chemins relevés dans le manifeste (pas sous strace)"
   }
  },
  "urls": {
@@ -2494,6 +2544,20 @@
   "data/lake/culture_medias/culture_medias_presse_pluralisme_ultramarins/aide-au-pluralisme-des-titres-ultramarins_2025_64ad7473.csv": "https://static.data.gouv.fr/resources/aide-au-pluralisme-des-titres-ultramarins/20261106-204451/aide-au-pluralisme-des-titres-ultramarins.csv",
   "data/lake/culture_medias/culture_medias_presse_publications_faibles_ressources_pub/aides-aux-publications-nationales-a-faibles-ressources-publi_3be0c144.csv": "https://static.data.gouv.fr/resources/aides-aux-publications-nationales-a-faibles-ressources-publicitaires-2/20261106-204136/aides-aux-publications-nationales-a-faibles-ressources-publicitaires.csv",
   "data/lake/culture_medias/culture_medias_presse_quotidiens_faibles_ressources_pa/aide-aux-quotidiens-regionaux-departementaux-et-locaux-a-fai_7ba8071d.csv": "https://static.data.gouv.fr/resources/aide-aux-quotidiens-regionaux-departementaux-et-locaux-a-faibles-ressources-de-petites-annonces-2/20261106-204250/aide-aux-quotidiens-regionaux-departementaux-et-locaux-a-faibles-ressources-de-p.csv",
-  "data/lake/culture_medias/culture_medias_presse_titres/aides-a-la-presse-classement-des-titres-de-presse-aides_fdbf8702.csv": "https://static.data.gouv.fr/resources/aides-a-la-presse-classement-des-titres-de-presse-aides/20250827-130747/aides-a-la-presse-classement-des-titres-de-presse-aides.csv"
+  "data/lake/culture_medias/culture_medias_presse_titres/aides-a-la-presse-classement-des-titres-de-presse-aides_fdbf8702.csv": "https://static.data.gouv.fr/resources/aides-a-la-presse-classement-des-titres-de-presse-aides/20250827-130747/aides-a-la-presse-classement-des-titres-de-presse-aides.csv",
+  "data/lake/petite_enfance/pe_caf_action_sociale_dep.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/vfdas_dep/exports/parquet",
+  "data/lake/petite_enfance/pe_caf_action_sociale_nat.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/vfdas_nat/exports/parquet",
+  "data/lake/petite_enfance/pe_caf_cmg_dep.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/ndurcmg_s_sitfam_dep/exports/parquet",
+  "data/lake/petite_enfance/pe_caf_couverture_dep.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/txcouv_pe_dep/exports/parquet",
+  "data/lake/petite_enfance/pe_caf_couverture_dep_hist.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/txcouv_pe_dep_hist/exports/parquet",
+  "data/lake/petite_enfance/pe_caf_couverture_nat.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/txcouv_pe_nat/exports/parquet",
+  "data/lake/petite_enfance/pe_caf_couverture_nat_hist.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/txcouv_pe_nat_hist/exports/parquet",
+  "data/lake/petite_enfance/pe_caf_depenses_nat.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/dep_tr_nat/exports/parquet",
+  "data/lake/petite_enfance/pe_caf_places_dep.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/nbpla_pe_dep/exports/parquet",
+  "data/lake/petite_enfance/pe_caf_places_dep_hist.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/nbpla_pe_dep_hist/exports/parquet",
+  "data/lake/petite_enfance/pe_caf_places_nat.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/nbpla_pe_nat/exports/parquet",
+  "data/lake/petite_enfance/pe_caf_places_nat_hist.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/nbpla_pe_nat_hist/exports/parquet",
+  "data/lake/petite_enfance/pe_drees_offre_accueil_2024.xlsx": "https://data.drees.solidarites-sante.gouv.fr/api/v2/catalog/datasets/331_l-offre-d-accueil-du-jeune-enfant/attachments/l_offre_d_accueil_des_enfants_de_moins_de_3_ans_series_longues_et_resulats_detailles_2024_xlsx",
+  "data/lake/secu/secu_caf_s_ben_dep.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/s_ben_dep/exports/parquet"
  }
 }

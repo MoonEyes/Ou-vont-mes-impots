@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/petite_enfance_departement.schema.json",
+  "title": "site/data/petite_enfance/departements/<annee>.json : accueil du jeune enfant par département (pipeline/petite_enfance.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "modes": {
+      "type": "object",
+      "properties": {
+        "serie": {
+          "enum": [
+            "depuis_2022",
+            "historique_2017_2022"
+          ]
+        }
+      },
+      "required": [
+        "serie",
+        "total"
+      ],
+      "additionalProperties": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    },
+    "drees": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "places_agreees": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        },
+        "places_agreees_total": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "agrements_assistants_maternels": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "required": [
+        "places_agreees",
+        "places_agreees_total",
+        "agrements_assistants_maternels"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "annee": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+    },
+    "departements": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^(\\d{2}|2A|2B|97\\d)$"
+      },
+      "minProperties": 100,
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string",
+            "minLength": 2
+          },
+          "places_cnaf": {
+            "type": "array",
+            "maxItems": 2,
+            "items": {
+              "$ref": "#/$defs/modes"
+            }
+          },
+          "couverture_cnaf": {
+            "type": "array",
+            "maxItems": 2,
+            "items": {
+              "$ref": "#/$defs/modes"
+            }
+          },
+          "action_sociale_eur": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          },
+          "cmg": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "foyers_decembre": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "montant_annuel_eur": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "foyers_decembre_par_type": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                }
+              }
+            },
+            "required": [
+              "foyers_decembre",
+              "montant_annuel_eur",
+              "foyers_decembre_par_type"
+            ],
+            "additionalProperties": false
+          },
+          "drees": {
+            "$ref": "#/$defs/drees"
+          }
+        },
+        "required": [
+          "nom",
+          "places_cnaf",
+          "couverture_cnaf",
+          "action_sociale_eur",
+          "cmg",
+          "drees"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "hors_departements": {
+      "type": "object"
+    },
+    "drees_autres_territoires": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "20",
+          "69D",
+          "69M"
+        ]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "nom",
+          "places_agreees",
+          "places_agreees_total",
+          "agrements_assistants_maternels"
+        ]
+      }
+    },
+    "non_disponibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "departement",
+          "annee",
+          "donnee",
+          "motif"
+        ]
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "annee",
+    "unite",
+    "definitions",
+    "modes_places",
+    "postes_action_sociale",
+    "types_cmg",
+    "categories_drees",
+    "departements",
+    "hors_departements",
+    "drees_autres_territoires",
+    "non_disponibles",
+    "notes"
+  ]
+}

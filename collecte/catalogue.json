@@ -4724,6 +4724,136 @@
    "titre": "Dares, « Données sur le recours à l'aide à l'embauche des jeunes » (NOE, ASP, DGEFP, au 5 mars 2022) : aides validées par semaine, secteur (groupe de la NAF) et département de l'employeur (pipeline/emploi.py)",
    "licence": "Licence Ouverte 2.0",
    "module": "pipeline/emploi.py"
+  },
+  {
+   "id": "pe_caf_places_dep",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "nbpla_pe_dep",
+   "titre": "CNAF, places offertes aux enfants de moins de 3 ans par mode d'accueil et par departement, depuis 2022 (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_caf_places_dep_hist",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "nbpla_pe_dep_hist",
+   "titre": "CNAF, places offertes aux enfants de moins de 3 ans par departement, historique 2017-2022 (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_caf_places_nat",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "nbpla_pe_nat",
+   "titre": "CNAF, places offertes aux enfants de moins de 3 ans, France, depuis 2022 (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_caf_places_nat_hist",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "nbpla_pe_nat_hist",
+   "titre": "CNAF, places offertes aux enfants de moins de 3 ans, France, historique 2017-2022 (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_caf_couverture_dep",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "txcouv_pe_dep",
+   "titre": "CNAF, taux de couverture d'accueil du jeune enfant par departement, depuis 2022 (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_caf_couverture_dep_hist",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "txcouv_pe_dep_hist",
+   "titre": "CNAF, taux de couverture d'accueil du jeune enfant par departement, historique 2017-2022 (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_caf_couverture_nat",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "txcouv_pe_nat",
+   "titre": "CNAF, taux de couverture d'accueil du jeune enfant, France, depuis 2022 (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_caf_couverture_nat_hist",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "txcouv_pe_nat_hist",
+   "titre": "CNAF, taux de couverture d'accueil du jeune enfant, France, historique 2017-2022 (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_caf_action_sociale_dep",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "vfdas_dep",
+   "titre": "CNAF, depenses d'action sociale des CAF par fonction, par caisse (departement), depuis 2017 (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_caf_action_sociale_nat",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "vfdas_nat",
+   "titre": "CNAF, depenses d'action sociale des CAF par fonction, France, depuis 2017 (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_caf_depenses_nat",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "dep_tr_nat",
+   "titre": "CNAF, depenses tous regimes par prestation (lignes du complement de libre choix du mode de garde), France (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_caf_cmg_dep",
+   "domaine": "petite_enfance",
+   "type": "ods_export",
+   "portail": "caf",
+   "dataset": "ndurcmg_s_sitfam_dep",
+   "titre": "CNAF, foyers beneficiaires du complement de libre choix du mode de garde par type et par departement, mensuel (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "pe_drees_offre_accueil_2024",
+   "domaine": "petite_enfance",
+   "type": "url",
+   "format": "xlsx",
+   "url": "https://data.drees.solidarites-sante.gouv.fr/api/v2/catalog/datasets/331_l-offre-d-accueil-du-jeune-enfant/attachments/l_offre_d_accueil_des_enfants_de_moins_de_3_ans_series_longues_et_resulats_detailles_2024_xlsx",
+   "titre": "DREES, l'offre d'accueil des enfants de moins de 3 ans, series longues et resultats detailles 2024 (enquete Aide sociale, volet PMI) (pipeline/petite_enfance.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/petite_enfance.py"
   }
  ],
  "non_collectables": [

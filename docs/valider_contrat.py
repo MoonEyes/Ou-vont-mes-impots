@@ -335,6 +335,10 @@ FICHIERS = [
     ("emploi_france_travail.schema.json", "emploi/france_travail.json", "existant"),
     ("emploi_activite_partielle.schema.json", "emploi/activite_partielle.json", "existant"),
     ("emploi_aides_embauche.schema.json", "emploi/aides_embauche.json", "existant"),
+    # accueil du jeune enfant : places, complément de mode de garde, action sociale des CAF (pipeline/petite_enfance.py)
+    ("petite_enfance_index.schema.json", "petite_enfance/index.json", "existant"),
+    ("petite_enfance_nationales.schema.json", "petite_enfance/nationales.json", "existant"),
+    ("petite_enfance_departement.schema.json", "petite_enfance/departements/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

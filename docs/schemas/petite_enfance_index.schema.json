@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/petite_enfance_index.schema.json",
+  "title": "site/data/petite_enfance/index.json : accueil du jeune enfant, dispositifs, chiffres clés, écarts entre sources, liens, sources (pipeline/petite_enfance.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "lien": {
+      "type": "object",
+      "properties": {
+        "vue": {
+          "enum": [
+            "prestations",
+            "secu_arbre"
+          ]
+        },
+        "fichier": {
+          "type": "string",
+          "pattern": "^(prestations|secu)/.+\\.json$"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lecture": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "required": [
+        "vue",
+        "fichier",
+        "id",
+        "lecture"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "page": {
+          "type": "string"
+        },
+        "titre": {
+          "type": "string"
+        },
+        "producteur": {
+          "type": "string"
+        },
+        "millesime": {
+          "type": "string"
+        },
+        "licence": {
+          "type": "string"
+        },
+        "verdict": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "titre",
+        "producteur",
+        "millesime",
+        "licence",
+        "verdict"
+      ]
+    },
+    "ecart": {
+      "type": "object",
+      "properties": {
+        "sujet": {
+          "type": "string"
+        },
+        "annee": {
+          "$ref": "commun.schema.json#/$defs/annee_entier"
+        },
+        "unite": {
+          "enum": [
+            "places",
+            "places pour 100 enfants",
+            "euros"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "valeur": {
+          "type": "number"
+        },
+        "autre_source": {
+          "type": "string"
+        },
+        "autre_valeur": {
+          "type": "number"
+        },
+        "ecart": {
+          "type": "number"
+        },
+        "ecart_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "lecture": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "required": [
+        "sujet",
+        "annee",
+        "unite",
+        "source",
+        "valeur",
+        "autre_source",
+        "autre_valeur",
+        "ecart",
+        "ecart_pct",
+        "lecture"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "date_sources": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "derniere_annee": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+    },
+    "dispositifs": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "cmg",
+              "action_sociale",
+              "places",
+              "places_agreees"
+            ]
+          },
+          "nom": {
+            "type": "string"
+          },
+          "financeur": {
+            "type": "string"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "annees_departements": {
+            "type": "array",
+            "items": {
+              "$ref": "commun.schema.json#/$defs/annee_entier"
+            }
+          },
+          "liens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/lien"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "nom",
+          "sources",
+          "annees_departements"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "fichiers": {
+      "type": "object",
+      "properties": {
+        "nationales": {
+          "const": "petite_enfance/nationales.json"
+        },
+        "departements": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^petite_enfance/departements/\\d{4}\\.json$"
+          }
+        }
+      },
+      "required": [
+        "nationales",
+        "departements"
+      ]
+    },
+    "chiffres_cles": {
+      "type": "object",
+      "required": [
+        "annee",
+        "note"
+      ]
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ecart"
+      },
+      "minItems": 1
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/lien"
+      },
+      "minItems": 1
+    },
+    "couverture_departementale": {
+      "type": "object",
+      "required": [
+        "departements",
+        "codes_hors_departement"
+      ]
+    },
+    "regle": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/source"
+      },
+      "minProperties": 5
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "motif": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "motif"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "conclusion",
+        "trouvailles"
+      ]
+    }
+  },
+  "required": [
+    "date_sources",
+    "annees",
+    "derniere_annee",
+    "dispositifs",
+    "fichiers",
+    "chiffres_cles",
+    "ecarts",
+    "liens",
+    "regle",
+    "sources",
+    "sources_inaccessibles",
+    "recherche_publique"
+  ]
+}

@@ -179,6 +179,7 @@ ETAPES: tuple[Etape, ...] = (
         ("base", "realisations", "operateurs", "associations", "local"), duree_s=60),
     axe("emploi", "Emploi : Unédic, France Travail, activité partielle", ("base", "operateurs", "secu", "prestations"),
         duree_s=30),
+    axe("petite_enfance", "Accueil du jeune enfant", ("secu", "prestations"), duree_s=30),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
