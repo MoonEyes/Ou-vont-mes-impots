@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/entites_fiches.schema.json",
+  "title": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py)",
+  "allOf": [{"$ref": "commun.schema.json#/$defs/entete"}],
+  "type": "object",
+  "$defs": {
+    "valeur": {"type": "array", "prefixItems": [
+        {"oneOf": [{"type": "integer", "minimum": 1990, "maximum": 2100}, {"type": "string", "pattern": "^[0-9]{4}(-[0-9]{4})?$"}, {"type": "null"}]},
+        {"type": ["number", "null"]}],
+      "minItems": 2, "maxItems": 2},
+    "serie": {"type": "object",
+      "properties": {
+        "precision": {"type": "string"},
+        "lien": {"type": "string", "pattern": "^(/[a-z0-9/_-]*(\\?.*)?|https://www\\.ccomptes\\.fr/.+)$"},
+        "statut": {"enum": ["approche"]},
+        "valeurs": {"type": "array", "items": {"$ref": "#/$defs/valeur"}, "minItems": 1}},
+      "required": ["precision", "valeurs"], "additionalProperties": false},
+    "bloc": {"type": "object",
+      "properties": {
+        "canal": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "notion": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "fichiers": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9_]+/.+\\.json$"}, "minItems": 1},
+        "nombre_lignes": {"type": "integer", "minimum": 1},
+        "sommes_par_annee": {"type": "array", "items": {"type": "array", "prefixItems": [
+            {"type": "integer"}, {"type": "number"}, {"type": "integer", "minimum": 2}, {"type": "string"}],
+          "minItems": 3, "maxItems": 4},
+          "description": "[année, somme calculée par le site, nombre de lignes, groupe si plusieurs] : mêmes canal, notion, groupe et année"},
+        "series_non_affichees": {"type": "object", "properties": {"nombre": {"type": "integer"}, "regle": {"type": "string"}}, "required": ["nombre", "regle"]},
+        "series": {"type": "array", "items": {"$ref": "#/$defs/serie"}, "minItems": 1}},
+      "required": ["canal", "notion", "fichiers", "nombre_lignes", "series"], "additionalProperties": false},
+    "probable": {"type": "object",
+      "properties": {
+        "canal": {"type": "string"}, "notion": {"type": "string"}, "nom_publie": {"type": "string"},
+        "departement": {"type": "string"}, "score": {"type": "number", "minimum": 0, "maximum": 1},
+        "decision": {"const": "probable"}, "precision": {"type": "string"},
+        "lien": {"type": ["string", "null"]}, "annee": {"type": ["integer", "null"]}},
+      "required": ["canal", "notion", "nom_publie", "departement", "score", "decision", "precision"], "additionalProperties": false},
+    "fiche": {"type": "object",
+      "properties": {
+        "siren": {"$ref": "commun.schema.json#/$defs/siren"},
+        "denomination": {"type": "string", "minLength": 1},
+        "categorie_juridique": {"type": "string", "pattern": "^[2-9][0-9]{3}$", "not": {"enum": ["2110", "2210", "2310", "2385"]}},
+        "departements": {"type": "array", "items": {"type": "string"}},
+        "canaux": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "recoit": {"type": "array", "items": {"$ref": "#/$defs/bloc"}},
+        "autres": {"type": "array", "items": {"$ref": "#/$defs/bloc"}},
+        "sommes_entre_canaux": {"type": "array", "items": {"type": "object",
+          "properties": {"annee": {"type": "integer"}, "groupe": {"type": "string"}, "montant_eur": {"type": "number"},
+            "canaux": {"type": "array", "items": {"type": "string"}, "minItems": 2}, "statut": {"const": "calculé par le site"}},
+          "required": ["annee", "groupe", "montant_eur", "canaux", "statut"]}},
+        "probables": {"type": "array", "items": {"$ref": "#/$defs/probable"}}},
+      "required": ["siren", "denomination", "categorie_juridique", "departements", "canaux", "recoit", "autres"],
+      "additionalProperties": false}
+  },
+  "properties": {
+    "prefixe": {"type": "string", "pattern": "^[0-9]{1,9}$"},
+    "colonnes_valeurs": {"const": ["annee_ou_periode", "montant_eur"]},
+    "fiches": {"type": "object", "propertyNames": {"pattern": "^[0-9]{9}$"}, "additionalProperties": {"$ref": "#/$defs/fiche"}}
+  },
+  "required": ["prefixe", "colonnes_valeurs", "fiches"]
+}

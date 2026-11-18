@@ -118,6 +118,17 @@ const AUTRES_ENTITES = [
     groupe: 'Ministères',
     extraire: (d) => (d.ministeres ?? []).filter((x) => typeof x?.ministere === 'string').map((x) => ({ nom: x.ministere, precision: 'Effectifs et masse salariale' })),
   },
+  {
+    cle: 'organisation',
+    fichier: 'entites/recherche_globale.json',
+    nom: 'Organisation',
+    groupe: 'Organisations présentes dans plusieurs sources du site',
+    // Organisations reliées par leur SIREN dans plusieurs sources (pipeline/entites.py) : la cible est leur fiche.
+    extraire: (d) =>
+      (d.entrees ?? [])
+        .filter((x) => Array.isArray(x) && /^\d{9}$/.test(x[0]) && typeof x[1] === 'string')
+        .map((x) => ({ nom: x[1], precision: `${x[2]} sources du site`, cles: x[0], cible: `#/beneficiaires/organisation?siren=${x[0]}` })),
+  },
 ]
 
 /** Sigles des établissements pénitentiaires (direction de l'administration pénitentiaire). */
@@ -345,7 +356,7 @@ export function construireIndex({ lire, lister, routes, sourceEcran, outils }) {
     for (const x of liste) {
       if (typeof x?.nom !== 'string' || !x.nom.trim() || vus.has(x.nom.toLowerCase())) continue
       vus.add(x.nom.toLowerCase())
-      ajouter(a.cle, x.nom, '#' + page.chemin, [a.nom, x.precision].filter(Boolean).join(' · '), x.cles ?? '')
+      ajouter(a.cle, x.nom, x.cible ?? '#' + page.chemin, [a.nom, x.precision].filter(Boolean).join(' · '), x.cles ?? '')
     }
   }
 

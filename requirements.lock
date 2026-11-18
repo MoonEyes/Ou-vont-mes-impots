@@ -1866,6 +1866,18 @@ six==1.17.0 \
     # via
     #   -c /root/ovmi_work/freeze.txt
     #   python-dateutil
+splink==5.0.0 \
+    --hash=sha256:389dfc2669b08889324571d5ef19a068bc8901e3a6ea1cc5c23af95fbe021177 \
+    --hash=sha256:4b4b99a9d9d59f313a6bee766832d5632d33ff39083d153f5e9a5ab505325a1c
+    # via
+    #   -c /root/ovmi_work/freeze.txt
+    #   -r /root/ovmi_work/req.txt
+sqlglot==30.33.0 \
+    --hash=sha256:9c007e0471c93e778d8613f25853543b959a3f793d9dadf1341b3d6bd53246a8 \
+    --hash=sha256:a5b279fe7397a9fb6cdd0274a13a5fcee0fa83ac6ff617083f1f2832031e90bc
+    # via
+    #   -c /root/ovmi_work/freeze.txt
+    #   splink
 tabulate==0.10.0 \
     --hash=sha256:e2cfde8f79420f6deeffdeda9aaec3b6bc5abce947655d17ac662b126e48a60d \
     --hash=sha256:f0b0622e567335c8fabaaa659f1b33bcb6ddfe2e496071b743aa113f8774f2d3

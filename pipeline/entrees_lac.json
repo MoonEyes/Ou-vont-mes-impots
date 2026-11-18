@@ -2054,6 +2054,15 @@
    "hors_catalogue": [],
    "octets_sources": 31467805,
    "note": "entrées relevées dans le manifeste de collecte (python pipeline/typologies.py collecter), non relevées sous strace ; lit aussi site/data/local et site/data/revenus_communes"
+  },
+  "entites": {
+   "sources": {},
+   "caches": [
+    "data/lake/_cache/local/prenoms.json",
+    "data/lake/_cache/local/sirene_unite_legale.parquet"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": 0
   }
  },
  "urls": {
