@@ -189,6 +189,9 @@ describe('« Préciser ma situation » : chaque profil du moteur étendu, de la 
       await attendreQue(() => main.querySelectorAll('#par-destinataire li').length > 0)
       if (r.prelevements.some((l) => l.destinataire.id === 'non_affecte')) {
         expect(t).toContain('Répartition entre organismes non publiée dans les données du site')
+      }
+      // Vue par défaut sans la part employeur : la ligne « non publié » n'y figure que si une ligne versée en est.
+      if (r.prelevements.some((l) => l.destinataire.id === 'non_affecte' && l.inclus_dans_total_paye && l.famille !== 'cotisation_patronale')) {
         expect($('#par-destinataire').textContent).toContain('Destinataire non publié dans les données du site')
         expect($('#par-destinataire').textContent).not.toContain('Destinataire non publié dans les données du site (')
       }
@@ -370,8 +373,11 @@ describe('textes du profil retenu', () => {
     const limites = norm(limitesDuCalcul(profil, r, false).join(' '))
     expect(limites).toContain('Centre national de la fonction publique territoriale')
     expect(limites).toContain('Complémentaire santé')
-    expect(limites).toContain('Retenue pour pension civile')
-    expect(limites).toContain('de la part de l’employeur')
+    // Retenue pour pension civile : destinataire publié depuis l'affectation étendue (vague 3), plus dans les limites.
+    expect(limites).not.toContain('Retenue pour pension civile')
+    // Lignes de l'employeur sans destinataire publié : citées seulement s'il en reste avec l'affectation publiée.
+    const employeurSans = r.prelevements.some((l) => l.destinataire.id === 'non_affecte' && l.famille === 'cotisation_patronale')
+    expect(limites.includes('de la part de l’employeur')).toBe(employeurSans)
     expect(limites).toContain('Commune non précisée')
     expect(limites).not.toContain('Cipav')
     expect(norm(resumeProfil(profil, r))).toMatch(/^En couple marié ou pacsé, 2 enfants ; toi : fonctionnaire titulaire, [\d\s]+ € net avant impôt par mois ; ton ou ta conjoint·e : salarié·e du secteur privé, 2 100 € net avant impôt par mois$/)

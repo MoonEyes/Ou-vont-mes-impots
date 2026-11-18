@@ -752,6 +752,25 @@ DEST_SANS_NOEUD = {
     "msa_rco": {"motif": "Retraite complémentaire obligatoire des non-salariés agricoles : aucun nœud propre ; son "
                          "rattachement à un nœud des régimes complémentaires n'est pas établi poste par poste.",
                 "noeud_englobant": None},
+    # Destinataires ajoutés à prelevements/affectation.json par l'affectation étendue (vague 3), sans nœud propre.
+    "cnracl": {"motif": "Caisse de retraite des agents des collectivités locales et des hôpitaux : régime de base, que "
+                        "l'arbre présente par branche (retraite de base, tous régimes) et non par régime.",
+               "noeud_englobant": "robss/vieillesse"},
+    "erafp": {"motif": "Retraite additionnelle de la fonction publique : régime complémentaire regroupé avec les autres "
+                       "régimes complémentaires, sans nœud propre.",
+              "noeud_englobant": "complementaires/autres_regimes"},
+    "fsv": {"motif": "Le Fonds de solidarité vieillesse a un nœud dans l'arbre, mais le lien vers ce destinataire de "
+                     "l'affectation n'y est pas encore posé (arbre produit avant l'affectation étendue).",
+            "noeud_englobant": "robss/fsv"},
+    "ircantec": {"motif": "Retraite complémentaire des agents publics contractuels : régime complémentaire regroupé "
+                          "avec les autres régimes complémentaires, sans nœud propre.",
+                 "noeud_englobant": "complementaires/autres_regimes"},
+    "rci_independants": {"motif": "Retraite complémentaire des indépendants : régime complémentaire regroupé avec les "
+                                  "autres régimes complémentaires, sans nœud propre.",
+                         "noeud_englobant": "complementaires/autres_regimes"},
+    "regime_local_am": {"motif": "Régime local d'assurance maladie d'Alsace-Moselle : régime complémentaire "
+                                 "obligatoire de la branche maladie, que l'arbre ne présente pas à part.",
+                        "noeud_englobant": "robss/maladie"},
 }
 
 

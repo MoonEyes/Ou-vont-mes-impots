@@ -2116,6 +2116,28 @@
    "hors_catalogue": [],
    "octets_sources": 4017740,
    "note": "source « pouvoirs_publics_documents » de collecte/catalogue.json (python pipeline/pouvoirs_publics.py collecter) et trois jeux de data/lake/etat déjà collectés par d'autres étapes ; lit aussi site/data/realisations/5xx.json et site/data/fonction_publique/indemnites_elus.json (sorties d'étapes, lecture seule)"
+  },
+  "millesimes": {
+   "sources": {},
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/etat/etat_plrg_2024",
+    "data/lake/etat/etat_plrg_2025"
+   ],
+   "octets_sources": 0,
+   "note": "relevé écrit à la main lors de l'intégration de la vague 3 (non relevé sous strace) : annexes 1 et 2 des lois relatives aux résultats de la gestion 2024 et 2025 (pipeline/millesimes.py) ; dossiers des sources etat_plrg_2024 et etat_plrg_2025 du catalogue, collectés par pipeline/millesimes.py"
+  },
+  "fraicheur": {
+   "sources": {},
+   "caches": [
+    "data/lake/_cache/fraicheur",
+    "data/lake/_cache/tout"
+   ],
+   "hors_catalogue": [
+    "data/lake/manifest.json"
+   ],
+   "octets_sources": 0,
+   "note": "relevé écrit à la main lors de l'intégration de la vague 3 (non relevé sous strace) : manifeste de collecte, vérifications de fraîcheur et rapport de passage (pipeline/fraicheur.py)"
   }
  },
  "urls": {

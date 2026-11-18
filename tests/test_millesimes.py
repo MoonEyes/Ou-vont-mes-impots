@@ -47,7 +47,8 @@ def test_vue_par_defaut_inchangee(index):
     donnees = (ROOT / "web" / "src" / "donnees.ts").read_text(encoding="utf-8")
     debut = donnees.index("VUES_ARBRE: VueArbre[] = [")
     assert "cle: 'execution2024'" in donnees[debut:debut + 200]
-    assert "millesimes/" not in donnees
+    # Onglet « Dépensé en 2025 (par politique) » (vague 3) : millesimes/ est une vue de plus, jamais la vue par défaut.
+    assert donnees.index("cle: 'execution2024'") < donnees.index("millesimes/")
 
 
 def _somme(n: dict) -> None:
