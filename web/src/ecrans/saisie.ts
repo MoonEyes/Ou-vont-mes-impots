@@ -1,51 +1,128 @@
-// Écran 1 : saisie du salaire net avant impôt et du profil facultatif.
-import { verifierProfil } from '../calcul/perimetre'
-import type { Personne, Profil, ResultatErreur, StatutActivite } from '../calcul/types'
+// Écran 1 : saisie du salaire net avant impôt (chemin simple, par défaut) et, dans « Préciser ma situation », des
+// autres profils calculés par calculerProfil : fonction publique, apprentissage, retraite, micro-entreprise.
+// Contrôle léger sur le fil principal (perimetre-etendu.ts), calcul dans un Web Worker : rien n'est envoyé.
+import { saisieInvalide, verifierProfilEtendu } from '../calcul/perimetre-etendu'
+import { ANNEE_NAISSANCE_65_ANS } from '../calcul/profils-ui'
+import type { ActiviteMicro, PersonneEtendue, ProfilEtendu, ResultatErreurEtendu, StatutActivite, TauxCsgRetraite, Versant } from '../calcul/types'
 import { enregistrerDestinataires } from '../calcul/destinataires'
 import { ALSACE_MOSELLE, DEPARTEMENTS, departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { session } from '../etat'
+import { cartesRayons } from '../composants/hub'
 import { annoncer, h } from '../util'
 
 const STATUTS: [StatutActivite, string][] = [
   ['salarie_prive', 'Salarié·e du secteur privé'],
   ['sans_activite', 'Sans activité professionnelle'],
-  ['fonctionnaire', 'Fonctionnaire'],
+  ['fonctionnaire', 'Fonctionnaire titulaire'],
   ['contractuel_public', 'Contractuel·le de la fonction publique'],
   ['independant', 'Indépendant·e ou micro-entrepreneur·se'],
   ['retraite', 'Retraité·e'],
-  ['demandeur_emploi', 'Demandeur·se d’emploi indemnisé·e'],
+  ['demandeur_emploi', 'Demandeur·se d’emploi indemnisé·e (pas encore couvert)'],
   ['apprenti', 'Apprenti·e'],
   ['etudiant', 'Étudiant·e'],
 ]
 
+/** Situations dont le calcul part du salaire net avant impôt (le champ du chemin simple). */
+const AVEC_SALAIRE = new Set<StatutActivite>(['salarie_prive', 'fonctionnaire', 'contractuel_public', 'apprenti'])
+
+/** Précision affichée sous la situation choisie : ce qui n'est pas couvert, et vers quel choix aller. */
+const NOTES_STATUT: Partial<Record<StatutActivite, string>> = {
+  independant: 'Seul le régime de la micro-entreprise est calculé : les cotisations des indépendants au régime réel n’ont pas pu être vérifiées contre une autre source.',
+  demandeur_emploi: 'Les prélèvements sur les allocations chômage ne sont pas encore couverts.',
+  etudiant: 'Avec un emploi salarié ou un contrat d’apprentissage, choisis « Salarié·e du secteur privé » ou « Apprenti·e ». Sans revenu, dans un couple : « Sans activité professionnelle ».',
+}
+
 const AIDE_SALAIRE =
   'Prends sur ta fiche de paie la ligne <strong>Net à payer avant impôt sur le revenu</strong>. Si tu touches des primes ou un 13e mois, fais la moyenne sur 12 mois : additionne le net avant impôt de tes 12 dernières fiches et divise par 12. N’utilise ni le <em>net imposable</em>, ni le <em>montant net social</em>, ni le <em>net payé</em> (après prélèvement à la source).'
 
-function blocPersonne(n: 1 | 2, p?: Personne): string {
+const radios = (nom: string, options: [string, string][], courant?: string) =>
+  options.map(([v, l]) => `<label><input type="radio" name="${nom}" value="${v}"${v === courant ? ' checked' : ''} /> ${h(l)}</label>`).join('')
+
+/** Groupe de boutons radio : fieldset et legend ; aide et message d'erreur reliés au groupe (aria-describedby). */
+function groupe(id: string, legende: string, contenu: string, aide = ''): string {
+  return `<fieldset class="choix saisie-groupe" id="${id}" aria-describedby="${aide ? `${id}-aide ` : ''}${id}-msg">
+      <legend>${h(legende)}</legend>
+      ${aide ? `<p class="aide" id="${id}-aide">${h(aide)}</p>` : ''}
+      <p class="message-champ" id="${id}-msg" hidden></p>
+      ${contenu}
+    </fieldset>`
+}
+
+/** Champ de montant : libellé, aide et message d'erreur reliés au champ (aria-describedby). */
+function champ(id: string, libelle: string, valeur: number | undefined, aide = ''): string {
+  return `<label for="${id}">${h(libelle)}</label>
+      ${aide ? `<p class="aide" id="${id}-aide">${h(aide)}</p>` : ''}
+      <input id="${id}" type="text" inputmode="decimal" spellcheck="false" autocomplete="off" aria-describedby="${aide ? `${id}-aide ` : ''}${id}-msg" value="${valeur ?? ''}" />
+      <p class="message-champ" id="${id}-msg" hidden></p>`
+}
+
+function blocPersonne(n: 1 | 2, p?: PersonneEtendue): string {
   const id = (x: string) => `p${n}-${x}`
-  const statut = p?.statut_activite ?? (n === 1 ? 'salarie_prive' : 'salarie_prive')
+  const statut = p?.statut_activite ?? 'salarie_prive'
   const tp = p?.temps_travail?.type === 'temps_partiel' ? p.temps_travail.quotite : null
+  const ind = p?.independant
+  const c = p?.csg_pension
+  const csg = c ? ('taux' in c ? c.taux : 'rfr') : undefined
+  const rfr = c && 'revenu_fiscal_reference' in c ? c : undefined
+  const age = p?.annee_naissance === undefined ? undefined : p.annee_naissance <= ANNEE_NAISSANCE_65_ANS ? 'plus65' : 'moins65'
+  const contrat = p?.apprentissage ? (p.apprentissage.contrat_avant_mars_2025 ? 'avant' : 'depuis') : undefined
+  // Précisions ouvertes au retour sur la saisie si elles ont servi (autre situation, cadre, temps partiel, frontalier).
+  const ouvert = statut !== 'salarie_prive' || !!p?.cadre || tp !== null || !!p?.frontalier
   return `<fieldset id="${id('bloc')}" ${n === 2 ? 'hidden' : ''}>
   <legend>${n === 1 ? 'Toi' : 'Ton ou ta conjoint·e'}</legend>
-  <label for="${id('statut')}">Situation professionnelle</label>
-  <select id="${id('statut')}" name="${id('statut')}">
-    ${STATUTS.map(([v, l]) => `<option value="${v}"${v === statut ? ' selected' : ''}>${h(l)}</option>`).join('')}
-  </select>
-  <div id="${id('salarie')}">
+  <div id="${id('salaire')}">
     <label for="${id('net')}">Salaire net avant impôt, par mois (en euros)</label>
     <input id="${id('net')}" name="${id('net')}" type="text" inputmode="decimal" spellcheck="false" autocomplete="off" aria-describedby="${id('aide')} ${id('msg')}" value="${p?.salaire_net_avant_impot_mensuel ?? ''}" />
     <p class="message-champ" id="${id('msg')}" hidden></p>
     <details><summary>Où trouver ce montant ?</summary><p class="aide" id="${id('aide')}">${AIDE_SALAIRE}</p></details>
-    <label class="case"><input type="checkbox" id="${id('cadre')}"${p?.cadre ? ' checked' : ''} /> Statut cadre</label>
-    <label class="case"><input type="checkbox" id="${id('partiel')}"${tp !== null ? ' checked' : ''} /> Temps partiel</label>
-    <div id="${id('quotite-bloc')}" ${tp === null ? 'hidden' : ''}>
-      <label for="${id('quotite')}">Quotité de travail (en % d’un temps plein)</label>
-      <input id="${id('quotite')}" type="text" inputmode="decimal" spellcheck="false" autocomplete="off" value="${tp !== null ? Math.round(tp * 100) : 80}" aria-describedby="${id('msg-q')}" />
-      <p class="message-champ" id="${id('msg-q')}" hidden></p>
-    </div>
-    <label class="case"><input type="checkbox" id="${id('frontalier')}"${p?.frontalier ? ' checked' : ''} /> Je travaille hors de France (frontalier)</label>
   </div>
+  <details id="${id('preciser')}"${ouvert ? ' open' : ''}>
+    <summary>Préciser ${n === 1 ? 'ma' : 'sa'} situation</summary>
+    <p class="aide">Par défaut, le calcul retient un salaire du secteur privé, à temps plein, non cadre. Fonction publique, apprentissage, retraite, micro-entreprise, temps partiel ou statut cadre : précise-le ici.</p>
+    <label for="${id('statut')}">Situation professionnelle</label>
+    <select id="${id('statut')}" name="${id('statut')}" aria-describedby="${id('note-statut')}">
+      ${STATUTS.map(([v, l]) => `<option value="${v}"${v === statut ? ' selected' : ''}>${h(l)}</option>`).join('')}
+    </select>
+    <p class="aide" id="${id('note-statut')}"${NOTES_STATUT[statut] ? '' : ' hidden'}>${h(NOTES_STATUT[statut] ?? '')}</p>
+    <div id="${id('opt-salarie')}">
+      <label class="case"><input type="checkbox" id="${id('cadre')}"${p?.cadre ? ' checked' : ''} /> Statut cadre</label>
+      <label class="case"><input type="checkbox" id="${id('frontalier')}"${p?.frontalier ? ' checked' : ''} /> Travail hors de France (frontalier)</label>
+    </div>
+    <div id="${id('opt-partiel')}">
+      <label class="case"><input type="checkbox" id="${id('partiel')}"${tp !== null ? ' checked' : ''} /> Temps partiel</label>
+      <div id="${id('quotite-bloc')}" ${tp === null ? 'hidden' : ''}>
+        <label for="${id('quotite')}">Quotité de travail (en % d’un temps plein)</label>
+        <input id="${id('quotite')}" type="text" inputmode="decimal" spellcheck="false" autocomplete="off" value="${tp !== null ? Math.round(tp * 100) : 80}" aria-describedby="${id('msg-q')}" />
+        <p class="message-champ" id="${id('msg-q')}" hidden></p>
+      </div>
+    </div>
+    <div id="${id('opt-fonctionnaire')}">
+      ${groupe(id('versant'), 'Versant de la fonction publique', radios(id('versant'), [['etat', 'Fonction publique de l’État'], ['territoriale', 'Fonction publique territoriale'], ['hospitaliere', 'Fonction publique hospitalière']], p?.versant))}
+      ${champ(id('primes'), 'Primes et indemnités, total brut par mois (en euros)', p?.primes_mensuelles, 'Additionne les primes et indemnités de la fiche de paie : indemnité de résidence, supplément familial de traitement, primes. Écris 0 s’il n’y en a pas.')}
+      ${champ(id('traitement'), 'Traitement indiciaire brut, par mois (facultatif)', p?.traitement_indiciaire_brut_mensuel, 'Ligne « traitement brut » de la fiche de paie. S’il est indiqué, le calcul part de ce traitement et des primes, et le salaire net est recalculé.')}
+    </div>
+    <div id="${id('opt-apprenti')}">
+      ${groupe(id('contrat'), 'Signature du contrat d’apprentissage', radios(id('contrat'), [['avant', 'Avant le 1er mars 2025'], ['depuis', 'Le 1er mars 2025 ou après']], contrat), 'Pour un contrat signé depuis le 1er mars 2025, la part du salaire exonérée de cotisations est plus basse et la CSG est due.')}
+    </div>
+    <div id="${id('opt-retraite')}">
+      ${champ(id('pension-base'), 'Retraite de base, par mois (en euros)', p?.pension_base_mensuelle, 'Régime général, fonction publique, régime agricole ou autre régime de base.')}
+      ${champ(id('pension-compl'), 'Retraite complémentaire, par mois (en euros)', p?.pension_complementaire_mensuelle || undefined, 'Agirc-Arrco, Ircantec, retraite additionnelle de la fonction publique. Laisse vide s’il n’y en a pas.')}
+      ${groupe(id('pension-saisie'), 'Ces montants sont', radios(id('pension-saisie'), [['nette_avant_impot', 'Nets avant impôt (versés avant le prélèvement à la source)'], ['brute', 'Bruts (avant CSG et cotisations)']], p?.pension_saisie ?? 'nette_avant_impot'))}
+      ${groupe(id('csg'), `Taux de CSG sur ${n === 1 ? 'ta' : 'sa'} pension`, radios(id('csg'), [['normal', 'Taux normal (8,3 %)'], ['median', 'Taux médian (6,6 %)'], ['reduit', 'Taux réduit (3,8 %)'], ['exonere', 'Exonération de CSG'], ['rfr', 'Je ne sais pas : le déduire de l’avis d’impôt']], csg), 'Il figure sur le relevé de pension et dépend du revenu fiscal de référence d’il y a deux ans.')}
+      <div id="${id('rfr-bloc')}"${csg === 'rfr' ? '' : ' hidden'}>
+        ${champ(id('rfr'), 'Revenu fiscal de référence de l’avis d’impôt 2024 (revenus 2023)', rfr?.revenu_fiscal_reference)}
+        ${champ(id('parts'), 'Nombre de parts de cet avis', rfr?.parts, 'Par exemple 1 pour une personne seule, 2 pour un couple marié ou pacsé.')}
+      </div>
+      ${groupe(id('age'), 'Âge au 31 décembre 2025', radios(id('age'), [['plus65', '65 ans ou plus (né·e en 1960 ou avant)'], ['moins65', 'Moins de 65 ans']], age), 'Sert à l’abattement d’impôt des personnes de 65 ans ou plus.')}
+    </div>
+    <div id="${id('opt-independant')}">
+      ${groupe(id('activite'), 'Nature de l’activité', radios(id('activite'), [['vente', 'Vente de marchandises'], ['service_bic', 'Prestations de services commerciales ou artisanales'], ['service_bnc', 'Activité libérale, affiliée au régime général']], ind?.activite))}
+      <div id="${id('artisan-bloc')}"><label class="case"><input type="checkbox" id="${id('artisan')}"${ind?.artisan ? ' checked' : ''} /> Activité artisanale (inscrite au répertoire des métiers)</label></div>
+      ${champ(id('ca'), 'Chiffre d’affaires encaissé en 2025, hors taxes (en euros, sur l’année)', ind?.chiffre_affaires_annuel)}
+      ${groupe(id('vl'), 'Versement libératoire de l’impôt sur le revenu', radios(id('vl'), [['oui', 'Oui, l’impôt est versé avec les cotisations'], ['non', 'Non']], ind?.versement_liberatoire === undefined ? undefined : ind.versement_liberatoire ? 'oui' : 'non'))}
+    </div>
+  </details>
 </fieldset>`
 }
 
@@ -63,7 +140,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
 <h1>Ton salaire</h1>
 ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abord ton salaire : le résultat se calcule à partir de ta saisie, et rien n’est gardé d’une visite à l’autre.</p>' : ''}
 <p class="chapeau">Indique ton salaire : le site calcule ce que tu verses chaque année, à qui va l’argent, puis montre où va l’argent public. Le calcul se fait <strong>sur ton appareil</strong> : rien de ce que tu saisis n’est envoyé ni enregistré.</p>
-<p class="aide">Version 1 : salarié·es du secteur privé vivant en métropole (hors Alsace-Moselle), revenus 2025.</p>
+<p class="aide">Revenus 2025, en France métropolitaine (Alsace-Moselle comprise). Par défaut, le calcul retient un salaire du secteur privé ; fonction publique, apprentissage, retraite et micro-entreprise se choisissent dans « Préciser ma situation ». Pas encore couverts : outre-mer, étranger, travail frontalier, allocations chômage, indépendants au régime réel.</p>
 <form id="formulaire" novalidate>
   <fieldset class="choix">
     <legend>Ton foyer</legend>
@@ -130,11 +207,17 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
   <div id="retour" aria-live="polite"></div>
 </form>
 <p class="aide">Aucune donnée ne quitte ton téléphone ou ton ordinateur : pas de cookie, pas de mesure d’audience. Voir <a href="#/mentions">confidentialité</a>.</p>
-<p><a href="#/explorer">Explorer sans saisir mon salaire</a></p>`
+<p><a href="#/explorer">Explorer sans saisir mon salaire</a></p>
+${cartesRayons('/calcul')}`
 
   const $ = <T extends HTMLElement>(s: string) => cible.querySelector(s) as T
   const form = $<HTMLFormElement>('#formulaire')
-  const situation = () => (form.querySelector('input[name=situation]:checked') as HTMLInputElement).value as Profil['foyer']['situation']
+  const situation = () => (form.querySelector('input[name=situation]:checked') as HTMLInputElement).value as ProfilEtendu['foyer']['situation']
+  const radio = (nom: string) => (form.querySelector(`input[name="${nom}"]:checked`) as HTMLInputElement | null)?.value
+  // Listes reposées par le script : l'attribut selected d'une option insérée par innerHTML est mal lu par certains
+  // moteurs de rendu (happy-dom des tests lit la 2e option dès que la 3e ou une suivante est choisie).
+  for (const n of [1, 2] as const) $<HTMLSelectElement>(`#p${n}-statut`).value = pr?.personnes[n - 1]?.statut_activite ?? 'salarie_prive'
+  $<HTMLSelectElement>('#zone').value = zone
 
   const majVisibilite = () => {
     const s = situation()
@@ -142,11 +225,19 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
     $('#p2-bloc').hidden = !couple
     $('#enfants-bloc').hidden = s === 'celibataire'
     for (const n of [1, 2]) {
-      const st = $<HTMLSelectElement>(`#p${n}-statut`).value
-      $(`#p${n}-salarie`).hidden = st !== 'salarie_prive'
+      const st = $<HTMLSelectElement>(`#p${n}-statut`).value as StatutActivite
+      $(`#p${n}-salaire`).hidden = !AVEC_SALAIRE.has(st)
+      $(`#p${n}-opt-salarie`).hidden = st !== 'salarie_prive'
+      $(`#p${n}-opt-partiel`).hidden = st !== 'salarie_prive' && st !== 'contractuel_public'
       $(`#p${n}-quotite-bloc`).hidden = !$<HTMLInputElement>(`#p${n}-partiel`).checked
+      for (const o of ['fonctionnaire', 'apprenti', 'retraite', 'independant']) $(`#p${n}-opt-${o}`).hidden = st !== o
+      $(`#p${n}-artisan-bloc`).hidden = radio(`p${n}-activite`) === 'service_bnc'
+      $(`#p${n}-rfr-bloc`).hidden = radio(`p${n}-csg`) !== 'rfr'
+      const note = $(`#p${n}-note-statut`)
+      note.textContent = NOTES_STATUT[st] ?? ''
+      note.hidden = !NOTES_STATUT[st]
     }
-    $('#tf-bloc').hidden = (form.querySelector('input[name=logement]:checked') as HTMLInputElement).value !== 'proprietaire'
+    $('#tf-bloc').hidden = radio('logement') !== 'proprietaire'
   }
   form.addEventListener('change', majVisibilite)
   majVisibilite()
@@ -165,6 +256,7 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
     comSel.innerHTML =
       '<option value="">Ne pas préciser</option>' +
       liste.map(([c, v]) => `<option value="${c}"${c === choisie ? ' selected' : ''}>${h(v[0])}</option>`).join('')
+    if (choisie && communes[choisie]) comSel.value = choisie
     if (ALSACE_MOSELLE.has(dep)) $<HTMLSelectElement>('#zone').value = 'alsace_moselle'
   }
   depSel.addEventListener('change', () => chargerCommunes(depSel.value))
@@ -189,6 +281,7 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
   // Le moteur de calcul (environ 160 Ko compressés, exécuté dans un Web Worker) est préchargé dès que l'on commence la saisie.
   const precharger = () => void import('../calcul/hors-fil').then((m) => m.prechauffer()).catch(() => {})
   $('#p1-net').addEventListener('focus', precharger, { once: true })
+  $('#p1-statut').addEventListener('focus', precharger, { once: true })
 
   const retour = $('#retour')
   const effacerErreurs = () => {
@@ -203,23 +296,95 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
     return t === '' ? NaN : Number(t)
   }
 
-  const lireProfil = (): Profil => {
-    const s = situation()
-    const couple = s.startsWith('couple')
-    const personne = (n: 1 | 2): Personne => {
-      const statut = $<HTMLSelectElement>(`#p${n}-statut`).value as StatutActivite
-      const p: Personne = { role: n === 1 ? 'declarant1' : 'declarant2', statut_activite: statut, frontalier: false }
-      if (statut === 'salarie_prive') {
-        const net = nombre($<HTMLInputElement>(`#p${n}-net`).value)
-        p.salaire_net_avant_impot_mensuel = Number.isFinite(net) ? net : 0
+  /** Montant facultatif : undefined si le champ est vide, NaN s'il est illisible. */
+  const facultatif = (sel: string) => {
+    const v = $<HTMLInputElement>(sel).value.trim()
+    return v === '' ? undefined : nombre(v)
+  }
+  const fini = (x: number | undefined) => (x !== undefined && Number.isFinite(x) ? x : undefined)
+
+  /** Une personne du foyer, telle que calculerProfil l'attend : seuls les champs de sa situation sont lus. */
+  const lirePersonne = (n: 1 | 2): PersonneEtendue => {
+    const statut = $<HTMLSelectElement>(`#p${n}-statut`).value as StatutActivite
+    const p: PersonneEtendue = { role: n === 1 ? 'declarant1' : 'declarant2', statut_activite: statut, frontalier: false }
+    const net = () => {
+      const x = nombre($<HTMLInputElement>(`#p${n}-net`).value)
+      return Number.isFinite(x) ? x : 0
+    }
+    const tempsTravail = (): PersonneEtendue['temps_travail'] => {
+      if (!$<HTMLInputElement>(`#p${n}-partiel`).checked) return { type: 'temps_plein' }
+      const q = nombre($<HTMLInputElement>(`#p${n}-quotite`).value.replace(/%$/, '')) / 100
+      return { type: 'temps_partiel', quotite: Number.isFinite(q) ? q : 0 }
+    }
+    switch (statut) {
+      case 'salarie_prive':
+        p.salaire_net_avant_impot_mensuel = net()
         p.cadre = $<HTMLInputElement>(`#p${n}-cadre`).checked
         p.frontalier = $<HTMLInputElement>(`#p${n}-frontalier`).checked
-        const partiel = $<HTMLInputElement>(`#p${n}-partiel`).checked
-        const q = nombre($<HTMLInputElement>(`#p${n}-quotite`).value.replace(/%$/, '')) / 100
-        p.temps_travail = partiel ? { type: 'temps_partiel', quotite: Number.isFinite(q) ? q : 0 } : { type: 'temps_plein' }
+        p.temps_travail = tempsTravail()
+        break
+      case 'contractuel_public':
+        p.salaire_net_avant_impot_mensuel = net()
+        p.temps_travail = tempsTravail()
+        break
+      case 'apprenti': {
+        p.salaire_net_avant_impot_mensuel = net()
+        const c = radio(`p${n}-contrat`)
+        if (c) p.apprentissage = { contrat_avant_mars_2025: c === 'avant' }
+        break
       }
-      return p
+      case 'fonctionnaire': {
+        const v = radio(`p${n}-versant`)
+        if (v) p.versant = v as Versant
+        const primes = fini(facultatif(`#p${n}-primes`))
+        if (primes !== undefined) p.primes_mensuelles = primes
+        // Traitement indiqué : le calcul part du traitement et des primes, le net saisi n'est pas utilisé.
+        const traitement = facultatif(`#p${n}-traitement`)
+        if (traitement !== undefined) p.traitement_indiciaire_brut_mensuel = Number.isFinite(traitement) ? traitement : 0
+        else p.salaire_net_avant_impot_mensuel = net()
+        break
+      }
+      case 'retraite': {
+        const base = fini(facultatif(`#p${n}-pension-base`))
+        if (base !== undefined) p.pension_base_mensuelle = base
+        // Retraite complémentaire laissée vide : aucune, comme le dit l'aide du champ.
+        const compl = facultatif(`#p${n}-pension-compl`)
+        if (compl === undefined) p.pension_complementaire_mensuelle = 0
+        else if (Number.isFinite(compl)) p.pension_complementaire_mensuelle = compl
+        p.pension_saisie = radio(`p${n}-pension-saisie`) === 'brute' ? 'brute' : 'nette_avant_impot'
+        const csg = radio(`p${n}-csg`)
+        if (csg === 'rfr') {
+          const rfr = fini(facultatif(`#p${n}-rfr`))
+          const parts = fini(facultatif(`#p${n}-parts`))
+          if (rfr !== undefined && parts !== undefined) p.csg_pension = { revenu_fiscal_reference: rfr, parts }
+        } else if (csg) p.csg_pension = { taux: csg as TauxCsgRetraite }
+        // Seul l'âge pivot compte (65 ans au 31 décembre) : né en 1960 ou avant, ou après.
+        const age = radio(`p${n}-age`)
+        if (age) p.annee_naissance = age === 'plus65' ? ANNEE_NAISSANCE_65_ANS : ANNEE_NAISSANCE_65_ANS + 1
+        break
+      }
+      case 'independant': {
+        const activite = radio(`p${n}-activite`) as ActiviteMicro | undefined
+        const ca = facultatif(`#p${n}-ca`)
+        const vl = radio(`p${n}-vl`)
+        p.independant = {
+          regime: 'micro',
+          ...(activite ? { activite } : {}),
+          artisan: activite !== 'service_bnc' && $<HTMLInputElement>(`#p${n}-artisan`).checked,
+          ...(ca !== undefined ? { chiffre_affaires_annuel: Number.isFinite(ca) ? ca : 0 } : {}),
+          ...(vl ? { versement_liberatoire: vl === 'oui' } : {}),
+        }
+        break
+      }
+      default:
+        break
     }
+    return p
+  }
+
+  const lireProfil = (): ProfilEtendu => {
+    const s = situation()
+    const couple = s.startsWith('couple')
     const nb = s === 'celibataire' ? 0 : Math.max(0, Math.min(10, Math.floor(Number($<HTMLInputElement>('#enfants').value) || 0)))
     const alt = Math.max(0, Math.min(nb, Math.floor(Number($<HTMLInputElement>('#alternee').value) || 0)))
     const z = $<HTMLSelectElement>('#zone').value
@@ -242,27 +407,63 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
         statut: logement,
         ...(logement === ('proprietaire' as string) && Number.isFinite(tf) && tf > 0 ? { taxe_fonciere_annuelle_eur: tf } : {}),
       },
-      personnes: couple ? [personne(1), personne(2)] : [personne(1)],
+      personnes: couple ? [lirePersonne(1), lirePersonne(2)] : [lirePersonne(1)],
     }
   }
 
-  const montrerErreur = (err: ResultatErreur) => {
+  /** Contrôle propre à la saisie, après celui du calcul : l'âge d'un·e retraité·e (abattement des 65 ans et plus). */
+  const verifierSaisie = (p: ProfilEtendu): ResultatErreurEtendu | null => {
+    const i = p.personnes.findIndex((q) => q.statut_activite === 'retraite' && q.annee_naissance === undefined)
+    if (i < 0) return null
+    return saisieInvalide(`/personnes/${i}/annee_naissance`, i === 0 ? 'Indique si tu as 65 ans ou plus au 31 décembre 2025.' : 'Indique si ton ou ta conjoint·e a 65 ans ou plus au 31 décembre 2025.')
+  }
+
+  /** Champ (ou groupe de boutons) et message de la saisie pour un pointeur d'erreur du calcul (/personnes/<i>/<champ>). */
+  const valide = (sel: string) => {
+    const x = facultatif(sel)
+    return x !== undefined && Number.isFinite(x) && x >= 0
+  }
+  const CHAMPS: Record<string, (n: number) => string> = {
+    salaire_net_avant_impot_mensuel: (n) => `#p${n}-net`,
+    'temps_travail/quotite': (n) => `#p${n}-quotite`,
+    versant: (n) => `#p${n}-versant`,
+    primes_mensuelles: (n) => `#p${n}-primes`,
+    traitement_indiciaire_brut_mensuel: (n) => `#p${n}-traitement`,
+    'apprentissage/contrat_avant_mars_2025': (n) => `#p${n}-contrat`,
+    // Pension de base lisible mais complémentaire illisible : l'erreur porte sur la complémentaire.
+    pension_base_mensuelle: (n) => (valide(`#p${n}-pension-base`) && $<HTMLInputElement>(`#p${n}-pension-compl`).value.trim() && !valide(`#p${n}-pension-compl`) ? `#p${n}-pension-compl` : `#p${n}-pension-base`),
+    csg_pension: (n) => (radio(`p${n}-csg`) !== 'rfr' ? `#p${n}-csg` : valide(`#p${n}-rfr`) ? `#p${n}-parts` : `#p${n}-rfr`),
+    annee_naissance: (n) => `#p${n}-age`,
+    'independant/activite': (n) => `#p${n}-activite`,
+    'independant/chiffre_affaires_annuel': (n) => `#p${n}-ca`,
+    'independant/versement_liberatoire': (n) => `#p${n}-vl`,
+  }
+  /** Message d'erreur d'un champ : ceux du chemin simple gardent leurs identifiants (p1-msg, p1-msg-q). */
+  const messageDe = (sel: string) => (/-net$/.test(sel) ? sel.replace(/-net$/, '-msg') : /-quotite$/.test(sel) ? sel.replace(/-quotite$/, '-msg-q') : `${sel}-msg`)
+
+  const montrerErreur = (err: ResultatErreurEtendu) => {
     const e = err.erreur
     if (e.code === 'SAISIE_INVALIDE' && e.champ) {
-      const m = /^\/personnes\/(\d)\/(salaire_net_avant_impot_mensuel|temps_travail\/quotite)/.exec(e.champ)
-      if (m) {
-        const n = Number(m[1]) + 1
-        const champ = $<HTMLInputElement>(m[2].startsWith('temps') ? `#p${n}-quotite` : `#p${n}-net`)
-        const msg = $(m[2].startsWith('temps') ? `#p${n}-msg-q` : `#p${n}-msg`)
-        champ.setAttribute('aria-invalid', 'true')
+      const m = /^\/personnes\/(\d)\/(.+)$/.exec(e.champ)
+      const sel = m ? CHAMPS[m[2]]?.(Number(m[1]) + 1) : undefined
+      if (sel) {
+        const champ = $(sel)
+        const msg = $(messageDe(sel))
         msg.textContent = e.message
         msg.hidden = false
-        champ.focus()
+        // Champ des précisions repliées : le bloc s'ouvre pour montrer l'erreur.
+        const details = champ.closest('details')
+        if (details) details.open = true
+        if (champ.tagName === 'FIELDSET') champ.querySelector<HTMLInputElement>('input')?.focus()
+        else {
+          champ.setAttribute('aria-invalid', 'true')
+          champ.focus()
+        }
         return
       }
     }
     if (e.code === 'PROFIL_HORS_V1') {
-      retour.innerHTML = `<div class="avertissement" tabindex="-1"><p><strong>Ce cas n’est pas encore couvert par la version 1.</strong></p><p>${h(e.message)}</p>${
+      retour.innerHTML = `<div class="avertissement" tabindex="-1"><p><strong>Ce cas n’est pas encore couvert par le calcul.</strong></p><p>${h(e.message)}</p>${
         e.redirection ? `<p><a class="bouton" href="${h(e.redirection.url)}">${h(e.redirection.libelle)}</a></p>` : ''
       }</div>`
     } else retour.innerHTML = `<p class="erreur" tabindex="-1">${h(e.message)}</p>`
@@ -285,7 +486,7 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
       return
     }
     const profil = lireProfil()
-    const err = verifierProfil(profil)
+    const err = verifierProfilEtendu(profil) ?? verifierSaisie(profil)
     if (err) return montrerErreur(err)
     retour.innerHTML = '<p class="chargement">Calcul en cours sur ton appareil…</p>'
     annoncer('Calcul en cours')
@@ -302,7 +503,7 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
       const commune = communeCode ? (communes[communeCode] ?? null) : undefined
       // Destinataires propres à affectation.json : enregistrés ici aussi, le moteur tournant dans un worker.
       enregistrerDestinataires((affectation as { destinataires?: Record<string, { nom: string; administration: string }> } | null)?.destinataires)
-      const res = await horsFil.calculerHorsFil(profil, { affectation, commune })
+      const res = await horsFil.calculerProfilHorsFil(profil, { affectation, commune })
       if (res.statut === 'erreur') return montrerErreur(res)
       const valeur = (n: string) => ((form.querySelector(`input[name=${n}]:checked`) as HTMLInputElement | null)?.value ?? 'inconnu') as 'oui'
       session.habitudes = { voiture: valeur('voiture'), fumeur: valeur('fumeur') }

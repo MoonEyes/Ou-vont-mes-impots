@@ -28,6 +28,8 @@ export const DESTINATAIRES: Record<IdDestinataire, Destinataire> = {
 const SUPPLEMENTAIRES: Record<string, Destinataire> = {
   // Taxes sur la consommation sans affectation publiée (calcul/hors-bulletin.ts) : libellé lisible, jamais l'identifiant.
   autres_taxes_produits: { id: 'autres_taxes_produits', nom: 'Plusieurs bénéficiaires (répartition non sourcée)', administration: 'Plusieurs' },
+  // Lignes des profils étendus sans entrée dans affectation.json (moteur-etendu.ts, NON_AFFECTE) : aucune répartition supposée.
+  non_affecte: { id: 'non_affecte', nom: 'Destinataire non publié dans les données du site', administration: 'Plusieurs' },
 }
 export function enregistrerDestinataires(d: Record<string, { nom: string; administration: string }> | undefined) {
   for (const [id, v] of Object.entries(d ?? {}))

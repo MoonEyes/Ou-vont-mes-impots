@@ -9,7 +9,10 @@ Deux entrées :
 | `calculer(profil, options)` | `moteur.ts` | Contrat 1.0 : salariés du privé, métropole hors Alsace-Moselle. Inchangé. |
 | `calculerProfil(profil, options)` | `moteur-etendu.ts` | Tous les profils ci-dessous. Sur-ensemble : un profil du contrat 1.0 y est accepté. |
 | `calculerProfilHorsFil(profil, options)` | `hors-fil.ts` | Même calcul dans le Web Worker (à utiliser depuis un écran). |
-| `verifierProfilEtendu(profil, options)` | `moteur-etendu.ts` | Contrôle de saisie et de périmètre seul (`null` si calculable). |
+| `verifierProfilEtendu(profil, options)` | `perimetre-etendu.ts` (réexporté par `moteur-etendu.ts`) | Contrôle de saisie et de périmètre seul (`null` si calculable), sans le moteur : utilisable sur le fil principal. |
+| libellés, profil retenu, limites | `profils-ui.ts` | Textes de l'écran résultat (`descriptionPersonne`, `limitesDuCalcul`, `phrasesVerifications`), sans le moteur. |
+
+Écran de saisie (`ecrans/saisie.ts`) : le salaire net avant impôt reste le seul champ du chemin par défaut ; le bloc « Préciser ma situation » (un par personne) ouvre la situation professionnelle et les champs du profil choisi. Conventions de la saisie : retraite complémentaire laissée vide = 0 ; âge des retraités demandé par la saisie (65 ans ou plus fin 2025 = `annee_naissance` 1960, sinon 1961) ; traitement indiciaire facultatif (s'il est indiqué, le net n'est pas transmis) ; seul le régime micro est proposé. L'écran résultat (`ecrans/paie.ts`) affiche le profil retenu, les vérifications du résultat et `limitesDuCalcul`. Test : `web/tests/profils_ui.test.ts`.
 
 ## Entrée : `ProfilEtendu` (`types.ts`)
 
