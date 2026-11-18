@@ -1656,6 +1656,49 @@
    "hors_catalogue": [],
    "octets_sources": 26752264,
    "note": "sources fe_* de collecte/catalogue.json, collectées par `python pipeline/fonds_europeens.py collecter` (qui lance aussi le rapprochement SIRENE sur le stock de data/lake/_cache/local, sans réseau) ; relevé d'après le manifeste du 18/11/2026"
+  },
+  "aides_entreprises": {
+   "sources": {
+    "aides_france2030_projets": [
+     "data/lake/aides_entreprises/aides_france2030_projets.csv"
+    ],
+    "benef_plan_de_relance": [
+     "data/lake/beneficiaires/benef_plan_de_relance.parquet"
+    ],
+    "aides_relance_industrie_mesure_filiere": [
+     "data/lake/aides_entreprises/aides_relance_industrie_mesure_filiere.parquet"
+    ],
+    "aides_relance_industrie_region_departement": [
+     "data/lake/aides_entreprises/aides_relance_industrie_region_departement.parquet"
+    ],
+    "aides_relance_industrie_type_entreprise": [
+     "data/lake/aides_entreprises/aides_relance_industrie_type_entreprise.parquet"
+    ],
+    "aides_relance_industrie_du_futur": [
+     "data/lake/aides_entreprises/aides_relance_industrie_du_futur.parquet"
+    ],
+    "aides_relance_cheque_france_num": [
+     "data/lake/aides_entreprises/aides_relance_cheque_france_num.parquet"
+    ],
+    "aides_pge": [
+     "data/lake/aides_entreprises/aides_pge/pge-departemental-naf-covid19-csv_c6b7b64a.csv",
+     "data/lake/aides_entreprises/aides_pge/pge-regional-naf-covid19-csv_084fa1f4.csv"
+    ],
+    "aides_pge_historique": [
+     "data/lake/aides_entreprises/aides_pge_historique/pge-regional-naf-2021-01-01.csv",
+     "data/lake/aides_entreprises/aides_pge_historique/pge-departemental-naf-2021-01-01.csv"
+    ]
+   },
+   "caches": [
+    "data/lake/_cache/aides_entreprises_sirene.json",
+    "data/lake/_cache/local/sirene_unite_legale.parquet",
+    "data/lake/_cache/recherche_entreprises.json"
+   ],
+   "hors_catalogue": [
+    "data/lake/aides_entreprises/tam"
+   ],
+   "octets_sources": 7164626,
+   "note": "registre TAM collecté par le module lui-même (pages publiques, par mois) ; relevé à la main le 18/11/2026"
   }
  },
  "urls": {
@@ -1673,12 +1716,28 @@
   "data/lake/_restreint/decisions/decisions_megalis_deliberations/deliberation-2026_5e30e87e.csv": "https://static.data.gouv.fr/resources/deliberations-des-organismes-adherents-de-megalis-bretagne/20261117-001405/deliberation-2026.csv",
   "data/lake/_restreint/decisions/decisions_nantes_metropole_deliberations.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_deliberations-instances-metropole-nantes/exports/parquet",
   "data/lake/_restreint/decisions/decisions_pdl_deliberations.csv": "https://data.paysdelaloire.fr/api/explore/v2.1/catalog/datasets/234400034_001-001_rapports-deliberations-et-proces-verbaux-rpdl-2019/exports/csv",
+  "data/lake/_restreint/europe/fe_ops_bretagne.csv": "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/feder-fse_beneficiaires/exports/csv?select=no_dossier%2Cperiode%2Cfonds%2Caction_du_programme%2Cobjectif_specifique%2Cbeneficiaire%2Cnom_de_l_operation%2Cdate_de_debut_de_l_operation%2Cdate_de_fin_de_l_operation%2Ccout_total_de_l_operation%2Ctaux_de_cofinancement_par_l_ue%2Ccode_postal%2Ccode_insee%2Cdomaine_d_intervention%2Cdate_de_derniere_mise_a_jour",
+  "data/lake/_restreint/europe/fe_ops_iledefrance_1420.csv": "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/gestion-des-fonds-europeens-liste-des-operations/exports/csv?select=nom_du_beneficiaire_beneficiary_name%2Cnom_de_l_operation_operation_name%2Cdate_du_debut_de_l_operation_operation_start_date%2Cdate_de_fin_de_l_operation_operation_end_date%2Ctotal_des_depenses_eligibles_attribue_a_l_operation_total_eligible_expenditure_allocated_to_the_oper%2Ctaux_de_cofinancement_par_l_union_europeenne_union_co_financing_rate%2Cdepartement_territory%2Cdenomination_de_la_categorie_d_intervention_dont_releve_l_operation_category_of_intervention%2Cfonds_funds",
+  "data/lake/_restreint/europe/fe_ops_iledefrance_2127.csv": "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/gestion-des-fonds-europeens-en-ile-de-france-liste-des-operations-2021-2027/exports/csv?select=code_de_l_operation_file_number%2Cnom_du_beneficiaire_dans_le_cas_de_marches_publics_nom_du_contractant_beneficiary_name%2Cnom_de_l_operation_name_of_the_operation%2Cdate_du_debut_de_l_operation_start_date_of_the_operation%2Cdate_d_achevement%2Ccout_total_de_l_operation_total_cost_of_the_operation%2Cfonds_fund%2Cobjectif_specifique_concerne_specific_objective_concerned%2Ctaux_de_cofinancement_par_l_union_europeenne_eu_cofinancing_rate%2Cindicateur_d_emplacement_ou_geolocalisation_de_l_operation_location_indicator_or_geolocation_for_the%2Ctype_d_intervention",
+  "data/lake/_restreint/europe/fe_ops_normandie_2127/liste_benef_fond_euro_c57b91be.csv": "https://www.datanormandie.fr/sites/default/files/dataset/eaf/bf193-cb88-4f17-af43-d27afd0805f6/liste_benef_fond_euro.csv",
+  "data/lake/_restreint/europe/fe_ops_paysdelaloire.csv": "https://data.paysdelaloire.fr/api/explore/v2.1/catalog/datasets/234400034_024-001_fonds_europeens/exports/csv?select=dp_prem_annee%2Cfonds%2Cos_action%2Ccout_total%2Cue%2Cetat%2Cregion%2Cdepartement0%2Cprives%2Cauto_financement%2Cndeg_du_dossier%2Clibelle_du_dossier%2Cetat_macro_du_dossier%2Craison_sociale_du_beneficiaire%2Ctype_de_beneficiaire_libelle%2Cnature_publique_ou_privee_du_beneficiaire%2Cinsee%2Cobjectif_thematique_libelle%2Cndeg_siret_du_beneficiaire",
+  "data/lake/_restreint/europe/fe_ops_reunion_1420.csv": "https://data.regionreunion.com/api/explore/v2.1/catalog/datasets/liste_des_operations_31/exports/csv?select=nom_du_beneficiaire_beneficiary%2Cnom_de_l_operation_operation%2Cdate_de_debut_de_l_operation_start_date%2Cdate_de_fin_de_l_operation_end_date%2Ctotal_des_depenses_eligibles_total_eligible_expenditure%2Cue%2Cempty%2Ccp%2Ccategorie_d_intervention_category_of_intervention",
   "data/lake/_restreint/politique/politique_hatvp_lobbying_csv.zip": "https://www.hatvp.fr/agora/opendata/csv/Vues_Separees_CSV.zip",
   "data/lake/_restreint/politique/politique_hatvp_lobbying_json.json": "https://www.hatvp.fr/agora/opendata/agora_repertoire_opendata.json",
   "data/lake/aides_entreprises/aides_france2030_projets.csv": "https://geobretagne.fr/geonetwork/srv/api/records/f09eb03a-b447-4281-bc58-402c953b0014/attachments/france2030_projets.csv",
+  "data/lake/aides_entreprises/aides_pge/pge-departemental-naf-covid19-csv_c6b7b64a.csv": "https://raw.githubusercontent.com/etalab/dashboard-aides-entreprises/master/published-data/pge-departemental-naf-latest.csv",
+  "data/lake/aides_entreprises/aides_pge/pge-regional-naf-covid19-csv_084fa1f4.csv": "https://raw.githubusercontent.com/etalab/dashboard-aides-entreprises/master/published-data/pge-regional-naf-latest.csv",
+  "data/lake/aides_entreprises/aides_pge_historique/pge-departemental-naf-2021-01-01.csv": "https://raw.githubusercontent.com/etalab/dashboard-aides-entreprises/a62d6dad3159f926d3649950c30132310d379869/published-data/pge/pge-2021-01-01/pge-departemental-naf-latest.csv",
+  "data/lake/aides_entreprises/aides_pge_historique/pge-regional-naf-2021-01-01.csv": "https://raw.githubusercontent.com/etalab/dashboard-aides-entreprises/a62d6dad3159f926d3649950c30132310d379869/published-data/pge/pge-2021-01-01/pge-regional-naf-latest.csv",
+  "data/lake/aides_entreprises/aides_relance_cheque_france_num.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plan-de-relance-france-num-laureats-et-montants-par-departement/exports/parquet",
+  "data/lake/aides_entreprises/aides_relance_industrie_du_futur.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/industrie-du-futur/exports/parquet",
+  "data/lake/aides_entreprises/aides_relance_industrie_mesure_filiere.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plan-de-relance-aap-industrie-annonces-au-18-12-donnees-mesure-x-filiere/exports/parquet",
+  "data/lake/aides_entreprises/aides_relance_industrie_region_departement.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plan-de-relance-aap-industrie-annonces-au-1812-donnees-region-x-departement/exports/parquet",
+  "data/lake/aides_entreprises/aides_relance_industrie_type_entreprise.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plan-de-relance-aap-industrie-annonces-au-18-12-donnees-par-region/exports/parquet",
   "data/lake/aides_entreprises/aides_urssaf_exos_champ_large_par_grandes_categories.parquet": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/exos-champ-large-par-grandes-categories/exports/parquet",
   "data/lake/aides_entreprises/aides_urssaf_exos_secteur_prive_france_entiere_par_me.parquet": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/exos-secteur-prive-france-entiere-par-mesures/exports/parquet",
   "data/lake/beneficiaires/benef_associations_plf25.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf25-donnees-de-l-annexe-jaune-effort-financier-de-l-etat-en-faveur-des-associations/exports/parquet",
+  "data/lake/beneficiaires/benef_plan_de_relance.parquet": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plan-de-relance/exports/parquet",
   "data/lake/beneficiaires/benef_subventions_cdc.parquet": "https://opendata.caissedesdepots.fr/api/explore/v2.1/catalog/datasets/subventions-attribuees-par-la-caisse-des-depots-depuis-01012018/exports/parquet",
   "data/lake/beneficiaires/beneficiaires_d44_subventions_associations.parquet": "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/224400028_subventions-aux-associations-du-departement-de-loire-atlantique/exports/parquet",
   "data/lake/beneficiaires/datagouv__conventions-de-subvention-2017/opendataconventionsubventions2017_7b921660.csv": "https://static.data.gouv.fr/resources/conventions-de-subvention-2017/20220708-080243/opendataconventionsubventions2017.csv",
@@ -2036,6 +2095,30 @@
   "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2026-ccas-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2026-ccas-nantes/exports/parquet",
   "data/lake/etat/ods_nantesmetropole__244400404_budget-primitif-bp-2026-nantes.parquet": "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_budget-primitif-bp-2026-nantes/exports/parquet",
   "data/lake/europe/esr__fr-esr-horizon-projects-entities.parquet": "https://data.enseignementsup-recherche.gouv.fr/api/explore/v2.1/catalog/datasets/fr-esr-horizon-projects-entities/exports/parquet",
+  "data/lake/europe/fe_cohesion_1420_execution.json": "https://cohesiondata.ec.europa.eu/resource/99js-gm52.json?%24select=cci%2Ctitle%2Cfund%2Cpriority%2Cto%2Cto_short%2Ccategory_of_region%2Ceafrd_measure%2Cmeasure_short_description%2Ceu_amount%2Cnational_amount%2Ctotal_amount%2Cyear%2Ctotal_eligible_cost%2Cpublic_eligible_cost%2Ctotal_eligible_expenditure%2Clatest_period%2Creference_date&%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Cyear%2Cpriority%2Cto%2Ccategory_of_region%2Ceafrd_measure&%24limit=200000",
+  "data/lake/europe/fe_cohesion_1420_paiements.json": "https://cohesiondata.ec.europa.eu/resource/gayr-92qh.json?%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Ccategory_of_region%2Cyear&%24limit=200000",
+  "data/lake/europe/fe_cohesion_1420_plans_annuels.json": "https://cohesiondata.ec.europa.eu/resource/rmer-4wcy.json?%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Ccategory_of_region&%24limit=200000",
+  "data/lake/europe/fe_cohesion_1420_prevu.json": "https://cohesiondata.ec.europa.eu/resource/e4v6-qrrq.json?%24select=cci%2Ctitle%2Cfund%2Cpriority%2Cto%2Cto_short%2Ccategory_of_region%2Ceafrd_measure_code%2Cmeasure_short_description%2Ceu_amount%2Cnational_amount%2Ctotal_amount&%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Cpriority%2Cto%2Ccategory_of_region%2Ceafrd_measure_code&%24limit=200000",
+  "data/lake/europe/fe_cohesion_2127_execution.json": "https://cohesiondata.ec.europa.eu/resource/3git-md5z.json?%24select=cci%2Cprogramme_short_title%2Cfund%2Ccategory_region_name%2Ctod_cycle%2Ctod_year%2Cis_latest_tod_cycle%2Cpriority_code%2Cpol_obj_code%2Cpol_obj_short_name%2Cspec_obj_code%2Cspec_obj_short_name%2Cdimension_type%2Ccategory_code%2Ccategory_short_title%2Ceu_amount%2Ctotal_amount%2Ctotal_eligiblecost_of_selectedoperations%2Ctotalspendeligibleexpenditure_declared%2Cnumber_of_operations&%24where=ms%3D%27FR%27+AND+dimension_type+in%28%27Intervention+Field%27%2C%27Intervention+Type%27%29&%24order=cci%2Cfund%2Ctod_cycle%2Cpriority_code%2Cspec_obj_code%2Ccategory_code%2Ccategory_region_name&%24limit=200000",
+  "data/lake/europe/fe_cohesion_2127_paiements.json": "https://cohesiondata.ec.europa.eu/resource/pbbz-hmfu.json?%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Ccategory_of_region%2Cyear&%24limit=200000",
+  "data/lake/europe/fe_cohesion_2127_plans_annuels.json": "https://cohesiondata.ec.europa.eu/resource/9qee-iv7c.json?%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Cfinancial_allocation_category&%24limit=200000",
+  "data/lake/europe/fe_cohesion_2127_prevu.json": "https://cohesiondata.ec.europa.eu/resource/hgyj-gyin.json?%24select=cci%2Cprogramme_title_short%2Cprogramme_version%2Cfund%2Ccategory_of_region%2Cpriority_code%2Cpolicy_objective_code%2Cpolicy_objective_short_name%2Cspecific_objective_short_name%2Cspecific_objective_code%2Cdimension_type%2Ccategory_code%2Ccategory_name%2Ceu_amount%2Ctotal_amount&%24where=ms%3D%27FR%27+AND+dimension_type+in%28%27Intervention+Field%27%2C%27Intervention+Type%27%29&%24order=cci%2Cfund%2Cpriority_code%2Cspecific_objective_code%2Ccategory_code%2Ccategory_of_region&%24limit=200000",
+  "data/lake/europe/fe_cohesion_feader_2327.json": "https://cohesiondata.ec.europa.eu/resource/7wr2-9vpr.json?%24order=fund&%24limit=200000",
+  "data/lake/europe/fe_cohesion_metadonnees/3git-md5z.json": "https://cohesiondata.ec.europa.eu/api/views/3git-md5z.json",
+  "data/lake/europe/fe_cohesion_metadonnees/7wr2-9vpr.json": "https://cohesiondata.ec.europa.eu/api/views/7wr2-9vpr.json",
+  "data/lake/europe/fe_cohesion_metadonnees/99js-gm52.json": "https://cohesiondata.ec.europa.eu/api/views/99js-gm52.json",
+  "data/lake/europe/fe_cohesion_metadonnees/9qee-iv7c.json": "https://cohesiondata.ec.europa.eu/api/views/9qee-iv7c.json",
+  "data/lake/europe/fe_cohesion_metadonnees/e4v6-qrrq.json": "https://cohesiondata.ec.europa.eu/api/views/e4v6-qrrq.json",
+  "data/lake/europe/fe_cohesion_metadonnees/f5vn-zy5i.json": "https://cohesiondata.ec.europa.eu/api/views/f5vn-zy5i.json",
+  "data/lake/europe/fe_cohesion_metadonnees/gayr-92qh.json": "https://cohesiondata.ec.europa.eu/api/views/gayr-92qh.json",
+  "data/lake/europe/fe_cohesion_metadonnees/hgyj-gyin.json": "https://cohesiondata.ec.europa.eu/api/views/hgyj-gyin.json",
+  "data/lake/europe/fe_cohesion_metadonnees/pbbz-hmfu.json": "https://cohesiondata.ec.europa.eu/api/views/pbbz-hmfu.json",
+  "data/lake/europe/fe_cohesion_metadonnees/rmer-4wcy.json": "https://cohesiondata.ec.europa.eu/api/views/rmer-4wcy.json",
+  "data/lake/europe/fe_cohesion_metadonnees/vvmb-dsbj.json": "https://cohesiondata.ec.europa.eu/api/views/vvmb-dsbj.json",
+  "data/lake/europe/fe_cohesion_programmes.json": "https://cohesiondata.ec.europa.eu/resource/f5vn-zy5i.json?%24where=ms%3D%27FR%27&%24order=period%2Ccci&%24limit=200000",
+  "data/lake/europe/fe_cohesion_psp_2327.json": "https://cohesiondata.ec.europa.eu/resource/vvmb-dsbj.json?%24where=member_state_code%3D%27FR%27&%24order=cci%2Cspecific_objective_code%2Callocation_type_eur&%24limit=200000",
+  "data/lake/europe/fe_eurostat_frr_emplois.json": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_rrf_use?geo=FR&lang=fr",
+  "data/lake/europe/fe_eurostat_frr_flux.json": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_rrf_fa?geo=FR&lang=fr",
   "data/lake/fiscalite/economie__impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/REI-2025-fichier-notice-trace.zip": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/impots-locaux-fichier-de-recensement-des-elements-dimposition-a-la-fiscalite-dir/attachments/rei_2025_fichier_notice_tracezip",
   "data/lake/fiscalite/economie__plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales/PLF2023_voies_et_moyens_t2_liste_des_depenses_fiscales.xlsx": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales/attachments/plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales_xlsx",
   "data/lake/outremer/outremer/ccomptes_financement_etat_outremer.zip": "https://www.ccomptes.fr/system/files/2022-05/20220524-donnees-financement-Etat-outremer.zip",
@@ -2075,59 +2158,29 @@
   "data/lake/recouvrement/recouvrement_urssaf_impayes_regions.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/taux-rar-horsto-mensuels-entreprises-de-10-salaries-ou-plus-par-region/exports/csv",
   "data/lake/recouvrement/recouvrement_urssaf_lexique.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/lexique-des-activites-et-des-services-de-lurssaf/exports/csv",
   "data/lake/recouvrement/recouvrement_urssaf_travail_dissimule.csv": "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/resultats-de-la-lutte-contre-le-travail-illegal/exports/csv",
-  "data/lake/secu/datagouv__depenses-et-recettes-de-lassurance-chomage/financement-de-l-assurance-chomage_47a22bbe.csv": "https://data.unedic.org/api/explore/v2.1/catalog/datasets/financement-de-l-assurance-chomage/exports/csv?use_labels=true",
-  "data/lake/secu/datagouv__subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/DGS_subventions-associations_2025_fd970d88.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/20261110-101421/dgs-subventions-associations-2025.csv",
-  "data/lake/secu/secu_protection_sociale.parquet": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/305_les-comptes-de-la-protection-sociale/exports/parquet",
-  "data/lake/sante/sante_finess_structures/finess-structures-mensuel-202610.json_9f714ec9.json.gz": "https://static.data.gouv.fr/resources/finess-structures-1/20261101-032138/finess-structures-mensuel-202610.json.gz",
-  "data/lake/sante/sante_finess_ej_gel/2026_2cba77b2.csv": "https://static.data.gouv.fr/resources/finess-extraction-des-entites-juridiques/20260512-091427/etalab-cs1100501-stock-20260512-0339.csv",
-  "data/lake/sante/sante_finess_et_gel/2026_2ce43ade.csv": "https://static.data.gouv.fr/resources/finess-extraction-du-fichier-des-etablissements/20260512-091308/etalab-cs1100502-stock-20260512-0339.csv",
-  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_21.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_21csv",
-  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_22.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_22csv",
-  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_23.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_23csv",
-  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_24.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_24csv",
-  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_25.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_25csv",
   "data/lake/sante/sante_cnsa_prix_ehpad/cnsa-export-prix-ehpad-2023-brute_909d509b.csv": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20240315-081549/cnsa-export-prix-ehpad-2023-brute.csv",
   "data/lake/sante/sante_cnsa_prix_ehpad/cnsa_export_prix_ehpad_2024_brute_ef251bbf.csv": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20250328-043751/cnsa-export-prix-ehpad-2024-brute.csv",
   "data/lake/sante/sante_cnsa_prix_ehpad/cnsa_export_prix_ehpad_2025_brute_cd04df7c.csv": "https://static.data.gouv.fr/resources/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/20260212-054051/cnsa-export-prix-ehpad-2025-brute.csv",
+  "data/lake/sante/sante_finess_ej_gel/2026_2cba77b2.csv": "https://static.data.gouv.fr/resources/finess-extraction-des-entites-juridiques/20260512-091427/etalab-cs1100501-stock-20260512-0339.csv",
+  "data/lake/sante/sante_finess_et_gel/2026_2ce43ade.csv": "https://static.data.gouv.fr/resources/finess-extraction-du-fichier-des-etablissements/20260512-091308/etalab-cs1100502-stock-20260512-0339.csv",
+  "data/lake/sante/sante_finess_structures/finess-structures-mensuel-202610.json_9f714ec9.json.gz": "https://static.data.gouv.fr/resources/finess-structures-1/20261101-032138/finess-structures-mensuel-202610.json.gz",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2011_aded33bf.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151835/hospidiag_opendata_2011.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2012_da9a5f34.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151742/hospidiag_opendata_2012.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2013_81e6d11b.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151646/hospidiag_opendata_2013.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2014_a2ad446d.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151545/hospidiag_opendata_2014.xlsx",
   "data/lake/sante/sante_hospi_diag/Hospi_Diag_Donn_es_2015_289b8533.xlsx": "https://static.data.gouv.fr/resources/hospi-diag/20170718-151239/hospidiag_opendata_2015.xlsx",
+  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_21.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_21csv",
+  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_22.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_22csv",
+  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_23.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_23csv",
+  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_24.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_24csv",
+  "data/lake/sante/sante_open_ccam_etablissements/Open_ccam_25.csv": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/open-ccam-etablissements/attachments/open_ccam_25csv",
+  "data/lake/secu/datagouv__depenses-et-recettes-de-lassurance-chomage/financement-de-l-assurance-chomage_47a22bbe.csv": "https://data.unedic.org/api/explore/v2.1/catalog/datasets/financement-de-l-assurance-chomage/exports/csv?use_labels=true",
+  "data/lake/secu/datagouv__subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/DGS_subventions-associations_2025_fd970d88.csv": "https://static.data.gouv.fr/resources/subventions-aux-associations-versees-en-2025-direction-generale-de-la-sante/20261110-101421/dgs-subventions-associations-2025.csv",
   "data/lake/secu/secu_atih_finances_ebnl.parquet": "https://data-essentiel.atih.sante.fr/api/explore/v2.1/catalog/datasets/isf-finance-ebnl-public/exports/parquet",
+  "data/lake/secu/secu_protection_sociale.parquet": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/305_les-comptes-de-la-protection-sociale/exports/parquet",
   "data/lake/solidarites_departements/solidarites_drees_ase.xlsx": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/les-beneficiaires-de-l-aide-sociale-a-l-enfance/attachments/les_beneficiaires_de_l_aide_sociale_a_l_enfance_series_longues_1996_2024_xlsx",
   "data/lake/solidarites_departements/solidarites_drees_minima_dep.xlsx": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/336_minima-sociaux-rsa-et-prime-d-activite/attachments/minima_sociaux_donnees_departementales_par_dispositif_xlsx",
   "data/lake/solidarites_departements/solidarites_drees_paph.xlsx": "https://data.drees.solidarites-sante.gouv.fr/api/explore/v2.1/catalog/datasets/les-beneficiaires-de-l-aide-sociale-departementale-aux-personnes-agees-ou-handic/attachments/paph_les_beneficiaires_de_l_aide_sociale_departementale_series_longues_1996_2024_xlsx",
-  "data/lake/solidarites_departements/solidarites_ofgl_formules.parquet": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/methodologie-ofgl-formules-des-agregats-financiers/exports/parquet?where=type_collectivite+in+%28%22D%C3%A9partements%22%2C+%22R%C3%A9gions%22%29+and+agregat+in+%28%22Allocations+RSA%22%2C+%22Allocations+APA%22%2C+%22Allocations+PCH%22%2C+%22Frais+d%27h%C3%A9bergement%22%2C+%22TICPE%22%2C+%22FMDI%22%2C+%22CNSA%22%29&select=agregat%2Ctype_collectivite%2Cannee%2Cnomenclatures%2Cformule%2Cformule_avec_libelle",
-  "data/lake/europe/fe_cohesion_1420_execution.json": "https://cohesiondata.ec.europa.eu/resource/99js-gm52.json?%24select=cci%2Ctitle%2Cfund%2Cpriority%2Cto%2Cto_short%2Ccategory_of_region%2Ceafrd_measure%2Cmeasure_short_description%2Ceu_amount%2Cnational_amount%2Ctotal_amount%2Cyear%2Ctotal_eligible_cost%2Cpublic_eligible_cost%2Ctotal_eligible_expenditure%2Clatest_period%2Creference_date&%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Cyear%2Cpriority%2Cto%2Ccategory_of_region%2Ceafrd_measure&%24limit=200000",
-  "data/lake/europe/fe_cohesion_1420_paiements.json": "https://cohesiondata.ec.europa.eu/resource/gayr-92qh.json?%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Ccategory_of_region%2Cyear&%24limit=200000",
-  "data/lake/europe/fe_cohesion_1420_plans_annuels.json": "https://cohesiondata.ec.europa.eu/resource/rmer-4wcy.json?%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Ccategory_of_region&%24limit=200000",
-  "data/lake/europe/fe_cohesion_1420_prevu.json": "https://cohesiondata.ec.europa.eu/resource/e4v6-qrrq.json?%24select=cci%2Ctitle%2Cfund%2Cpriority%2Cto%2Cto_short%2Ccategory_of_region%2Ceafrd_measure_code%2Cmeasure_short_description%2Ceu_amount%2Cnational_amount%2Ctotal_amount&%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Cpriority%2Cto%2Ccategory_of_region%2Ceafrd_measure_code&%24limit=200000",
-  "data/lake/europe/fe_cohesion_2127_execution.json": "https://cohesiondata.ec.europa.eu/resource/3git-md5z.json?%24select=cci%2Cprogramme_short_title%2Cfund%2Ccategory_region_name%2Ctod_cycle%2Ctod_year%2Cis_latest_tod_cycle%2Cpriority_code%2Cpol_obj_code%2Cpol_obj_short_name%2Cspec_obj_code%2Cspec_obj_short_name%2Cdimension_type%2Ccategory_code%2Ccategory_short_title%2Ceu_amount%2Ctotal_amount%2Ctotal_eligiblecost_of_selectedoperations%2Ctotalspendeligibleexpenditure_declared%2Cnumber_of_operations&%24where=ms%3D%27FR%27+AND+dimension_type+in%28%27Intervention+Field%27%2C%27Intervention+Type%27%29&%24order=cci%2Cfund%2Ctod_cycle%2Cpriority_code%2Cspec_obj_code%2Ccategory_code%2Ccategory_region_name&%24limit=200000",
-  "data/lake/europe/fe_cohesion_2127_paiements.json": "https://cohesiondata.ec.europa.eu/resource/pbbz-hmfu.json?%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Ccategory_of_region%2Cyear&%24limit=200000",
-  "data/lake/europe/fe_cohesion_2127_plans_annuels.json": "https://cohesiondata.ec.europa.eu/resource/9qee-iv7c.json?%24where=ms%3D%27FR%27&%24order=cci%2Cfund%2Cfinancial_allocation_category&%24limit=200000",
-  "data/lake/europe/fe_cohesion_2127_prevu.json": "https://cohesiondata.ec.europa.eu/resource/hgyj-gyin.json?%24select=cci%2Cprogramme_title_short%2Cprogramme_version%2Cfund%2Ccategory_of_region%2Cpriority_code%2Cpolicy_objective_code%2Cpolicy_objective_short_name%2Cspecific_objective_short_name%2Cspecific_objective_code%2Cdimension_type%2Ccategory_code%2Ccategory_name%2Ceu_amount%2Ctotal_amount&%24where=ms%3D%27FR%27+AND+dimension_type+in%28%27Intervention+Field%27%2C%27Intervention+Type%27%29&%24order=cci%2Cfund%2Cpriority_code%2Cspecific_objective_code%2Ccategory_code%2Ccategory_of_region&%24limit=200000",
-  "data/lake/europe/fe_cohesion_feader_2327.json": "https://cohesiondata.ec.europa.eu/resource/7wr2-9vpr.json?%24order=fund&%24limit=200000",
-  "data/lake/europe/fe_cohesion_metadonnees/e4v6-qrrq.json": "https://cohesiondata.ec.europa.eu/api/views/e4v6-qrrq.json",
-  "data/lake/europe/fe_cohesion_metadonnees/99js-gm52.json": "https://cohesiondata.ec.europa.eu/api/views/99js-gm52.json",
-  "data/lake/europe/fe_cohesion_metadonnees/gayr-92qh.json": "https://cohesiondata.ec.europa.eu/api/views/gayr-92qh.json",
-  "data/lake/europe/fe_cohesion_metadonnees/rmer-4wcy.json": "https://cohesiondata.ec.europa.eu/api/views/rmer-4wcy.json",
-  "data/lake/europe/fe_cohesion_metadonnees/hgyj-gyin.json": "https://cohesiondata.ec.europa.eu/api/views/hgyj-gyin.json",
-  "data/lake/europe/fe_cohesion_metadonnees/3git-md5z.json": "https://cohesiondata.ec.europa.eu/api/views/3git-md5z.json",
-  "data/lake/europe/fe_cohesion_metadonnees/pbbz-hmfu.json": "https://cohesiondata.ec.europa.eu/api/views/pbbz-hmfu.json",
-  "data/lake/europe/fe_cohesion_metadonnees/9qee-iv7c.json": "https://cohesiondata.ec.europa.eu/api/views/9qee-iv7c.json",
-  "data/lake/europe/fe_cohesion_metadonnees/7wr2-9vpr.json": "https://cohesiondata.ec.europa.eu/api/views/7wr2-9vpr.json",
-  "data/lake/europe/fe_cohesion_metadonnees/vvmb-dsbj.json": "https://cohesiondata.ec.europa.eu/api/views/vvmb-dsbj.json",
-  "data/lake/europe/fe_cohesion_metadonnees/f5vn-zy5i.json": "https://cohesiondata.ec.europa.eu/api/views/f5vn-zy5i.json",
-  "data/lake/europe/fe_cohesion_programmes.json": "https://cohesiondata.ec.europa.eu/resource/f5vn-zy5i.json?%24where=ms%3D%27FR%27&%24order=period%2Ccci&%24limit=200000",
-  "data/lake/europe/fe_cohesion_psp_2327.json": "https://cohesiondata.ec.europa.eu/resource/vvmb-dsbj.json?%24where=member_state_code%3D%27FR%27&%24order=cci%2Cspecific_objective_code%2Callocation_type_eur&%24limit=200000",
-  "data/lake/europe/fe_eurostat_frr_emplois.json": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_rrf_use?geo=FR&lang=fr",
-  "data/lake/europe/fe_eurostat_frr_flux.json": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_rrf_fa?geo=FR&lang=fr",
-  "data/lake/_restreint/europe/fe_ops_bretagne.csv": "https://data.bretagne.bzh/api/explore/v2.1/catalog/datasets/feder-fse_beneficiaires/exports/csv?select=no_dossier%2Cperiode%2Cfonds%2Caction_du_programme%2Cobjectif_specifique%2Cbeneficiaire%2Cnom_de_l_operation%2Cdate_de_debut_de_l_operation%2Cdate_de_fin_de_l_operation%2Ccout_total_de_l_operation%2Ctaux_de_cofinancement_par_l_ue%2Ccode_postal%2Ccode_insee%2Cdomaine_d_intervention%2Cdate_de_derniere_mise_a_jour",
-  "data/lake/_restreint/europe/fe_ops_iledefrance_1420.csv": "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/gestion-des-fonds-europeens-liste-des-operations/exports/csv?select=nom_du_beneficiaire_beneficiary_name%2Cnom_de_l_operation_operation_name%2Cdate_du_debut_de_l_operation_operation_start_date%2Cdate_de_fin_de_l_operation_operation_end_date%2Ctotal_des_depenses_eligibles_attribue_a_l_operation_total_eligible_expenditure_allocated_to_the_oper%2Ctaux_de_cofinancement_par_l_union_europeenne_union_co_financing_rate%2Cdepartement_territory%2Cdenomination_de_la_categorie_d_intervention_dont_releve_l_operation_category_of_intervention%2Cfonds_funds",
-  "data/lake/_restreint/europe/fe_ops_iledefrance_2127.csv": "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/gestion-des-fonds-europeens-en-ile-de-france-liste-des-operations-2021-2027/exports/csv?select=code_de_l_operation_file_number%2Cnom_du_beneficiaire_dans_le_cas_de_marches_publics_nom_du_contractant_beneficiary_name%2Cnom_de_l_operation_name_of_the_operation%2Cdate_du_debut_de_l_operation_start_date_of_the_operation%2Cdate_d_achevement%2Ccout_total_de_l_operation_total_cost_of_the_operation%2Cfonds_fund%2Cobjectif_specifique_concerne_specific_objective_concerned%2Ctaux_de_cofinancement_par_l_union_europeenne_eu_cofinancing_rate%2Cindicateur_d_emplacement_ou_geolocalisation_de_l_operation_location_indicator_or_geolocation_for_the%2Ctype_d_intervention",
-  "data/lake/_restreint/europe/fe_ops_normandie_2127/liste_benef_fond_euro_c57b91be.csv": "https://www.datanormandie.fr/sites/default/files/dataset/eaf/bf193-cb88-4f17-af43-d27afd0805f6/liste_benef_fond_euro.csv",
-  "data/lake/_restreint/europe/fe_ops_paysdelaloire.csv": "https://data.paysdelaloire.fr/api/explore/v2.1/catalog/datasets/234400034_024-001_fonds_europeens/exports/csv?select=dp_prem_annee%2Cfonds%2Cos_action%2Ccout_total%2Cue%2Cetat%2Cregion%2Cdepartement0%2Cprives%2Cauto_financement%2Cndeg_du_dossier%2Clibelle_du_dossier%2Cetat_macro_du_dossier%2Craison_sociale_du_beneficiaire%2Ctype_de_beneficiaire_libelle%2Cnature_publique_ou_privee_du_beneficiaire%2Cinsee%2Cobjectif_thematique_libelle%2Cndeg_siret_du_beneficiaire",
-  "data/lake/_restreint/europe/fe_ops_reunion_1420.csv": "https://data.regionreunion.com/api/explore/v2.1/catalog/datasets/liste_des_operations_31/exports/csv?select=nom_du_beneficiaire_beneficiary%2Cnom_de_l_operation_operation%2Cdate_de_debut_de_l_operation_start_date%2Cdate_de_fin_de_l_operation_end_date%2Ctotal_des_depenses_eligibles_total_eligible_expenditure%2Cue%2Cempty%2Ccp%2Ccategorie_d_intervention_category_of_intervention"
+  "data/lake/solidarites_departements/solidarites_ofgl_formules.parquet": "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/methodologie-ofgl-formules-des-agregats-financiers/exports/parquet?where=type_collectivite+in+%28%22D%C3%A9partements%22%2C+%22R%C3%A9gions%22%29+and+agregat+in+%28%22Allocations+RSA%22%2C+%22Allocations+APA%22%2C+%22Allocations+PCH%22%2C+%22Frais+d%27h%C3%A9bergement%22%2C+%22TICPE%22%2C+%22FMDI%22%2C+%22CNSA%22%29&select=agregat%2Ctype_collectivite%2Cannee%2Cnomenclatures%2Cformule%2Cformule_avec_libelle"
  }
 }

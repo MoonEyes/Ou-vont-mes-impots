@@ -1,0 +1,170 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/aides_entreprises_france_relance.schema.json",
+ "title": "site/data/aides_entreprises/france_relance.json : France Relance, lauréats industriels et montants agrégés",
+ "description": "Lauréats publiés des appels à projets industriels (personnes morales nommées, sans montant à la source) et montants agrégés (participation de l'État, investissement) par mesure, filière, type d'entreprise et territoire ; Industrie du futur et chèque France Num par département ; écarts entre tables.",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "unite",
+  "avertissement",
+  "laureats",
+  "projets_par",
+  "montants",
+  "ecarts",
+  "ordre"
+ ],
+ "propertyNames": {
+  "not": {
+   "pattern": "(?i)pr[eé]nom"
+  }
+ },
+ "properties": {
+  "avertissement": {
+   "type": "string",
+   "minLength": 40
+  },
+  "laureats": {
+   "type": "object",
+   "required": [
+    "colonnes",
+    "lignes",
+    "projets_publies",
+    "projets_nommes",
+    "projets_agreges",
+    "regle"
+   ],
+   "properties": {
+    "colonnes": {
+     "const": [
+      "siren",
+      "denomination",
+      "categorie_juridique",
+      "mesure",
+      "filiere",
+      "type_entreprise",
+      "departement",
+      "region",
+      "mise_a_jour"
+     ]
+    },
+    "lignes": {
+     "type": "array",
+     "items": {
+      "type": "array",
+      "prefixItems": [
+       {
+        "$ref": "commun.schema.json#/$defs/siren"
+       },
+       {
+        "type": "string",
+        "minLength": 1
+       },
+       {
+        "$ref": "commun.schema.json#/$defs/categorie_personne_morale"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": [
+         "string",
+         "null"
+        ],
+        "pattern": "^([0-9]{2}|2A|2B|97[1-6])$"
+       },
+       {
+        "type": [
+         "string",
+         "null"
+        ],
+        "pattern": "^(0[1-6]|[1-9][0-9])$"
+       },
+       {
+        "type": [
+         "string",
+         "null"
+        ],
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+       }
+      ],
+      "minItems": 9,
+      "maxItems": 9
+     }
+    },
+    "projets_publies": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "projets_nommes": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "projets_agreges": {
+     "type": "object",
+     "additionalProperties": {
+      "type": "integer",
+      "minimum": 0
+     }
+    },
+    "regle": {
+     "type": "string",
+     "minLength": 3
+    }
+   }
+  },
+  "projets_par": {
+   "type": "object",
+   "required": [
+    "mesure",
+    "filiere",
+    "type_entreprise",
+    "region"
+   ],
+   "additionalProperties": {
+    "type": "array",
+    "items": {
+     "type": "object",
+     "required": [
+      "cle",
+      "projets"
+     ]
+    }
+   }
+  },
+  "montants": {
+   "type": "object",
+   "required": [
+    "par_mesure_et_filiere",
+    "par_mesure_et_type_entreprise",
+    "par_departement",
+    "par_region",
+    "par_mesure",
+    "totaux_participation_etat_eur",
+    "industrie_du_futur",
+    "cheque_france_num"
+   ]
+  },
+  "ecarts": {
+   "type": "array",
+   "items": {
+    "$ref": "aides_entreprises_index.schema.json#/$defs/ecart"
+   }
+  },
+  "ordre": {
+   "$ref": "aides_entreprises_index.schema.json#/$defs/ordre"
+  }
+ }
+}

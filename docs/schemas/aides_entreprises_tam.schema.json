@@ -1,0 +1,425 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/aides_entreprises_tam.schema.json",
+ "title": "site/data/aides_entreprises/tam.json : registre européen de transparence des aides d'État, France",
+ "description": "Aides individuelles publiées par les autorités françaises (Transparency Award Module), agrégées par année d'octroi, mesure (numéro SA), objectif, instrument, type de bénéficiaire, section NAF, région et tranche ; bénéficiaires nommés : personnes morales seulement.",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "unite",
+  "avertissement",
+  "definitions",
+  "annees",
+  "total",
+  "par_annee",
+  "par_mesure",
+  "par_objectif",
+  "par_instrument",
+  "par_type_beneficiaire",
+  "par_secteur",
+  "par_region",
+  "rattachement_regions",
+  "par_tranche",
+  "croisements",
+  "non_rattaches",
+  "montants_isoles",
+  "beneficiaires",
+  "ordre",
+  "collecte"
+ ],
+ "propertyNames": {
+  "not": {
+   "pattern": "(?i)pr[eé]nom"
+  }
+ },
+ "properties": {
+  "avertissement": {
+   "type": "string",
+   "minLength": 40
+  },
+  "definitions": {
+   "type": "object",
+   "required": [
+    "element_aide",
+    "montant_nominal",
+    "fourchette",
+    "seuils"
+   ],
+   "additionalProperties": {
+    "type": "string",
+    "minLength": 20
+   }
+  },
+  "annees": {
+   "type": "array",
+   "items": {
+    "$ref": "commun.schema.json#/$defs/annee_entier"
+   }
+  },
+  "total": {
+   "$ref": "aides_entreprises_index.schema.json#/$defs/agregat_tam"
+  },
+  "par_annee": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^[0-9]{4}$"
+   },
+   "additionalProperties": {
+    "$ref": "aides_entreprises_index.schema.json#/$defs/agregat_tam"
+   }
+  },
+  "sans_date_octroi": {
+   "anyOf": [
+    {
+     "type": "null"
+    },
+    {
+     "$ref": "aides_entreprises_index.schema.json#/$defs/agregat_tam"
+    }
+   ]
+  },
+  "par_mesure": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/agregat_tam_champs"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "sa",
+     "titre",
+     "titres_differents",
+     "autorites"
+    ],
+    "properties": {
+     "sa": {
+      "type": "string"
+     },
+     "titre": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "titres_differents": {
+      "type": "integer",
+      "minimum": 0
+     },
+     "autorites": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+       "type": [
+        "string",
+        "null"
+       ]
+      }
+     }
+    },
+    "unevaluatedProperties": false
+   }
+  },
+  "par_objectif": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/agregat_tam_champs"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "objectif"
+    ]
+   }
+  },
+  "par_instrument": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/agregat_tam_champs"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "instrument"
+    ]
+   }
+  },
+  "par_type_beneficiaire": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/agregat_tam_champs"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "type"
+    ]
+   }
+  },
+  "par_secteur": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "section",
+     "libelle",
+     "aides",
+     "element_aide_eur",
+     "divisions"
+    ],
+    "properties": {
+     "section": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^[A-U]$"
+     },
+     "libelle": {
+      "type": "string",
+      "minLength": 3
+     },
+     "divisions": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "division"
+       ],
+       "properties": {
+        "division": {
+         "type": "string",
+         "pattern": "^[0-9]{2}$"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "par_region": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "code",
+     "nom",
+     "rattachement",
+     "aides",
+     "element_aide_eur"
+    ],
+    "properties": {
+     "code": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^(0[1-6]|[1-9][0-9])$"
+     },
+     "nom": {
+      "type": "string",
+      "minLength": 3
+     },
+     "rattachement": {
+      "enum": [
+       "region",
+       "zone_pluriregionale",
+       "national",
+       "hors_france",
+       "non_rattache"
+      ]
+     }
+    }
+   }
+  },
+  "rattachement_regions": {
+   "type": "object",
+   "propertyNames": {
+    "enum": [
+     "region",
+     "ancienne_region",
+     "departement",
+     "zone_pluriregionale",
+     "national",
+     "hors_france",
+     "non_rattache"
+    ]
+   },
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "definition",
+     "aides",
+     "element_aide_eur"
+    ]
+   }
+  },
+  "par_tranche": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/agregat_tam_champs"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "tranche"
+    ]
+   }
+  },
+  "croisements": {
+   "type": "object",
+   "required": [
+    "annee_secteur",
+    "annee_region",
+    "annee_tranche"
+   ],
+   "additionalProperties": {
+    "type": "object",
+    "propertyNames": {
+     "pattern": "^[0-9]{4}$"
+    },
+    "additionalProperties": {
+     "type": "object",
+     "additionalProperties": {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/agregat_tam"
+     }
+    }
+   }
+  },
+  "delai_publication_jours": {
+   "type": "object",
+   "required": [
+    "mediane",
+    "neuf_sur_dix_sous",
+    "aides"
+   ]
+  },
+  "non_rattaches": {
+   "type": "object",
+   "required": [
+    "secteurs",
+    "regions",
+    "montants_illisibles"
+   ]
+  },
+  "montants_isoles": {
+   "type": "object",
+   "required": [
+    "aides",
+    "regle"
+   ],
+   "properties": {
+    "aides": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "ref",
+       "sa",
+       "element_aide_eur",
+       "mediane_mesure_eur"
+      ],
+      "additionalProperties": false,
+      "properties": {
+       "ref": {
+        "type": "string"
+       },
+       "sa": {
+        "type": "string"
+       },
+       "annee": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "element_aide_eur": {
+        "type": "number"
+       },
+       "mediane_mesure_eur": {
+        "type": "number"
+       },
+       "aides_mesure": {
+        "type": "integer",
+        "minimum": 0
+       }
+      }
+     }
+    }
+   }
+  },
+  "beneficiaires": {
+   "allOf": [
+    {
+     "$ref": "commun.schema.json#/$defs/groupe_beneficiaires"
+    }
+   ],
+   "type": "object",
+   "required": [
+    "total_eur",
+    "verification_classement"
+   ],
+   "properties": {
+    "top": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "aides",
+       "par_annee_eur"
+      ],
+      "properties": {
+       "aides": {
+        "type": "integer",
+        "minimum": 0
+       },
+       "par_annee_eur": {
+        "type": "object",
+        "propertyNames": {
+         "pattern": "^[0-9]{4}$"
+        }
+       }
+      }
+     }
+    },
+    "verification_classement": {
+     "type": "object",
+     "required": [
+      "seuil_eur",
+      "non_verifies_au_dessus_du_seuil",
+      "classement_complet"
+     ]
+    }
+   }
+  },
+  "ordre": {
+   "$ref": "aides_entreprises_index.schema.json#/$defs/ordre"
+  },
+  "collecte": {
+   "type": "object",
+   "required": [
+    "mois",
+    "collecte_du",
+    "collecte_au",
+    "methode",
+    "url",
+    "champ_non_lu"
+   ]
+  }
+ }
+}

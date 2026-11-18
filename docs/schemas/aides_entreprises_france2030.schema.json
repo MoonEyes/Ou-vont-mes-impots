@@ -1,0 +1,239 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/aides_entreprises_france2030.schema.json",
+ "title": "site/data/aides_entreprises/france2030.json : France 2030 par année, opérateur, région, secteur, typologie, objectif",
+ "description": "Montants d'aide engagés des projets lauréats de France 2030 (subvention et avance remboursable). Agrégats seulement : les bénéficiaires nommés restent dans beneficiaires/france2030.json.",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "unite",
+  "avertissement",
+  "lignes_source",
+  "doublons_exacts_retires",
+  "total",
+  "composantes_eur",
+  "par_annee",
+  "par_operateur",
+  "par_region_financement",
+  "par_region_beneficiaire",
+  "par_secteur",
+  "par_typologie",
+  "par_objectif",
+  "par_strategie",
+  "par_programme",
+  "croisements",
+  "couverture_secteur",
+  "regions",
+  "beneficiaires_nommes",
+  "ordre"
+ ],
+ "propertyNames": {
+  "not": {
+   "pattern": "(?i)pr[eé]nom"
+  }
+ },
+ "properties": {
+  "avertissement": {
+   "type": "string",
+   "minLength": 40
+  },
+  "lignes_source": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "doublons_exacts_retires": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "total": {
+   "$ref": "aides_entreprises_index.schema.json#/$defs/somme_projets"
+  },
+  "composantes_eur": {
+   "type": "object",
+   "required": [
+    "subvention",
+    "avance_remboursable",
+    "interets",
+    "ecart_au_montant_aide",
+    "note"
+   ]
+  },
+  "par_annee": {
+   "type": "object",
+   "minProperties": 1,
+   "additionalProperties": {
+    "$ref": "aides_entreprises_index.schema.json#/$defs/somme_projets"
+   }
+  },
+  "par_operateur": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/somme_projets"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "cle"
+    ]
+   }
+  },
+  "par_region_financement": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/somme_projets"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "cle"
+    ]
+   }
+  },
+  "par_region_beneficiaire": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/somme_projets"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "cle"
+    ]
+   }
+  },
+  "par_typologie": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/somme_projets"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "cle"
+    ]
+   }
+  },
+  "par_objectif": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/somme_projets"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "cle"
+    ]
+   }
+  },
+  "par_strategie": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/somme_projets"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "cle"
+    ]
+   }
+  },
+  "par_programme": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/somme_projets"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "cle"
+    ]
+   }
+  },
+  "par_secteur": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/somme_projets"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "section",
+     "libelle"
+    ],
+    "properties": {
+     "section": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^[A-U]$"
+     },
+     "libelle": {
+      "type": "string",
+      "minLength": 3
+     }
+    }
+   }
+  },
+  "croisements": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "object",
+    "additionalProperties": {
+     "type": "object",
+     "additionalProperties": {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/somme_projets"
+     }
+    }
+   }
+  },
+  "couverture_secteur": {
+   "type": "object",
+   "required": [
+    "montant_eur",
+    "part",
+    "beneficiaires",
+    "beneficiaires_avec_siren",
+    "methode"
+   ]
+  },
+  "rapprochement": {
+   "type": [
+    "object",
+    "null"
+   ]
+  },
+  "beneficiaires_nommes": {
+   "type": "object",
+   "required": [
+    "fichier",
+    "note"
+   ]
+  },
+  "ordre": {
+   "$ref": "aides_entreprises_index.schema.json#/$defs/ordre"
+  }
+ }
+}

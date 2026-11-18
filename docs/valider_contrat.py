@@ -271,6 +271,21 @@ FICHIERS = [
     ("fonds_europeens_frr.schema.json", "fonds_europeens/frr.json", "existant"),
     ("fonds_europeens_operations_index.schema.json", "fonds_europeens/operations.json", "existant"),
     ("fonds_europeens_operations.schema.json", "fonds_europeens/operations/*.json", "existant"),
+    # aides aux entreprises : registre européen TAM, France 2030, France Relance, PGE (pipeline/aides_entreprises.py)
+    ("aides_entreprises_index.schema.json", "aides_entreprises/index.json", "existant"),
+    ("aides_entreprises_tam.schema.json", "aides_entreprises/tam.json", "existant"),
+    ("aides_entreprises_france2030.schema.json", "aides_entreprises/france2030.json", "existant"),
+    ("aides_entreprises_france_relance.schema.json", "aides_entreprises/france_relance.json", "existant"),
+    ("aides_entreprises_pge.schema.json", "aides_entreprises/pge.json", "existant"),
+    # logement : aides personnelles par aide et département, MaPrimeRénov', PTZ, renvois (pipeline/logement.py)
+    ("logement_index.schema.json", "logement/index.json", "existant"),
+    ("logement_aides_personnelles.schema.json", "logement/aides_personnelles/*.json", "existant"),
+    ("logement_maprimerenov.schema.json", "logement/maprimerenov.json", "existant"),
+    ("logement_ptz.schema.json", "logement/ptz.json", "existant"),
+    # revenus et impôt sur le revenu par commune : IRCOM, Filosofi (pipeline/revenus_communes.py)
+    ("revenus_communes_index.schema.json", "revenus_communes/index.json", "existant"),
+    ("revenus_communes_communes.schema.json", "revenus_communes/communes/*.json", "existant"),
+    ("revenus_communes_tranches.schema.json", "revenus_communes/tranches/*/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

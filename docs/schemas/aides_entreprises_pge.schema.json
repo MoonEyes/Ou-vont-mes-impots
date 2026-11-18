@@ -1,0 +1,139 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/aides_entreprises_pge.schema.json",
+ "title": "site/data/aides_entreprises/pge.json : prêts garantis par l'État par secteur, région, département et année",
+ "description": "Situations publiées (nombre et montant des prêts) et différences annuelles ; une différence négative est publiée telle quelle.",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "unite",
+  "avertissement",
+  "dates",
+  "methode_par_annee",
+  "total",
+  "par_secteur",
+  "par_region",
+  "par_departement",
+  "differences_negatives",
+  "ecarts",
+  "ordre"
+ ],
+ "propertyNames": {
+  "not": {
+   "pattern": "(?i)pr[eé]nom"
+  }
+ },
+ "properties": {
+  "avertissement": {
+   "type": "string",
+   "minLength": 40
+  },
+  "dates": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "string",
+    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+   }
+  },
+  "methode_par_annee": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "additionalProperties": {
+    "type": "string",
+    "minLength": 3
+   }
+  },
+  "total": {
+   "$ref": "aides_entreprises_index.schema.json#/$defs/pge_series"
+  },
+  "par_secteur": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/pge_series"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "section",
+     "libelle"
+    ],
+    "properties": {
+     "section": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^[A-U]$"
+     }
+    }
+   }
+  },
+  "par_region": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/pge_series"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "code",
+     "nom"
+    ],
+    "properties": {
+     "code": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^(0[1-6]|[1-9][0-9])$"
+     }
+    }
+   }
+  },
+  "par_departement": {
+   "type": "array",
+   "items": {
+    "allOf": [
+     {
+      "$ref": "aides_entreprises_index.schema.json#/$defs/pge_series"
+     }
+    ],
+    "type": "object",
+    "required": [
+     "code",
+     "nom",
+     "region"
+    ]
+   }
+  },
+  "differences_negatives": {
+   "type": "object",
+   "required": [
+    "cellules",
+    "note"
+   ]
+  },
+  "ecarts": {
+   "type": "array",
+   "items": {
+    "$ref": "aides_entreprises_index.schema.json#/$defs/ecart"
+   }
+  },
+  "ordre": {
+   "$ref": "aides_entreprises_index.schema.json#/$defs/ordre"
+  }
+ }
+}

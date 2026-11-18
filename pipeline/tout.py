@@ -161,6 +161,13 @@ ETAPES: tuple[Etape, ...] = (
         ("territoires", "prestations")),
     axe("fonds_europeens", "Fonds européens structurels et d'investissement (cohesiondata, Eurostat FRR, listes d'opérations)",
         ("base",), duree_s=240),
+    Etape("aides_entreprises", "Aides aux entreprises (registre européen TAM, France 2030, France Relance, PGE)",
+          ("base", "beneficiaires", "local", "controle"), ("site/data/aides_entreprises",),
+          collecter=(m("aides_entreprises", "collecter", "--budget", "1800", "--rafraichir"),),
+          produire=(m("aides_entreprises", "produire"),), duree_estimee_s=1900),
+    axe("logement", "Logement : aides personnelles, MaPrimeRénov', prêts à taux zéro",
+        ("base", "local", "operateurs", "realisations", "niches", "prestations", "europe_comparaison"), duree_s=90),
+    axe("revenus_communes", "Revenus et impôt sur le revenu par commune (IRCOM, Filosofi)", ("local",), duree_s=300),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
