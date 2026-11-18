@@ -1389,26 +1389,41 @@ web/src/**/*.ts, pipeline/*.py (relevé des lecteurs de la vue par défaut) ─�
 **Règles propres.** Les exécutions 2024 et 2025 sont comparées avec la même méthode (dépenses constatées du PLRG, même périmètre que l'arbre du site : budget général hors remboursements et dégrèvements, avances à l'audiovisuel public, prélèvements sur recettes) ; l'exécution 2024 affichée (budget vert retraité au format PLF 2026) n'est montrée qu'avec son écart de méthode, jamais additionnée. Une publication est qualifiée par constat daté (`publié en données ouvertes`, `publié en PDF seulement`, `non publié en données ouvertes`, `non localisé`), sans jugement sur le producteur. Ce module n'écrit ni `arbre/`, ni `meta.json`, ni `web/`. Dates par `pipeline/reproductible.py` ; deux productions sur le même entrepôt sont identiques octet pour octet.
 
 ### 2.49 Séries longues : `series/` (pipeline/series.py)
+
 Ce qui manque pour lire les grandes masses sur longue période (2005 à la dernière année publiée) en euros courants, en euros constants et en part du PIB : indice annuel des prix à la consommation de l'Insee (base 2025), PIB à prix courants de l'Insee (base 2020) et dépenses des administrations publiques par fonction COFOG depuis 2005 (Eurostat gov_10a_exp ; `cofog.json` n'en publie que la dernière année). Les montants des recettes, dépenses par administration, solde, dette et intérêts ne sont pas recopiés : l'écran `/explorer/series` lit `recettes.json`, `administrations.json`, `dette/encours.json` et `dette/interets.json` tels quels. Commandes : `python pipeline/series.py collecter` (réseau, vers `data/lake/series/_api/` ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/series.py produire` (sans réseau). Tests : `pytest tests/test_series.py`.
+
+```
 Insee BDM 011814639 (indice des prix), 011779992 (PIB) ; Eurostat gov_10a_exp, nama_10_gdp
      └─> pipeline/series.py ─> site/data/series/index.json, fonctions.json
                                  └─ lus avec recettes.json, administrations.json, dette/encours.json, dette/interets.json
+```
+
 | Fichier, champ | Sens |
+|---|---|
 | `index.json`, `prix` | `indice` par année (moyenne annuelle, base 2025 = 100), `coefficient` = indice de `annee_reference` / indice de l'année (euros constants = euros courants × coefficient), `methode`, `source` (`url`, `idbank`, `maj` lue dans la série) |
 | `index.json`, `pib` | `md` par année (milliards d'euros courants), `methode` de la part du PIB (montant / PIB × 100), `comparaison` avec Eurostat nama_10_gdp et `ecarts` tels quels, `annees_baisse` (années où le PIB en euros courants baisse, `variation_pct`) |
 | `index.json`, `ruptures[]` | `serie` (`prix`, `pib`, `comptes`, `depenses_administration`, `fonctions`...), `annee` (ou null), `type` (changement de base, valeurs provisoires, périmètre, rupture signalée par Eurostat, lecture), `lecture` : affichées sous les graphiques concernés |
 | `index.json`, `fichiers` | fichiers lus par l'écran : `series/fonctions.json` et les fichiers repris d'autres étapes, sans modification |
 | `fonctions.json`, `total`, `fonctions[]` | `code` (GF01 à GF10), `nom`, `md` par année, `provisoire` et `rupture` (années signalées par Eurostat, statuts « p » et « b ») |
 | `fonctions.json`, `ecarts[]` | total COFOG face aux dépenses totales d'`administrations.json` (`total_cofog_md`, `depenses_totales_md`, `ecart_md`), montrés sans correction |
+
 Règles propres : une valeur absente est null, jamais 0 ; les dates de mise à jour sont celles des sources, jamais la date du passage ; les dépenses par administration ne s'additionnent pas (transferts entre administrations) ; les trois lectures (euros courants, euros constants, part du PIB) sont proposées côte à côte, aucune n'est présentée comme la bonne.
+
 ### 2.50 Agriculture : `agriculture/` (pipeline/agriculture.py)
+
 Politique agricole commune (PAC) en France par département, par année et par type d'aide ; développement rural (FEADER) par programme régional avec sa contrepartie nationale ; paiements européens 2023-2027 ; budget de l'État pour l'agriculture (programmes 149, 206, 215, 381). Agrégats seulement : **aucun bénéficiaire individuel de la PAC, même personne morale** (règle du projet) ; aucun fichier nominatif n'est lu. Les dépenses fiscales agricoles ne sont citées que par renvoi vers `niches/` (identifiants, aucun montant recopié). Commandes : `python pipeline/agriculture.py collecter` (réseau, par `collecte/collecte.py`, entrées `agriculture_*` du catalogue ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/agriculture.py produire [--sortie DOSSIER]` (sans réseau, moins d'une seconde ; lit `realisations/`, `arbre/`, `niches/programmes.json`, `ue/retours.json` en lecture seule). Tests : `pytest tests/test_agriculture.py`.
+
+```
 data/lake/agriculture/ (Agreste et ASP : aides PAC 2005-2009 par région et département, CSV ;
                         Commission européenne, cohesiondata.ec.europa.eu : FEADER 2014-2020 lignes France,
                         paiements FEAGA 2023-2027, paiements FEADER 2023-2027, JSON)
 site/data/realisations/{149,206,215,381}.json, arbre/*_{149,206,215,381}.json, niches/programmes.json, ue/retours.json
      └─> pipeline/agriculture.py ─> site/data/agriculture/index.json, pac_departements.json (< 300 Ko),
                                     developpement_rural.json, etat.json
+```
+
+| Fichier, champ | Sens |
+|---|---|
 | `index.json` | `fichiers[]`, `reperes` (dernier chiffre de chaque vue : `pac_france_hors_tom`, `feader_2014_2022`, `feaga_paiements`, `programme_149` ; sources et périmètres différents, jamais additionnés), `liens[]` (`vue`, `fichier`, `lecture` : `ue/retours.json`, `realisations/149.json`, `niches/programmes.json`, `retraites/index.json`), `confidentialite`, `limites`, `sources` (par clé : `id_catalogue`, `entrepot`, `titre`, `producteur`, `url`, `page`, `licence`, `millesime`, `verdict`), `sources_inaccessibles[]` (`source`, `url`, `constat`, `effet`), `recherche_publique` (`date`, `verdict`, `trouvailles[]` classées `réutilisable tel quel`, `à adapter`, `inspiration` ou `écarté`, avec licence et date) |
 | `pac_departements.json`, `colonnes[]` | une colonne par (année, aide, indicateur) : `annee`, `aide` (clé de `aides`), `indicateur` (`beneficiaires`, `animaux_primes`, `quotas_t`, `montant_eur`, `montant_total_eur`, composantes `montant_prime_de_base_eur`, `complement_extensification_eur`…), `unite` (`euros`, `exploitations`, `animaux`, `tonnes`), `libelle_source` |
 | `pac_departements.json`, `territoires[]` | dans l'ordre de la source : `niveau` (`france` = France hors TOM, `ensemble` = DOM ou France métropolitaine, `region` = ancienne région d'avant 2016, `departement`), `code` (code Insee : `01`…`95`, `2A`, `2B`, `971`…`974` ; région : ancien code, `01` à `04` pour l'outre-mer ; un même code peut désigner une région et un département : un territoire se désigne par `niveau` et `code`), `nom`, `region` (ancienne région du département), `valeurs[]` alignées sur `colonnes` (euros, convertis des milliers d'euros de la source ; null = cellule vide ou secrète), `par_annee.<an>` : `montants_retenus_eur` (par aide), `somme_montants_retenus_eur`, `aides_sans_montant[]` |
@@ -1419,30 +1434,51 @@ site/data/realisations/{149,206,215,381}.json, arbre/*_{149,206,215,381}.json, n
 | `developpement_rural.json`, `autre_vue_ue` | rubrique 3 « Agriculture et pêche » de `ue/retours.json` (`valeurs_md[]` par année civile, Md€) posée à côté, jamais additionnée (autre périmètre, autre calendrier) |
 | `etat.json`, `programmes[]` | 149, 206, 215, 381 : `nom`, `mission`, `fichier_realisations`, `perimetre` (149 : numéro du programme « Forêt » jusqu'en 2014, réunion avec l'ancien 154 depuis 2015 ; ruptures non corrigées), `annees[]` (`vote_lfi_eur`, `depense_constatee_eur`, `source`, années publiées seulement), `arbre` (exécution 2024 : `fichier`, `id`, `md`, `actions[]`) |
 | `etat.json`, `programmes_absents[]`, `depenses_fiscales`, `cofinancement_feader` | programmes non repris faute de données dans le dépôt (154, compte « Développement agricole et rural ») ; renvoi vers `niches/programmes.json` (programme 149 : `noeud`, `mesures[]` identifiants, `fichier_mesures`) ; renvoi vers `developpement_rural.json` |
+
 **Pour l'écran.** Carte ou tableau par département : `pac_departements.json`, `territoires[niveau=departement].par_annee.<an>.somme_montants_retenus_eur`, avec le détail par aide (`montants_retenus_eur`) et le pilier ; signaler en hachuré (non publié) les aides de `aides_sans_montant` et les cellules de `cellules_secretes` ; préciser que la série s'arrête en 2009 (`limites`). Développement rural : une ligne par programme régional, part UE et contrepartie nationale côte à côte (`ue_eur`, `contrepartie_nationale_eur`), dépenses déclarées en regard ; les départements d'un programme ne reçoivent pas de part calculée. Budget de l'État : série par programme avec la rupture de 2015 du programme 149 (`perimetre`), renvoi vers l'écran des dépenses fiscales. Les quatre vues (Agreste, Commission, budget de l'État, annexe sur les relations avec l'UE) ne s'additionnent jamais.
+
 Règles propres : « S » ou cellule vide à la source reste null, jamais 0, et chaque cellule secrète est listée ; un total publié qui ne retombe pas sur la somme de ses lignes (au millier d'euros près) est publié avec son écart, jamais corrigé ; aucun montant n'est réparti entre départements ; composantes d'une aide jamais ajoutées entre elles. Non couverts (`sources_inaccessibles`) : montants PAC par département après 2009 (Telepac, transparence des bénéficiaires : HTTP 503 lors de la collecte du 18/11/2026 ; si la source revient, seule une agrégation par département et par mesure sera publiée), chiffres de l'Agence de services et de paiement et documents de budget.gouv.fr (contrôle anti-robot, non contourné), comptes départementaux de l'agriculture d'Agreste (application interactive sans fichier stable).
+
 ### 2.51 Transports et mobilité : `transports/` (pipeline/transports.py)
+
 Budget de l'Agence de financement des infrastructures de transport de France (AFITF : recettes affectées, dépenses par mode), concours publics au ferroviaire (SNCF Réseau, SNCF Voyageurs, TER, trains d'équilibre du territoire), part des contrats de plan État-région (CPER) versée par l'AFITF, programmes budgétaires des transports par action, versement mobilité perçu par les autorités organisatrices (agrégat national). Agrégats publiés seulement, aucun bénéficiaire individuel. Commandes : `python pipeline/transports.py collecter` (réseau, par `collecte/collecte.py`, entrées `transports_sdes_bilan_2024_activite`, `transports_afitf_budgets`, `etat_budget_vert_2026` ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/transports.py produire [--sortie DOSSIER]` (sans réseau, quelques secondes ; lit `arbre/`, `realisations/`, `programmes/`, `local_satellites/`, `retraites/` en lecture seule, pour des liens). Tests : `pytest tests/test_transports.py`.
+
+```
 data/lake/transports/ (SDES, Bilan annuel des transports en 2024, classeur A, onglets A4.a, A5.1-a/b/c, A5.2-a/b,
                        A6.c, A7.2-a/b ; AFIT France, budgets exécutés 2022 à 2025 et budget initial 2026, PDF)
 data/lake/etat/etat_budget_vert_2026.parquet (PLF 2026, budget vert : CP par action, taxes affectées plafonnées)
      └─> pipeline/transports.py ─> site/data/transports/index.json, afitf.json, ferroviaire.json, programmes.json,
                                    versement_mobilite.json (chacun < 100 Ko)
+```
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
 | `transports/index.json` | `transports_index` | `fichiers`, `reperes[]` (`id`, `libelle`, `annee`, `valeur`, `unite` : `euros` ou `millions d'euros`, `statut` quand l'année est provisoire, `source`, `fichier`), `ecarts[]`, `controles[]` (tous fichiers réunis), `regle`, `limites`, `liens[]`, `sources` (titre, producteur, page, licence, verdict), `sources_inaccessibles[]`, `recherche_publique` |
 | `transports/afitf.json` | `transports_afitf` | `budgets[]` (un par année : `nature` budget exécuté ou initial, `url` du PDF, `modes[]` ferroviaire, routier, tca, fluvial, maritime, exceptionnels, support avec `ae`, `cp`, `lignes[]` et `dont_plan_de_relance`, `total`, `recettes[]` par ligne, `total_recettes`, `controles[]`) en euros ; `serie_recettes_depenses` (SDES A7.2-a, 2007-2024) et `serie_interventions_par_mode` (A7.2-b, 2005-2024, hors CPER, CPER, totaux par mode) en M€ ; `cper` (série CPER par mode et lignes « CPER » des budgets) ; `taxes_affectees` (budget vert) ; `definitions`, `modes` (libellés), `ecarts[]` |
 | `transports/ferroviaire.json` | `transports_ferroviaire` | `sncf_reseau.subventions_investissement` (A5.2-a : par financeur, 2001-2024) et `.investissements` (A5.2-b) ; `sncf_voyageurs` (A5.1-b : exploitation et investissement par financeur) ; `ter` (A5.1-c) ; `operateurs_voyageurs` (A5.1-a : Intercités, TER, Transilien, RATP, transports urbains de province) ; `trains_equilibre_territoire` (`exploitation`, `investissement` par année, `materiel_tet_afitf_cp_eur` des budgets de l'AFITF) ; `regle`, `controles[]`, `ecarts[]` |
 | `transports/programmes.json` | `transports_programmes` | `programmes[]` (203, 205, 612, 613, 614, 751, 753, 754 : `actions[]` avec `execution_2024`, `lfi_2025`, `plf_2026` en euros de CP, `total_actions_eur`, `lignes_hors_action[]` : fonds de concours, mesures de périmètre, `liens[]` vers `arbre/`, `realisations/`, `programmes/`) ; `programmes_sans_donnee_ici[]` (355 et 198 : liens seulement) ; `taxes_affectees[]` (AFITF, VNF, Société des grands projets, exploitants d'aérodromes) ; `depenses_etat_afitf_par_mode` (A4.a, 2001-2024, fonctionnement, investissement, charges de retraite) |
 | `transports/versement_mobilite.json` | `transports_versement_mobilite` | `serie` (A6.c, 1997-2024 : province par catégorie d'autorité, Île-de-France Mobilités, ensemble), `definition`, `perimetre`, `taux_par_commune` (lien vers `local_satellites/index.json`), `controles[]` |
+
 **Forme des tableaux du SDES.** Chaque tableau repris garde la forme `{onglet, titre, unite, annees[], statut_annees, lignes[{id, libelle, valeurs[]}], absences[], renvois_source[]}` : `valeurs` est aligné sur `annees` ; `statut_annees` donne les années semi-définitives ou provisoires ; `absences[]` dit pour chaque valeur null ce que porte la source (`-`, `nd` ou `cellule vide`) ; `renvois_source` reproduit les notes de bas de tableau. Les `id` de lignes sont hiérarchiques (`cper.ferroviaire`, `exploitation.regions`) : une ligne parente est le total publié de ses enfants, jamais recalculé.
+
 **Pour l'écran (à afficher par un autre agent).** Montants : euros dans les budgets de l'AFITF et dans `programmes[]`, millions d'euros courants dans les tableaux du SDES (`unite` de chaque objet) ; AE et CP toujours nommés en clair (« engagements », « paiements de l'année »), jamais par leur sigle seul. Budget exécuté et budget initial ne se comparent pas comme deux exécutions : afficher `nature`. Les tableaux par financeur (SNCF Réseau), par activité (TER) et par opérateur ne s'additionnent pas entre eux ; les taxes affectées ne s'ajoutent pas aux crédits des programmes ; trois millésimes (exécution 2024, LFI 2025, PLF 2026) côte à côte. Chaque `ecarts[]` (`source`/`valeur` contre `autre_source`/`autre_valeur`, `ecart`, `ecart_pct`, `lecture_ecart`) se montre tel quel, sans choisir de source. Repère le plus récent : `index.json` `reperes`. Le versement mobilité est un agrégat national : aucun montant par commune n'est calculé (les taux par commune sont dans `local_satellites/`).
+
 **Règles propres.** Un tiret, « nd » ou une cellule vide restent null, jamais 0 (0 publié reste 0). Un total du SDES qui ne retombe pas sur ses lignes est publié dans `controles[]` (`total_publie`, `somme_des_lignes`, `ecart`, `lignes_vides`), jamais corrigé. Budgets de l'AFITF : chaque nombre est rangé en AE ou CP selon sa position dans la page ; la production s'arrête si une ligne n'est pas reconnue, si les modes ne retombent pas sur le total, ou si un mode ne retombe pas sur ses lignes, sauf quand l'écart est exactement la ligne « dont plan de relance » du mode (publié dans `budgets[].controles`, cas du budget exécuté 2023). Les libellés de la source sont gardés (`libelle`) à côté d'identifiants stables. CPER : seule la part versée par l'AFITF est publiée (pas de jeu national des maquettes régionales). Dates par `pipeline/reproductible.py` (domaines `transports` et `etat`) ; deux productions sur le même entrepôt sont identiques octet pour octet.
+
 ### 2.52 Énergie et climat : `energie_climat/` (pipeline/energie_climat.py)
+
 Charges de service public de l'énergie évaluées chaque année par la Commission de régulation de l'énergie (soutien aux énergies renouvelables électriques, biométhane, zones non interconnectées dont la péréquation tarifaire, cogénération, effacements, dispositifs sociaux, frais de gestion, boucliers tarifaires et amortisseurs), crédits des programmes 345 « Service public de l'énergie » et 174 « Énergie, climat et après-mines » par ligne de dépense, chèque énergie. Agrégats publiés seulement, aucun opérateur ni fournisseur nommé. Les montants du programme 345 par action dans le budget de l'État restent dans `arbre/` et `programmes/` : cette vue y renvoie par des liens. Le budget vert n'est lu que pour ses colonnes de montants (aucune cotation environnementale reprise ; `realisations/` ne l'utilise que pour l'exécution 2022 par programme). Commandes : `python pipeline/energie_climat.py collecter` (réseau ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/energie_climat.py produire` (sans réseau, `pdftotext` requis). Tests : `pytest tests/test_energie_climat.py`.
+
+```
 data/lake/energie_climat/ (CRE : délibérations n° 2024-139, 2025-180, 2026-149 en PDF ;
                            budget vert des PLF 2024, 2025, 2026 filtré sur les programmes 174 et 345)
      └─> pipeline/energie_climat.py ─> site/data/energie_climat/index.json, charges_service_public.json,
                                          boucliers.json, budget.json, cheque_energie.json
                                          └─ liens (fichier + id) vers arbre/, programmes/, realisations/, tracabilite/
+```
+
+| Fichier, champ | Sens |
+|---|---|
 | `index.json`, `chiffres_cles[]` | total des charges de la dernière délibération, une entrée par colonne : `annee`, `m_eur`, `nature` (`constatees`, `prevision_mise_a_jour`, `previsionnelles`), `deliberation`, `libelle` prêt à afficher |
 | `index.json`, `liens[]` | `vue` (`arbre_etat`, `programmes`, `realisations`, `tracabilite`), `fichier`, `id`, `programme` (345 ou 174), `lecture` : même argent vu d'une autre vue, jamais additionné |
 | `index.json`, `cas_transition_energetique` | `applicable` faux : compte d'affectation spéciale supprimé au 1er janvier 2021, charges portées depuis par le programme 345 ; exécution 2016-2020 non reprise |
@@ -1457,13 +1493,22 @@ data/lake/energie_climat/ (CRE : délibérations n° 2024-139, 2025-180, 2026-14
 | `budget.json`, `totaux[]` | par `programme`, `annee`, `nature` : `hors_retraitements_eur`, `avec_retraitements_eur`, `lignes_null` |
 | `cheque_energie.json`, `national.<annee>[]` | crédits de la ligne « Chèque énergie » du programme 174 : `nature`, `source_plf`, `code`, `libelle`, `eur` |
 | `cheque_energie.json`, `departements`, `nombre_cheques` | null : non publiés en données ouvertes (`departements_mention`, `nombre_cheques_mention`, `sources_inaccessibles`) ; à afficher en motif hachuré « non publié » |
+
 Règles propres : un tableau de la CRE n'est retenu que si ses sous-totaux et son total se recalculent (à 0,15 M€ près, plus 0,05 M€ par terme d'arrondi) ; une charge négative (installations soutenues qui reversent quand les prix de marché dépassent le tarif ou le prix de référence) est publiée telle quelle ; les montants de la CRE (M€, au titre d'une année) et du budget (euros, crédits de l'année) ne sont jamais additionnés ; aucune date du jour n'est écrite (dates des délibérations). Pour l'écran : afficher `nature` à côté de chaque montant de la CRE (constaté, prévision mise à jour, prévision), un montant en pointillé quand il s'agit d'une prévision, et les révisions d'une même année côte à côte.
+
 ### 2.53 Culture et médias : `culture_medias/` (pipeline/culture_medias.py)
+
 Budget de la culture par programme et par action, dotations à l'audiovisuel public et financement de leur compte, aides à la presse par titre, par groupe et par dispositif, soutiens du Centre national du cinéma et de l'image animée (CNC) par dispositif. Uniquement des documents publiés, déclarés dans `collecte/catalogue.json` (entrées `culture_medias_*`). Commandes : `python pipeline/culture_medias.py collecter` (réseau, par `collecte/collecte.py` ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/culture_medias.py produire [--sortie DOSSIER]` (sans réseau, quelques secondes). Tests : `pytest tests/test_culture_medias.py`. Aucun écran dans ce lot : cette section sert de guide à l'écran qui l'affichera.
+
+```
 data/lake/culture_medias/ (budget vert du PLF 2026 ; annexes CSV des PLRG 2023, 2024, 2025 ; classement des titres et
                            des groupes de presse aidés ; 10 tableaux par dispositif d'aide à la presse ; Bilan 2025 du CNC)
      └─> pipeline/culture_medias.py ─> site/data/culture_medias/index.json, budget.json, audiovisuel.json, presse.json,
                                        cnc.json (chacun < 1 Mo)
+```
+
+| Fichier, champ | Sens |
+|---|---|
 | `index.json` | `fichiers[]` (`fichier`, `contenu`, `octets`), `reperes` (un chiffre clé par fichier, avec `statut`), `limites[]`, `sources[]` (`id_catalogue`, page, licence, `collecte_le`), `sources_inaccessibles[]` (`constat` daté), `recherche_publique` (`trouvailles[]` avec `verdict`, licence, date) |
 | `budget.json`, `missions[]` | missions « Culture » (programmes 131, 175, 224, 361) et « Médias, livre et industries culturelles » (180, 334). Par programme : `actions[]` (`code` « 131-01 », `libelle`, `execution_2024_eur`, `lfi_2025_eur`, `plf_2026_eur` ; `lignes[]` quand la source découpe l'action, avec `statut` « calculé »), `lignes_hors_action[]` (retraitements du budget vert : fonds de concours, contribution au compte Pensions, mesures de périmètre, chacune avec `lecture`), `somme_actions` (calculé), `plrg_2025` (`lfi_eur`, `credits_ouverts_eur`, `depenses_constatees_eur`, `titres[]`) ; `somme_programmes` par mission |
 | `budget.json`, `depenses_fiscales.lignes[]` | dépenses fiscales rattachées aux deux missions : `code`, `impot`, `libelle`, `chiffrage_2024_eur`, `chiffrage_2025_eur`, `chiffrage_2026_eur`, `mention_source[]` (« nc », « ε », « non chiffré à la source ») ; jamais additionnées aux crédits |
@@ -1477,16 +1522,27 @@ data/lake/culture_medias/ (budget vert du PLF 2026 ; annexes CSV des PLRG 2023, 
 | `presse.json`, `dispositifs.lignes[]` | 10 dispositifs (`id`, `libelle`, `source`) : `par_annee[]` (`lignes`, `montant_eur` calculé), jusqu'à 2025 (2024 non publié) |
 | `presse.json`, `budget_programme_180` | action 180-02 « Aides à la presse » du budget vert : même argent vu depuis le budget de l'État, à ne pas additionner |
 | `cnc.json` | `soutiens` 2025 (`total_meur`, `automatiques_meur`, `selectifs_meur`, `secteurs[]` cinéma, audiovisuel, dispositifs transversaux, chacun `automatiques` et `selectifs` avec `dispositifs[]`), `dispositifs_autofinances`, `recettes_fonds_de_soutien` (`taxes[]` avec `taxe` et `sigle`, `produit_brut_meur`, `prelevement_budget_de_gestion_meur`, `total_net_meur`), `definitions`, `methode`, `controles[]` ; montants en millions d'euros à une décimale, tels que publiés |
+
 **Lecture pour l'écran.** Les quatre fichiers sont quatre vues qui se recoupent (les aides à la presse sont aussi des crédits du programme 180 ; le CNC est financé par des taxes affectées, pas par des crédits) : ne jamais les additionner entre eux ni additionner deux millésimes. Le PLF 2026 est un projet : l'afficher comme tel. Toute valeur `statut` « calculé » s'affiche avec cette mention ; une valeur null s'affiche « non publié » avec sa `mention_source` quand elle existe. Les sigles (TSA, TST-E, TSV…) ne s'affichent jamais seuls : `taxe` donne le nom complet. Pour le tutoiement : l'audiovisuel public est financé par une part de la TVA que tu verses déjà (`financement.mode`).
+
 **Règles propres.** Une cellule vide, « nc » ou « ε » à la source reste null avec sa mention, jamais 0. Les sommes faites ici partent des montants bruts de la source (fractions d'euro comprises) et portent le statut « calculé ». Titres et groupes de presse : noms tels que publiés par le ministère, sauf nom de personne possible (local.objet_publiable, initiale suivie d'un nom) : nom null, `titre_masque` ou `groupe_masque` vrai, montant conservé ; les précisions entre parenthèses des noms de groupe (actionnaires, parts) ne sont pas reprises. Soutiens du CNC : montants relevés dans les graphiques des pages 271 et 272 du Bilan 2025 ; à chaque production chaque montant est recherché dans le texte de la page et chaque sous-total recalculé (écart d'arrondi toléré 0,15 M€), sinon la production s'arrête. Non couverts (`sources_inaccessibles`) : LFI 2026 par action (budget.gouv.fr protégé par un dispositif anti-robot, non contourné), budget initial du CNC, classement des titres de presse 2024 et 2025, aides du CNC par bénéficiaire. Ordres écrits dans `ordre`. Dates par `pipeline/reproductible.py` ; deux productions sur le même entrepôt sont identiques octet pour octet.
+
 ### 2.54 Sport : `sport/` (pipeline/sport.py)
+
 Budget de l'État pour le sport (programme 219 « Sport » et programme 350 « Jeux olympiques et paralympiques 2024 »), financement de l'Agence nationale du sport, subventions du programme 219 aux fédérations, subventions du CNDS (prédécesseur de l'Agence) par fédération et par région en 2015, coût public des Jeux de Paris 2024 tel qu'évalué par la Cour des comptes. Les séries budgétaires, l'Agence et les subventions du programme 219 sont reprises des fichiers déjà produits par `realisations/`, `programmes/`, `operateurs/` et `associations/` (chaque bloc porte `fichier`, le fichier d'origine) : rien n'est recalculé. Commandes : `python pipeline/sport.py collecter` (réseau, entrées `sport` et `sport_cnds` du catalogue ; un refus est noté, jamais contourné), `python pipeline/sport.py produire` (sans réseau, reproductible). Tests : `pytest tests/test_sport.py`.
+
+```
 data/lake/sport/sport/ccomptes_jop2024_rapport.pdf            (Cour des comptes, septembre 2025)
 data/lake/_restreint/sport/sport_cnds/cnds_part_*_2015.xlsx    (CNDS 2015, data.gouv.fr ; noms sans SIREN)
 site/data/realisations/219.json, 350.json ; programmes/219.json ; operateurs/operateurs.json (id ans) ;
 site/data/associations/programmes/219.json ; local/geo/*.json
      └─> pipeline/sport.py ─> site/data/sport/index.json, budget.json, federations.json, cnds_2015.json, jop.json
+```
+
 Pour l'écran : `index.json` d'abord. `blocs.<id>.statut` vaut `publié` (avec `fichier`, `source`, `description`) ou `non publié en données ouvertes` (avec `motif`, sans fichier ni nombre) ; le bloc `agence_nationale_du_sport_subventions` est non publié : l'écran affiche son motif, jamais un zéro. `chiffres_cles` donne trois montants de sources différentes, à présenter côte à côte avec leur source, jamais additionnés. Tous les montants en euros sauf `jop.json` (millions d'euros, une décimale, tels que publiés par la Cour) et `actions_219` (milliards d'euros).
+
+| Fichier, champ | Sens |
+|---|---|
 | `index.json`, `blocs`, `statuts`, `limites`, `sources`, `sources_inaccessibles`, `recherche_publique` | statut de chaque bloc, définition des statuts, limites à afficher, sources (titre, producteur, URL, licence, verdict, `collecte_le`), sources non lues et motif, recherche préalable (Règle n°0) |
 | `index.json`, `chiffres_cles` | `programme_219_depense_constatee` (dernière année exécutée : `annee`, `eur`), `jop_organisation_meur`, `jop_infrastructures_meur`, `cnds_2015_part_territoriale_eur`, `lecture` |
 | `index.json`, `liens[]` | fichiers voisins (`fichier`, `id` éventuel, `lecture`) : prévu et dépensé, opérateurs, associations, bénéficiaires du programme 219 |
@@ -1501,15 +1557,25 @@ Pour l'écran : `index.json` d'abord. `blocs.<id>.statut` vaut `publié` (avec `
 | `jop.json`, `postes[]`, `totaux_meur` | tableau n° 5 de la Cour : `volet` (`organisation` ou `infrastructures`), `poste` (libellé de la Cour), `montant_meur` ; totaux par volet (3 019,2 et 3 631,4 M€ au 30 juin 2025) ; publiés seulement si la somme des postes redonne chaque total à 0,2 M€ près |
 | `jop.json`, `par_acteur`, `autres_montants`, `estimation_anterieure` | répartition par acteur (État et opérateurs, collectivités, entreprises de service public ; arrondis de la Cour, somme différente du total), recettes publiques, dépenses nettes d'organisation, dépenses fiscales, budget du comité d'organisation, estimation de la note d'étape de juin 2025 ; chaque montant porte `citation`, phrase exacte du rapport |
 | `jop.json`, `programme_350` | crédits du programme 350 par année (budget de l'État), autre périmètre : à afficher à côté de l'évaluation de la Cour, jamais ajouté |
+
 Règles propres : aucun bénéficiaire du CNDS n'est nommé (pas de SIREN dans la source ; colonnes bénéficiaire, siège, code postal, porteur, commune et projet jamais lues ; fichiers bruts en zone restreinte) ; une fédération n'est nommée que si `sirene.personne_morale` est vrai ; la sélection des fédérations se fait sur la dénomination (comités, ligues et fédérations d'éducation populaire compris, voir `regle`) ; deux sources ne sont jamais additionnées. Non couverts, faute de jeu ouvert (`sources_inaccessibles`) : subventions de l'Agence nationale du sport depuis 2019 (agencedusport.fr a refusé la connexion), subventions du CNDS de 2016 à 2018.
+
 ### 2.55 Emploi et assurance chômage : `emploi/` (pipeline/emploi.py)
+
 Comptes de l'Assurance chômage (Unédic, 2011 à 2025 : recettes, dépenses, soldes, dette), allocataires indemnisés par année, financement de France Travail par l'Unédic et par l'État, activité partielle (dépenses de l'État et de l'Unédic depuis 2007, heures et montants par mois en 2020 et 2021, heures par secteur, indemnités par année et par secteur depuis 2018), aide à l'embauche des jeunes et crédits de l'État des programmes 102 et 103. Agrégats publiés seulement, aucun employeur nommé. La formation et l'apprentissage restent dans `formation/` (2.32), l'arbre de l'Unédic dans `secu/` (2.16), l'allocation chômage dans `prestations/` (2.24), la fiche de France Travail dans `operateurs/` (2.21) : liens, jamais de montants additionnés. Commandes : `python pipeline/emploi.py collecter` (réseau ; un refus 401/403/429 ou une page anti-robot est noté, jamais contourné), `python pipeline/emploi.py produire` (sans réseau). Tests : `pytest tests/test_emploi.py`.
+
+```
 data/lake/emploi/ (Unédic : dépenses et recettes, indicateurs mensuels, étude activité partielle 2022 ;
                    Urssaf : assiette chômage partiel par secteur NA38 ; Dares : aide à l'embauche des jeunes)
   + site/data/operateurs/operateurs.json, programmes/102.json, programmes/103.json, arbre/*_102.json, *_103.json
      └─> pipeline/emploi.py ─> site/data/emploi/index.json, unedic.json, france_travail.json,
                                activite_partielle.json, aides_embauche.json
+```
+
 Montants en euros entiers (`*_eur`), y compris ceux que l'Unédic publie en millions d'euros (multipliés par 1 000 000, sans autre arrondi). Les clés d'année sont des chaînes (`"2024"`).
+
+| Fichier, champ | Sens |
+|---|---|
 | `index.json`, `chiffres_cles` | dernière année des comptes de l'Unédic : `unedic_recettes_eur`, `unedic_depenses_eur`, `unedic_allocations_eur`, `unedic_vers_france_travail_eur`, `unedic_activite_partielle_eur`, `unedic_dette_eur` (signe de la source : négatif = dette nette), `allocataires_indemnises_moyenne_mensuelle` |
 | `index.json`, `ecarts[]` | `objet` (`allocations_unedic` : comptes contre somme des dépenses mensuelles ; `activite_partielle_unedic` : étude de 2022 contre comptes), `annee`, `source`/`valeur`, `autre_source`/`autre_valeur`, `ecart`, `ecart_pct`, `lecture_ecart` ; montrés, jamais tranchés |
 | `index.json`, `sources`, `deja_publies`, `sources_inaccessibles`, `recherche_publique` | sources brutes (`entrepot` = nom dans data/lake/emploi/), fichiers d'autres vues lus par le module, sources non accessibles et motif, Règle n°0 |
@@ -1524,14 +1590,23 @@ Montants en euros entiers (`*_eur`), y compris ceux que l'Unédic publie en mill
 | `activite_partielle.json`, `indemnites_par_secteur` | Urssaf, 35 secteurs NA38 (`code`, `libelle`, `na17`, `grand_secteur`) ; `annees.<an>` : `indemnites_eur` (somme des trimestres), `masse_salariale_eur`, `part_indemnites_pct` ; `totaux.<an>` avec `trimestres` et `annee_complete` (l'année en cours est partielle) ; `annees_completes` |
 | `activite_partielle.json`, `indemnites_et_allocations` | par année : `indemnites_urssaf_eur` (versées par les employeurs aux salariés) face à `allocations_etat_unedic_etude_2022_eur` (remboursées aux employeurs) ; deux grandeurs différentes, `lecture` |
 | `aides_embauche.json`, `aide_embauche_jeunes` | `total_aides_validees`, `semaines[]` (`semaine` AAAA/SS, `aides`), `sections[]` (sections de la NAF : `aides_connues`, `groupes_secret_statistique`), `groupes[]` (groupe NAF à 3 chiffres, `section`, `aides`), `aides_secteur_non_renseigne` (« nc » de la source), `departements[]` (`code` 01 à 976, 2A, 2B ; `aides`) ; « nd » de la source (moins de 5) = null ; aucun montant |
+
 Règles propres : sources différentes côte à côte avec leurs écarts, jamais additionnées ; aucun montant estimé à partir d'heures ou de nombres d'aides ; valeur absente ou en secret statistique = null, jamais 0. Pour l'écran : la dette est négative dans la source (l'afficher comme « dette nette de … » en valeur absolue, en citant la source) ; l'étude de 2022 est figée (2021 provisoire) ; les heures indemnisées n'existent ici que pour 2020 et 2021. Non couverts (`sources_inaccessibles`) : séries de la Dares sur l'activité partielle (page anti-robot), comptes financiers de France Travail (aucun jeu ouvert), autres aides à l'embauche par année (aucun jeu ouvert).
+
 ### 2.56 Accueil du jeune enfant : `petite_enfance/` (pipeline/petite_enfance.py)
+
 Dépenses de l'accueil des jeunes enfants et offre d'accueil, par année (2017 à 2025) et par département : complément de libre choix du mode de garde (partie de la prestation d'accueil du jeune enfant) détaillé par mode de garde, action sociale des CAF pour la petite enfance (dont la prestation de service unique versée aux crèches), places offertes aux moins de 3 ans et taux de couverture (CNAF, indicateur de l'Observatoire national de la petite enfance), places agréées en établissement et agréments d'assistants maternels (DREES, enquête Aide sociale). Agrégats publiés seulement, aucun établissement ni aucune personne nommés. La prestation d'accueil du jeune enfant reste publiée en total dans `prestations/` (2.24) : cette vue détaille son complément de mode de garde et y renvoie par un lien, sans l'additionner. Commandes : `python pipeline/petite_enfance.py collecter` (réseau, par collecte/collecte.py, domaine `petite_enfance` et `secu_caf_s_ben_dep` ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/petite_enfance.py produire` (sans réseau). Tests : `pytest tests/test_petite_enfance.py`.
+
+```
 data/lake/petite_enfance/pe_caf_* (CNAF data.caf.fr : nbpla_pe, txcouv_pe, vfdas, dep_tr_nat, ndurcmg_s_sitfam_dep)
 data/lake/petite_enfance/pe_drees_offre_accueil_2024.xlsx (DREES, offre d'accueil des moins de 3 ans)
 data/lake/secu/secu_caf_s_ben_dep.parquet (CNAF, colonnes du complément de mode de garde)
      └─> pipeline/petite_enfance.py ─> site/data/petite_enfance/index.json, nationales.json, departements/<annee>.json
                                         └─ liens (fichier + id) vers prestations/nationales.json (paje), secu/arbre/racine.json (robss/famille)
+```
+
+| Fichier, champ | Sens |
+|---|---|
 | `index.json`, `dispositifs[]` | `cmg`, `action_sociale`, `places`, `places_agreees` : `nom`, `financeur`, `sources` (clés de `sources`), `annees_departements` (années présentes dans les fichiers départementaux), `liens` |
 | `index.json`, `chiffres_cles` | chiffres d'accroche, chacun avec son année : `cmg_eur` (2024, dépenses tous régimes), `action_sociale_petite_enfance_eur` (2024), `places_cnaf` et `couverture_cnaf` (2023, dernière année publiée), `places_agreees_drees` (2024) ; `note` : ils ne s'additionnent pas |
 | `index.json`, `ecarts[]` | `sujet`, `annee`, `unite` (`places`, `places pour 100 enfants`, `euros`), `source`/`valeur` contre `autre_source`/`autre_valeur`, `ecart` (= valeur moins autre valeur), `ecart_pct` (rapporté à l'autre valeur), `lecture` : places en crèche et chez une assistante maternelle (CNAF contre DREES, chaque série de la CNAF), ancienne contre nouvelle série de la CNAF en 2022, complément de mode de garde (dépenses comptables contre montants versés chaque mois) |
@@ -1544,15 +1619,24 @@ data/lake/secu/secu_caf_s_ben_dep.parquet (CNAF, colonnes du complément de mode
 | `departements/<annee>.json`, `departements.<code>` | 101 départements (codes `01` à `95`, `2A`, `2B`, `971` à `974`, `976`) : `nom` ; `places_cnaf[]` et `couverture_cnaf[]` (une entrée par série, avec `serie` ; deux entrées en 2022, aucune hors 2017 à 2023 et pour Mayotte) ; `action_sociale_eur` (postes de `postes_action_sociale`, caisse rattachée par son numéro d'organisme) ; `cmg` (`foyers_decembre`, `montant_annuel_eur` null si un mois manque, `foyers_decembre_par_type` ; null en 2025) ; `drees` (`places_agreees` par catégorie, `places_agreees_total` en 2024 seulement, `agrements_assistants_maternels`) |
 | `departements/<annee>.json`, `drees_autres_territoires` | territoires publiés par la DREES à la place de départements : `20` Collectivité de Corse (depuis 2018, 2A et 2B sont alors null), `69D` Nouveau Rhône et `69M` Métropole de Lyon (le Rhône `69` n'a pas de total en 2024) ; jamais additionnés aux départements |
 | `departements/<annee>.json`, `hors_departements`, `non_disponibles`, `notes` | codes de la CNAF hors département (977, 978, 99, XX, XXX) ; cellules vides ou « ND » de la DREES avec `motif` ; notes de périmètre de l'année |
+
 Règles propres : aucun total n'additionne deux sources ; les dépenses du complément de mode de garde (CNAF, tous régimes, cotisations prises en charge comprises) et la somme des montants versés chaque mois (champ CAF) sont montrées côte à côte avec leur écart ; les deux séries de places de la CNAF ne sont pas chaînées ; une valeur absente à la source est null, jamais 0. Rupture : à partir de septembre 2025, les foyers du complément pour l'emploi direct ne figurent presque plus dans les jeux départementaux de la CNAF (réforme du 1er septembre 2025) : 2025 n'est pas repris par département pour le complément. Pour l'écran : les montants sont en euros (pas en M€), les taux en places pour 100 enfants ; afficher la série et la source avec chaque chiffre, ne pas comparer un département à un autre par un classement de valeur ; un sigle de la source (PSU, CMG, EAJE) n'est jamais affiché seul, les libellés `nom` le développent.
+
 ### 2.57 Eau et environnement : `eau_environnement/` (pipeline/eau_environnement.py)
+
 Agences de l'eau (redevances encaissées par catégorie, écrêtement reversé au budget général de l'État, plafond annuel, contribution à l'Office français de la biodiversité, autorisations d'engagement par domaine), aides de l'ADEME, Fonds vert, liens vers les programmes 113, 181 et 380. Agrégats seulement : aucun bénéficiaire n'est nommé ici ; les lauréats du Fonds vert et les bénéficiaires de l'ADEME qui sont des personnes morales restent dans `subventions/` (2.26), atteints par un lien. Commandes : `python pipeline/eau_environnement.py collecter` (réseau, par `collecte/collecte.py` : entrées `eau_jaune_agences_eau_plf2026`, `eau_jaune_agences_eau_plf2025`, `subv_ademe_aides`, `subv_fonds_vert` ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/eau_environnement.py produire` (sans réseau ; `pdftotext` du paquet poppler-utils). Tests : `pytest tests/test_eau_environnement.py`.
+
+```
 data/lake/eau_environnement/ (annexes au PLF 2026 et 2025 « Agences de l'eau », PDF)
 data/lake/_restreint/subventions/ (aides de l'ADEME, Fonds vert : mêmes fichiers que subventions.py, aucun nom lu)
 site/data/local/geo/<dep>.json (département -> région, versionné)
      └─> pipeline/eau_environnement.py ─> site/data/eau_environnement/index.json, agences_eau.json, ademe.json,
                                           fonds_vert.json (chacun < 1 Mo)
                                           └─ liens (fichier + id) vers programmes/113|181|380, operateurs/, subventions/
+```
+
+| Fichier, champ | Sens |
+|---|---|
 | `index.json`, `chiffres` | repères de la dernière année des agences (`annee_agences`) : `redevances_encaissees_meur`, `ecretement_meur` (null si aucun), `plafond_redevances_meur`, `contribution_operateurs_meur` ; totaux ADEME et Fonds vert en euros ; sources différentes, jamais additionnées (`note`) |
 | `index.json`, `liens[]` | `vue`, `fichier` (relatif à site/data), `id`, `lecture` : programmes 113, 181 (action 12 : subvention à l'ADEME), 380 ; nœuds `agencesdeleau` et `ademe` de `operateurs/operateurs.json` ; `subventions/attribuants/subv_fonds_vert.json` et `subv_ademe_aides.json` (bénéficiaires nommés) |
 | `index.json`, `sources`, `sources_inaccessibles`, `recherche_publique`, `limites`, `regle` | sources (titre, producteur, url, page, millésime, licence, verdict) ; jeux absents et motif ; trouvailles classées (verdict, licence, date) |
@@ -1566,16 +1650,26 @@ site/data/local/geo/<dep>.json (département -> région, versionné)
 | `fonds_vert.json` | `par_annee[]` (`programme` 380 ou 113), `par_region[]` (nom de la source, `region` = code ou null pour les collectivités d'outre-mer hors régions), `region_non_publiee`, `par_instructeur[]` (colonne « opérateur » : ADEME, une agence de l'eau, agence non précisée ; `publie = false` en 2023), `par_forme_juridique[]` (libellés de la source, `publie = false` quand la colonne manque), `par_demarche[]` ; chaque agrégat porte `montant_eur`, `projets`, `lignes_montant_non_communique` |
 | `fonds_vert.json`, `agences_eau.comparaison[]` | par agence et par année : `liste_fonds_vert_eur` et `liste_projets` (projets rattachés à l'agence dans la liste ; null si la colonne n'est pas publiée ou si aucun projet), face à `jaune_ae_fonds_vert_meur` (ligne « Fonds vert » des autorisations d'engagement de l'agence, millions d'euros) : même dispositif vu par deux publications, jamais additionné |
 | `fonds_vert.json`, `laureats` | lien `fichier` + `chemin` vers les lauréats nommés (personnes morales) de `subventions/` |
+
 **Pour l'écran** (un autre agent) : par bassin, `agences_eau.json` donne la ligne « ce que l'agence a encaissé » (catégories de redevances, empilables : leur somme est le sous-total (1)) et la ligne « ce qu'elle a engagé » (domaines 1 à 3 et primes, ou `total_sous_plafond`) ; l'écrêtement et la contribution à l'OFB se montrent à part, avec le plafond. Ne pas additionner redevances et autorisations d'engagement (recettes et engagements), ni l'ADEME avec l'action 12 du programme 181, ni la liste du Fonds vert avec les lignes « Fonds vert » du jaune. Toute valeur null s'affiche « non publié » (motif hachuré), jamais 0. Les montants des agences sont en millions d'euros, ceux de l'ADEME et du Fonds vert en euros.
+
 Règles propres : une cellule vide du jaune est null (la source ne distingue pas zéro et absence) ; les tableaux du PDF sont lus par position de colonne et contrôlés (arrêt si un contrôle dépasse 2 M€) ; dispositifs de l'ADEME de moins de 3 conventions regroupés ; aucun nom de bénéficiaire lu ni publié. Non couverts (`sources_inaccessibles`) : redevances et aides des agences en jeu ouvert, montants annuels du Fonds chaleur et du Fonds économie circulaire, prélèvements sur le fonds de roulement des agences avant 2019, jaune PLF 2024 (tableaux en image). Dates par `pipeline/reproductible.py` ; deux productions sur le même entrepôt sont identiques octet pour octet.
+
 ### 2.58 Sécurité intérieure : `securite_interieure/` (pipeline/securite_interieure.py)
+
 Crédits de la police nationale (programme 176), de la gendarmerie nationale (152), de la sécurité civile (161) et de la sécurité et éducation routières (207), mission Sécurités : exécution par titre et catégorie, actions et sous-actions, plafonds d'emplois votés ; recettes des amendes versées au compte d'affectation spéciale « Contrôle de la circulation et du stationnement routiers » et leur affectation (programmes 751, 753, 754, 755). Aucune statistique de délinquance (hors du sujet du site), aucune donnée individuelle. Sources : jeux CSV de data.economie.gouv.fr déclarés dans `collecte/catalogue.json` (entrées `securite_interieure_*`). Commandes : `python pipeline/securite_interieure.py collecter` (réseau, par `collecte/collecte.py` ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/securite_interieure.py produire [--sortie DOSSIER]` (sans réseau, quelques secondes ; lit `site/data/realisations/<programme>.json` en lecture seule). Tests : `pytest tests/test_securite_interieure.py`.
+
+```
 data/lake/securite_interieure/ (PLRG 2023, 2024, 2025 : annexe 1 état CP et état titre catégorie, annexe 2 état CP,
                                 recouvrements et situation comptable des comptes spéciaux ; PLF 2026 budget vert ;
                                 PLF 2025 destination et nature ; emplois LFI 2019 à 2023)
 site/data/realisations/176.json, 152.json, 161.json, 207.json (série longue prévu / dépensé)
      └─> pipeline/securite_interieure.py ─> site/data/securite_interieure/index.json, budget.json, effectifs.json,
                                             amendes.json (chacun < 1 Mo, environ 85 Ko au total)
+```
+
+| Fichier, champ | Sens |
+|---|---|
 | `index.json`, `reperes` | dernière année exécutée (2025) : par programme `depenses_constatees_eur`, `par_titre[]` (`titre`, `groupe`, `eur`, `part_pct`), `etpt_lfi` et `annee_etpt` ; `mission` (somme calculée, `statut: "calculé"`) ; `amendes` (`recouvrements_eur`, `depenses_eur`, `solde_fin_eur`) |
 | `index.json`, autres champs | `fichiers[]` (`fichier`, `contenu`, `octets`), `limites[]`, `voir_aussi[]` (fichiers existants d'autres vues : `realisations/`, `nature/`, `effectifs/`, `programmes/`), `sources[]` (page, licence, date de collecte), `sources_inaccessibles[]`, `recherche_publique` (trouvailles, verdict, licence, date) |
 | `budget.json`, `programmes[]` | un objet par programme, dans l'ordre 176, 152, 161, 207 : `programme`, `libelle`, `mission` |
@@ -1593,9 +1687,13 @@ site/data/realisations/176.json, 152.json, 161.json, 207.json (série longue pr�
 | `amendes.json`, `structure` | sections du compte et programmes qu'elles financent (« Contrôle automatisé » : 751 ; « Circulation et stationnement routiers » : 753, 754, 755), texte de référence |
 | `amendes.json`, `annees[]` | 2023 à 2025 : `recettes[]` (lignes de l'annexe : `niveau` `prevision` avec `evaluation_eur`, ou `execution` avec `recouvrement_eur`), `recettes_par_section[]` (`evaluation_eur`, `recouvrement_eur`, `depenses_constatees_programmes_eur`), `recouvrements_total_eur`, `depenses[]` (751, 753, 754, 755 : crédits votés, ouverts, consommés, `part_depenses_pct` calculée), `depenses_total_eur`, `situation` (`solde_entree_eur`, `recettes_eur`, `depenses_eur`, `solde_sortie_eur`), `controles` |
 | `amendes.json`, `actions_budget_vert[]` | actions des programmes 751, 753, 754 (exécution 2024, LFI 2025, PLF 2026 ; le programme 755 n'est pas dans le budget vert) |
+
 Repères (fichiers produits le 18/11/2026) : dépenses constatées 2025 de 13,49 Md€ pour la police nationale (dont 11,70 Md€ de personnel), 11,27 Md€ pour la gendarmerie nationale (dont 9,16 Md€), 0,97 Md€ pour la sécurité civile, 60,1 M€ pour le programme 207 ; plafonds d'emplois LFI 2023 : 151 020 ETPT (176), 102 162 (152), 2 467 (161) ; compte des amendes 2025 : 1,90 Md€ encaissés, 1,86 Md€ dépensés (dont 778 M€ aux collectivités par le programme 754 et 729 M€ au désendettement de l'État par le programme 755), solde de 1,23 Md€ en fin d'année.
+
 **Pour l'écran.** Afficher les crédits en euros avec leur année et leur nature (exécution, loi de finances initiale, projet de loi) ; ne jamais additionner deux millésimes ni deux sources. Le titre 2 contient les cotisations de l'employeur, dont la contribution au compte Pensions : le dire à côté du montant de personnel. Les ETPT sont des plafonds votés, pas des effectifs présents ; aucun ratio euros par agent n'est fourni (millésimes différents). Toute valeur `statut: "calculé"` ou champ dit calculé (`mission`, `part_pct`, `part_depenses_pct`, `evolution_etpt`) s'affiche avec la mention « calculé ». Pour les amendes, montrer que seule la part versée au compte est couverte (`limites`) et que l'écart entre recettes et dépenses d'une année passe par le solde du compte. Aucun classement entre police et gendarmerie, aucune couleur de valeur.
+
 **Règles propres.** Une valeur absente à la source reste `null`, jamais 0. Les contrôles sont refaits à chaque production : catégories = titre, titre 2 de l'état titre catégorie = titre 2 de l'état CP, recettes et dépenses du compte = situation comptable, solde de sortie = solde d'entrée + recettes - dépenses ; un écart entre deux annexes est publié (`ecarts[]`, `controle`, `controle_actions`), jamais corrigé ; une colonne ou un programme absent arrête la production (`DonneeInattendue`). Non couverts (`sources_inaccessibles`) : projets et rapports annuels de performances de budget.gouv.fr (protection contre les robots, non contournée), plafonds d'emplois après la LFI 2023 (aucun jeu ouvert), part des amendes hors du compte. Dates par `pipeline/reproductible.py` ; deux productions sur le même entrepôt sont identiques octet pour octet.
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.
