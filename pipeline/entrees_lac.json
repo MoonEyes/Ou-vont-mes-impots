@@ -1986,6 +1986,30 @@
    "hors_catalogue": [],
    "octets_sources": 6304808,
    "note": "sources du domaine « petite_enfance » de collecte/catalogue.json et secu_caf_s_ben_dep, collectées par `python pipeline/petite_enfance.py collecter` ; chemins relevés dans le manifeste (pas sous strace)"
+  },
+  "eau_environnement": {
+   "sources": {
+    "eau_jaune_agences_eau_plf2025": [
+     "data/lake/eau_environnement/eau_jaune_agences_eau_plf2025.pdf"
+    ],
+    "eau_jaune_agences_eau_plf2026": [
+     "data/lake/eau_environnement/eau_jaune_agences_eau_plf2026.pdf"
+    ],
+    "subv_ademe_aides": [
+     "data/lake/_restreint/subventions/subv_ademe_aides.csv"
+    ],
+    "subv_fonds_vert": [
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2023-export_ac2da594.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2024-export_1fdc94e1.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2025-export_b5d38c64.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2024-export_558ace5f.csv",
+     "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2025-export_df1c6fc7.csv"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 42457339,
+   "note": "relevé à la main sur le manifeste de collecte (pipeline/eau_environnement.py collecter) ; lit aussi site/data/local/geo (versionné)"
   }
  },
  "urls": {
@@ -2558,6 +2582,14 @@
   "data/lake/petite_enfance/pe_caf_places_nat.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/nbpla_pe_nat/exports/parquet",
   "data/lake/petite_enfance/pe_caf_places_nat_hist.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/nbpla_pe_nat_hist/exports/parquet",
   "data/lake/petite_enfance/pe_drees_offre_accueil_2024.xlsx": "https://data.drees.solidarites-sante.gouv.fr/api/v2/catalog/datasets/331_l-offre-d-accueil-du-jeune-enfant/attachments/l_offre_d_accueil_des_enfants_de_moins_de_3_ans_series_longues_et_resulats_detailles_2024_xlsx",
-  "data/lake/secu/secu_caf_s_ben_dep.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/s_ben_dep/exports/parquet"
+  "data/lake/secu/secu_caf_s_ben_dep.parquet": "https://data.caf.fr/api/explore/v2.1/catalog/datasets/s_ben_dep/exports/parquet",
+  "data/lake/_restreint/subventions/subv_ademe_aides.csv": "https://data.ademe.fr/data-fair/api/v1/datasets/les-aides-financieres-de-l%27ademe/full",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2023-export_ac2da594.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes-en-2023/20240731-110636/fonds-vert-2023-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2024-export_1fdc94e1.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20250731-095516/fonds-vert-2024-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-2025-export_b5d38c64.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20260622-085623/fonds-vert-2025-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2024-export_558ace5f.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20250731-100849/fonds-vert-p113-2024-export.csv",
+  "data/lake/_restreint/subventions/subv_fonds_vert/fonds-vert-p113-2025-export_df1c6fc7.csv": "https://static.data.gouv.fr/resources/fonds-vert-liste-des-projets-subventionnes/20260728-085038/fonds-vert-p113-2025-export.csv.csv",
+  "data/lake/eau_environnement/eau_jaune_agences_eau_plf2025.pdf": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Jaunes/01-Jaune_Agences_eau.pdf",
+  "data/lake/eau_environnement/eau_jaune_agences_eau_plf2026.pdf": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1089974/file/1-Jaune2026_Agences_Eau.pdf"
  }
 }

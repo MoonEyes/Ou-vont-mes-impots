@@ -4854,6 +4854,26 @@
    "titre": "DREES, l'offre d'accueil des enfants de moins de 3 ans, series longues et resultats detailles 2024 (enquete Aide sociale, volet PMI) (pipeline/petite_enfance.py)",
    "licence": "Licence Ouverte 2.0",
    "module": "pipeline/petite_enfance.py"
+  },
+  {
+   "id": "eau_jaune_agences_eau_plf2026",
+   "domaine": "eau_environnement",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www.assemblee-nationale.fr/dyn/dyn/contenu/visualisation/1089974/file/1-Jaune2026_Agences_Eau.pdf",
+   "titre": "Annexe au PLF 2026, Agences de l'eau (jaune), miroir Assemblee nationale : redevances encaissees et autorisations d'engagement par agence, 2019-2024 (pipeline/eau_environnement.py)",
+   "licence": "document administratif public",
+   "module": "pipeline/eau_environnement.py"
+  },
+  {
+   "id": "eau_jaune_agences_eau_plf2025",
+   "domaine": "eau_environnement",
+   "type": "url",
+   "format": "pdf",
+   "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF2025-Jaunes/01-Jaune_Agences_eau.pdf",
+   "titre": "Annexe au PLF 2025, Agences de l'eau (jaune), miroir Assemblee nationale : edition precedente, comparee a l'edition 2026 (pipeline/eau_environnement.py)",
+   "licence": "document administratif public",
+   "module": "pipeline/eau_environnement.py"
   }
  ],
  "non_collectables": [

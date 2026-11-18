@@ -1,0 +1,404 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/eau_environnement_ademe.schema.json",
+  "title": "site/data/eau_environnement/ademe.json : aides de l'ADEME par année, région et dispositif (pipeline/eau_environnement.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "source_url",
+    "collecte_le",
+    "unite",
+    "total",
+    "par_annee",
+    "par_region",
+    "non_localise",
+    "par_dispositif",
+    "par_dispositif_autres",
+    "fonds_nommes",
+    "avertissement",
+    "liens"
+  ],
+  "properties": {
+    "total": {
+      "type": "object",
+      "required": [
+        "montant_eur",
+        "conventions",
+        "lignes_montant_non_communique"
+      ],
+      "properties": {
+        "montant_eur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "conventions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lignes_montant_non_communique": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "conventions_sans_annee": {
+      "type": "integer"
+    },
+    "par_annee": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "montant_eur",
+              "conventions",
+              "lignes_montant_non_communique"
+            ],
+            "properties": {
+              "montant_eur": {
+                "type": "number",
+                "minimum": 0
+              },
+              "conventions": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lignes_montant_non_communique": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        ],
+        "type": "object",
+        "required": [
+          "annee"
+        ],
+        "properties": {
+          "annee": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          }
+        }
+      }
+    },
+    "par_region": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "montant_eur",
+              "conventions",
+              "lignes_montant_non_communique"
+            ],
+            "properties": {
+              "montant_eur": {
+                "type": "number",
+                "minimum": 0
+              },
+              "conventions": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lignes_montant_non_communique": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        ],
+        "type": "object",
+        "required": [
+          "region",
+          "nom",
+          "par_annee"
+        ],
+        "properties": {
+          "region": {
+            "type": "string",
+            "pattern": "^[0-9]{2}$"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "par_annee": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "montant_eur",
+                    "conventions",
+                    "lignes_montant_non_communique"
+                  ],
+                  "properties": {
+                    "montant_eur": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "conventions": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "lignes_montant_non_communique": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                }
+              ],
+              "type": "object",
+              "required": [
+                "annee"
+              ],
+              "properties": {
+                "annee": {
+                  "type": "integer",
+                  "minimum": 2000,
+                  "maximum": 2100
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "non_localise": {
+      "type": "object",
+      "required": [
+        "montant_eur",
+        "conventions",
+        "lignes_montant_non_communique"
+      ],
+      "properties": {
+        "montant_eur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "conventions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lignes_montant_non_communique": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "par_dispositif": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "montant_eur",
+              "conventions",
+              "lignes_montant_non_communique"
+            ],
+            "properties": {
+              "montant_eur": {
+                "type": "number",
+                "minimum": 0
+              },
+              "conventions": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lignes_montant_non_communique": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        ],
+        "type": "object",
+        "required": [
+          "dispositif",
+          "par_annee"
+        ],
+        "properties": {
+          "dispositif": {
+            "type": "string"
+          },
+          "conventions": {
+            "type": "integer",
+            "minimum": 3
+          },
+          "par_annee": {
+            "type": "object",
+            "patternProperties": {
+              "^20[0-9]{2}$": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "par_dispositif_autres": {
+      "allOf": [
+        {
+          "type": "object",
+          "required": [
+            "montant_eur",
+            "conventions",
+            "lignes_montant_non_communique"
+          ],
+          "properties": {
+            "montant_eur": {
+              "type": "number",
+              "minimum": 0
+            },
+            "conventions": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "lignes_montant_non_communique": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      ],
+      "type": "object",
+      "required": [
+        "dispositifs",
+        "regle"
+      ]
+    },
+    "fonds_nommes": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "montant_eur",
+              "conventions",
+              "lignes_montant_non_communique"
+            ],
+            "properties": {
+              "montant_eur": {
+                "type": "number",
+                "minimum": 0
+              },
+              "conventions": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lignes_montant_non_communique": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        ],
+        "type": "object",
+        "required": [
+          "id",
+          "nom",
+          "regle",
+          "dispositifs",
+          "par_annee"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "fonds_chaleur",
+              "fonds_economie_circulaire"
+            ]
+          },
+          "dispositifs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "par_annee": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "montant_eur",
+                    "conventions",
+                    "lignes_montant_non_communique"
+                  ],
+                  "properties": {
+                    "montant_eur": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "conventions": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "lignes_montant_non_communique": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                }
+              ],
+              "type": "object",
+              "required": [
+                "annee"
+              ],
+              "properties": {
+                "annee": {
+                  "type": "integer",
+                  "minimum": 2000,
+                  "maximum": 2100
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "avertissement": {
+      "type": "string"
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vue",
+          "fichier",
+          "id",
+          "lecture"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "vue": {
+            "type": "string"
+          },
+          "fichier": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lecture": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
