@@ -1841,6 +1841,29 @@
    "hors_catalogue": [],
    "octets_sources": 4017740,
    "note": "source « pouvoirs_publics_documents » de collecte/catalogue.json (python pipeline/pouvoirs_publics.py collecter) et trois jeux de data/lake/etat déjà collectés par d'autres étapes ; lit aussi site/data/realisations/5xx.json et site/data/fonction_publique/indemnites_elus.json (sorties d'étapes, lecture seule)"
+  },
+  "assurance_maladie_territoires": {
+   "sources": {
+    "secu_ameli_depenses": [
+     "data/lake/secu/secu_ameli_depenses.parquet"
+    ],
+    "amt_ameli_prescriptions": [
+     "data/lake/assurance_maladie_territoires/amt_ameli_prescriptions.parquet"
+    ],
+    "amt_ameli_honoraires": [
+     "data/lake/assurance_maladie_territoires/amt_ameli_honoraires.parquet"
+    ],
+    "secu_placss2024_annexe3": [
+     "data/lake/secu/secu_placss2024_annexe3.pdf"
+    ],
+    "secu_placss2025_annexe3": [
+     "data/lake/secu/secu_placss2025_annexe3.pdf"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 2313880,
+   "note": "entrées relevées dans le manifeste de collecte (python pipeline/assurance_maladie_territoires.py collecter), non relevées sous strace"
   }
  },
  "urls": {
@@ -2374,6 +2397,11 @@
   "data/lake/pouvoirs_publics/pouvoirs_publics_documents/rap2025_pouvoirs_publics.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1109910/file/Pouvoirs_publics_PB.pdf",
   "data/lake/pouvoirs_publics/pouvoirs_publics_documents/an_fiche7_situation_materielle_depute.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/telechargement/631144/file/Fiche%207%20corrig%C3%A9e%20-%20Situation%20mat%C3%A9rielle%20du%20d%C3%A9put%C3%A9_actualis%C3%A9e%20080126.pdf",
   "data/lake/pouvoirs_publics/pouvoirs_publics_documents/senat_recueil_pouvoirs_publics_traitement_gouvernement.html": "https://www.senat.fr/reglement/pouvoirs_publics22.html",
-  "data/lake/pouvoirs_publics/pouvoirs_publics_documents/plf2016_bg_msn_dest.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv"
+  "data/lake/pouvoirs_publics/pouvoirs_publics_documents/plf2016_bg_msn_dest.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-de-finances-pour-2016-plf-2016/attachments/plf2016_bg_msn_dest_csv",
+  "data/lake/secu/secu_ameli_depenses.parquet": "https://data.ameli.fr/api/explore/v2.1/catalog/datasets/depenses/exports/parquet",
+  "data/lake/assurance_maladie_territoires/amt_ameli_prescriptions.parquet": "https://data.ameli.fr/api/explore/v2.1/catalog/datasets/prescriptions/exports/parquet?where=profession_sante%3D%22Ensemble+des+m%C3%A9decins%22&select=annee%2Cregion%2Clibelle_region%2Cdepartement%2Clibelle_departement%2Cposte_prescription%2Clibelle_poste_prescription%2Cmontant_total_prescription",
+  "data/lake/assurance_maladie_territoires/amt_ameli_honoraires.parquet": "https://data.ameli.fr/api/explore/v2.1/catalog/datasets/honoraires/exports/parquet?where=profession_sante%3D%22Ensemble+des+m%C3%A9decins%22+OR+profession_sante%3D%22Ensemble+des+chirurgiens-dentistes%22+OR+profession_sante%3D%22Ensemble+des+auxiliaires+m%C3%A9dicaux%22+OR+profession_sante%3D%22Sages-femmes%22&select=annee%2Cprofession_sante%2Cregion%2Clibelle_region%2Cdepartement%2Clibelle_departement%2Chono_sans_depassement_totaux%2Cdepassements_totaux",
+  "data/lake/secu/secu_placss2024_annexe3.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/922636/file/PLACSS2024-Annexe3.pdf",
+  "data/lake/secu/secu_placss2025_annexe3.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1112982/file/PLACSS2025-Annexe%203.pdf"
  }
 }

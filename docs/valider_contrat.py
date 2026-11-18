@@ -303,6 +303,12 @@ FICHIERS = [
     ("pouvoirs_publics_dotations.schema.json", "pouvoirs_publics/dotations.json", "existant"),
     ("pouvoirs_publics_budgets_institutions.schema.json", "pouvoirs_publics/budgets_institutions.json", "existant"),
     ("pouvoirs_publics_indemnites.schema.json", "pouvoirs_publics/indemnites.json", "existant"),
+    # assurance maladie : dépenses remboursées par grand poste, prescriptions et honoraires par département, ONDAM
+    # par sous-objectif (pipeline/assurance_maladie_territoires.py)
+    ("assurance_maladie_territoires_index.schema.json", "assurance_maladie_territoires/index.json", "existant"),
+    ("assurance_maladie_territoires_postes.schema.json", "assurance_maladie_territoires/postes.json", "existant"),
+    ("assurance_maladie_territoires_departements.schema.json", "assurance_maladie_territoires/departements.json", "existant"),
+    ("assurance_maladie_territoires_ondam.schema.json", "assurance_maladie_territoires/ondam.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

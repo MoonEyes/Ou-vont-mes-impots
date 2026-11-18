@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/assurance_maladie_territoires_postes.schema.json",
+  "title": "site/data/assurance_maladie_territoires/postes.json : dépenses remboursées par l'assurance maladie (tous régimes) par grand poste et sous-poste de soins, France entière, par année (Cnam, cartographie des pathologies)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "statut",
+    "producteur",
+    "perimetre",
+    "annees",
+    "postes",
+    "controles",
+    "definitions",
+    "ordre"
+  ],
+  "properties": {
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "statut": {
+      "enum": [
+        "tracé",
+        "approché",
+        "non publié"
+      ]
+    },
+    "producteur": {
+      "type": "string",
+      "minLength": 3
+    },
+    "perimetre": {
+      "type": "string",
+      "minLength": 3
+    },
+    "annees": {
+      "type": "array",
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      },
+      "minItems": 1
+    },
+    "postes": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "niveau",
+          "parent",
+          "libelle",
+          "libelle_source",
+          "montants_eur"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_.]+$"
+          },
+          "niveau": {
+            "enum": [
+              0,
+              1,
+              2
+            ]
+          },
+          "parent": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "libelle": {
+            "type": "string",
+            "minLength": 3
+          },
+          "libelle_source": {
+            "type": "string",
+            "minLength": 3
+          },
+          "montants_eur": {
+            "type": "array",
+            "items": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "controles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "poste",
+          "annee",
+          "ecart_eur"
+        ],
+        "properties": {
+          "annee": {
+            "$ref": "commun.schema.json#/$defs/annee_entier"
+          },
+          "ecart_eur": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "ordre": {
+      "type": "string",
+      "minLength": 3
+    }
+  }
+}
