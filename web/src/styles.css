@@ -2594,7 +2594,6 @@ td.nombre {
   * {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    box-shadow: none !important;
   }
   .evitement,
   .navigation,
