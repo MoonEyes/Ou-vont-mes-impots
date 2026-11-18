@@ -1,0 +1,369 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/emploi_index.schema.json",
+  "title": "site/data/emploi/index.json : chiffres clés de l'Unédic, écarts entre sources, sources (pipeline/emploi.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "date_sources",
+    "annees",
+    "derniere_annee",
+    "fichiers",
+    "chiffres_cles",
+    "ecarts",
+    "regle",
+    "limites",
+    "sources",
+    "deja_publies",
+    "sources_inaccessibles",
+    "recherche_publique"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date_sources": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "annees": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee_entier"
+      }
+    },
+    "derniere_annee": {
+      "$ref": "commun.schema.json#/$defs/annee_entier"
+    },
+    "fichiers": {
+      "type": "object",
+      "required": [
+        "unedic",
+        "france_travail",
+        "activite_partielle",
+        "aides_embauche"
+      ],
+      "properties": {
+        "unedic": {
+          "const": "emploi/unedic.json"
+        },
+        "france_travail": {
+          "const": "emploi/france_travail.json"
+        },
+        "activite_partielle": {
+          "const": "emploi/activite_partielle.json"
+        },
+        "aides_embauche": {
+          "const": "emploi/aides_embauche.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    "chiffres_cles": {
+      "type": "object",
+      "required": [
+        "annee",
+        "unedic_recettes_eur",
+        "unedic_depenses_eur",
+        "unedic_allocations_eur",
+        "unedic_dette_eur",
+        "unedic_vers_france_travail_eur",
+        "unedic_activite_partielle_eur",
+        "allocataires_indemnises_moyenne_mensuelle",
+        "note"
+      ],
+      "properties": {
+        "annee": {
+          "type": "integer"
+        },
+        "unedic_recettes_eur": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "unedic_depenses_eur": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "unedic_allocations_eur": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "unedic_dette_eur": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "unedic_vers_france_travail_eur": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "unedic_activite_partielle_eur": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "allocataires_indemnises_moyenne_mensuelle": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "objet",
+          "annee",
+          "source",
+          "valeur",
+          "autre_source",
+          "autre_valeur",
+          "ecart",
+          "ecart_pct",
+          "lecture_ecart"
+        ],
+        "properties": {
+          "objet": {
+            "enum": [
+              "allocations_unedic",
+              "activite_partielle_unedic"
+            ]
+          },
+          "annee": {
+            "type": "integer"
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valeur": {
+            "type": "integer"
+          },
+          "autre_source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "autre_valeur": {
+            "type": "integer"
+          },
+          "ecart": {
+            "type": "integer"
+          },
+          "ecart_pct": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "lecture_ecart": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 1
+    },
+    "limites": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "sources": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "entrepot",
+          "url",
+          "page",
+          "titre",
+          "producteur",
+          "millesime",
+          "licence",
+          "verdict"
+        ],
+        "properties": {
+          "entrepot": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "minLength": 1
+          },
+          "page": {
+            "type": "string",
+            "minLength": 1
+          },
+          "titre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "producteur": {
+            "type": "string",
+            "minLength": 1
+          },
+          "millesime": {
+            "type": "string",
+            "minLength": 1
+          },
+          "licence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "verdict": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "deja_publies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "fichiers",
+          "titre"
+        ],
+        "properties": {
+          "fichiers": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "titre": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sources_inaccessibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "motif"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "motif": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "conclusion",
+        "trouvailles"
+      ],
+      "properties": {
+        "date": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conclusion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trouvailles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "nom",
+              "url",
+              "licence",
+              "verdict"
+            ],
+            "properties": {
+              "nom": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": "string",
+                "minLength": 1
+              },
+              "licence": {
+                "type": "string",
+                "minLength": 1
+              },
+              "verdict": {
+                "type": "string",
+                "minLength": 1
+              },
+              "mise_a_jour": {
+                "type": "string",
+                "minLength": 1
+              },
+              "dernier_commit": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

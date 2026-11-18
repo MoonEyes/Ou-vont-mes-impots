@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/emploi_unedic.schema.json",
+  "title": "site/data/emploi/unedic.json : comptes annuels de l'Assurance chômage et indicateurs annuels (pipeline/emploi.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "annees",
+    "definitions",
+    "comptes",
+    "structure",
+    "indicateurs_annuels",
+    "indicateurs_methode",
+    "note",
+    "liens"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "annees": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "integer"
+      }
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "comptes": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^(19|20)[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "recettes_total",
+          "recettes_contributions",
+          "recettes_csg",
+          "recettes_autres",
+          "depenses_total",
+          "depenses_allocations",
+          "depenses_retraites",
+          "depenses_activite_partielle",
+          "depenses_france_travail",
+          "depenses_autres",
+          "solde_technique",
+          "elements_exceptionnels",
+          "solde_financier",
+          "dette"
+        ],
+        "properties": {
+          "recettes_total": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "recettes_contributions": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "recettes_csg": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "recettes_autres": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "depenses_total": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "depenses_allocations": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "depenses_retraites": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "depenses_activite_partielle": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "depenses_france_travail": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "depenses_autres": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "solde_technique": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "elements_exceptionnels": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "solde_financier": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "dette": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "structure": {
+      "type": "object",
+      "required": [
+        "recettes",
+        "depenses",
+        "regle"
+      ],
+      "properties": {
+        "recettes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "depenses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "regle": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "indicateurs_annuels": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^(19|20)[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "mois",
+          "allocataires_indemnises_moyenne_mensuelle",
+          "depense_allocations_somme_mensuelle_eur"
+        ],
+        "properties": {
+          "mois": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "allocataires_indemnises_moyenne_mensuelle": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "depense_allocations_somme_mensuelle_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "indicateurs_methode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vue",
+          "fichier",
+          "id",
+          "lecture"
+        ],
+        "properties": {
+          "vue": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fichier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 1
+          },
+          "millesime": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

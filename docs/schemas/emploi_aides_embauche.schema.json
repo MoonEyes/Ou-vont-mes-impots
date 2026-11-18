@@ -1,0 +1,327 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/emploi_aides_embauche.schema.json",
+  "title": "site/data/emploi/aides_embauche.json : aide à l'embauche des jeunes et crédits de l'État (pipeline/emploi.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "aide_embauche_jeunes",
+    "credits_etat_programme_103",
+    "note",
+    "liens"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "aide_embauche_jeunes": {
+      "type": "object",
+      "required": [
+        "definition",
+        "total_aides_validees",
+        "total_par_departement",
+        "semaines",
+        "sections",
+        "groupes",
+        "aides_secteur_non_renseigne",
+        "departements",
+        "note"
+      ],
+      "properties": {
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "total_aides_validees": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_par_departement": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "semaines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "semaine",
+              "aides"
+            ],
+            "properties": {
+              "semaine": {
+                "type": "string",
+                "pattern": "^20[0-9]{2}/[0-9]{2}$"
+              },
+              "aides": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "libelle",
+              "aides_connues",
+              "groupes_secret_statistique"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "pattern": "^[A-U]$"
+              },
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "aides_connues": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "groupes_secret_statistique": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "groupes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "libelle",
+              "section",
+              "aides"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "pattern": "^[0-9]{3}$"
+              },
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "section": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "aides": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "aides_secteur_non_renseigne": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "departements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "libelle",
+              "aides"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "pattern": "^([0-9]{2}|2[AB]|97[0-9])$"
+              },
+              "libelle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "aides": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "credits_etat_programme_103": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "action",
+          "libelle",
+          "execution_2024_eur",
+          "execution_2024_lien",
+          "plf_2025_cp_eur",
+          "plf_2025_sous_actions"
+        ],
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "action": {
+            "type": "string",
+            "pattern": "^[0-9]{2}$"
+          },
+          "libelle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "execution_2024_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "execution_2024_lien": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "fichier",
+              "id"
+            ],
+            "properties": {
+              "fichier": {
+                "type": "string",
+                "minLength": 1
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          },
+          "plf_2025_cp_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "plf_2025_sous_actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "libelle",
+                "cp_eur"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "libelle": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "cp_eur": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vue",
+          "fichier",
+          "id",
+          "lecture"
+        ],
+        "properties": {
+          "vue": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fichier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 1
+          },
+          "millesime": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

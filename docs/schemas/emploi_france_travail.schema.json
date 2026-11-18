@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/emploi_france_travail.schema.json",
+  "title": "site/data/emploi/france_travail.json : financement de France Travail par l'Unédic et par l'État (pipeline/emploi.py)",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "annees",
+    "definitions",
+    "regle",
+    "credits_etat_programme_102",
+    "liens"
+  ],
+  "properties": {
+    "unite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "annees": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^(19|20)[0-9]{2}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "unedic_financement_et_frais_de_recouvrement_eur",
+          "nature",
+          "financement_etat_execution_cp_eur",
+          "dont_subvention_pour_charges_de_service_public_cp_eur",
+          "dont_transferts_cp_eur",
+          "credits_votes_lfi_cp_eur",
+          "credits_votes_lfi_scsp_cp_eur",
+          "budget_initial_charges_eur",
+          "budget_initial_produits_eur",
+          "etpt_sous_plafond",
+          "etpt_hors_plafond",
+          "source_jaune"
+        ],
+        "properties": {
+          "unedic_financement_et_frais_de_recouvrement_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "nature": {
+            "enum": [
+              "execution",
+              "lfi",
+              null
+            ]
+          },
+          "financement_etat_execution_cp_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "dont_subvention_pour_charges_de_service_public_cp_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "dont_transferts_cp_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "credits_votes_lfi_cp_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "credits_votes_lfi_scsp_cp_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "budget_initial_charges_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "budget_initial_produits_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "etpt_sous_plafond": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "etpt_hors_plafond": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "source_jaune": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "regle": {
+      "type": "string",
+      "minLength": 1
+    },
+    "credits_etat_programme_102": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "programme",
+          "action",
+          "libelle",
+          "execution_2024_eur",
+          "execution_2024_lien",
+          "plf_2025_cp_eur",
+          "plf_2025_sous_actions"
+        ],
+        "properties": {
+          "programme": {
+            "type": "string",
+            "pattern": "^[0-9]{3}$"
+          },
+          "action": {
+            "type": "string",
+            "pattern": "^[0-9]{2}$"
+          },
+          "libelle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "execution_2024_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "execution_2024_lien": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "fichier",
+              "id"
+            ],
+            "properties": {
+              "fichier": {
+                "type": "string",
+                "minLength": 1
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          },
+          "plf_2025_cp_eur": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "plf_2025_sous_actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "libelle",
+                "cp_eur"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "libelle": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "cp_eur": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "liens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vue",
+          "fichier",
+          "id",
+          "lecture"
+        ],
+        "properties": {
+          "vue": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fichier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lecture": {
+            "type": "string",
+            "minLength": 1
+          },
+          "millesime": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

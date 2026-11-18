@@ -252,6 +252,12 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # emploi : comptes de l'Unédic, France Travail, activité partielle, aides à l'embauche (pipeline/emploi.py)
+    ("emploi_index.schema.json", "emploi/index.json", "existant"),
+    ("emploi_unedic.schema.json", "emploi/unedic.json", "existant"),
+    ("emploi_france_travail.schema.json", "emploi/france_travail.json", "existant"),
+    ("emploi_activite_partielle.schema.json", "emploi/activite_partielle.json", "existant"),
+    ("emploi_aides_embauche.schema.json", "emploi/aides_embauche.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

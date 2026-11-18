@@ -1500,6 +1500,13 @@
    "hors_catalogue": [],
    "octets_sources": 24826525
   },
+  "emploi": {
+   "sources": {},
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "entrées collectées par le module lui-même (pipeline/emploi.py collecter, data/lake/emploi/) ; non relevées sous strace"
+  },
   "retraites": {
    "sources": {},
    "caches": [],
