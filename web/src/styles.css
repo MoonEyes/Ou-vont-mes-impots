@@ -3046,3 +3046,11 @@ fieldset.saisie-groupe {
   margin-top: 2rem;
 .signaler p {
 .signaler-lien {
+/* trame partagée : fond de carte des pages département et commune (src/composants/trame-france.svg, par <use>).
+   Le fichier n'a ni couleur ni police : tout est hérité de l'élément <use>, thème sombre compris. */
+.trame .t-fond {
+  fill: var(--papier);
+  stroke: var(--contour);
+  font-size: 15px;
+  text-anchor: middle;
+  pointer-events: none;
