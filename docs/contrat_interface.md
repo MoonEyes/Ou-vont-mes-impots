@@ -1105,6 +1105,27 @@ data/lake/secu/retraites_* (DREES EACR table A-Cadrage ; DREES emploi intérieur
 
 Règles propres : les effectifs des régimes ne s'additionnent pas (une personne qui perçoit des pensions de plusieurs régimes est comptée dans chacun ; seule la série `tous_regimes`, estimée par la DREES, compte chaque personne une fois) ; aucune masse de pensions n'est recalculée à partir d'un effectif et d'une moyenne ; une valeur absente à la source est null, jamais 0. Non couverts, faute de jeu ouvert (`sources_inaccessibles`) : cotisants des autres régimes, ressources par origine des régimes hors CAS Pensions, exécution du CAS Pensions ; les fichiers du Conseil d'orientation des retraites ne sont pas repris (réutilisation soumise à accord).
 
+### 2.41 Séries longues : `series/` (pipeline/series.py)
+
+Ce qui manque pour lire les grandes masses sur longue période (2005 à la dernière année publiée) en euros courants, en euros constants et en part du PIB : indice annuel des prix à la consommation de l'Insee (base 2025), PIB à prix courants de l'Insee (base 2020) et dépenses des administrations publiques par fonction COFOG depuis 2005 (Eurostat gov_10a_exp ; `cofog.json` n'en publie que la dernière année). Les montants des recettes, dépenses par administration, solde, dette et intérêts ne sont pas recopiés : l'écran `/explorer/series` lit `recettes.json`, `administrations.json`, `dette/encours.json` et `dette/interets.json` tels quels. Commandes : `python pipeline/series.py collecter` (réseau, vers `data/lake/series/_api/` ; un refus 401/403/429 est noté, jamais contourné), `python pipeline/series.py produire` (sans réseau). Tests : `pytest tests/test_series.py`.
+
+```
+Insee BDM 011814639 (indice des prix), 011779992 (PIB) ; Eurostat gov_10a_exp, nama_10_gdp
+     └─> pipeline/series.py ─> site/data/series/index.json, fonctions.json
+                                 └─ lus avec recettes.json, administrations.json, dette/encours.json, dette/interets.json
+```
+
+| Fichier, champ | Sens |
+|---|---|
+| `index.json`, `prix` | `indice` par année (moyenne annuelle, base 2025 = 100), `coefficient` = indice de `annee_reference` / indice de l'année (euros constants = euros courants × coefficient), `methode`, `source` (`url`, `idbank`, `maj` lue dans la série) |
+| `index.json`, `pib` | `md` par année (milliards d'euros courants), `methode` de la part du PIB (montant / PIB × 100), `comparaison` avec Eurostat nama_10_gdp et `ecarts` tels quels, `annees_baisse` (années où le PIB en euros courants baisse, `variation_pct`) |
+| `index.json`, `ruptures[]` | `serie` (`prix`, `pib`, `comptes`, `depenses_administration`, `fonctions`...), `annee` (ou null), `type` (changement de base, valeurs provisoires, périmètre, rupture signalée par Eurostat, lecture), `lecture` : affichées sous les graphiques concernés |
+| `index.json`, `fichiers` | fichiers lus par l'écran : `series/fonctions.json` et les fichiers repris d'autres étapes, sans modification |
+| `fonctions.json`, `total`, `fonctions[]` | `code` (GF01 à GF10), `nom`, `md` par année, `provisoire` et `rupture` (années signalées par Eurostat, statuts « p » et « b ») |
+| `fonctions.json`, `ecarts[]` | total COFOG face aux dépenses totales d'`administrations.json` (`total_cofog_md`, `depenses_totales_md`, `ecart_md`), montrés sans correction |
+
+Règles propres : une valeur absente est null, jamais 0 ; les dates de mise à jour sont celles des sources, jamais la date du passage ; les dépenses par administration ne s'additionnent pas (transferts entre administrations) ; les trois lectures (euros courants, euros constants, part du PIB) sont proposées côte à côte, aucune n'est présentée comme la bonne.
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.

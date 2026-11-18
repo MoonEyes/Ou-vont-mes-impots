@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/series_fonctions.schema.json",
+  "title": "site/data/series/fonctions.json : dépenses des administrations publiques par fonction COFOG depuis 2005",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "unite",
+    "definition",
+    "avertissement",
+    "sources",
+    "annees",
+    "total",
+    "fonctions",
+    "ecarts"
+  ],
+  "$defs": {
+    "serie": {
+      "type": "object",
+      "required": [
+        "nom",
+        "md",
+        "provisoire",
+        "rupture"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^GF(0[1-9]|10)$"
+        },
+        "nom": {
+          "type": "string",
+          "minLength": 3
+        },
+        "md": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          },
+          "additionalProperties": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "provisoire": {
+          "type": "array",
+          "items": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          }
+        },
+        "rupture": {
+          "type": "array",
+          "items": {
+            "$ref": "commun.schema.json#/$defs/annee"
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "millesime": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unite": {
+      "type": "string",
+      "pattern": "^milliards d'euros"
+    },
+    "definition": {
+      "type": "string",
+      "minLength": 20
+    },
+    "avertissement": {
+      "type": "string",
+      "minLength": 20
+    },
+    "sources": {
+      "type": "object",
+      "required": [
+        "eurostat"
+      ],
+      "properties": {
+        "eurostat": {
+          "type": "object",
+          "required": [
+            "titre",
+            "url",
+            "licence",
+            "maj"
+          ],
+          "properties": {
+            "titre": {
+              "type": "string",
+              "minLength": 5
+            },
+            "url": {
+              "type": "string",
+              "pattern": "^https://"
+            },
+            "licence": {
+              "type": "string",
+              "minLength": 3
+            },
+            "maj": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+            },
+            "idbank": {
+              "type": "string",
+              "pattern": "^[0-9]{9}$"
+            },
+            "intitule_source": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "annees": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "commun.schema.json#/$defs/annee"
+      }
+    },
+    "total": {
+      "$ref": "#/$defs/serie"
+    },
+    "fonctions": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/serie"
+          },
+          {
+            "required": [
+              "code"
+            ]
+          }
+        ]
+      }
+    },
+    "ecarts": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "annee",
+              "ecart_md",
+              "explication"
+            ],
+            "properties": {
+              "annee": {
+                "$ref": "commun.schema.json#/$defs/annee"
+              },
+              "ecart_md": {
+                "type": "number"
+              },
+              "explication": {
+                "type": "string",
+                "minLength": 20
+              }
+            }
+          },
+          {
+            "required": [
+              "total_cofog_md",
+              "depenses_totales_md"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

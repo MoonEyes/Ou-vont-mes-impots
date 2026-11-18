@@ -2562,3 +2562,103 @@ td.nombre {
   border-radius: var(--rayon);
   padding: 0.25rem 1.5rem;
 }
+/* series */
+.sl-figure {
+  margin: 1rem 0;
+}
+.sl-figure figcaption {
+  margin-bottom: 0.5rem;
+}
+.sl-courbe {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.sl-trait {
+  fill: none;
+  stroke: var(--texte);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.sl-provisoire {
+  stroke-dasharray: 2 5;
+}
+.sl-point {
+  fill: var(--famille);
+  stroke: var(--texte);
+  stroke-width: 1.2;
+}
+.sl-grille {
+  stroke: var(--filet);
+  stroke-width: 1;
+}
+.sl-zero {
+  stroke: var(--texte);
+  stroke-width: 1.5;
+}
+.sl-etiquette {
+  fill: var(--secondaire);
+  font-family: var(--texte-police);
+  font-size: 12px;
+}
+.sl-grand .sl-etiquette {
+  font-size: 13px;
+}
+.sl-multiples {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  max-width: none;
+}
+.sl-multiples > li {
+  margin: 0;
+  padding: 0.875rem 1rem;
+}
+.sl-nom {
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+.sl-lecture {
+  font-size: 0.9375rem;
+  margin: 0.375rem 0 0;
+}
+.sl-notes {
+  font-size: 0.9375rem;
+  color: var(--secondaire);
+  padding-left: 1.25rem;
+}
+.sl-legende {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  font-size: 0.9375rem;
+}
+.sl-legende li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.sl-motif {
+  display: inline-block;
+  width: 2rem;
+  border-top: 2.5px solid var(--texte);
+}
+.sl-motif-provisoire {
+  border-top-style: dotted;
+}
+@media (min-width: 720px) {
+  .sl-multiples {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1100px) {
+  .sl-multiples {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
