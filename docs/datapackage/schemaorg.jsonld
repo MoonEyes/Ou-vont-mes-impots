@@ -35,7 +35,7 @@
   "url": "https://github.com/MoonEyes/Ou-vont-mes-impots"
  },
  "version": "1.6.0",
- "dateModified": "2026-11-18T16:15:33Z",
+ "dateModified": "2026-11-18T17:44:21Z",
  "temporalCoverage": "1980/2027",
  "spatialCoverage": {
   "@type": "Place",
@@ -47,6 +47,7 @@
   "https://api.insee.fr/melodi/file/DD_CNA_APU/DD_CNA_APU_CSV_FR",
   "https://api.insee.fr/melodi/file/DS_ERFS_NON_RETROPOLE/DS_ERFS_NON_RETROPOLE_CSV_FR",
   "https://api.insee.fr/melodi/file/DS_FILOSOFI_CC/DS_FILOSOFI_CC_2023_CSV_FR",
+  "https://barometre.assemblee-nationale.fr/barometre_application_lois_assemblee.csv",
   "https://cohesiondata.ec.europa.eu/api/views/e4v6-qrrq.json",
   "https://cohesiondata.ec.europa.eu/resource/3git-md5z.json?%24select=cci%2Cprogramme_short_title%2Cfund%2Ccategory_region_name%2Ctod_cycle%2Ctod_year%2Cis_latest_tod_cycle%2Cpriority_code%2Cpol_obj_code%2Cpol_obj_short_name%2Cspec_obj_code%2Cspec_obj_short_name%2Cdimension_type%2Ccategory_code%2Ccategory_short_title%2Ceu_amount%2Ctotal_amount%2Ctotal_eligiblecost_of_selectedoperations%2Ctotalspendeligibleexpenditure_declared%2Cnumber_of_operations&%24where=ms%3D%27FR%27+AND+dimension_type+in%28%27Intervention+Field%27%2C%27Intervention+Type%27%29&%24order=cci%2Cfund%2Ctod_cycle%2Cpriority_code%2Cspec_obj_code%2Ccategory_code%2Ccategory_region_name&%24limit=200000",
   "https://cohesiondata.ec.europa.eu/resource/7wr2-9vpr.json",
@@ -240,8 +241,7 @@
   "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/224400028_subventions-aux-associations-du-departement-de-loire-atlantique/exports/parquet",
   "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/244400552_subvention-compa-2018/exports/parquet",
   "https://data.loire-atlantique.fr/api/explore/v2.1/catalog/datasets/244400552_subvention-compa-2019/exports/parquet",
-  "https://data.loire-atlantique.fr/explore/dataset/224400028_rapports-deliberations-proces-verbaux-conseil-departemental/",
-  "https://data.loire-atlantique.fr/explore/dataset/224400028_subventions-aux-associations-du-departement-de-loire-atlantique/"
+  "https://data.loire-atlantique.fr/explore/dataset/224400028_rapports-deliberations-proces-verbaux-conseil-departemental/"
  ],
  "distribution": [
   {
@@ -1989,6 +1989,72 @@
    "name": "valeurs initiales, successives et cibles des indicateurs du baromètre de la DITP (pipeline/performance.py)",
    "encodingFormat": "application/json",
    "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/performance/barometre/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "présentation du baromètre de l'application des lois, sources, définitions, comptes par année de publication des lois (calculés par le site), fichiers",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "lois de finances et de financement de la Sécurité sociale, mesures d'application prévues et publiées, du plus récent au plus ancien",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/lois_finances.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "lois publiées dans l'année, mesures d'application prévues et publiées",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/lois/2002.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "mesures d'application d'une loi, dans l'ordre de l'échéancier",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/mesures/JORFTEXT000000233457.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "dispositifs et statut publié, totaux du Fonds vert par année, départements, contrôles, sources, recherche préalable (pipeline/projets_subventionnes.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/projets_subventionnes/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "projets du Fonds vert par commune (montants engagés), badges Action cœur de ville et Petites villes de demain, lien vers les projets des dotations de l'État (territoires/<dep>.json) (pipeline/projets_subventionnes.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/projets_subventionnes/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "exercices, définitions, méthode, couverture des balances et des crédits votés (pipeline/investissement_communes.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/investissement_communes/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "dépenses d'équipement mandatées par commune et par exercice (balances DGFiP), crédits votés publiés (pipeline/investissement_communes.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/investissement_communes/communes/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "couverture des délibérations publiées au format national, jeux lus, règles (pipeline/deliberations.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "délibérations publiées par une collectivité (métadonnées : date, matière, objet filtré, lien), comptes et exclusions (pipeline/deliberations.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/collectivites/200011062.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "documents budgétaires publiés au format national « Budget », par collectivité (pipeline/deliberations.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/budgets.json"
   },
   {
    "@type": "DataDownload",

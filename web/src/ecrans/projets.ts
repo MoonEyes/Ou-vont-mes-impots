@@ -10,7 +10,7 @@ import { fragmentCommune, fragmentDepartement } from '../chemins'
 import { departementDe, TOUS_DEPARTEMENTS } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { lien, type Rendu } from '../routeur'
-import { absent, badgeStatut, entier, eur, h, source, traitStatut } from '../util'
+import { absent, badgeStatut, entier, eur, h, source, badgeCalcule } from '../util'
 
 export const TITRE = 'Projets subventionnés par l’État'
 export const SANS_PROJET = 'aucun projet publié pour ces dispositifs'
@@ -125,7 +125,6 @@ export function sommes(projets: Projet[]): { annee: number; dispositif: string; 
 
 // --- Rendu -----------------------------------------------------------------------------------------------------------
 
-export const badgeCalcule = () => `<span class="badge">${traitStatut('approche')}Calculé par le site</span>`
 const montant = (x: number | null) => (x === null ? 'non communiqué' : eur(x))
 
 export function badges(c: ProjetsDep['communes'][string] | undefined, idx: Index | null): string {
@@ -147,7 +146,7 @@ export function tableauSommes(projets: Projet[], legende: string): string {
   return `<div class="tableau-defile"><table><caption>${h(legende)}</caption><thead><tr><th scope="col">Année</th><th scope="col">Dispositif</th><th scope="col" class="nombre">Projets</th><th scope="col" class="nombre">Somme des montants publiés</th><th scope="col">Statut publié</th></tr></thead><tbody>${s
     .map((x) => `<tr><th scope="row">${x.annee}</th><td>${h(libelleDispositif(x.dispositif))}</td><td class="nombre">${h(entier(x.n))}</td><td class="nombre">${h(eur(x.montant))}${x.nc ? ` <span class="aide">(${x.nc} montant${x.nc > 1 ? 's' : ''} non communiqué${x.nc > 1 ? 's' : ''}, hors somme)</span>` : ''}</td><td>${h(x.statut)}</td></tr>`)
     .join('')}</tbody></table></div>
-<p class="aide">Somme ${badgeCalcule()} : montants publiés d’une même année et d’un même dispositif, additionnés ligne par ligne. Les dotations (subventions attribuées) et le Fonds vert (montants engagés) ne sont jamais additionnés entre eux.</p>`
+<p class="aide">Somme ${badgeCalcule('montants publiés d’une même année et d’un même dispositif, additionnés ligne par ligne')}. Les dotations (subventions attribuées) et le Fonds vert (montants engagés) ne sont jamais additionnés entre eux.</p>`
 }
 
 export function tableauProjets(projets: Projet[], legende: string): string {
@@ -201,7 +200,7 @@ export async function contenuDepartement(dep: string): Promise<string> {
   return `${lignes.length ? `<div class="tableau-defile"><table><caption>Projets publiés dans le département, par année et par dispositif</caption><thead><tr><th scope="col">Année</th><th scope="col">Dispositif</th><th scope="col" class="nombre">Projets</th><th scope="col" class="nombre">Somme des montants publiés</th><th scope="col">Statut publié</th></tr></thead><tbody>${lignes
     .map((x) => `<tr><th scope="row">${h(x.annee)}</th><td>${h(libelleDispositif(x.dispositif))}</td><td class="nombre">${h(entier(x.n))}</td><td class="nombre">${h(eur(x.montant))}</td><td>${h(x.statut)}</td></tr>`)
     .join('')}</tbody></table></div>
-<p class="aide">Somme ${badgeCalcule()} : projets dont le bénéficiaire est nommé, d’une même année et d’un même dispositif. Les dotations et le Fonds vert ne sont jamais additionnés entre eux. ${h(PHRASE_STATUT)}</p>` : `<p>${h(SANS_PROJET)}.</p>`}
+<p class="aide">Somme ${badgeCalcule('projets dont le bénéficiaire est nommé, d’une même année et d’un même dispositif')}. Les dotations et le Fonds vert ne sont jamais additionnés entre eux. ${h(PHRASE_STATUT)}</p>` : `<p>${h(SANS_PROJET)}.</p>`}
 <p>${h(entier(acv))} commune${acv > 1 ? 's' : ''} du programme Action cœur de ville, ${h(entier(pvd))} du programme Petites villes de demain (listes sans montant).</p>
 ${terr ? source(`Dotations : ${terr.source}`, terr.millesime) : ''}${d ? source(d.source, d.millesime) : ''}`
 }

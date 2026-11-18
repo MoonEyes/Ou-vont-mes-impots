@@ -6,7 +6,7 @@
 // badge « calculé par le site » avec leur méthode. Aucun nom de personne (colonnes retirées par le pipeline).
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
-import { absent, badgeStatut, entier, h, pct, rendreDefilables, traitStatut } from '../util'
+import { absent, badgeCalcule, badgeStatut, entier, h, LEGENDE_CALCULE, pct, rendreDefilables, traitStatut } from '../util'
 import { enCours } from './dette'
 
 const CHEMIN = '/decisions/application-des-lois'
@@ -88,9 +88,6 @@ interface Mesures {
   mesures: Mesure[]
 }
 
-const LIBELLE_CALCULE = 'Calculé par le site'
-/** Badge de la règle « chiffre calculé par le site » (même balisage que util.badgeCalcule de la branche d'intégration). */
-const badgeCalcule = () => `<span class="badge badge-calcule" data-calcule><span class="motif motif-calcule" aria-hidden="true"></span>${LIBELLE_CALCULE}</span>`
 export const METHODE_DELAIS =
   'pour une loi, plus petit, médian et plus grand des délais publiés par LexImpact pour ses mesures appliquées (jours entre la publication de la loi et celle du texte d’application). Les mesures en attente n’ont pas de délai.'
 export const REGLE_ORDRE = 'Ordre des lois : de la plus récente à la plus ancienne, par date de publication au Journal officiel. Aucun classement par taux ni par délai.'
@@ -135,7 +132,7 @@ function ligneLoi(l: Loi): string {
   return `<li><details data-id="${h(l.id)}"${l.fichier_mesures ? ` data-fichier="${h(l.fichier_mesures)}"` : ''}><summary>${h(l.titre)}</summary><div class="fiche"></div></details><span class="dest">${h(
     l.categorie_libelle ? `${l.categorie_libelle} · ` : '',
   )}publiée le ${h(dateLongue(l.date_publication))} · ${h(lectureLoi(l))}${
-    l.mesures_a_appliquer ? ` · taux publié par le baromètre : ${h(tauxPublie(l))} · délai médian (calculé par le site) : ${h(delaiMedian(l))}` : ''
+    l.mesures_a_appliquer ? ` · taux publié par le baromètre : ${h(tauxPublie(l))} · délai médian : ${h(delaiMedian(l))}` : ''
   }</span></li>`
 }
 
@@ -208,7 +205,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
 <p class="source">${h(`${src.producteur}, « ${src.titre} », ${src.licence}, ressources du ${src.ressource_modifiee_le ?? 'non précisé'}, collectées le ${src.collecte_le}`)} · <a href="${h(src.url)}">jeu de données</a></p>
 <ul class="legende-statuts" aria-label="Lecture des valeurs">
   <li>${traitStatut('trace')}<span><strong>Tracé</strong> : valeur publiée par le baromètre, reprise telle quelle (le taux et les délais par mesure sont des calculs de LexImpact)</span></li>
-  <li><span class="motif motif-calcule" aria-hidden="true"></span><span><strong>${LIBELLE_CALCULE}</strong> : délai médian d’une loi et sommes par année, calculés par le site à partir de valeurs publiées pour la même loi ou la même année, méthode écrite à côté</span></li>
+  ${LEGENDE_CALCULE}
   <li>${traitStatut('nonpub')}<span><strong>Non publié</strong> : valeur absente de la source ou texte non repris ; jamais compté pour zéro</span></li>
 </ul>
 
@@ -219,7 +216,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
   <select id="al-cat"><option value="">Toutes (${h(entier(fin.lois.length))})</option>${cats.map((c) => `<option value="${h(c.categorie)}">${h(c.libelle)} (${h(entier(c.lois))})</option>`).join('')}</select>
 </form>
 <p class="aide" data-regle-ordre>${h(REGLE_ORDRE)}</p>
-<p class="aide">Délai médian ${badgeCalcule()} <span class="methode-calcul">Méthode : ${h(METHODE_DELAIS)}</span></p>
+<p class="aide">Délai médian ${badgeCalcule(METHODE_DELAIS)}</p>
 <div id="liste-al-fin" aria-live="polite"></div>
 
 <h2>Toutes les lois, année par année</h2>
@@ -231,7 +228,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
         `<tr><th scope="row"><a href="${lien(CHEMIN, { annee: a.annee })}">${a.annee}</a></th><td class="nombre">${h(entier(a.lois))}</td><td class="nombre">${h(entier(a.lois_application_directe))}</td><td class="nombre">${h(entier(a.mesures_a_appliquer))}</td><td class="nombre">${h(entier(a.mesures_appliquees))}</td><td class="nombre">${h(entier(a.mesures_en_attente))}</td><td class="nombre">${h(entier(a.mesures_sans_objet))}</td></tr>`,
     )
     .join('')}</tbody></table></div>
-<p class="aide">${badgeCalcule()} <span class="methode-calcul">Méthode : ${h(idx.par_annee.methode)}</span> Une loi récente a eu moins de temps pour recevoir ses textes d’application qu’une loi ancienne : deux années ne se comparent pas directement.</p>
+<p class="aide">${badgeCalcule(idx.par_annee.methode)} Une loi récente a eu moins de temps pour recevoir ses textes d’application qu’une loi ancienne : deux années ne se comparent pas directement.</p>
 <form id="filtres-al-annee" class="carte">
   <label for="al-annee">Année</label>
   <select id="al-annee">${annees.map((a) => `<option value="${a.annee}"${a.annee === etat.annee ? ' selected' : ''}>${a.annee} (${h(entier(a.lois))} lois)</option>`).join('')}</select>

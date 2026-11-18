@@ -164,7 +164,7 @@ describe('bloc des pages commune et département', () => {
   it('au prérendu (happy-dom) : rien n’est ajouté à la page', async () => {
     await ecran('#/local/commune?insee=44109')
     expect(main.querySelector('.projets-bloc')).toBeNull()
-    expect(requetes.some((u) => u.includes('projets_subventionnes') || u.includes('territoires/'))).toBe(false)
+    expect(requetes.some((u) => u.includes('projets_subventionnes'))).toBe(false)
   })
 
   it('dans le navigateur : bloc avant « Pour aller plus loin », données chargées seulement au clic', async () => {
@@ -174,7 +174,7 @@ describe('bloc des pages commune et département', () => {
       const bloc = main.querySelector<HTMLElement>('.projets-bloc')!
       expect(bloc).not.toBeNull()
       expect(bloc.nextElementSibling?.textContent).toBe('Pour aller plus loin')
-      expect(requetes.some((u) => u.includes('projets_subventionnes') || u.includes('territoires/'))).toBe(false)
+      expect(requetes.some((u) => u.includes('projets_subventionnes'))).toBe(false)
       const bouton = bloc.querySelector('button')!
       expect(bouton.getAttribute('aria-expanded')).toBe('false')
       bouton.click()

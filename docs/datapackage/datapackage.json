@@ -6,7 +6,7 @@
  "description": "Budget de l'État, Sécurité sociale, collectivités, prélèvements, dette, bénéficiaires nommés (personnes morales), décisions et contrôle, retraités à partir de jeux publics ouverts (data.economie.gouv.fr, data.gouv.fr, Eurostat, Insee, DGFiP, OFGL, Assemblée nationale, Sénat, DILA, CNCCFP, HATVP, Cour des comptes). Site citoyen, non officiel. Chaque fichier JSON porte son millésime et sa source ; un montant écarté est publié avec sa raison. Précautions de lecture et exemples : docs/REUTILISER.md.",
  "homepage": "https://mooneyes.github.io/Ou-vont-mes-impots/",
  "version": "1.6.0",
- "created": "2026-11-18T16:15:33Z",
+ "created": "2026-11-18T17:44:21Z",
  "keywords": [
   "budget de l'État",
   "finances publiques",
@@ -86,6 +86,10 @@
   },
   {
    "title": "Agreste (ministere de l'Agriculture) et Agence de services et de paiement",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "title": "Assemblee nationale et LexImpact (donnees Legifrance de la DILA)",
    "licence": "Licence Ouverte 2.0"
   },
   {
@@ -762,6 +766,10 @@
   },
   {
    "title": "nantesmetropole",
+   "licence": "Licence Ouverte 2.0"
+  },
+  {
+   "title": "opendata.caissedesdepots.fr",
    "licence": "Licence Ouverte 2.0"
   },
   {
@@ -14525,6 +14533,396 @@
    ],
    "sources_declarees": [
     "Direction interministérielle de la transformation publique (DITP), « Baromètre des résultats de l'action publique » : https://www.data.gouv.fr/datasets/barometre-des-resultats-de-laction-publique-1/ ; fichiers indicateurs : https://github.com/DITP-pilotage/barometre-resultats"
+   ]
+  },
+  {
+   "name": "application-lois-index",
+   "title": "présentation du baromètre de l'application des lois, sources, définitions, comptes par année de publication des lois (calculés par le site), fichiers",
+   "description": "site/data/application_lois/index.json : présentation du baromètre de l'application des lois, sources, définitions, comptes par année de publication des lois (calculés par le site), fichiers. Fichier site/data/application_lois/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/application_lois_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Assemblee nationale et LexImpact (donnees Legifrance de la DILA) : Barometre de l'application des lois (Assemblee nationale, LexImpact) : liste des lois et liste des mesures d'application (echeanciers Legifrance de la DILA), CSV quotidiens (pipeline/application_lois.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://barometre.assemblee-nationale.fr/barometre_application_lois_assemblee.csv"
+    }
+   ],
+   "motif": "site/data/application_lois/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "application_lois",
+   "millesimes": [
+    "Lois publiées du 2002-07-19 au 2026-11-02, baromètre au 2026-11-15"
+   ],
+   "sources_declarees": [
+    "Assemblée nationale et LexImpact, d’après les échéanciers de Légifrance (DILA), « Données du baromètre de l’application des lois », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/6825af1382d4b7afed51de59/), Licence Ouverte 2.0, ressources du 2026-11-15"
+   ]
+  },
+  {
+   "name": "application-lois-lois-finances",
+   "title": "lois de finances et de financement de la Sécurité sociale, mesures d'application prévues et publiées, du plus récent au plus ancien",
+   "description": "site/data/application_lois/lois_finances.json : lois de finances et de financement de la Sécurité sociale, mesures d'application prévues et publiées, du plus récent au plus ancien. Fichier site/data/application_lois/lois_finances.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/lois_finances.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/application_lois_finances.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Assemblee nationale et LexImpact (donnees Legifrance de la DILA) : Barometre de l'application des lois (Assemblee nationale, LexImpact) : liste des lois et liste des mesures d'application (echeanciers Legifrance de la DILA), CSV quotidiens (pipeline/application_lois.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://barometre.assemblee-nationale.fr/barometre_application_lois_assemblee.csv"
+    }
+   ],
+   "motif": "site/data/application_lois/lois_finances.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "application_lois",
+   "millesimes": [
+    "Lois publiées du 2002-07-19 au 2026-11-02, baromètre au 2026-11-15"
+   ],
+   "sources_declarees": [
+    "Assemblée nationale et LexImpact, d’après les échéanciers de Légifrance (DILA), « Données du baromètre de l’application des lois », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/6825af1382d4b7afed51de59/), Licence Ouverte 2.0, ressources du 2026-11-15"
+   ]
+  },
+  {
+   "name": "application-lois-lois",
+   "title": "lois publiées dans l'année, mesures d'application prévues et publiées",
+   "description": "site/data/application_lois/lois/<annee>.json : lois publiées dans l'année, mesures d'application prévues et publiées. Famille de 25 fichiers (motif site/data/application_lois/lois/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/lois/2002.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/application_lois_lois.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Assemblee nationale et LexImpact (donnees Legifrance de la DILA) : Barometre de l'application des lois (Assemblee nationale, LexImpact) : liste des lois et liste des mesures d'application (echeanciers Legifrance de la DILA), CSV quotidiens (pipeline/application_lois.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://barometre.assemblee-nationale.fr/barometre_application_lois_assemblee.csv"
+    }
+   ],
+   "motif": "site/data/application_lois/lois/*.json",
+   "nombre_fichiers": 25,
+   "etape_pipeline": "application_lois",
+   "millesimes": [
+    "Lois publiées du 2002-07-19 au 2026-11-02, baromètre au 2026-11-15"
+   ],
+   "sources_declarees": [
+    "Assemblée nationale et LexImpact, d’après les échéanciers de Légifrance (DILA), « Données du baromètre de l’application des lois », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/6825af1382d4b7afed51de59/), Licence Ouverte 2.0, ressources du 2026-11-15"
+   ]
+  },
+  {
+   "name": "application-lois-mesures",
+   "title": "mesures d'application d'une loi, dans l'ordre de l'échéancier",
+   "description": "site/data/application_lois/mesures/<identifiant>.json : mesures d'application d'une loi, dans l'ordre de l'échéancier. Famille de 799 fichiers (motif site/data/application_lois/mesures/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/mesures/JORFTEXT000000233457.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/application_lois_mesures.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "Assemblee nationale et LexImpact (donnees Legifrance de la DILA) : Barometre de l'application des lois (Assemblee nationale, LexImpact) : liste des lois et liste des mesures d'application (echeanciers Legifrance de la DILA), CSV quotidiens (pipeline/application_lois.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://barometre.assemblee-nationale.fr/barometre_application_lois_assemblee.csv"
+    }
+   ],
+   "motif": "site/data/application_lois/mesures/*.json",
+   "nombre_fichiers": 799,
+   "etape_pipeline": "application_lois",
+   "millesimes": [
+    "Lois publiées du 2002-07-19 au 2026-11-02, baromètre au 2026-11-15"
+   ],
+   "sources_declarees": [
+    "Assemblée nationale et LexImpact, d’après les échéanciers de Légifrance (DILA), « Données du baromètre de l’application des lois », data.gouv.fr (https://www.data.gouv.fr/fr/datasets/6825af1382d4b7afed51de59/), Licence Ouverte 2.0, ressources du 2026-11-15"
+   ]
+  },
+  {
+   "name": "projets-subventionnes-index",
+   "title": "dispositifs et statut publié, totaux du Fonds vert par année, départements, contrôles, sources, recherche préalable (pipeline/projets_subventionnes.py)",
+   "description": "site/data/projets_subventionnes/index.json : dispositifs et statut publié, totaux du Fonds vert par année, départements, contrôles, sources, recherche préalable (pipeline/projets_subventionnes.py). Fichier site/data/projets_subventionnes/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/projets_subventionnes/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/projets_subventionnes_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "opendata.caissedesdepots.fr : Action coeur de ville, liste des villes du programme (ANCT, export CSV de la Caisse des depots) (pipeline/projets_subventionnes.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://opendata.caissedesdepots.fr/api/explore/v2.1/catalog/datasets/villes_action_coeurdeville/exports/csv?use_labels=true"
+    },
+    {
+     "title": "static.data.gouv.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    }
+   ],
+   "motif": "site/data/projets_subventionnes/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "projets_subventionnes",
+   "millesimes": [
+    "Fonds vert : listes 2023 à 2025 (montants engagés) ; Action cœur de ville et Petites villes de demain : listes 2026 ; sources collectées au 2026-11-18"
+   ],
+   "sources_declarees": [
+    "Ministère de la Transition écologique (Fonds vert, data.gouv.fr 66a215a463a9da4fb801b8cf), ANCT (Action cœur de ville, Petites villes de demain), DGCL via site/data/territoires (dotations), stock SIRENE (catégorie juridique)"
+   ]
+  },
+  {
+   "name": "projets-subventionnes-n",
+   "title": "projets du Fonds vert par commune (montants engagés), badges Action cœur de ville et Petites villes de demain, lien vers les projets des dotations de l'État (territoires/<dep>.json) (pipeline/projets_subventionnes.py)",
+   "description": "site/data/projets_subventionnes/<dep>.json : projets du Fonds vert par commune (montants engagés), badges Action cœur de ville et Petites villes de demain, lien vers les projets des dotations de l'État (territoires/<dep>.json) (pipeline/projets_subventionnes.py). Famille de 101 fichiers (motif site/data/projets_subventionnes/[0-9]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/projets_subventionnes/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/projets_subventionnes_departement.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 : aucune source de l'étape n'impose de partage à l'identique ; mentionner les sources.",
+   "sources": [
+    {
+     "title": "opendata.caissedesdepots.fr : Action coeur de ville, liste des villes du programme (ANCT, export CSV de la Caisse des depots) (pipeline/projets_subventionnes.py)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0",
+     "path": "https://opendata.caissedesdepots.fr/api/explore/v2.1/catalog/datasets/villes_action_coeurdeville/exports/csv?use_labels=true"
+    },
+    {
+     "title": "static.data.gouv.fr (2 jeux)",
+     "licence": "Licence Ouverte 2.0",
+     "licence_normalisee": "etalab-2.0"
+    }
+   ],
+   "motif": "site/data/projets_subventionnes/[0-9]*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "projets_subventionnes",
+   "millesimes": [
+    "Fonds vert : listes 2023 à 2025 (montants engagés) ; Action cœur de ville et Petites villes de demain : listes 2026 ; sources collectées au 2026-11-18"
+   ],
+   "sources_declarees": [
+    "Ministère de la Transition écologique (Fonds vert, data.gouv.fr 66a215a463a9da4fb801b8cf), ANCT (Action cœur de ville, Petites villes de demain), DGCL via site/data/territoires (dotations), stock SIRENE (catégorie juridique)"
+   ]
+  },
+  {
+   "name": "investissement-communes-index",
+   "title": "exercices, définitions, méthode, couverture des balances et des crédits votés (pipeline/investissement_communes.py)",
+   "description": "site/data/investissement_communes/index.json : exercices, définitions, méthode, couverture des balances et des crédits votés (pipeline/investissement_communes.py). Fichier site/data/investissement_communes/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/investissement_communes/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/investissement_communes_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr, DGFiP « Balances comptables des communes » 2010 à 2025 (budget principal, agrégé côté serveur), Licence Ouverte 2.0",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/investissement_communes/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "investissement_communes",
+   "millesimes": [
+    "Balances 2010 à 2025 (exercice 2025 publié le 2026-07-13)"
+   ],
+   "sources_declarees": [
+    "data.economie.gouv.fr, DGFiP « Balances comptables des communes » 2010 à 2025 (budget principal, agrégé côté serveur), Licence Ouverte 2.0"
+   ]
+  },
+  {
+   "name": "investissement-communes-communes",
+   "title": "dépenses d'équipement mandatées par commune et par exercice (balances DGFiP), crédits votés publiés (pipeline/investissement_communes.py)",
+   "description": "site/data/investissement_communes/communes/<dep>.json : dépenses d'équipement mandatées par commune et par exercice (balances DGFiP), crédits votés publiés (pipeline/investissement_communes.py). Famille de 101 fichiers (motif site/data/investissement_communes/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/investissement_communes/communes/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/investissement_communes_communes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr, DGFiP « Balances comptables des communes » 2010 à 2025 (budget principal, agrégé côté serveur), Licence Ouverte 2.0",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/investissement_communes/communes/*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "investissement_communes",
+   "millesimes": [
+    "Balances 2010 à 2025 (exercice 2025 publié le 2026-07-13)"
+   ],
+   "sources_declarees": [
+    "data.economie.gouv.fr, DGFiP « Balances comptables des communes » 2010 à 2025 (budget principal, agrégé côté serveur), Licence Ouverte 2.0"
+   ]
+  },
+  {
+   "name": "deliberations-index",
+   "title": "couverture des délibérations publiées au format national, jeux lus, règles (pipeline/deliberations.py)",
+   "description": "site/data/deliberations/index.json : couverture des délibérations publiées au format national, jeux lus, règles (pipeline/deliberations.py). Fichier site/data/deliberations/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/deliberations_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.gouv.fr, jeux déclarés au schéma national « Délibérations » (https://schema.data.gouv.fr/scdl/deliberations.html), liste https://www.data.gouv.fr/api/1/datasets/?schema=scdl/deliberations",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/deliberations/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "deliberations",
+   "millesimes": [
+    "Jeux publiés sur data.gouv.fr relevés le 2026-11-18"
+   ],
+   "sources_declarees": [
+    "data.gouv.fr, jeux déclarés au schéma national « Délibérations » (https://schema.data.gouv.fr/scdl/deliberations.html), liste https://www.data.gouv.fr/api/1/datasets/?schema=scdl/deliberations"
+   ]
+  },
+  {
+   "name": "deliberations-collectivites",
+   "title": "délibérations publiées par une collectivité (métadonnées : date, matière, objet filtré, lien), comptes et exclusions (pipeline/deliberations.py)",
+   "description": "site/data/deliberations/collectivites/<siren>.json : délibérations publiées par une collectivité (métadonnées : date, matière, objet filtré, lien), comptes et exclusions (pipeline/deliberations.py). Famille de 1210 fichiers (motif site/data/deliberations/collectivites/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/collectivites/200011062.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/deliberations_collectivite.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.gouv.fr, jeux déclarés au schéma national « Délibérations » (https://schema.data.gouv.fr/scdl/deliberations.html), liste https://www.data.gouv.fr/api/1/datasets/?schema=scdl/deliberations",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/deliberations/collectivites/*.json",
+   "nombre_fichiers": 1210,
+   "etape_pipeline": "deliberations",
+   "millesimes": [
+    "Jeux publiés sur data.gouv.fr relevés le 2026-11-18"
+   ],
+   "sources_declarees": [
+    "data.gouv.fr, jeux déclarés au schéma national « Délibérations » (https://schema.data.gouv.fr/scdl/deliberations.html), liste https://www.data.gouv.fr/api/1/datasets/?schema=scdl/deliberations"
+   ]
+  },
+  {
+   "name": "deliberations-budgets",
+   "title": "documents budgétaires publiés au format national « Budget », par collectivité (pipeline/deliberations.py)",
+   "description": "site/data/deliberations/budgets.json : documents budgétaires publiés au format national « Budget », par collectivité (pipeline/deliberations.py). Fichier site/data/deliberations/budgets.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/budgets.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/deliberations_budgets.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.gouv.fr, jeux déclarés au schéma national « Budget » (https://schema.data.gouv.fr/scdl/budget.html), liste https://www.data.gouv.fr/api/1/datasets/?schema=scdl/budget",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/deliberations/budgets.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "deliberations",
+   "millesimes": [
+    "Jeux publiés sur data.gouv.fr relevés le 2026-11-18"
+   ],
+   "sources_declarees": [
+    "data.gouv.fr, jeux déclarés au schéma national « Budget » (https://schema.data.gouv.fr/scdl/budget.html), liste https://www.data.gouv.fr/api/1/datasets/?schema=scdl/budget"
    ]
   },
   {

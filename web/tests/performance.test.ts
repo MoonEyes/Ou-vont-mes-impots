@@ -3,7 +3,7 @@
 // 2 352 pages département et commune. Le fond est un fichier SVG partagé (src/composants/trame-france.svg), seul le
 // département de la page est écrit dans le HTML. Vérifie le fichier, l'encadré « Où c'est » et les budgets mesurés
 // sur le site construit (dist/prerendu.json et pages réelles).
-import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { gzipSync } from 'node:zlib'
 import { beforeAll, describe, expect, it } from 'vitest'
@@ -80,6 +80,23 @@ describe('budgets du site construit', () => {
     assurerSite()
     bilan = JSON.parse(readFileSync(join(DIST, 'prerendu.json'), 'utf8'))
   }, 600000)
+
+  it('nombre de fichiers et poids de dist sous les limites de l’hébergement (20 000 fichiers par version, 1 Go)', () => {
+    // Marge : 18 000 fichiers au plus (limite Cloudflare gratuite : 20 000) ; regrouper les petits fichiers au-delà.
+    const tout = { n: 0, octets: 0 }
+    const parcourir = (d: string) => {
+      for (const e of readdirSync(d, { withFileTypes: true })) {
+        if (e.isDirectory()) parcourir(join(d, e.name))
+        else {
+          tout.n++
+          tout.octets += statSync(join(d, e.name)).size
+        }
+      }
+    }
+    parcourir(DIST)
+    expect(tout.n).toBeLessThanOrEqual(18000)
+    expect(tout.octets).toBeLessThan(1e9)
+  })
 
   it('HTML prérendu et pages département et commune sous leur budget', () => {
     expect(bilan.octets_pages).toBeLessThan(BUDGET.html_total)

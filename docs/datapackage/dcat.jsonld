@@ -35,7 +35,7 @@
   "@id": "http://publications.europa.eu/resource/authority/frequency/WEEKLY"
  },
  "dct:modified": {
-  "@value": "2026-11-18T16:15:33Z",
+  "@value": "2026-11-18T17:44:21Z",
   "@type": "xsd:dateTime"
  },
  "dct:temporal": {
@@ -82,6 +82,9 @@
   },
   {
    "@id": "https://api.insee.fr/melodi/file/DS_FILOSOFI_CC/DS_FILOSOFI_CC_2023_CSV_FR"
+  },
+  {
+   "@id": "https://barometre.assemblee-nationale.fr/barometre_application_lois_assemblee.csv"
   },
   {
    "@id": "https://cohesiondata.ec.europa.eu/api/views/e4v6-qrrq.json"
@@ -193,6 +196,9 @@
   },
   {
    "@id": "https://opendata.afd.fr/api/explore/v2.1/catalog/datasets/donnees-des-contrats-dachats-et-de-subventions-dun-montant-superieur-a-15-000-ef/exports/csv"
+  },
+  {
+   "@id": "https://opendata.caissedesdepots.fr/api/explore/v2.1/catalog/datasets/villes_action_coeurdeville/exports/csv?use_labels=true"
   },
   {
    "@id": "https://raw.githubusercontent.com/DITP-pilotage/barometre-resultats/prod/data/ind-292.csv"
@@ -5867,6 +5873,215 @@
    },
    "dct:conformsTo": {
     "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/performance_barometre_zone.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "présentation du baromètre de l'application des lois, sources, définitions, comptes par année de publication des lois (calculés par le site), fichiers",
+   "dct:description": "site/data/application_lois/index.json : présentation du baromètre de l'application des lois, sources, définitions, comptes par année de publication des lois (calculés par le site), fichiers. Fichier site/data/application_lois/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/application_lois_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "lois de finances et de financement de la Sécurité sociale, mesures d'application prévues et publiées, du plus récent au plus ancien",
+   "dct:description": "site/data/application_lois/lois_finances.json : lois de finances et de financement de la Sécurité sociale, mesures d'application prévues et publiées, du plus récent au plus ancien. Fichier site/data/application_lois/lois_finances.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/lois_finances.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/lois_finances.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/application_lois_finances.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "lois publiées dans l'année, mesures d'application prévues et publiées",
+   "dct:description": "site/data/application_lois/lois/<annee>.json : lois publiées dans l'année, mesures d'application prévues et publiées. Famille de 25 fichiers (motif site/data/application_lois/lois/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/lois/2002.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/lois/2002.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/application_lois_lois.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "mesures d'application d'une loi, dans l'ordre de l'échéancier",
+   "dct:description": "site/data/application_lois/mesures/<identifiant>.json : mesures d'application d'une loi, dans l'ordre de l'échéancier. Famille de 799 fichiers (motif site/data/application_lois/mesures/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/mesures/JORFTEXT000000233457.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/application_lois/mesures/JORFTEXT000000233457.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/application_lois_mesures.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "dispositifs et statut publié, totaux du Fonds vert par année, départements, contrôles, sources, recherche préalable (pipeline/projets_subventionnes.py)",
+   "dct:description": "site/data/projets_subventionnes/index.json : dispositifs et statut publié, totaux du Fonds vert par année, départements, contrôles, sources, recherche préalable (pipeline/projets_subventionnes.py). Fichier site/data/projets_subventionnes/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/projets_subventionnes/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/projets_subventionnes/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/projets_subventionnes_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "projets du Fonds vert par commune (montants engagés), badges Action cœur de ville et Petites villes de demain, lien vers les projets des dotations de l'État (territoires/<dep>.json) (pipeline/projets_subventionnes.py)",
+   "dct:description": "site/data/projets_subventionnes/<dep>.json : projets du Fonds vert par commune (montants engagés), badges Action cœur de ville et Petites villes de demain, lien vers les projets des dotations de l'État (territoires/<dep>.json) (pipeline/projets_subventionnes.py). Famille de 101 fichiers (motif site/data/projets_subventionnes/[0-9]*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/projets_subventionnes/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/projets_subventionnes/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/projets_subventionnes_departement.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "exercices, définitions, méthode, couverture des balances et des crédits votés (pipeline/investissement_communes.py)",
+   "dct:description": "site/data/investissement_communes/index.json : exercices, définitions, méthode, couverture des balances et des crédits votés (pipeline/investissement_communes.py). Fichier site/data/investissement_communes/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/investissement_communes/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/investissement_communes/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/investissement_communes_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "dépenses d'équipement mandatées par commune et par exercice (balances DGFiP), crédits votés publiés (pipeline/investissement_communes.py)",
+   "dct:description": "site/data/investissement_communes/communes/<dep>.json : dépenses d'équipement mandatées par commune et par exercice (balances DGFiP), crédits votés publiés (pipeline/investissement_communes.py). Famille de 101 fichiers (motif site/data/investissement_communes/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/investissement_communes/communes/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/investissement_communes/communes/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/investissement_communes_communes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "couverture des délibérations publiées au format national, jeux lus, règles (pipeline/deliberations.py)",
+   "dct:description": "site/data/deliberations/index.json : couverture des délibérations publiées au format national, jeux lus, règles (pipeline/deliberations.py). Fichier site/data/deliberations/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/deliberations_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "délibérations publiées par une collectivité (métadonnées : date, matière, objet filtré, lien), comptes et exclusions (pipeline/deliberations.py)",
+   "dct:description": "site/data/deliberations/collectivites/<siren>.json : délibérations publiées par une collectivité (métadonnées : date, matière, objet filtré, lien), comptes et exclusions (pipeline/deliberations.py). Famille de 1210 fichiers (motif site/data/deliberations/collectivites/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/collectivites/200011062.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/collectivites/200011062.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/deliberations_collectivite.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "documents budgétaires publiés au format national « Budget », par collectivité (pipeline/deliberations.py)",
+   "dct:description": "site/data/deliberations/budgets.json : documents budgétaires publiés au format national « Budget », par collectivité (pipeline/deliberations.py). Fichier site/data/deliberations/budgets.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/budgets.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/deliberations/budgets.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/deliberations_budgets.schema.json"
    }
   },
   {

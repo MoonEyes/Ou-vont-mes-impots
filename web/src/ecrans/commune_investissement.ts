@@ -4,7 +4,7 @@
 // qu'au clic. Montants tracés (balances DGFiP), somme « équipement » calculée par le site, crédits votés tracés
 // (document budgétaire publié par la commune) ; aucun taux ni écart calculé (règle 13).
 import { chargerSiPresent } from '../donnees'
-import { absent, badgeStatut, eur, h, pct, source, traitStatut } from '../util'
+import { absent, badgeStatut, eur, h, pct, source, traitStatut, badgeCalcule } from '../util'
 
 export interface InvIndex {
   millesime: string
@@ -72,7 +72,6 @@ export interface Contexte {
 }
 
 export const TITRE = 'Investissement réalisé et délibérations publiées'
-export const badgeCalcule = () => `<span class="badge">${traitStatut('approche')}Calculé par le site</span>`
 const montant = (x: number | undefined | null) => (x === undefined || x === null ? '–' : h(eur(x)))
 const nonPublie = () => `<span class="badge">${traitStatut('nonpub')}Non publié</span>`
 
@@ -92,7 +91,7 @@ export function blocInvestissement(idx: InvIndex, dep: InvDep | null, ctx: Conte
   }
   const enteteVote = avecVote ? '<th scope="col" class="nombre">Crédits votés au budget primitif</th><th scope="col" class="nombre">Crédits ouverts sur l’année (compte administratif)</th>' : ''
   return `<p>${h(idx.presentation)}</p>
-<p class="aide">${badgeStatut('trace')} : montants de la balance comptable (DGFiP). Colonne « Équipement » ${badgeCalcule()} : somme des comptes 20 hors 204, 21 et 23 d’une même balance. ${nonPublie()} : aucune balance publiée pour cet exercice sous le numéro SIREN de la commune actuelle (commune créée plus tard, fusion ou comptes non publiés) ; ce n’est pas un montant nul.</p>
+<p class="aide">${badgeStatut('trace')} : montants de la balance comptable (DGFiP). Colonne « Équipement » ${badgeCalcule('somme des comptes 20 hors 204, 21 et 23 d’une même balance (même commune, même exercice)')} ${nonPublie()} : aucune balance publiée pour cet exercice sous le numéro SIREN de la commune actuelle (commune créée plus tard, fusion ou comptes non publiés) ; ce n’est pas un montant nul.</p>
 <div class="tableau-defile"><table><caption>Dépenses d’équipement réellement payées par ${h(c.nom)} (budget principal), en euros, par exercice</caption><thead><tr><th scope="col">Exercice</th><th scope="col" class="nombre">Équipement (20 hors 204, 21, 23)</th><th scope="col" class="nombre">dont achats et biens achevés (21)</th><th scope="col" class="nombre">dont travaux en cours (23)</th><th scope="col" class="nombre">dont études et logiciels (20 hors 204)</th><th scope="col" class="nombre">Subventions d’équipement versées (204, à part)</th>${enteteVote}</tr></thead><tbody>${annees.map(ligne).join('')}</tbody></table></div>
 ${
   avecVote
@@ -112,7 +111,7 @@ export function phraseCouverture(d: DelibIndex): string {
     .map((t) => d.couverture[t])
     .filter((x): x is Couverture => !!x)
     .map((x) => `${x.publient} ${x.libelle}${x.total ? ` sur ${x.total}` : ''}`)
-  return `<p>${new Intl.NumberFormat('fr-FR').format(c.publient)} communes sur ${new Intl.NumberFormat('fr-FR').format(c.total ?? 0)} publient leurs délibérations en données ouvertes au format national${parts.length ? `, soit ${parts.join(' et ')}` : ''} ${badgeCalcule()} ; ${h(autres.join(', '))}.</p><p class="aide">${h(d.methode)}</p>`
+  return `<p>${new Intl.NumberFormat('fr-FR').format(c.publient)} communes sur ${new Intl.NumberFormat('fr-FR').format(c.total ?? 0)} publient leurs délibérations en données ouvertes au format national${parts.length ? `, soit ${parts.join(' et ')}` : ''} ${badgeCalcule(d.methode)} ; ${h(autres.join(', '))}.</p>`
 }
 
 /** Délibérations d'une collectivité : comptes par année, récentes par matière, exclusions comptées. */
