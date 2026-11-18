@@ -309,6 +309,9 @@ FICHIERS = [
     ("assurance_maladie_territoires_postes.schema.json", "assurance_maladie_territoires/postes.json", "existant"),
     ("assurance_maladie_territoires_departements.schema.json", "assurance_maladie_territoires/departements.json", "existant"),
     ("assurance_maladie_territoires_ondam.schema.json", "assurance_maladie_territoires/ondam.json", "existant"),
+    # fiscalité locale par commune, séries 2010 à aujourd'hui : taux et produits du REI (pipeline/fiscalite_locale_series.py)
+    ("fiscalite_locale_series_index.schema.json", "fiscalite_locale_series/index.json", "existant"),
+    ("fiscalite_locale_series_communes.schema.json", "fiscalite_locale_series/communes/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

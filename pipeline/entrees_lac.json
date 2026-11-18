@@ -1864,6 +1864,15 @@
    "hors_catalogue": [],
    "octets_sources": 2313880,
    "note": "entrées relevées dans le manifeste de collecte (python pipeline/assurance_maladie_territoires.py collecter), non relevées sous strace"
+  },
+  "fiscalite_locale_series": {
+   "sources": {},
+   "caches": [],
+   "hors_catalogue": [
+    "data/lake/fiscalite_locale_series/extraits"
+   ],
+   "octets_sources": 29802113,
+   "note": "extraits annuels du REI (colonnes retenues, un csv.gz et un json par annee) ecrits par `python pipeline/fiscalite_locale_series.py collecter` (source fiscalite_locale_series_rei du catalogue) ; les archives sont supprimees apres extraction ; relevé à la main le 18/11/2026"
   }
  },
  "urls": {

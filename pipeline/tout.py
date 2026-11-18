@@ -173,6 +173,7 @@ ETAPES: tuple[Etape, ...] = (
     axe("pouvoirs_publics", "Pouvoirs publics : dotations de la mission, budgets des assemblées et de la Présidence, barèmes d'indemnités par fonction",
         ("base", "realisations"), duree_s=30),
     axe("assurance_maladie_territoires", "Assurance maladie : dépenses remboursées par poste, par département, ONDAM", ("secu",), duree_s=60),
+    axe("fiscalite_locale_series", "Fiscalité locale par commune : taux et produits depuis 2010 (REI)", ("local",), duree_s=120),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
