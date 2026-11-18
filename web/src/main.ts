@@ -4,6 +4,7 @@ import { definirRacine } from './donnees'
 import { afficher, brancherAdresses, lireFragment, REDIRECTIONS } from './routeur'
 import { rendreDefilables } from './util'
 import { ROUTES } from './routes'
+import { brancherHorsLigne } from './hors-ligne'
 
 export { ROUTES }
 
@@ -112,3 +113,6 @@ function demarrerChemins(racineRelative: string, main: HTMLElement, fermer: () =
 }
 
 if (typeof document !== 'undefined' && document.getElementById('contenu')) demarrer()
+
+// Site publié : lecture hors ligne des pages déjà vues (service worker facultatif, voir src/hors-ligne.ts).
+if (typeof document !== 'undefined' && document.getElementById('contenu') && document.documentElement.dataset.racine !== undefined) brancherHorsLigne(document.documentElement.dataset.racine)
