@@ -78,6 +78,13 @@
         "string",
         "null"
       ]
+    },
+    "motif_cout_moyen": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "motif de non-publication du coût moyen par emploi (règle « chiffre calculé par le site »)"
     }
   },
   "required": [

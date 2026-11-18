@@ -518,7 +518,7 @@ def nom_de_personne_seul(nom) -> bool:
         return False
     import local
     mots = re.findall(r"[A-Z]+", unicodedata.normalize("NFKD", str(nom).upper()).encode("ascii", "ignore").decode())
-    if not 2 <= len(mots) <= 3 or any(m in MOTS_ORGANISME for m in mots):
+    if not 2 <= len(mots) <= 3 or any(m in MOTS_ORGANISME or m in local.EQUIPEMENTS_ET_VOIES for m in mots):
         return False
     liste = prenoms()
     return mots[0] in liste and local.contient_nom_de_personne(str(nom), liste)

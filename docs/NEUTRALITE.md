@@ -91,8 +91,8 @@ Sinon le chiffre est retiré de l'affichage, et de préférence mis à `null` av
 
 | Chiffre | Décision |
 |---------|----------|
-| Montant par étudiant (éducation et recherche, 457 €) | retiré : dépenses d'une année civile, étudiants d'une année universitaire |
-| Coût complet moyen par emploi (fonction publique, 78 358 € ; page programme) | affiché seulement si emplois et dépenses de personnel sont de la même année ; aujourd'hui emplois LFI 2023 et dépenses 2024 : retiré |
+| Montant par étudiant (éducation et recherche, 457 €) | retiré : dépenses d'une année civile, étudiants d'une année universitaire ; données : `cout_par_etudiant_eur` à `null`, motif dans `mention` |
+| Coût complet moyen par emploi (fonction publique, 78 358 € ; page programme) | affiché seulement si emplois et dépenses de personnel sont de la même année ; aujourd'hui emplois LFI 2023 et dépenses 2024 : retiré ; données : `cout_moyen_par_etpt_eur` à `null`, motif dans `motif_cout_moyen` |
 | Montant par habitant outre-mer (crédits 2024 divisés par la population) | retiré : année de la population non publiée avec elle |
 | Montant par journée de détention (justice), reste à charge des départements (solidarités) | non affichés |
 | Indemnités des membres du Gouvernement calculées depuis les décrets | gardées : statut « calculé par le site » et formule |

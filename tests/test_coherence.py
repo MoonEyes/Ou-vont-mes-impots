@@ -1094,10 +1094,8 @@ def test_R31_vie_politique_sur_100_denominateur_publie():
 def test_R32_effectifs_null_propage():
     for f in glob.glob(str(SITE / "effectifs" / "*.json")):
         e = json.loads(Path(f).read_text(encoding="utf-8"))
-        if e.get("etpt") is None or e.get("titre2_eur") is None:
-            assert e.get("cout_moyen_par_etpt_eur") is None, f
-        else:
-            assert abs(e["cout_moyen_par_etpt_eur"] - e["titre2_eur"] / e["etpt"]) <= 1, f
+        # Coût moyen par emploi : non publié (années différentes, règle « chiffre calculé par le site »).
+        assert e.get("cout_moyen_par_etpt_eur") is None, f
         n = SITE / "nature" / f"{e['programme']}.json"
         if n.exists() and e.get("titre2_eur") is not None:
             t2 = sum(c["eur"] for c in json.loads(n.read_text(encoding="utf-8"))["categories"] if c["code"] in ("21", "22", "23"))

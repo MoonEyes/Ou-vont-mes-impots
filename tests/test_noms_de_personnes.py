@@ -60,3 +60,14 @@ FICHIERS = sorted([*SITE.glob("associations/programmes/*.json"), SITE / "associa
 def test_aucun_nom_de_personne_seul_publie(fichier: Path):
     fautes = sorted({n for n in _noms(fichier) if A.nom_de_personne_seul(n)})
     assert not fautes, f"{fichier.relative_to(SITE)} : dénominations qui ressemblent à un nom de personne : {fautes[:10]}"
+
+
+def test_nom_de_lieu_apres_un_mot_d_equipement_ou_de_voie():
+    import local
+    liste = set(local.PRENOMS_MINIMAUX) | {"VICTOR", "JULES", "JEAN", "MARIE"}
+    for publiable in ("école Victor Hugo", "Groupe scolaire Jules Ferry", "rue Jean Jaurès", "Gymnase Jean Moulin",
+                      "Médiathèque Marie Curie", "place Jean Jaurès, réfection"):
+        assert local.objet_publiable(publiable, liste) == publiable, publiable
+    for retire in ("M. Jean Dupont", "propriété de Marie Martin", "Subvention à Jean Dupont"):
+        assert local.objet_publiable(retire, liste) is None, retire
+    assert not A.nom_de_personne_seul("ECOLE VICTOR HUGO")

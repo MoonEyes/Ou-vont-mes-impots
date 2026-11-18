@@ -892,8 +892,20 @@ def prenoms() -> set:
     return _PRENOMS
 
 
+# Equipement, etablissement ou voie : un nom qui suit l'un de ces mots (« ecole Victor Hugo », « rue Jean Jaures »,
+# « groupe scolaire Jules Ferry ») est le nom d'un lieu, pas celui d'une personne. Regarde jusqu'a trois mots avant.
+EQUIPEMENTS_ET_VOIES = frozenset("""
+ECOLE ECOLES GROUPE SCOLAIRE COLLEGE LYCEE MATERNELLE ELEMENTAIRE PRIMAIRE SALLE SALLES GYMNASE STADE PISCINE
+MEDIATHEQUE BIBLIOTHEQUE LUDOTHEQUE CENTRE MAISON ESPACE FOYER CRECHE HALLE COMPLEXE THEATRE CINEMA MUSEE
+AUDITORIUM HOPITAL EHPAD RESIDENCE CITE QUARTIER JARDIN JARDINS RUE PLACE AVENUE AV BOULEVARD BD ALLEE ALLEES QUAI
+PARC SQUARE PONT CHEMIN ROUTE IMPASSE PASSAGE PROMENADE ESPLANADE PARVIS COURS RONDPOINT GIRATOIRE ZAC ZONE
+INSTITUT INTERNAT DOJO BOULODROME VELODROME HIPPODROME PATINOIRE TERRAIN TERRAINS PALAIS CHAPELLE EGLISE
+""".split())
+
+
 def contient_nom_de_personne(o: str, liste: set | None = None) -> bool:
-    """Civilite, ou prenom frequent suivi d'un mot (hors « Saint-Jean », « Sainte-Marie ») : prudence, objet retire."""
+    """Civilite, ou prenom frequent suivi d'un mot (hors « Saint-Jean », « Sainte-Marie » et hors nom de lieu qui suit
+    un mot d'equipement ou de voie, EQUIPEMENTS_ET_VOIES) : prudence, objet retire."""
     if CIVILITE_RE.search(o):
         return True
     liste = prenoms() if liste is None else liste
@@ -902,6 +914,8 @@ def contient_nom_de_personne(o: str, liste: set | None = None) -> bool:
         if m not in liste or i + 1 >= len(t):
             continue
         if i > 0 and t[i - 1] in ("SAINT", "SAINTE", "ST", "STE"):
+            continue
+        if any(m in EQUIPEMENTS_ET_VOIES for m in t[max(0, i - 3):i]):
             continue
         if len(t[i + 1]) >= 2 and t[i + 1] not in MOTS_OUTILS:
             return True

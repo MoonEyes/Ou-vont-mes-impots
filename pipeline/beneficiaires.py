@@ -67,6 +67,11 @@ SOURCE_API = "API Recherche d'entreprises (recherche-entreprises.api.gouv.fr), c
 # --- Utilitaires ------------------------------------------------------------------------------------------------
 
 
+MOTIF_COUT_MOYEN = ("non publié : emplois votés en LFI 2023 et dépenses de personnel exécutées en 2024 ne portent pas "
+                    "sur la même année ; un chiffre calculé par le site n'est publié que si ses montants portent sur "
+                    "la même année et le même périmètre (docs/NEUTRALITE.md, règle 11)")
+
+
 def dump(path: Path, obj) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     texte = json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
@@ -284,7 +289,9 @@ def effectifs() -> dict:
         e = par_p.get(p)
         t2 = sum(v for c, v in nat.get(p, {"categories": {}})["categories"].items() if c in ("21", "22", "23"))
         etpt = round(sum(c["etpt"] for c in e["categories"]), 2) if e else None
-        cout = round(t2 / etpt) if etpt and t2 else None
+        # Règle « chiffre calculé par le site » (docs/NEUTRALITE.md, règle 11) : ETPT de la LFI 2023 et dépenses de
+        # personnel 2024 ne portent pas sur la même année : coût moyen par emploi non publié (null, motif).
+        cout = None
         obj = {
             "millesime": "ETPT : LFI 2023 (dernier millésime publié par programme) ; titre 2 : exécution 2024",
             "source": f"{s['source']} ; {SRC['plrg_titre_cat']['source']}",
@@ -295,12 +302,9 @@ def effectifs() -> dict:
             "titre2_eur": eur(t2) if t2 else None, "millesime_titre2": "Exécution 2024",
             "eur_sur_100_titre2": sur_100(t2, ent["total_eur"]) if t2 else None,
             "cout_moyen_par_etpt_eur": cout,
-            "avertissement": ("Millésimes différents : dépenses de personnel 2024 (PLRG 2024) divisées par les ETPT "
-                              "votés en LFI 2023. Le titre 2 inclut les cotisations employeur et la contribution au "
-                              "compte d'affectation spéciale Pensions : c'est un coût complet employeur, pas un salaire. "
-                              "Un programme réorganisé entre 2023 et 2024 peut donner un ratio faux."
-                              if cout else ("Pas d'ETPT publié pour ce programme en LFI 2023 (programme créé ou "
-                                            "renuméroté depuis)." if t2 and not e else None)),
+            "motif_cout_moyen": MOTIF_COUT_MOYEN if etpt and t2 else None,
+            "avertissement": ("Pas d'ETPT publié pour ce programme en LFI 2023 (programme créé ou renuméroté depuis)."
+                              if t2 and not e else None),
         }
         dump(SITE / "effectifs" / f"{p}.json", obj)
         n += 1

@@ -183,9 +183,10 @@ def test_effectifs_cout_moyen():
     n = 0
     for f in sorted((SITE / "effectifs").glob("*.json")):
         d = _json(f)
-        if d["cout_moyen_par_etpt_eur"]:
+        # Règle « chiffre calculé par le site » : ETPT 2023 et dépenses 2024, coût moyen jamais publié, motif écrit.
+        assert d["cout_moyen_par_etpt_eur"] is None
+        if d["etpt"] and d["titre2_eur"]:
             n += 1
-            assert d["cout_moyen_par_etpt_eur"] == pytest.approx(d["titre2_eur"] / d["etpt"], abs=1)
-            assert "Millésimes différents" in d["avertissement"]
+            assert "même année" in d["motif_cout_moyen"]
             assert d["millesime_etpt"] == "LFI 2023"
     assert n > 30

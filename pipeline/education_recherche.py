@@ -1119,14 +1119,21 @@ def _code(v, prefixe: str):
 REGIONS_OUTRE_MER = {"01": "971", "02": "972", "03": "973", "04": "974", "06": "976"}
 
 
-def mention_cout(budget, etudiants) -> str | None:
-    """Pourquoi le coût par étudiant n'est pas calculé (null, jamais 0) ; None quand il l'est."""
+# Règle « chiffre calculé par le site » (docs/NEUTRALITE.md, 18/11/2026) : dépenses d'une année civile divisées par
+# des étudiants d'une année universitaire, deux périodes différentes : le coût par étudiant n'est pas publié.
+MOTIF_REGLE_CALCULE = ("non publié : les dépenses des collectivités portent sur une année civile et les effectifs sur "
+                       "une année universitaire ; un chiffre calculé par le site n'est publié que si ses montants "
+                       "portent sur la même année et le même périmètre (docs/NEUTRALITE.md, règle 11)")
+
+
+def mention_cout(budget, etudiants) -> str:
+    """Pourquoi le coût par étudiant n'est pas publié (null, jamais 0)."""
     if budget is None:
         return ("non calculé : dépense des collectivités pour l'enseignement supérieur et la vie étudiante non "
                 "publiée pour cette année et ce périmètre")
     if not etudiants:
         return "non calculé : effectif étudiant absent pour cette année et ce périmètre"
-    return None
+    return MOTIF_REGLE_CALCULE
 
 
 def construire_etudiants(lignes: list[dict], collectivites: dict, rattachement: dict[str, dict]) -> dict:
@@ -1193,18 +1200,15 @@ def construire_etudiants(lignes: list[dict], collectivites: dict, rattachement: 
             budget = g["esve_eur"][c_annees.index(a)] if g else None
             n = e["eff"][rang[a]] if e else None
             valeurs.append({"annee": a, "qualite_budget": qualite[str(a)], "budget_esve_eur": budget, "etudiants": n,
-                            "cout_par_etudiant_eur": round(budget / n, 2) if budget is not None and n else None,
-                            "statut": STATUT_CALCULE if budget is not None and n else None,
+                            "cout_par_etudiant_eur": None, "statut": None,
                             "mention": mention_cout(budget, n)})
         cout_regions.append({"code": code, "nom": (g or {}).get("nom") or (e or {}).get("nom"), "valeurs": valeurs})
     national = []
     for a in sorted(set(c_annees) & set(annees)):
         budget = collectivites["national"][c_annees.index(a)]["esve_eur"]
         n = somme(g["eff"][rang[a]] for g in reg.values())
-        ok = budget is not None and bool(n)
         national.append({"annee": a, "qualite_budget": qualite[str(a)], "budget_esve_eur": budget, "etudiants": n,
-                         "cout_par_etudiant_eur": round(budget / n, 2) if ok else None,
-                         "statut": STATUT_CALCULE if ok else None, "mention": mention_cout(budget, n)})
+                         "cout_par_etudiant_eur": None, "statut": None, "mention": mention_cout(budget, n)})
     s = SOURCES["effectifs"]
     return {
         "millesime": "Effectifs étudiants " + s["millesime"] + " ; coût par étudiant calculé, 2007 à 2025",

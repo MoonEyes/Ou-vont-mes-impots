@@ -220,10 +220,11 @@ def test_cout_par_etudiant_calcule_avec_sa_formule():
     c = etu["cout_par_etudiant"]
     assert c["statut"] == "calculé" and "budget_esve_eur / etudiants" in c["formule"]
     v = {r["code"]: r["valeurs"] for r in c["regions"]}
+    # Règle « chiffre calculé par le site » : années civile et universitaire différentes, coût non publié (motif).
     assert v["52"][0] == {"annee": 2023, "qualite_budget": "définitif", "budget_esve_eur": 1500.0, "etudiants": 150,
-                          "cout_par_etudiant_eur": 10.0, "statut": "calculé", "mention": None}
+                          "cout_par_etudiant_eur": None, "statut": None, "mention": er.MOTIF_REGLE_CALCULE}
     assert v["52"][1]["cout_par_etudiant_eur"] is None and v["52"][1]["statut"] is None   # budget absent en 2024
-    assert "non publiée" in v["52"][1]["mention"] and v["52"][0]["mention"] is None
+    assert "non publiée" in v["52"][1]["mention"] and v["52"][0]["mention"] == er.MOTIF_REGLE_CALCULE
     # national 2024 : la catégorie « enseignement supérieur » n'est pas publiée : null avec mention, jamais 0
     n24 = coll["national"][1]
     assert (n24["esve_eur"], n24["total_eur"], n24["rt_eur"], n24["categories_publiees"]) == (None, None, 80.0, ["rt"])
@@ -231,7 +232,7 @@ def test_cout_par_etudiant_calcule_avec_sa_formule():
     nat24 = c["national"][1]
     assert (nat24["budget_esve_eur"], nat24["cout_par_etudiant_eur"], nat24["statut"]) == (None, None, None)
     assert nat24["etudiants"] == 120 and nat24["mention"]
-    assert v["974"][0]["cout_par_etudiant_eur"] == 3.0                  # La Réunion : R04 rapproché de 974
+    assert v["974"][0]["etudiants"] == 30 and v["974"][0]["cout_par_etudiant_eur"] is None   # R04 rapproché de 974
     assert next(g for g in etu["par_region"] if g["region"] == "52")["etudiants"] == [150, 120]              # composante en double compte exclue
     ligne = next(e for e in etu["etablissements"] if e[0] == "c")
     assert ligne[12] is True and ligne[2] is None
@@ -434,11 +435,10 @@ def test_cout_par_etudiant_publie_recalcule():
         for v in r["valeurs"]:
             attendu = budget[r["code"]]["esve_eur"][coll["annees"].index(v["annee"])] if r["code"] in budget else None
             assert v["budget_esve_eur"] == attendu, (r["code"], v["annee"])
-            if v["cout_par_etudiant_eur"] is None:
-                assert v["statut"] is None and (v["budget_esve_eur"] is None or not v["etudiants"])
-            else:
-                assert v["statut"] == "calculé"
-                assert v["cout_par_etudiant_eur"] == round(v["budget_esve_eur"] / v["etudiants"], 2)
+            # Règle « chiffre calculé par le site » : jamais publié, motif écrit.
+            assert v["cout_par_etudiant_eur"] is None and v["statut"] is None and v["mention"]
+            if v["budget_esve_eur"] is not None and v["etudiants"]:
+                assert v["mention"] == er.MOTIF_REGLE_CALCULE
                 calcules += 1
     assert calcules > 100
     par_region = {er.REGIONS_OUTRE_MER.get(g["region"], g["region"]): g for g in etu["par_region"]}
