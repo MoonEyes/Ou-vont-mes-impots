@@ -18,7 +18,7 @@ reprises. Les dépenses fiscales rattachées au programme 174 restent dans `nich
 Entrées : data/lake/energie_climat/ (non versionné), collectées par `collecter` :
     energie_climat_cre_cspe_<2024|2025|2026>.pdf       délibérations de la CRE (n° 2024-139, 2025-180, 2026-149)
     energie_climat_budget_vert_plf<2024|2025|2026>.json export filtré (programmes 174 et 345) du budget vert
-Sorties (site/data/energie_climat/, contrat docs/contrat_interface.md 2.41) :
+Sorties (site/data/energie_climat/, contrat docs/contrat_interface.md 2.52) :
     index.json, charges_service_public.json, boucliers.json, budget.json, cheque_energie.json
 
 Commandes :

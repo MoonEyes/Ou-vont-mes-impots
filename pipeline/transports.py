@@ -19,7 +19,7 @@ Entrées (data/lake/, non versionné, déclarées dans collecte/catalogue.json) 
 Lecture seule de site/data/arbre/, realisations/, programmes/ (liens, jamais de montant recopié) et de
 site/data/local_satellites/index.json (taux de versement mobilité par commune, autre axe).
 
-Sorties (site/data/transports/, contrat docs/contrat_interface.md 2.41, schémas docs/schemas/transports_*) :
+Sorties (site/data/transports/, contrat docs/contrat_interface.md 2.51, schémas docs/schemas/transports_*) :
     index.json, afitf.json, ferroviaire.json, programmes.json, versement_mobilite.json
 
 Commandes :
