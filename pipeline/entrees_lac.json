@@ -1507,6 +1507,41 @@
    "octets_sources": null,
    "note": "entrées collectées par le module lui-même ; non relevées sous strace (entrepôt purgé)"
   },
+  "immobilier_etat": {
+   "sources": {
+    "immobilier_etat_cessions_2013_2018": [
+     "data/lake/immobilier_etat/immobilier_etat_cessions_2013_2018.csv"
+    ],
+    "immobilier_etat_documents": [
+     "data/lake/immobilier_etat/immobilier_etat_documents/dpt2026_politique_immobiliere.pdf",
+     "data/lake/immobilier_etat/immobilier_etat_documents/pap2026_cas_immobilier.pdf"
+    ],
+    "immobilier_etat_parc_2021": [
+     "data/lake/immobilier_etat/immobilier_etat_parc_2021.csv"
+    ],
+    "immobilier_etat_parc_2022": [
+     "data/lake/immobilier_etat/immobilier_etat_parc_2022.csv"
+    ],
+    "immobilier_etat_parc_2023": [
+     "data/lake/immobilier_etat/immobilier_etat_parc_2023.csv"
+    ],
+    "immobilier_etat_plrg_annexes": [
+     "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2023_cs_comptable.csv",
+     "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2023_cs_cp.csv",
+     "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2023_cs_recouvrements.csv",
+     "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2024_cs_comptable.csv",
+     "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2024_cs_cp.csv",
+     "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2024_cs_recouvrements.csv",
+     "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2025_cs_comptable.csv",
+     "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2025_cs_cp.csv",
+     "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2025_cs_recouvrements.csv"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 33958240,
+   "note": "sources du domaine « immobilier_etat » de collecte/catalogue.json, collectées par `python pipeline/immobilier_etat.py collecter` ; chemins relevés le 2026-11-18 sans strace (liste des fichiers lus par le module)"
+  },
   "sante_etablissements": {
    "sources": {
     "sante_finess_structures": [
@@ -1551,6 +1586,21 @@
   }
  },
  "urls": {
+  "data/lake/immobilier_etat/immobilier_etat_cessions_2013_2018.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/cessions-immobilieres-de-letat-copie/exports/csv?select=annee_cession%2Cpays%2Cdep_code%2Cnature%2Cministere_occupant%2Ctype_procedure_ayant_mene_a_la_vente%2Cnature_juridique_acquereur%2Cnb_procedure",
+  "data/lake/immobilier_etat/immobilier_etat_documents/dpt2026_politique_immobiliere.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1090100/file/12-DPT2026_Politique_immobiliere.pdf",
+  "data/lake/immobilier_etat/immobilier_etat_documents/pap2026_cas_immobilier.pdf": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1088065/file/PAP2026_CS_CAS_Gestion_patrimoine_immobilier_Etat_YB.pdf",
+  "data/lake/immobilier_etat/immobilier_etat_parc_2021.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/parc_immobilier_etat_20211231/exports/csv?select=code_chorus%2Ctype%2Cfonction%2Cdept%2Ccode_insee%2Clibelle_nouvelle_region%2Cpays%2Cministere%2Ctype_gestionnaire%2Ctype_proprietaire%2Csurface_m2%2Cdate_de_reference",
+  "data/lake/immobilier_etat/immobilier_etat_parc_2022.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/parc_immobilier_etat_20221231/exports/csv?select=code_chorus%2Ctype%2Cfonction%2Cdept%2Ccode_insee%2Clibelle_nouvelle_region%2Cpays%2Cministere%2Ctype_gestionnaire%2Ctype_proprietaire%2Csurface_m2%2Cdate_de_reference",
+  "data/lake/immobilier_etat/immobilier_etat_parc_2023.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/parc_immobilier_etat_20231231/exports/csv?select=code_chorus%2Ctype%2Cfonction%2Cdept%2Ccode_insee%2Clibelle_nouvelle_region%2Cpays%2Cministere%2Ctype_gestionnaire%2Ctype_proprietaire%2Csurface_m2%2Cdate_de_reference",
+  "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2023_cs_comptable.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_comptable_2023_csv",
+  "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2023_cs_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_cp_2023_csv",
+  "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2023_cs_recouvrements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2023/attachments/annexe2_etat_recouvt_2023_csv",
+  "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2024_cs_comptable.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_comptable_2024_csv",
+  "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2024_cs_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_cp_2024_csv",
+  "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2024_cs_recouvrements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plrg-2024/attachments/annexe2_etat_recouvt_2024_csv",
+  "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2025_cs_comptable.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_comptable_2025csv",
+  "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2025_cs_cp.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_cp_2025csv",
+  "data/lake/immobilier_etat/immobilier_etat_plrg_annexes/plrg_2025_cs_recouvrements.csv": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2025/attachments/annexe2_etat_recouvt_2025csv",
   "data/lake/_restreint/beneficiaires/benef_decp/decp_11cea8e8.parquet": "https://static.data.gouv.fr/resources/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire/20261117-051110/decp.parquet",
   "data/lake/_restreint/beneficiaires/datagouv__subventions-de-bourges-plus-en-2018-et-2019/subventions-de-bourges-plus-en-2018-et-2019_85c2c379.parquet": "https://data.bourgesplus.fr/api/v2/catalog/datasets/subventions-de-bourges-plus-en-2018-et-2019/exports/parquet",
   "data/lake/_restreint/beneficiaires/ods_laregion__subventions-du-conseil-regional.parquet": "https://data.laregion.fr/api/explore/v2.1/catalog/datasets/subventions-du-conseil-regional/exports/parquet",

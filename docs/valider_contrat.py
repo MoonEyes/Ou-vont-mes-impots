@@ -252,6 +252,12 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # immobilier de l'État : parc, loyers, cessions, compte « Gestion du patrimoine immobilier de l'État » (pipeline/immobilier_etat.py)
+    ("immobilier_etat_index.schema.json", "immobilier_etat/index.json", "existant"),
+    ("immobilier_etat_parc.schema.json", "immobilier_etat/parc.json", "existant"),
+    ("immobilier_etat_loyers.schema.json", "immobilier_etat/loyers.json", "existant"),
+    ("immobilier_etat_cessions.schema.json", "immobilier_etat/cessions.json", "existant"),
+    ("immobilier_etat_compte.schema.json", "immobilier_etat/compte.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
