@@ -1500,6 +1500,26 @@
    "hors_catalogue": [],
    "octets_sources": 24826525
   },
+  "transports": {
+   "sources": {
+    "transports_sdes_bilan_2024_activite": [
+     "data/lake/transports/transports_sdes_bilan_2024_activite.xlsx"
+    ],
+    "transports_afitf_budgets": [
+     "data/lake/transports/transports_afitf_budgets/budget_execute_2022.pdf",
+     "data/lake/transports/transports_afitf_budgets/budget_execute_2023.pdf",
+     "data/lake/transports/transports_afitf_budgets/budget_execute_2024.pdf",
+     "data/lake/transports/transports_afitf_budgets/budget_execute_2025.pdf",
+     "data/lake/transports/transports_afitf_budgets/budget_initial_2026.pdf"
+    ],
+    "etat_budget_vert_2026": [
+     "data/lake/etat/etat_budget_vert_2026.parquet"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 1576861
+  },
   "retraites": {
    "sources": {},
    "caches": [],
@@ -1551,6 +1571,12 @@
   }
  },
  "urls": {
+  "data/lake/transports/transports_sdes_bilan_2024_activite.xlsx": "https://www.statistiques.developpement-durable.gouv.fr/media/8861/download?inline",
+  "data/lake/transports/transports_afitf_budgets/budget_execute_2022.pdf": "https://www.afit-france.fr/sites/default/files/2023-03/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202022.pdf",
+  "data/lake/transports/transports_afitf_budgets/budget_execute_2023.pdf": "https://www.afit-france.fr/sites/default/files/2024-02/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202023.pdf",
+  "data/lake/transports/transports_afitf_budgets/budget_execute_2024.pdf": "https://www.afit-france.fr/sites/default/files/2025-07/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202024.pdf",
+  "data/lake/transports/transports_afitf_budgets/budget_execute_2025.pdf": "https://www.afit-france.fr/sites/default/files/2026-02/Budget%20ex%C3%A9cut%C3%A9%20de%20l%27ann%C3%A9e%202025.pdf",
+  "data/lake/transports/transports_afitf_budgets/budget_initial_2026.pdf": "https://www.afit-france.fr/sites/default/files/2025-12/Budget%20initial%20de%20l%27ann%C3%A9e%202026.pdf",
   "data/lake/_restreint/beneficiaires/benef_decp/decp_11cea8e8.parquet": "https://static.data.gouv.fr/resources/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire/20261117-051110/decp.parquet",
   "data/lake/_restreint/beneficiaires/datagouv__subventions-de-bourges-plus-en-2018-et-2019/subventions-de-bourges-plus-en-2018-et-2019_85c2c379.parquet": "https://data.bourgesplus.fr/api/v2/catalog/datasets/subventions-de-bourges-plus-en-2018-et-2019/exports/parquet",
   "data/lake/_restreint/beneficiaires/ods_laregion__subventions-du-conseil-regional.parquet": "https://data.laregion.fr/api/explore/v2.1/catalog/datasets/subventions-du-conseil-regional/exports/parquet",

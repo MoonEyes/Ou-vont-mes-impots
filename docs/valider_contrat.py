@@ -252,6 +252,12 @@ FICHIERS = [
     ("retraites_index.schema.json", "retraites/index.json", "existant"),
     ("retraites_regimes.schema.json", "retraites/regimes.json", "existant"),
     ("retraites_etat.schema.json", "retraites/etat.json", "existant"),
+    # transports : AFITF, concours publics au ferroviaire, programmes, versement mobilité (pipeline/transports.py)
+    ("transports_index.schema.json", "transports/index.json", "existant"),
+    ("transports_afitf.schema.json", "transports/afitf.json", "existant"),
+    ("transports_ferroviaire.schema.json", "transports/ferroviaire.json", "existant"),
+    ("transports_programmes.schema.json", "transports/programmes.json", "existant"),
+    ("transports_versement_mobilite.schema.json", "transports/versement_mobilite.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
