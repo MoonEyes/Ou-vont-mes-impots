@@ -5726,7 +5726,7 @@
   {
    "@type": "dcat:Distribution",
    "dct:title": "fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py)",
-   "dct:description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 752 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dct:description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 762 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "dcat:accessURL": {
     "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/005.json"
    },
@@ -5745,7 +5745,7 @@
   {
    "@type": "dcat:Distribution",
    "dct:title": "organisations dont un mot du nom commence par la clé (pipeline/entites.py)",
-   "dct:description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 724 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dct:description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 728 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "dcat:accessURL": {
     "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/00.json"
    },
@@ -6177,6 +6177,63 @@
    },
    "dct:conformsTo": {
     "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/qui_a_vote_departement.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "couverture de la correspondance code postal -> commune, normalisation des noms, fichiers, arrondissements de Paris, Lyon et Marseille, hors périmètre, recherche préalable (pipeline/ma_commune.py)",
+   "dct:description": "site/data/ma_commune/index.json : couverture de la correspondance code postal -> commune, normalisation des noms, fichiers, arrondissements de Paris, Lyon et Marseille, hors périmètre, recherche préalable (pipeline/ma_commune.py). Fichier site/data/ma_commune/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ma_commune_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "pour chaque code postal, communes desservies [insee, nom, département, population, précision : arrondissement ou localités] (pipeline/ma_commune.py)",
+   "dct:description": "site/data/ma_commune/cp/<2 chiffres>.json : pour chaque code postal, communes desservies [insee, nom, département, population, précision : arrondissement ou localités] (pipeline/ma_commune.py). Famille de 96 fichiers (motif site/data/ma_commune/cp/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/cp/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/cp/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ma_commune_cp.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "noms de communes, de localités (ligne 5 de La Poste) et d'arrondissements dont la clé compacte commence par le préfixe [insee, nom, département, population, codes postaux, type] (pipeline/ma_commune.py)",
+   "dct:description": "site/data/ma_commune/noms/<préfixe>.json : noms de communes, de localités (ligne 5 de La Poste) et d'arrondissements dont la clé compacte commence par le préfixe [insee, nom, département, population, codes postaux, type] (pipeline/ma_commune.py). Famille de 126 fichiers (motif site/data/ma_commune/noms/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/noms/a.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/noms/a.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ma_commune_noms.schema.json"
    }
   },
   {
