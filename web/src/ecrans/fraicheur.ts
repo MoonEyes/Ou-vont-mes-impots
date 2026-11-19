@@ -1,6 +1,7 @@
 // Méthode : fraîcheur des données (site/data/fraicheur/index.json, écrit par pipeline/fraicheur.py).
 // Pour chaque source : dernière collecte, millésime publié, date de publication par la source, prochaine édition
 // attendue (calendrier officiel, sinon rien), statut. Liste filtrable et triable ; ce que fait la mise à jour du lundi.
+import { choix, fixerChoix, listeRecherche, valeurChoix } from '../composants/choix'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import { route } from '../routes'
@@ -245,15 +246,12 @@ ${
 <form id="fr-filtres" class="carte">
   <label for="fr-q">Chercher une source</label>
   <input id="fr-q" type="search" autocomplete="off" />
-  <label for="fr-statut">Statut</label>
-  <select id="fr-statut"><option value="">Tous</option>${STATUTS_ORDRE.map((s) => `<option value="${s}"${s === etat.statut ? ' selected' : ''}>${h(f.statuts[s]?.libelle ?? MOT_STATUT[s])} (${h(entier(f.comptes[s] ?? 0))})</option>`).join('')}</select>
-  <label for="fr-page">Page du site</label>
-  <select id="fr-page"><option value="">Toutes</option>${f.etapes
+  ${choix({ id: 'fr-statut', etiquette: 'Statut', options: [{ valeur: '', libelle: 'Tous' }, ...STATUTS_ORDRE.map((s) => ({ valeur: s, libelle: `${f.statuts[s]?.libelle ?? MOT_STATUT[s]} (${entier(f.comptes[s] ?? 0)})` }))], valeur: etat.statut })}
+  ${listeRecherche({ id: 'fr-page', etiquette: 'Page du site', options: [], optionsHtml: `<option value="">Toutes</option>${f.etapes
     .filter((e) => e.sources)
     .map((e) => `<option value="${h(e.etape)}"${e.etape === etat.page ? ' selected' : ''}>${h(e.libelle)}</option>`)
-    .join('')}<option value="${AUCUNE}"${etat.page === AUCUNE ? ' selected' : ''}>Aucune page rattachée</option></select>
-  <label for="fr-tri">Trier par</label>
-  <select id="fr-tri"><option value="page">Page du site, dans l’ordre de la mise à jour</option><option value="collecte">Dernière collecte, la plus récente d’abord</option><option value="prochaine">Prochaine édition attendue, la plus proche d’abord</option><option value="nom">Nom de la source</option></select>
+    .join('')}<option value="${AUCUNE}"${etat.page === AUCUNE ? ' selected' : ''}>Aucune page rattachée</option>` })}
+  ${choix({ id: 'fr-tri', etiquette: 'Trier par', options: [{ valeur: 'page', libelle: 'Page du site, dans l’ordre de la mise à jour' }, { valeur: 'collecte', libelle: 'Dernière collecte, la plus récente d’abord' }, { valeur: 'prochaine', libelle: 'Prochaine édition attendue, la plus proche d’abord' }, { valeur: 'nom', libelle: 'Nom de la source' }], valeur: etat.tri })}
 </form>
 <p id="fr-compte" aria-live="polite"></p>
 <ul class="lignes" id="fr-liste"></ul>
@@ -308,14 +306,15 @@ ${
   }
   const form = cible.querySelector('#fr-filtres') as HTMLFormElement
   // Filtres demandés par l'adresse (?statut=, ?page=) : valeur posée aussi par le DOM, pas seulement par « selected ».
-  ;(cible.querySelector('#fr-statut') as HTMLSelectElement).value = etat.statut
-  ;(cible.querySelector('#fr-page') as HTMLSelectElement).value = etat.page
+  fixerChoix(cible, 'fr-statut', etat.statut)
+  fixerChoix(cible, 'fr-page', etat.page)
   form.addEventListener('submit', (e) => e.preventDefault())
-  form.addEventListener('input', () => {
+  form.addEventListener('input', (e) => {
+    if ((e.target as HTMLElement).matches('.choix-filtre')) return
     etat.q = (cible.querySelector('#fr-q') as HTMLInputElement).value
-    etat.statut = (cible.querySelector('#fr-statut') as HTMLSelectElement).value
-    etat.page = (cible.querySelector('#fr-page') as HTMLSelectElement).value
-    etat.tri = (cible.querySelector('#fr-tri') as HTMLSelectElement).value
+    etat.statut = valeurChoix(cible, 'fr-statut')
+    etat.page = valeurChoix(cible, 'fr-page')
+    etat.tri = valeurChoix(cible, 'fr-tri') as typeof etat.tri
     etat.vus = PAR_PAGE
     dessiner()
   })

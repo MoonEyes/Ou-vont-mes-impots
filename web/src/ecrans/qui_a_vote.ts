@@ -5,6 +5,7 @@
 // navigateur, rien n'est envoyé ni conservé (aucune adresse, aucun stockage). Neutralité : aucun classement, score
 // ni qualificatif ; groupes dans l'ordre alphabétique écrit à l'écran ; positions écrites en toutes lettres, sans
 // couleur ; décomptes tels que publiés (aucun pourcentage calculé).
+import { SEUIL_LISTE, choix, choixLiens, fixerChoix, listeRecherche, valeurChoix } from '../composants/choix'
 import { charger, chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import { absent, entier, h, rendreDefilables, source } from '../util'
@@ -295,9 +296,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
   cible.innerHTML = `<h1>Qui a voté tes impôts</h1>
 <p class="chapeau">${h(idx.presentation)} Décisions publiées par l’Assemblée nationale et le Sénat depuis juillet 2024.</p>
 <h2>Choisis un impôt</h2>
-<form class="carte" id="qav-form-impot"><label for="qav-impot">Impôt</label><select id="qav-impot"><option value="">Choisir…</option>${idx.impots
-    .map((i) => `<option value="${h(i.id)}"${choisi?.id === i.id ? ' selected' : ''}>${h(i.libelle)}</option>`)
-    .join('')}</select></form>
+${choixLiens({ id: 'qav-impot', etiquette: 'Impôt', liens: idx.impots.map((i) => ({ href: lien(CHEMIN, { impot: i.id }), libelle: i.libelle, courant: choisi?.id === i.id })) })}
 <details class="carte avant-lecture"><summary>Ce que cette page montre et ne montre pas</summary>
 <p>Elle ne montre ni les votes à main levée ni les scrutins nominatifs du Sénat, qui ne sont pas publiés en données ouvertes.</p>
 ${encadreManque(MANQUES.senatScrutins(releveSenat(idx)))}
@@ -313,18 +312,13 @@ ${idx.non_couverts.map((n) => `<p class="aide">${h(n.libelle)} : non couvert, ${
 <h2 id="qav-ton-depute">Ton député</h2>
 <p>${h(idx.confidentialite)}</p>
 <form class="carte" id="qav-form-depute">
-  <label for="qav-dep">Département</label>
-  <select id="qav-dep"><option value="">Choisir…</option>${idx.departements.map((d) => `<option value="${h(d.code)}">${h(d.code)} ${h(d.nom)}</option>`).join('')}</select>
-  <label for="qav-circo">Circonscription</label>
-  <select id="qav-circo" disabled><option value="">Choisis d’abord un département</option></select>
+  ${listeRecherche({ id: 'qav-dep', etiquette: 'Département', options: [], optionsHtml: `<option value="">Choisir…</option>${idx.departements.map((d) => `<option value="${h(d.code)}">${h(d.code)} ${h(d.nom)}</option>`).join('')}` })}
+  <div id="qav-circo-zone" aria-live="polite"><p class="aide">Choisis d’abord un département : ses circonscriptions s’affichent ici.</p></div>
 </form>
 <div id="qav-depute" aria-live="polite"></div>
 ${source(idx.source, `${idx.millesime}${idx.donnees_au ? `, scrutins jusqu’au ${dateFr(idx.donnees_au)}` : ''}`)}
 <ul class="liens-sortie"><li><a href="${lien('/decisions/votes')}">Votes sur les crédits du budget de l’État</a></li><li><a href="${lien('/calcul')}">Calculer ce que tu verses</a></li></ul>`
 
-  cible.querySelector<HTMLSelectElement>('#qav-impot')?.addEventListener('change', (e) => {
-    location.hash = lien(CHEMIN, { impot: (e.target as HTMLSelectElement).value })
-  })
 
   const zoneImpot = cible.querySelector<HTMLElement>('#qav-impot-detail')!
   if (choisi) {
@@ -344,25 +338,28 @@ ${source(idx.source, `${idx.millesime}${idx.donnees_au ? `, scrutins jusqu’au 
   }
 
   const dep = cible.querySelector<HTMLSelectElement>('#qav-dep')!
-  const circo = cible.querySelector<HTMLSelectElement>('#qav-circo')!
+  const zoneCirco = cible.querySelector<HTMLElement>('#qav-circo-zone')!
+  const ordinal = (c: number) => (c === 1 ? '1re' : `${c}e`)
   const zoneDep = cible.querySelector<HTMLElement>('#qav-depute')!
   let fichierDep: DepFichier | null = null
   const choisirDep = async () => {
     const d = idx.departements.find((x) => x.code === dep.value)
     zoneDep.innerHTML = ''
     fichierDep = null
-    circo.disabled = !d
-    circo.innerHTML = d
-      ? `<option value="">Choisir…</option>${d.circonscriptions.map((c) => `<option value="${c}">${c === 1 ? '1re' : `${c}e`} circonscription</option>`).join('')}`
-      : '<option value="">Choisis d’abord un département</option>'
+    // Une seule circonscription : elle est choisie d'office ; sinon, le composant suit le nombre (segmenté, liste, recherche).
+    zoneCirco.innerHTML = d
+      ? choix({ id: 'qav-circo', etiquette: `Circonscription (${d.circonscriptions.length} dans ce département)`, options: d.circonscriptions.map((c) => ({ valeur: String(c), libelle: d.circonscriptions.length > SEUIL_LISTE ? `${ordinal(c)} circonscription` : ordinal(c) })), valeur: d.circonscriptions.length === 1 ? String(d.circonscriptions[0]) : undefined })
+      : '<p class="aide">Choisis d’abord un département : ses circonscriptions s’affichent ici.</p>'
     if (d) fichierDep = await chargerSiPresent<DepFichier>(`qui_a_vote/${d.fichier}`)
+    if (d?.circonscriptions.length === 1) await choisirCirco()
   }
   const choisirCirco = async () => {
     const d = idx.departements.find((x) => x.code === dep.value)
-    if (!d || !circo.value) return
+    const numero = valeurChoix(cible, 'qav-circo')
+    if (!d || !numero) return
     fichierDep = fichierDep ?? (await chargerSiPresent<DepFichier>(`qui_a_vote/${d.fichier}`))
     const sc = await charger<ScrutinsListe>('qui_a_vote/scrutins.json').catch(() => null)
-    const c = fichierDep?.circonscriptions.find((x) => x.numero === Number(circo.value))
+    const c = fichierDep?.circonscriptions.find((x) => x.numero === Number(numero))
     if (!c || !sc) {
       zoneDep.innerHTML = absent('Données de cette circonscription non disponibles.')
       return
@@ -374,7 +371,7 @@ ${c.deputes.map((x) => rendreDepute(x, sc.scrutins, nomsImpots)).join('')}
     rendreDefilables(zoneDep)
   }
   dep.addEventListener('change', choisirDep)
-  circo.addEventListener('change', choisirCirco)
+  zoneCirco.addEventListener('change', choisirCirco)
   // Lien venu de la recherche du site : ?dep=<code>&circo=<numéro> ouvre directement cette circonscription.
   const depVoulu = idx.departements.find((x) => x.code === params.get('dep'))
   if (depVoulu) {
@@ -382,7 +379,7 @@ ${c.deputes.map((x) => rendreDepute(x, sc.scrutins, nomsImpots)).join('')}
     await choisirDep()
     const n = Number(params.get('circo'))
     if (depVoulu.circonscriptions.includes(n)) {
-      circo.value = String(n)
+      fixerChoix(cible, 'qav-circo', String(n))
       await choisirCirco()
     }
   }

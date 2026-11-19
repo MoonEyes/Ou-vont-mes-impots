@@ -17,7 +17,8 @@ import * as perimetre from '../src/calcul/perimetre-etendu'
 import { descriptionPersonne, LIBELLE_PROFIL, limitesDuCalcul, natureRevenus, resumeProfil } from '../src/calcul/profils-ui'
 import type { Affectation } from '../src/calcul/agregats'
 import type { PersonneEtendue, ProfilEtendu, ResultatOk, ResultatOkEtendu } from '../src/calcul/types'
-import { attendreQue, monterPage, requetes } from './aide-dom'
+import { attendreQue, choisirValeur, monterPage, requetes } from './aide-dom'
+import { valeurChoix } from '../src/composants/choix'
 
 const RACINE = process.cwd()
 const affectation = JSON.parse(readFileSync(join(RACINE, 'tests/fixtures/data/prelevements/affectation.json'), 'utf8')) as Affectation
@@ -38,11 +39,7 @@ const norm = (s: string) => s.replace(/\s+/g, ' ')
 const $ = <T extends HTMLElement = HTMLElement>(s: string) => main.querySelector(s) as T
 const soumettre = () => $<HTMLFormElement>('#formulaire').dispatchEvent(new Event('submit', { cancelable: true }))
 const remplir = (sel: string, valeur: string) => ($<HTMLInputElement>(sel).value = valeur)
-const choisirStatut = (n: 1 | 2, statut: string) => {
-  const s = $<HTMLSelectElement>(`#p${n}-statut`)
-  s.value = statut
-  s.dispatchEvent(new Event('change', { bubbles: true }))
-}
+const choisirStatut = (n: 1 | 2, statut: string) => choisirValeur(main, `p${n}-statut`, statut)
 /** Coche un bouton radio (happy-dom ne décoche pas les autres boutons du groupe : on le fait ici). */
 const cocher = (nom: string, valeur: string) => {
   main.querySelectorAll<HTMLInputElement>(`input[name="${nom}"]`).forEach((r) => (r.checked = r.value === valeur))
@@ -101,12 +98,13 @@ describe('chemin simple : salaire net avant impôt seul, par défaut', () => {
     session.profil = null
     session.resultat = null
     await ecran('#/calcul')
-    const statut = $<HTMLSelectElement>('#p1-statut')
-    // Choix de situation avant le montant, quatre situations d'abord, les autres regroupées.
+    const statut = $('#p1-statut')
+    // Choix de situation avant le montant : neuf situations en boutons radio (liste partagée), les quatre courantes d'abord.
     expect(statut.compareDocumentPosition($('#p1-net')) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-    expect(Array.from(statut.querySelectorAll(':scope > option')).map((o) => o.textContent)).toEqual(['Salarié·e du secteur privé', 'Fonctionnaire titulaire', 'Retraité·e', 'Micro-entrepreneur·se'])
-    expect(statut.querySelector('optgroup')?.getAttribute('label')).toBe('Autres situations')
-    expect(statut.value).toBe('salarie_prive')
+    expect(statut.tagName).toBe('FIELDSET')
+    expect(Array.from(statut.querySelectorAll('label.choix-option')).map((o) => o.textContent).slice(0, 4)).toEqual(['Salarié·e du secteur privé', 'Fonctionnaire titulaire', 'Retraité·e', 'Micro-entrepreneur·se'])
+    expect(statut.querySelectorAll('input[type=radio]')).toHaveLength(9)
+    expect(valeurChoix(main, 'p1-statut')).toBe('salarie_prive')
     // Case outre-mer et territoire avant le montant, territoire masqué tant que la case n'est pas cochée.
     expect($('#outremer').compareDocumentPosition($('#p1-net')) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect($('#territoire-bloc').hidden).toBe(true)
@@ -157,7 +155,7 @@ describe('chemin simple : salaire net avant impôt seul, par défaut', () => {
     expect(texte()).toContain('Salarié·e du secteur privé : vérifié (OpenFisca, 20 cas types de salariés')
     expect(texte()).toContain('Complémentaire santé et prévoyance d’entreprise : non comptées')
     expect($('#titre-patronal')).not.toBeNull()
-    expect($('#avec-patronal')).not.toBeNull()
+    expect($('#paie-contenu [value="avec"]')).not.toBeNull()
   }, 120000)
 })
 
@@ -195,7 +193,7 @@ describe('« Préciser ma situation » : chaque profil du moteur étendu, de la 
       session.profil = profil
       await ecran('#/calcul')
       // Situation reprise au retour sur la saisie ; précisions (cadre, temps partiel) ouvertes si elles ont servi.
-      expect($<HTMLSelectElement>('#p1-statut').value).toBe(profil.personnes[0].statut_activite)
+      expect(valeurChoix(main, 'p1-statut')).toBe(profil.personnes[0].statut_activite)
       if (profil.personnes.some((p) => p.cadre || p.temps_travail?.type === 'temps_partiel'))
         expect($<HTMLDetailsElement>('#p1-preciser').open || $<HTMLDetailsElement>('#p2-preciser').open).toBe(true)
       const r = await calculerParLaSaisie()
@@ -218,7 +216,7 @@ describe('« Préciser ma situation » : chaque profil du moteur étendu, de la 
       expect(t).toContain(attendu.nature)
       // Part employeur : affichée seulement s'il y en a une (pas pour une pension ni une micro-entreprise seules).
       expect(!!$('#titre-patronal'), 'section employeur').toBe(attendu.patronal)
-      expect(!!$('#avec-patronal'), 'bascule employeur').toBe(attendu.patronal)
+      expect(!!$('#paie-contenu [value="avec"]'), 'bascule employeur').toBe(attendu.patronal)
       if (!attendu.patronal) expect(t).toContain(attendu.sansEmployeur ?? 'Pas de cotisations d’employeur')
       for (const x of attendu.aussi ?? []) expect(norm(t), x).toContain(x)
       if (profil.residence.zone === 'dom') {
@@ -368,9 +366,7 @@ describe('saisie pas à pas : champs révélés, erreurs reliées aux champs', (
     remplir('#p1-net', '2000')
     expect(await erreurSur('#territoire-msg')).toContain('territoire')
     expect($('#territoire').getAttribute('aria-invalid')).toBe('true')
-    const t = $<HTMLSelectElement>('#territoire')
-    t.value = 'guadeloupe'
-    t.dispatchEvent(new Event('change', { bubbles: true }))
+    choisirValeur(main, 'territoire', 'guadeloupe')
     // Le département suit le territoire (communes de Guadeloupe pour la taxe foncière et Ma commune).
     expect($<HTMLSelectElement>('#departement').value).toBe('971')
     choisirStatut(1, 'retraite')
@@ -384,7 +380,7 @@ describe('saisie pas à pas : champs révélés, erreurs reliées aux champs', (
     const r = await calculerParLaSaisie()
     expect((session.profil as ProfilEtendu | null)?.residence).toMatchObject({ zone: 'dom', territoire: 'guadeloupe' })
     expect(r.verifications.map((v) => v.profil)).toContain('outre_mer')
-    t.value = 'mayotte'
+    choisirValeur(main, 'territoire', 'mayotte')
     soumettre()
     await attendreQue(() => !!main.querySelector('#retour .avertissement'))
     expect(texte()).toContain('Mayotte')
@@ -404,7 +400,7 @@ describe('saisie pas à pas : champs révélés, erreurs reliées aux champs', (
         cocher('p1-csg', 'median')
         cocher('p1-age', 'plus65')
       }
-      $<HTMLSelectElement>('#zone').value = zone
+      choisirValeur(main, 'zone', zone)
       soumettre()
       await attendreQue(() => !!main.querySelector('#retour .avertissement'))
       expect(main.querySelector('#retour .avertissement')?.getAttribute('tabindex')).toBe('-1')

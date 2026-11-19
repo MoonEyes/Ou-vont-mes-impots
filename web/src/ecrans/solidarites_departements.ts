@@ -9,6 +9,7 @@
 // par le site ; aucun reste à charge officiel n'est publié par département. Écarts entre sources montrés tels quels.
 // Les pages Prestations, Collectivités, Sécurité sociale et Budget du département montrent des montants voisins :
 // elles sont reliées, pas recopiées. Agrégats seulement, aucune personne nommée.
+import { listeRecherche } from '../composants/choix'
 import { partPersonnelle } from '../composants/hub'
 import { TOUS_DEPARTEMENTS } from '../departements'
 import { chargerSiPresent } from '../donnees'
@@ -501,7 +502,7 @@ ${blocEcartsNationaux(idx)}
 <h2>Dans ton département</h2>
 <p>Les comptes de chaque collectivité, ses bénéficiaires et les écarts entre sources. Depuis 2015 dans le Rhône, 2018 en Corse et 2021 en Alsace, une autre collectivité exerce les compétences du département : ses comptes sont présentés à part.</p>
 <form id="sol-dep" class="recherche">
-  <div><label for="sol-dep-choix">Département</label><select id="sol-dep-choix"><option value="">Choisir un département</option>${options}</select></div>
+  <div>${listeRecherche({ id: 'sol-dep-choix', etiquette: 'Département', options: [], optionsHtml: `<option value="">Choisir un département</option>${options}` })}</div>
 </form>
 <div id="sol-dep-resultat" aria-live="polite">${depInitial ? '<p class="chargement">Chargement…</p>' : INVITE_DEP}</div>
 <h2>Montants voisins sur d’autres pages</h2>

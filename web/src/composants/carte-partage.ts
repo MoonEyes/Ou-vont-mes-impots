@@ -3,6 +3,7 @@
 // au site ni mis dans une adresse. Par défaut l'image ne porte aucun montant personnel (ni total ni salaire) :
 // seulement des parts sur 100 €. Une case explicite ajoute les montants. Le bouton « Imprimer » ouvre
 // l'impression du navigateur (feuille d'impression : bloc « recap-partage » à la fin de styles.css).
+import { caseACocher } from './choix'
 import type { Complet } from '../calcul/hors-bulletin'
 import { NOM_SUR100, ORDRE_ADMIN, sur100Entiers } from '../calcul/repartition'
 import type { ResultatOk } from '../calcul/types'
@@ -316,7 +317,7 @@ export function monterPartage(cible: ParentNode) {
   // Replié (audit du 19/11, lot 3) : le résumé dit la règle (pas de montants par défaut), la case s'ouvre à la demande.
   const options = document.createElement('details')
   options.className = 'partage-options'
-  options.innerHTML = `<summary>Sans tes montants, sauf si tu les ajoutes</summary><label class="case"><input type="checkbox" id="partage-montants" aria-describedby="partage-montants-aide" /> Ajouter mes montants à l’image</label>
+  options.innerHTML = `<summary>Sans tes montants, sauf si tu les ajoutes</summary>${caseACocher({ id: 'partage-montants', libelle: 'Ajouter mes montants à l’image', attributs: 'aria-describedby="partage-montants-aide"' })}
 <p class="aide" id="partage-montants-aide">Sans cette case, l’image montre seulement les parts sur 100 € : ni ce que tu verses en euros, ni ton salaire. Avec, elle montre ton total, sa fourchette et ton salaire net.</p>`
   actions.after(options)
 }

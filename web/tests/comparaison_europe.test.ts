@@ -102,7 +102,7 @@ describe('comparaison européenne', () => {
     const fr = Array.from(lignesPays()).find((l) => l.classList.contains('repere-france'))!
     expect(espaces(fr.querySelector('td.nombre')?.textContent)).toBe('44,2 %')
     // La part du total n'a pas de sens pour un total : l'option n'est pas proposée.
-    const unites = Array.from(main.querySelectorAll<HTMLOptionElement>('#cmp-unite option')).map((o) => o.value)
+    const unites = Array.from(main.querySelectorAll<HTMLAnchorElement>('#cmp-unite a')).map((a) => new URLSearchParams(a.getAttribute('href')!.split('?')[1]).get('u'))
     expect(unites).toEqual(['pct_pib', 'eur_hab'])
     expect(texte()).toContain('Insee')
   })

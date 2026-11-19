@@ -7,6 +7,7 @@
 // Prévu, décidé, dépensé et payé se lisent côte à côte, jamais additionnés ni rapportés l'un à l'autre en taux.
 // null = non publié (jamais 0). Aucun classement par montant : fonds dans l'ordre publié, régions par code Insee,
 // opérations par ordre alphabétique. Seules les personnes morales sont nommées (règle appliquée par le pipeline).
+import { choix, listeRecherche, valeurChoix } from '../composants/choix'
 import { partPersonnelle } from '../composants/hub'
 import { encadreManque, MANQUES } from '../composants/manque'
 import { charger, chargerSiPresent, DonneeAbsente } from '../donnees'
@@ -545,9 +546,9 @@ function blocRegions(regions: Regions | null, idx: Index, choisie: string | null
     .join('')}</tbody></table></div>
 <p class="aide">${badgeStatut('trace')} Régions dans l’ordre de leur code officiel, sans classement. Le développement rural 2023-2027 est un programme national.</p>
 ${source(regions.source)}
-<form class="recherche carte" id="fe-region-form" aria-label="Choisir une région"><label for="fe-region">Détail d’une région</label><select id="fe-region"><option value="">Choisir</option>${regions.regions
+<form class="recherche carte" id="fe-region-form" aria-label="Choisir une région">${listeRecherche({ id: 'fe-region', etiquette: 'Détail d’une région', options: [], optionsHtml: `<option value="">Choisir</option>${regions.regions
     .map((r) => `<option value="${h(r.code)}"${r.code === choisie ? ' selected' : ''}>${h(r.nom)}</option>`)
-    .join('')}</select></form>
+    .join('')}` })}</form>
 <div id="fe-region-detail" aria-live="polite">${choisie ? detailRegion(regions.regions.find((r) => r.code === choisie) ?? null, idx) : ''}</div>`
 }
 
@@ -726,10 +727,7 @@ ${encadreManque(MANQUES.fondsEuropeensCommunes({ listes: ops.listes, inaccessibl
     )
     .join('')}</tbody></table></div>
 <form class="recherche carte" id="fe-ops-form" role="search" aria-label="Chercher une opération">
-  <label for="fe-ops-liste">Liste</label>
-  <select id="fe-ops-liste"><option value="">Choisir une liste</option>${ops.listes
-    .map((l) => `<option value="${h(l.id)}"${l.id === choisie ? ' selected' : ''}>${h(l.autorite_de_gestion)} (${h(l.periodes.join(', '))})</option>`)
-    .join('')}</select>
+  ${choix({ id: 'fe-ops-liste', etiquette: 'Liste', options: ops.listes.map((l) => ({ valeur: l.id, libelle: `${l.autorite_de_gestion} (${l.periodes.join(', ')})` })), valeur: choisie ?? undefined })}
   <label for="fe-ops-q">Nom du bénéficiaire, intitulé ou commune</label>
   <input id="fe-ops-q" type="search" autocomplete="off" value="${h(q)}" />
 </form>
@@ -823,7 +821,7 @@ async function brancherOperations(cible: HTMLElement, ops: IndexOperations) {
   if (!form || !zone || !statut) return
   const etat = { page: 1 }
   const dessiner = async (focusPremier = false) => {
-    const id = (form.querySelector('#fe-ops-liste') as HTMLSelectElement).value
+    const id = valeurChoix(form, 'fe-ops-liste')
     const q = (form.querySelector('#fe-ops-q') as HTMLInputElement).value
     const r = ops.listes.find((x) => x.id === id)
     if (!r) {
@@ -852,7 +850,9 @@ async function brancherOperations(cible: HTMLElement, ops: IndexOperations) {
     if (focusPremier) zone.querySelector<HTMLElement>('tr[data-premier] th')?.focus()
   }
   form.addEventListener('submit', (e) => e.preventDefault())
-  form.addEventListener('input', () => {
+  form.addEventListener('input', (e) => {
+    // Choix partagés (liste, recherche) : traités par l'écouteur change ci-dessous, une seule fois.
+    if ((e.target as HTMLElement).closest('[data-choix]')) return
     etat.page = 1
     void dessiner()
   })
@@ -860,7 +860,7 @@ async function brancherOperations(cible: HTMLElement, ops: IndexOperations) {
     etat.page = 1
     void dessiner()
   })
-  if ((form.querySelector('#fe-ops-liste') as HTMLSelectElement).value) await dessiner()
+  if (valeurChoix(form, 'fe-ops-liste')) await dessiner()
 }
 
 function blocEcarts(idx: Index): string {

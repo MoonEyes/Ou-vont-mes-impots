@@ -10,7 +10,7 @@ import { afficher } from '../src/routeur'
 import { viderCache } from '../src/donnees'
 import { picto } from '../src/composants/pictos'
 import { CONTACT } from '../src/composants/signaler'
-import { attendreQue, monterPage, requetes } from './aide-dom'
+import { attendreQue, choisirValeur, monterPage, requetes } from './aide-dom'
 
 const RACINE = process.cwd()
 const PRIVEES = join(RACINE, 'tests', 'fixtures', 'hopitaux')
@@ -26,7 +26,8 @@ const ecran = async (fragment: string) => {
 }
 const texte = (el: Element = main) => el.textContent?.replace(/\s+/g, ' ') ?? ''
 const choisir = (sel: string, valeur: string) => {
-  const s = main.querySelector<HTMLSelectElement | HTMLInputElement>(sel)!
+  const s = main.querySelector<HTMLElement>(sel)!
+  if (!(s instanceof HTMLInputElement || s instanceof HTMLSelectElement)) return choisirValeur(main, sel.slice(1), valeur)
   s.value = valeur
   s.dispatchEvent(new Event('input', { bubbles: true }))
 }
@@ -155,13 +156,11 @@ describe('page hôpitaux', () => {
       expect(etabs, cle).toBe(f.totaux.par_annee['2023'].etablissements)
     }
     // Bascule « Par activité » et choix de l'année : le tableau se redessine.
-    main.querySelector<HTMLButtonElement>('[data-groupe="activite_principale"]')!.click()
+    main.querySelector<HTMLButtonElement>('#hop-groupe [value="activite_principale"]')!.click()
     expect(main.querySelector('#hop-groupes caption')?.textContent).toContain('Comptes 2024 par activité principale')
-    expect(main.querySelector('[data-groupe="activite_principale"]')?.getAttribute('aria-pressed')).toBe('true')
+    expect(main.querySelector('#hop-groupe [value="activite_principale"]')?.getAttribute('aria-checked')).toBe('true')
     expect(texte(main.querySelector('#hop-groupes')!)).toContain('Médecine, chirurgie, obstétrique')
-    const annee = main.querySelector<HTMLSelectElement>('#hop-annee')!
-    annee.value = '2020'
-    annee.dispatchEvent(new Event('change'))
+    choisirValeur(main, 'hop-annee', '2020')
     expect(main.querySelector('#hop-groupes caption')?.textContent).toContain('Comptes 2020 par activité principale')
     // Investissement : absent des comptes repris, dit en toutes lettres, avec ce qui est publié au niveau national.
     const inv = Array.from(main.querySelectorAll('.absent')).find((x) => texte(x).includes('Les dépenses d’investissement des hôpitaux'))!

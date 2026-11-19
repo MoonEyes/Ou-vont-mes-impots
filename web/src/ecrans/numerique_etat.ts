@@ -3,6 +3,7 @@
 // projet), puis les fonds de transformation numérique. Valeurs telles que publiées : les écarts entre éditions sont
 // donnés sans qualificatif, une valeur non publiée reste « non publiée » (jamais 0). Aucun nom de personne : le
 // « ministère porteur » du panorama est un ministère, les porteurs des fonds sont des administrations.
+import { choix, listeRecherche, valeurChoix } from '../composants/choix'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import { absent, badgeStatut, entier, eurLisible, h, traitStatut } from '../util'
@@ -241,10 +242,8 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
   ${programme ? `<p>Projets dont le financement publié cite le programme ${h(programme)} · <a href="${lien('/explorer/numerique-etat')}">voir tous les projets</a></p>` : ''}
   <label for="ne-q">Chercher un projet</label>
   <input id="ne-q" type="search" autocomplete="off" />
-  <label for="ne-min">Ministère</label>
-  <select id="ne-min"><option value="">Tous</option>${optionsMin.map((o) => `<option value="${h(o.s)}">${h(o.nom)}</option>`).join('')}</select>
-  <label for="ne-perimetre">Projets</label>
-  <select id="ne-perimetre"><option value="derniere"${etat.perimetre === 'derniere' ? ' selected' : ''}>Suivis dans l’édition de ${h(moisAnnee(derniere.edition))}</option><option value="tous"${etat.perimetre === 'tous' ? ' selected' : ''}>Tous les projets depuis ${h(moisAnnee(pano.premiere_edition))}</option></select>
+  ${listeRecherche({ id: 'ne-min', etiquette: 'Ministère', options: [], optionsHtml: `<option value="">Tous</option>${optionsMin.map((o) => `<option value="${h(o.s)}">${h(o.nom)}</option>`).join('')}` })}
+  ${choix({ id: 'ne-perimetre', etiquette: 'Projets', options: [{ valeur: 'derniere', libelle: `Suivis dans l’édition de ${moisAnnee(derniere.edition)}` }, { valeur: 'tous', libelle: `Tous les projets depuis ${moisAnnee(pano.premiere_edition)}` }], valeur: etat.perimetre })}
 </form>
 <p class="aide" data-regle-ordre>${h(REGLE_PROJETS)}</p>
 <div id="liste-ne" aria-live="polite"></div>
@@ -325,10 +324,11 @@ ${liste.length > visibles.length ? `<button type="button" id="ne-plus">Afficher 
   }
   const form = cible.querySelector('#filtres-ne') as HTMLFormElement
   form.addEventListener('submit', (e) => e.preventDefault())
-  form.addEventListener('input', () => {
+  form.addEventListener('input', (e) => {
+    if ((e.target as HTMLElement).matches('.choix-filtre')) return
     etat.q = (cible.querySelector('#ne-q') as HTMLInputElement).value.trim()
     etat.min = (cible.querySelector('#ne-min') as HTMLSelectElement).value
-    etat.perimetre = (cible.querySelector('#ne-perimetre') as HTMLSelectElement).value
+    etat.perimetre = valeurChoix(cible, 'ne-perimetre') as typeof etat.perimetre
     etat.page = 1
     dessiner()
   })

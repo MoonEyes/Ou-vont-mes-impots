@@ -8,6 +8,7 @@
 // d'index.json ne contient que le périmètre et les identifiants des citations ; les champs « financement » des grandeurs
 // sont vides). La page cite, mot pour mot, la page de l'AFD et le projet annuel de performances 2026 (CITATIONS,
 // documents consultés le 18/11/2026).
+import { choixLiens, listeRecherche } from '../composants/choix'
 import { parAdministration } from '../calcul/repartition'
 import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent, VUES_ARBRE } from '../donnees'
@@ -282,9 +283,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const choixPays = apd.pays.find((p) => p.code === params.get('pays')) ?? null
   const srcApd = `${apd.source}, collecté le ${apd.collecte_le}`
 
-  const choixAnnee = `<div class="bascule" role="group" aria-label="Année de la déclaration">${annees
-    .map((a) => `<a class="bouton" href="${lien(ROUTE, { a, pays: choixPays?.code })}"${a === an ? ' aria-current="true"' : ''}>${a}</a>`)
-    .join('')}</div>`
+  const choixAnnee = choixLiens({ etiquette: 'Année de la déclaration', liens: annees.map((a) => ({ href: lien(ROUTE, { a, pays: choixPays?.code }), libelle: String(a), courant: a === an })) })
 
   cible.innerHTML = `
 <h1>L’aide publique au développement</h1>
@@ -452,9 +451,8 @@ ${regleOrdre(REGLE_ORDRE_REGIONS)}
 <p class="aide">Chaque région additionne, colonne par colonne, les pays et regroupements régionaux publiés par la Direction générale du Trésor. Les lignes régionales et « non spécifié » de la source restent des regroupements : elles ne sont pas réparties entre pays. ${badgeStatut('trace')}</p>`
     : absent(`Pas de ventilation par pays publiée pour ${an}.`)
 }
-<form id="aide-dev-pays-form" class="choix">
-<label for="aide-dev-choix-pays">Voir un pays ou un regroupement, année par année</label>
-<select id="aide-dev-choix-pays"><option value="">Choisir</option>${pays.map((p) => `<option value="${h(p.code)}"${p.code === choix?.code ? ' selected' : ''}>${h(p.nom)}</option>`).join('')}</select>
+<form id="aide-dev-pays-form">
+${listeRecherche({ id: 'aide-dev-choix-pays', etiquette: 'Voir un pays ou un regroupement, année par année', options: [], optionsHtml: `<option value="">Choisir</option>${pays.map((p) => `<option value="${h(p.code)}"${p.code === choix?.code ? ' selected' : ''}>${h(p.nom)}</option>`).join('')}` })}
 <button type="submit" class="bouton">Afficher</button>
 </form>
 <div id="aide-dev-pays" aria-live="polite">${choix ? '<p class="chargement">Chargement…</p>' : ''}</div>

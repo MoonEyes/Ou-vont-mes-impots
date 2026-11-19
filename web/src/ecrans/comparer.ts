@@ -3,6 +3,7 @@
 // et pour chaque indicateur des barres sur la même échelle. Aucun classement, aucune couleur de valeur :
 // les deux communes portent la couleur de la famille, dans l'ordre choisi par la personne.
 // Adresse partageable : #/local/comparer?a=<insee>&b=<insee>.
+import { listeRecherche, remplirListe } from '../composants/choix'
 import { fragmentCommune } from '../chemins'
 import { partPersonnelle } from '../composants/hub'
 import { TOUS_DEPARTEMENTS, departementDe } from '../departements'
@@ -157,11 +158,9 @@ function formulaire(a: string, b: string): string {
   const options = TOUS_DEPARTEMENTS.map(([c, n]) => `<option value="${c}">${c} ${h(n)}</option>`).join('')
   const bloc = (cote: 'a' | 'b', titre: string) => `<fieldset>
   <legend>${titre}</legend>
-  <label for="dep-${cote}">Département</label>
-  <select id="dep-${cote}" data-cote="${cote}"><option value="">Choisir</option>${options}</select>
+  ${listeRecherche({ id: `dep-${cote}`, etiquette: 'Département', options: [], optionsHtml: `<option value="">Choisir</option>${options}`, attributs: `data-cote="${cote}"` })}
   <div id="com-${cote}-bloc" hidden>
-    <label for="com-${cote}">Commune</label>
-    <select id="com-${cote}" name="${cote}"></select>
+    ${listeRecherche({ id: `com-${cote}`, etiquette: 'Commune', options: [], optionsHtml: ``, attributs: `name="${cote}"` })}
   </div>
 </fieldset>`
   return `<form id="choix-comparer" class="carte carte-contour" data-a="${h(a)}" data-b="${h(b)}">
@@ -181,11 +180,10 @@ async function brancher(cible: HTMLElement, a: string, b: string) {
     const com = cible.querySelector<HTMLSelectElement>(`#com-${cote}`)!
     cible.querySelector<HTMLElement>(`#com-${cote}-bloc`)!.hidden = !dep
     if (!dep) return
-    com.innerHTML = '<option value="">Chargement…</option>'
+    remplirListe(com, '<option value="">Chargement…</option>')
     const g = await chargerSiPresent<{ communes: Record<string, { nom: string }> }>(`local/geo/${dep}.json`)
     const liste = Object.entries(g?.communes ?? {}).sort((x, y) => x[1].nom.localeCompare(y[1].nom, 'fr'))
-    com.innerHTML = `<option value="">Choisir</option>${liste.map(([c, v]) => `<option value="${c}"${c === choisie ? ' selected' : ''}>${h(v.nom)}</option>`).join('')}`
-    if (choisie) com.value = choisie
+    remplirListe(com, [{ valeur: '', libelle: 'Choisir' }, ...liste.map(([c, v]) => ({ valeur: c, libelle: v.nom }))], choisie ?? '')
   }
   const prets: Promise<void>[] = []
   for (const [cote, insee] of [['a', a], ['b', b]] as const) {

@@ -5,6 +5,7 @@
 // site/data/associations/ (liste annexée au projet de loi de finances, pipeline/associations.py).
 // Seules des personnes morales sont nommées ; le reste est affiché agrégé, comme les fichiers le publient.
 // Les deux familles de sources se recouvrent : montrées côte à côte, jamais additionnées.
+import { listeRecherche } from '../composants/choix'
 import { chargerSiPresent, listeProgrammes, viderCache } from '../donnees'
 import { lien } from '../routeur'
 import { absent, annoncer, appliquerLargeurs, badgeStatut, barres, entier, eurLisible, h, source, sur100, surligne } from '../util'
@@ -288,10 +289,10 @@ async function blocMissions(ai: IndexAssoc, annee: number): Promise<string> {
     g.programmes.push({ numero: p.programme, libelle: p.libelle, montant: v })
     groupes.set(m, g)
   }
-  const choix = `<label for="sub-annee">Année de versement</label><select id="sub-annee">${ai.annees
+  const choix = `${listeRecherche({ id: 'sub-annee', etiquette: 'Année de versement', options: [], optionsHtml: `${ai.annees
     .filter((x) => x.statut === 'publie')
     .map((x) => `<option value="${x.annee}"${x.annee === annee ? ' selected' : ''}>${x.annee_credits} (projet de loi de finances ${x.annee})</option>`)
-    .join('')}</select>`
+    .join('')}` })}`
   if (!a || a.statut !== 'publie' || !groupes.size) return choix + absent('Pas de liste publiée pour cette année.')
   const total = nb(a.total_source_eur) ?? 0
   const liste = [...groupes.entries()].sort((x, y) => y[1].total - x[1].total || x[0].localeCompare(y[0], 'fr'))

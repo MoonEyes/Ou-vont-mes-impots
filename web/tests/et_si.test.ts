@@ -341,11 +341,9 @@ describe('et si : écran', () => {
     const zone = await monter()
     expect(texte(zone.querySelector('#es-profil'))).toContain('Calcul pour ta situation saisie : en couple marié ou pacsé, 2 enfants à charge. Le salaire qui change est le tien')
     expect(texte(zone.querySelector('#es-profil'))).toContain('celui de ton ou ta conjoint·e reste à 1 500 € net par mois')
-    expect(zone.querySelector('[role="radiogroup"][aria-labelledby="es-personne-titre"]')).not.toBeNull()
+    expect(zone.querySelector('#es-personne[role="radiogroup"][aria-labelledby="es-personne-etiquette"]')).not.toBeNull()
     expect(zone.querySelector<HTMLInputElement>('#es-depart')!.value).toBe('3200')
-    const radio = zone.querySelector<HTMLInputElement>('input[name="es-personne"][value="declarant2"]')!
-    radio.checked = true
-    radio.dispatchEvent(new Event('change', { bubbles: true }))
+    zone.querySelector<HTMLButtonElement>('#es-personne [role="radio"][value="declarant2"]')!.click()
     expect(zone.querySelector<HTMLInputElement>('#es-depart')!.value).toBe('1500')
     expect(zone.querySelector<HTMLInputElement>('#es-nouveau')!.value).toBe('1650')
     expect(texte(zone.querySelector('#es-profil'))).toContain('Le salaire qui change est celui de ton ou ta conjoint·e')

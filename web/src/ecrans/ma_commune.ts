@@ -4,6 +4,7 @@
 // région (chacun à part, jamais additionnés), bénéficiaires nommés (personnes morales seulement), projets aidés par
 // l'État, délibérations, fonds européens, repères parmi les communes qui se ressemblent.
 // Aucune requête hors du site ; aucune donnée saisie n'est envoyée ni conservée ; le salaire n'est jamais lu ici.
+import { listeOnglets } from '../composants/choix'
 import { fragmentCommune, fragmentDepartement } from '../chemins'
 import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
@@ -253,34 +254,6 @@ const SECTIONS: [string, string, string][] = [
   ['mc-comparer', 'Communes semblables', 'Même densité, même taille'],
 ]
 
-/**
- * Onglets accessibles (motif « tabs » de l'APG ARIA) : flèches gauche et droite, Début et Fin ; la sélection suit le
- * focus. Aucune donnée n'est retirée : chaque panneau est dans la page, les autres sont seulement masqués.
- */
-export function brancherOnglets(racine: HTMLElement): void {
-  const onglets = [...racine.querySelectorAll<HTMLButtonElement>('[role="tab"]')]
-  const choisir = (o: HTMLButtonElement, focus: boolean) => {
-    for (const x of onglets) {
-      const actif = x === o
-      x.setAttribute('aria-selected', String(actif))
-      x.tabIndex = actif ? 0 : -1
-      const panneau = racine.querySelector<HTMLElement>(`#${x.getAttribute('aria-controls')}`)
-      if (panneau) panneau.hidden = !actif
-    }
-    if (focus) o.focus()
-  }
-  onglets.forEach((o, i) => {
-    o.addEventListener('click', () => choisir(o, false))
-    o.addEventListener('keydown', (e) => {
-      const k = e.key
-      const j = k === 'ArrowRight' ? (i + 1) % onglets.length : k === 'ArrowLeft' ? (i - 1 + onglets.length) % onglets.length : k === 'Home' ? 0 : k === 'End' ? onglets.length - 1 : -1
-      if (j < 0) return
-      e.preventDefault()
-      choisir(onglets[j], true)
-    })
-  })
-}
-
 async function synthese(cible: HTMLElement, insee: string): Promise<Rendu | void> {
   const dep = departementDe(insee)
   const geo = await chargerSiPresent<Geo>(`local/geo/${dep}.json`)
@@ -308,9 +281,7 @@ async function synthese(cible: HTMLElement, insee: string): Promise<Rendu | void
     ${arr ? `<p class="aide">${h(arr.note)}</p>` : ''}
   </div>
 </div>
-<div class="onglets-collants"><div role="tablist" aria-label="Budget de chaque collectivité, une à la fois" class="onglets">${ONGLETS.map(
-    ([id, , court], i) => `<button type="button" role="tab" id="${id}-onglet" aria-controls="${id}-panneau" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${h(court)}</button>`,
-  ).join('')}</div></div>
+<div class="onglets-collants">${listeOnglets({ etiquette: 'Budget de chaque collectivité, une à la fois', onglets: ONGLETS.map(([id, , court]) => ({ id: `${id}-onglet`, libelle: court, panneau: `${id}-panneau` })) })}</div>
 ${ONGLETS.map(([id, t], i) => `<section role="tabpanel" id="${id}-panneau" aria-labelledby="${id}-onglet" class="ma-commune-bloc"${i === 0 ? '' : ' hidden'}><h2 id="${id}-titre" tabindex="-1">${h(titres[id] ?? t)}</h2>${zone(id)}</section>`).join('\n')}
 ${SECTIONS.map(([id, t, resume]) => repli({ id: `${id}-repli`, idTitre: `${id}-titre`, titre: titres[id] ?? t, resume: h(resume), contenu: zone(id) })).join('\n')}
 ${repli({
@@ -327,7 +298,6 @@ ${repli({
 </ul>
 ${idxMc ? source(idxMc.source, idxMc.millesime) : ''}`,
 })}`
-  brancherOnglets(cible)
   const remplir = (id: string, html: string) => {
     const z = cible.querySelector<HTMLElement>(`#${id}`)
     if (!z) return

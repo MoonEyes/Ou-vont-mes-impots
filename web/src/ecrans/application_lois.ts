@@ -4,6 +4,7 @@
 // Sécurité sociale d'abord. Aucun classement ni qualificatif : ordre par date de publication, valeurs telles que
 // publiées ; le taux est celui du baromètre (calcul de LexImpact) ; délais par loi et sommes par année portent le
 // badge « calculé par le site » avec leur méthode. Aucun nom de personne (colonnes retirées par le pipeline).
+import { choix, listeRecherche, valeurChoix } from '../composants/choix'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import { absent, badgeCalcule, badgeStatut, entier, h, LEGENDE_CALCULE, pct, rendreDefilables, traitStatut } from '../util'
@@ -212,8 +213,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
 <h2>Lois de finances et de financement de la Sécurité sociale</h2>
 <p>Le budget de l’État est voté chaque année par une loi de finances, celui de la Sécurité sociale par une loi de financement. Leurs articles renvoient eux aussi à des décrets et arrêtés.</p>
 <form id="filtres-al-fin" class="carte">
-  <label for="al-cat">Type de loi</label>
-  <select id="al-cat"><option value="">Toutes (${h(entier(fin.lois.length))})</option>${cats.map((c) => `<option value="${h(c.categorie)}">${h(c.libelle)} (${h(entier(c.lois))})</option>`).join('')}</select>
+  ${choix({ id: 'al-cat', etiquette: 'Type de loi', options: [{ valeur: '', libelle: `Toutes (${entier(fin.lois.length)})` }, ...cats.map((c) => ({ valeur: c.categorie, libelle: `${c.libelle} (${entier(c.lois)})` }))], valeur: '' })}
 </form>
 <p class="aide" data-regle-ordre>${h(REGLE_ORDRE)}</p>
 <p class="aide">Délai médian ${badgeCalcule(METHODE_DELAIS)}</p>
@@ -230,8 +230,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
     .join('')}</tbody></table></div>
 <p class="aide">${badgeCalcule(idx.par_annee.methode)} Une loi récente a eu moins de temps pour recevoir ses textes d’application qu’une loi ancienne : deux années ne se comparent pas directement.</p>
 <form id="filtres-al-annee" class="carte">
-  <label for="al-annee">Année</label>
-  <select id="al-annee">${annees.map((a) => `<option value="${a.annee}"${a.annee === etat.annee ? ' selected' : ''}>${a.annee} (${h(entier(a.lois))} lois)</option>`).join('')}</select>
+  ${listeRecherche({ id: 'al-annee', etiquette: 'Année', options: [], optionsHtml: `${annees.map((a) => `<option value="${a.annee}"${a.annee === etat.annee ? ' selected' : ''}>${a.annee} (${h(entier(a.lois))} lois)</option>`).join('')}` })}
   <label for="al-q">Chercher dans les titres</label>
   <input id="al-q" type="search" autocomplete="off" />
 </form>
@@ -257,8 +256,8 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
     zoneFin.innerHTML = liste.length ? `<p>${h(entier(liste.length))} loi${liste.length > 1 ? 's' : ''}.</p><ul class="lignes">${liste.map(ligneLoi).join('')}</ul>` : absent('Aucune loi de ce type.')
     brancherFiches(zoneFin, lois)
   }
-  ;(cible.querySelector('#al-cat') as HTMLSelectElement).addEventListener('change', (e) => {
-    etat.cat = (e.target as HTMLSelectElement).value
+  ;(cible.querySelector('#al-cat') as HTMLElement).addEventListener('change', () => {
+    etat.cat = valeurChoix(cible, 'al-cat')
     dessinerFin()
   })
   dessinerFin()
@@ -279,7 +278,8 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
   }
   const formAn = cible.querySelector('#filtres-al-annee') as HTMLFormElement
   formAn.addEventListener('submit', (e) => e.preventDefault())
-  formAn.addEventListener('input', () => {
+  formAn.addEventListener('input', (e) => {
+    if ((e.target as HTMLElement).matches('.choix-filtre')) return
     etat.annee = Number((cible.querySelector('#al-annee') as HTMLSelectElement).value)
     etat.q = (cible.querySelector('#al-q') as HTMLInputElement).value.trim()
     void dessinerAnnee()

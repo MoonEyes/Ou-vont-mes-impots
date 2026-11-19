@@ -10,6 +10,7 @@ import { chargerSiPresent } from '../donnees'
 import { session } from '../etat'
 import { cartesRayons } from '../composants/hub'
 import { annoncer, h } from '../util'
+import { caseACocher, fixerChoix, listeRecherche, radioListe, remplirListe, valeurChoix } from '../composants/choix'
 
 /** Situations proposées d'abord, avant le montant ; les autres sont regroupées ensuite. */
 const STATUTS: [StatutActivite, string][] = [
@@ -57,17 +58,11 @@ const NOTES_STATUT: Partial<Record<StatutActivite, string>> = {
 const AIDE_SALAIRE =
   'Prends sur ta fiche de paie la ligne <strong>Net à payer avant impôt sur le revenu</strong>. Si tu touches des primes ou un 13e mois, fais la moyenne sur 12 mois : additionne le net avant impôt de tes 12 dernières fiches et divise par 12. N’utilise ni le <em>net imposable</em>, ni le <em>montant net social</em>, ni le <em>net payé</em> (après prélèvement à la source).'
 
-const radios = (nom: string, options: [string, string][], courant?: string) =>
-  options.map(([v, l]) => `<label><input type="radio" name="${nom}" value="${v}"${v === courant ? ' checked' : ''} /> ${h(l)}</label>`).join('')
+const radios = (options: [string, string][]) => options.map(([valeur, libelle]) => ({ valeur, libelle }))
 
-/** Groupe de boutons radio : fieldset et legend ; aide et message d'erreur reliés au groupe (aria-describedby). */
-function groupe(id: string, legende: string, contenu: string, aide = ''): string {
-  return `<fieldset class="choix saisie-groupe" id="${id}" aria-describedby="${aide ? `${id}-aide ` : ''}${id}-msg">
-      <legend>${h(legende)}</legend>
-      ${aide ? `<p class="aide" id="${id}-aide">${h(aide)}</p>` : ''}
-      <p class="message-champ" id="${id}-msg" hidden></p>
-      ${contenu}
-    </fieldset>`
+/** Groupe de boutons radio (composant partagé) : aide et message d'erreur reliés au groupe (aria-describedby). */
+function groupe(id: string, legende: string, options: { valeur: string; libelle: string }[], courant?: string, aide = ''): string {
+  return radioListe({ id, etiquette: legende, options, valeur: courant, aide: aide || undefined, message: true, grille: false })
 }
 
 /** Champ de montant : libellé, aide et message d'erreur reliés au champ (aria-describedby). */
@@ -90,14 +85,9 @@ function blocPersonne(n: 1 | 2, p?: PersonneEtendue): string {
   const contrat = p?.apprentissage ? (p.apprentissage.contrat_avant_mars_2025 ? 'avant' : 'depuis') : undefined
   // Précisions ouvertes au retour sur la saisie si elles ont servi (cadre, temps partiel, frontalier).
   const ouvert = !!p?.cadre || tp !== null || !!p?.frontalier
-  const options = (l: [StatutActivite, string][]) => l.map(([v, lib]) => `<option value="${v}"${v === statut ? ' selected' : ''}>${h(lib)}</option>`).join('')
   return `<fieldset id="${id('bloc')}" ${n === 2 ? 'hidden' : ''}>
   <legend>${n === 1 ? 'Toi' : 'Ton ou ta conjoint·e'}</legend>
-  <label for="${id('statut')}">${n === 1 ? 'Ta situation' : 'Sa situation'}</label>
-  <select id="${id('statut')}" name="${id('statut')}" aria-describedby="${id('note-statut')}">
-    ${options(STATUTS)}
-    <optgroup label="Autres situations">${options(AUTRES_STATUTS)}</optgroup>
-  </select>
+  ${radioListe({ id: id('statut'), etiquette: n === 1 ? 'Ta situation' : 'Sa situation', options: radios([...STATUTS, ...AUTRES_STATUTS]), valeur: statut, decritPar: id('note-statut'), grille: false })}
   <p class="aide" id="${id('note-statut')}"${NOTES_STATUT[statut] ? '' : ' hidden'}>${h(NOTES_STATUT[statut] ?? '')}</p>
   <div id="${id('salaire')}">
     <label for="${id('net')}" id="${id('net-libelle')}">${h(LIBELLE_NET[statut] ?? LIBELLE_NET_DEFAUT)}</label>
@@ -106,39 +96,39 @@ function blocPersonne(n: 1 | 2, p?: PersonneEtendue): string {
     <details><summary>Où trouver ce montant ?</summary><p class="aide" id="${id('aide')}">${AIDE_SALAIRE}</p></details>
   </div>
   <div id="${id('opt-fonctionnaire')}">
-    ${groupe(id('versant'), 'Versant de la fonction publique', radios(id('versant'), [['etat', 'Fonction publique de l’État'], ['territoriale', 'Fonction publique territoriale'], ['hospitaliere', 'Fonction publique hospitalière']], p?.versant))}
+    ${groupe(id('versant'), 'Versant de la fonction publique', radios([['etat', 'Fonction publique de l’État'], ['territoriale', 'Fonction publique territoriale'], ['hospitaliere', 'Fonction publique hospitalière']]), p?.versant)}
     ${champ(id('primes'), 'Primes et indemnités, total brut par mois (en euros)', p?.primes_mensuelles, 'Additionne les primes et indemnités de la fiche de paie : indemnité de résidence, supplément familial de traitement, primes ; outre-mer, la majoration de traitement. Écris 0 s’il n’y en a pas.')}
     ${champ(id('traitement'), 'Traitement indiciaire brut, par mois (facultatif)', p?.traitement_indiciaire_brut_mensuel, 'Ligne « traitement brut » de la fiche de paie. S’il est indiqué, le calcul part de ce traitement et des primes, et le salaire net est recalculé.')}
   </div>
   <div id="${id('opt-apprenti')}">
-    ${groupe(id('contrat'), 'Signature du contrat d’apprentissage', radios(id('contrat'), [['avant', 'Avant le 1er mars 2025'], ['depuis', 'Le 1er mars 2025 ou après']], contrat), 'Pour un contrat signé depuis le 1er mars 2025, la part du salaire exonérée de cotisations est plus basse et la CSG est due.')}
+    ${groupe(id('contrat'), 'Signature du contrat d’apprentissage', radios([['avant', 'Avant le 1er mars 2025'], ['depuis', 'Le 1er mars 2025 ou après']]), contrat, 'Pour un contrat signé depuis le 1er mars 2025, la part du salaire exonérée de cotisations est plus basse et la CSG est due.')}
   </div>
   <div id="${id('opt-retraite')}">
     ${champ(id('pension-base'), 'Pension de retraite de base, par mois (en euros)', p?.pension_base_mensuelle, 'Régime général, fonction publique, régime agricole ou autre régime de base.')}
     ${champ(id('pension-compl'), 'Pension de retraite complémentaire, par mois (en euros)', p?.pension_complementaire_mensuelle || undefined, 'Agirc-Arrco, Ircantec, retraite additionnelle de la fonction publique. Laisse vide s’il n’y en a pas.')}
-    ${groupe(id('pension-saisie'), 'Ces montants sont', radios(id('pension-saisie'), [['nette_avant_impot', 'Nets avant impôt (versés avant le prélèvement à la source)'], ['brute', 'Bruts (avant CSG et cotisations)']], p?.pension_saisie ?? 'nette_avant_impot'))}
-    ${groupe(id('csg'), `Taux de CSG sur ${n === 1 ? 'ta' : 'sa'} pension`, radios(id('csg'), [['normal', 'Taux normal (8,3 %)'], ['median', 'Taux médian (6,6 %)'], ['reduit', 'Taux réduit (3,8 %)'], ['exonere', 'Exonération de CSG'], ['rfr', 'Je ne sais pas : le déduire de l’avis d’impôt (métropole seulement)']], csg), 'Il figure sur le relevé de pension et dépend du revenu fiscal de référence d’il y a deux ans.')}
+    ${groupe(id('pension-saisie'), 'Ces montants sont', radios([['nette_avant_impot', 'Nets avant impôt (versés avant le prélèvement à la source)'], ['brute', 'Bruts (avant CSG et cotisations)']]), p?.pension_saisie ?? 'nette_avant_impot')}
+    ${groupe(id('csg'), `Taux de CSG sur ${n === 1 ? 'ta' : 'sa'} pension`, radios([['normal', 'Taux normal (8,3 %)'], ['median', 'Taux médian (6,6 %)'], ['reduit', 'Taux réduit (3,8 %)'], ['exonere', 'Exonération de CSG'], ['rfr', 'Je ne sais pas : le déduire de l’avis d’impôt (métropole seulement)']]), csg, 'Il figure sur le relevé de pension et dépend du revenu fiscal de référence d’il y a deux ans.')}
     <div id="${id('rfr-bloc')}"${csg === 'rfr' ? '' : ' hidden'}>
       ${champ(id('rfr'), 'Revenu fiscal de référence de l’avis d’impôt 2024 (revenus 2023)', rfr?.revenu_fiscal_reference)}
       ${champ(id('parts'), 'Nombre de parts de cet avis', rfr?.parts, 'Par exemple 1 pour une personne seule, 2 pour un couple marié ou pacsé.')}
     </div>
-    ${groupe(id('age'), 'Âge au 31 décembre 2025', radios(id('age'), [['plus65', '65 ans ou plus (né·e en 1960 ou avant)'], ['moins65', 'Moins de 65 ans']], age), 'Sert à l’abattement d’impôt des personnes de 65 ans ou plus.')}
+    ${groupe(id('age'), 'Âge au 31 décembre 2025', radios([['plus65', '65 ans ou plus (né·e en 1960 ou avant)'], ['moins65', 'Moins de 65 ans']]), age, 'Sert à l’abattement d’impôt des personnes de 65 ans ou plus.')}
   </div>
   <div id="${id('opt-independant')}">
     ${champ(id('ca'), 'Chiffre d’affaires encaissé en 2025, hors taxes (en euros, sur l’année)', ind?.chiffre_affaires_annuel)}
-    ${groupe(id('activite'), 'Nature de l’activité', radios(id('activite'), [['vente', 'Vente de marchandises'], ['service_bic', 'Prestations de services commerciales ou artisanales'], ['service_bnc', 'Activité libérale, affiliée au régime général']], ind?.activite))}
-    <div id="${id('artisan-bloc')}"><label class="case"><input type="checkbox" id="${id('artisan')}"${ind?.artisan ? ' checked' : ''} /> Activité artisanale (inscrite au répertoire des métiers)</label></div>
-    ${groupe(id('vl'), 'Versement libératoire de l’impôt sur le revenu', radios(id('vl'), [['oui', 'Oui, l’impôt est versé avec les cotisations'], ['non', 'Non']], ind?.versement_liberatoire === undefined ? undefined : ind.versement_liberatoire ? 'oui' : 'non'))}
+    ${groupe(id('activite'), 'Nature de l’activité', radios([['vente', 'Vente de marchandises'], ['service_bic', 'Prestations de services commerciales ou artisanales'], ['service_bnc', 'Activité libérale, affiliée au régime général']]), ind?.activite)}
+    <div id="${id('artisan-bloc')}">${caseACocher({ id: id('artisan'), libelle: 'Activité artisanale (inscrite au répertoire des métiers)', coche: !!ind?.artisan })}</div>
+    ${groupe(id('vl'), 'Versement libératoire de l’impôt sur le revenu', radios([['oui', 'Oui, l’impôt est versé avec les cotisations'], ['non', 'Non']]), ind?.versement_liberatoire === undefined ? undefined : ind.versement_liberatoire ? 'oui' : 'non')}
   </div>
   <details id="${id('preciser')}"${ouvert ? ' open' : ''}>
     <summary>Préciser ${n === 1 ? 'ma' : 'sa'} situation</summary>
     <p class="aide">Par défaut, le calcul retient un emploi à temps plein, non cadre. Temps partiel, statut cadre ou travail hors de France : précise-le ici.</p>
     <div id="${id('opt-salarie')}">
-      <label class="case"><input type="checkbox" id="${id('cadre')}"${p?.cadre ? ' checked' : ''} /> Statut cadre</label>
-      <label class="case"><input type="checkbox" id="${id('frontalier')}"${p?.frontalier ? ' checked' : ''} /> Travail hors de France (frontalier)</label>
+      ${caseACocher({ id: id('cadre'), libelle: 'Statut cadre', coche: !!p?.cadre })}
+      ${caseACocher({ id: id('frontalier'), libelle: 'Travail hors de France (frontalier)', coche: !!p?.frontalier })}
     </div>
     <div id="${id('opt-partiel')}">
-      <label class="case"><input type="checkbox" id="${id('partiel')}"${tp !== null ? ' checked' : ''} /> Temps partiel</label>
+      ${caseACocher({ id: id('partiel'), libelle: 'Temps partiel', coche: tp !== null })}
       <div id="${id('quotite-bloc')}" ${tp === null ? 'hidden' : ''}>
         <label for="${id('quotite')}">Quotité de travail (en % d’un temps plein)</label>
         <input id="${id('quotite')}" type="text" inputmode="decimal" spellcheck="false" autocomplete="off" value="${tp !== null ? Math.round(tp * 100) : 80}" aria-describedby="${id('msg-q')}" />
@@ -158,8 +148,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
   const outremer = pr?.residence.zone === 'dom'
   const territoire = (pr as ProfilEtendu | null)?.residence.territoire ?? ''
   const zone = outremer ? 'metropole' : pr?.residence.zone === 'metropole' && pr.residence.alsace_moselle ? 'alsace_moselle' : (pr?.residence.zone ?? 'metropole')
-  const choix = (nom: string, valeur: string, courant: string, texte: string) =>
-    `<label><input type="radio" name="${nom}" value="${valeur}"${valeur === courant ? ' checked' : ''} /> ${texte}</label>`
+  const o = (valeur: string, libelle: string) => ({ valeur, libelle })
 
   // Arrivée depuis l'accueil avec un salaire : le calcul part tout de suite ; l'état est dit en haut de l'écran
   // (et non sous le formulaire, hors de la vue sur un téléphone).
@@ -171,12 +160,9 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
 <p class="chapeau">Indique ton salaire : le site calcule ce que tu verses chaque année, à qui va l’argent, puis montre où va l’argent public. Le calcul se fait <strong>sur ton appareil</strong> : rien de ce que tu saisis n’est envoyé ni enregistré.</p>
 <p class="aide">Revenus 2025, en France métropolitaine (Alsace-Moselle comprise), en Guadeloupe, en Martinique, en Guyane et à La Réunion. Choisis d’abord ta situation (salarié·e du secteur privé, fonctionnaire, retraité·e, micro-entrepreneur·se), puis le montant demandé : salaire net avant impôt, pension ou chiffre d’affaires. Pas encore couverts : Mayotte et les collectivités d’outre-mer, étranger, travail frontalier, allocations chômage, indépendants au régime réel.</p>
 <form id="formulaire" novalidate>
-  <fieldset class="choix">
+  <fieldset>
     <legend>Ton foyer</legend>
-    ${choix('situation', 'celibataire', sit, 'Seul·e, sans enfant à charge')}
-    ${choix('situation', 'parent_isole', sit, 'Seul·e avec enfant(s) à charge')}
-    ${choix('situation', 'couple_marie_pacse', sit, 'En couple, marié·es ou pacsé·es')}
-    ${choix('situation', 'couple_union_libre', sit, 'En couple, sans être marié·es ni pacsé·es')}
+    ${radioListe({ id: 'situation', etiquette: 'Situation du foyer', etiquetteCachee: true, options: [o('celibataire', 'Seul·e, sans enfant à charge'), o('parent_isole', 'Seul·e avec enfant(s) à charge'), o('couple_marie_pacse', 'En couple, marié·es ou pacsé·es'), o('couple_union_libre', 'En couple, sans être marié·es ni pacsé·es')], valeur: sit, grille: false })}
     <div id="enfants-bloc">
       <label for="enfants">Nombre d’enfants à charge</label>
       <input id="enfants" type="number" inputmode="numeric" min="0" max="10" step="1" value="${nbEnfants}" />
@@ -185,67 +171,37 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
       <p class="message-champ" id="msg-alternee" hidden></p>
     </div>
   </fieldset>
-  <fieldset class="choix" id="bloc-outremer">
+  <fieldset id="bloc-outremer">
     <legend>Outre-mer</legend>
-    <label class="case"><input type="checkbox" id="outremer"${outremer ? ' checked' : ''} /> J’habite en outre-mer</label>
+    ${caseACocher({ id: 'outremer', libelle: 'J’habite en outre-mer', coche: outremer })}
     <div id="territoire-bloc"${outremer ? '' : ' hidden'}>
-      <label for="territoire">Territoire</label>
-      <select id="territoire" aria-describedby="territoire-aide territoire-msg">
-        <option value="">Choisir</option>
-        ${TERRITOIRES.map(([v, l]) => `<option value="${v}"${v === territoire ? ' selected' : ''}>${h(l)}</option>`).join('')}
-      </select>
-      <p class="aide" id="territoire-aide">Impôt sur le revenu réduit de 30 % (Guadeloupe, Martinique, La Réunion) ou de 40 % (Guyane), dans une limite. Les taxes sur la consommation (TVA à taux propres, octroi de mer) ne sont pas chiffrées.</p>
-      <p class="message-champ" id="territoire-msg" hidden></p>
+      ${radioListe({ id: 'territoire', etiquette: 'Territoire', options: TERRITOIRES.map(([v, l]) => o(v, l)), valeur: territoire, aide: 'Impôt sur le revenu réduit de 30 % (Guadeloupe, Martinique, La Réunion) ou de 40 % (Guyane), dans une limite. Les taxes sur la consommation (TVA à taux propres, octroi de mer) ne sont pas chiffrées.', message: true, grille: false })}
     </div>
   </fieldset>
   ${blocPersonne(1, pr?.personnes[0])}
   ${blocPersonne(2, pr?.personnes[1])}
-  <fieldset class="choix">
+  <fieldset>
     <legend>Ton logement (facultatif)</legend>
-    ${choix('logement', 'locataire', logement, 'Locataire')}
-    ${choix('logement', 'proprietaire', logement, 'Propriétaire')}
-    ${choix('logement', 'loge_gratuitement', logement, 'Logé·e gratuitement')}
+    ${radioListe({ id: 'logement', etiquette: 'Statut du logement', etiquetteCachee: true, options: [o('locataire', 'Locataire'), o('proprietaire', 'Propriétaire'), o('loge_gratuitement', 'Logé·e gratuitement')], valeur: logement, grille: true })}
     <div id="tf-bloc" hidden>
       <label for="tf">Montant de ta taxe foncière sur l’avis, par an (facultatif)</label>
       <input id="tf" type="text" inputmode="decimal" spellcheck="false" autocomplete="off" value="${pr?.logement?.taxe_fonciere_annuelle_eur ?? ''}" />
     </div>
   </fieldset>
-  <fieldset class="choix">
+  <fieldset>
     <legend>Ta consommation (facultatif)</legend>
     <p class="aide">Sert à affiner les taxes sur la consommation (carburant, tabac).</p>
-    <p id="voiture-titre"><strong>Le foyer a-t-il une voiture ?</strong></p>
-    <div role="radiogroup" aria-labelledby="voiture-titre">
-      ${choix('voiture', 'inconnu', session.habitudes.voiture, 'Ne pas préciser')}
-      ${choix('voiture', 'oui', session.habitudes.voiture, 'Oui')}
-      ${choix('voiture', 'non', session.habitudes.voiture, 'Non')}
-    </div>
-    <p id="fumeur-titre"><strong>Quelqu’un fume-t-il dans le foyer ?</strong></p>
-    <div role="radiogroup" aria-labelledby="fumeur-titre">
-      ${choix('fumeur', 'inconnu', session.habitudes.fumeur, 'Ne pas préciser')}
-      ${choix('fumeur', 'oui', session.habitudes.fumeur, 'Oui')}
-      ${choix('fumeur', 'non', session.habitudes.fumeur, 'Non')}
-    </div>
+    ${radioListe({ id: 'voiture', etiquette: 'Le foyer a-t-il une voiture ?', options: [o('inconnu', 'Ne pas préciser'), o('oui', 'Oui'), o('non', 'Non')], valeur: session.habitudes.voiture, grille: true })}
+    ${radioListe({ id: 'fumeur', etiquette: 'Quelqu’un fume-t-il dans le foyer ?', options: [o('inconnu', 'Ne pas préciser'), o('oui', 'Oui'), o('non', 'Non')], valeur: session.habitudes.fumeur, grille: true })}
   </fieldset>
   <fieldset>
     <legend>Où tu vis</legend>
     <div id="zone-bloc"${outremer ? ' hidden' : ''}>
-      <label for="zone">Lieu de résidence</label>
-      <select id="zone" aria-describedby="zone-msg">
-        <option value="metropole"${zone === 'metropole' ? ' selected' : ''}>France métropolitaine (hors Alsace-Moselle)</option>
-        <option value="alsace_moselle"${zone === 'alsace_moselle' ? ' selected' : ''}>Alsace-Moselle (Bas-Rhin, Haut-Rhin, Moselle)</option>
-        <option value="etranger"${zone === 'etranger' ? ' selected' : ''}>À l’étranger</option>
-      </select>
-      <p class="message-champ" id="zone-msg" hidden></p>
+      ${radioListe({ id: 'zone', etiquette: 'Lieu de résidence', options: [o('metropole', 'France métropolitaine (hors Alsace-Moselle)'), o('alsace_moselle', 'Alsace-Moselle (Bas-Rhin, Haut-Rhin, Moselle)'), o('etranger', 'À l’étranger')], valeur: zone, message: true, grille: false })}
     </div>
-    <label for="departement">Département (facultatif, pour les taux locaux)</label>
-    <select id="departement">
-      <option value="">Ne pas préciser</option>
-      ${TOUS_DEPARTEMENTS.map(([c, n]) => `<option value="${c}">${c} ${h(n)}</option>`).join('')}
-    </select>
+    ${listeRecherche({ id: 'departement', etiquette: 'Département (facultatif, pour les taux locaux)', options: [o('', 'Ne pas préciser'), ...TOUS_DEPARTEMENTS.map(([c, n]) => o(c, `${c} ${n}`))] })}
     <div id="commune-bloc" hidden>
-      <label for="commune">Commune</label>
-      <select id="commune" aria-describedby="commune-msg"></select>
-      <p class="message-champ" id="commune-msg" hidden></p>
+      ${listeRecherche({ id: 'commune', etiquette: 'Commune', options: [], message: true, recherche: false })}
     </div>
   </fieldset>
   <div class="actions"><button class="bouton-principal" type="submit">Calculer</button></div>
@@ -257,13 +213,13 @@ ${cartesRayons('/calcul')}`
 
   const $ = <T extends HTMLElement>(s: string) => cible.querySelector(s) as T
   const form = $<HTMLFormElement>('#formulaire')
-  const situation = () => (form.querySelector('input[name=situation]:checked') as HTMLInputElement).value as ProfilEtendu['foyer']['situation']
+  const situation = () => valeurChoix(form, 'situation') as ProfilEtendu['foyer']['situation']
   const radio = (nom: string) => (form.querySelector(`input[name="${nom}"]:checked`) as HTMLInputElement | null)?.value
   // Listes reposées par le script : l'attribut selected d'une option insérée par innerHTML est mal lu par certains
   // moteurs de rendu (happy-dom des tests lit la 2e option dès que la 3e ou une suivante est choisie).
-  for (const n of [1, 2] as const) $<HTMLSelectElement>(`#p${n}-statut`).value = pr?.personnes[n - 1]?.statut_activite ?? 'salarie_prive'
-  $<HTMLSelectElement>('#zone').value = zone
-  $<HTMLSelectElement>('#territoire').value = territoire
+  for (const n of [1, 2] as const) fixerChoix(form, `p${n}-statut`, pr?.personnes[n - 1]?.statut_activite ?? 'salarie_prive')
+  fixerChoix(form, 'zone', zone)
+  fixerChoix(form, 'territoire', territoire)
 
   const majVisibilite = () => {
     const s = situation()
@@ -271,7 +227,7 @@ ${cartesRayons('/calcul')}`
     $('#p2-bloc').hidden = !couple
     $('#enfants-bloc').hidden = s === 'celibataire'
     for (const n of [1, 2]) {
-      const st = $<HTMLSelectElement>(`#p${n}-statut`).value as StatutActivite
+      const st = valeurChoix(form, `p${n}-statut`) as StatutActivite
       $(`#p${n}-salaire`).hidden = !AVEC_SALAIRE.has(st)
       $(`#p${n}-net-libelle`).textContent = LIBELLE_NET[st] ?? LIBELLE_NET_DEFAUT
       $(`#p${n}-preciser`).hidden = !AVEC_PRECISIONS.has(st)
@@ -300,19 +256,16 @@ ${cartesRayons('/calcul')}`
   const chargerCommunes = async (dep: string, choisie?: string) => {
     $('#commune-bloc').hidden = !dep
     if (!dep) return
-    comSel.innerHTML = '<option value="">Chargement…</option>'
+    remplirListe(comSel, '<option value="">Chargement…</option>')
     const d = await chargerSiPresent<{ communes: typeof communes; millesime?: string }>(`communes/${dep}.json`)
     communes = d?.communes ?? {}
     const liste = Object.entries(communes).sort((a, b) => a[1][0].localeCompare(b[1][0], 'fr'))
-    comSel.innerHTML =
-      '<option value="">Ne pas préciser</option>' +
-      liste.map(([c, v]) => `<option value="${c}"${c === choisie ? ' selected' : ''}>${h(v[0])}</option>`).join('')
-    if (choisie && communes[choisie]) comSel.value = choisie
-    if (ALSACE_MOSELLE.has(dep)) $<HTMLSelectElement>('#zone').value = 'alsace_moselle'
+    remplirListe(comSel, [{ valeur: '', libelle: 'Ne pas préciser' }, ...liste.map(([c, v]) => ({ valeur: c, libelle: v[0] }))], choisie && communes[choisie] ? choisie : '')
+    if (ALSACE_MOSELLE.has(dep)) fixerChoix(form, 'zone', 'alsace_moselle')
     const t = territoireDeCommune(dep + '00')
     if (t) {
       $<HTMLInputElement>('#outremer').checked = true
-      $<HTMLSelectElement>('#territoire').value = t
+      fixerChoix(form, 'territoire', t)
       majVisibilite()
     }
   }
@@ -321,22 +274,22 @@ ${cartesRayons('/calcul')}`
     const t = territoireDeCommune(depSel.value + '00')
     if (t) {
       $<HTMLInputElement>('#outremer').checked = true
-      $<HTMLSelectElement>('#territoire').value = t
+      fixerChoix(form, 'territoire', t)
     } else if (depSel.value) $<HTMLInputElement>('#outremer').checked = false
     majVisibilite()
     return chargerCommunes(depSel.value)
   })
   $('#territoire').addEventListener('change', () => {
-    const t = $<HTMLSelectElement>('#territoire').value as TerritoireOutreMer
+    const t = valeurChoix(form, 'territoire') as TerritoireOutreMer
     const dep = t && t in TERRITOIRES_DOM ? TERRITOIRES_DOM[t as keyof typeof TERRITOIRES_DOM].departement : ''
     if (dep && depSel.value !== dep) {
-      depSel.value = dep
+      fixerChoix(form, 'departement', dep)
       void chargerCommunes(dep)
     }
   })
   const insee = pr?.residence.commune_insee
   if (insee) {
-    depSel.value = departementDe(insee)
+    fixerChoix(form, 'departement', departementDe(insee))
     await chargerCommunes(depSel.value, insee)
   }
 
@@ -347,7 +300,7 @@ ${cartesRayons('/calcul')}`
   if (amorce) {
     $<HTMLInputElement>('#p1-net').value = amorce.net
     if (amorce.insee && /^(\d{5}|2[AB]\d{3})$/.test(amorce.insee)) {
-      depSel.value = departementDe(amorce.insee)
+      fixerChoix(form, 'departement', departementDe(amorce.insee))
       if (depSel.value) await chargerCommunes(depSel.value, amorce.insee)
     }
   }
@@ -355,7 +308,7 @@ ${cartesRayons('/calcul')}`
   // Le moteur de calcul (environ 160 Ko compressés, exécuté dans un Web Worker) est préchargé dès que l'on commence la saisie.
   const precharger = () => void import('../calcul/hors-fil').then((m) => m.prechauffer()).catch(() => {})
   $('#p1-net').addEventListener('focus', precharger, { once: true })
-  $('#p1-statut').addEventListener('focus', precharger, { once: true })
+  $('#p1-statut').addEventListener('focusin', precharger, { once: true })
 
   const retour = $('#retour')
   /** Le calcul lancé depuis l'accueil s'est arrêté (saisie à compléter, erreur) : le message du haut renvoie au formulaire. */
@@ -384,7 +337,7 @@ ${cartesRayons('/calcul')}`
 
   /** Une personne du foyer, telle que calculerProfil l'attend : seuls les champs de sa situation sont lus. */
   const lirePersonne = (n: 1 | 2): PersonneEtendue => {
-    const statut = $<HTMLSelectElement>(`#p${n}-statut`).value as StatutActivite
+    const statut = valeurChoix(form, `p${n}-statut`) as StatutActivite
     const p: PersonneEtendue = { role: n === 1 ? 'declarant1' : 'declarant2', statut_activite: statut, frontalier: false }
     const net = () => {
       const x = nombre($<HTMLInputElement>(`#p${n}-net`).value)
@@ -467,9 +420,9 @@ ${cartesRayons('/calcul')}`
     const nb = s === 'celibataire' ? 0 : Math.max(0, Math.min(10, Math.floor(Number($<HTMLInputElement>('#enfants').value) || 0)))
     const alt = Math.max(0, Math.min(nb, Math.floor(Number($<HTMLInputElement>('#alternee').value) || 0)))
     const om = $<HTMLInputElement>('#outremer').checked
-    const territoire = $<HTMLSelectElement>('#territoire').value as TerritoireOutreMer | ''
-    const z = om ? 'dom' : $<HTMLSelectElement>('#zone').value
-    const logement = (form.querySelector('input[name=logement]:checked') as HTMLInputElement).value as 'locataire'
+    const territoire = valeurChoix(form, 'territoire') as TerritoireOutreMer | ''
+    const z = om ? 'dom' : valeurChoix(form, 'zone')
+    const logement = valeurChoix(form, 'logement') as 'locataire'
     const tf = nombre($<HTMLInputElement>('#tf').value)
     const commune = comSel.value
     return {
@@ -546,8 +499,11 @@ ${cartesRayons('/calcul')}`
         // Champ des précisions repliées : le bloc s'ouvre pour montrer l'erreur.
         const details = champ.closest('details')
         if (details) details.open = true
-        if (champ.tagName === 'FIELDSET') champ.querySelector<HTMLInputElement>('input')?.focus()
-        else {
+        if (champ.tagName === 'FIELDSET') {
+          // Groupe de boutons radio : le groupe est marqué, le focus va au bouton coché ou au premier.
+          champ.setAttribute('aria-invalid', 'true')
+          ;(champ.querySelector<HTMLInputElement>('input:checked') ?? champ.querySelector<HTMLInputElement>('input'))?.focus()
+        } else {
           champ.setAttribute('aria-invalid', 'true')
           champ.focus()
         }

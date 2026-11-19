@@ -148,7 +148,7 @@ describe('parcours principal, de la saisie au Sankey', () => {
     expect(retour.querySelector('a[href="#/calcul/resultat"]')).not.toBeNull()
     expect(retour.querySelector('a[href="#/calcul"]')).not.toBeNull()
     expect(avant(main.querySelector('h1'), retour)).toBe(true)
-    expect(main.querySelector(`[data-depart="${depart}"]`)?.getAttribute('aria-pressed')).toBe('true')
+    expect(main.querySelector<HTMLInputElement>(`#suivre-departs input[value="${depart}"]`)?.checked).toBe(true)
   })
 
   it('budget de l’État depuis le billet : aucune répartition « par déduction » de ta part, blocs lents complétés après l’affichage', async () => {

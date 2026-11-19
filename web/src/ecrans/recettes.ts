@@ -1,4 +1,5 @@
 // Écran 9 : les recettes. Chaque impôt et qui l'encaisse, depuis 2005 (Eurostat, comptabilité nationale).
+import { choixLiens } from '../composants/choix'
 import { charger, chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import { barres, h, libelle, md, pct, source, sur100, surligne } from '../util'
@@ -39,8 +40,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   cible.innerHTML = `
 <h1>D’où vient l’argent : les recettes</h1>
 <p class="chapeau">Chaque grand impôt et qui l’encaisse (État, Sécurité sociale, collectivités locales), de ${h(annees[0])} à ${h(derniere)}.</p>
-<label for="impot">Impôt</label>
-<select id="impot">${ordre.map((c) => `<option value="${c}"${c === code ? ' selected' : ''}>${h(NOMS[c] ?? r.impots[c].nom)}</option>`).join('')}</select>
+${choixLiens({ id: 'impot', etiquette: 'Impôt', liens: ordre.map((c) => ({ href: lien('/explorer/recettes', { i: c }), libelle: NOMS[c] ?? r.impots[c].nom, courant: c === code })) })}
 <h2>${h(NOMS[code] ?? imp.nom)} en ${h(derniere)}</h2>
 <div class="carte" data-cle>
   <p class="grand-chiffre">${surligne(md(totalDerniere))}</p>
@@ -82,7 +82,4 @@ ${
         .join('')}</tbody></table></div><p class="aide">La somme des administrations dépasse l’ensemble : les transferts entre elles (par exemple les dotations de l’État aux collectivités) ne sont comptés qu’une fois dans l’ensemble.</p>`
     : ''
 }`
-  cible.querySelector<HTMLSelectElement>('#impot')?.addEventListener('change', (e) => {
-    location.hash = lien('/explorer/recettes', { i: (e.target as HTMLSelectElement).value })
-  })
 }

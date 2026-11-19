@@ -150,11 +150,11 @@ const libelleProposition = (p: Proposition, idx: IndexMaCommune | null) => {
 export function formulaire(id: string, valeur = ''): string {
   return `<form id="${id}" class="carte carte-contour ma-commune-champ" role="search" autocomplete="off">
   <label for="${id}-saisie">Code postal ou nom de la commune</label>
-  <p class="aide" id="${id}-aide">Par exemple 44119, Grandchamp-des-Fontaines ou Saint-Herblain 44. Recherche faite sur ton appareil, rien n’est envoyé.</p>
-  <div class="ma-commune-ligne"><input type="search" id="${id}-saisie" name="q" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="${id}-aide ${id}-etat" aria-controls="${id}-liste" value="${h(valeur)}">
+  <p class="aide" id="${id}-aide">Par exemple 44119, Grandchamp-des-Fontaines ou Saint-Herblain 44. Flèche bas pour parcourir les propositions. Recherche faite sur ton appareil, rien n’est envoyé.</p>
+  <div class="ma-commune-ligne"><input type="search" id="${id}-saisie" name="q" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="${id}-aide ${id}-etat" aria-controls="${id}-liste" data-propositions="${id}-liste" value="${h(valeur)}">
   <button type="submit" class="bouton-principal">Voir ma commune</button></div>
   <p id="${id}-etat" class="message-champ" role="status" aria-live="polite"></p>
-  <ul id="${id}-liste" class="ma-commune-propositions" aria-label="Communes proposées"></ul>
+  <ul id="${id}-liste" class="ma-commune-propositions" aria-label="Communes proposées" data-propositions-de="${id}-saisie"></ul>
 </form>`
 }
 

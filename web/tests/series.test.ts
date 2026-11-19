@@ -84,24 +84,24 @@ describe('séries longues : écran', () => {
     const enc = lire('dette/encours.json')
     const dette = main.querySelector('section[aria-labelledby="sl-h-dette"]')!
     expect(norm(dette.textContent ?? '')).toContain(norm(`${fr(enc.insee.Ensemble.md['2025'])} Md€ en 2025`))
-    expect(main.querySelector('button[data-mode="courants"]')?.getAttribute('aria-pressed')).toBe('true')
+    expect(main.querySelector('#sl-mode [value="courants"]')?.getAttribute('aria-checked')).toBe('true')
     expect(main.querySelectorAll('path.sl-provisoire').length).toBeGreaterThan(0)
     expect(texte()).toContain('* valeur provisoire')
     expect(texte()).toContain('Pointillé : valeur provisoire')
   })
 
-  it('bascule : euros constants puis part du PIB, sans changer de page, ruptures de série affichées', async () => {
+  it('segmenté : euros constants puis part du PIB, sans changer de page, ruptures de série affichées', async () => {
     await ecran('#/explorer/series')
     const enc = lire('dette/encours.json')
-    main.querySelector<HTMLButtonElement>('button[data-mode="pib"]')!.click()
+    main.querySelector<HTMLButtonElement>('#sl-mode [value="pib"]')!.click()
     await attendre(80)
-    expect(main.querySelector('button[data-mode="pib"]')?.getAttribute('aria-pressed')).toBe('true')
-    expect(main.querySelector('button[data-mode="courants"]')?.getAttribute('aria-pressed')).toBe('false')
+    expect(main.querySelector('#sl-mode [value="pib"]')?.getAttribute('aria-checked')).toBe('true')
+    expect(main.querySelector('#sl-mode [value="courants"]')?.getAttribute('aria-checked')).toBe('false')
     const partDette = (enc.insee.Ensemble.md['2025'] / idx.pib.md['2025']) * 100
     expect(norm(main.querySelector('section[aria-labelledby="sl-h-dette"]')!.textContent ?? '')).toContain(norm(`${fr(partDette)} % en 2025 du PIB`))
     expect(texte()).toContain('part du PIB, en %')
     expect(texte()).toContain('le PIB en euros courants baisse')
-    main.querySelector<HTMLButtonElement>('button[data-mode="constants"]')!.click()
+    main.querySelector<HTMLButtonElement>('#sl-mode [value="constants"]')!.click()
     await attendre(80)
     expect(texte()).toContain(`milliards d’euros de ${idx.annee_reference}`)
     expect(texte()).toContain('base 2025')
@@ -115,9 +115,9 @@ describe('séries longues : écran', () => {
 
   it('paramètre u : ouvre directement le mode demandé ; mode inconnu ramené aux euros courants', async () => {
     await ecran('#/explorer/series?u=pib')
-    expect(main.querySelector('button[data-mode="pib"]')?.getAttribute('aria-pressed')).toBe('true')
+    expect(main.querySelector('#sl-mode [value="pib"]')?.getAttribute('aria-checked')).toBe('true')
     await ecran('#/explorer/series?u=autre')
-    expect(main.querySelector('button[data-mode="courants"]')?.getAttribute('aria-pressed')).toBe('true')
+    expect(main.querySelector('#sl-mode [value="courants"]')?.getAttribute('aria-checked')).toBe('true')
   })
 
   it('fichiers de séries absents : état « en cours d’intégration » avec des sorties', async () => {

@@ -911,7 +911,6 @@ label {
   font-size: var(--t0);
   margin: 1rem 0 0.375rem;
 }
-.choix label,
 label.case {
   display: flex;
   align-items: center;
@@ -967,7 +966,7 @@ input[aria-invalid='true'] {
    - secondaire (par défaut pour button et .bouton, ou .bouton-secondaire) : 16 px, 10 x 22 px, contour ;
    - principal (.bouton-principal, un seul par écran) : 18 px, 14 x 28 px, fond encre, ombre jaune 4 px ;
    - lien d'action (.bouton-lien) : texte souligné, sans contour ni fond.
-   Survol = changement de fond, sans animation. Les réglettes (.bascule) et puces reprennent le secondaire. */
+   Survol = changement de fond, sans animation. Les choix (.choix-*) ont leurs propres règles. */
 button,
 .bouton,
 .bouton-secondaire {
@@ -1035,12 +1034,6 @@ button.bouton-lien:hover,
     box-shadow: 0 4px 0 var(--etat);
   }
 }
-button[aria-pressed='true'],
-.bascule a[aria-current='true'] {
-  background: var(--principal);
-  border-color: var(--principal);
-  color: var(--sur-principal);
-}
 button:disabled {
   border-style: dashed;
   background: var(--papier);
@@ -1058,31 +1051,235 @@ button:disabled {
   margin: 1.5rem 0;
   max-width: none;
 }
-/* Bascule (millésime, vue) : une réglette de pastilles dans un même contour. */
-.bascule {
-  display: inline-flex;
+/* ---------- Choix (composants/choix.ts, docs/AUDIT_CHOIX.md) ----------
+   Un composant par type de choix. L'état choisi se voit sans la couleur : coche dessinée et graisse (segments, liens),
+   pastille et contour (boutons radio), trait sous l'onglet, position du curseur (interrupteur). Cibles de 44 px. */
+.choix-bloc {
+  margin: 1rem 0 1.25rem;
+}
+.choix-etiquette,
+legend.choix-etiquette {
+  display: block;
+  float: none;
+  width: auto;
+  font-family: var(--texte-police);
+  font-weight: 700;
+  font-size: var(--t0);
+  line-height: 1.4;
+  margin: 0 0 0.375rem;
+  padding: 0;
+}
+.choix-bloc > .aide,
+.choix-liste > .aide {
+  margin: 0 0 0.5rem;
+}
+/* Segmenté et liens de choix : une réglette de pastilles dans un même contour ; à 360 px, les pastilles passent à la
+   ligne en gardant toute la largeur (aucun débordement, aucun texte coupé). */
+.choix-segmente,
+.choix-liens {
+  display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
+  width: fit-content;
+  max-width: 100%;
   padding: 0.25rem;
-  margin: 0.5rem 0 1.25rem;
   border: var(--trait) solid var(--contour);
   border-radius: 1.75rem;
   background: var(--papier);
 }
-.bascule .bouton,
-.bascule button {
-  border-color: transparent;
-  background: transparent;
+.choix-liens {
+  margin: 0.5rem 0 1.25rem;
 }
-.bascule .bouton:hover,
-.bascule button:hover {
+.choix-liens-liste {
+  border-radius: 1.25rem;
+}
+.choix-liens-colonne {
+  flex-direction: column;
+  width: auto;
+  max-width: 42rem;
+  border-radius: var(--rayon-champ);
+}
+.choix-liens-colonne .choix-lien {
+  justify-content: flex-start;
+  text-align: left;
+  border-radius: calc(var(--rayon-champ) - 0.25rem);
+}
+.choix-segment,
+.choix-lien {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--texte);
+  font-weight: 600;
+  font-size: var(--t0);
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+}
+.choix-segment:hover,
+.choix-lien:hover {
   background: var(--secu);
   color: var(--encre);
 }
-.bascule a[aria-current='true'],
-.bascule button[aria-pressed='true'] {
+.choix-segment[aria-checked='true'],
+.choix-lien[aria-current='page'],
+.choix-segment[aria-checked='true']:hover,
+.choix-lien[aria-current='page']:hover {
   background: var(--principal);
   color: var(--sur-principal);
+  font-weight: 800;
+}
+/* Option d'une liste détaillée (Suivre un euro) : même état choisi que les segments. */
+.choix-riche[aria-pressed='true'],
+.choix-riche[aria-pressed='true']:hover {
+  background: var(--principal);
+  border-color: var(--principal);
+  color: var(--sur-principal);
+  font-weight: 800;
+}
+/* Coche dessinée (aucun texte ajouté au nom lu par les lecteurs d'écran). */
+.choix-segment[aria-checked='true']::before,
+.choix-lien[aria-current='page']::before,
+.choix-riche[aria-pressed='true']::before {
+  content: '';
+  flex: none;
+  width: 0.375em;
+  height: 0.75em;
+  border: solid currentColor;
+  border-width: 0 0.1875em 0.1875em 0;
+  transform: translateY(-0.125em) rotate(45deg);
+  margin-right: 0.125em;
+}
+/* Liste radio : 5 à 12 options. Pastille native, contour et graisse sur l'option choisie. */
+fieldset.choix-liste {
+  background: none;
+  padding: 0;
+  margin: 1rem 0 1.25rem;
+  border-radius: 0;
+}
+.choix-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+label.choix-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 44px;
+  margin: 0;
+  padding: 0.375rem 0.875rem 0.375rem 0.625rem;
+  border: var(--trait) solid transparent;
+  border-radius: var(--rayon-champ);
+  font-weight: 400;
+  font-size: var(--t0);
+  line-height: 1.35;
+  cursor: pointer;
+}
+label.choix-option:hover {
+  border-color: var(--filet);
+}
+label.choix-option:has(input:checked) {
+  border-color: var(--contour);
+  background: var(--papier);
+  font-weight: 700;
+}
+.choix-liste-grille .choix-options {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.choix-liste-grille label.choix-option {
+  border-color: var(--filet);
+  border-radius: 999px;
+}
+.choix-liste-grille label.choix-option:has(input:checked) {
+  border-color: var(--contour);
+}
+/* Liste avec recherche : plus de 12 options. Champ qui filtre, puis la liste native. */
+.choix-recherche-ligne {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 42rem;
+}
+.choix-recherche-ligne .choix-filtre {
+  flex: 1 1 11rem;
+  max-width: none;
+  font-weight: 400;
+}
+.choix-recherche-ligne select {
+  flex: 2 1 16rem;
+  min-width: 0;
+}
+.choix-compte {
+  font-size: var(--t-1);
+  margin: 0.25rem 0 0;
+}
+.choix-compte:empty {
+  display: none;
+}
+/* Réglage oui/non (rôle switch) : curseur à gauche (non), à droite (oui) ; pas d’animation. */
+label.choix-interrupteur {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 44px;
+  margin: 0;
+  font-weight: 400;
+  font-size: var(--t1);
+  cursor: pointer;
+}
+.choix-interrupteur input[role='switch'] {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 3.25rem;
+  height: 2rem;
+  margin: -1rem 0 0;
+  opacity: 0;
+}
+.choix-piste {
+  flex: none;
+  position: relative;
+  width: 3.25rem;
+  height: 2rem;
+  border: var(--trait) solid var(--contour);
+  border-radius: 999px;
+  background: var(--papier);
+}
+.choix-piste::after {
+  content: '';
+  position: absolute;
+  top: 0.28rem;
+  left: 0.28rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: var(--contour);
+}
+.choix-interrupteur input:checked + .choix-piste {
+  background: var(--principal);
+}
+.choix-interrupteur input:checked + .choix-piste::after {
+  left: auto;
+  right: 0.28rem;
+  background: var(--sur-principal);
+}
+.choix-interrupteur input:focus-visible + .choix-piste {
+  outline: 3px solid var(--contour);
+  outline-offset: 3px;
+}
+label.case > span {
+  flex: 1;
 }
 
 details {
@@ -2314,6 +2511,9 @@ td.nombre {
 .heros-form input {
   max-width: none;
 }
+.heros-champs .choix-bloc {
+  margin: 0;
+}
 @media (min-width: 34rem) {
   .heros-champs {
     grid-template-columns: 1fr 1fr;
@@ -3110,7 +3310,9 @@ fieldset.saisie-groupe {
   .entete-ligne .navigation,
   .fil-ariane,
   .voir-aussi,
-  .bascule,
+  .choix-liens,
+  .choix-segmente,
+  .choix-onglets,
   .actions,
   .partage-options,
   #partage-info,
@@ -3982,20 +4184,40 @@ fieldset.saisie-groupe {
   padding: 0.375rem 0;
   border-bottom: var(--trait) solid var(--contour);
 }
-.onglets {
+.choix-onglets {
   display: flex;
-  gap: 0.5rem;
-  overflow-x: auto;
-  scrollbar-width: thin;
+  gap: 0.25rem;
 }
-.onglets [role='tab'] {
-  flex: none;
+.choix-onglet {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 44px;
+  padding: 0.5rem 1rem;
   border-radius: 999px;
+  font-weight: 600;
+  white-space: nowrap;
 }
-.onglets [role='tab'][aria-selected='true'] {
+.choix-onglet[aria-selected='true'],
+.choix-onglet[aria-selected='true']:hover {
   background: var(--principal);
+  border-color: var(--principal);
   color: var(--sur-principal);
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 5px;
+}
+/* À 360 px, les quatre onglets tiennent en deux rangées au lieu de défiler hors de l'écran. */
+@media (max-width: 37.5rem) {
+  .choix-onglets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .choix-onglet {
+    padding: 0.5rem 0.625rem;
+  }
 }
 .ma-commune-bloc[role='tabpanel'] {
   border-top: 0;
@@ -4260,7 +4482,7 @@ fieldset.saisie-groupe {
 #mc-region-panneau {
   --niveau: var(--niveau-region);
 }
-.onglets [role='tab'][id^='mc-']::before {
+.choix-onglet[id^='mc-']::before {
   content: '';
   display: inline-block;
   flex: none;

@@ -9,7 +9,7 @@ import { ROUTES } from '../src/main'
 import { afficher } from '../src/routeur'
 import { viderCache } from '../src/donnees'
 import { dateLongue, delaiMedian, lectureLoi, tauxPublie, type Loi } from '../src/ecrans/application_lois'
-import { monterPage } from './aide-dom'
+import { choisirValeur, monterPage } from './aide-dom'
 
 const CHEMIN = '/decisions/application-des-lois'
 const FIXTURES = join(process.cwd(), 'tests', 'fixtures')
@@ -117,9 +117,7 @@ describe('/decisions/application-des-lois', () => {
 
   it('filtre par type de loi', async () => {
     await ecran(`#${CHEMIN}`)
-    const sel = main.querySelector('#al-cat') as HTMLSelectElement
-    sel.value = 'lfss'
-    sel.dispatchEvent(new Event('change'))
+    choisirValeur(main, 'al-cat', 'lfss')
     const n = fin.lois.filter((l: Loi) => l.categorie === 'lfss').length
     expect(main.querySelectorAll('#liste-al-fin li').length).toBe(n)
   })

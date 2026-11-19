@@ -183,7 +183,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
   const menuFacettes = `<nav aria-label="Regrouper les communes"><h2>Regrouper les communes</h2><ul class="liens-sortie">${(Object.keys(FACETTES) as Facette[])
     .map((f) => `<li>${f === facette ? `<strong aria-current="page">${h(FACETTES[f])}</strong>` : `<a href="${lien('/local/croiser', { c: choisi.id, f, ...garde })}">${h(FACETTES[f])}</a>`}</li>`)
     .join('')}</ul></nav>`
-  const formulaire = `<form id="croiser-lieu" class="choix" role="search"><h2>Repérer ta commune ou ton département</h2>
+  const formulaire = `<form id="croiser-lieu" role="search"><h2>Repérer ta commune ou ton département</h2>
 <label for="croiser-insee">Code Insee de la commune (5 caractères)</label><input type="text" id="croiser-insee" name="insee" inputmode="text" autocomplete="off" pattern="(\\d{5}|2[ABab]\\d{3})" value="${h(insee)}">
 <label for="croiser-dep">ou numéro du département</label><input type="text" id="croiser-dep" name="dep" autocomplete="off" pattern="(\\d{2,3}|2[ABab])" value="${h(!insee ? depDemande : '')}">
 <p><button class="bouton" type="submit">Repérer</button></p></form>`

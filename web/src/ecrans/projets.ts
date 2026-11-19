@@ -6,6 +6,7 @@
 //
 // Le même module fournit le bloc des pages commune et département (brancherProjets) : il n'est inséré que dans le
 // navigateur et son contenu n'est chargé qu'au clic, pour ne rien ajouter au HTML prérendu des pages locales.
+import { listeRecherche } from '../composants/choix'
 import { fragmentCommune, fragmentDepartement } from '../chemins'
 import { departementDe, TOUS_DEPARTEMENTS } from '../departements'
 import { chargerSiPresent } from '../donnees'
@@ -260,10 +261,10 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams): Promi
   const intro = `<h1>${TITRE}</h1>
 <p class="chapeau">Les projets d’une commune ou d’un département que l’État a subventionnés : dotations d’investissement des collectivités (DETR, DSIL, DPV, DSID) et Fonds vert, avec leur bénéficiaire, leur montant et leur année.</p>
 <p class="aide">${h(PHRASE_STATUT)} La page ne montre ni les autres aides de l’État, ni les fonds européens, ni les financements des collectivités.</p>`
-  const formulaire = `<form id="projets-lieu" class="choix" role="search"><h2>Choisir un lieu</h2>
-<label for="projets-dep">Département</label><select id="projets-dep" name="dep"><option value="">Choisir</option>${(idx?.departements.map((x) => [x.code, x.nom] as [string, string]) ?? TOUS_DEPARTEMENTS)
+  const formulaire = `<form id="projets-lieu" role="search"><h2>Choisir un lieu</h2>
+${listeRecherche({ id: 'projets-dep', etiquette: 'Département', options: [], optionsHtml: `<option value="">Choisir</option>${(idx?.departements.map((x) => [x.code, x.nom] as [string, string]) ?? TOUS_DEPARTEMENTS)
     .map(([c, n]) => `<option value="${h(c)}"${c === dep ? ' selected' : ''}>${h(c)} ${h(n)}</option>`)
-    .join('')}</select>
+    .join('')}`, attributs: `name="dep"` })}
 <label for="projets-q">Commune (nom ou code Insee)</label><input type="search" id="projets-q" name="q" autocomplete="off" value="${h(insee || q)}">
 <p><button class="bouton" type="submit">Afficher</button></p></form>`
   const sorties = `<h2>Pour aller plus loin</h2><ul class="liens-sortie">
@@ -328,9 +329,9 @@ ${sorties}`
   const annees = [...new Set(tous.map((p) => p.annee))].sort((a, b) => b - a)
   const filtres = tous.filter((p) => (!filtreDisp || p.dispositif === filtreDisp) && (filtreAn === null || p.annee === filtreAn))
   const filtresForm = tous.length
-    ? `<form id="projets-filtres" class="choix"><h2>Filtrer</h2><input type="hidden" name="insee" value="${h(insee)}">
-<label for="projets-disp">Dispositif</label><select id="projets-disp" name="d"><option value="">Tous les dispositifs</option>${disps.map((x) => `<option value="${h(x)}"${x === filtreDisp ? ' selected' : ''}>${h(libelleDispositif(x))}</option>`).join('')}</select>
-<label for="projets-an">Année</label><select id="projets-an" name="a"><option value="">Toutes les années</option>${annees.map((a) => `<option value="${a}"${a === filtreAn ? ' selected' : ''}>${a}</option>`).join('')}</select>
+    ? `<form id="projets-filtres"><h2>Filtrer</h2><input type="hidden" name="insee" value="${h(insee)}">
+${listeRecherche({ id: 'projets-disp', etiquette: 'Dispositif', options: [], optionsHtml: `<option value="">Tous les dispositifs</option>${disps.map((x) => `<option value="${h(x)}"${x === filtreDisp ? ' selected' : ''}>${h(libelleDispositif(x))}</option>`).join('')}`, attributs: `name="d"` })}
+${listeRecherche({ id: 'projets-an', etiquette: 'Année', options: [], optionsHtml: `<option value="">Toutes les années</option>${annees.map((a) => `<option value="${a}"${a === filtreAn ? ' selected' : ''}>${a}</option>`).join('')}`, attributs: `name="a"` })}
 <p><button class="bouton" type="submit">Filtrer</button></p></form>`
     : ''
   const filtreTexte = [filtreDisp ? libelleDispositif(filtreDisp) : '', filtreAn !== null ? String(filtreAn) : ''].filter(Boolean).join(', ')

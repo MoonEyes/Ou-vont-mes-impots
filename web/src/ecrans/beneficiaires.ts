@@ -1,5 +1,6 @@
 // Écran 6 : qui reçoit l'argent (associations, opérateurs, France 2030, marchés de l'État).
 // Seules des personnes morales sont nommées ; le reste est agrégé (règle du pipeline).
+import { choixLiens, listeRecherche } from '../composants/choix'
 import { charger, chargerSiPresent, listeProgrammes, type Noeud } from '../donnees'
 import { cartesRayons, planRubrique } from '../composants/hub'
 import { lien } from '../routeur'
@@ -73,9 +74,9 @@ function brancherVoirPlus(cible: HTMLElement) {
 
 async function ongletProgramme(p: string | null): Promise<string> {
   const progs = (await listeProgrammes()).sort((a, b) => Number(a.numero) - Number(b.numero))
-  const choix = `<label for="prog">Programme</label><select id="prog">${progs
+  const choix = `${listeRecherche({ id: 'prog', etiquette: 'Programme', options: [], optionsHtml: `${progs
     .map((x) => `<option value="${x.numero}"${x.numero === p ? ' selected' : ''}>${h(x.numero)} ${h(x.nom)}</option>`)
-    .join('')}</select>`
+    .join('')}` })}`
   const num = p ?? progs[0]?.numero
   const d = await chargerSiPresent<{
     libelle: string
@@ -143,9 +144,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 <p class="chapeau">Les bénéficiaires connus de l’argent de l’État : associations, opérateurs, entreprises soutenues par France 2030, titulaires de marchés publics. Seules des personnes morales sont nommées. Les prestations versées aux personnes (retraites, santé, famille, chômage) ne sont pas nominatives : elles sont présentées par branche dans <a href="#/explorer/secu">Sécurité sociale et protection sociale</a>.</p>
 ${planRubrique('/beneficiaires')}
 <p>Toutes les subventions publiées, par année, par ministère et par type de bénéficiaire, avec une recherche par organisme : <a href="${lien('/beneficiaires/subventions')}">Les subventions de l’État et de ses opérateurs</a>.</p>
-<div class="bascule" role="group" aria-label="Catégorie de bénéficiaires">${ONGLETS.map(
-    ([k, l]) => `<a class="bouton" href="${lien('/beneficiaires', { onglet: k, p: k === 'programme' ? p : undefined })}"${k === onglet ? ' aria-current="true"' : ''}>${h(l)}</a>`,
-  ).join('')}</div>
+${choixLiens({ etiquette: 'Catégorie de bénéficiaires', liens: ONGLETS.map(([k, l]) => ({ href: lien('/beneficiaires', { onglet: k, p: k === 'programme' ? p : undefined }), libelle: l, courant: k === onglet })) })}
 ${contenu}
 ${cartesRayons('/beneficiaires')}`
   brancherVoirPlus(cible)

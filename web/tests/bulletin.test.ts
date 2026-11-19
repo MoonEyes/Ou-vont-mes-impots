@@ -175,19 +175,19 @@ describe('fiche de paie expliquée', () => {
     expect(cle.querySelector('.source')?.textContent).toContain('modele-social')
   })
 
-  it('bascule : montants par mois ou sur un an, état annoncé par aria-pressed', () => {
+  it('segmenté : montants par mois ou sur un an, état annoncé par aria-checked', () => {
     const [f] = fichesDe(exemple, PROFIL_EXEMPLE)
-    const an = main.querySelector<HTMLButtonElement>('button[data-periode="an"]')!
-    expect(main.querySelector('button[data-periode="mois"]')?.getAttribute('aria-pressed')).toBe('true')
-    expect(an.getAttribute('aria-pressed')).toBe('false')
+    const an = main.querySelector<HTMLButtonElement>('#bulletin-periode [value="an"]')!
+    expect(main.querySelector('#bulletin-periode [value="mois"]')?.getAttribute('aria-checked')).toBe('true')
+    expect(an.getAttribute('aria-checked')).toBe('false')
     an.click()
-    expect(an.getAttribute('aria-pressed')).toBe('true')
-    expect(main.querySelector('button[data-periode="mois"]')?.getAttribute('aria-pressed')).toBe('false')
+    expect(an.getAttribute('aria-checked')).toBe('true')
+    expect(main.querySelector('#bulletin-periode [value="mois"]')?.getAttribute('aria-checked')).toBe('false')
     expect(net(main.querySelector('.surligne')?.textContent)).toBe(eurFr(f.net - montantPas(f)))
     expect(montant(ligne('Montant net à payer avant impôt sur le revenu'))).toBe(eurFr(f.net))
     expect(net(main.querySelector('#titre-bulletin-net')?.textContent)).toBe('Montant net à payer, sur un an')
     expect(main.querySelector('caption')?.textContent).toContain('sur un an')
-    main.querySelector<HTMLButtonElement>('button[data-periode="mois"]')!.click()
+    main.querySelector<HTMLButtonElement>('#bulletin-periode [value="mois"]')!.click()
     expect(net(main.querySelector('#titre-bulletin-net')?.textContent)).toBe('Montant net à payer, par mois')
   })
 
@@ -202,8 +202,8 @@ describe('fiche de paie expliquée', () => {
     expect(table.querySelectorAll('tbody th[scope="row"]').length).toBeGreaterThan(15)
     expect((table.closest('.tableau-defile') as HTMLElement).tabIndex).toBe(0)
     expect(table.closest('.tableau-defile')?.getAttribute('role')).toBe('region')
-    for (const g of Array.from(main.querySelectorAll('#bulletin-reglages [role="group"]'))) expect(g.getAttribute('aria-label')).toBeTruthy()
-    for (const b of Array.from(main.querySelectorAll('#bulletin-reglages button'))) expect(['true', 'false']).toContain(b.getAttribute('aria-pressed'))
+    for (const g of Array.from(main.querySelectorAll('#bulletin-reglages [role="radiogroup"]'))) expect(document.getElementById(g.getAttribute('aria-labelledby') ?? '')?.textContent).toBeTruthy()
+    for (const b of Array.from(main.querySelectorAll('#bulletin-reglages button'))) expect(['true', 'false']).toContain(b.getAttribute('aria-checked'))
   })
 
   it('saisie de la session : cadre à 3 000 €, ligne Apec, lien vers ce que tu verses en un an', async () => {
@@ -232,11 +232,11 @@ describe('fiche de paie expliquée', () => {
     expect(f1.pas!.base).toBeCloseTo(f1.imposable + f2.imposable, 2)
     expect(f1.pas!.taux).toBe(Math.round((moteur(r, 'impot_revenu') / (f1.imposable + f2.imposable)) * 1000) / 1000)
     await ecran()
-    const personnes = Array.from(main.querySelectorAll<HTMLButtonElement>('button[data-personne]'))
+    const personnes = Array.from(main.querySelectorAll<HTMLButtonElement>('#bulletin-personne [role="radio"]'))
     expect(personnes.map((b) => b.textContent)).toEqual(['Toi', 'Ton ou ta conjoint·e'])
     expect(montant(ligne('Montant net à payer avant impôt sur le revenu'))).toBe(eurFr(2500))
     personnes[1].click()
-    expect(personnes[1].getAttribute('aria-pressed')).toBe('true')
+    expect(personnes[1].getAttribute('aria-checked')).toBe('true')
     expect(montant(ligne('Montant net à payer avant impôt sur le revenu'))).toBe(eurFr(1800))
     expect(montant(ligne('Montant brut'))).toBe(eurFr(f2.brut / 12))
     expect(texte()).toContain(`Calculée pour ta saisie : ${eurFr(2500)} et ${eurFr(1800)} net avant impôt par mois`)
@@ -306,7 +306,7 @@ describe('fiche de paie expliquée', () => {
       session.resultat = resultat
       await ecran()
       for (const periode of ['mois', 'an']) {
-        main.querySelector<HTMLButtonElement>(`button[data-periode="${periode}"]`)!.click()
+        main.querySelector<HTMLButtonElement>(`#bulletin-periode [value="${periode}"]`)!.click()
         verifierLexique(document.body.textContent ?? '', `${nom}, ${periode}`)
         for (const el of Array.from(main.querySelectorAll('[aria-label], [title], [alt]'))) verifierLexique(['aria-label', 'title', 'alt'].map((a) => el.getAttribute(a) ?? '').join(' '), `${nom} (attribut)`)
         expect(main.textContent, nom).not.toContain('—')

@@ -11,7 +11,8 @@ import { ROUTES } from '../src/main'
 import { afficher } from '../src/routeur'
 import { viderCache } from '../src/donnees'
 import { NOM_ABSENT, POSITIONS, rendreNominatif, SANS_POSITION, texteEnClair, type Impot, type Index } from '../src/ecrans/qui_a_vote'
-import { monterPage } from './aide-dom'
+import { choisirValeur, monterPage } from './aide-dom'
+import { valeurChoix } from '../src/composants/choix'
 
 const CHEMIN = '/decisions/qui-a-vote'
 const FIXTURES = join(process.cwd(), 'tests', 'fixtures')
@@ -117,7 +118,7 @@ describe('/decisions/qui-a-vote', () => {
     await ecran(`#${CHEMIN}?impot=impot_revenu`)
     await attendre(() => !!main.querySelector('#qav-titre-impot'))
     expect(main.querySelector('#qav-titre-impot')?.textContent).toBe(ir.impot.libelle)
-    expect((main.querySelector('#qav-impot') as HTMLSelectElement).value).toBe('impot_revenu')
+    expect(main.querySelector('#qav-impot [aria-current="page"]')?.getAttribute('href')).toBe(`#${CHEMIN}?impot=impot_revenu`)
     expect(texte()).not.toMatch(/\bPLF(SS|G)? \d{4}/) // jamais de sigle seul
     expect(texte()).toContain(texteEnClair(ir.articles[0].texte))
     expect(texte()).toContain('Lien avec l’impôt')
@@ -175,13 +176,13 @@ describe('/decisions/qui-a-vote', () => {
     const avant = location.hash
     requetes.length = 0
     const dep = main.querySelector<HTMLSelectElement>('#qav-dep')!
-    const circo = main.querySelector<HTMLSelectElement>('#qav-circo')!
-    expect(circo.disabled).toBe(true)
+    // Avant le département : aucune liste désactivée, une consigne ; ensuite, le composant suit le nombre (10 : liste radio).
+    expect(main.querySelector('#qav-circo')).toBeNull()
+    expect(main.querySelector('#qav-circo-zone')?.textContent).toContain('Choisis d’abord un département')
     dep.value = '44'
     dep.dispatchEvent(new Event('change'))
-    await attendre(() => !circo.disabled && circo.options.length === 11)
-    circo.value = '1'
-    circo.dispatchEvent(new Event('change'))
+    await attendre(() => main.querySelectorAll('#qav-circo input[type="radio"]').length === 10)
+    choisirValeur(main, 'qav-circo', '1')
     const zone = main.querySelector<HTMLElement>('#qav-depute')!
     await attendre(() => !!zone.querySelector('h4'))
     const c = dep44.circonscriptions[0]
@@ -206,7 +207,7 @@ describe('/decisions/qui-a-vote', () => {
     const zone = main.querySelector<HTMLElement>('#qav-depute')!
     await attendre(() => !!zone.querySelector('h4'))
     expect(main.querySelector<HTMLSelectElement>('#qav-dep')!.value).toBe('44')
-    expect(main.querySelector<HTMLSelectElement>('#qav-circo')!.value).toBe('1')
+    expect(valeurChoix(main, 'qav-circo')).toBe('1')
     expect(Array.from(zone.querySelectorAll('h4')).map((x) => x.textContent)).toEqual(dep44.circonscriptions[0].deputes.map((x: { nom: string | null }) => x.nom ?? expect.any(String)))
     await ecran(`#${CHEMIN}?dep=zz&circo=99`)
     expect(main.querySelector<HTMLSelectElement>('#qav-dep')!.value).toBe('')

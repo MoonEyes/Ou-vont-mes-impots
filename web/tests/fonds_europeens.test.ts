@@ -15,7 +15,7 @@ import G from '../src/glossaire.json'
 import { afficher } from '../src/routeur'
 import { ROUTES } from '../src/routes'
 import { eurLisible, sur100 } from '../src/util'
-import { attendreQue, monterPage } from './aide-dom'
+import { attendreQue, choisirValeur, monterPage } from './aide-dom'
 
 const RACINE = process.cwd()
 const PROPRES = join(RACINE, 'tests', 'fixtures', 'fonds_europeens')
@@ -58,11 +58,7 @@ const tableau = (debut: string, racine: ParentNode = main) => {
 const ligne = (t: HTMLTableElement, entete: string) =>
   Array.from(t.querySelectorAll('tbody tr, tfoot tr')).find((tr) => n(tr.querySelector('th')?.textContent).startsWith(entete)) as HTMLTableRowElement
 const cellules = (tr: HTMLTableRowElement) => Array.from(tr.querySelectorAll('td')).map((td) => n(td.textContent))
-const selectionner = (sel: string, valeur: string) => {
-  const s = main.querySelector<HTMLSelectElement>(sel)!
-  s.value = valeur
-  s.dispatchEvent(new Event('change', { bubbles: true }))
-}
+const selectionner = (sel: string, valeur: string) => choisirValeur(main, sel.slice(1), valeur)
 
 beforeAll(() => {
   monterPage()

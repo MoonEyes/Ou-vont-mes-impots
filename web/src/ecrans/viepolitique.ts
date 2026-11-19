@@ -1,5 +1,6 @@
 // Écran 8 : vie politique par année (programme 232, aide publique aux partis, comptes de campagne).
 // Seuls les candidats et les partis sont nommés (données publiques de la CNCCFP).
+import { listeRecherche } from '../composants/choix'
 import { charger, chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import { absent, entier, eur, eurLisible, h, source, sur100, surligne } from '../util'
@@ -115,8 +116,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   cible.innerHTML = `
 <h1>Vie politique en ${a.annee}</h1>
 <p class="chapeau">Ce que l’État dépense au titre de la vie politique : organisation des élections, aide publique aux partis, remboursement des campagnes des candidats.</p>
-<label for="annee-vp">Année</label>
-<select id="annee-vp">${annees.map((x) => `<option value="${x}"${x === a.annee ? ' selected' : ''}>${x}</option>`).join('')}</select>
+${listeRecherche({ id: 'annee-vp', etiquette: 'Année', options: [], optionsHtml: `${annees.map((x) => `<option value="${x}"${x === a.annee ? ' selected' : ''}>${x}</option>`).join('')}` })}
 <h2>Programme 232 « Vie politique »</h2>
 ${
   p

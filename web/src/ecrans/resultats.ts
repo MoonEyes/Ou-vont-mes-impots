@@ -2,6 +2,7 @@
 // dépensés, cibles et valeurs réalisées des indicateurs, année par année (site/data/performance/programmes/<p>.json) ;
 // pour un département, indicateurs du baromètre des résultats de l'action publique (performance/barometre/<code>.json).
 // Aucun écart, ratio, note ni classement : les valeurs sont posées côte à côte, telles que publiées.
+import { listeRecherche } from '../composants/choix'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import type { Rendu } from '../routeur'
@@ -328,8 +329,7 @@ ${
 ${
   bi
     ? `<p>${h(bi.presentation)}</p>
-<label for="choix-dep-perf">Choisir un département</label>
-<select id="choix-dep-perf"><option value="">Département…</option>${bi.departements.map((d) => `<option value="${h(d.code)}">${h(d.code)} ${h(d.nom)}</option>`).join('')}</select>
+${listeRecherche({ id: 'choix-dep-perf', etiquette: 'Choisir un département', options: [], optionsHtml: `<option value="">Département…</option>${bi.departements.map((d) => `<option value="${h(d.code)}">${h(d.code)} ${h(d.nom)}</option>`).join('')}` })}
 <ul class="liste-colonnes">${bi.departements.map((d) => `<li><a href="${lien(CHEMIN, { dep: d.code })}">${h(d.nom)} (${h(d.code)})</a></li>`).join('')}</ul>
 ${source(bi.source, bi.millesime)}`
     : absent('Baromètre en cours d’intégration.')

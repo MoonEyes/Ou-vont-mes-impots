@@ -1,6 +1,7 @@
 // Formation professionnelle (site/data/formation/) : compte personnel de formation, alternance et formation des
 // demandeurs d'emploi côté budget de l'État, ressources de France compétences, financeurs, personnes, écarts entre sources.
 // Les montants de périmètres différents sont montrés côte à côte, jamais additionnés.
+import { choixLiens } from '../composants/choix'
 import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent, type Noeud } from '../donnees'
 import { lien } from '../routeur'
@@ -194,9 +195,7 @@ ${ops
     : ''
 
   const financeurs = Object.keys(idx.cpf.financeurs)
-  const choix = `<form id="formation-annee"><label for="formation-annee-choix">Année du compte personnel de formation</label><select id="formation-annee-choix">${liste
-    .map((y) => `<option value="${h(y)}"${y === a ? ' selected' : ''}>${h(y)}${annees[y].complete ? '' : ' (année en cours)'}</option>`)
-    .join('')}</select></form>`
+  const choix = choixLiens({ id: 'formation-annee', etiquette: 'Année du compte personnel de formation', liens: liste.map((y) => ({ href: lien('/explorer/formation-professionnelle', { a: y }), libelle: `${y}${annees[y].complete ? '' : ' (en cours)'}`, courant: y === a })) })
   const parFinanceur = `<h3>Qui finance les formations du compte personnel de formation en ${h(a)}</h3>
 ${choix}
 <div class="carte" data-cle>
@@ -324,7 +323,4 @@ ${elus}
 ${sources}
 <p class="liens-sortie">${progLien ? `<a href="${h(progLien)}">Le programme ${h(lienArbre!.programme ?? '103')} dans le budget de l’État</a> · ` : ''}<a href="${lien('/beneficiaires/programme', { p: lienArbre?.programme ?? '103' })}">Qui reçoit l’argent du programme ${h(lienArbre?.programme ?? '103')}</a> · <a href="${lien('/explorer/operateurs')}">Les opérateurs de l’État</a></p>
 ${partPersonnelle()}`
-  cible.querySelector<HTMLSelectElement>('#formation-annee-choix')?.addEventListener('change', (e) => {
-    location.hash = lien('/explorer/formation-professionnelle', { a: (e.target as HTMLSelectElement).value })
-  })
 }

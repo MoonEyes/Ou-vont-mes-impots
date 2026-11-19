@@ -1,4 +1,5 @@
 // La France et l'Union européenne (site/data/ue/) : contribution, usage, retours, bénéficiaires nommés.
+import { listeRecherche } from '../composants/choix'
 import { partPersonnelle } from '../composants/hub'
 import { DEPARTEMENTS } from '../departements'
 import { chargerSiPresent } from '../donnees'
@@ -76,9 +77,9 @@ ${
     ? `<p>${h(String(r.beneficiaires_nommes.nombre))} organismes nommés reçoivent ${h(eurLisible(r.beneficiaires_nommes.total_nomme_eur))}, soit ${h(pct(r.beneficiaires_nommes.part_nommee * 100, 0))} des fonds suivis. Seules des personnes morales sont nommées.</p>`
     : ''
 }
-<form id="dep-ue"><label for="dep-ue-choix">Département</label><select id="dep-ue-choix"><option value="">Choisir</option>${DEPARTEMENTS.map(
+<form id="dep-ue">${listeRecherche({ id: 'dep-ue-choix', etiquette: 'Département', options: [], optionsHtml: `<option value="">Choisir</option>${DEPARTEMENTS.map(
     ([k, n]) => `<option value="${k}"${k === dep ? ' selected' : ''}>${k} ${h(n)}</option>`,
-  ).join('')}</select></form>
+  ).join('')}` })}</form>
 ${
   b
     ? `<h3>${h(b.nom)}</h3><ul>${Object.entries(b.totaux)

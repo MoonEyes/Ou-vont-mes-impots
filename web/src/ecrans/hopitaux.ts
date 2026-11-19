@@ -7,6 +7,7 @@
 // (Hospi Diag, moins de 1 Mo, chargé seulement quand aucun département n'est choisi). Seuls les établissements dont
 // le gestionnaire est une personne morale sont nommés (filtre du pipeline) ; aucune donnée de patient, aucun
 // professionnel nommé.
+import { choix, listeRecherche, segmente, valeurChoix } from '../composants/choix'
 import { billet } from '../composants/billet'
 import { partPersonnelle } from '../composants/hub'
 import { TOUS_DEPARTEMENTS } from '../departements'
@@ -456,14 +457,8 @@ ${billet(
   ).join('')}</tbody></table></div>
 <p class="aide">${h(majuscule(f.totaux.methode))}.</p>
 <h3>Par catégorie, activité ou secteur</h3>
-<div class="bascule" role="group" aria-label="Regrouper les comptes">
-  <button type="button" data-groupe="categorie" aria-pressed="true">Par catégorie</button><button type="button" data-groupe="activite_principale" aria-pressed="false">Par activité</button><button type="button" data-groupe="secteur" aria-pressed="false">Par secteur</button>
-</div>
-<label for="hop-annee">Année des comptes</label>
-<select id="hop-annee">${[...annees]
-    .reverse()
-    .map((a) => `<option value="${h(a)}">${h(a)}</option>`)
-    .join('')}</select>
+${segmente({ id: 'hop-groupe', etiquette: 'Regrouper les comptes', options: [{ valeur: 'categorie', libelle: 'Par catégorie' }, { valeur: 'activite_principale', libelle: 'Par activité' }, { valeur: 'secteur', libelle: 'Par secteur' }], valeur: 'categorie' })}
+${choix({ id: 'hop-annee', etiquette: 'Année des comptes', options: [...annees].reverse().map((a) => ({ valeur: a, libelle: a })), valeur: an })}
 <div id="hop-groupes">${tableComptes(f, an, 'categorie')}</div>
 <p class="aide">Catégories et tranches de taille (en millions d’euros) définies par l’ATIH. Activité principale : au moins 80 % de l’activité de l’établissement.</p>
 <details><summary>Définitions de l’ATIH</summary><ul>${Object.entries(f.definitions)
@@ -525,19 +520,17 @@ function sectionRecherche(idx: Index, deps: Departements | null, depInitial: str
   )}. ${h(entier(idx.totaux.etablissements_nommes))} sont listés par leur nom : hôpitaux, cliniques, autres établissements relevant de la loi hospitalière, EHPAD et établissements ayant une activité ou un prix publié. Les autres sont comptés sans être nommés.</p>
 <p class="aide">${h(idx.regle_personnes)} ${h(idx.perimetre)}</p>
 <form id="hop-form" class="carte" role="search" aria-label="Chercher un établissement">
-  <label for="hop-dep">Département</label>
-  <select id="hop-dep"><option value="">Toute la France : hôpitaux et cliniques dont les comptes ${h(plage(idx.sources.hospi_diag?.millesime ?? '2011-2015'))} sont publiés</option>${
+  ${listeRecherche({ id: 'hop-dep', etiquette: 'Département', options: [], optionsHtml: `<option value="">Toute la France : hôpitaux et cliniques dont les comptes ${h(plage(idx.sources.hospi_diag?.millesime ?? '2011-2015'))} sont publiés</option>${
     deps
       ? Object.keys(deps.departements)
           .sort()
           .map((k) => `<option value="${h(k)}"${k === depInitial ? ' selected' : ''}>${h(k)} ${h(NOMS_DEP.get(k) ?? '')}</option>`)
           .join('')
       : ''
-  }</select>
+  }` })}
   <label for="hop-q">Nom, commune ou numéro FINESS</label>
   <input id="hop-q" type="search" autocomplete="off" value="${h(qInitial)}" />
-  <label for="hop-type">Type d’établissement (dans un département)</label>
-  <select id="hop-type"><option value="">Tous les établissements listés</option><option value="hospitalier">Hôpitaux, cliniques et autres établissements de la loi hospitalière</option><option value="ehpad">EHPAD</option></select>
+  ${choix({ id: 'hop-type', etiquette: 'Type d’établissement (dans un département)', options: [{ valeur: '', libelle: 'Tous les établissements listés' }, { valeur: 'hospitalier', libelle: 'Hôpitaux, cliniques et autres établissements de la loi hospitalière' }, { valeur: 'ehpad', libelle: 'EHPAD' }], valeur: '' })}
 </form>
 <p id="hop-statut" class="aide" aria-live="polite"></p>
 <div id="hop-resultats"><p>Choisis un département pour voir ses établissements, ou écris au moins trois lettres du nom d’un hôpital ou d’une clinique pour chercher dans toute la France.</p></div>
@@ -734,17 +727,10 @@ ${partPersonnelle()}`
 
 function brancherComptes(cible: HTMLElement, f: Finances | null) {
   const zone = cible.querySelector<HTMLElement>('#hop-groupes')
-  const choixAnnee = cible.querySelector<HTMLSelectElement>('#hop-annee')
+  const choixAnnee = cible.querySelector<HTMLElement>('#hop-annee')
   if (!f || !zone || !choixAnnee) return
-  let groupe: 'categorie' | 'activite_principale' | 'secteur' = 'categorie'
-  const dessiner = () => (zone.innerHTML = tableComptes(f, choixAnnee.value, groupe))
-  cible.querySelectorAll<HTMLButtonElement>('[data-groupe]').forEach((b) =>
-    b.addEventListener('click', () => {
-      groupe = b.dataset.groupe as typeof groupe
-      cible.querySelectorAll('[data-groupe]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
-      dessiner()
-    }),
-  )
+  const dessiner = () => (zone.innerHTML = tableComptes(f, valeurChoix(cible, 'hop-annee'), valeurChoix(cible, 'hop-groupe') as 'categorie' | 'activite_principale' | 'secteur'))
+  cible.querySelector('#hop-groupe')?.addEventListener('change', dessiner)
   choixAnnee.addEventListener('change', dessiner)
 }
 
@@ -913,10 +899,11 @@ async function brancherRecherche(cible: HTMLElement, idx: Index, deps: Departeme
   }
 
   form.addEventListener('submit', (e) => e.preventDefault())
-  form.addEventListener('input', () => {
+  form.addEventListener('input', (e) => {
+    if ((e.target as HTMLElement).matches('.choix-filtre')) return
     etat.dep = (form.querySelector('#hop-dep') as HTMLSelectElement).value
     etat.q = (form.querySelector('#hop-q') as HTMLInputElement).value
-    etat.type = (form.querySelector('#hop-type') as HTMLSelectElement).value
+    etat.type = valeurChoix(form, 'hop-type')
     etat.page = 1
     void dessiner()
   })

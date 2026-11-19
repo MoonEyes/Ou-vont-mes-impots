@@ -1,6 +1,7 @@
 // Opérateurs de l'État (site/data/operateurs/) : financement par l'État, taxes affectées, ressources
 // propres, emplois, séries 2020-2024 et LFI 2025, statut de traçabilité. Rémunérations : seule la
 // somme des dix plus hautes, telle que publiée ; aucun nom de personne.
+import { choix, listeRecherche, valeurChoix } from '../composants/choix'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import { absent, badgeCalcule, entier, eurLisible, h, type Statut, STATUTS, sur100, surligne, traitStatut } from '../util'
@@ -138,14 +139,9 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   ${p ? `<p>Opérateurs financés par le programme ${h(p)} · <a href="${lien('/explorer/operateurs')}">voir tous les opérateurs</a></p>` : ''}
   <label for="op-q">Chercher un opérateur</label>
   <input id="op-q" type="search" autocomplete="off" value="${h(etat.q)}" />
-  <label for="op-mission">Mission</label>
-  <select id="op-mission"><option value="">Toutes</option>${missions.map((m) => `<option${m === etat.mission ? ' selected' : ''}>${h(m)}</option>`).join('')}</select>
-  <label for="op-categorie">Catégorie</label>
-  <select id="op-categorie"><option value="">Toutes</option><option value="__categorie"${etat.categorie === '__categorie' ? ' selected' : ''}>Catégories d’opérateurs (universités, ARS, agences de l’eau...)</option>${statuts
-    .map((s) => `<option value="${h(s)}"${s === etat.categorie ? ' selected' : ''}>Statut ${h(s)}</option>`)
-    .join('')}</select>
-  <label for="op-tri">Trier par</label>
-  <select id="op-tri"><option value="scsp">Subvention ${ANNEE_REF}</option><option value="financement">Total versé par l’État ${ANNEE_REF}</option><option value="etpt">Emplois ${ANNEE_REF}</option><option value="nom">Nom</option></select>
+  ${listeRecherche({ id: 'op-mission', etiquette: 'Mission', options: [], optionsHtml: `<option value="">Toutes</option>${missions.map((m) => `<option${m === etat.mission ? ' selected' : ''}>${h(m)}</option>`).join('')}` })}
+  ${choix({ id: 'op-categorie', etiquette: 'Catégorie', options: [{ valeur: '', libelle: 'Toutes' }, { valeur: '__categorie', libelle: 'Catégories d’opérateurs (universités, ARS, agences de l’eau...)' }, ...statuts.map((s) => ({ valeur: s, libelle: `Statut ${s}` }))], valeur: etat.categorie })}
+  ${choix({ id: 'op-tri', etiquette: 'Trier par', options: [{ valeur: 'scsp', libelle: `Subvention ${ANNEE_REF}` }, { valeur: 'financement', libelle: `Total versé par l’État ${ANNEE_REF}` }, { valeur: 'etpt', libelle: `Emplois ${ANNEE_REF}` }, { valeur: 'nom', libelle: 'Nom' }], valeur: etat.tri })}
 </form>
 <div id="liste-op" aria-live="polite"></div>
 ${idx ? `<details><summary>Limites des données</summary><ul>${limites.map((l) => `<li>${h(l)}</li>`).join('')}</ul></details>` : ''}`
@@ -198,11 +194,12 @@ ${liste.length > visibles.length ? `<button type="button" id="op-plus">Afficher 
   }
   const form = cible.querySelector('#filtres-op') as HTMLFormElement
   form.addEventListener('submit', (e) => e.preventDefault())
-  form.addEventListener('input', () => {
+  form.addEventListener('input', (e) => {
+    if ((e.target as HTMLElement).matches('.choix-filtre')) return
     etat.q = (cible.querySelector('#op-q') as HTMLInputElement).value.trim()
     etat.mission = (cible.querySelector('#op-mission') as HTMLSelectElement).value
-    etat.categorie = (cible.querySelector('#op-categorie') as HTMLSelectElement).value
-    etat.tri = (cible.querySelector('#op-tri') as HTMLSelectElement).value
+    etat.categorie = valeurChoix(cible, 'op-categorie')
+    etat.tri = valeurChoix(cible, 'op-tri') as typeof etat.tri
     etat.page = 1
     dessiner()
   })

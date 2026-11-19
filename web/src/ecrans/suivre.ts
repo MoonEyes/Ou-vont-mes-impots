@@ -3,6 +3,7 @@
 // Sécurité sociale (secu/arbre, liens_affectation de secu/index.json), budget de l'État (arbre/ puis tracabilite/),
 // collectivités locales (arbre_administrations/). La piste s'arrête là où plus rien n'est publié, et la page le dit.
 // Mouvement seulement après un choix de la personne (jauge et défilement), coupé sous prefers-reduced-motion.
+import { fixerChoix, listeRecherche, optionRiche, radioListe, segmente, valeurChoix } from '../composants/choix'
 import { filPiste, type MaillonPiste } from '../composants/fil-euro'
 import { niveauDestinataire, pastilleNiveau } from '../composants/niveaux'
 import { statutPart } from '../composants/tracabilite'
@@ -391,14 +392,13 @@ const FREQUENTS = ['csg_activite', 'impot_revenu', 'tva', 'vieillesse_plafonnee'
 function puces(aff: Affectation, depart: string): string {
   const cles = FREQUENTS.filter((k) => aff.prelevements[k])
   if (!cles.includes(depart)) cles.push(depart)
-  return cles.map((k) => `<button type="button" data-depart="${h(k)}" aria-pressed="${k === depart}">${h(propre(COURTS[k] ?? aff.prelevements[k].libelle))}</button>`).join('')
+  return radioListe({ id: 'suivre-departs', etiquette: 'Départs fréquents', classe: 'suivre-departs', grille: true, options: cles.map((k) => ({ valeur: k, libelle: propre(COURTS[k] ?? aff.prelevements[k].libelle) })), valeur: depart })
 }
 
 function listeDeparts(aff: Affectation, depart: string): string {
-  return `<label for="suivre-tous">Tous les prélèvements (${Object.keys(aff.prelevements).length})</label>
-<select id="suivre-tous">${groupes(aff)
+  return `${listeRecherche({ id: 'suivre-tous', etiquette: `Tous les prélèvements (${Object.keys(aff.prelevements).length})`, options: [], optionsHtml: `${groupes(aff)
     .map((g) => `<optgroup label="${h(g.titre)}">${g.cles.map((k) => `<option value="${h(k)}"${k === depart ? ' selected' : ''}>${h(propre(COURTS[k] ?? aff.prelevements[k].libelle))}</option>`).join('')}</optgroup>`)
-    .join('')}</select>`
+    .join('')}` })}`
 }
 
 const groupes = (aff: Affectation) => {
@@ -457,7 +457,7 @@ function rendreEtapes(aff: Affectation, e: Etat): string {
       const negatif = o.part < 0
       const valeur = negatif ? `en déduction : ${montant(-o.part * c[i], e.base)}` : montant(o.part * c[i], e.base)
       const nom = o.suite && !negatif
-        ? `<button type="button" class="suivre-choix" data-etape="${i}" data-cle="${h(o.cle)}" aria-pressed="${choisi === o.cle}">${o.pastille ?? ''}${h(o.nom)}</button>`
+        ? optionRiche({ classe: 'suivre-choix', choisi: choisi === o.cle, attributs: `data-etape="${i}" data-cle="${h(o.cle)}"`, html: `${o.pastille ?? ''}${h(o.nom)}` })
         : `<span class="nom">${o.pastille ?? ''}${h(o.nom)}</span>`
       return `<li${choisi === o.cle ? ' class="actif"' : ''}><div class="barre-tete">${nom}<span class="valeur">${h(valeur)} ${badgeStatut(o.statut)}</span></div>${
         o.detail ? `<div class="aide">${h(o.detail)}</div>` : ''
@@ -473,7 +473,7 @@ function rendreEtapes(aff: Affectation, e: Etat): string {
       ? `<div class="suivre-fin">
   <h4>${n.fin.statut ? `${badgeStatut(n.fin.statut)} ` : ''}La piste s’arrête ici</h4>
   <p>${h(n.fin.texte)}</p>
-  ${n.fin.alternative ? `<p><button type="button" class="suivre-choix" data-etape="${i}" data-cle="${h(n.fin.alternative.cle)}" aria-pressed="${choisi === n.fin.alternative.cle}">${h(n.fin.alternative.nom)}</button> ${badgeStatut(n.fin.alternative.statut)}</p>` : ''}
+  ${n.fin.alternative ? `<p>${optionRiche({ classe: 'suivre-choix', choisi: choisi === n.fin.alternative.cle, attributs: `data-etape="${i}" data-cle="${h(n.fin.alternative.cle)}"`, html: h(n.fin.alternative.nom) })} ${badgeStatut(n.fin.alternative.statut)}</p>` : ''}
   ${n.fin.liens?.length ? `<ul>${n.fin.liens.map((l) => `<li><a href="${h(l.href)}">${h(l.texte)}</a></li>`).join('')}</ul>` : ''}
 </div>`
       : ''
@@ -529,7 +529,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const e: Etat = { depart, base, piste: [], niveaux: [] }
   Object.assign(e, await construire(lecteur, depart, pisteDemandee ? pisteDemandee.split('~').filter(Boolean) : null))
 
-  const boutonsDepart = `<div class="bascule suivre-departs" role="group" aria-label="Départs fréquents">${puces(aff, e.depart)}</div>
+  const boutonsDepart = `<div id="suivre-rangee">${puces(aff, e.depart)}</div>
 <div class="suivre-tous">${listeDeparts(aff, e.depart)}</div>`
 
   cible.innerHTML = `
@@ -540,8 +540,7 @@ ${legendeStatuts()}
 <section class="carte" aria-labelledby="suivre-titre-depart">
   <h2 id="suivre-titre-depart">D’où part ton euro</h2>
   ${boutonsDepart}
-  <h3>Montant suivi</h3>
-  <div class="bascule"><button type="button" data-base="1" aria-pressed="${e.base === 1}">Sur 1 €</button><button type="button" data-base="100" aria-pressed="${e.base === 100}">Sur 100 €</button></div>
+  ${segmente({ id: 'suivre-base', etiquette: 'Montant suivi', options: [{ valeur: '1', libelle: 'Sur 1 €' }, { valeur: '100', libelle: 'Sur 100 €' }], valeur: String(e.base) })}
 </section>
 <section class="carte" aria-labelledby="suivre-titre-piste">
   <h2 id="suivre-titre-piste">Ta piste</h2>
@@ -578,38 +577,44 @@ ${legendeStatuts()}
   peindre()
 
   let enCoursDeCalcul = false
-  const rangee = cible.querySelector('.suivre-departs') as HTMLElement
+  const rangee = cible.querySelector('#suivre-rangee') as HTMLElement
   const tous = cible.querySelector('#suivre-tous') as HTMLSelectElement
   const changerDepart = async (k: string) => {
     if (!aff.prelevements[k]) return
     e.depart = k
     Object.assign(e, await construire(lecteur, e.depart, null))
-    rangee.innerHTML = puces(aff, k)
-    tous.value = k
+    // Départ déjà parmi les puces : seule la puce cochée change (le focus clavier reste en place) ; sinon il s'y ajoute.
+    if (rangee.querySelector(`input[value="${k}"]`)) fixerChoix(cible, 'suivre-departs', k)
+    else rangee.innerHTML = puces(aff, k)
+    fixerChoix(cible, 'suivre-tous', k)
     peindre()
     annoncer(`Piste de départ : ${propre(COURTS[k] ?? aff.prelevements[k].libelle)}`)
   }
-  tous.addEventListener('change', async () => {
-    if (enCoursDeCalcul || !tous.value || tous.value === e.depart) return
+  // Départ choisi dans les puces ou dans la liste : le dernier choix l'emporte, même fait pendant un calcul.
+  let departVoulu = e.depart
+  const demanderDepart = async (k: string) => {
+    if (!k) return
+    departVoulu = k
+    if (enCoursDeCalcul) return
     enCoursDeCalcul = true
     try {
-      await changerDepart(tous.value)
+      while (departVoulu !== e.depart && aff.prelevements[departVoulu]) await changerDepart(departVoulu)
     } finally {
       enCoursDeCalcul = false
     }
+  }
+  tous.addEventListener('change', () => demanderDepart(tous.value))
+  rangee.addEventListener('change', () => demanderDepart(valeurChoix(cible, 'suivre-departs')))
+  cible.querySelector('#suivre-base')?.addEventListener('change', () => {
+    e.base = valeurChoix(cible, 'suivre-base') === '100' ? 100 : 1
+    peindre()
   })
   cible.addEventListener('click', async (ev) => {
     const b = (ev.target as HTMLElement).closest('button')
     if (!b || !cible.contains(b) || enCoursDeCalcul) return
     enCoursDeCalcul = true
     try {
-      if (b.dataset.depart) {
-        await changerDepart(b.dataset.depart)
-      } else if (b.dataset.base) {
-        e.base = b.dataset.base === '100' ? 100 : 1
-        cible.querySelectorAll('[data-base]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
-        peindre()
-      } else if (b.dataset.etape !== undefined && b.dataset.cle) {
+      if (b.dataset.etape !== undefined && b.dataset.cle) {
         const i = Number(b.dataset.etape)
         const r = await construire(lecteur, e.depart, [...e.piste.slice(0, i), b.dataset.cle])
         Object.assign(e, r)

@@ -1,4 +1,5 @@
 // Écran 3 : où va l'argent de l'État « sur 100 € », avec la part empruntée.
+import { choixLiens } from '../composants/choix'
 import { billet, type Part, partsAdministrations, ton } from '../composants/billet'
 import { eurosNonPublies } from '../composants/chiffres-site'
 import { blocTracabilite } from '../composants/tracabilite'
@@ -158,9 +159,7 @@ ${billet(
     <p class="chapeau">Le budget de l’État (${h(md(total))}, ${h(periode)}) découpé en grands postes, ramené à 100 €. Les remboursements et dégrèvements d’impôts ne sont pas comptés : c’est de l’argent rendu, pas dépensé.</p>
     ${en2025 ? `<p class="chapeau" id="niveau-2025">${h(PHRASE_NIVEAU_2025)}</p>` : ''}
   </div>
-  <div class="bascule" role="group" aria-label="Millésime">
-    ${vues.map((x) => `<a class="bouton" href="${lien('/explorer/etat', { m: x.cle })}"${x === v ? ' aria-current="true"' : ''}>${h(x.libelle)}</a>`).join('')}
-  </div>
+  ${choixLiens({ etiquette: 'Millésime', liens: vues.map((x) => ({ href: lien('/explorer/etat', { m: x.cle }), libelle: x.libelle, courant: x === v })) })}
 </div>
 ${retourResultat()}
 ${perso}

@@ -3,6 +3,7 @@
 // budget) sur 100 € de son budget, le coût complet moyen d'un emploi (calcul du site, approché), les évolutions publiées
 // par l'Insee et les écarts entre sources, posés côte à côte sans arbitrage ni addition. Rien d'individuel : aucune
 // rémunération d'une personne, aucun nom ; les cabinets ministériels ne sont repris que par totaux.
+import { listeRecherche } from '../composants/choix'
 import { fragmentDepartement } from '../chemins'
 import { billet, listeParts, type Part } from '../composants/billet'
 import { partPersonnelle } from '../composants/hub'
@@ -547,10 +548,9 @@ function blocTerritoires(ter: Territoires, dep: string | null): string {
   ]
   const regions = Object.entries(ter.regions).sort((a, c) => a[1].libelle.localeCompare(c[1].libelle, 'fr'))
   const initial = dep && presents.has(dep) ? `d-${dep}` : ''
-  return `<form id="fp-territoire-form"><label for="fp-territoire">Département ou région</label>
-<select id="fp-territoire"><option value="">France (repères nationaux)</option><optgroup label="Départements">${deps
+  return `<form id="fp-territoire-form">${listeRecherche({ id: 'fp-territoire', etiquette: 'Département ou région', options: [], optionsHtml: `<option value="">France (repères nationaux)</option><optgroup label="Départements">${deps
     .map(([c, n]) => `<option value="d-${h(c)}"${`d-${c}` === initial ? ' selected' : ''}>${h(c)} ${h(n)}</option>`)
-    .join('')}</optgroup><optgroup label="Régions">${regions.map(([c, z]) => `<option value="r-${h(c)}">${h(z.libelle)}</option>`).join('')}</optgroup></select></form>
+    .join('')}</optgroup><optgroup label="Régions">${regions.map(([c, z]) => `<option value="r-${h(c)}">${h(z.libelle)}</option>`).join('')}</optgroup>` })}</form>
 <div id="fp-zone-territoire" aria-live="polite">${zoneTerritoire(ter, initial)}</div>
 <p class="aide">${h(ter.champ)} ${badgeStatut('trace')}</p>
 ${source(ter.source, ter.millesime)}`

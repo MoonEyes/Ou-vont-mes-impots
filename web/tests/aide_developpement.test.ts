@@ -235,12 +235,12 @@ describe('écran aide publique au développement', () => {
 
   it('choix de l’année : la déclaration demandée, la dernière si l’année est inconnue', async () => {
     await ecran(`${ROUTE}?a=2023`)
-    expect(main.querySelector('.bascule [aria-current="true"]')?.textContent).toBe('2023')
+    expect(main.querySelector('.choix-liens [aria-current="page"]')?.textContent).toBe('2023')
     expect(tableau('Aide déclarée pour 2023 par canal')).not.toBeNull()
     expect(esp(main.querySelector('.cles li')?.textContent)).toContain(esp(eurLisible(total(2023, 'equivalent_don_eur'))))
     await ecran(`${ROUTE}?a=1990`)
-    expect(main.querySelector('.bascule [aria-current="true"]')?.textContent).toBe(String(derniere))
-    expect(main.querySelectorAll('.bascule a')).toHaveLength(apd.annees.length)
+    expect(main.querySelector('.choix-liens [aria-current="page"]')?.textContent).toBe(String(derniere))
+    expect(main.querySelectorAll('.choix-liens a')).toHaveLength(apd.annees.length)
   })
 
   it('sans pays choisi, les fichiers de l’AFD et de l’OCDE ne sont pas lus', async () => {

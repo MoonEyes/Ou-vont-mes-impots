@@ -105,7 +105,7 @@ describe('outre-mer', () => {
     const attendu = terrs.reduce((s, t) => s + valeurColonne(colonnes, t.credits_etat.dpt_plf2026.missions!.find((m) => m.mission === 'Enseignement scolaire')!.valeurs, 'execution_2024_cp')!, 0)
     expect(valeurColonne(colonnes, ens.valeurs, 'execution_2024_cp')).toBe(attendu)
     expect(Array.from(main.querySelectorAll('[data-regle-ordre]')).map((x) => x.textContent)).toContain(REGLE_MISSIONS)
-    expect(main.querySelector('.bascule [aria-current="true"]')?.textContent).toBe('Les six ensemble')
+    expect(main.querySelector('.choix-liens [aria-current="page"]')?.textContent).toBe('Les six ensemble')
   })
 
   it('un territoire choisi : ses missions, ses blocs publiés ou non, le recoupement de la dotation globale', async () => {
@@ -114,7 +114,7 @@ describe('outre-mer', () => {
     await ecran('#/explorer/outre-mer?t=988')
     remettre()
     const t = terrs.find((x) => x.territoire.code === '988')!
-    expect(main.querySelector('.bascule [aria-current="true"]')?.textContent).toBe(t.territoire.nom)
+    expect(main.querySelector('.choix-liens [aria-current="page"]')?.textContent).toBe(t.territoire.nom)
     expect(main.querySelector('#missions')?.textContent).toContain(t.territoire.nom)
     const d = t.credits_etat.dpt_plf2026
     const premiere = trierMissions(d.missions!, d.colonnes!)[0]
@@ -125,7 +125,7 @@ describe('outre-mer', () => {
     expect(rec.querySelectorAll('tbody tr').length).toBe(idx.ecarts.filter((e) => e.territoire === '988').length)
     // Code inconnu : retour à la vue des six ensemble.
     await ecran('#/explorer/outre-mer?t=999')
-    expect(main.querySelector('.bascule [aria-current="true"]')?.textContent).toBe('Les six ensemble')
+    expect(main.querySelector('.choix-liens [aria-current="page"]')?.textContent).toBe('Les six ensemble')
   })
 
   it('aucune valeur absente affichée comme 0, calculs par habitant prudents', () => {

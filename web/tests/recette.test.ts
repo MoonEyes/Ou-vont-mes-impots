@@ -5,7 +5,7 @@ import { ROUTES } from '../src/main'
 import { afficher } from '../src/routeur'
 import { session } from '../src/etat'
 import { destinataire } from '../src/calcul/destinataires'
-import { attendreQue, monterPage } from './aide-dom'
+import { attendreQue, choisirValeur, monterPage } from './aide-dom'
 
 let main: HTMLElement
 const ecran = async (fragment: string) => {
@@ -68,9 +68,7 @@ describe('recette', () => {
 
   it('saisie : message hors V1 focalisable', async () => {
     await ecran('#/calcul')
-    const s = main.querySelector<HTMLSelectElement>('#p1-statut')!
-    s.value = 'demandeur_emploi'
-    s.dispatchEvent(new Event('change', { bubbles: true }))
+    choisirValeur(main, 'p1-statut', 'demandeur_emploi')
     soumettre()
     await attendreQue(() => !!main.querySelector('#retour .avertissement'))
     expect(main.querySelector('#retour .avertissement')?.getAttribute('tabindex')).toBe('-1')

@@ -63,7 +63,7 @@ describe('suivre un euro', () => {
   it('par défaut : la CSG, suivie par la plus grande part jusqu’à la fin de la piste', async () => {
     await ecran('#/suivre-un-euro')
     expect(main.querySelector('h1')?.textContent).toContain('Suivre un euro')
-    expect(main.querySelector('[data-depart="csg_activite"]')?.getAttribute('aria-pressed')).toBe('true')
+    expect(main.querySelector<HTMLInputElement>('#suivre-departs input[value="csg_activite"]')?.checked).toBe(true)
     // Étape 1 : la répartition légale, lue dans les données.
     const csg = aff.prelevements.csg_activite.ventilation as { destinataire: string; part: number }[]
     const e1 = etapes()[0]
@@ -87,10 +87,10 @@ describe('suivre un euro', () => {
 
   it('sur 100 € : les montants changent d’échelle', async () => {
     await ecran('#/suivre-un-euro')
-    await cliquer(main.querySelector('[data-base="100"]'))
+    await cliquer(main.querySelector('#suivre-base [value="100"]'))
     const cnam = aff.prelevements.csg_activite.ventilation.find((v: { destinataire: string }) => v.destinataire === 'cnam')
     expect(etapes()[0].textContent).toContain(montant(cnam.part, 100))
-    expect(main.querySelector('[data-base="100"]')?.getAttribute('aria-pressed')).toBe('true')
+    expect(main.querySelector('#suivre-base [value="100"]')?.getAttribute('aria-checked')).toBe('true')
   })
 
   it('choisir une piste : les étapes suivantes sont recalculées, le focus va à la nouvelle étape, mouvement coupé si demandé', async () => {
@@ -160,21 +160,21 @@ describe('suivre un euro', () => {
 
   it('départ : six puces fréquentes et une liste groupée de tous les prélèvements (lot 3, pas de mur de puces)', async () => {
     await ecran('#/suivre-un-euro')
-    const puces = [...main.querySelectorAll<HTMLButtonElement>('.suivre-departs [data-depart]')]
+    const puces = [...main.querySelectorAll<HTMLInputElement>('#suivre-departs input[type="radio"]')]
     expect(puces.length).toBeLessThanOrEqual(7)
-    expect(puces.find((b) => b.dataset.depart === 'csg_activite')?.getAttribute('aria-pressed')).toBe('true')
+    expect(puces.find((b) => b.value === 'csg_activite')?.checked).toBe(true)
     const liste = main.querySelector<HTMLSelectElement>('#suivre-tous')!
     expect(main.querySelector('label[for="suivre-tous"]')).not.toBeNull()
     expect(liste.querySelectorAll('optgroup').length).toBeGreaterThan(1)
     const toutes = [...liste.querySelectorAll('option')].map((o) => o.value)
-    for (const p of puces) expect(toutes).toContain(p.dataset.depart)
+    for (const p of puces) expect(toutes).toContain(p.value)
     // Un départ hors des puces, choisi dans la liste : la piste change et le départ rejoint les puces, pressé.
-    const autre = toutes.find((k) => !puces.some((p) => p.dataset.depart === k))!
+    const autre = toutes.find((k) => !puces.some((p) => p.value === k))!
     const avant = main.querySelector('#suivre-etapes')!.innerHTML
     liste.value = autre
     liste.dispatchEvent(new Event('change'))
     await attendreQue(() => main.querySelector('#suivre-etapes')!.innerHTML !== avant)
-    expect(main.querySelector(`.suivre-departs [data-depart="${autre}"]`)?.getAttribute('aria-pressed')).toBe('true')
+    expect(main.querySelector<HTMLInputElement>(`#suivre-departs input[value="${autre}"]`)?.checked).toBe(true)
     // Piste : libellés entiers (plus de troncature « … »), montant à droite.
     expect(main.querySelector('.fil-piste')?.textContent).not.toContain('…')
   })

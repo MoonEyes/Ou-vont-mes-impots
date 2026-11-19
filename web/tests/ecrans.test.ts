@@ -6,7 +6,7 @@ import { afficher, redirection } from '../src/routeur'
 import { session } from '../src/etat'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { attendreQue, monterPage, requetes } from './aide-dom'
+import { attendreQue, choisirValeur, monterPage, requetes } from './aide-dom'
 
 const eurFr = (x: number) => `${new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(Math.round(x))} €`.replace(/\s+/g, ' ')
 
@@ -148,9 +148,7 @@ describe('écrans', () => {
 
   it('1. saisie : profil hors V1, message de sortie et redirection', async () => {
     await ecran('#/calcul')
-    const s = main.querySelector<HTMLSelectElement>('#p1-statut')!
-    s.value = 'demandeur_emploi'
-    s.dispatchEvent(new Event('change', { bubbles: true }))
+    choisirValeur(main, 'p1-statut', 'demandeur_emploi')
     main.querySelector<HTMLFormElement>('#formulaire')!.dispatchEvent(new Event('submit', { cancelable: true }))
     await attendreQue(() => !!main.querySelector('#retour .avertissement'))
     expect(texte()).toContain('allocations chômage')
@@ -179,8 +177,8 @@ describe('écrans', () => {
     const patronal = main.querySelector('[aria-labelledby=titre-patronal]')!
     expect(patronal.querySelectorAll('.lignes li').length).toBeGreaterThan(8)
     await attendreQue(() => main.querySelectorAll('#par-destinataire li').length > 0)
-    main.querySelector<HTMLButtonElement>('#avec-patronal')!.click()
-    await attendreQue(() => main.querySelector('#avec-patronal')?.getAttribute('aria-pressed') === 'true')
+    main.querySelector<HTMLButtonElement>('#paie-contenu [value="avec"]')!.click()
+    await attendreQue(() => main.querySelector('#paie-contenu [value="avec"]')?.getAttribute('aria-checked') === 'true')
     expect(texte()).toContain('Assurance maladie')
   }, 90000)
 
@@ -448,9 +446,7 @@ describe('écrans', () => {
     expect(texte()).toMatch(/sur 100 € de subventions/)
     for (const l of ['Tracé', 'Approché nommé', 'Approché par catégorie']) expect(texte()).toContain(l)
     // Filtre par catégorie d'opérateurs
-    const cat = main.querySelector<HTMLSelectElement>('#op-categorie')!
-    cat.value = '__categorie'
-    cat.dispatchEvent(new Event('input', { bubbles: true }))
+    choisirValeur(main, 'op-categorie', '__categorie')
     const lignes = main.querySelectorAll('#liste-op details[data-id]')
     expect(lignes.length).toBe(4)
     // Fiche d'une catégorie : séries, budget voté 2025, établissements, rémunérations en somme seulement
@@ -462,10 +458,8 @@ describe('écrans', () => {
     expect(fiche).toContain('Approché par catégorie')
     expect(fiche).toMatch(/dix plus hautes rémunérations 2024 \(somme\)/)
     // Tri par nom
-    cat.value = ''
-    const tri = main.querySelector<HTMLSelectElement>('#op-tri')!
-    tri.value = 'nom'
-    tri.dispatchEvent(new Event('input', { bubbles: true }))
+    choisirValeur(main, 'op-categorie', '')
+    choisirValeur(main, 'op-tri', 'nom')
     const noms = Array.from(main.querySelectorAll('#liste-op summary')).map((x) => x.textContent ?? '')
     expect(noms).toEqual([...noms].sort((a, b) => a.localeCompare(b, 'fr')))
     // Depuis un programme

@@ -3,6 +3,7 @@
 // Agrégats publiés seulement, aucune donnée individuelle. Chaque série garde sa source : deux sources ne sont jamais
 // additionnées et leurs écarts sont montrés tels que le pipeline les publie. Les liens vers les arbres (budget de
 // l'État, Sécurité sociale) désignent le même argent vu du côté du financeur : jamais ajoutés au montant versé.
+import { choix, listeRecherche, valeurChoix } from '../composants/choix'
 import { fragmentDepartement } from '../chemins'
 import { partPersonnelle } from '../composants/hub'
 import { TOUS_DEPARTEMENTS } from '../departements'
@@ -570,13 +571,10 @@ ${prestations.map((p) => fiche(p, nat.prestations[p.id], index, annees)).join('\
 <h2>Dans ton département</h2>
 <p>Les caisses d’allocations familiales publient, pour chaque département, le nombre de foyers payés et les montants versés (sans la Mutualité sociale agricole). Pour le minimum vieillesse, seul le nombre d’allocataires est publié par département. Ne sont pas publiés par département : ${h(nonCouvert.join(' ; '))}.</p>
 <form id="pr-dep" class="recherche">
-  <div><label for="pr-dep-choix">Département</label><select id="pr-dep-choix"><option value="">Choisir un département</option>${TOUS_DEPARTEMENTS.map(
+  <div>${listeRecherche({ id: 'pr-dep-choix', etiquette: 'Département', options: [], optionsHtml: `<option value="">Choisir un département</option>${TOUS_DEPARTEMENTS.map(
     ([k, n]) => `<option value="${h(k)}"${k === depChoisi ? ' selected' : ''}>${h(k)} ${h(n)}</option>`,
-  ).join('')}</select></div>
-  <div><label for="pr-dep-an">Année</label><select id="pr-dep-an">${[...deps]
-    .reverse()
-    .map((a) => `<option${a === anChoisi ? ' selected' : ''}>${h(a)}</option>`)
-    .join('')}</select></div>
+  ).join('')}` })}</div>
+  <div>${choix({ id: 'pr-dep-an', etiquette: 'Année', options: [...deps].reverse().map((a) => ({ valeur: a, libelle: a })), valeur: anChoisi })}</div>
 </form>
 <div id="pr-dep-resultat" aria-live="polite">${depInitial || INVITE_DEP}</div>
 <h2>Ce que ces chiffres ne disent pas</h2>
@@ -595,7 +593,7 @@ ${partPersonnelle()}`
   // Département et année : le bloc se recalcule sur place, sans recharger la page.
   const zone = cible.querySelector('#pr-dep-resultat') as HTMLElement
   const choixDep = cible.querySelector('#pr-dep-choix') as HTMLSelectElement
-  const choixAn = cible.querySelector('#pr-dep-an') as HTMLSelectElement
+  const choixAn = cible.querySelector('#pr-dep-an') as HTMLElement
   let jeton = 0
   const brancherEvolution = () =>
     zone.querySelectorAll<HTMLDetailsElement>('details.pr-evolution').forEach((d) =>
@@ -610,7 +608,7 @@ ${partPersonnelle()}`
   const majDepartement = async () => {
     const moi = ++jeton
     const code = choixDep.value
-    const html = nomsDepartements.has(code) ? await blocDepartement(index, nat, ordre, code, choixAn.value) : INVITE_DEP
+    const html = nomsDepartements.has(code) ? await blocDepartement(index, nat, ordre, code, valeurChoix(cible, 'pr-dep-an')) : INVITE_DEP
     if (moi !== jeton) return
     zone.innerHTML = html
     appliquerLargeurs(zone)

@@ -1,4 +1,5 @@
 // Écran 2 : ce que tu verses (total annuel, ligne par ligne avec destinataire, patronal à part).
+import { segmente, valeurChoix } from '../composants/choix'
 import { type Affectation, cleAffectation, parDestinataire } from '../calcul/agregats'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
@@ -388,10 +389,7 @@ ${repli({
   resume: `Les ${h(pluriel(nbDest, 'destinataire'))}, montant par montant`,
   contenu: `${
     patronales.length
-      ? `<div class="bascule" role="group" aria-label="Contenu de la répartition">
-  <button type="button" id="sans-patronal" aria-pressed="true">Ce que tu verses</button>
-  <button type="button" id="avec-patronal" aria-pressed="false">Avec la part de l’employeur</button>
-</div>`
+      ? segmente({ id: 'paie-contenu', etiquette: 'Contenu de la répartition', options: [{ valeur: 'sans', libelle: 'Ce que tu verses' }, { valeur: 'avec', libelle: 'Avec la part de l’employeur' }], valeur: 'sans' })
       : ''
   }
 <div id="par-destinataire" aria-live="polite"></div>`,
@@ -419,11 +417,8 @@ ${
   const montrer = async (avec: boolean) => {
     zone.innerHTML = await parDest(avec)
     appliquerLargeurs(zone)
-    cible.querySelector('#sans-patronal')?.setAttribute('aria-pressed', String(!avec))
-    cible.querySelector('#avec-patronal')?.setAttribute('aria-pressed', String(avec))
   }
-  cible.querySelector('#sans-patronal')?.addEventListener('click', () => montrer(false))
-  cible.querySelector('#avec-patronal')?.addEventListener('click', () => montrer(true))
+  cible.querySelector('#paie-contenu')?.addEventListener('change', () => montrer(valeurChoix(cible, 'paie-contenu') === 'avec'))
   await montrer(false)
   cible.querySelector('#partager-carte')?.addEventListener('click', async () => {
     const info = cible.querySelector('#partage-info') as HTMLElement

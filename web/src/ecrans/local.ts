@@ -1,4 +1,5 @@
 // Hub « Chez moi » : choisir sa commune (fichiers par département, chargés à la demande).
+import { listeRecherche, remplirListe } from '../composants/choix'
 import { fragmentCommune, fragmentDepartement } from '../chemins'
 import { cartesRayons, partPersonnelle, planRubrique } from '../composants/hub'
 import { trame } from '../composants/trame'
@@ -21,11 +22,9 @@ ${planRubrique('/local')}
     ${formulaire('local-recherche')}
     <h2>Chercher une commune par département</h2>
     <form id="choix-commune" class="carte carte-contour">
-      <label for="dep-local">Département</label>
-      <select id="dep-local"><option value="">Choisir</option>${TOUS_DEPARTEMENTS.map(([c, n]) => `<option value="${c}">${c} ${h(n)}</option>`).join('')}</select>
+      ${listeRecherche({ id: 'dep-local', etiquette: 'Département', options: [], optionsHtml: `<option value="">Choisir</option>${TOUS_DEPARTEMENTS.map(([c, n]) => `<option value="${c}">${c} ${h(n)}</option>`).join('')}` })}
       <div id="com-local-bloc" hidden>
-        <label for="com-local">Commune</label>
-        <select id="com-local"></select>
+        ${listeRecherche({ id: 'com-local', etiquette: 'Commune', options: [], optionsHtml: `` })}
       </div>
       <p class="actions"><button type="submit" class="bouton-principal">Voir ma commune</button></p>
       <p id="msg-local" class="message-champ" hidden></p>
@@ -50,11 +49,11 @@ ${partPersonnelle()}`
   const charger = async (d: string, choisie?: string) => {
     cible.querySelector<HTMLElement>('#com-local-bloc')!.hidden = !d
     if (!d) return
-    com.innerHTML = '<option value="">Chargement…</option>'
+    remplirListe(com, '<option value="">Chargement…</option>')
     const g = await chargerSiPresent<{ communes: Record<string, { nom: string; population?: number }> }>(`local/geo/${d}.json`)
     communes = g?.communes ?? {}
     const liste = Object.entries(g?.communes ?? {}).sort((a, b) => a[1].nom.localeCompare(b[1].nom, 'fr'))
-    com.innerHTML = liste.map(([c, v]) => `<option value="${c}"${c === choisie ? ' selected' : ''}>${h(v.nom)}</option>`).join('')
+    remplirListe(com, [{ valeur: '', libelle: 'Choisir' }, ...liste.map(([c, v]) => ({ valeur: c, libelle: v.nom }))], choisie && communes[choisie] ? choisie : '')
   }
   dep.addEventListener('change', () => charger(dep.value))
   if (insee) {

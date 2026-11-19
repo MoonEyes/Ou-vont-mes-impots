@@ -2,6 +2,7 @@
 // Montants notifiés hors taxes, jamais des paiements. Les lignes écartées (marques du producteur du jeu, séries de
 // montants identiques) sont comptées et montrées à part, jamais ajoutées aux totaux. Seules des personnes morales
 // sont nommées ; entrepreneurs individuels et unités non diffusibles sont agrégés.
+import { choixLiens } from '../composants/choix'
 import { billet, listeParts, tableauBillet, type Famille, type Part } from '../composants/billet'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
@@ -414,9 +415,7 @@ ${source(clair(idx.source), clair(idx.millesime))}
   cible.innerHTML = `
 <h1>Les marchés publics</h1>
 <p class="chapeau">Un marché public est un achat d’un acheteur public (État, commune, département, région, hôpital, établissement public…) à une entreprise ou à un organisme : des travaux, des fournitures ou des services. Les montants ci-dessous sont ceux publiés à la signature du marché, hors taxes : pour un accord-cadre, c’est un montant maximum sur plusieurs années. Ce ne sont pas des sommes payées.</p>
-<div class="bascule" role="group" aria-label="Année de notification">${annees
-    .map((y) => `<a class="bouton" href="${lien(CHEMIN, { a: y })}"${y === a ? ' aria-current="true"' : ''}>${y}</a>`)
-    .join('')}</div>
+${choixLiens({ etiquette: 'Année de notification', liens: annees.map((y) => ({ href: lien(CHEMIN, { a: y }), libelle: String(y), courant: y === a })) })}
 <ul class="cles" aria-label="Chiffres clés des marchés publics en ${a}">
   <li class="cle-famille"><strong>${h(md(total))}</strong><span>de marchés notifiés en ${a}, hors taxes</span>${statutTrace}</li>
   <li><strong>${h(entier(an.marches))}</strong><span>marchés publiés en ${a}, par ${h(entier(an.acheteurs))} acheteurs</span>${statutTrace}</li>

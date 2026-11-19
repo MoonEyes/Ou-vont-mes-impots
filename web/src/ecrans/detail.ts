@@ -1,4 +1,5 @@
 // Écran 4 : détail à profondeur libre (arbre chargé à la demande, fil d'Ariane, barres, Sankey).
+import { choixLiens } from '../composants/choix'
 import { dessinerSankey, ecranLarge } from '../composants/sankey'
 import { blocTracabilite } from '../composants/tracabilite'
 import { charger, deplier, type Noeud, trouverNoeud, type VueArbre, VUES_ARBRE } from '../donnees'
@@ -97,9 +98,7 @@ export async function rendreArbre(cible: HTMLElement, params: URLSearchParams, c
 
   cible.innerHTML = `
 <h1>${h(libelle(noeud.nom))}</h1>
-<div class="bascule" role="group" aria-label="Vue du budget">
-  ${cfg.vues.map((x) => `<a class="bouton" href="${lien(cfg.page, { m: x.cle })}"${x === vue ? ' aria-current="true"' : ''}>${h(x.libelle)}</a>`).join('')}
-</div>
+${choixLiens({ etiquette: 'Vue du budget', liens: cfg.vues.map((x) => ({ href: lien(cfg.page, { m: x.cle }), libelle: x.libelle, courant: x === vue })) })}
 ${ariane}
 <div class="carte" data-cle>
   <p class="grand-chiffre">${surligne(md(noeud.md))}</p>

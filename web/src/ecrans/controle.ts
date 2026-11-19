@@ -1,4 +1,5 @@
 // Contrôle, représentation d'intérêts et aides aux entreprises (site/data/controle/).
+import { listeRecherche } from '../composants/choix'
 import { DEPARTEMENTS } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
@@ -45,9 +46,9 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 <p class="chapeau">Qui contrôle l’usage de l’argent public, quelles organisations déclarent des actions de représentation d’intérêts auprès des décideurs publics, et ce que les études publiées comptent comme aides aux entreprises.</p>
 <h2>Les rapports de contrôle</h2>
 <p>${h(entier(idx.controle.collectivites.publications_rattachees))} rapports des chambres régionales des comptes rattachés à une collectivité ; ${h(entier(idx.controle.programmes.neb))} notes d’exécution budgétaire de la Cour des comptes rattachées aux missions de l’État.</p>
-<form><label for="dep-controle">Rapports sur les collectivités d’un département</label><select id="dep-controle"><option value="">Choisir</option>${DEPARTEMENTS.map(
+<form>${listeRecherche({ id: 'dep-controle', etiquette: 'Rapports sur les collectivités d’un département', options: [], optionsHtml: `<option value="">Choisir</option>${DEPARTEMENTS.map(
     ([k, n]) => `<option value="${k}"${k === dep ? ' selected' : ''}>${k} ${h(n)}</option>`,
-  ).join('')}</select></form>
+  ).join('')}` })}</form>
 ${
   depPubs
     ? `<ul class="lignes">${depPubs.publications

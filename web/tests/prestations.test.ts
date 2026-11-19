@@ -11,7 +11,7 @@ import { adresseBloc } from '../src/ecrans/prestations'
 import { afficher, titreDocument } from '../src/routeur'
 import { ROUTES } from '../src/routes'
 import { entier, eurLisible, pct, sur100 } from '../src/util'
-import { attendreQue, monterPage, requetes } from './aide-dom'
+import { attendreQue, choisirValeur, monterPage, requetes } from './aide-dom'
 
 type Serie = Record<string, number | null>
 interface Lien {
@@ -295,9 +295,7 @@ describe('prestations versées aux ménages', () => {
     dep.dispatchEvent(new Event('change'))
     await attendreQue(() => (zoneDep().querySelector('h3')?.textContent ?? '').includes('Loire-Atlantique (44)'))
     const ans = Object.keys(index.fichiers.departements).sort()
-    const an = main.querySelector<HTMLSelectElement>('#pr-dep-an')!
-    an.value = ans[0]
-    an.dispatchEvent(new Event('change'))
+    choisirValeur(main, 'pr-dep-an', ans[0])
     await attendreQue(() => (zoneDep().querySelector('h3')?.textContent ?? '').includes(`en ${ans[0]}`))
     expect(location.hash).toBe(avant)
     const evol = zoneDep().querySelector<HTMLDetailsElement>('details.pr-evolution')!

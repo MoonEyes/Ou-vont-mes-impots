@@ -7,7 +7,8 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import { dateLongue, filtrer, type Fraicheur, MOT_STATUT, pageDuSite, rendre, STATUTS_ORDRE, trier } from '../src/ecrans/fraicheur'
 import { ROUTES } from '../src/main'
 import { afficher } from '../src/routeur'
-import { attendreQue, monterPage, requetes } from './aide-dom'
+import { attendreQue, choisirValeur, monterPage, requetes } from './aide-dom'
+import { valeurChoix } from '../src/composants/choix'
 
 const FX = JSON.parse(readFileSync(join(process.cwd(), 'tests', 'fixtures', 'data', 'fraicheur', 'index.json'), 'utf8')) as Fraicheur
 const nf = (x: number) => new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(x).replace(/\s+/g, ' ')
@@ -20,7 +21,8 @@ const ecran = async (fragment: string) => {
 }
 const texte = () => main.textContent?.replace(/\s+/g, ' ') ?? ''
 const saisir = (sel: string, valeur: string) => {
-  const el = main.querySelector<HTMLInputElement | HTMLSelectElement>(sel)!
+  const el = main.querySelector<HTMLElement>(sel)!
+  if (!(el instanceof HTMLInputElement || el instanceof HTMLSelectElement)) return choisirValeur(main, sel.slice(1), valeur)
   el.value = valeur
   el.dispatchEvent(new Event('input', { bubbles: true }))
 }
@@ -158,7 +160,7 @@ describe('fraîcheur des données', () => {
 
   it('filtre initial par l’adresse (?statut=en_retard)', async () => {
     await ecran('#/methode/fraicheur?statut=en_retard')
-    expect((main.querySelector('#fr-statut') as HTMLSelectElement).value).toBe('en_retard')
+    expect(valeurChoix(main, 'fr-statut')).toBe('en_retard')
     expect(lignes().length).toBe(FX.sources.filter((s) => s.statut === 'en_retard').length)
   })
 
@@ -191,7 +193,7 @@ describe('fraîcheur des données', () => {
     expect(main.querySelectorAll('a[href=""], a:not([href])')).toHaveLength(0)
     for (const b of Array.from(main.querySelectorAll('#fr-liste .badge'))) expect(Object.values(MOT_STATUT)).toContain(b.textContent)
     // Chaque champ de formulaire a son étiquette.
-    for (const c of Array.from(main.querySelectorAll('#fr-filtres input, #fr-filtres select'))) expect(main.querySelector(`label[for="${c.id}"]`), c.id).not.toBeNull()
+    for (const c of Array.from(main.querySelectorAll('#fr-filtres input, #fr-filtres select'))) expect(c.closest('label') ?? main.querySelector(`label[for="${c.id}"]`), c.id).not.toBeNull()
   })
 
   it('lexique neutre sur tout le texte affiché, détails dépliables compris', async () => {

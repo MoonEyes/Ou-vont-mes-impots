@@ -137,7 +137,8 @@ describe('le reçu de l’année', () => {
     rendre(main)
     const caseMontants = main.querySelector<HTMLInputElement>('#recu-montants')!
     expect(caseMontants.checked).toBe(false)
-    expect(main.querySelector('label[for="recu-montants"], label.case')?.textContent).toContain('Afficher mes montants en euros')
+    expect(caseMontants.getAttribute('role')).toBe('switch')
+    expect(caseMontants.closest('label')?.textContent).toContain('Afficher mes montants en euros')
     expect(n(main.querySelector('#recu-zone')?.textContent)).not.toContain(n(eur(c.total.central)))
 
     const imprimer = vi.fn()

@@ -51,7 +51,7 @@ const texteEcran = () => {
   c.querySelectorAll('.source').forEach((s) => s.remove())
   return norm(c.textContent ?? '')
 }
-const ongletActif = () => main.querySelector('.bascule [aria-current="true"]')?.textContent
+const ongletActif = () => main.querySelector('.choix-liens [aria-current="page"]')?.textContent
 
 beforeAll(() => {
   monterPage()
@@ -89,7 +89,7 @@ describe('écran /explorer/etat', () => {
   it('sans paramètre : exécution 2024, onglet 2025 proposé, aucun fichier 2025 chargé', async () => {
     await ecran('#/explorer/etat')
     expect(ongletActif()).toBe('Dépensé en 2024 (par politique)')
-    const onglets = [...main.querySelectorAll('.bascule a')].map((a) => [a.textContent, a.getAttribute('href')])
+    const onglets = [...main.querySelectorAll('.choix-liens a')].map((a) => [a.textContent, a.getAttribute('href')])
     expect(onglets).toContainEqual(['Dépensé en 2025 (par politique)', '#/explorer/etat?m=execution2025'])
     expect(onglets).toHaveLength(3)
     expect(requetes.some((r) => r.includes('millesimes/execution2025'))).toBe(false)
@@ -150,7 +150,7 @@ describe('écran /explorer/etat', () => {
     for (const f of ['#/explorer/etat?m=execution2025', '#/explorer/etat']) {
       await ecran(f)
       const t = norm(
-        [...main.querySelectorAll('#niveau-2025, section[aria-labelledby="titre-methode"], .chapeau, #programmes-2025, .bascule')].map((e) => e.textContent).join(' '),
+        [...main.querySelectorAll('#niveau-2025, section[aria-labelledby="titre-methode"], .chapeau, #programmes-2025, .choix-liens')].map((e) => e.textContent).join(' '),
       )
       expect(t).not.toMatch(/\bPLRG\b|\bPLF\b|\bLFI\b/)
       expect(t).not.toContain('—')

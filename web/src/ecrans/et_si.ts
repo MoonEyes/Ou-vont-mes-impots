@@ -5,6 +5,7 @@
 // prélèvement et par destinataire (en euros et sur 100 €), puis le taux marginal : ce que deviennent 100 € de
 // salaire brut en plus, à partir du salaire choisi. Des montants et leur explication, sans appréciation.
 // Aucun montant n'est mis dans une adresse ni envoyé : tout reste en mémoire, sur l'appareil.
+import { segmente, valeurChoix } from '../composants/choix'
 import exemple from '../exemple-lyon.json'
 import { parDestinataire, type Affectation } from '../calcul/agregats'
 import { destinataire, enregistrerDestinataires, LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
@@ -349,9 +350,7 @@ function texteProfil(e: Etat): string {
 
 function choixPersonne(e: Etat): string {
   if (e.variables.length < 2) return ''
-  const option = (r: Role, texte: string) => `<label><input type="radio" name="es-personne" value="${r}"${r === e.role ? ' checked' : ''} /> ${texte}</label>`
-  return `<p id="es-personne-titre"><strong>Le salaire qui change</strong></p>
-      <div class="choix" role="radiogroup" aria-labelledby="es-personne-titre">${option('declarant1', 'Le tien')}${option('declarant2', 'Celui de ton ou ta conjoint·e')}</div>`
+  return segmente({ id: 'es-personne', etiquette: 'Le salaire qui change', options: [{ valeur: 'declarant1', libelle: 'Le tien' }, { valeur: 'declarant2', libelle: 'Celui de ton ou ta conjoint·e' }], valeur: e.role })
 }
 
 /** Noms des destinataires d'une famille de prélèvements, du montant le plus élevé au plus faible. */
@@ -763,10 +762,9 @@ ${source('calcul sur ton appareil avec modele-social (règles de l’Urssaf, lic
     suivre(salairePropose(net))
     majEcart()
   }
-  cible.querySelectorAll<HTMLInputElement>('input[name="es-personne"]').forEach((r) =>
-    r.addEventListener('change', () => {
-      if (!r.checked) return
-      etat.role = r.value as Role
+  cible.querySelector('#es-personne')?.addEventListener('change', () => {
+    {
+      etat.role = valeurChoix(cible, 'es-personne') as Role
       $('#es-profil').innerHTML = texteProfil(etat)
       const q = etat.profil.personnes.find((x) => x.role === etat.role)
       // Salaire saisi : repris tout de suite ; traitement indiciaire : retrouvé par le calcul.
@@ -775,8 +773,8 @@ ${source('calcul sur ton appareil avec modele-social (règles de l’Urssaf, lic
         poserDepart(net)
         return actualiser(true)
       })
-    }),
-  )
+    }
+  })
   $<HTMLFormElement>('#es-form').addEventListener('submit', (ev) => {
     ev.preventDefault()
     clearTimeout(minuterie)

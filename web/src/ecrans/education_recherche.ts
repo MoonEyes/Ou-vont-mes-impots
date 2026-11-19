@@ -6,6 +6,7 @@
 // « non publié », jamais 0.
 // Deux sources ne sont jamais additionnées. Seuls les organismes que le pipeline a classés personnes morales sont
 // nommés ; les autres restent agrégés. Aucune année n'est écrite ici : elles sont lues dans les fichiers.
+import { fixerChoix, segmente, valeurChoix } from '../composants/choix'
 import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent } from '../donnees'
 import { TOUS_DEPARTEMENTS } from '../departements'
@@ -556,10 +557,7 @@ function blocLycees(idx: Index | null, region: string | null): string {
   if (!t || !region) return ''
   return `<h2>Les lycées : ce que versent trois régions</h2>
 <p>D’après le code de l’éducation, la région a la charge des bâtiments, de l’équipement et du fonctionnement des lycées publics, et verse aussi des aides aux lycées privés sous contrat ; l’État rémunère les enseignants. Trois régions publient en données ouvertes ce qu’elles versent à chaque lycée. Leurs montants n’ont pas la même nature (votés, versés, aides à des actions) : ils ne se comparent pas d’une région à l’autre et ne s’additionnent pas.</p>
-<div class="bascule" role="group" aria-label="Région">${Object.keys(t)
-    .sort()
-    .map((c) => `<button type="button" data-region="${h(c)}" aria-pressed="${c === region}">${h(t[c].region)}</button>`)
-    .join('')}</div>
+${segmente({ id: 'er-region', etiquette: 'Région', options: Object.keys(t).sort().map((c) => ({ valeur: c, libelle: t[c].region })), valeur: region })}
 <div id="er-lycee" aria-live="polite"><p class="chargement">Chargement de la région…</p></div>`
 }
 
@@ -624,9 +622,9 @@ async function afficherRegion(racine: HTMLElement, idx: Index, code: string) {
   const zone = racine.querySelector<HTMLElement>('#er-lycee')
   const t = idx.totaux.lycees?.[code]
   if (!zone || !t) return
-  racine.querySelectorAll<HTMLButtonElement>('[data-region]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.region === code)))
+  fixerChoix(racine, 'er-region', code)
   const d = await chargerSiPresent<Lycees>(t.fichier)
-  if (racine.querySelector('[data-region][aria-pressed="true"]')?.getAttribute('data-region') !== code) return
+  if (valeurChoix(racine, 'er-region') !== code) return
   zone.innerHTML = d ? blocRegion(d) : absent('Données de cette région non disponibles.')
   if (d) brancherListe(zone, 'er-lycees-noms', lignesLycees(d))
   appliquerLargeurs(zone)
@@ -772,7 +770,7 @@ async function completer(cible: HTMLElement, idx: Index | null, region: string |
     brancherListe(cible, 'er-anr-ancien-noms', lignesAnr(anrEtab.anr_2005_2009, 'aide_allouee_eur'))
   }
   if (idx && region) {
-    cible.querySelectorAll<HTMLButtonElement>('[data-region]').forEach((b) => b.addEventListener('click', () => void afficherRegion(cible, idx, b.dataset.region ?? '')))
+    cible.querySelector('#er-region')?.addEventListener('change', () => void afficherRegion(cible, idx, valeurChoix(cible, 'er-region')))
     await afficherRegion(cible, idx, region)
   }
   appliquerLargeurs(cible)

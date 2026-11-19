@@ -2,6 +2,7 @@
 // trois étapes, les caisses à explorer.
 // Le texte et le billet s'affichent tout de suite (l'exemple est un petit fichier du site, écrit par les tests à
 // partir du vrai calcul) ; les chiffres des tuiles et le nombre de sources, lus dans les données, complètent ensuite.
+import { listeRecherche, remplirListe } from '../composants/choix'
 import { billet, listeParts, partsAdministrations } from '../composants/billet'
 import { remplirTuiles, tuiles } from '../composants/caisses'
 import { plusDeSources } from '../composants/chiffres-site'
@@ -39,13 +40,9 @@ export function rendre(cible: HTMLElement) {
             <span class="champ-euro"><input id="heros-net" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="Par exemple ${h(entier(ex.profil.net_mensuel))}" aria-describedby="heros-aide heros-msg" /></span>
             <p class="aide" id="heros-aide">Ligne « Net à payer avant impôt sur le revenu » de ta fiche de paie.</p>
           </div>
-          <div>
-            <label for="heros-dep">Ton département</label>
-            <select id="heros-dep"><option value="">Ne pas préciser</option>${DEPARTEMENTS.map(([c, n]) => `<option value="${c}">${c} ${h(n)}</option>`).join('')}</select>
-          </div>
+          ${listeRecherche({ id: 'heros-dep', etiquette: 'Ton département', options: [{ valeur: '', libelle: 'Ne pas préciser' }, ...DEPARTEMENTS.map(([c, n]) => ({ valeur: c, libelle: `${c} ${n}` }))] })}
           <div id="heros-com-bloc" hidden>
-            <label for="heros-com">Ta commune</label>
-            <select id="heros-com"></select>
+            ${listeRecherche({ id: 'heros-com', etiquette: 'Ta commune', options: [], recherche: false })}
           </div>
         </div>
         <p class="message-champ" id="heros-msg" hidden></p>
@@ -151,10 +148,10 @@ ${tuiles()}
   dep.addEventListener('change', async () => {
     cible.querySelector<HTMLElement>('#heros-com-bloc')!.hidden = !dep.value
     if (!dep.value) return
-    com.innerHTML = '<option value="">Chargement…</option>'
+    remplirListe(com, '<option value="">Chargement…</option>')
     const d = await chargerSiPresent<{ communes: Record<string, [string, number | null, number | null]> }>(`communes/${dep.value}.json`)
     const liste = Object.entries(d?.communes ?? {}).sort((a, b) => a[1][0].localeCompare(b[1][0], 'fr'))
-    com.innerHTML = '<option value="">Ne pas préciser</option>' + liste.map(([c, v]) => `<option value="${c}">${h(v[0])}</option>`).join('')
+    remplirListe(com, [{ valeur: '', libelle: 'Ne pas préciser' }, ...liste.map(([c, v]) => ({ valeur: c, libelle: v[0] }))], '')
   })
   cible.querySelector('#heros-form')!.addEventListener('submit', (e) => {
     e.preventDefault()

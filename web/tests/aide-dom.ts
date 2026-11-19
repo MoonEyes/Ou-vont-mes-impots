@@ -32,3 +32,26 @@ export async function attendreQue(cond: () => boolean, delai = 20000) {
     await attendre(20)
   }
 }
+
+/**
+ * Choisit une valeur dans un choix partagé (segmenté, liste radio, liste native) comme le ferait la personne :
+ * la valeur change, puis les événements input et change partent de l'élément choisi (composants/choix.ts).
+ */
+export function choisirValeur(racine: ParentNode, id: string, valeur: string) {
+  const e = racine.querySelector<HTMLElement>(`#${id}`)
+  if (!e) throw new Error(`choix introuvable : #${id}`)
+  if (e instanceof HTMLSelectElement) {
+    e.value = valeur
+    e.dispatchEvent(new Event('input', { bubbles: true }))
+    e.dispatchEvent(new Event('change', { bubbles: true }))
+    return
+  }
+  const segment = e.querySelector<HTMLButtonElement>(`[role="radio"][value="${valeur}"]`)
+  if (segment) return segment.click()
+  const radio = e.querySelector<HTMLInputElement>(`input[type="radio"][value="${valeur}"]`)
+  if (!radio) throw new Error(`valeur absente de #${id} : ${valeur}`)
+  // happy-dom ne décoche pas les autres boutons du groupe : on le fait ici.
+  e.querySelectorAll<HTMLInputElement>('input[type="radio"]').forEach((r) => (r.checked = r === radio))
+  radio.dispatchEvent(new Event('input', { bubbles: true }))
+  radio.dispatchEvent(new Event('change', { bubbles: true }))
+}

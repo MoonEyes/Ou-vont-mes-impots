@@ -1,6 +1,7 @@
 // Crédits de l'État dans les six territoires d'outre-mer que « Budget de ma commune » ne couvre pas (site/data/outremer/) :
 // par territoire, par mission, par habitant et dans le temps. Deux sources de périmètres différents (Cour des comptes 2018 à 2020,
 // document de politique transversale 2024 à 2026) : montrées côte à côte, jamais raccordées ni additionnées.
+import { choixLiens } from '../composants/choix'
 import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent, type Noeud } from '../donnees'
 import { lien } from '../routeur'
@@ -277,10 +278,7 @@ ${cle}
 ${tableauTerritoires(idx, terrs)}
 ${source(sourcesTexte(idx, ['dpt_plf2026', 'geo']), idx.millesime)}
 <h2 id="missions">Par mission : ${h(nomChoix)}</h2>
-<div class="bascule" role="group" aria-label="Territoire">${[
-    `<a class="bouton" href="${lien('/explorer/outre-mer')}"${choisi ? '' : ' aria-current="true"'}>Les six ensemble</a>`,
-    ...terrs.map((t) => `<a class="bouton" href="${lien('/explorer/outre-mer', { t: t.territoire.code })}"${choisi === t ? ' aria-current="true"' : ''}>${h(t.territoire.nom)}</a>`),
-  ].join('')}</div>
+${choixLiens({ etiquette: 'Territoire', liens: [{ href: lien('/explorer/outre-mer'), libelle: 'Les six ensemble', courant: !choisi }, ...terrs.map((t) => ({ href: lien('/explorer/outre-mer', { t: t.territoire.code }), libelle: t.territoire.nom, courant: choisi === t }))] })}
 <p>Une mission regroupe les crédits d’une politique de l’État (justice, enseignement scolaire, sécurités, outre-mer…). Le document répartit par territoire les crédits de tous les ministères ; une partie des dépenses n’est pas répartie par territoire et n’apparaît pas ici.</p>
 ${blocMissions(choix, nomChoix)}
 ${choisi ? blocTerritoire(idx, choisi) : ''}

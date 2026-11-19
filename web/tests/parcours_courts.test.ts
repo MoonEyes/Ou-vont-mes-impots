@@ -155,7 +155,7 @@ describe('résultat : un écran de synthèse, le reste à la demande', () => {
 describe('chapeaux courts, le reste sous l’action (problème 14)', () => {
   it('qui a voté, organisation, recherche : « Ce que cette page montre et ne montre pas » placé après le formulaire', () => {
     for (const [f, formulaire] of [
-      ['qui_a_vote.ts', 'id="qav-form-impot"'],
+      ['qui_a_vote.ts', "id: 'qav-impot'"],
       ['organisation.ts', 'id="org-form"'],
       ['recherche.ts', 'id="recherche-page"'],
     ]) {

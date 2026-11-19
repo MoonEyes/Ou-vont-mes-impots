@@ -244,9 +244,9 @@ describe('écran éducation et recherche', () => {
     await ecran()
     const idx = lire('education_recherche/index.json')
     const d = lire('education_recherche/lycees/11.json')
-    const boutons = Array.from(main.querySelectorAll<HTMLButtonElement>('[data-region]'))
-    expect(boutons.map((b) => b.dataset.region)).toEqual(Object.keys(idx.totaux.lycees).sort())
-    expect(boutons.map((b) => b.getAttribute('aria-pressed'))).toEqual(['true', 'false', 'false'])
+    const boutons = Array.from(main.querySelectorAll<HTMLButtonElement>('#er-region [role="radio"]'))
+    expect(boutons.map((b) => b.value)).toEqual(Object.keys(idx.totaux.lycees).sort())
+    expect(boutons.map((b) => b.getAttribute('aria-checked'))).toEqual(['true', 'false', 'false'])
     expect(boutons.every((b) => b.type === 'button')).toBe(true)
     const zone = main.querySelector('#er-lycee')!
     expect(n(zone.querySelector('h3')?.textContent)).toBe(d.region.nom)
@@ -276,16 +276,16 @@ describe('écran éducation et recherche', () => {
   it('lycées : changement de région sans navigation ; contrôle 2017 et sigle expliqué (Centre-Val de Loire), année publiée à 0 (Pays de la Loire)', async () => {
     await ecran()
     const zone = main.querySelector('#er-lycee')!
-    main.querySelector<HTMLButtonElement>('[data-region="24"]')!.click()
+    main.querySelector<HTMLButtonElement>('#er-region [value="24"]')!.click()
     await attendreQue(() => n(zone.querySelector('h3')?.textContent) === 'Centre-Val de Loire')
     expect(location.hash).toBe(PAGE)
-    expect(main.querySelector('[data-region="24"]')?.getAttribute('aria-pressed')).toBe('true')
-    expect(main.querySelector('[data-region="11"]')?.getAttribute('aria-pressed')).toBe('false')
+    expect(main.querySelector('#er-region [value="24"]')?.getAttribute('aria-checked')).toBe('true')
+    expect(main.querySelector('#er-region [value="11"]')?.getAttribute('aria-checked')).toBe('false')
     const cvl = lire('education_recherche/lycees/24.json')
     expect(n(zone.textContent)).toContain(n(`Contrôle ${cvl.controles[0].annee} : somme des dotations ${eurLisible(cvl.controles[0].somme_des_dotations_eur)}`))
     expect(n(zone.textContent)).toContain('DGF : dotation globale de fonctionnement')
     expect(n(zone.querySelector('.source')?.textContent)).toContain('ODbL 1.0')
-    main.querySelector<HTMLButtonElement>('[data-region="52"]')!.click()
+    main.querySelector<HTMLButtonElement>('#er-region [value="52"]')!.click()
     await attendreQue(() => n(zone.querySelector('h3')?.textContent) === 'Pays de la Loire')
     const t = Array.from(zone.querySelectorAll('table'))[0]
     expect(n(ligne(t, '2017').textContent)).toContain('(montants publiés à 0)')

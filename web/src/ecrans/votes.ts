@@ -1,4 +1,5 @@
 // Votes, amendements et mouvements de crédits (site/data/decisions/).
+import { listeRecherche } from '../composants/choix'
 import { listeProgrammes, chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import { absent, eurLisible, h, source } from '../util'
@@ -40,9 +41,9 @@ export const montantEtape = (c: { cp: number | null; raison?: string }) => (c.cp
 export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const p = params.get('p')
   const progs = (await listeProgrammes()).sort((a, b) => Number(a.numero) - Number(b.numero))
-  const choix = `<label for="prog-votes">Programme</label><select id="prog-votes"><option value="">Tous les programmes</option>${progs
+  const choix = `${listeRecherche({ id: 'prog-votes', etiquette: 'Programme', options: [], optionsHtml: `<option value="">Tous les programmes</option>${progs
     .map((x) => `<option value="${x.numero}"${x.numero === p ? ' selected' : ''}>${h(x.numero)} ${h(x.nom)}</option>`)
-    .join('')}</select>`
+    .join('')}` })}`
   const idx = await chargerSiPresent<Index>('decisions/index.json')
   if (!idx) {
     cible.innerHTML = enCours('Votes, amendements et mouvements de crédits', 'Amendements, scrutins et mouvements de crédits publiés au Journal officiel.')

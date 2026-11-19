@@ -38,7 +38,7 @@ describe('marchés publics', () => {
     expect(main.querySelector('h1')?.textContent?.trim()).toBe('Les marchés publics')
     expect(main.querySelector('nav[aria-label="Fil d\'Ariane"] [aria-current=page]')?.getAttribute('href')).toBe('#/beneficiaires/marches')
     const derniere = annees.par_annee.filter((p: { total_eur: number | null }) => p.total_eur !== null).at(-1)
-    expect(main.querySelector('.bascule [aria-current="true"]')?.textContent).toBe(String(derniere.annee))
+    expect(main.querySelector('.choix-liens [aria-current="page"]')?.textContent).toBe(String(derniere.annee))
     const cle = main.querySelector('.cles li')!
     expect(espaces(cle.querySelector('strong')!.textContent!)).toBe(mdFr(derniere.total_eur))
     expect(cle.querySelector('span')!.textContent).toBe(`de marchés notifiés en ${derniere.annee}, hors taxes`)
@@ -128,7 +128,7 @@ describe('marchés publics', () => {
 
   it('année inconnue : retour à la plus récente ; données absentes : état « en cours d’intégration »', async () => {
     await ecran('#/beneficiaires/marches?a=1990')
-    expect(main.querySelector('.bascule [aria-current="true"]')?.textContent).toBe(String(idx.annees.at(-1)))
+    expect(main.querySelector('.choix-liens [aria-current="page"]')?.textContent).toBe(String(idx.annees.at(-1)))
     const { rendre } = await import('../src/ecrans/marches')
     const { viderCache } = await import('../src/donnees')
     viderCache()

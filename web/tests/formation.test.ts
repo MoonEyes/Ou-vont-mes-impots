@@ -93,10 +93,9 @@ describe('formation professionnelle', () => {
     const sit = tableau('Dossiers entrés en formation en 2022')!
     const de = usagers.annees['2022'].situation["Demandeur d'emploi"]
     expect(sit.textContent!.replace(/\s+/g, ' ')).toContain(nf(de[0]))
-    main.querySelector<HTMLSelectElement>('#formation-annee-choix')!.value = '2026'
-    main.querySelector<HTMLSelectElement>('#formation-annee-choix')!.dispatchEvent(new Event('change'))
-    expect(location.hash).toBe('#/explorer/formation-professionnelle?a=2026')
-    await ecran(location.hash)
+    const lien2026 = main.querySelector<HTMLAnchorElement>('#formation-annee a[href$="?a=2026"]')!
+    expect(lien2026.textContent).toBe('2026 (en cours)')
+    await ecran(lien2026.getAttribute('href')!)
     expect(texte()).toContain('Année en cours')
     // Année inconnue : retour à la dernière année complète.
     await ecran('#/explorer/formation-professionnelle?a=1999')

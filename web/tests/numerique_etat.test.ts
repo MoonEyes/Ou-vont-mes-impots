@@ -7,7 +7,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import { ROUTES } from '../src/main'
 import { afficher } from '../src/routeur'
 import { meur, moisAnnee, REGLE_MINISTERES, REGLE_PROJETS, signe, valeurReleve } from '../src/ecrans/numerique_etat'
-import { attendre, monterPage } from './aide-dom'
+import { attendre, choisirValeur, monterPage } from './aide-dom'
 
 let main: HTMLElement
 const ecran = async (fragment: string) => {
@@ -19,7 +19,8 @@ const texte = (el: Element = main) => el.textContent?.replace(/\s+/g, ' ') ?? ''
 const FIX = join(process.cwd(), 'tests', 'fixtures', 'data', 'numerique_etat')
 const lire = (p: string) => JSON.parse(readFileSync(join(FIX, p), 'utf8'))
 const choisir = (id: string, valeur: string) => {
-  const s = main.querySelector<HTMLSelectElement | HTMLInputElement>(id)!
+  const s = main.querySelector<HTMLElement>(id)!
+  if (!(s instanceof HTMLInputElement || s instanceof HTMLSelectElement)) return choisirValeur(main, id.slice(1), valeur)
   s.value = valeur
   main.querySelector('#filtres-ne')!.dispatchEvent(new Event('input', { bubbles: true }))
 }

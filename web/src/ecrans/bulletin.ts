@@ -5,6 +5,7 @@
 // son bloc de dépenses). Fiche de la saisie de la session (mémoire de la page, jamais une adresse) ou, à défaut, celle
 // de l'exemple de l'accueil (src/exemple-lyon.json). Ce qui dépend de l'entreprise (taux d'accidents du travail,
 // mutuelle, prévoyance, répartition de la retraite complémentaire) est signalé, jamais inventé.
+import { segmente, valeurChoix } from '../composants/choix'
 import exemple from '../exemple-lyon.json'
 import { additionner, type Affectation } from '../calcul/agregats'
 import { destinataire, enregistrerDestinataires, LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
@@ -871,12 +872,17 @@ async function completer(cible: HTMLElement, saisie: ResultatOk | null): Promise
   const fiches = fichesDe(r, saisie ? session.profil : PROFIL_EXEMPLE)
   const etat = { periode: 'mois' as Periode, personne: 0 }
   const reglages = cible.querySelector<HTMLElement>('#bulletin-reglages')!
-  const bascule = (nom: string, etiquette: string, options: [string, string][]) =>
-    `<div class="bascule" role="group" aria-label="${h(etiquette)}">${options.map(([valeur, t]) => `<button type="button" data-${nom}="${h(valeur)}" aria-pressed="false">${h(t)}</button>`).join('')}</div>`
-  reglages.innerHTML = `${fiches.length > 1 ? bascule('personne', 'Fiche de paie de', fiches.map((x, i) => [String(i), NOMS[x.role]])) : ''}${bascule('periode', 'Période des montants', [
-    ['mois', 'Par mois'],
-    ['an', 'Sur un an'],
-  ])}`
+  const bascule = (nom: string, etiquette: string, options: [string, string][], valeur: string) =>
+    segmente({ id: `bulletin-${nom}`, etiquette, options: options.map(([v, libelle]) => ({ valeur: v, libelle })), valeur })
+  reglages.innerHTML = `${fiches.length > 1 ? bascule('personne', 'Fiche de paie de', fiches.map((x, i) => [String(i), NOMS[x.role]]), '0') : ''}${bascule(
+    'periode',
+    'Période des montants',
+    [
+      ['mois', 'Par mois'],
+      ['an', 'Sur un an'],
+    ],
+    'mois',
+  )}`
   const sources = `${affectation?.source ? source(`destinataires : ${affectation.source}`, affectation.millesime) : ''}${source(
     'rubriques : modèle de bulletin de paie de l’arrêté du 31 janvier 2023 (salariés du privé)',
   )}`
@@ -889,18 +895,14 @@ ${lignesFiche(v)}
 ${tableau(v)}
 ${sources}`
     cible.querySelector<HTMLElement>('#bulletin-variable')!.innerHTML = variable(v)
-    reglages.querySelectorAll<HTMLButtonElement>('button').forEach((b) =>
-      b.setAttribute('aria-pressed', String(b.dataset.periode ? b.dataset.periode === etat.periode : b.dataset.personne === String(etat.personne))),
-    )
     rendreDefilables(zone)
   }
-  reglages.addEventListener('click', (e) => {
-    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button')
-    if (!b) return
-    if (b.dataset.periode) etat.periode = b.dataset.periode as Periode
-    else if (b.dataset.personne) etat.personne = Number(b.dataset.personne)
+  reglages.addEventListener('change', (e) => {
+    const periode = !!(e.target as HTMLElement).closest('#bulletin-periode')
+    etat.periode = (valeurChoix(reglages, 'bulletin-periode') || 'mois') as Periode
+    etat.personne = Number(valeurChoix(reglages, 'bulletin-personne') || 0)
     dessiner()
-    annoncer(b.dataset.periode ? (etat.periode === 'mois' ? 'Montants par mois' : 'Montants sur un an') : `Fiche de paie : ${NOMS[fiches[etat.personne].role]}`)
+    annoncer(periode ? (etat.periode === 'mois' ? 'Montants par mois' : 'Montants sur un an') : `Fiche de paie : ${NOMS[fiches[etat.personne].role]}`)
   })
   dessiner()
 }

@@ -3,6 +3,7 @@
 // le motif tracé / approché / non publié dans la marge, la date et le millésime des barèmes en pied. Un reçu constate,
 // il ne juge pas. Imprimable et partageable ; par défaut, sans aucun montant en euros (parts sur 100 € seulement),
 // comme la carte du résultat : une case explicite ajoute les montants. Tout reste en mémoire de la page.
+import { interrupteur } from '../composants/choix'
 import { parDestinataire } from '../calcul/agregats'
 import { destinataire } from '../calcul/destinataires'
 import { sur100Entiers } from '../calcul/repartition'
@@ -172,7 +173,7 @@ export function rendre(cible: HTMLElement) {
   cible.innerHTML = `<h1>Ton reçu de l’année</h1>
 <p class="chapeau">Ce que tu verses, une ligne par destinataire, à imprimer ou partager. Un reçu constate : il ne juge aucune dépense.</p>
 <div class="recu-options">
-  <label class="case"><input type="checkbox" id="recu-montants" aria-describedby="recu-montants-aide" /> Afficher mes montants en euros</label>
+  ${interrupteur({ id: 'recu-montants', libelle: 'Afficher mes montants en euros', decritPar: 'recu-montants-aide' })}
   <p class="aide" id="recu-montants-aide">Sans cette case, le reçu montre seulement les parts sur 100 € : ni ce que tu verses en euros, ni ton salaire. Le partage suit ce choix.</p>
   <div class="actions"><button type="button" id="recu-imprimer">Imprimer</button><button type="button" id="recu-partager">Partager</button><a class="bouton-lien" href="#/calcul/resultat">Revenir à mon résultat</a></div>
   <p class="aide" id="recu-info" role="status"></p>

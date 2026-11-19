@@ -2,6 +2,7 @@
 // prélèvements obligatoires, en part du PIB, par habitant et en part du total, sur les années publiées par Eurostat.
 // Autre sujet que /explorer/ue (ce que la France verse au budget de l'Union) : les deux pages se renvoient l'une à l'autre.
 // Neutralité : aucun rang, aucune couleur de valeur ; la France est seulement repérée (mot et contour) ; ordre affiché.
+import { choixLiens, listeRecherche } from '../composants/choix'
 import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
@@ -245,7 +246,8 @@ ${partPersonnelle()}`
   const form = cible.querySelector<HTMLFormElement>('#choix-comparaison')
   form?.addEventListener('change', () => {
     const v = (id: string) => form.querySelector<HTMLSelectElement>(`#${id}`)?.value
-    location.hash = lien(CHEMIN, { p: v('cmp-poste'), u: v('cmp-unite'), a: v('cmp-annee'), o: v('cmp-ordre') })
+    const courant = (id: string) => new URLSearchParams(form.querySelector<HTMLAnchorElement>(`#${id} [aria-current="page"]`)?.hash.split('?')[1] ?? '')
+    location.hash = lien(CHEMIN, { p: v('cmp-poste'), u: courant('cmp-unite').get('u') ?? undefined, a: v('cmp-annee'), o: courant('cmp-ordre').get('o') ?? undefined })
   })
   form?.addEventListener('submit', (e) => e.preventDefault())
 }
@@ -306,17 +308,13 @@ function formulaire(idx: Index, prel: Prelevements | null, vue: Vue, codePo: str
     })
     .join('')
   return `<form id="choix-comparaison" class="carte">
-  <label for="cmp-poste">Poste</label>
-  <select id="cmp-poste"><optgroup label="Dépenses publiques par fonction">${optDep}</optgroup>${optPrel ? `<optgroup label="Impôts et cotisations obligatoires">${optPrel}</optgroup>` : ''}</select>
-  <label for="cmp-unite">Unité</label>
-  <select id="cmp-unite">${unites.map((u) => `<option value="${u.cle}"${sel(u.cle === unite)}>${h(u.libelle)}</option>`).join('')}</select>
-  <label for="cmp-annee">Année</label>
-  <select id="cmp-annee">${[...annees]
+  ${listeRecherche({ id: 'cmp-poste', etiquette: 'Poste', options: [], optionsHtml: `<optgroup label="Dépenses publiques par fonction">${optDep}</optgroup>${optPrel ? `<optgroup label="Impôts et cotisations obligatoires">${optPrel}</optgroup>` : ''}` })}
+  ${choixLiens({ id: 'cmp-unite', etiquette: 'Unité', liens: unites.map((u) => ({ href: lien(CHEMIN, { p: courant, u: u.cle, a: annee, o: ordre }), libelle: u.libelle, courant: u.cle === unite })) })}
+  ${listeRecherche({ id: 'cmp-annee', etiquette: 'Année', options: [], optionsHtml: `${[...annees]
     .reverse()
     .map((a) => `<option value="${a}"${sel(a === annee)}>${a}</option>`)
-    .join('')}</select>
-  <label for="cmp-ordre">Ordre des pays</label>
-  <select id="cmp-ordre">${ORDRES.map((o) => `<option value="${o.cle}"${sel(o.cle === ordre)}>${h(o.libelle)}</option>`).join('')}</select>
+    .join('')}` })}
+  ${choixLiens({ id: 'cmp-ordre', etiquette: 'Ordre des pays', liens: ORDRES.map((o) => ({ href: lien(CHEMIN, { p: courant, u: unite, a: annee, o: o.cle }), libelle: o.libelle, courant: o.cle === ordre })) })}
 </form>`
 }
 

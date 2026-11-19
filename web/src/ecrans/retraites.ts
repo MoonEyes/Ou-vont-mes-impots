@@ -3,6 +3,7 @@
 // personne. Les montants de pensions sont lus dans les fichiers liés (prestations/, secu/, arbre/), jamais recopiés
 // ni recalculés à partir d'un effectif et d'une moyenne. Les effectifs des régimes ne s'additionnent pas, deux
 // comptabilités ne s'additionnent jamais, et une valeur absente de la source reste « non publié », jamais 0.
+import { listeRecherche } from '../composants/choix'
 import { parAdministration } from '../calcul/repartition'
 import type { Fourchette, Prelevement } from '../calcul/types'
 import { billet, listeParts, type Part, ton } from '../composants/billet'
@@ -619,8 +620,7 @@ ${source(srcCps, `${premier} à ${dernier}`)}`
     : ''
 }
 <h3>Retraités et pension moyenne, année par année</h3>
-<label for="ret-regime">Régime</label>
-<select id="ret-regime">${options.map((id) => `<option value="${h(id)}"${id === choisi ? ' selected' : ''}>${h(reg.regimes[id].nom)}</option>`).join('')}</select>
+${listeRecherche({ id: 'ret-regime', etiquette: 'Régime', options: [], optionsHtml: `${options.map((id) => `<option value="${h(id)}"${id === choisi ? ' selected' : ''}>${h(reg.regimes[id].nom)}</option>`).join('')}` })}
 <div id="ret-serie" aria-live="polite">${serieRegime(choisi, reg, idx)}</div>
 ${source(srcEacr, idx.sources.drees_eacr?.millesime)}
 </section>`

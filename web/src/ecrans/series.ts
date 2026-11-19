@@ -3,6 +3,7 @@
 // des prix, le PIB et les dépenses par fonction viennent de site/data/series/ (pipeline/series.py).
 // Chaque graphique a sa phrase de lecture et son tableau ; les valeurs provisoires sont en pointillé, les ruptures
 // de série écrites sous le graphique concerné.
+import { segmente, valeurChoix } from '../composants/choix'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import { annoncer, h, md, pct, rendreDefilables, source } from '../util'
@@ -381,7 +382,7 @@ export async function rendre(cible: HTMLElement, params?: URLSearchParams) {
   cible.innerHTML = `
 <h1>Les finances publiques depuis 2005</h1>
 <p class="chapeau">Recettes, dépenses, solde, dette et intérêts de l’ensemble des administrations publiques, année par année de ${h(annees[0])} à ${h(annees[annees.length - 1])}. Choisis comment lire les montants : tels que publiés, corrigés de la hausse des prix, ou rapportés à ce que le pays produit en un an.</p>
-<div class="bascule" role="group" aria-label="Unité des montants">${MODES.map((m) => `<button type="button" data-mode="${m.id}" aria-pressed="${m.id === mode}">${h(m.id === 'constants' ? `${m.libelle} (de ${ref})` : m.libelle)}</button>`).join('')}</div>
+${segmente({ id: 'sl-mode', etiquette: 'Unité des montants', options: MODES.map((m) => ({ valeur: m.id, libelle: m.id === 'constants' ? `${m.libelle} (de ${ref})` : m.libelle })), valeur: mode })}
 <div class="carte carte-contour sl-mode"><p id="sl-explication">${h(explication())}</p><ul class="sl-notes" id="sl-notes-mode">${notesMode().map((n) => `<li>${h(n)}</li>`).join('')}</ul></div>
 <p class="avertissement">${h(idx.avertissement)}</p>
 <ul class="sl-legende" aria-label="Légende des courbes"><li><span class="sl-motif" aria-hidden="true"></span>Trait plein : valeur publiée</li><li><span class="sl-motif sl-motif-provisoire" aria-hidden="true"></span>Pointillé : valeur provisoire, révisable</li></ul>
@@ -395,12 +396,11 @@ ${source(idx.source, idx.millesime)}
 </section>`
 
   const zone = cible.querySelector<HTMLElement>('#sl-blocs')!
-  cible.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((bouton) =>
-    bouton.addEventListener('click', () => {
-      const m = bouton.dataset.mode as Mode
+  cible.querySelector('#sl-mode')?.addEventListener('change', () => {
+    {
+      const m = valeurChoix(cible, 'sl-mode') as Mode
       if (m === mode) return
       mode = m
-      cible.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)))
       // Détails ouverts conservés d'un mode à l'autre.
       const section = (d: Element) => d.closest('section')?.getAttribute('aria-labelledby') ?? ''
       const ouverts = new Set(Array.from(zone.querySelectorAll('details[open]')).map(section))
@@ -412,6 +412,6 @@ ${source(idx.source, idx.millesime)}
       cible.querySelector('#sl-notes-mode')!.innerHTML = notesMode().map((n) => `<li>${h(n)}</li>`).join('')
       rendreDefilables(zone)
       annoncer(`Montants affichés : ${uniteMode(mode, ref)}.`)
-    }),
-  )
+    }
+  })
 }
