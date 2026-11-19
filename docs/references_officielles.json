@@ -1,0 +1,1640 @@
+{
+ "description": "Table de référence des grands totaux affichés par le site face au chiffre officiel publié (docs/VERIFICATION_TOTAUX.md). Lue par tests/test_totaux_officiels.py.",
+ "date_verification": "2026-11-19",
+ "classes": {
+  "conforme": "écart avec le chiffre officiel inférieur ou égal à la tolérance",
+  "ecart_explique": "écart de périmètre ou de méthode, décomposé en montants publiés (composantes)",
+  "erreur_corrigee": "erreur trouvée et corrigée dans le dépôt (correction.avant / correction.apres)",
+  "non_verifiable": "aucun chiffre officiel publié (motif)"
+ },
+ "lecture": "site.chemin : clés successives dans site/data/<fichier> ; site.noeud : identifiant d'un nœud d'arbre ; site.calcul : agrégat recalculé par le test (voir le test). Composantes d'un écart : site - officiel = somme(signe x composante), à la tolérance près.",
+ "totaux": [
+  {
+   "id": "etat_solde_budgetaire_execution_2024",
+   "theme": "État",
+   "libelle": "Solde budgétaire de l'État, exécution 2024",
+   "ecran": "web/src/ecrans/etat.ts (Explorer > État)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "deficit.json",
+    "chemin": [
+     "etat",
+     "annees",
+     "Exécution 2024",
+     "solde_budgetaire_md"
+    ]
+   },
+   "officiel": {
+    "valeur": -155.929972,
+    "document": "DGFiP, situation mensuelle budgétaire de l'État au 31 décembre (séries longues), copie versionnée data/raw/situation_budgetaire.json",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "31/12/2024",
+    "tableau": "ligne « Solde budgétaire »"
+   },
+   "tolerance": {
+    "absolue": 0.005,
+    "justification": "arrondi du site (montant publié par le site à 4 décimales en Md€) ; la source est à l'euro"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "etat_solde_budgetaire_execution_2025",
+   "theme": "État",
+   "libelle": "Solde budgétaire de l'État, exécution 2025",
+   "ecran": "web/src/ecrans/etat.ts (Explorer > État)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "deficit.json",
+    "chemin": [
+     "etat",
+     "annees",
+     "Exécution 2025",
+     "solde_budgetaire_md"
+    ]
+   },
+   "officiel": {
+    "valeur": -124.205674,
+    "document": "DGFiP, situation mensuelle budgétaire de l'État au 31 décembre (séries longues), copie versionnée data/raw/situation_budgetaire.json",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "31/12/2025",
+    "tableau": "ligne « Solde budgétaire »"
+   },
+   "tolerance": {
+    "absolue": 0.005,
+    "justification": "arrondi du site (montant publié par le site à 4 décimales en Md€) ; la source est à l'euro"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "etat_solde_budgetaire_lfi_2025",
+   "theme": "État",
+   "libelle": "Solde budgétaire de l'État voté, LFI 2025",
+   "ecran": "web/src/ecrans/etat.ts (Explorer > État)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "deficit.json",
+    "chemin": [
+     "etat",
+     "annees",
+     "LFI 2025",
+     "solde_budgetaire_md"
+    ]
+   },
+   "officiel": {
+    "valeur": -138.995864,
+    "document": "DGFiP, situations mensuelles budgétaires, pièce jointe « textes législatifs », ligne LFI (copie versionnée data/raw/situation_budgetaire_lois.json)",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "LFI 2025",
+    "tableau": "ligne « Solde budgétaire », colonne 2025"
+   },
+   "tolerance": {
+    "absolue": 0.005,
+    "justification": "arrondi du site (montant publié par le site à 4 décimales en Md€) ; la source est à l'euro"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "etat_solde_budgetaire_lfi_2024",
+   "theme": "État",
+   "libelle": "Solde budgétaire de l'État voté, LFI 2024",
+   "ecran": "web/src/ecrans/etat.ts (Explorer > État)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "deficit.json",
+    "chemin": [
+     "etat",
+     "annees",
+     "LFI 2024",
+     "solde_budgetaire_md"
+    ]
+   },
+   "officiel": {
+    "valeur": -146.891455,
+    "document": "DGFiP, situations mensuelles budgétaires, pièce jointe « textes législatifs », ligne LFI (copie versionnée data/raw/situation_budgetaire_lois.json)",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "LFI 2024",
+    "tableau": "ligne « Solde budgétaire », colonne 2024"
+   },
+   "tolerance": {
+    "absolue": 0.005,
+    "justification": "arrondi du site (montant publié par le site à 4 décimales en Md€) ; la source est à l'euro"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "etat_depenses_nettes_bg_execution_2024",
+   "theme": "État",
+   "libelle": "Dépenses nettes du budget général, exécution 2024",
+   "ecran": "web/src/ecrans/etat.ts (Explorer > État)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "deficit.json",
+    "chemin": [
+     "etat",
+     "annees",
+     "Exécution 2024",
+     "depenses_nettes_bg_md"
+    ]
+   },
+   "officiel": {
+    "valeur": 443.413251,
+    "document": "DGFiP, situation mensuelle budgétaire de l'État au 31 décembre (séries longues), copie versionnée data/raw/situation_budgetaire.json",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "31/12/2024"
+   },
+   "tolerance": {
+    "absolue": 0.0005,
+    "justification": "arrondi du site (montant publié par le site à 4 décimales en Md€) ; la source est à l'euro"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "etat_recettes_nettes_bg_execution_2024",
+   "theme": "État",
+   "libelle": "Recettes nettes du budget général, exécution 2024",
+   "ecran": "web/src/ecrans/etat_actionnaire.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "deficit.json",
+    "chemin": [
+     "etat",
+     "annees",
+     "Exécution 2024",
+     "recettes_nettes_bg_md"
+    ]
+   },
+   "officiel": {
+    "valeur": 348.890901,
+    "document": "DGFiP, situation mensuelle budgétaire de l'État au 31 décembre (séries longues), copie versionnée data/raw/situation_budgetaire.json",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "31/12/2024"
+   },
+   "tolerance": {
+    "absolue": 0.0005,
+    "justification": "arrondi du site (montant publié par le site à 4 décimales en Md€) ; la source est à l'euro"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "etat_psr_execution_2024",
+   "theme": "État",
+   "libelle": "Prélèvements sur recettes, exécution 2024",
+   "ecran": "web/src/ecrans/etat.ts (Explorer > État)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "deficit.json",
+    "chemin": [
+     "etat",
+     "annees",
+     "Exécution 2024",
+     "prelevements_sur_recettes_md"
+    ]
+   },
+   "officiel": {
+    "valeur": 67.733239,
+    "document": "DGFiP, situation mensuelle budgétaire de l'État au 31 décembre (séries longues), copie versionnée data/raw/situation_budgetaire.json",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "31/12/2024"
+   },
+   "tolerance": {
+    "absolue": 0.0005,
+    "justification": "arrondi du site (montant publié par le site à 4 décimales en Md€) ; la source est à l'euro"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "etat_psr_collectivites_execution_2024",
+   "theme": "État",
+   "libelle": "Prélèvement sur recettes au profit des collectivités, exécution 2024",
+   "ecran": "web/src/ecrans/etat.ts (Explorer > État)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "meta.json",
+    "chemin": [
+     "controle",
+     "etat",
+     "execution_2024",
+     "prelevements_sur_recettes_md",
+     "Collectivités territoriales"
+    ]
+   },
+   "officiel": {
+    "valeur": 45.456845,
+    "document": "DGFiP, situation mensuelle budgétaire de l'État au 31 décembre (séries longues), copie versionnée data/raw/situation_budgetaire.json",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "31/12/2024"
+   },
+   "tolerance": {
+    "absolue": 0.0005,
+    "justification": "arrondi du site (montant publié par le site à 4 décimales en Md€) ; la source est à l'euro"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "etat_remboursements_degrevements_execution_2024",
+   "theme": "État",
+   "libelle": "Remboursements et dégrèvements d'impôts retirés de l'arbre, exécution 2024",
+   "ecran": "web/src/ecrans/methode.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "meta.json",
+    "chemin": [
+     "controle",
+     "etat",
+     "execution_2024",
+     "remboursements_et_degrevements",
+     "montant_md"
+    ]
+   },
+   "officiel": {
+    "valeur": 146.523496,
+    "document": "PLRG 2024, annexe 1, mission « Remboursements et dégrèvements », dépenses constatées (copie versionnée data/raw/plrg_2024_cp.json)",
+    "url": "https://data.economie.gouv.fr/explore/dataset/projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbation-des-comptes-de-lannee-plrg-2024/",
+    "millesime": "Exécution 2024"
+   },
+   "tolerance": {
+    "absolue": 0.0005,
+    "justification": "arrondi du site (montant publié par le site à 4 décimales en Md€) ; la source est à l'euro"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "etat_arbre_execution_2024",
+   "theme": "État",
+   "libelle": "Total de l'arbre de l'État hors prélèvements sur recettes, Exécution 2024",
+   "ecran": "web/src/ecrans/etat.ts (Explorer > État) et methode.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "meta.json",
+    "chemin": [
+     "controle",
+     "etat",
+     "execution_2024",
+     "total_hors_psr_md"
+    ]
+   },
+   "officiel": {
+    "valeur": 443.413251,
+    "document": "DGFiP, situation mensuelle budgétaire de l'État au 31 décembre (séries longues), copie versionnée data/raw/situation_budgetaire.json",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "31/12/2024"
+   },
+   "tolerance": {
+    "absolue": 0.002,
+    "justification": "somme de montants arrondis à 4 ou 6 décimales"
+   },
+   "classe": "ecart_explique",
+   "ecart": {
+    "explication": "Périmètre : les remboursements et dégrèvements d'impôts locaux sont dans les dépenses nettes du budget général mais retirés de l'arbre ; le jeu budget vert retraité au format PLF 2026 diffère du PLRG ; les avances à l'audiovisuel public (compte de concours financiers, hors budget général) sont gardées.",
+    "composantes": [
+     {
+      "libelle": "remboursements et dégrèvements d'impôts locaux, retirés de l'arbre",
+      "signe": -1,
+      "site": {
+       "fichier": "meta.json",
+       "chemin": [
+        "controle",
+        "etat",
+        "execution_2024",
+        "remboursements_et_degrevements",
+        "detail_md",
+        "Remboursements et dégrèvements d'impôts locaux"
+       ]
+      }
+     },
+     {
+      "libelle": "retraitement au format PLF 2026 par la direction du budget (jeu budget vert) face au PLRG",
+      "signe": -1,
+      "site": {
+       "fichier": "meta.json",
+       "chemin": [
+        "controle",
+        "etat",
+        "execution_2024",
+        "rapprochement_plrg",
+        "ecart_md"
+       ]
+      }
+     },
+     {
+      "libelle": "avances à l'audiovisuel public (compte de concours financiers) gardées dans l'arbre",
+      "signe": 1,
+      "site": {
+       "fichier": "arbre/racine.json",
+       "noeud": "Culture et medias/Avances à l'audiovisuel public"
+      }
+     }
+    ]
+   },
+   "note_ecran": "web/src/ecrans/etat.ts, noteChiffresOfficiels : chiffres officiels de la même année (dépenses nettes du budget général, prélèvements sur recettes) écrits sous le total ; écart de méthode avec le PLRG déjà affiché (bloc « Deux méthodes ») et détaillé dans l'écran Méthode"
+  },
+  {
+   "id": "etat_arbre_lfi_2025",
+   "theme": "État",
+   "libelle": "Total de l'arbre de l'État hors prélèvements sur recettes, LFI 2025",
+   "ecran": "web/src/ecrans/etat.ts (Explorer > État) et methode.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "meta.json",
+    "chemin": [
+     "controle",
+     "etat",
+     "lfi_2025",
+     "total_hors_psr_md"
+    ]
+   },
+   "officiel": {
+    "valeur": 438.820187,
+    "document": "DGFiP, situations mensuelles budgétaires, pièce jointe « textes législatifs », ligne LFI (copie versionnée data/raw/situation_budgetaire_lois.json)",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "LFI 2025"
+   },
+   "tolerance": {
+    "absolue": 0.002,
+    "justification": "somme de montants arrondis à 4 ou 6 décimales"
+   },
+   "classe": "ecart_explique",
+   "ecart": {
+    "explication": "Périmètre : les remboursements et dégrèvements d'impôts locaux sont dans les dépenses nettes du budget général mais retirés de l'arbre ; le jeu budget vert retraité au format PLF 2026 diffère du PLRG ; les avances à l'audiovisuel public (compte de concours financiers, hors budget général) sont gardées.",
+    "composantes": [
+     {
+      "libelle": "remboursements et dégrèvements d'impôts locaux, retirés de l'arbre",
+      "signe": -1,
+      "site": {
+       "fichier": "meta.json",
+       "chemin": [
+        "controle",
+        "etat",
+        "lfi_2025",
+        "remboursements_et_degrevements",
+        "detail_md",
+        "Remboursements et dégrèvements d'impôts locaux"
+       ]
+      }
+     },
+     {
+      "libelle": "retraitement au format PLF 2026 par la direction du budget (jeu budget vert) face au PLRG",
+      "signe": -1,
+      "site": {
+       "fichier": "meta.json",
+       "chemin": [
+        "controle",
+        "etat",
+        "lfi_2025",
+        "rapprochement_plrg",
+        "ecart_md"
+       ]
+      }
+     },
+     {
+      "libelle": "avances à l'audiovisuel public (compte de concours financiers) gardées dans l'arbre",
+      "signe": 1,
+      "site": {
+       "fichier": "arbre_lfi2025/racine.json",
+       "noeud": "Culture et medias/Avances à l'audiovisuel public"
+      }
+     }
+    ]
+   },
+   "note_ecran": "web/src/ecrans/etat.ts, noteChiffresOfficiels : chiffres officiels de la même année (dépenses nettes du budget général, prélèvements sur recettes) écrits sous le total ; écart de méthode avec le PLRG déjà affiché (bloc « Deux méthodes ») et détaillé dans l'écran Méthode"
+  },
+  {
+   "id": "etat_arbre_execution_2025",
+   "theme": "État",
+   "libelle": "Total de l'arbre de l'État hors prélèvements sur recettes, Exécution 2025",
+   "ecran": "web/src/ecrans/etat.ts (Explorer > État) et methode.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "millesimes/execution2025/racine.json",
+    "calcul": "racine_hors_psr"
+   },
+   "officiel": {
+    "valeur": 441.194313,
+    "document": "DGFiP, situation mensuelle budgétaire de l'État au 31 décembre (séries longues), copie versionnée data/raw/situation_budgetaire.json",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "31/12/2025"
+   },
+   "tolerance": {
+    "absolue": 0.002,
+    "justification": "somme de montants arrondis à 4 ou 6 décimales"
+   },
+   "classe": "ecart_explique",
+   "ecart": {
+    "explication": "Périmètre : les remboursements et dégrèvements d'impôts locaux sont dans les dépenses nettes du budget général mais retirés de l'arbre ; les avances à l'audiovisuel public (compte de concours financiers, hors budget général) sont gardées.",
+    "composantes": [
+     {
+      "libelle": "remboursements et dégrèvements d'impôts locaux, retirés de l'arbre",
+      "signe": -1,
+      "valeur": 4.519875,
+      "source": "DGFiP, situation mensuelle budgétaire de l'État au 31 décembre (séries longues), copie versionnée data/raw/situation_budgetaire.json, ligne « Remboursements et dégrèvements d'impôts locaux »"
+     },
+     {
+      "libelle": "avances à l'audiovisuel public (compte de concours financiers) gardées dans l'arbre",
+      "signe": 1,
+      "site": {
+       "fichier": "millesimes/execution2025/racine.json",
+       "noeud": "Culture et medias/Avances à l'audiovisuel public"
+      }
+     }
+    ]
+   },
+   "note_ecran": "web/src/ecrans/etat.ts, noteChiffresOfficiels : chiffres officiels de la même année (dépenses nettes du budget général, prélèvements sur recettes) écrits sous le total ; écart de méthode avec le PLRG déjà affiché (bloc « Deux méthodes ») et détaillé dans l'écran Méthode"
+  },
+  {
+   "id": "secu_robss_2024",
+   "theme": "Sécurité sociale",
+   "libelle": "Dépenses des régimes obligatoires de base et du FSV (hors transferts), exécution 2024",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre/racine.json",
+    "noeud": "robss"
+   },
+   "officiel": {
+    "valeur": 643.1,
+    "document": "PLACSS 2024 (projet de loi n° 1456), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1456.html",
+    "millesime": "Exécution 2024",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_maladie_2024",
+   "theme": "Sécurité sociale",
+   "libelle": "Branche maladie, exécution 2024",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre/racine.json",
+    "noeud": "robss/maladie"
+   },
+   "officiel": {
+    "valeur": 253.0,
+    "document": "PLACSS 2024 (projet de loi n° 1456), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1456.html",
+    "millesime": "Exécution 2024",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_atmp_2024",
+   "theme": "Sécurité sociale",
+   "libelle": "Branche AT-MP, exécution 2024",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre/racine.json",
+    "noeud": "robss/atmp"
+   },
+   "officiel": {
+    "valeur": 16.3,
+    "document": "PLACSS 2024 (projet de loi n° 1456), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1456.html",
+    "millesime": "Exécution 2024",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_vieillesse_2024",
+   "theme": "Sécurité sociale",
+   "libelle": "Branche vieillesse, exécution 2024",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre/racine.json",
+    "noeud": "robss/vieillesse"
+   },
+   "officiel": {
+    "valeur": 293.8,
+    "document": "PLACSS 2024 (projet de loi n° 1456), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1456.html",
+    "millesime": "Exécution 2024",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_famille_2024",
+   "theme": "Sécurité sociale",
+   "libelle": "Branche famille, exécution 2024",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre/racine.json",
+    "noeud": "robss/famille"
+   },
+   "officiel": {
+    "valeur": 57.8,
+    "document": "PLACSS 2024 (projet de loi n° 1456), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1456.html",
+    "millesime": "Exécution 2024",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_autonomie_2024",
+   "theme": "Sécurité sociale",
+   "libelle": "Branche autonomie, exécution 2024",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre/racine.json",
+    "noeud": "robss/autonomie"
+   },
+   "officiel": {
+    "valeur": 39.9,
+    "document": "PLACSS 2024 (projet de loi n° 1456), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1456.html",
+    "millesime": "Exécution 2024",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_fsv_2024",
+   "theme": "Sécurité sociale",
+   "libelle": "Fonds de solidarité vieillesse, exécution 2024",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre/racine.json",
+    "noeud": "robss/fsv"
+   },
+   "officiel": {
+    "valeur": 20.5,
+    "document": "PLACSS 2024 (projet de loi n° 1456), article 1, 2°, tableau d'équilibre du FSV",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1456.html",
+    "millesime": "Exécution 2024",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_2025",
+   "theme": "Sécurité sociale",
+   "libelle": "Dépenses des régimes obligatoires de base et du FSV (hors transferts), exécution 2025",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre_2025/racine.json",
+    "noeud": "robss"
+   },
+   "officiel": {
+    "valeur": 666.0,
+    "document": "PLACSS 2025 (projet de loi n° 2843), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2843.html",
+    "millesime": "Exécution 2025",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_maladie_2025",
+   "theme": "Sécurité sociale",
+   "libelle": "Branche maladie, exécution 2025",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre_2025/racine.json",
+    "noeud": "robss/maladie"
+   },
+   "officiel": {
+    "valeur": 262.6,
+    "document": "PLACSS 2025 (projet de loi n° 2843), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2843.html",
+    "millesime": "Exécution 2025",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_atmp_2025",
+   "theme": "Sécurité sociale",
+   "libelle": "Branche AT-MP, exécution 2025",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre_2025/racine.json",
+    "noeud": "robss/atmp"
+   },
+   "officiel": {
+    "valeur": 17.4,
+    "document": "PLACSS 2025 (projet de loi n° 2843), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2843.html",
+    "millesime": "Exécution 2025",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_vieillesse_2025",
+   "theme": "Sécurité sociale",
+   "libelle": "Branche vieillesse, exécution 2025",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre_2025/racine.json",
+    "noeud": "robss/vieillesse"
+   },
+   "officiel": {
+    "valeur": 304.1,
+    "document": "PLACSS 2025 (projet de loi n° 2843), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2843.html",
+    "millesime": "Exécution 2025",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_famille_2025",
+   "theme": "Sécurité sociale",
+   "libelle": "Branche famille, exécution 2025",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre_2025/racine.json",
+    "noeud": "robss/famille"
+   },
+   "officiel": {
+    "valeur": 58.5,
+    "document": "PLACSS 2025 (projet de loi n° 2843), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2843.html",
+    "millesime": "Exécution 2025",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_autonomie_2025",
+   "theme": "Sécurité sociale",
+   "libelle": "Branche autonomie, exécution 2025",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre_2025/racine.json",
+    "noeud": "robss/autonomie"
+   },
+   "officiel": {
+    "valeur": 41.8,
+    "document": "PLACSS 2025 (projet de loi n° 2843), article 1, tableau d'équilibre des régimes obligatoires de base",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2843.html",
+    "millesime": "Exécution 2025",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_robss_fsv_2025",
+   "theme": "Sécurité sociale",
+   "libelle": "Fonds de solidarité vieillesse, exécution 2025",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre_2025/racine.json",
+    "noeud": "robss/fsv"
+   },
+   "officiel": {
+    "valeur": 21.4,
+    "document": "PLACSS 2025 (projet de loi n° 2843), article 1, 2°, tableau d'équilibre du FSV",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2843.html",
+    "millesime": "Exécution 2025",
+    "tableau": "colonne « Dépenses »"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_cades_dette_amortie_2024",
+   "theme": "Sécurité sociale",
+   "libelle": "Dette sociale amortie par la CADES, 2024",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre/racine.json",
+    "noeud": "cades/amortissement"
+   },
+   "officiel": {
+    "valeur": 16.0,
+    "document": "PLACSS 2024, article 2, 3° (dette amortie par la CADES)",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1456.html",
+    "millesime": "Exécution 2024"
+   },
+   "tolerance": {
+    "absolue": 0.5,
+    "justification": "la loi publie un nombre entier de milliards (« 16 milliards d'euros ») ; le site lit le compte de résultat (annexe 7)"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_cades_dette_amortie_2025",
+   "theme": "Sécurité sociale",
+   "libelle": "Dette sociale amortie par la CADES, 2025",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre_2025/racine.json",
+    "noeud": "cades/amortissement"
+   },
+   "officiel": {
+    "valeur": 16.2,
+    "document": "PLACSS 2025, article 2, 3° (dette amortie par la CADES)",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2843.html",
+    "millesime": "Exécution 2025"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la loi publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "secu_total_organismes_2024",
+   "theme": "Sécurité sociale",
+   "libelle": "Total de l'arbre « dépenses des organismes », exécution 2024",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre/racine.json",
+    "noeud": "racine"
+   },
+   "officiel": {
+    "valeur": 643.1,
+    "document": "PLACSS 2024 (projet de loi n° 1456), article 1, tableau d'équilibre des régimes obligatoires de base (chiffre officiel le plus proche)",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1456.html",
+    "millesime": "Exécution 2024"
+   },
+   "tolerance": {
+    "absolue": 0.002,
+    "justification": "somme de montants arrondis au millier d'euros"
+   },
+   "classe": "ecart_explique",
+   "ecart": {
+    "explication": "Périmètre : le site ajoute aux régimes obligatoires de base et au FSV les régimes complémentaires, l'Unédic et la CADES ; aucun document ne publie ce total.",
+    "composantes": [
+     {
+      "libelle": "régimes complémentaires",
+      "signe": 1,
+      "site": {
+       "fichier": "secu/arbre/racine.json",
+       "noeud": "complementaires"
+      }
+     },
+     {
+      "libelle": "Unédic",
+      "signe": 1,
+      "site": {
+       "fichier": "secu/arbre/racine.json",
+       "noeud": "unedic"
+      }
+     },
+     {
+      "libelle": "CADES",
+      "signe": 1,
+      "site": {
+       "fichier": "secu/arbre/racine.json",
+       "noeud": "cades"
+      }
+     }
+    ]
+   },
+   "note_ecran": "avertissement de la racine (pipeline/secu.py) : « Ce total n'est pas un chiffre publié… 643,1 Md€ (PLACSS 2024, article 1) »"
+  },
+  {
+   "id": "secu_total_organismes_2025",
+   "theme": "Sécurité sociale",
+   "libelle": "Total de l'arbre « dépenses des organismes », exécution 2025",
+   "ecran": "web/src/ecrans/secu.ts (Explorer > Sécurité sociale)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "secu/arbre_2025/racine.json",
+    "noeud": "racine"
+   },
+   "officiel": {
+    "valeur": 666.0,
+    "document": "PLACSS 2025 (projet de loi n° 2843), article 1, tableau d'équilibre des régimes obligatoires de base (chiffre officiel le plus proche)",
+    "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2843.html",
+    "millesime": "Exécution 2025"
+   },
+   "tolerance": {
+    "absolue": 0.002,
+    "justification": "somme de montants arrondis au millier d'euros"
+   },
+   "classe": "erreur_corrigee",
+   "ecart": {
+    "explication": "Périmètre : le site ajoute l'Unédic et la CADES aux régimes obligatoires de base et au FSV ; pas de régimes complémentaires en 2025 (comptes non collectés).",
+    "composantes": [
+     {
+      "libelle": "Unédic",
+      "signe": 1,
+      "site": {
+       "fichier": "secu/arbre_2025/racine.json",
+       "noeud": "unedic"
+      }
+     },
+     {
+      "libelle": "CADES",
+      "signe": 1,
+      "site": {
+       "fichier": "secu/arbre_2025/racine.json",
+       "noeud": "cades"
+      }
+     }
+    ]
+   },
+   "correction": {
+    "avant": "avertissement repris de 2024 : 2,7 Md€ comptés deux fois (Unédic vers Agirc-Arrco 2,5 Md€, FSV vers régimes complémentaires 0,2 Md€), alors que la vue 2025 n'a pas de régimes complémentaires ; total 727,5 Md€ présenté sans mise en garde face aux 827,9 Md€ de 2024",
+    "apres": "0 Md€ de double compte cité pour 2025 ; avertissement : périmètre différent de 2024 (sans régimes complémentaires), chiffre officiel le plus proche 666,0 Md€ (PLACSS 2025) ; montants inchangés",
+    "commit": "secu : avertissement propre à chaque vue et chiffre officiel le plus proche",
+    "verification": {
+     "fichier": "secu/arbre_2025/racine.json",
+     "champ": "avertissement",
+     "absent": "Agirc-Arrco, 2,5 Md€",
+     "present": "666,0 Md€"
+    }
+   },
+   "note_ecran": "avertissement de la racine 2025 (pipeline/secu.py)"
+  },
+  {
+   "id": "apu_depenses_2024",
+   "theme": "Administrations publiques",
+   "libelle": "Dépenses des administrations publiques (TE), 2024",
+   "ecran": "web/src/ecrans/etat.ts (part empruntée APU), collectivites.ts, comparer.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "administrations.json",
+    "chemin": [
+     "annees",
+     "2024",
+     "Ensemble",
+     "TE"
+    ]
+   },
+   "officiel": {
+    "valeur": 1672.7082,
+    "document": "Eurostat (notification de la France, comptes des administrations publiques transmis par l'Insee)",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FR&unit=MIO_EUR&sector=S13&na_item=TE",
+    "millesime": "2024 (mise à jour Eurostat d'octobre ou novembre 2026)"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "le site publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "apu_depenses_2025",
+   "theme": "Administrations publiques",
+   "libelle": "Dépenses des administrations publiques (TE), 2025",
+   "ecran": "web/src/ecrans/etat.ts (part empruntée APU), collectivites.ts, comparer.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "administrations.json",
+    "chemin": [
+     "annees",
+     "2025",
+     "Ensemble",
+     "TE"
+    ]
+   },
+   "officiel": {
+    "valeur": 1714.1117,
+    "document": "Eurostat (notification de la France, comptes des administrations publiques transmis par l'Insee)",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FR&unit=MIO_EUR&sector=S13&na_item=TE",
+    "millesime": "2025 (mise à jour Eurostat d'octobre ou novembre 2026)"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "le site publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "apu_recettes_2024",
+   "theme": "Administrations publiques",
+   "libelle": "Recettes des administrations publiques (TR), 2024",
+   "ecran": "web/src/ecrans/etat.ts (part empruntée APU), collectivites.ts, comparer.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "administrations.json",
+    "chemin": [
+     "annees",
+     "2024",
+     "Ensemble",
+     "TR"
+    ]
+   },
+   "officiel": {
+    "valeur": 1503.5901,
+    "document": "Eurostat (notification de la France, comptes des administrations publiques transmis par l'Insee)",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FR&unit=MIO_EUR&sector=S13&na_item=TR",
+    "millesime": "2024 (mise à jour Eurostat d'octobre ou novembre 2026)"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "le site publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "apu_solde_2024",
+   "theme": "Administrations publiques",
+   "libelle": "Besoin de financement des administrations publiques (B9), 2024",
+   "ecran": "web/src/ecrans/etat.ts (part empruntée APU), collectivites.ts, comparer.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "deficit.json",
+    "chemin": [
+     "administrations_publiques",
+     "annees",
+     "2024",
+     "B9_md"
+    ]
+   },
+   "officiel": {
+    "valeur": -169.1181,
+    "document": "Eurostat (notification de la France, comptes des administrations publiques transmis par l'Insee)",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FR&unit=MIO_EUR&sector=S13&na_item=B9",
+    "millesime": "2024 (mise à jour Eurostat d'octobre ou novembre 2026)"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "le site publie au dixième de milliard"
+   },
+   "classe": "conforme",
+   "controle_secondaire": {
+    "document": "Insee, comptes nationaux annuels des administrations publiques (DD_CNA_APU, mis à jour le 31/08/2026), B9 S13 2024",
+    "valeur": -169.1181
+   }
+  },
+  {
+   "id": "apu_solde_2025",
+   "theme": "Administrations publiques",
+   "libelle": "Besoin de financement des administrations publiques (B9), 2025",
+   "ecran": "web/src/ecrans/etat.ts (part empruntée APU), collectivites.ts, comparer.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "deficit.json",
+    "chemin": [
+     "administrations_publiques",
+     "annees",
+     "2025",
+     "B9_md"
+    ]
+   },
+   "officiel": {
+    "valeur": -151.592,
+    "document": "Eurostat (notification de la France, comptes des administrations publiques transmis par l'Insee)",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FR&unit=MIO_EUR&sector=S13&na_item=B9",
+    "millesime": "2025 (mise à jour Eurostat d'octobre ou novembre 2026)"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "le site publie au dixième de milliard"
+   },
+   "classe": "conforme",
+   "controle_secondaire": {
+    "document": "Insee DD_CNA_APU (31/08/2026), B9 S13 2025 : -152,5 Md€, antérieur à la notification d'octobre 2026 retenue par Eurostat (révision, pas une erreur)",
+    "valeur": -152.532
+   }
+  },
+  {
+   "id": "apul_depenses_2025",
+   "theme": "Administrations publiques",
+   "libelle": "Dépenses des administrations publiques locales (S1313), 2025",
+   "ecran": "web/src/ecrans/etat.ts (part empruntée APU), collectivites.ts, comparer.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "administrations.json",
+    "chemin": [
+     "annees",
+     "2025",
+     "Collectivites locales",
+     "TE"
+    ]
+   },
+   "officiel": {
+    "valeur": 335.4818,
+    "document": "Eurostat (notification de la France, comptes des administrations publiques transmis par l'Insee)",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FR&unit=MIO_EUR&sector=S1313&na_item=TE",
+    "millesime": "2025 (mise à jour Eurostat d'octobre ou novembre 2026)"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "le site publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "asso_depenses_2025",
+   "theme": "Administrations publiques",
+   "libelle": "Dépenses des administrations de sécurité sociale (S1314), 2025",
+   "ecran": "web/src/ecrans/etat.ts (part empruntée APU), collectivites.ts, comparer.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "administrations.json",
+    "chemin": [
+     "annees",
+     "2025",
+     "Securite sociale",
+     "TE"
+    ]
+   },
+   "officiel": {
+    "valeur": 803.164,
+    "document": "Eurostat (notification de la France, comptes des administrations publiques transmis par l'Insee)",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FR&unit=MIO_EUR&sector=S1314&na_item=TE",
+    "millesime": "2025 (mise à jour Eurostat d'octobre ou novembre 2026)"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "le site publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "cofog_total_2024",
+   "theme": "Administrations publiques",
+   "libelle": "Dépenses publiques par fonction (COFOG), total 2024",
+   "ecran": "web/src/ecrans/etat.ts (part empruntée APU), collectivites.ts, comparer.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "cofog.json",
+    "chemin": [
+     "total"
+    ]
+   },
+   "officiel": {
+    "valeur": 1671.7938,
+    "document": "Eurostat (notification de la France, comptes des administrations publiques transmis par l'Insee)",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=FR&unit=MIO_EUR&sector=S13&na_item=TE&cofog99=TOTAL",
+    "millesime": "2024 (mise à jour Eurostat d'octobre ou novembre 2026)"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "le site publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "tva_2025",
+   "theme": "Administrations publiques",
+   "libelle": "Taxes du type TVA (D211), toutes administrations, 2025",
+   "ecran": "web/src/ecrans/etat.ts (part empruntée APU), collectivites.ts, comparer.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "recettes.json",
+    "chemin": [
+     "impots",
+     "D211",
+     "par_administration",
+     "Ensemble",
+     "2025"
+    ]
+   },
+   "officiel": {
+    "valeur": 208.821,
+    "document": "Eurostat (notification de la France, comptes des administrations publiques transmis par l'Insee)",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=FR&unit=MIO_EUR&sector=S13&na_item=D211",
+    "millesime": "2025 (mise à jour Eurostat d'octobre ou novembre 2026)"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "le site publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "interets_apu_2025",
+   "theme": "Administrations publiques",
+   "libelle": "Intérêts versés par les administrations publiques (D41), 2025",
+   "ecran": "web/src/ecrans/etat.ts (part empruntée APU), collectivites.ts, comparer.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "dette/index.json",
+    "chemin": [
+     "synthese",
+     "interets_apu_d41",
+     "md"
+    ]
+   },
+   "officiel": {
+    "valeur": 65.7209,
+    "document": "Eurostat (notification de la France, comptes des administrations publiques transmis par l'Insee)",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=FR&unit=MIO_EUR&sector=S13&na_item=D41PAY",
+    "millesime": "2025 (mise à jour Eurostat d'octobre ou novembre 2026)"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "le site publie au dixième de milliard"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "dette_maastricht_2024",
+   "theme": "Dette",
+   "libelle": "Dette de Maastricht fin 2024",
+   "ecran": "web/src/ecrans/dette.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "dette/encours.json",
+    "chemin": [
+     "insee",
+     "Ensemble",
+     "md",
+     "2024"
+    ]
+   },
+   "officiel": {
+    "valeur": 3306.1,
+    "document": "Insee, dette trimestrielle de Maastricht des administrations publiques (base 2020), 4e trimestre",
+    "url": "https://bdm.insee.fr/series/sdmx/data/DETTE-TRIM-APU-2020?startPeriod=2024",
+    "millesime": "publication du 29/09/2026"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "Insee publie au dixième"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "dette_maastricht_2025",
+   "theme": "Dette",
+   "libelle": "Dette de Maastricht fin 2025",
+   "ecran": "web/src/ecrans/dette.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "dette/encours.json",
+    "chemin": [
+     "insee",
+     "Ensemble",
+     "md",
+     "2025"
+    ]
+   },
+   "officiel": {
+    "valeur": 3460.1,
+    "document": "Insee, dette trimestrielle de Maastricht des administrations publiques (base 2020), 4e trimestre",
+    "url": "https://bdm.insee.fr/series/sdmx/data/DETTE-TRIM-APU-2020?startPeriod=2024",
+    "millesime": "publication du 29/09/2026"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "Insee publie au dixième"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "dette_maastricht_pct_pib_2025",
+   "theme": "Dette",
+   "libelle": "Dette de Maastricht fin 2025, en % du PIB",
+   "ecran": "web/src/ecrans/dette.ts",
+   "unite": "% du PIB",
+   "site": {
+    "fichier": "dette/encours.json",
+    "chemin": [
+     "insee",
+     "Ensemble",
+     "pct_pib",
+     "2025"
+    ]
+   },
+   "officiel": {
+    "valeur": 115.7,
+    "document": "Insee, dette trimestrielle de Maastricht des administrations publiques (base 2020), 4e trimestre",
+    "url": "https://bdm.insee.fr/series/sdmx/data/DETTE-TRIM-APU-2020?startPeriod=2024",
+    "millesime": "publication du 29/09/2026"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "Insee publie au dixième"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "dette_maastricht_2026T2",
+   "theme": "Dette",
+   "libelle": "Dette de Maastricht au 2e trimestre 2026",
+   "ecran": "web/src/ecrans/dette.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "dette/index.json",
+    "chemin": [
+     "synthese",
+     "encours_maastricht",
+     "dernier_trimestre",
+     "md"
+    ]
+   },
+   "officiel": {
+    "valeur": 3595.5,
+    "document": "Insee, dette trimestrielle de Maastricht des APU (base 2020), 2026-T2",
+    "url": "https://bdm.insee.fr/series/sdmx/data/DETTE-TRIM-APU-2020?startPeriod=2024",
+    "millesime": "publication du 29/09/2026"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "Insee publie au dixième"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "regions_depenses_2025",
+   "theme": "Collectivités",
+   "libelle": "Dépenses totales des régions et collectivités à statut particulier, 2025",
+   "ecran": "web/src/ecrans/collectivites.ts (Les collectivités locales)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "local/budgets/regions.json",
+    "calcul": "somme_ofgl",
+    "agregat": "depenses_totales",
+    "annee": "2025"
+   },
+   "officiel": {
+    "valeur": 42.197223,
+    "document": "OFGL, base des comptes des régions consolidée (agrégat « Dépenses totales », toutes collectivités de la base : régions et collectivités territoriales uniques)",
+    "url": "https://data.ofgl.fr/explore/dataset/ofgl-base-regions-consolidee/",
+    "millesime": "comptes 2025"
+   },
+   "tolerance": {
+    "absolue": 0.001,
+    "justification": "somme au millier d'euros"
+   },
+   "classe": "erreur_corrigee",
+   "correction": {
+    "avant": "« Les 18 régions : 42,2 Md€ » alors que la somme porte sur 17 comptes (Mayotte est dans la base des départements)",
+    "apres": "« Les régions et collectivités à statut particulier (17 comptes publiés par l'OFGL ; Mayotte est comptée avec les départements) : 42,2 Md€ », badge « calculé par le site » et méthode ; montant inchangé",
+    "commit": "collectivites : nombre de comptes réellement sommés et badge calculé par le site"
+   }
+  },
+  {
+   "id": "departements_depenses_2025",
+   "theme": "Collectivités",
+   "libelle": "Dépenses totales des départements (y compris Paris et la métropole de Lyon), 2025",
+   "ecran": "web/src/ecrans/collectivites.ts (Les collectivités locales)",
+   "unite": "Md€",
+   "site": {
+    "fichier": "local/budgets/departements.json",
+    "calcul": "somme_ofgl",
+    "agregat": "depenses_totales",
+    "annee": "2025"
+   },
+   "officiel": {
+    "valeur": 95.828684,
+    "document": "OFGL, base des comptes des départements consolidée (agrégat « Dépenses totales », départements, Ville de Paris, métropole de Lyon)",
+    "url": "https://data.ofgl.fr/explore/dataset/ofgl-base-departements-consolidee/",
+    "millesime": "comptes 2025"
+   },
+   "tolerance": {
+    "absolue": 0.001,
+    "justification": "somme au millier d'euros"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "ue_psr_execution_2024",
+   "theme": "Union européenne",
+   "libelle": "Prélèvement sur recettes au profit de l'UE, exécution 2024",
+   "ecran": "web/src/ecrans/ue.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "ue/contribution.json",
+    "chemin": [
+     "psr_ue",
+     "md"
+    ]
+   },
+   "officiel": {
+    "valeur": 22.276394,
+    "document": "DGFiP, situation mensuelle budgétaire de l'État au 31 décembre (séries longues), copie versionnée data/raw/situation_budgetaire.json",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "31/12/2024"
+   },
+   "tolerance": {
+    "absolue": 0.0005,
+    "justification": "arrondi du site (montant publié par le site à 4 décimales en Md€) ; la source est à l'euro"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "ue_psr_execution_2025",
+   "theme": "Union européenne",
+   "libelle": "Prélèvement sur recettes au profit de l'UE, exécution 2025",
+   "ecran": "web/src/ecrans/ue.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "ue/retours.json",
+    "calcul": "annee_retours",
+    "annee": 2025,
+    "champ": "psr_ue_execute_md"
+   },
+   "officiel": {
+    "valeur": 22.96173,
+    "document": "DGFiP, situation mensuelle budgétaire de l'État au 31 décembre (séries longues), copie versionnée data/raw/situation_budgetaire.json",
+    "url": "https://data.economie.gouv.fr/explore/dataset/situations-mensuelles-budgetaires-series-longues/",
+    "millesime": "31/12/2025"
+   },
+   "tolerance": {
+    "absolue": 0.001,
+    "justification": "le site publie au million"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "ue_retours_2024",
+   "theme": "Union européenne",
+   "libelle": "Dépenses de l'UE réalisées en France (retours), 2024",
+   "ecran": "web/src/ecrans/ue.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "ue/retours.json",
+    "calcul": "annee_retours",
+    "annee": 2024,
+    "champ": "retours_md"
+   },
+   "officiel": {
+    "valeur": 16.456,
+    "document": "Sénat, commission des finances, note de présentation « Affaires européennes » PLF 2026 (« les dépenses réalisées en France s'élevaient à 16,456 milliards d'euros »)",
+    "url": "https://www.senat.fr/fileadmin/cru-1762483659/Commissions/Finances/2025-2026/PLF_2026/NP/Affaires_europeennes_NP_PLF_2026.pdf",
+    "millesime": "2024"
+   },
+   "tolerance": {
+    "absolue": 0.0005,
+    "justification": "même précision que la source"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "ue_solde_net_2024",
+   "theme": "Union européenne",
+   "libelle": "Solde net comptable de la France, 2024",
+   "ecran": "web/src/ecrans/ue.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "ue/retours.json",
+    "calcul": "annee_retours",
+    "annee": 2024,
+    "champ": "solde_net_comptable_md"
+   },
+   "officiel": {
+    "valeur": -7.9,
+    "document": "Sénat, commission des finances, note de présentation « Affaires européennes » PLF 2026 (« - 7,9 milliards d'euros »)",
+    "url": "https://www.senat.fr/fileadmin/cru-1762483659/Commissions/Finances/2025-2026/PLF_2026/NP/Affaires_europeennes_NP_PLF_2026.pdf",
+    "millesime": "2024"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la source publie au dixième"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "ue_contribution_comptable_2024",
+   "theme": "Union européenne",
+   "libelle": "Contribution totale de la France (méthode comptable), 2024",
+   "ecran": "web/src/ecrans/ue.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "ue/contribution.json",
+    "chemin": [
+     "contribution_comptable_2024_md"
+    ]
+   },
+   "officiel": {
+    "valeur": 24.3,
+    "document": "Sénat, commission des finances, note de présentation « Affaires européennes » PLF 2027 (« 24,3 milliards d'euros en 2024 »)",
+    "url": "https://www.senat.fr/fileadmin/cru-1792598966/Commissions/Finances/2026-2027/PLF_2027/NP/NP_Affaires_europeennes_PLF_2027.pdf",
+    "millesime": "2024"
+   },
+   "tolerance": {
+    "absolue": 0.05,
+    "justification": "la source publie au dixième"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "niches_total_2024",
+   "theme": "Dépenses fiscales",
+   "libelle": "Dépenses fiscales chiffrées, 2024 (grand chiffre de l'écran)",
+   "ecran": "web/src/ecrans/niches.ts",
+   "unite": "M€",
+   "site": {
+    "fichier": "niches/index.json",
+    "chemin": [
+     "totaux",
+     "2024",
+     "chiffre_meur"
+    ]
+   },
+   "officiel": {
+    "valeur": 89406.0,
+    "document": "Évaluation des voies et moyens, tome II, PLF 2026, p. 17, tableau des dépenses fiscales par impôt, ligne « Total » (colonnes 2024, 2025, 2026)",
+    "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1087933/file/Voies_et_moyens_Tome_2_2026.pdf",
+    "millesime": "PLF 2026 (constaté 2024)"
+   },
+   "tolerance": {
+    "absolue": 0.5,
+    "justification": "la source publie au million d'euros"
+   },
+   "classe": "conforme"
+  },
+  {
+   "id": "niches_total_2025",
+   "theme": "Dépenses fiscales",
+   "libelle": "Somme des dépenses fiscales chiffrées, 2025 (estimation)",
+   "ecran": "web/src/ecrans/niches.ts",
+   "unite": "M€",
+   "site": {
+    "fichier": "niches/index.json",
+    "chemin": [
+     "totaux",
+     "2025",
+     "chiffre_meur"
+    ]
+   },
+   "officiel": {
+    "valeur": 91834.0,
+    "document": "Évaluation des voies et moyens, tome II, PLF 2026, p. 17, tableau des dépenses fiscales par impôt, ligne « Total » (colonnes 2024, 2025, 2026)",
+    "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1087933/file/Voies_et_moyens_Tome_2_2026.pdf",
+    "millesime": "PLF 2026 (estimé 2025)"
+   },
+   "tolerance": {
+    "absolue": 0.5,
+    "justification": "la source publie au million d'euros"
+   },
+   "classe": "ecart_explique",
+   "ecart": {
+    "explication": "Le total publié impute une prévision aux mesures dont la fiche porte « nc » ; le site ne compte jamais une mesure non chiffrée. Les deux montants sont affichés côte à côte avec l'explication.",
+    "composantes": [
+     {
+      "libelle": "prévision imputée par le total publié aux mesures « nc »",
+      "signe": -1,
+      "site": {
+       "fichier": "niches/index.json",
+       "chemin": [
+        "totaux",
+        "2025",
+        "ecart_meur"
+       ]
+      }
+     }
+    ]
+   },
+   "note_ecran": "web/src/ecrans/niches.ts : colonne « Total publié » et phrase d'explication sous le tableau (ecart_explication)"
+  },
+  {
+   "id": "niches_total_2026",
+   "theme": "Dépenses fiscales",
+   "libelle": "Somme des dépenses fiscales chiffrées, 2026 (estimation)",
+   "ecran": "web/src/ecrans/niches.ts",
+   "unite": "M€",
+   "site": {
+    "fichier": "niches/index.json",
+    "chemin": [
+     "totaux",
+     "2026",
+     "chiffre_meur"
+    ]
+   },
+   "officiel": {
+    "valeur": 88269.0,
+    "document": "Évaluation des voies et moyens, tome II, PLF 2026, p. 17, tableau des dépenses fiscales par impôt, ligne « Total » (colonnes 2024, 2025, 2026)",
+    "url": "https://www.assemblee-nationale.fr/dyn/contenu/visualisation/1087933/file/Voies_et_moyens_Tome_2_2026.pdf",
+    "millesime": "PLF 2026 (estimé 2026)"
+   },
+   "tolerance": {
+    "absolue": 0.5,
+    "justification": "la source publie au million d'euros"
+   },
+   "classe": "ecart_explique",
+   "ecart": {
+    "explication": "Le total publié impute une prévision aux mesures dont la fiche porte « nc » ; le site ne compte jamais une mesure non chiffrée. Les deux montants sont affichés côte à côte avec l'explication.",
+    "composantes": [
+     {
+      "libelle": "prévision imputée par le total publié aux mesures « nc »",
+      "signe": -1,
+      "site": {
+       "fichier": "niches/index.json",
+       "chemin": [
+        "totaux",
+        "2026",
+        "ecart_meur"
+       ]
+      }
+     }
+    ]
+   },
+   "note_ecran": "web/src/ecrans/niches.ts : colonne « Total publié » et phrase d'explication sous le tableau (ecart_explication)"
+  },
+  {
+   "id": "operateurs_scsp_execution_2024",
+   "theme": "Opérateurs",
+   "libelle": "Subventions pour charges de service public versées aux opérateurs, exécution 2024",
+   "ecran": "web/src/ecrans/operateurs.ts",
+   "unite": "Md€",
+   "site": {
+    "fichier": "operateurs/operateurs.json",
+    "calcul": "somme_scsp_operateurs",
+    "annee": "2024"
+   },
+   "officiel": null,
+   "tolerance": {
+    "absolue": 0.0,
+    "justification": "sans objet"
+   },
+   "classe": "non_verifiable",
+   "motif": "L'annexe « Opérateurs de l'État » au PLF 2026 publie l'exécution 2024 opérateur par opérateur (et par catégorie), sans total ; ses tableaux de synthèse (p. 17 à 24) ne totalisent que la LFI 2025 et le PLF 2026. Aucun autre document officiel trouvé ne publie ce total. Le site affiche donc une somme calculée, désormais avec le badge « calculé par le site » et sa méthode (règle 13).",
+   "controle_secondaire": {
+    "document": "jaune « Opérateurs de l'État » PLF 2026, p. 24 : SCSP LFI 2025 = 33 491 513 097 €",
+    "url": "https://www2.assemblee-nationale.fr/static/17/Annexes-DL/PLF-2026/22-Jaune2026_Operateurs.pdf",
+    "valeur": 33.491513,
+    "site_lfi_2025": {
+     "fichier": "operateurs/index.json",
+     "chemin": [
+      "totaux",
+      "2025",
+      "lfi_scsp_cp_eur"
+     ]
+    },
+    "constat": "somme des lignes lues 33,488 Md€ : 3,2 M€ de moins (0,01 %), lignes de l'annexe non rattachées à un opérateur ; non affiché à l'écran"
+   }
+  },
+  {
+   "id": "simulateur_sur_100",
+   "theme": "Simulateur",
+   "libelle": "Répartition « sur 100 € » du simulateur (Sécurité sociale, État, collectivités, sans destinataire publié)",
+   "ecran": "web/src/ecrans/etat.ts, recu.ts, resume-calcul.ts",
+   "unite": "€ sur 100",
+   "site": null,
+   "officiel": null,
+   "tolerance": {
+    "absolue": 0.0,
+    "justification": "les euros entiers totalisent exactement 100 (méthode du plus fort reste)"
+   },
+   "classe": "conforme",
+   "controle_interne": {
+    "test": "web/tests/sur100_totaux.test.ts",
+    "regle": "pour chaque cas type, somme des administrations = total payé (ventilations de somme 1, à un millionième près) et euros entiers = 100"
+   },
+   "motif": "Pas de chiffre officiel : la répartition dépend du foyer ; contrôlée en interne."
+  }
+ ]
+}
