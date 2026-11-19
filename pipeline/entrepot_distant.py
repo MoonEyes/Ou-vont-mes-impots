@@ -308,8 +308,12 @@ def signer_get(url: str, cle: str, secret: str, region: str, maintenant: dt.date
             "Authorization": f"AWS4-HMAC-SHA256 Credential={cle}/{portee}, SignedHeaders={noms}, Signature={signature}"}
 
 
-def _get(cfg: ConfigLecture, cle: str, cible: Path | None = None, essais: int = 4):
+def _get(cfg: ConfigLecture, cle: str, cible: Path | None = None, essais: int = 4, nom: str | None = None):
+    """GET (anonyme ou signé). Avec `cible` : écrit dans ce temporaire puis contrôle d'intégrité (taille annoncée,
+    format complet d'après `nom`, collecte/integrite.py) ; l'appelant vérifie ensuite le sha256 et renomme."""
     import requests
+    from fetch import _integrite as fetch_integrite, octets_annonces
+    integrite = fetch_integrite()
     erreur = None
     for n in range(essais):
         url = cfg.url(cle)
@@ -320,12 +324,18 @@ def _get(cfg: ConfigLecture, cle: str, cible: Path | None = None, essais: int = 
                 r.raise_for_status()
                 if cible is None:
                     return r.content
+                attendu = octets_annonces(r)
                 with cible.open("wb") as f:
                     for bloc in r.iter_content(1 << 20):
                         f.write(bloc)
-                return cible
+            if attendu is not None and cible.stat().st_size != attendu:
+                raise requests.ConnectionError(f"transfert tronqué ({cible.stat().st_size} octets sur {attendu})")
+            integrite.verifier_fichier(cible, nom=nom or cible.name)
+            return cible
         except PermissionError:
             raise
+        except integrite.IntegriteInvalide as exc:
+            raise ConnectionError(f"{cle} : fichier incomplet ou invalide ({exc})") from exc
         except requests.RequestException as exc:
             erreur = exc
             time.sleep(2 ** (n + 1))
@@ -370,7 +380,7 @@ def restaurer(cfg: ConfigLecture, etapes: list[str] | None, lignee_seule: bool =
             with tempfile.NamedTemporaryFile(dir=p.parent, prefix=".restaure_", delete=False) as t:
                 tmp = Path(t.name)
             try:
-                _get(cfg, objet(info["sha256"]), tmp)
+                _get(cfg, objet(info["sha256"]), tmp, nom=p.name)
             except (PermissionError, ConnectionError) as exc:
                 tmp.unlink(missing_ok=True)
                 bilan["absents_distants"].append(f"{c} : {exc}")
