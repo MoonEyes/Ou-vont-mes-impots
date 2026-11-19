@@ -102,6 +102,16 @@ Sinon le chiffre est retiré de l'affichage, et de préférence mis à `null` av
 
 Parts « sur 100 € » (décision du 18/11/2026) : ce sont des parts de chiffres publiés par une même source, sans badge ; une part qui combine deux sources porte le badge « Calculé par le site » et sa méthode (exemple : part des charges de personnel des hôpitaux). La part personnelle (« ce que tu verses ») relève du calcul personnel, décrit sur la page Méthode.
 
+## Personnes nommées (décision du propriétaire, 18-19/11/2026)
+
+Seules des personnes publiques agissant dans leur mandat ou leur candidature sont nommées, à partir de sources officielles :
+
+- candidats : comptes de campagne (CNCCFP, Journal officiel) ;
+- parlementaires : réserve parlementaire (décision « On nomme »), auteurs d'amendements et de motions, votes publiés (décision « On nomme aussi » du 19/11/2026) ;
+- membres du Gouvernement : barèmes par fonction seulement, jamais par nom.
+
+Tous sont présentés de la même façon (même tableau, ordre neutre écrit, aucune mise en avant). Aucune autre personne physique n'est nommée : bénéficiaires, agents, particuliers cités dans des actes restent agrégés ou retirés.
+
 ## Personnes nommées (décision du 19/11/2026)
 
 Les parlementaires sont nommés comme auteurs d'amendements fiscaux et par leur vote nominatif publié aux scrutins publics (écran « Qui a voté tes impôts », `/decisions/qui-a-vote`, contrat 2.70). Seuls le nom, le groupe politique, la circonscription, le vote et l'amendement sont publiés : ni date de naissance, ni adresse, ni profession, ni patrimoine, ni déclaration à la HATVP, ni photo. Même traitement pour tous les groupes : aucun classement, score, palmarès ni qualificatif ; groupes dans l'ordre alphabétique, règle écrite à l'écran ; décomptes tels que publiés. Avertissements toujours affichés : un non-votant n'est pas forcément absent, délégations de vote, mises au point, un vote sur un article n'est pas un vote sur l'impôt entier. Un élu candidat à une élection nationale reste non nommé sur cet écran comme dans le bloc décisions (règle de 2.11). Tests : `tests/test_qui_a_vote.py`, `web/tests/qui_a_vote.test.ts`.
