@@ -157,7 +157,7 @@ describe('écrans', () => {
     expect(location.hash).toBe('#/calcul/resultat')
     await ecran('#/calcul/resultat')
     expect(main.querySelector('nav.fil-ariane [aria-current=page]')?.textContent).toBe('Résultat')
-    for (const [t, href] of [['Où va l’argent de l’État', '#/explorer/etat'], ['Ta commune', '#/local'], ['Qui le reçoit', '#/beneficiaires']])
+    for (const [t, href] of [['Où va l’argent de l’État', '#/explorer/etat'], ['Et dans ma commune ?', '#/local/ma-commune'], ['Qui le reçoit', '#/beneficiaires']])
       expect(Array.from(main.querySelectorAll('.cartes a')).find((a) => a.textContent?.includes(t))?.getAttribute('href')).toBe(href)
     expect(main.querySelector('#partager-carte')?.textContent).toBe('Partager ma carte')
     expect(texte()).toContain('Ce que tu verses en un an')

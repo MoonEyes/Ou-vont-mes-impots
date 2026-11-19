@@ -1,0 +1,80 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/ma_commune_cp.schema.json",
+ "title": "site/data/ma_commune/cp/<2 chiffres>.json : pour chaque code postal, communes desservies [insee, nom, département, population, précision : arrondissement ou localités] (pipeline/ma_commune.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "date_sources",
+  "prefixe",
+  "colonnes",
+  "codes_postaux"
+ ],
+ "properties": {
+  "date_sources": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "prefixe": {
+   "type": "string",
+   "pattern": "^\\d{2}$"
+  },
+  "colonnes": {
+   "const": [
+    "insee",
+    "nom",
+    "departement",
+    "population",
+    "precision"
+   ]
+  },
+  "codes_postaux": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^\\d{5}$"
+   },
+   "additionalProperties": {
+    "type": "array",
+    "minItems": 1,
+    "items": {
+     "type": "array",
+     "prefixItems": [
+      {
+       "type": "string",
+       "pattern": "^(\\d{5}|2[AB]\\d{3})$"
+      },
+      {
+       "type": "string",
+       "minLength": 1
+      },
+      {
+       "type": "string",
+       "pattern": "^(\\d{2,3}|2[AB])$"
+      },
+      {
+       "type": [
+        "integer",
+        "null"
+       ],
+       "minimum": 0
+      },
+      {
+       "type": [
+        "string",
+        "null"
+       ]
+      }
+     ],
+     "minItems": 5,
+     "maxItems": 5
+    }
+   }
+  }
+ }
+}

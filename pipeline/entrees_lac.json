@@ -2,6 +2,17 @@
  "note": "Fichiers de data/lake lus par la production de chaque étape (python pipeline/tout.py inventorier, sous strace). `sources` : identifiants du catalogue (collecte/collecte.py) et chemins ; `caches` : dossiers remplis par les commandes de collecte des modules ; `hors_catalogue` : fichiers déposés par la collecte d'un module ; `urls` : URL publique de chaque fichier (manifeste), lue par `tout.py entrepot`.",
  "releve_le": "2026-11-17",
  "etapes": {
+  "ma_commune": {
+   "sources": {
+    "ma_commune_codes_postaux": [
+     "data/lake/ma_commune/ma_commune_codes_postaux.csv"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 1555485,
+   "note": "entr\u00e9e relev\u00e9e dans le manifeste de collecte (python pipeline/ma_commune.py collecter) ; lit aussi site/data/local/geo (versionn\u00e9)"
+  },
   "sport": {
    "sources": {
     "sport": [
@@ -2448,6 +2459,7 @@
   }
  },
  "urls": {
+  "data/lake/ma_commune/ma_commune_codes_postaux.csv": "https://data.laposte.fr/data-fair/api/v1/datasets/laposte-hexasmal/raw",
   "data/lake/energie_climat/energie_climat_budget_vert_plf2024.json": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/budgetvert_plf2024_opendata_vf/exports/json?where=numero_programme%3D174%20or%20numero_programme%3D345",
   "data/lake/energie_climat/energie_climat_budget_vert_plf2025.json": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf25-budget-vert/exports/json?where=numero_programme%3D174%20or%20numero_programme%3D345",
   "data/lake/energie_climat/energie_climat_budget_vert_plf2026.json": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/plf-2026-budget-vert/exports/json?where=numero_programme%3D174%20or%20numero_programme%3D345",

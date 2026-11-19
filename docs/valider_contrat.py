@@ -412,6 +412,10 @@ FICHIERS = [
     ("qui_a_vote_votes.schema.json", "qui_a_vote/votes_*.json", "existant"),
     ("qui_a_vote_scrutins.schema.json", "qui_a_vote/scrutins.json", "existant"),
     ("qui_a_vote_departement.schema.json", "qui_a_vote/departements/*.json", "existant"),
+    # ma commune : correspondance code postal -> commune et index des noms (pipeline/ma_commune.py)
+    ("ma_commune_index.schema.json", "ma_commune/index.json", "existant"),
+    ("ma_commune_cp.schema.json", "ma_commune/cp/*.json", "existant"),
+    ("ma_commune_noms.schema.json", "ma_commune/noms/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

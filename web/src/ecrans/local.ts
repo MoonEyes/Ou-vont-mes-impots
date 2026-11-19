@@ -7,6 +7,7 @@ import { chargerSiPresent } from '../donnees'
 import { session } from '../etat'
 import { lien } from '../routeur'
 import { h } from '../util'
+import { brancherFormulaire, formulaire } from './ma_commune_recherche'
 
 export async function rendre(cible: HTMLElement) {
   const insee = session.profil?.residence.commune_insee
@@ -15,7 +16,9 @@ export async function rendre(cible: HTMLElement) {
 <p class="chapeau">Ce que dépensent ta commune, ton intercommunalité, ton département et ta région, ce que l’État leur verse, et les taux d’impôts locaux votés.</p>
 <div class="colonnes c-6-6">
   <div>
-    <h2>Chercher une commune</h2>
+    <h2>Ma commune en un écran</h2>
+    ${formulaire('local-recherche')}
+    <h2>Chercher une commune par département</h2>
     <form id="choix-commune" class="carte carte-contour">
       <label for="dep-local">Département</label>
       <select id="dep-local"><option value="">Choisir</option>${TOUS_DEPARTEMENTS.map(([c, n]) => `<option value="${c}">${c} ${h(n)}</option>`).join('')}</select>
@@ -39,6 +42,7 @@ export async function rendre(cible: HTMLElement) {
 <ul class="liste-colonnes">${TOUS_DEPARTEMENTS.map(([c, n]) => `<li><a href="${fragmentDepartement(c, n)}">${h(n)} (${c})</a></li>`).join('')}</ul>
 ${cartesRayons('/local')}
 ${partPersonnelle()}`
+  brancherFormulaire(cible, 'local-recherche')
   const dep = cible.querySelector<HTMLSelectElement>('#dep-local')!
   const com = cible.querySelector<HTMLSelectElement>('#com-local')!
   let communes: Record<string, { nom: string; population?: number }> = {}

@@ -6159,6 +6159,17 @@
    "licence": "Licence Ouverte 2.0",
    "elus_nommes": true,
    "module": "pipeline/qui_a_vote.py"
+  },
+  {
+   "id": "ma_commune_codes_postaux",
+   "domaine": "ma_commune",
+   "type": "url",
+   "format": "csv",
+   "url": "https://data.laposte.fr/data-fair/api/v1/datasets/laposte-hexasmal/raw",
+   "producteur": "La Poste",
+   "titre": "La Poste, base officielle des codes postaux (HexaSmal) : code commune Insee, nom, code postal, libelle d'acheminement, ligne 5 (pipeline/ma_commune.py)",
+   "licence": "Licence Ouverte 2.0",
+   "module": "pipeline/ma_commune.py"
   }
  ],
  "non_collectables": [
