@@ -6086,6 +6086,101 @@
   },
   {
    "@type": "dcat:Distribution",
+   "dct:title": "impôts du simulateur reliés aux décisions du Parlement (17e législature), méthode de rattachement, avertissements, départements et circonscriptions",
+   "dct:description": "site/data/qui_a_vote/index.json : impôts du simulateur reliés aux décisions du Parlement (17e législature), méthode de rattachement, avertissements, départements et circonscriptions. Fichier site/data/qui_a_vote/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/qui_a_vote_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "articles rattachés à un impôt, scrutins publics (décompte par groupe publié), amendements adoptés nommés",
+   "dct:description": "site/data/qui_a_vote/impot_<id>.json : articles rattachés à un impôt, scrutins publics (décompte par groupe publié), amendements adoptés nommés. Famille de 9 fichiers (motif site/data/qui_a_vote/impot_*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/impot_accises_energie.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/impot_accises_energie.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/qui_a_vote_impot.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "vote nominatif de chaque député à chaque scrutin retenu pour un impôt, par groupe, avec délégations et mises au point",
+   "dct:description": "site/data/qui_a_vote/votes_<id>.json : vote nominatif de chaque député à chaque scrutin retenu pour un impôt, par groupe, avec délégations et mises au point. Famille de 9 fichiers (motif site/data/qui_a_vote/votes_*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/votes_accises_energie.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/votes_accises_energie.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/qui_a_vote_votes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "scrutins publics retenus (tous impôts), pour l'entrée « Ton député »",
+   "dct:description": "site/data/qui_a_vote/scrutins.json : scrutins publics retenus (tous impôts), pour l'entrée « Ton député ». Fichier site/data/qui_a_vote/scrutins.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/scrutins.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/scrutins.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/qui_a_vote_scrutins.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "députés de chaque circonscription pendant la législature (nom, dates du mandat) et position à chaque scrutin retenu ; aucune autre donnée personnelle",
+   "dct:description": "site/data/qui_a_vote/departements/<code>.json : députés de chaque circonscription pendant la législature (nom, dates du mandat) et position à chaque scrutin retenu ; aucune autre donnée personnelle. Famille de 107 fichiers (motif site/data/qui_a_vote/departements/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/departements/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/departements/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/qui_a_vote_departement.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
    "dct:title": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "dct:description": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique. Table CSV (non publiée sur le site, lue dans le dépôt).",
    "dcat:accessURL": {

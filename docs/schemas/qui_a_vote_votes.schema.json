@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/qui_a_vote_votes.schema.json",
+  "title": "site/data/qui_a_vote/votes_<id>.json : vote nominatif de chaque député à chaque scrutin retenu pour un impôt, par groupe, avec délégations et mises au point",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "donnees_au",
+    "impot",
+    "regle_ordre_groupes",
+    "deputes",
+    "masque",
+    "votes"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 10
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "donnees_au": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "impot": {
+      "type": "string"
+    },
+    "regle_ordre_groupes": {
+      "type": "string"
+    },
+    "masque": {
+      "type": "string"
+    },
+    "deputes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^PA[0-9]+$"
+      },
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "votes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[0-9]+$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "groupes",
+          "mises_au_point"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "groupes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "groupe",
+                "pour",
+                "contre",
+                "abstention",
+                "non_votant",
+                "par_delegation"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "groupe": {
+                  "type": "string"
+                },
+                "pour": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^PA[0-9]+$"
+                  }
+                },
+                "contre": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^PA[0-9]+$"
+                  }
+                },
+                "abstention": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^PA[0-9]+$"
+                  }
+                },
+                "non_votant": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^PA[0-9]+$"
+                  }
+                },
+                "par_delegation": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^PA[0-9]+$"
+                  }
+                }
+              }
+            }
+          },
+          "mises_au_point": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "depute",
+                "position_souhaitee"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "depute": {
+                  "type": "string",
+                  "pattern": "^PA[0-9]+$"
+                },
+                "position_souhaitee": {
+                  "enum": [
+                    "pour",
+                    "contre",
+                    "abstention",
+                    "non_votant"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

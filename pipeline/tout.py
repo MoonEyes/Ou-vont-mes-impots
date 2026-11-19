@@ -199,6 +199,8 @@ ETAPES: tuple[Etape, ...] = (
         duree_s=300),
     axe("investissement_communes", "Investissement réalisé par commune (balances DGFiP 2010 à 2025) et crédits votés",
         ("local", "deliberations"), duree_s=600),
+    axe("qui_a_vote", "Qui a voté tes impôts : articles, scrutins publics nominatifs et amendements adoptés par impôt (Assemblée, Sénat)",
+        ("decisions",), duree_s=120),
     # Nouvel axe : une ligne ici (avant « datapackage »). Une étape dont le module est absent du dépôt est ignorée,
     # une dépendance vers une étape absente aussi.
     axe("projets_subventionnes", "Projets subventionnés par l'État : Fonds vert par commune, Action cœur de ville, Petites villes de demain, liens vers les dotations", ("local", "territoires", "subventions"), duree_s=60),

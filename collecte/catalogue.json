@@ -6148,6 +6148,17 @@
    "producteur": "collectivites (data.gouv.fr)",
    "lu_par": "pipeline/deliberations.py collecter : chaque ressource reduite a un extrait agrege (data/lake/deliberations/budgets/), brut supprime",
    "module": "pipeline/deliberations.py"
+  },
+  {
+   "id": "qui_a_vote_an_l17_acteurs",
+   "domaine": "qui_a_vote",
+   "type": "url",
+   "format": "zip",
+   "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+   "titre": "Assemblee nationale, 17e legislature : tous les acteurs, mandats et organes (historique) ; seuls nom, groupe et circonscription sont lus (pipeline/qui_a_vote.py)",
+   "licence": "Licence Ouverte 2.0",
+   "elus_nommes": true,
+   "module": "pipeline/qui_a_vote.py"
   }
  ],
  "non_collectables": [
@@ -6243,6 +6254,10 @@
   {
    "source": "budget.gouv.fr (projets et rapports annuels de performances 2026 de la mission Securites, PDF)",
    "motif": "page de protection contre les robots (Incapsula) constatee le 18/11/2026 : non contourne ; credits et emplois lus dans les jeux de data.economie.gouv.fr (pipeline/securite_interieure.py)"
+  },
+  {
+   "source": "Assemblee nationale, textes examines en seance (format ouvert, assemblee-nationale.fr/dyn/opendata/<uid>.html)",
+   "motif": "liste variable tiree des amendements de seance : collectee par python pipeline/qui_a_vote.py collecter (controle d'integrite collecte/integrite.py)"
   }
  ]
 }

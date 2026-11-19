@@ -2420,6 +2420,31 @@
    "hors_catalogue": [],
    "octets_sources": null,
    "note": "exports agrégés côté serveur collectés par le module lui-même (python pipeline/investissement_communes.py collecter), non relevés sous strace ; lit aussi site/data/local/geo"
+  },
+  "qui_a_vote": {
+   "sources": {
+    "decisions_an_l17_amendements": [
+     "data/lake/decisions/decisions_an_l17_amendements.zip"
+    ],
+    "decisions_an_l17_dossiers": [
+     "data/lake/decisions/decisions_an_l17_dossiers.zip"
+    ],
+    "decisions_an_l17_scrutins": [
+     "data/lake/decisions/decisions_an_l17_scrutins.zip"
+    ],
+    "decisions_senat_ameli": [
+     "data/lake/decisions/decisions_senat_ameli.zip"
+    ],
+    "qui_a_vote_an_l17_acteurs": [
+     "data/lake/qui_a_vote/qui_a_vote_an_l17_acteurs.zip"
+    ]
+   },
+   "caches": [
+    "data/lake/qui_a_vote/textes"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "zips de l'Assembl\u00e9e et dump Ameli partag\u00e9s avec l'\u00e9tape decisions (aucune collecte en double) ; AMO30 (catalogue qui_a_vote_an_l17_acteurs) et textes examin\u00e9s en s\u00e9ance (data/lake/qui_a_vote/textes/<uid>.html) collect\u00e9s par python pipeline/qui_a_vote.py collecter"
   }
  },
  "urls": {
@@ -2722,6 +2747,7 @@
   "data/lake/controle/controle_ccomptes_publications_2011_2016.csv": "https://static.data.gouv.fr/resources/publications-de-la-cour-des-comptes-par-type-et-date-de-publication-2011-2016/20180507-120722/Publications_CDC_type_date__ISBN_v_04mai16.csv",
   "data/lake/controle/controle_crc_rod_metadonnees.xlsx": "https://static.data.gouv.fr/resources/rapports-dobservations-definitives-des-chambres-regionales-des-comptes-crc-et-reponses-associees-1/20200122-192454/meta-rod-datasession.xlsx",
   "data/lake/controle/controle_hcsp_2026_aides_entreprises.pdf": "https://www.strategie-plan.gouv.fr/files/files/Publications/2026/2026-07-16%20-%20Rapport%20Aides%20aux%20entreprises/HCSP-2026-RAPPORT-AIDES-ENTREPRISES.pdf",
+  "data/lake/qui_a_vote/qui_a_vote_an_l17_acteurs.zip": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
   "data/lake/decisions/decisions_an_l17_amendements.zip": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip",
   "data/lake/decisions/decisions_an_l17_deputes.zip": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/deputes_actifs_mandats_actifs_organes/AMO10_deputes_actifs_mandats_actifs_organes.json.zip",
   "data/lake/decisions/decisions_an_l17_dossiers.zip": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip",

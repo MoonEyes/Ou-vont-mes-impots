@@ -1,0 +1,458 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/qui_a_vote_impot.schema.json",
+  "title": "site/data/qui_a_vote/impot_<id>.json : articles rattachés à un impôt, scrutins publics (décompte par groupe publié), amendements adoptés nommés",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "donnees_au",
+    "impot",
+    "methode",
+    "avertissements",
+    "regle_ordre",
+    "regle_ordre_groupes",
+    "regle_personnes",
+    "articles",
+    "scrutins",
+    "amendements_adoptes",
+    "fichier_votes"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 10
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "donnees_au": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "impot": {
+      "type": "object",
+      "required": [
+        "id",
+        "libelle",
+        "lignes_simulateur",
+        "bases_texte"
+      ]
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 40
+    },
+    "avertissements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "regle_ordre": {
+      "type": "string"
+    },
+    "regle_ordre_groupes": {
+      "type": "string"
+    },
+    "regle_personnes": {
+      "type": "string"
+    },
+    "articles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "texte",
+          "lecture",
+          "document",
+          "article",
+          "intitule",
+          "rattachement",
+          "scrutins",
+          "url_document"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "texte": {
+            "type": "string"
+          },
+          "texte_libelle": {
+            "type": "string"
+          },
+          "lecture": {
+            "type": "string"
+          },
+          "document": {
+            "type": "string"
+          },
+          "url_document": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "article": {
+            "type": "string"
+          },
+          "intitule": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "intitule_source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "extrait": {
+            "type": "string"
+          },
+          "rattachement": {
+            "type": "object",
+            "required": [
+              "methode",
+              "preuves"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "methode": {
+                "enum": [
+                  "intitule",
+                  "code_cite",
+                  "intitule_et_code_cite",
+                  "article_vise"
+                ]
+              },
+              "preuves": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 10
+                }
+              },
+              "article_entier": {
+                "type": "boolean"
+              }
+            }
+          },
+          "scrutins": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "scrutins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "numero",
+          "date",
+          "texte",
+          "lecture",
+          "objet",
+          "type",
+          "rattachement",
+          "resultat",
+          "votants",
+          "pour",
+          "contre",
+          "abstentions",
+          "non_votants",
+          "groupes",
+          "url"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "numero": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "texte": {
+            "type": "string",
+            "pattern": "^PL[A-Z]+ [0-9]{4}$"
+          },
+          "lecture": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "objet": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "article",
+              "amendement"
+            ]
+          },
+          "article": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "amendement": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rattachement": {
+            "type": "object",
+            "required": [
+              "methode",
+              "preuves"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "methode": {
+                "enum": [
+                  "intitule",
+                  "code_cite",
+                  "intitule_et_code_cite",
+                  "article_vise"
+                ]
+              },
+              "preuves": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 10
+                }
+              },
+              "article_entier": {
+                "type": "boolean"
+              }
+            }
+          },
+          "resultat": {
+            "type": "string"
+          },
+          "votants": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "exprimes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pour": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "contre": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "abstentions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "non_votants": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "nominatif": {
+            "type": "boolean"
+          },
+          "groupes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "groupe",
+                "membres",
+                "pour",
+                "contre",
+                "abstentions",
+                "non_votants"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "groupe": {
+                  "type": "string"
+                },
+                "membres": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "pour": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "contre": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "abstentions": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "non_votants": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://www\\.assemblee-nationale\\.fr/"
+          }
+        }
+      }
+    },
+    "amendements_adoptes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "chambre",
+          "texte",
+          "numero",
+          "date",
+          "sort",
+          "auteur",
+          "dispositif",
+          "rattachement",
+          "url"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "chambre": {
+            "enum": [
+              "Assemblée nationale",
+              "Sénat"
+            ]
+          },
+          "texte": {
+            "type": "string"
+          },
+          "lecture": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "numero": {
+            "type": "string"
+          },
+          "article_vise": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sort": {
+            "const": "Adopté"
+          },
+          "auteur": {
+            "type": "object",
+            "required": [
+              "type",
+              "nom",
+              "groupe"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "nom": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "groupe": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "masque": {
+                "type": "string"
+              }
+            }
+          },
+          "cosignataires": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "dispositif": {
+            "type": "string"
+          },
+          "rattachement": {
+            "type": "object",
+            "required": [
+              "methode",
+              "preuves"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "methode": {
+                "enum": [
+                  "intitule",
+                  "code_cite",
+                  "intitule_et_code_cite",
+                  "article_vise"
+                ]
+              },
+              "preuves": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 10
+                }
+              },
+              "article_entier": {
+                "type": "boolean"
+              }
+            }
+          },
+          "scrutin": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          }
+        }
+      }
+    },
+    "fichier_votes": {
+      "type": "string"
+    }
+  }
+}
