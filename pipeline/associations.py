@@ -543,6 +543,12 @@ def serie(js: dict, ext: dict) -> dict:
     totaux = {}
     nominatifs = {l["siren"] for j in js.values() for l in j["lignes"] if denomination_nominative(l["denomination"])}
     nominatifs |= {s for s, e in ext.items() if e.get("nom") and denomination_nominative(e["nom"])}
+    # Décision du 19/11/2026 (option B) : nom rétabli si le stock SIRENE confirme une personne morale ; c'est alors la
+    # dénomination de l'unité légale (raison sociale) qui est publiée, pas celle de la source.
+    retablis = {s: n for s in sorted(nominatifs)
+                if (n := sirene.nom_publiable_personne_morale(s, (ext.get(s) or {}).get("cj"),
+                                                              (ext.get(s) or {}).get("nom")))}
+    nominatifs -= set(retablis)
     for a in sorted(js):
         j = js[a]
         t = {"total": 0.0, "lignes": 0, "nommes": 0.0, "pp": 0.0, "ni": 0.0, "nv": 0.0, "nom": 0.0, "assoc": set(),
@@ -574,7 +580,7 @@ def serie(js: dict, ext: dict) -> dict:
                 c[cle] += l["montant"]
                 t[cle] += l["montant"]
         totaux[a] = t
-    return {"programmes": progs, "totaux": totaux, "noms_source": noms_source}
+    return {"programmes": progs, "totaux": totaux, "noms_source": noms_source, "retablis": retablis}
 
 
 def _parts(lignes: list, entete_octets: int) -> list[list]:
@@ -606,7 +612,8 @@ def produire_serie(js: dict, ext: dict, sortie: Path) -> dict:
         lignes = []
         for siren, par_an in g["assoc"].items():
             e = ext.get(siren) or {}
-            nom = sans_domiciliation(s["noms_source"][siren][1] or e.get("nom") or None)  # dénomination la plus récente
+            # dénomination la plus récente ; raison sociale SIRENE pour un nom rétabli (option B du 19/11/2026)
+            nom = s["retablis"].get(siren) or sans_domiciliation(s["noms_source"][siren][1] or e.get("nom") or None)
             cj = s["noms_source"][siren][2]
             vals = [NC if a in INEXPLOITABLES else (B.eur(par_an[a]) if a in par_an else None) for a in annees]
             lignes.append([siren, nom, cj, B.eur(sum(par_an.values())), vals])
@@ -706,7 +713,8 @@ def produire_rnf(rnf: list[dict], ext: dict, liste: set, sortie: Path) -> dict:
         e = ext.get(siren) or {}
         titre = r.get("titre")
         if denomination_nominative(titre):
-            titre, titres_retires = None, titres_retires + 1
+            titre = sirene.nom_publiable_personne_morale(siren, e.get("cj"), e.get("nom"))  # option B, 19/11/2026
+            titres_retires += titre is None
         lignes.append([r["numero_rnf"], titre, r.get("type_organisme"), objet,
                        (r.get("date_creation") or "")[:10] or None, r.get("domaine_interet_general"), r.get("etat"),
                        r.get("prefecture"), r["siret"], e.get("cj") if sirene.personne_morale(e.get("cj")) else None,
@@ -1026,9 +1034,10 @@ def produire_reserve(res: dict, js: dict, ext: dict, liste: set, sortie: Path) -
                 siren, methode = ((e["siren"], "api_nom_departement") if e.get("siren") and cj_api[:1] in ("7", "8", "9")
                                   else (None, None))
             st, cj = B.statut(siren, None, ext) if siren else ("ni", None)
-            if st == "pm" and (ext.get(siren) or {}).get("trouve") \
-                    and not denomination_nominative((ext.get(siren) or {}).get("nom")):
-                e = ext[siren]
+            e = ext.get(siren) or {}
+            if st == "pm" and e.get("trouve") and (not denomination_nominative(e.get("nom")) or
+                                                   sirene.nom_publiable_personne_morale(siren, e.get("cj"),
+                                                                                        e.get("nom"))):
                 p["nommes"].append([siren, e.get("nom") or None, cj, e.get("rna"), l["programme"],
                                     B.eur(l["montant"]), texte_publiable(l["descriptif"], liste), methode])
                 g["nommes"] += l["montant"]

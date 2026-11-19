@@ -798,6 +798,25 @@ def sirene_cj(sirens: set[str]) -> dict:
     return res
 
 
+def raisons_sociales(sirens: set[str]) -> dict:
+    """SIREN -> (catégorie juridique, dénomination de l'unité légale, statut de diffusion), stock SIRENE local, pour
+    sirene.nom_publiable_personne_morale : la raison sociale seule (denominationUniteLegale), jamais la dénomination
+    usuelle ni une enseigne ; aucune colonne de nom ou de prénom de personne physique n'est lue. Stock absent : {}."""
+    p = CACHE / "sirene_unite_legale.parquet"
+    if not p.exists() or not sirens:
+        return {}
+    con = ddb()
+    con.execute("create temp table q_rs(siren varchar)")
+    con.executemany("insert into q_rs values (?)", [(s,) for s in sorted(sirens)])
+    res = {}
+    for r in rows(con, f"""select u.siren, cast(u.categorieJuridiqueUniteLegale as varchar) cj,
+                          u.denominationUniteLegale rs, u.statutDiffusionUniteLegale diffusion
+                          from '{p}' u join q_rs using (siren)"""):
+        cj = (r["cj"] or "").split(".")[0].zfill(4) if r["cj"] else ""
+        res[r["siren"]] = (cj, (propre(r["rs"]) or None) if sirene.personne_morale(cj) else None, r["diffusion"])
+    return res
+
+
 def norm_col(c: str) -> str:
     return re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", c.lower()).encode("ascii", "ignore").decode())
 

@@ -4,6 +4,8 @@
 Filtre : pipeline/associations.py, nom_de_personne_seul (prénoms fréquents de SIRENE quand le cache est présent,
 liste minimale de pipeline/local.py sinon). Une telle dénomination n'est pas nommée : son montant reste agrégé.
 Les sociétés au nom de leur fondateur (marchés, aides) restent nommées : personnes morales (sirene.personne_morale).
+Dans entites/, une société (catégorie juridique 5xxx ou 6xxx du stock SIRENE) dont la raison sociale a été rétablie par
+sirene.nom_publiable_personne_morale (décision du 19/11/2026, option B) suit cette même règle : elle reste nommée.
 """
 from __future__ import annotations
 
@@ -35,30 +37,46 @@ def test_filtre_nom_de_personne_seul():
 
 
 def _noms(p: Path):
+    """(SIREN ou identifiant si connu, nom) de chaque dénomination publiée du fichier."""
     d = json.loads(p.read_text(encoding="utf-8"))
 
-    def w(x, cle=""):
+    def w(x, cle="", ident=None):
         if isinstance(x, dict):
+            ident = x.get("siren") if isinstance(x.get("siren"), str) else ident
             for k, v in x.items():
-                yield from w(v, k)
+                yield from w(v, k, ident)
         elif isinstance(x, list):
             if len(x) > 1 and isinstance(x[0], str) and re.fullmatch(r"\d{9}|\d{14}|\d{3}-FDD-[\w-]+", x[0]) \
                     and isinstance(x[1], str):
-                yield x[1]
+                yield x[0], x[1]
             for v in x:
-                yield from w(v, cle)
+                yield from w(v, cle, ident)
         elif isinstance(x, str) and cle in ("nom", "denomination", "nom_usuel", "libelle"):
-            yield x
+            yield ident, x
     yield from w(d)
 
 
+def _societes_entites() -> set:
+    """SIREN des sociétés (catégorie 5xxx ou 6xxx) des fiches d'entites/ : leur raison sociale suit la règle des
+    sociétés au nom de leur fondateur (nommées)."""
+    import sirene
+    res = set()
+    for f in SITE.glob("entites/fiches/*.json"):
+        for s, fiche in json.loads(f.read_text(encoding="utf-8")).get("fiches", {}).items():
+            if sirene.societe(fiche.get("categorie_juridique")):
+                res.add(s)
+    return res
+
+
+_SOCIETES = _societes_entites()
 FICHIERS = sorted([*SITE.glob("associations/programmes/*.json"), SITE / "associations" / "fonds_fondations.json",
                    *SITE.glob("entites/**/*.json")])
 
 
 @pytest.mark.parametrize("fichier", [f for f in FICHIERS if f.exists()], ids=lambda p: str(p.relative_to(SITE)))
 def test_aucun_nom_de_personne_seul_publie(fichier: Path):
-    fautes = sorted({n for n in _noms(fichier) if A.nom_de_personne_seul(n)})
+    societes = _SOCIETES if "entites" in fichier.parts else set()
+    fautes = sorted({n for s, n in _noms(fichier) if A.nom_de_personne_seul(n) and (s or "")[:9] not in societes})
     assert not fautes, f"{fichier.relative_to(SITE)} : dénominations qui ressemblent à un nom de personne : {fautes[:10]}"
 
 

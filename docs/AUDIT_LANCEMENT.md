@@ -54,6 +54,15 @@ Les écrans qui calculent (somme des fonds européens, organisation, croiser, pr
 - Constat 3 corrigé : intitulé retiré (null, montants conservés) ; règle d'adresse précise ajoutée au filtre des intitulés des listes d'opérations (`fonds_europeens.intitule_publiable`, motif `adresse_precise`, comptes dans `rapprochement.intitules_retires_par_motif`).
 - Constat 4 corrigé : `pipeline/controle.py` relancé ; `totaux_par_annee` et `lobbying/ministeres.json` ne comptent plus les organisations exclues (une dénomination de plus passée dans `exclus`).
 
+### Constat du 19/11/2026 : dénominations de sociétés masquées par le filtre plus strict (branche `agent/noms-societes-sirene`)
+
+Effet de bord du commit 56d55461 : la liste de prénoms Insee masquait des dénominations de personnes morales identifiées par leur SIREN (« LILLY FRANCE », « YARA FRANCE », « HELIO GRAPHIC », « ASSOCIATION MEDINA »...). Décision du propriétaire (option B) appliquée par `sirene.nom_publiable_personne_morale` (SIREN, catégorie juridique de personne morale, raison sociale SIRENE de l'unité légale, diffusion non partielle).
+
+- `entites` : régénéré (il ne lit que `site/data` et le stock SIRENE des unités légales, édition du 3 novembre 2026, relu en colonnes réduites). 6 053 organisations rétablies (2 544 sociétés, 3 509 autres personnes morales), dont 626 avec une fiche et une entrée de recherche publiées ; 198 restent exclues (`nom_de_personne_possible`). Parmi les 626, 18 sociétés ont une raison sociale de la forme « Prénom Nom » (exemples « LEON NOEL », « ERIC GELAY ») : nommées selon la règle des sociétés au nom de leur fondateur, à arbitrer avec les ~3 000 déjà nommées dans les marchés.
+- `associations` : entrepôt absent sur la machine de contrôle, axe non régénéré ; règle appliquée aux fichiers publiés (lignes masquées par 56d55461 reprises de la version précédente, raison sociale SIRENE substituée, totaux par année et comptes déplacés de `dont_denomination_nominative_eur` vers `nommes_eur` ; méthode vérifiée en rejouant les 60 SIREN masqués : 0 écart avec la version d'avant). 9 SIREN rétablis (36 lignes de programmes) ; 1 titre du registre des fonds et fondations rétabli (« FONDS DE DOTATION PALMYRE CONSERVATION ») ; 51 SIREN restent agrégés (raison sociale SIRENE « Prénom Nom » seule : « MIA MIA », « TIA PAULA », « GAIA PARIS »...).
+- `subventions`, `projets_subventionnes` : règle branchée dans le code (équipes artistiques ; bénéficiaires du Fonds vert) ; entrepôt absent, fichiers publiés inchangés : les lignes agrégées n'y gardent pas leur SIREN. Effet visible à la prochaine régénération complète.
+- Restent masqués : `fonds_europeens` (2 dénominations, « ATHENA-OI SARL » et « GAIA SERVICES ET PROSPECTIVE », lignes sans SIRET : nom sans SIREN), `controle` (1 organisation du répertoire HATVP sans SIREN), et tous les textes libres retirés par 56d55461 (délibérations, objets, intitulés).
+
 ## Les 15 passages les plus difficiles pour le grand public
 
 | N° | Page | Passage (début) | Difficulté |

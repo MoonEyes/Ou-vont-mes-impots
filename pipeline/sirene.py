@@ -42,6 +42,41 @@ def personne_morale(cj) -> bool:
     return bool(CJ_RE.match(s)) and s[0] in "23456789" and s not in CJ_PERSONNES_PHYSIQUES
 
 
+def societe(cj) -> bool:
+    """Société commerciale (5xxx) ou autre personne morale immatriculée au RCS (6xxx : sociétés civiles, GIE...)."""
+    return personne_morale(cj) and str(cj)[0] in "56"
+
+
+def nom_publiable_personne_morale(siren, cj, denomination, diffusion=None) -> str | None:
+    """Dénomination d'une organisation que le filtre de noms de personnes a masquée, rétablie seulement si le
+    répertoire SIRENE confirme une personne morale (décision du propriétaire du 19/11/2026, option B).
+
+    Arguments : SIREN porté par la ligne (ou rapproché exactement par le pipeline), et, lus dans le répertoire SIRENE
+    pour CE SIREN, la catégorie juridique, la dénomination de l'unité légale (denominationUniteLegale, la raison
+    sociale : jamais un nom d'usage, une enseigne ni le nom de la source) et le statut de diffusion.
+    Renvoie la raison sociale à publier, ou None (le nom reste masqué) :
+    - SIREN invalide, catégorie qui n'est pas une personne morale (1000 entrepreneur individuel, indivision et
+      groupements de personnes physiques), raison sociale absente, diffusion partielle ;
+    - civilité ou domiciliation chez une personne dans la raison sociale ;
+    - organisation qui n'est pas une société (association, fondation, fonds de dotation, organisme public...) dont
+      la raison sociale ressemble à un nom de personne seul : règle du 18/11 (associations.denomination_nominative,
+      inchangée). Les sociétés au nom de leur fondateur restent nommées, comme dans les marchés et les aides
+      (règle de tests/test_noms_de_personnes.py, inchangée).
+    Les textes libres (objets, intitulés) ne passent jamais par cette fonction."""
+    if not siren_valide(siren) or not personne_morale(cj) or (diffusion or "O") == "P":
+        return None
+    rs = re.sub(r"\s+", " ", str(denomination or "")).strip()
+    if not rs:
+        return None
+    import associations
+    import local
+    if local.CIVILITE_RE.search(rs) or associations.DOMICILIATION_RE.search(rs):
+        return None
+    if not societe(cj) and associations.denomination_nominative(rs):
+        return None
+    return rs
+
+
 def charger_cache() -> dict:
     if CACHE.exists():
         return json.loads(CACHE.read_text(encoding="utf-8"))

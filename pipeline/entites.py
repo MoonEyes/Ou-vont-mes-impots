@@ -21,9 +21,10 @@ canaux ne sont additionnés que si leur notion est déclarée cumulable entre ca
 pluriannuelle n'est jamais additionnée à une année.
 
 Confidentialité : seules les personnes morales sont reprises (sirene.personne_morale sur la catégorie juridique du
-stock SIRENE, à défaut celle de la source) ; un nom qui ressemble à celui d'une personne (local.contient_nom_de_personne)
-ou une unité à diffusion partielle n'est jamais repris. Les colonnes de nom et de prénom du stock SIRENE ne sont pas
-lues.
+stock SIRENE, à défaut celle de la source) ; une unité à diffusion partielle n'est jamais reprise ; un nom qui ressemble
+à celui d'une personne (local.contient_nom_de_personne) n'est repris que si le stock SIRENE confirme une personne
+morale, et c'est alors la raison sociale de l'unité légale qui est publiée (sirene.nom_publiable_personne_morale,
+décision du 19/11/2026, option B). Les colonnes de nom et de prénom du stock SIRENE ne sont pas lues.
 
 Entrées : site/data/<axes ci-dessus> (lecture seule) ; stock SIRENE des unités légales partagé avec local.py
           (data/lake/_cache/local/sirene_unite_legale.parquet, facultatif : catégorie juridique et dénomination) ;
@@ -1071,7 +1072,18 @@ def produire(sortie: Path = SORTIE) -> dict:
         if not motif and not nom:
             motif = "sans_denomination"
         if not motif and contient_nom_de_personne(nom, liste_prenoms):
-            motif = "nom_de_personne_possible"
+            # Décision du 19/11/2026 (option B) : nom rétabli seulement si le stock SIRENE confirme une personne
+            # morale ; la raison sociale (et le sigle) du stock est alors publiée, jamais le nom de la source.
+            rs = (r.get("nom") or "").strip()
+            if rs and r.get("sigle") and r["sigle"].strip() and r["sigle"].strip().upper() not in rs.upper():
+                rs = f"{rs} ({r['sigle'].strip()})"  # raison sociale et sigle du stock, comme pour tout nom publié
+            nom_sirene = sirene.nom_publiable_personne_morale(s, r.get("cj"), rs, r.get("diffusion"))
+            if nom_sirene is None:
+                motif = "nom_de_personne_possible"
+            else:
+                nom = nom_sirene
+                stats["noms_retablis_sirene_societes" if sirene.societe(r.get("cj"))
+                      else "noms_retablis_sirene_autres_personnes_morales"] += 1
         if motif:
             exclus[motif] += 1
             continue
@@ -1283,8 +1295,11 @@ def produire(sortie: Path = SORTIE) -> dict:
         "regle_personnes": "Seules les personnes morales sont reprises : catégorie juridique du stock SIRENE (à "
                            "défaut, celle de la source) de 2xxx à 9xxx hors groupements de personnes physiques "
                            "(sirene.personne_morale) ; unité à diffusion partielle exclue ; dénomination qui peut "
-                           "contenir le nom d'une personne (civilité, prénom fréquent suivi d'un nom) exclue. Les "
-                           "exclusions sont seulement comptées.",
+                           "contenir le nom d'une personne (civilité, prénom fréquent suivi d'un nom) exclue, sauf si le "
+                           "stock SIRENE confirme une personne morale : sa dénomination d'unité légale (raison "
+                           "sociale) est alors publiée, jamais un nom d'usage ni une enseigne ; une organisation qui "
+                           "n'est pas une société et dont la raison sociale ressemble à un nom de personne seul reste "
+                           "exclue (décision du 19/11/2026). Les exclusions sont seulement comptées.",
         "notions": {k: {"libelle": v["libelle"], "sens": v["sens"], "somme_canal": v["somme_canal"],
                         "cumulable_entre_canaux": v["cumulable"]} for k, v in NOTIONS.items()},
         "canaux": canaux_idx,
