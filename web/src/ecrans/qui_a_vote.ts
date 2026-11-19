@@ -339,7 +339,7 @@ ${source(idx.source, `${idx.millesime}${idx.donnees_au ? `, scrutins jusqu’au 
   const circo = cible.querySelector<HTMLSelectElement>('#qav-circo')!
   const zoneDep = cible.querySelector<HTMLElement>('#qav-depute')!
   let fichierDep: DepFichier | null = null
-  dep.addEventListener('change', async () => {
+  const choisirDep = async () => {
     const d = idx.departements.find((x) => x.code === dep.value)
     zoneDep.innerHTML = ''
     fichierDep = null
@@ -348,8 +348,8 @@ ${source(idx.source, `${idx.millesime}${idx.donnees_au ? `, scrutins jusqu’au 
       ? `<option value="">Choisir…</option>${d.circonscriptions.map((c) => `<option value="${c}">${c === 1 ? '1re' : `${c}e`} circonscription</option>`).join('')}`
       : '<option value="">Choisis d’abord un département</option>'
     if (d) fichierDep = await chargerSiPresent<DepFichier>(`qui_a_vote/${d.fichier}`)
-  })
-  circo.addEventListener('change', async () => {
+  }
+  const choisirCirco = async () => {
     const d = idx.departements.find((x) => x.code === dep.value)
     if (!d || !circo.value) return
     fichierDep = fichierDep ?? (await chargerSiPresent<DepFichier>(`qui_a_vote/${d.fichier}`))
@@ -364,5 +364,18 @@ ${source(idx.source, `${idx.millesime}${idx.donnees_au ? `, scrutins jusqu’au 
 ${c.deputes.map((x) => rendreDepute(x, sc.scrutins, nomsImpots)).join('')}
 <p class="aide">« ${h(SANS_POSITION)} » : le député était en fonction mais n’apparaît dans aucune liste du scrutin ; la source ne dit pas pourquoi.</p>`
     rendreDefilables(zoneDep)
-  })
+  }
+  dep.addEventListener('change', choisirDep)
+  circo.addEventListener('change', choisirCirco)
+  // Lien venu de la recherche du site : ?dep=<code>&circo=<numéro> ouvre directement cette circonscription.
+  const depVoulu = idx.departements.find((x) => x.code === params.get('dep'))
+  if (depVoulu) {
+    dep.value = depVoulu.code
+    await choisirDep()
+    const n = Number(params.get('circo'))
+    if (depVoulu.circonscriptions.includes(n)) {
+      circo.value = String(n)
+      await choisirCirco()
+    }
+  }
 }

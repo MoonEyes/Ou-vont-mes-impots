@@ -200,4 +200,16 @@ describe('/decisions/qui-a-vote', () => {
     expect(texteRedige(zone)).not.toMatch(QUALIFICATIFS)
     lexiqueNeutre('ton député', zone)
   })
+
+  it('lien venu de la recherche du site : ?dep=44&circo=1 ouvre la circonscription ; paramètres inconnus ignorés', async () => {
+    await ecran(`#${CHEMIN}?dep=44&circo=1`)
+    const zone = main.querySelector<HTMLElement>('#qav-depute')!
+    await attendre(() => !!zone.querySelector('h4'))
+    expect(main.querySelector<HTMLSelectElement>('#qav-dep')!.value).toBe('44')
+    expect(main.querySelector<HTMLSelectElement>('#qav-circo')!.value).toBe('1')
+    expect(Array.from(zone.querySelectorAll('h4')).map((x) => x.textContent)).toEqual(dep44.circonscriptions[0].deputes.map((x: { nom: string | null }) => x.nom ?? expect.any(String)))
+    await ecran(`#${CHEMIN}?dep=zz&circo=99`)
+    expect(main.querySelector<HTMLSelectElement>('#qav-dep')!.value).toBe('')
+    expect(main.querySelector('#qav-depute')!.innerHTML).toBe('')
+  })
 })
