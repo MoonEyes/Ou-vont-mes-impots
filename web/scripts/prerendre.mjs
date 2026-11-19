@@ -132,9 +132,8 @@ const siteLd = {
   // Recherche interne (écran /recherche, paramètre q, exécutée sur l'appareil) : décrite pour les moteurs.
   potentialAction: { '@type': 'SearchAction', target: { '@type': 'EntryPoint', urlTemplate: `${SITE}${versChemin('#/recherche?q=')}{search_term_string}` }, 'query-input': 'required name=search_term_string' },
 }
-// Pages autres que l'accueil : le site n'est décrit qu'une fois (accueil) ; ailleurs, son nom, son adresse et son
-// identifiant suffisent à le relier (2 352 pages locales, budgets de poids, docs/PERF.md).
-const siteLdCourt = { '@type': 'WebSite', '@id': siteLd['@id'], name: siteLd.name, url: SITE }
+// Le site (WebSite, avec son nom et sa recherche) n'est décrit que sur l'accueil, seule page que les moteurs lisent
+// pour le nom du site ; ailleurs, le fil d'Ariane suffit (2 352 pages locales, budgets de poids, docs/PERF.md).
 const jeuLd = { '@id': `${SITE}#donnees`, ...jeuDeDonnees(ldSource['@graph'].find((x) => x['@type'] === 'Dataset')) }
 
 // Polices du premier écran (texte courant et titres), préchargées : elles arrivent avec la feuille de style, avant le
@@ -199,13 +198,13 @@ function composer({ chemin, titre, description, fil, contenu, indexable, racine 
   const prefixe = racine ?? prefixeRacine(chemin)
   const url = SITE + chemin
   const rel = (fragment) => prefixe + versChemin(fragment)
-  const graphe = [chemin ? siteLdCourt : siteLd]
-  if (!chemin) graphe.push(jeuLd)
-  else
-    graphe.push(
-      { '@type': 'WebPage', '@id': url, url, name: titre, description, inLanguage: 'fr', isPartOf: { '@id': `${SITE}#site` } },
-      ...(fil.length ? [{ '@type': 'BreadcrumbList', itemListElement: fil.map((m, i) => ({ '@type': 'ListItem', position: i + 1, name: m.nom, item: SITE + versChemin(m.fragment).split('?')[0] })) }] : []),
-    )
+  // Accueil : le site et le jeu de données. Autres pages : le fil d'Ariane seul. Plus d'objet WebPage, qui ne faisait
+  // que répéter le titre, la description et l'adresse canonique de la page (environ 550 octets par page, docs/PERF.md).
+  const graphe = !chemin
+    ? [siteLd, jeuLd]
+    : fil.length
+      ? [{ '@type': 'BreadcrumbList', itemListElement: fil.map((m, i) => ({ '@type': 'ListItem', position: i + 1, name: m.nom, item: SITE + versChemin(m.fragment).split('?')[0] })) }]
+      : []
   const active = '/' + (chemin.split('/')[0] ?? '')
   const meta = (html, re, valeur) => {
     if (!re.test(html)) throw new Error(`gabarit : balise attendue absente (${re})`)
@@ -220,10 +219,14 @@ function composer({ chemin, titre, description, fil, contenu, indexable, racine 
   html = meta(html, /(<meta property="og:description" content=")[^"]*(")/, description)
   html = meta(html, /(<meta property="og:url" content=")[^"]*(")/, url)
   html = meta(html, /(<meta property="og:image" content=")[^"]*(")/, `${SITE}og.png`)
+  // Couleur de thème : une seule balise quand les variantes claire et sombre du gabarit ont la même valeur.
+  const themes = [...html.matchAll(/<meta name="theme-color" content="([^"]*)" media="[^"]*" \/>\s*/g)]
+  if (themes.length > 1 && themes.every((m) => m[1] === themes[0][1]))
+    themes.forEach((m, i) => (html = html.replace(m[0], i ? '' : `<meta name="theme-color" content="${m[1]}" />\n    `)))
   if (!html.includes('<link rel="stylesheet"')) throw new Error('gabarit : feuille de style absente')
   html = html.replace('<link rel="stylesheet"', `${polices.map((f) => `<link rel="preload" href="./assets/${f}" as="font" type="font/woff2" crossorigin />\n    `).join('')}<link rel="stylesheet"`)
   if (!indexable || COPIE_SECOURS) html = html.replace('<title>', '<meta name="robots" content="noindex, follow" />\n    <title>')
-  html = html.replace(/(<script type="application\/ld\+json">)[\s\S]*?(<\/script>)/, (_, a, b) => `${a}\n${jsonLd({ '@context': 'https://schema.org', '@graph': graphe })}\n    ${b}`)
+  html = html.replace(/(<script type="application\/ld\+json">)[\s\S]*?(<\/script>)\s*/, (_, a, b) => (graphe.length ? `${a}\n${jsonLd({ '@context': 'https://schema.org', '@graph': graphe })}\n    ${b}\n    ` : ''))
   // Fichiers du site (scripts, styles, icône) et liens de l'en-tête et du pied : relatifs à la page.
   html = html.replace(/((?:src|href)=")\.\/(?!\/)/g, `$1${prefixe}`)
   html = html.replace(/href="(#\/[^"]*)"/g, (_, f) => `href="${echapper(rel(f.replace(/&amp;/g, '&')))}"`)
@@ -233,10 +236,34 @@ function composer({ chemin, titre, description, fil, contenu, indexable, racine 
     (_, a, b) =>
       `${a}\n<noscript><p class="avertissement">Sans JavaScript, les pages se lisent telles quelles. Le calcul à partir du salaire et les choix (année, commune, programme) ont besoin de JavaScript, exécuté sur ton appareil sans rien envoyer.</p></noscript>\n${contenu}\n    ${b}`,
   )
-  // Indentation entre les balises (gabarit et écrans) : un saut de ligne suffit, le rendu est identique (aucun
-  // <pre> ni <textarea> dans les pages prérendues ; un blanc reste un blanc). Environ 2 Ko par page.
-  if (/<(pre|textarea)\b/.test(html)) return html
-  return html.replace(/>\n[ \t]+</g, '>\n<')
+  return alleger(html)
+}
+
+// Éléments de bloc : un blanc placé juste avant ou juste après l'une de leurs balises n'est pas affiché (ni dans un
+// bloc, ni dans une grille ou une boîte flexible). Aucun d'eux n'est mis en ligne par la feuille de style là où le
+// prérendu laisse un blanc (docs/PERF.md, « Allègement du 19/11/2026 »).
+const BLOC = /^(?:html|head|body|meta|link|title|script|noscript|main|header|footer|nav|section|aside|article|div|p|ul|ol|li|h[1-6]|form|table|thead|tbody|tfoot|tr|td|th|caption|dl|dt|dd|figure|figcaption|details|summary)$/i
+/**
+ * Allège le HTML sans changer ce qui est affiché : blancs supprimés autour des balises de bloc, ramenés à un seul
+ * caractère ailleurs (un blanc entre deux éléments en ligne reste un blanc), attributs vides des marqueurs data-* et
+ * de readonly écrits sans valeur (même sens en HTML). Le contenu de <textarea> et <pre>, où les blancs comptent, est
+ * gardé tel quel.
+ */
+function alleger(html) {
+  return html
+    .split(/(<textarea\b[\s\S]*?<\/textarea>|<pre\b[\s\S]*?<\/pre>)/)
+    .map((x, i) =>
+      i % 2
+        ? x
+        : x
+            .replace(/<\/?([a-zA-Z][\w-]*)[^<>]*>\s+(?=<\/?([a-zA-Z][\w-]*))/g, (m, avant, apres) => {
+              const balise = m.replace(/\s+$/, '')
+              return BLOC.test(avant) || BLOC.test(apres) ? balise : balise + (/\n/.test(m.slice(balise.length)) ? '\n' : ' ')
+            })
+            .replace(/[ \t]*\n\s*/g, '\n')
+            .replace(/ (data-[\w-]+|readonly)=""/g, ' $1'),
+    )
+    .join('')
 }
 
 /** Rend une adresse interne avec le routeur du site et écrit sa page. */
@@ -256,6 +283,9 @@ async function prerendre(fragment, { indexable = true, lastmod = dateDonnees } =
   main.querySelectorAll('a[href^="#/"]').forEach((a) => a.setAttribute('href', prefixe + versChemin(a.getAttribute('href'))))
   // Liens vers un fichier de données (« ./data/… », src/ecrans/etat.ts lienDonnee) : relatifs à la page.
   main.querySelectorAll('a[href^="./data/"]').forEach((a) => a.setAttribute('href', prefixe + a.getAttribute('href').slice(2)))
+  // Pages département et commune (2 352) : l'encadré « Signaler une erreur » est posé par le script, comme sa liste
+  // des fichiers affichés (budgets de poids, docs/PERF.md). Sans JavaScript, le contact reste sur la page Mentions.
+  if (/^local\/(\d{2,3}|2[AB])/.test(chemin)) main.querySelectorAll('aside.signaler').forEach((a) => a.remove())
   main.querySelectorAll('use[href$="#trame-france"]').forEach((u) => {
     if (!trameFrance) throw new Error('dist/assets/trame-france-*.svg absent : le fond de carte partagé n’a pas été construit.')
     u.setAttribute('href', `${prefixe}assets/${trameFrance}#trame-france`)

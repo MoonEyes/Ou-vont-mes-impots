@@ -27,7 +27,7 @@ describe('comparer deux communes', () => {
   it('sans paramètre : formulaire département puis commune, de chaque côté, et rappel sur les compétences', async () => {
     await ecran('#/local/comparer')
     expect(main.querySelector('h1')?.textContent).toBe('Comparer deux communes')
-    expect(document.title).toBe('Comparer deux communes · Où vont mes impôts')
+    expect(document.title).toBe('Comparer le budget de deux communes · Où vont mes impôts')
     expect(main.querySelectorAll('#choix-comparer fieldset')).toHaveLength(2)
     expect(main.querySelector('label[for="dep-a"]')).not.toBeNull()
     expect(main.querySelector('label[for="com-b"]')).not.toBeNull()
@@ -60,7 +60,7 @@ describe('comparer deux communes', () => {
 
   it('deux communes : mêmes indicateurs, même année, mêmes échelles, aucun classement', async () => {
     await ecran('#/local/comparer?a=69123&b=69001')
-    expect(document.title).toBe('Comparer Lyon et Affoux : budget par habitant, dette, taux · Où vont mes impôts')
+    expect(document.title).toBe('Comparer Lyon et Affoux : budget par habitant, dette, taux')
     // Les listes sont préremplies avec le choix de l'adresse.
     expect(main.querySelector<HTMLSelectElement>('#com-a')!.value).toBe('69123')
     expect(main.querySelector<HTMLSelectElement>('#com-b')!.value).toBe('69001')

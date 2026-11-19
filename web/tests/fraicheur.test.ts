@@ -57,7 +57,7 @@ describe('fraîcheur des données', () => {
     expect(Array.from(main.querySelectorAll('.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Méthode', 'Fraîcheur'])
     expect(main.querySelector('.erreur')).toBeNull()
     expect(main.querySelector('a[href="#/methode/limites"]')).not.toBeNull()
-    expect(document.title).toBe('Fraîcheur des données : collecte, millésime, prochaine publication · Où vont mes impôts')
+    expect(document.title).toBe('Fraîcheur des données : collecte et millésime')
     // La page dit ce qu'elle montre et ce qu'elle ne montre pas.
     expect(texte()).toContain('elle ne dit rien de la qualité d’une source ni de l’usage de l’argent public')
     // Elle apparaît dans le hub de son parent.

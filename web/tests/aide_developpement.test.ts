@@ -84,7 +84,7 @@ describe('écran aide publique au développement', () => {
     for (const a of sorties) expect(a.textContent ?? '').not.toMatch(/^\s*(ici|cliquez ici|lien|en savoir plus)\s*$/i)
     const voir = Array.from(main.querySelectorAll('.voir-aussi a')).map((a) => a.getAttribute('href'))
     expect(voir).toEqual(['#/explorer/etat', '#/explorer/ue', '#/explorer'])
-    expect(document.title).toBe('Aide publique au développement de la France : montant, dons, prêts, pays · Où vont mes impôts')
+    expect(document.title).toBe('Aide publique au développement : montant et pays')
   })
 
   it('chiffres clés de la dernière déclaration : équivalent-don, dons et prêts séparés, statut tracé', async () => {

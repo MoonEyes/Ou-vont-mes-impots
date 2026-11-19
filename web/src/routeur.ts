@@ -9,6 +9,7 @@ import { brancherExports } from './composants/exporter'
 import { annoncer, appliquerLargeurs, h, enPrerendu } from './util'
 import { blocSignaler, majSignaler } from './composants/signaler'
 import { oublierLectures } from './donnees'
+import { META_PAGES, NOM_SITE, TITRE_ACCUEIL, titreSite } from './metadonnees'
 
 /**
  * Un écran remplit cible. Il peut rendre la main avant d'avoir tout chargé en renvoyant { suite } :
@@ -140,11 +141,15 @@ function voirAussi(routes: Route[], route: Route): string {
   ].join('')}</ul></nav>`
 }
 
-export const NOM_SITE = 'Où vont mes impôts'
-export const TITRE_ACCUEIL = 'Où vont mes impôts : vois où va l’argent que tu verses'
-/** Titre du document d'une page ; propre (titre donné par l'écran) pour une commune ou un département. */
+export { NOM_SITE, TITRE_ACCUEIL }
+/**
+ * Titre du document d'une page ; propre (titre donné par l'écran) pour une commune ou un département. Titres et
+ * descriptions des balises : src/metadonnees.ts (60 caractères au plus, nom du site en suffixe s'il tient).
+ */
 export const titreDocument = (route: Route, propre?: string) =>
-  route.chemin === '/' ? TITRE_ACCUEIL : `${propre ?? route.titrePage ?? route.titre} · ${NOM_SITE}`
+  route.chemin === '/' ? TITRE_ACCUEIL : titreSite(propre ?? META_PAGES[route.chemin]?.titre ?? route.titrePage ?? route.titre)
+/** Description de la page (balise meta description) : src/metadonnees.ts, à défaut celle de la table des routes. */
+export const descriptionPage = (route: Route, propre?: string) => propre ?? META_PAGES[route.chemin]?.description ?? route.description
 
 /** Adresse canonique d'une adresse interne, relative à la racine du site : sans paramètre de vue. */
 export const cheminCanonique = (fragment: string) => versChemin(fragment).split('?')[0]
@@ -245,7 +250,7 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
     adresse.remplacer(propre.adresse)
     fragment = propre.adresse
   }
-  const page = { route, titre: titreDocument(route, propre.titre), description: propre.description ?? route.description, fil: maillons(routes, route, propre.fil) }
+  const page = { route, titre: titreDocument(route, propre.titre), description: descriptionPage(route, propre.description), fil: maillons(routes, route, propre.fil) }
   majEntete(page.titre, page.description, fragment)
   const racine = '/' + (route.chemin.split('/')[1] ?? '')
   document.querySelectorAll('.entete [data-rubrique]').forEach((a) => {

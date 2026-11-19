@@ -5,6 +5,7 @@ import { fragmentCommune, fragmentDepartement, SEUIL_PAGE_COMMUNE } from '../che
 import { partPersonnelle } from '../composants/hub'
 import { ouCest } from '../composants/trame'
 import { chargerSiPresent } from '../donnees'
+import { metaDepartement } from '../metadonnees'
 import type { Rendu } from '../routeur'
 import { absent, appliquerLargeurs, enPrerendu, entier, h, source } from '../util'
 import { blocBudget, clesBudget, type Budgets, type Geo } from './commune'
@@ -19,7 +20,6 @@ const DETAIL_DEPARTEMENT: [string, string][] = [
   ['sec-organismes', 'Syndicats et organismes départementaux'],
 ]
 
-export const titreDepartement = (nom: string, code: string) => `${nom} (${code}) : budget des communes, dépenses, dotations, taux`
 
 export async function rendre(cible: HTMLElement, params: URLSearchParams): Promise<Rendu | void> {
   const dep = params.get('dep') ?? ''
@@ -127,8 +127,7 @@ ${partPersonnelle()}`
     })
   return {
     suite,
-    titre: titreDepartement(nom, dep),
+    ...metaDepartement(nom, dep, communes.length),
     fil: [{ nom, fragment: fragmentDepartement(dep, nom) }],
-    description: `${nom} (${dep}) : le budget de chacune des ${entier(communes.length)} communes (dépenses par habitant, dotations de l’État, taux d’impôts locaux votés) et celui du département.`,
   }
 }

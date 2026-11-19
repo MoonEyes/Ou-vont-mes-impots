@@ -397,7 +397,7 @@ describe('page « Rechercher dans le site »', () => {
     expect(main.querySelector('[data-regle-ordre]')?.textContent).toBe(REGLE_ORDRE)
     expect(Array.from(main.querySelectorAll('#recherche-consigne a')).map((a) => a.getAttribute('href'))).toContain('#/recherche?q=Lyon')
     expect(requetes).not.toContain('data/_recherche.json')
-    expect(document.title).toBe('Rechercher une commune, un programme du budget ou une page du site · Où vont mes impôts')
+    expect(document.title).toBe('Rechercher une commune, un programme, une page')
   })
 
   it('avec un texte : résultats par famille, nombre annoncé, sources de l’index', async () => {
