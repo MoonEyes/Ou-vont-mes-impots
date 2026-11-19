@@ -22,6 +22,7 @@ import type { Famille, Prelevement, ProfilEtendu, ResultatOk } from '../calcul/t
 import { session } from '../etat'
 import { ORDRE_ADMIN, NOM_SUR100 } from '../calcul/repartition'
 import { billet, type Famille as FamilleBillet, FAMILLE_ADMIN, listeParts, partsAdministrations, tableauBillet } from '../composants/billet'
+import { decouperQuandVisible } from '../composants/decoupe'
 import { filEuro } from '../composants/fil-euro'
 import { resumer, sorties } from '../composants/resume-calcul'
 import { METHODE_TOTAL, phrasePosition, positionCentrale } from '../calcul/fourchette'
@@ -431,4 +432,6 @@ ${
     }
   })
   ;(await import('../composants/carte-partage')).monterPartage(cible)
+  // La découpe, une seule fois par visite, quand le billet devient visible (coupée par prefers-reduced-motion).
+  decouperQuandVisible(cible)
 }

@@ -3950,3 +3950,12 @@ fieldset.saisie-groupe {
 .avant-lecture {
   margin: 1rem 0;
 }
+/* La découpe (résultat, une seule fois) : perforations pointillées posées le temps du mouvement, puis retirées. */
+.b-perfo {
+  fill: none;
+  stroke: var(--contour);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 6;
+  stroke-linecap: round;
+  pointer-events: none;
+}
