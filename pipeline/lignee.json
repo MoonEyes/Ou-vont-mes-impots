@@ -501,6 +501,167 @@
     }
    },
    "date_sources": "2026-11-17T00:00:00Z"
+  },
+  "revenus_communes": {
+   "fichiers": {
+    "data/lake/comptes_nationaux/insee_ds_filosofi_cc.zip": {
+     "sha256": "cc2cb14103f522175284120aa2342b8dd27a377fe3318abea77339d258f3b95d",
+     "octets": 5352911,
+     "source": "insee_ds_filosofi_cc",
+     "collecte_le": "2026-11-18T08:09:56+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_filosofi_2021.zip": {
+     "sha256": "24961b1217ce760c8159dc16cd57d4ef9bbc2939fae34005dad91e695e95aa95",
+     "octets": 5063469,
+     "source": "revenus_communes_filosofi_2021",
+     "collecte_le": "2026-11-18T08:11:35+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2002_d_clar_s_en_2003_par_collectiv_1859baa1.xlsx": {
+     "sha256": "2b02197fd75433c04b6cd336d011e383bb230f63c6c6932d37d50df6a6cc37c8",
+     "octets": 6734785,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2003_d_clar_s_en_2004_par_collectiv_239cf93b.zip": {
+     "sha256": "900c829dad114f43a1a04e3160e89b20bb832e362a051947701c1a6cb736414e",
+     "octets": 17913428,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2004_d_clar_s_en_2005_par_collectiv_b291e147.zip": {
+     "sha256": "c24651f03ac49632764d461c1f7a26e86f4bbb3e63227a946e51cc04bf6d8018",
+     "octets": 17129897,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2005_d_clar_s_en_2006_par_collectiv_41719202.zip": {
+     "sha256": "04939d7bd704a1d383c9265013cb2d77300fdd2071a8051d9c1af5f472d584ac",
+     "octets": 16603634,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2006_d_clar_s_en_2007_par_collectiv_66e309d1.zip": {
+     "sha256": "e225cc63dc563377a267115e4496ee039d0202d16e2277dbf49badee6a5389d7",
+     "octets": 17141172,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2007_d_clar_s_en_2008_par_collectiv_4370dfeb.zip": {
+     "sha256": "9a509d8de027bc216099dfd2fec03ff5de18595e96ddf82dde97ca86e37749d9",
+     "octets": 17216260,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2008_d_clar_s_en_2009_par_collectiv_088bf32c.zip": {
+     "sha256": "21dfa5a54f87152fa66b417eebcb834fa93902bd875cc645cb81983cc6ffa5ba",
+     "octets": 17411608,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2009_d_clar_s_en_2010_par_collectiv_ee496d5f.zip": {
+     "sha256": "f11303df0cb8d3cd3fff10ad4a2219a659fbdbc8a4750c513ca6ef4a133781a3",
+     "octets": 17662128,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2010_d_clar_s_en_2011_par_collectiv_1ac687e5.zip": {
+     "sha256": "082ff3465bdad81ff7eb82293c233a2979f9eb0b6a468cb73014409f31413966",
+     "octets": 13672399,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2011_d_clar_s_en_2012_par_collectiv_fb3c472a.zip": {
+     "sha256": "e02c5b56c30a37e4803c4b150ce50038337e42b48ec3f09cddd25625b09713e8",
+     "octets": 14267873,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2012_d_clar_s_en_2013_par_collectiv_3e18d0e2.zip": {
+     "sha256": "217a502415924c82ef2eef01da04f9efee36566510f1d2e7e4d9eca5a4dbd850",
+     "octets": 14222593,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2013_d_clar_s_en_2014_par_collectiv_0d96fc3e.zip": {
+     "sha256": "19e7680662a45ce9f3d1a8c82fdd94cfabd0cafae83c66ac51e4a7357a7e1102",
+     "octets": 14562982,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2014_d_clar_s_en_2015_par_collectiv_9f4aa23a.zip": {
+     "sha256": "2b8632926311b451bd5a331f8c5be4022ffd3d648030fbdcf7f9121193b93941",
+     "octets": 14473828,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2015_d_clar_s_en_2016_par_collectiv_0949ed65.zip": {
+     "sha256": "cbc2cf87d9790932003ebda7077f4f79e1d3dcf3b24798e7735e1341c996f030",
+     "octets": 16551609,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2016_d_clar_s_en_2017_par_collectiv_72e526ce.zip": {
+     "sha256": "27a3db140da82022215dbcad5d0e5b774d91f1ce748eedf54417578afefea02d",
+     "octets": 16243177,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2017_d_clar_s_en_2018_par_collectiv_58ead9c4.zip": {
+     "sha256": "a0a9531ff33c141b44c7941586f4e2812fd4ed9e69c70f10c7e21275d737c7ed",
+     "octets": 16388407,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2018_d_clar_s_en_2019_par_collectiv_d8d5252c.zip": {
+     "sha256": "7d84fa6a20b6c7d2c5addcef77542232b208de2de38a85b85d9f8e1169fa16f2",
+     "octets": 18080656,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2019_d_clar_s_en_2020_par_collectiv_cc0d8dc0.zip": {
+     "sha256": "8e6276aeb4ff59e92c68183d719003e7578ca0f8c0ac83f5b2b32452d9a998df",
+     "octets": 16385288,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2020_d_clar_s_en_2021_par_collectiv_23c55b31.zip": {
+     "sha256": "e13e73e40daad86f8c4652d30d0e2d03ade35fa350c5fdee53f95aac54514849",
+     "octets": 16913774,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2021_d_clar_s_en_2022_par_collectiv_261bc54d.zip": {
+     "sha256": "29b00aa9aca0364219d958e9ff443b542078dfd0210707777474ef287c0a5b26",
+     "octets": 17032583,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2022_d_clar_s_en_2023_par_collectiv_35c857d5.zip": {
+     "sha256": "497c2d1ca4e439865c38f8f854563e9718c4b57949aa39172ecd51449c37d317",
+     "octets": 17642568,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2023_d_clar_s_en_2024_par_collectiv_65c61c89.zip": {
+     "sha256": "f3a8d6afd9af627359b8f37a73696429b58ac72b37b96d5b9ef35eadf9d2db6c",
+     "octets": 17476829,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_ircom/Imp_t_sur_les_revenus_de_2024_d_clar_s_en_2025_par_collectiv_e626cd65.zip": {
+     "sha256": "3df14c80f69afb76a8c6d1f13cd2fb9e861ba9e162bc1e516c6fb2ed77338b00",
+     "octets": 18181698,
+     "source": "revenus_communes_ircom",
+     "collecte_le": "2026-11-18T08:10:05+00:00"
+    },
+    "data/lake/revenus_communes/revenus_communes_passage_cog.zip": {
+     "sha256": "64ce9ee2ac559710361eee7e77e7ddc204b06c3340556a26d653824f99bf6a57",
+     "octets": 950354,
+     "source": "revenus_communes_passage_cog",
+     "collecte_le": "2026-11-18T16:11:53+00:00"
+    }
+   },
+   "date_sources": "2026-11-18T00:00:00Z"
   }
  }
 }

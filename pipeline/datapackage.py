@@ -5,6 +5,8 @@
                      (motifs de docs/valider_contrat.py), schéma JSON référencé (docs/schemas), licence des données
                      dérivées, sources d'origine et leur licence, millésimes lus dans l'en-tête des fichiers ;
                      les trois tables CSV reprennent les schémas Frictionless du datapackage.json racine
+                     ; une ressource produite par une étape relevée dans pipeline/lignee.json cite la version de
+                     ses entrées (`versions_sources` : sha256, taille, source, date de collecte, date de l'étape)
   fichiers.csv       inventaire : chaque fichier versionné de site/data, sa ressource, son schéma, ses URL
   sources.csv        lignée : chaque jeu d'origine lu par une étape du pipeline (pipeline/entrees_lac.json,
                      pipeline/sources.json), éditeur, URL, licence telle que publiée et licence normalisée
@@ -243,6 +245,29 @@ def lignee() -> list[dict]:
     return sorted(lignes, key=lambda x: (x["etape"], x["source_id"]))
 
 
+# --- Versions des entrées (pipeline/lignee.json) -----------------------------------------------------------------
+
+LIGNEE = ROOT / "pipeline" / "lignee.json"
+
+
+def versions_entrees() -> dict[str, dict]:
+    """Par étape relevée dans pipeline/lignee.json (versionné, lu sans entrepôt) : date de production et, pour chaque
+    fichier d'entrée, sha256, taille, identifiant de source du catalogue et date de collecte quand elle est connue."""
+    try:
+        doc = json.loads(LIGNEE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    out = {}
+    for etape, d in sorted((doc.get("etapes") or {}).items()):
+        fichiers = [{"chemin": chemin, "source_id": f.get("source"), "sha256": f.get("sha256"),
+                     "octets": f.get("octets"), "collecte_le": f.get("collecte_le")}
+                    for chemin, f in sorted((d.get("fichiers") or {}).items()) if f.get("sha256")]
+        if fichiers:
+            out[etape] = {"releve": "pipeline/lignee.json", "date_sources": d.get("date_sources"),
+                          "fichiers": fichiers}
+    return out
+
+
 # --- Construction ------------------------------------------------------------------------------------------------
 
 def _schema_desc(nom: str) -> tuple[str, str]:
@@ -308,6 +333,7 @@ def construire() -> dict[str, str]:
     fichiers = fichiers_versionnes()
     fams, orphelins = familles(fichiers)
     lignes = lignee()
+    versions = versions_entrees()
     par_etape = defaultdict(list)
     for li in lignes:
         par_etape[li["etape"]].append(li)
@@ -345,6 +371,8 @@ def construire() -> dict[str, str]:
             "millesimes": millesimes[:40],
             "sources_declarees": [t for t, _ in declarees[:10]],
         }
+        if etape in versions:
+            r["versions_sources"] = versions[etape]
         ressources.append(r)
         for f in fam["fichiers"]:
             inventaire.append((f, fam["nom"], fam["schema"]))
@@ -367,6 +395,8 @@ def construire() -> dict[str, str]:
              "etape_pipeline": etape or "non rattachée"}
         if t and t.get("schema"):
             r["schema"] = t["schema"]
+        if etape in versions:
+            r["versions_sources"] = versions[etape]
         if not r["sources"]:
             r["sources"] = [{"title": "voir site/data/" + f.rsplit("/", 1)[0] + "/ (fichiers JSON de la même étape)",
                              "licence": "voir la source citée", "licence_normalisee": "non-precisee"}]
@@ -423,6 +453,13 @@ def construire() -> dict[str, str]:
                     for ed, lics in sorted(editeurs.items())],
         "couverture_temporelle": f"{min(annees)}/{max(annees)}" if annees else None,
         "signaler_une_erreur": DEPOT + "/issues",
+        "versions_sources": "Ressources produites par une étape relevée dans pipeline/lignee.json ("
+                            + ", ".join(sorted(versions)) + ") : champ `versions_sources` de la ressource, avec "
+                            "pour chaque fichier d'entrée lu (data/lake) son sha256, sa taille, sa source du catalogue "
+                            "et sa date de collecte quand elles sont connues, et la date de production de l'étape "
+                            "(`date_sources`). Autres ressources : version des entrées non relevée, voir le champ "
+                            "source et le millésime de chaque fichier." if versions else
+                            "Aucune étape relevée dans pipeline/lignee.json : version des entrées non publiée.",
         "resources": ressources,
     }
     if package["couverture_temporelle"] is None:

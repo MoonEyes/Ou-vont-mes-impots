@@ -107,6 +107,27 @@ def test_tables_csv_reprennent_les_schemas_du_datapackage_racine(descripteur):
             assert src and r["schema"] == src["schema"], r["name"]
 
 
+def test_chaque_ressource_cite_la_version_de_ses_entrees_quand_elle_est_connue(descripteur):
+    """pipeline/lignee.json : une ressource d'une étape relevée cite chaque fichier d'entrée (sha256, date)."""
+    lig = json.loads((ROOT / "pipeline" / "lignee.json").read_text(encoding="utf-8"))["etapes"]
+    vues = set()
+    for r in descripteur["resources"]:
+        etape = r.get("etape_pipeline")
+        if etape not in lig:
+            assert "versions_sources" not in r, r["name"]
+            continue
+        v = r["versions_sources"]
+        vues.add(etape)
+        assert v["releve"] == "pipeline/lignee.json" and v["date_sources"] == lig[etape]["date_sources"], r["name"]
+        attendu = {c: f["sha256"] for c, f in lig[etape]["fichiers"].items()}
+        assert {f["chemin"]: f["sha256"] for f in v["fichiers"]} == attendu, r["name"]
+        for f in v["fichiers"]:
+            assert re.fullmatch(r"[0-9a-f]{64}", f["sha256"]) and f["chemin"].startswith("data/lake/"), f
+            assert f["collecte_le"] == lig[etape]["fichiers"][f["chemin"]]["collecte_le"], f
+    assert vues == {e for e in lig if lig[e]["fichiers"]} & {r.get("etape_pipeline") for r in descripteur["resources"]}
+    assert "pipeline/lignee.json" in descripteur["versions_sources"]
+
+
 def test_contributeurs_generiques_sans_nom_de_personne(descripteur):
     assert [c["title"] for c in descripteur["contributors"]] == [dpk.PROJET]
     texte = (SORTIE / "datapackage.json").read_text(encoding="utf-8") + (SORTIE / "dcat.jsonld").read_text(

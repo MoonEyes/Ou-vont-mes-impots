@@ -13,6 +13,7 @@ Les métadonnées de réutilisation sont dans `docs/datapackage/` :
 | `datapackage.json` | [Frictionless Data Package v2](https://datapackage.org/) : une ressource par famille de fichiers, schéma JSON, licence, sources, millésimes |
 | `fichiers.csv` | inventaire : chaque fichier, sa famille (`ressource`), son schéma, son URL de téléchargement |
 | `sources.csv` | lignée : chaque jeu public lu par chaque étape du pipeline, avec son éditeur, son URL et sa licence |
+| `datapackage.json`, champ `versions_sources` d'une ressource | version exacte des fichiers d'entrée de l'étape qui l'a produite, quand elle est relevée dans `pipeline/lignee.json` : chemin dans l'entrepôt, sha256, taille, source du catalogue, date de collecte, date de production de l'étape |
 | `dcat.jsonld` | description DCAT-AP (moissonnage par data.gouv.fr et les portails européens) |
 | `schemaorg.jsonld` | description schema.org `Dataset` |
 
