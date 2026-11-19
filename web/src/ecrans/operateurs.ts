@@ -3,7 +3,7 @@
 // somme des dix plus hautes, telle que publiée ; aucun nom de personne.
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
-import { absent, entier, eurLisible, h, type Statut, STATUTS, sur100, surligne, traitStatut } from '../util'
+import { absent, badgeCalcule, entier, eurLisible, h, type Statut, STATUTS, sur100, surligne, traitStatut } from '../util'
 import { enCours } from './dette'
 
 interface Montant {
@@ -125,6 +125,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 <div class="carte" data-cle>
   <p class="grand-chiffre">${surligne(eurLisible(totalScsp))}</p>
   <p class="sous-chiffre">de subventions pour charges de service public versées par l’État aux opérateurs en ${ANNEE_REF} (${h(String(ops.length))} lignes du jaune budgétaire). Chaque fiche donne la part de l’opérateur sur 100 € de ce total.</p>
+  <p class="aide">Ce total n’est pas publié tel quel : l’annexe « Opérateurs de l’État » donne l’exécution ${ANNEE_REF} opérateur par opérateur, sans total. ${badgeCalcule(`somme des subventions pour charges de service public exécutées en ${ANNEE_REF} (crédits de paiement), ligne par ligne du jaune budgétaire, même année`)}</p>
   <p class="source">${h(f.source)} (${h(f.millesime)})</p>
 </div>
 <ul class="legende-statuts" aria-label="Statuts de traçabilité">
