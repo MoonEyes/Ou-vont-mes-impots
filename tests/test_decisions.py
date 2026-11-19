@@ -152,7 +152,7 @@ def test_aucun_champ_personnel_hors_nom_elu():
         for k in _cles(d):
             assert not INTERDIT.search(k), (f.name, k)
         for a in _auteurs(d):
-            assert set(a) <= {"type", "nom", "groupe", "masque"}, (f.name, a)
+            assert set(a) <= {"type", "nom", "groupe"}, (f.name, a)  # décision du 19/11/2026 : plus de `masque`
             assert a["type"] in TYPES_AUTEURS or a["type"].startswith(("rapporteur", "président")), (f.name, a)
             if a["type"] == "gouvernement":
                 assert a["nom"] == "Gouvernement"

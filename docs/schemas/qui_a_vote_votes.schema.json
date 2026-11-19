@@ -15,7 +15,6 @@
     "impot",
     "regle_ordre_groupes",
     "deputes",
-    "masque",
     "votes"
   ],
   "properties": {
@@ -38,9 +37,6 @@
       "type": "string"
     },
     "regle_ordre_groupes": {
-      "type": "string"
-    },
-    "masque": {
       "type": "string"
     },
     "deputes": {

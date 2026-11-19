@@ -15,6 +15,8 @@ import vie_politique  # noqa: E402
 SITE = ROOT / "site" / "data"
 VP = SITE / "vie_politique"
 CANDIDATS = VP / "candidats"
+# Decision du 19/11/2026 : les parlementaires candidats nationaux y sont nommes (amendements, votes nominatifs).
+PARLEMENTAIRES_NOMMES = {SITE / "decisions", SITE / "qui_a_vote"}
 TOL = 1.0  # euro
 
 
@@ -174,7 +176,9 @@ def test_candidats_publies_seulement_si_drapeau_et_liste_blanche():
 def test_aucun_nom_de_candidat_hors_du_dossier_candidats():
     """Aucun nom de candidat dans site/data/vie_politique hors de candidats/ (les noms de partis, personnes
     morales publiees par la CNCCFP, sont exclus du controle), ni, pour les candidats nationaux (presidentielles,
-    tetes de liste europeennes), ailleurs dans site/data."""
+    tetes de liste europeennes), ailleurs dans site/data. Exception (decision du proprietaire du 19/11/2026) : un
+    parlementaire qui a ete candidat national est nomme comme les autres dans decisions/ et qui_a_vote/ (auteur
+    d'amendement, vote nominatif, objet du scrutin tel que publie)."""
     noms = _noms_candidats()
     if not noms:
         pytest.skip("detail par candidat absent (lancer pipeline/vie_politique.py produire)")
@@ -191,7 +195,7 @@ def test_aucun_nom_de_candidat_hors_du_dossier_candidats():
     assert not fuites, fuites[:20]
     nationaux = _noms_candidats(seulement=("presidentielle_", "europeennes_"))
     for f in SITE.rglob("*.json"):
-        if CANDIDATS in f.parents or VP / "partis" in f.parents:
+        if CANDIDATS in f.parents or VP / "partis" in f.parents or PARLEMENTAIRES_NOMMES & set(f.parents):
             continue
         texte = f.read_text(encoding="utf-8")
         if not re.search(r"[A-Z]{3,}", texte):

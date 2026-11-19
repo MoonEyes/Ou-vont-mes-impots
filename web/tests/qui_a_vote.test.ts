@@ -10,7 +10,7 @@ import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { ROUTES } from '../src/main'
 import { afficher } from '../src/routeur'
 import { viderCache } from '../src/donnees'
-import { POSITIONS, rendreNominatif, SANS_POSITION, texteEnClair, type Impot, type Index } from '../src/ecrans/qui_a_vote'
+import { NOM_ABSENT, POSITIONS, rendreNominatif, SANS_POSITION, texteEnClair, type Impot, type Index } from '../src/ecrans/qui_a_vote'
 import { monterPage } from './aide-dom'
 
 const CHEMIN = '/decisions/qui-a-vote'
@@ -149,22 +149,23 @@ describe('/decisions/qui-a-vote', () => {
     const v = votes.votes[String(s.numero)]
     expect(Array.from(zone.querySelectorAll('h5')).map((x) => x.textContent)).toEqual(v.groupes.map((g: { groupe: string }) => g.groupe))
     const premier = v.groupes.find((g: { pour: string[] }) => g.pour.length)
-    if (premier) expect(zone.textContent).toContain(votes.deputes[premier.pour[0]] ?? 'élu non nommé ici')
+    if (premier) expect(zone.textContent).toContain(votes.deputes[premier.pour[0]] ?? NOM_ABSENT)
     if (v.mises_au_point.length) expect(zone.textContent).toContain('indique avoir voulu voter')
     else expect(zone.textContent).toContain('Aucune mise au point publiée')
     expect(zone.textContent).toContain('n’a pas de position enregistrée')
     expect(norm(zone.textContent ?? '')).not.toMatch(PERSONNEL)
   })
 
-  it('rendreNominatif : élu non nommé ici, délégation, positions en toutes lettres', () => {
+  it('rendreNominatif : nom absent de la source, délégation, positions en toutes lettres', () => {
     const html = rendreNominatif(
-      { deputes: { PA1: 'Alice Martin', PA2: null }, masque: 'élu candidat à une élection nationale', votes: { '9': { groupes: [{ groupe: 'Groupe A', pour: ['PA1'], contre: ['PA2'], abstention: [], non_votant: [], par_delegation: ['PA1'] }], mises_au_point: [{ depute: 'PA1', position_souhaitee: 'contre' }] } } },
+      { deputes: { PA1: 'Alice Martin', PA2: null }, votes: { '9': { groupes: [{ groupe: 'Groupe A', pour: ['PA1'], contre: ['PA2'], abstention: [], non_votant: [], par_delegation: ['PA1'] }], mises_au_point: [{ depute: 'PA1', position_souhaitee: 'contre' }] } } },
       9,
     )
     const d = document.createElement('div')
     d.innerHTML = html
     expect(d.textContent).toContain('Alice Martin (par délégation)')
-    expect(d.textContent).toContain('élu non nommé ici')
+    expect(d.textContent).toContain(NOM_ABSENT)
+    expect(d.textContent).not.toContain('non nommé ici')
     expect(d.textContent).toContain('Alice Martin indique avoir voulu voter contre')
     expect(Object.values(POSITIONS)).toEqual(['pour', 'contre', 'abstention', 'non-votant'])
   })

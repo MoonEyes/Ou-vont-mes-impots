@@ -99,9 +99,6 @@
                     "null"
                   ]
                 },
-                "masque": {
-                  "type": "string"
-                },
                 "debut": {
                   "type": [
                     "string",

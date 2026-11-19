@@ -22,6 +22,8 @@ Commandes (chacune < 9 min) :
   python pipeline/decisions.py produire   # sans réseau : écrit site/data/decisions/
   python pipeline/decisions.py plrg       # sans réseau, sans archive JORF : recale les seuls champs tirés du PLRG
                                           # dans les fiches publiées (régénération ciblée)
+  python pipeline/decisions.py auteurs    # sans réseau, sans archive JORF : rétablit les noms d'auteurs et les
+                                          # objets de scrutins effacés avant le 19/11/2026 (régénération ciblée)
 
 Montants : une cellule vide vaut 0 ; une valeur non vide illisible devient null avec sa raison
 (`valeurs_illisibles_plrg`), jamais 0 ; une valeur en notation scientifique (PLRG 2023, programme 200) est lue et
@@ -29,7 +31,9 @@ signalée (`precision_plrg`). `produire` et `plrg` s'arrêtent si LFI, crédits 
 site/data/realisations/<n>.json de plus de 1 €.
 
 Personnes : seuls les élus (députés, sénateurs) et le Gouvernement sont nommés comme auteurs ; aucune autre donnée
-personnelle n'est lue ni écrite (pas de date de naissance, d'adresse, de profession).
+personnelle n'est lue ni écrite (pas de date de naissance, d'adresse, de profession). Décision du propriétaire du
+19/11/2026 : un élu qui a été candidat à une élection nationale est nommé comme les autres (auteur, objet du scrutin
+tel que publié) ; rien d'autre n'est écrit sur lui.
 """
 from __future__ import annotations
 
@@ -71,6 +75,7 @@ JORF_INCR = DEC / "decisions_jorf_increments"
 
 SRC_AN = "data.assemblee-nationale.fr, 17e législature : amendements, scrutins, dossiers législatifs, acteurs"
 SRC_SENAT = "data.senat.fr, base Ameli (amendements, dump SQL lu sans PostgreSQL : blocs COPY)"
+SRC_AMDT = f"{SRC_AN} ; {SRC_SENAT}"
 SRC_JORF = "DILA, archive JORF (echanges.dila.gouv.fr, Freemium_jorf_global et incréments)"
 SRC_PLRG = "data.economie.gouv.fr, PLRG {a} (annexe 1 « état CP » : LFI, LFR, reports, mouvements réglementaires, dépenses)"
 
@@ -1014,58 +1019,6 @@ def coherence(mouvements: list[dict], plrg: dict) -> dict:
     return out
 
 
-# --- Règle du dépôt : noms des candidats nationaux (présidentielle, têtes de liste européennes) ------------------
-# tests/test_vie_politique.py interdit ces noms hors du dossier vie_politique/candidats : un élu qui a été candidat
-# national est donc publié sans son nom (type et groupe conservés, `masque` explique pourquoi).
-
-
-def _norm_vp(s: str) -> str:
-    s = "".join(c for c in unicodedata.normalize("NFKD", s or "") if not unicodedata.combining(c))
-    return re.sub(r"[^a-z0-9]+", " ", s.lower()).strip()
-
-
-def candidats_nationaux() -> set[str]:
-    try:
-        import vie_politique
-        dossier = (SITE / "vie_politique" / "candidats" if vie_politique.AFFICHER_CANDIDATS
-                   else vie_politique.RESTREINT)
-    except Exception:  # noqa: BLE001
-        return set()
-    noms = set()
-    for f in sorted(Path(dossier).glob("*.json")):
-        if not f.stem.startswith(("presidentielle_", "europeennes_")):
-            continue
-        for c in json.loads(f.read_text(encoding="utf-8")).get("candidats", []):
-            for morceau in re.split(r"\bet\b", c.get("candidat") or ""):
-                n = _norm_vp(morceau)
-                if len(n.split()) >= 2 and len(n) >= 8:
-                    noms.add(n)
-    return noms
-
-
-def contient(texte: str, noms: set[str]) -> bool:
-    t = _norm_vp(texte).split()
-    return any(" ".join(t[i:i + n]) in noms for n in range(2, 6) for i in range(len(t) - n + 1))
-
-
-MASQUE = "élu candidat à une élection nationale : son nom n'est publié que dans le bloc vie politique"
-
-
-def masquer(amdts: list[dict], scrutins: list[dict], noms: set[str]) -> int:
-    k = 0
-    for a in amdts:
-        if a["auteur"].get("nom") and contient(a["auteur"]["nom"], noms):
-            a["auteur"] = {**a["auteur"], "nom": None, "masque": MASQUE}
-            k += 1
-    for s in scrutins:
-        s["objet"] = re.sub(r" (?:de|du) (?:M\.|Mme|MM\.|Mmes)\s.*?(?= (?:à|après|avant|au|aux) |\s*\(|$)", "",
-                            s["objet"])
-        if contient(s["objet"], noms):
-            s["objet"] = re.sub(r"\s+de\s.*$", "", s["objet"])
-            k += 1
-    return k
-
-
 # --- d. Production ----------------------------------------------------------------------------------------------------
 
 ADOPTE = "Adopté"
@@ -1155,26 +1108,14 @@ def recaler_plrg() -> None:
           file=sys.stderr)
 
 
-def produire() -> None:
-    if not (CACHE_JORF / "textes").exists():
-        raise SystemExit("cache JORF absent : lancer d'abord `python pipeline/decisions.py jorf`")
-    nomen = nomenclature()
-    plrg = lire_plrg()
-    amdts = amendements_an(nomen) + amendements_senat(nomen)
-    scr = scrutins_an(amdts)
-    masques = masquer(amdts, scr, candidats_nationaux())
+def ecrire_amendements_et_scrutins(amdts: list[dict], scr: list[dict], genere: str,
+                                   sortie: Path = SORTIE) -> tuple[dict, dict]:
+    """Écrit amendements_resume.json et scrutins.json ; rend (résumé par programme et année, adoptés par programme)."""
     par_amdt_scrutin = defaultdict(list)
     for s in scr:
         if s["amendement"]:
             par_amdt_scrutin[s["amendement"]].append({"numero": s["numero"], "resultat": s["resultat"],
                                                       "pour": s["pour"], "contre": s["contre"], "url": s["url"]})
-    mvts, stats_mvt = mouvements_jorf(nomen)
-    coh = coherence(mvts, plrg)
-    genere = date_sources(avec_heure=True)
-    SORTIE.mkdir(parents=True, exist_ok=True)
-    for f in SORTIE.glob("*.json"):
-        f.unlink()
-
     # amendements : par programme et par année
     resume = defaultdict(lambda: defaultdict(lambda: {"deposes_an": 0, "deposes_senat": 0, "adoptes_seance_an": 0,
                                                        "adoptes_seance_senat": 0, "adoptes_commission_an": 0,
@@ -1206,10 +1147,9 @@ def produire() -> None:
                 "date": a["date_sort"] or a["date_depot"], "auteur": a["auteur"], "cosignataires": a["cosignataires"],
                 "ae": l["ae"], "cp": l["cp"], "net_cp_amendement": a["net_cp"], "rapprochement": l["rapprochement"],
                 "scrutins": par_amdt_scrutin.get(a["id"], []), "url": a["url"]})
-    src_amdt = f"{SRC_AN} ; {SRC_SENAT}"
-    dump(SORTIE / "amendements_resume.json", {
+    dump(sortie / "amendements_resume.json", {
         "millesime": "Lois de finances examinées pendant la 17e législature (PLF 2025 à 2027, fin de gestion 2024 à "
-                     "2026)", "source": src_amdt, "genere_le": genere, "unite": "euros",
+                     "2026)", "source": SRC_AMDT, "genere_le": genere, "unite": "euros",
         "methode": ("Un amendement de crédits est compté pour chaque programme dont il modifie les AE ou les CP. "
                     "« Adopté en séance » modifie le texte de la chambre ; « adopté en commission » (Assemblée) "
                     "n'est qu'une proposition au texte examiné en séance. Montant net = somme signée des lignes."),
@@ -1218,12 +1158,35 @@ def produire() -> None:
         "lignes_non_rattachees": dict(non_rattaches),
         "par_programme": {p: dict(sorted(v.items())) for p, v in sorted(resume.items())}})
 
-    dump(SORTIE / "scrutins.json", {
+    dump(sortie / "scrutins.json", {
         "millesime": "Scrutins publics de la 17e législature sur les lois de finances", "source": SRC_AN,
         "genere_le": genere, "types": ["ensemble", "premiere_partie", "seconde_partie", "credits_mission",
                                        "article_equilibre", "article", "motion", "amendement", "autre"],
         "note": "Les scrutins sur amendements ne sont gardés que pour les amendements de crédits.",
         "scrutins": scr})
+    return resume, adoptes_prog
+
+
+def etapes_amendements(am: list[dict], a: int) -> list[dict]:
+    return [{"date": x["date"], "annee": a, "etape": f"Amendement adopté ({x['chambre']}, {x['lieu']})",
+             "cp": x["cp"], "ae": x["ae"], "auteur": x["auteur"]["nom"], "url": x["url"]} for x in am]
+
+
+def produire() -> None:
+    if not (CACHE_JORF / "textes").exists():
+        raise SystemExit("cache JORF absent : lancer d'abord `python pipeline/decisions.py jorf`")
+    nomen = nomenclature()
+    plrg = lire_plrg()
+    amdts = amendements_an(nomen) + amendements_senat(nomen)
+    scr = scrutins_an(amdts)
+    mvts, stats_mvt = mouvements_jorf(nomen)
+    coh = coherence(mvts, plrg)
+    genere = date_sources(avec_heure=True)
+    SORTIE.mkdir(parents=True, exist_ok=True)
+    for f in SORTIE.glob("*.json"):
+        f.unlink()
+
+    resume, adoptes_prog = ecrire_amendements_et_scrutins(amdts, scr, genere)
 
     par_annee = defaultdict(list)
     lignes_prog = defaultdict(list)
@@ -1284,10 +1247,7 @@ def produire() -> None:
             am = [x for x in adoptes_prog.get(p, []) if x["annee"] == a]
             if am:
                 e["amendements_adoptes"] = am
-                for x in am:
-                    chrono.append({"date": x["date"], "annee": a, "etape": f"Amendement adopté ({x['chambre']}, "
-                                   f"{x['lieu']})", "cp": x["cp"], "ae": x["ae"], "auteur": x["auteur"]["nom"],
-                                   "url": x["url"]})
+                chrono.extend(etapes_amendements(am, a))
             mv = [x for x in lignes_prog.get(p, []) if x["annee"] == a]
             if mv:
                 e["mouvements_jo"] = mv
@@ -1303,7 +1263,7 @@ def produire() -> None:
         nom = f"programme_{p}.json"
         dump(SORTIE / nom, {
             "millesime": "2021 à 2027 (selon les sources disponibles par année)",
-            "source": f"{src_amdt} ; {SRC_JORF} ; " + SRC_PLRG.format(a="2023-2025"), "genere_le": genere,
+            "source": f"{SRC_AMDT} ; {SRC_JORF} ; " + SRC_PLRG.format(a="2023-2025"), "genere_le": genere,
             "programme": p, "libelle": (meta or {}).get("libelle") or nomen["libelles"].get(p),
             "mission": (meta or {}).get("mission"), "dans_arbre_2024": p in arbre_progs, "unite": "euros",
             "annees": annees, "chronologie": chrono})
@@ -1312,7 +1272,7 @@ def produire() -> None:
     adoptes = [a for a in amdts if a["sort"] == ADOPTE]
     dump(SORTIE / "index.json", {
         "millesime": "17e législature (juillet 2024 à novembre 2026) ; mouvements en gestion 2021 à 2026",
-        "source": f"{src_amdt} ; {SRC_JORF} ; " + SRC_PLRG.format(a="2023-2025"), "genere_le": genere,
+        "source": f"{SRC_AMDT} ; {SRC_JORF} ; " + SRC_PLRG.format(a="2023-2025"), "genere_le": genere,
         "programmes": [f.split("_")[-1][:-5] for f in fichiers], "fichiers": fichiers + [
             "decisions/amendements_resume.json", "decisions/scrutins.json", "decisions/coherence_plrg.json"] + [
             f"decisions/mouvements_{a}.json" for a in sorted(par_annee)],
@@ -1322,7 +1282,7 @@ def produire() -> None:
                     "adoptes_seance_senat": sum(1 for a in adoptes if a["chambre"] == "Sénat" and
                                                 a["lieu"] == "séance"),
                     "adoptes_commission_an": sum(1 for a in adoptes if a["chambre"] == "AN" and a["lieu"] != "séance"),
-                    "scrutins": len(scr), "mouvements": stats_mvt, "noms_masques": masques},
+                    "scrutins": len(scr), "mouvements": stats_mvt},
         "coherence_plrg": {a: {c: {"ecart_pct": v["ecart_pct"], "conforme": v["conforme"]} for c, v in r.items()}
                            for a, r in coh.items()},
         "regle_personnes": "Seuls les élus (députés, sénateurs), le Gouvernement et les commissions sont nommés "
@@ -1344,15 +1304,105 @@ def produire() -> None:
         print(f"  {a} : " + ", ".join(f"{c} écart {v['ecart_pct']} %" for c, v in r.items()), file=sys.stderr)
 
 
+# Objet de scrutin tel que publié avant la décision du 19/11/2026 : auteur effacé (« de M. … »), et pour un candidat
+# national tout ce qui suivait « de ». Sert seulement au contrôle de `auteurs` (rien d'autre ne doit changer).
+_AUTEUR_OBJET_ANCIEN = r" (?:de|du) (?:M\.|Mme|MM\.|Mmes)\s.*?(?= (?:à|après|avant|au|aux) |\s*\(|$)"
+
+
+def _objet_ancien_possible(nouveau: str, ancien: str) -> bool:
+    sans = re.sub(_AUTEUR_OBJET_ANCIEN, "", nouveau)
+    return ancien in (nouveau, sans, re.sub(r"\s+de\s.*$", "", sans))
+
+
+def _meme_hors_noms(nouveau, ancien, compte: dict, cle: str = "") -> bool:
+    """Vrai si `nouveau` ne diffère d'`ancien` que par un nom d'auteur auparavant effacé (null, `masque`) ou par
+    l'objet d'un scrutin dont l'auteur était effacé. Un nom déjà publié ne doit pas changer."""
+    if cle == "auteur":
+        if isinstance(ancien, dict) and isinstance(nouveau, dict):
+            if {k: v for k, v in ancien.items() if k not in ("nom", "masque")} != \
+                    {k: v for k, v in nouveau.items() if k != "nom"}:
+                return False
+            ancien, nouveau = ancien.get("nom"), nouveau.get("nom")
+        if ancien is None and nouveau is not None:
+            compte["auteurs"] += 1
+            return True
+        return ancien == nouveau
+    if cle == "objet" and isinstance(nouveau, str) and isinstance(ancien, str):
+        if nouveau != ancien:
+            compte["objets"] += 1
+        return _objet_ancien_possible(nouveau, ancien)
+    if isinstance(nouveau, dict) and isinstance(ancien, dict):
+        return set(nouveau) == set(ancien) and all(_meme_hors_noms(nouveau[k], ancien[k], compte, k) for k in nouveau)
+    if isinstance(nouveau, list) and isinstance(ancien, list):
+        return len(nouveau) == len(ancien) and all(_meme_hors_noms(n, a, compte) for n, a in zip(nouveau, ancien))
+    return nouveau == ancien
+
+
+def recaler_auteurs() -> None:
+    """Régénération ciblée (sans archive JORF) après la décision du 19/11/2026 : rétablit, dans les fichiers publiés,
+    le nom des auteurs d'amendements effacés (`masque`) et l'objet des scrutins tel que publié par l'Assemblée. Les
+    nouveaux noms et objets sont relus dans les zips de l'Assemblée et du Sénat, par identifiant d'amendement et de
+    scrutin. Rien d'autre n'est réécrit (comptes, montants, mouvements) : s'arrête sans rien écrire si un
+    identifiant manque, si le type ou le groupe d'un auteur diffère, ou si un nom déjà publié changerait."""
+    if not (SORTIE / "index.json").exists():
+        raise SystemExit("site/data/decisions/ absent : lancer `python pipeline/decisions.py produire`")
+    nomen = nomenclature()
+    amdts = amendements_an(nomen) + amendements_senat(nomen)
+    auteurs = {a["id"]: a["auteur"] for a in amdts}
+    scrutins = {s["id"]: s for s in scrutins_an(amdts)}
+    lire = lambda f: json.loads(f.read_text(encoding="utf-8"))  # noqa: E731
+    compte = {"auteurs": 0, "objets": 0}
+    a_ecrire: dict[Path, dict] = {}
+
+    def controler(f: Path, nouveau: dict, ancien: dict) -> None:
+        if not _meme_hors_noms(nouveau, ancien, compte):
+            raise SystemExit(f"{f.name} : écart autre qu'un nom d'auteur ou un objet de scrutin ; lancer produire")
+        if nouveau != ancien:
+            a_ecrire[f] = nouveau
+
+    f = SORTIE / "scrutins.json"
+    ancien = lire(f)
+    nouveau = json.loads(json.dumps(ancien))
+    for s in nouveau["scrutins"]:
+        if s["id"] not in scrutins:
+            raise SystemExit(f"scrutin {s['id']} absent du zip de l'Assemblée ; lancer produire")
+        s["objet"] = scrutins[s["id"]]["objet"]
+    controler(f, nouveau, ancien)
+    for f in sorted(SORTIE.glob("programme_*.json")):
+        ancien = lire(f)
+        nouveau = json.loads(json.dumps(ancien))
+        par_url = {}
+        for e in nouveau["annees"].values():
+            for x in e.get("amendements_adoptes", []):
+                if x["id"] not in auteurs:
+                    raise SystemExit(f"{f.name} : amendement {x['id']} absent des sources ; lancer produire")
+                x["auteur"] = dict(auteurs[x["id"]])
+                par_url[x["url"]] = x["auteur"]["nom"]
+        for c in nouveau["chronologie"]:
+            if c["etape"].startswith("Amendement adopté"):
+                c["auteur"] = par_url[c["url"]]
+        controler(f, nouveau, ancien)
+    f = SORTIE / "index.json"
+    ancien = lire(f)
+    nouveau = {**ancien, "comptes": {k: v for k, v in ancien["comptes"].items() if k != "noms_masques"}}
+    if nouveau != ancien:
+        a_ecrire[f] = nouveau
+    for f, d in a_ecrire.items():
+        dump(f, d)
+    print(f"auteurs : {compte['auteurs']} nom(s) d'auteur rétabli(s), {compte['objets']} objet(s) de scrutin "
+          f"rétabli(s), {len(a_ecrire)} fichier(s) réécrit(s)", file=sys.stderr)
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("etape", choices=["jorf", "produire", "plrg"])
+    ap.add_argument("etape", choices=["jorf", "produire", "plrg", "auteurs"])
     ap.add_argument("--budget", type=float, default=540.0, help="secondes (étape jorf)")
     args = ap.parse_args()
     if args.etape == "jorf":
         scanner_jorf(archives_jorf(), args.budget)
     elif args.etape == "plrg":
         recaler_plrg()
+    elif args.etape == "auteurs":
+        recaler_auteurs()
     else:
         produire()
 

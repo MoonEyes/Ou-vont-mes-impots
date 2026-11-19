@@ -396,9 +396,6 @@
                   "string",
                   "null"
                 ]
-              },
-              "masque": {
-                "type": "string"
               }
             }
           },

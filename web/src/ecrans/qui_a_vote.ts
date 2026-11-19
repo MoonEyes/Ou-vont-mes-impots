@@ -98,7 +98,7 @@ interface Amendement {
   article_vise: string | null
   date: string | null
   sort: string
-  auteur: { type: string; nom: string | null; groupe: string | null; masque?: string }
+  auteur: { type: string; nom: string | null; groupe: string | null }
   cosignataires: number
   dispositif: string
   rattachement: Rattachement
@@ -130,17 +130,19 @@ interface VoteGroupe {
 }
 interface Votes {
   deputes: Record<string, string | null>
-  masque: string
   votes: Record<string, { groupes: VoteGroupe[]; mises_au_point: { depute: string; position_souhaitee: string }[] }>
 }
 type VoteDepute = [number, string | null, 0 | 1, string | null, string | null]
 interface DepFichier {
   departement: { code: string; nom: string }
-  circonscriptions: { numero: number; deputes: { depute: string; nom: string | null; masque?: string; debut: string | null; fin: string | null; votes: VoteDepute[] }[] }[]
+  circonscriptions: { numero: number; deputes: { depute: string; nom: string | null; debut: string | null; fin: string | null; votes: VoteDepute[] }[] }[]
 }
 interface ScrutinsListe {
   scrutins: { numero: number; date: string; texte: string; lecture: string | null; objet: string; impots: string[]; resultat: string; url: string }[]
 }
+
+/** Identifiant de l’Assemblée sans nom dans son fichier des acteurs (aucun nom n’est retiré par le site). */
+export const NOM_ABSENT = 'nom absent du fichier des députés de l’Assemblée'
 
 export const POSITIONS: Record<string, string> = {
   pour: 'pour',
@@ -209,7 +211,7 @@ ${a.scrutins.length ? `<p class="aide">Scrutin public sur l’article : n° ${a.
 
 function amendementHtml(a: Amendement): string {
   const au = a.auteur
-  const qui = au.nom ? `${au.nom}${au.groupe ? ` (${au.groupe})` : ''}` : au.masque ? `auteur non nommé ici : ${au.masque}` : au.type
+  const qui = au.nom ? `${au.nom}${au.groupe ? ` (${au.groupe})` : ''}` : au.type
   return `<li><p><strong>${h(qui)}</strong> · ${h(a.chambre)}, ${h(texteEnClair(a.texte))}${a.lecture ? `, ${h(a.lecture)}` : ''}, amendement ${lienSiUrl(a.url, `n° ${a.numero}`)}${a.article_vise ? ` à l’article ${h(a.article_vise)}` : ''}, adopté${a.date ? ` le ${h(dateFr(a.date))}` : ''}${a.cosignataires ? ` (${entier(a.cosignataires)} cosignataires)` : ''}${a.scrutin ? `, scrutin public n° ${h(String(a.scrutin))}` : ''}</p>
 <details><summary>Texte de l’amendement (début)</summary><p>${h(a.dispositif)}</p></details>
 ${preuve(a.rattachement)}</li>`
@@ -245,7 +247,7 @@ ${source(d.source, d.millesime)}`
 export function rendreNominatif(v: Votes, numero: number): string {
   const s = v.votes[String(numero)]
   if (!s) return absent('Vote nominatif non publié pour ce scrutin.')
-  const nom = (pa: string) => v.deputes[pa] ?? 'élu non nommé ici'
+  const nom = (pa: string) => v.deputes[pa] ?? NOM_ABSENT
   const deleg = (g: VoteGroupe) => new Set(g.par_delegation)
   const liste = (g: VoteGroupe, cle: 'pour' | 'contre' | 'abstention' | 'non_votant') =>
     g[cle].length ? `<li><strong>${h(POSITIONS[cle])}</strong> (${entier(g[cle].length)}) : ${g[cle].map((pa) => h(nom(pa)) + (deleg(g).has(pa) ? ' (par délégation)' : '')).join(', ')}</li>` : ''
@@ -253,14 +255,14 @@ export function rendreNominatif(v: Votes, numero: number): string {
     ? `<p><strong>Mises au point publiées</strong> : ${s.mises_au_point.map((m) => `${h(nom(m.depute))} indique avoir voulu voter ${h(POSITIONS[m.position_souhaitee] ?? m.position_souhaitee)}`).join(' ; ')}.</p>`
     : '<p class="aide">Aucune mise au point publiée pour ce scrutin.</p>'
   return `${s.groupes.map((g) => `<h5>${h(g.groupe)}</h5><ul>${(['pour', 'contre', 'abstention', 'non_votant'] as const).map((c) => liste(g, c)).join('')}</ul>`).join('')}${mises}
-<p class="aide">Un député absent de ces listes n’a pas de position enregistrée pour ce scrutin.${Object.values(v.deputes).some((x) => x === null) ? ` Élu non nommé ici : ${h(v.masque)}.` : ''}</p>`
+<p class="aide">Un député absent de ces listes n’a pas de position enregistrée pour ce scrutin.</p>`
 }
 
 /** Votes d’un député sur les scrutins retenus pendant son mandat, ordre chronologique. */
 export function rendreDepute(x: DepFichier['circonscriptions'][number]['deputes'][number], scrutins: ScrutinsListe['scrutins'], impots: Map<string, string>): string {
   const par = new Map(x.votes.map((v) => [v[0], v]))
   const pendant = scrutins.filter((s) => (!x.debut || s.date >= x.debut) && (!x.fin || s.date <= x.fin))
-  const qui = x.nom ?? `élu non nommé ici${x.masque ? ` (${x.masque})` : ''}`
+  const qui = x.nom ?? NOM_ABSENT
   const lignes = pendant
     .map((s) => {
       const v = par.get(s.numero)
