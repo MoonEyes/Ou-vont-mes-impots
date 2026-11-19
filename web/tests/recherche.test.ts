@@ -9,17 +9,24 @@ import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { aUnePage, fragmentCommune, fragmentDepartement } from '../src/chemins'
 import {
   adresse,
+  assembler,
   brancherEntete,
   chercher,
+  chercherOrganisations,
+  chercherTout,
   construireMoteur,
+  contexteOrg,
   distance,
   type IndexBrut,
   type Moteur,
   normaliser,
   oublierMoteur,
   precision,
+  REGLE_ORDRE,
   selection,
+  sirenDe,
 } from '../src/composants/recherche'
+import GLOSSAIRE from '../src/glossaire.json'
 import { TOUS_DEPARTEMENTS } from '../src/departements'
 import { viderCache } from '../src/donnees'
 import { afficher, lireFragment, REDIRECTIONS } from '../src/routeur'
@@ -30,11 +37,13 @@ import { attendreQue, monterPage, requetes } from './aide-dom'
 const RACINE = process.cwd()
 const FIXTURES = join(RACINE, 'tests', 'fixtures', 'data')
 const SITE_DATA = join(RACINE, '..', 'site', 'data')
-const OUTILS = { aUnePage, libelle, departements: TOUS_DEPARTEMENTS }
+const OUTILS = { aUnePage, libelle, departements: TOUS_DEPARTEMENTS, glossaire: GLOSSAIRE }
 
 type Construire = (o: object) => { index: IndexBrut; bilan: Record<string, number> & { entites_sans_page: string[] } }
 let construireIndex: Construire
 let TAILLE_VISEE: number
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let script: any
 
 const lecteur = (racine: string, ajouts: Record<string, unknown> = {}) => ({
   lire: (c: string) => {
@@ -68,18 +77,31 @@ const construire = (racine = FIXTURES, ajouts: Record<string, unknown> = {}, rou
 let indexFixtures: IndexBrut
 let moteur: Moteur
 let servi: IndexBrut | null = null
+/** Fichiers servis en plus des fixtures (chemin sous data/), et dossier de données réel lu en plus. */
+const servisEnPlus = new Map<string, unknown>()
+let racineEnPlus: string | null = null
 const geo69 = GEO69
 
 beforeAll(async () => {
   const mod = await import(/* @vite-ignore */ pathToFileURL(join(RACINE, 'scripts', 'index-recherche.mjs')).href)
   construireIndex = mod.construireIndex
   TAILLE_VISEE = mod.TAILLE_VISEE
+  script = mod
   indexFixtures = construire().index
   moteur = construireMoteur(indexFixtures)
   monterPage()
   // L'index de recherche est servi comme les autres fichiers de données (data/_recherche.json), ou absent (404).
   const base = globalThis.fetch
   vi.stubGlobal('fetch', async (url: string) => {
+    const u = String(url)
+    if (u.startsWith('data/') && servisEnPlus.has(u.slice(5))) {
+      requetes.push(u)
+      return new Response(JSON.stringify(servisEnPlus.get(u.slice(5))), { status: 200, headers: { 'content-type': 'application/json' } })
+    }
+    if (u.startsWith('data/') && racineEnPlus && existsSync(join(racineEnPlus, u.slice(5)))) {
+      requetes.push(u)
+      return new Response(readFileSync(join(racineEnPlus, u.slice(5)), 'utf8'), { status: 200, headers: { 'content-type': 'application/json' } })
+    }
     if (String(url) !== 'data/_recherche.json') return base(url)
     requetes.push(String(url))
     return servi ? new Response(JSON.stringify(servi), { status: 200, headers: { 'content-type': 'application/json' } }) : new Response('introuvable', { status: 404 })
@@ -87,6 +109,8 @@ beforeAll(async () => {
 })
 beforeEach(() => {
   servi = indexFixtures
+  servisEnPlus.clear()
+  racineEnPlus = null
   oublierMoteur()
   viderCache()
 })
@@ -113,7 +137,9 @@ describe('moteur de recherche', () => {
     const lyon = premier('lyon')!
     expect(lyon.nom).toBe('Lyon')
     expect(adresse(moteur, lyon)).toBe(fragmentCommune('69123', 'Lyon', geo69.communes['69123'].population))
-    for (const q of ['LYON', 'Lyôn', 'lyonn', 'lyno']) expect(premier(q)?.nom, q).toBe('Lyon')
+    for (const q of ['LYON', 'Lyôn', 'lyno', 'lyon,']) expect(premier(q)?.nom, q).toBe('Lyon')
+    // « lyonn » : début de « Lyonnais » (7) avant la faute de frappe sur « Lyon » (5), sans tenir compte de la taille.
+    expect(chercher(moteur, 'lyonn').resultats.map((r) => r.e.nom)).toContain('Lyon')
     expect(premier('villeurbane')?.nom).toBe('Villeurbanne')
     expect(premier('Rhône')?.nom).toBe('Rhône')
     expect(premier('rhone')?.nom).toBe('Rhône')
@@ -246,14 +272,23 @@ describe('index construit au build', () => {
     expect(r.map((e) => [e[1], e[2]])).toEqual([['CNAV (salariés du privé)', '#/explorer/secu']])
   })
 
-  it.skipIf(!existsSync(join(SITE_DATA, 'local', 'geo')))('index réel (site/data) : moins de 1 Mo, toutes les communes, recherche rapide', () => {
+  it.skipIf(!existsSync(join(SITE_DATA, 'local', 'geo')))('index réel (site/data) : noyau et morceaux sous 1 Mo, toutes les communes, recherche rapide', () => {
     const { index, bilan } = construire(SITE_DATA)
-    const texte = JSON.stringify(index)
+    const { noyau, morceaux } = script.decouperIndex(index)
+    const texte = JSON.stringify(noyau)
     expect(Buffer.byteLength(texte)).toBeLessThan(TAILLE_VISEE)
-    expect(gzipSync(texte).length).toBeLessThan(400_000)
+    expect(gzipSync(texte).length).toBeLessThan(150_000)
+    expect(Object.keys(noyau.morceaux).sort()).toEqual(['communes', 'parlementaires'])
+    for (const m of Object.values(morceaux)) {
+      const t = JSON.stringify(m)
+      expect(Buffer.byteLength(t)).toBeLessThan(TAILLE_VISEE)
+      expect(gzipSync(t).length).toBeLessThan(300_000)
+    }
     expect(bilan.commune).toBeGreaterThan(34000)
     expect(bilan.departement).toBe(101)
-    const m = construireMoteur(JSON.parse(texte))
+    expect(bilan.parlementaire).toBeGreaterThan(577)
+    expect(bilan.glossaire).toBe(GLOSSAIRE.termes.length)
+    const m = construireMoteur(assembler(JSON.parse(texte), Object.values(morceaux).map((x) => JSON.parse(JSON.stringify(x)))))
     for (const [q, attendu] of [
       ['nantes', 'Nantes'],
       ['bordaux', 'Bordeaux'],
@@ -358,7 +393,8 @@ describe('page « Rechercher dans le site »', () => {
     expect(main.querySelectorAll('.bouton-principal')).toHaveLength(1)
     expect(main.querySelector('#recherche-statut')?.getAttribute('role')).toBe('status')
     expect(main.querySelector('.chapeau')?.textContent).toContain('rien de ce que tu tapes n’est envoyé')
-    expect(main.textContent).toContain('ni dans les montants ni parmi les bénéficiaires nommés')
+    expect(main.textContent).toContain('Elle ne cherche pas dans les montants')
+    expect(main.querySelector('[data-regle-ordre]')?.textContent).toBe(REGLE_ORDRE)
     expect(Array.from(main.querySelectorAll('#recherche-consigne a')).map((a) => a.getAttribute('href'))).toContain('#/recherche?q=Lyon')
     expect(requetes).not.toContain('data/_recherche.json')
     expect(document.title).toBe('Rechercher une commune, un programme du budget ou une page du site · Où vont mes impôts')
@@ -422,4 +458,297 @@ describe('page « Rechercher dans le site »', () => {
     ]
     for (const t of textes) for (const r of LEXIQUE.regles) expect(t).not.toMatch(borne(r.termes.join('|')))
   })
+})
+
+// --- Recherche globale : organisations, parlementaires, glossaire, ordre, clavier, confidentialité ---------------------
+
+/** Petit jeu d'organisations au format publié (entites/index.json, entites/recherche/, morceaux de contexte). */
+const ORG = {
+  config: {
+    famille: 0,
+    prefixes: { as: 'entites/recherche/as.json', cr: 'entites/recherche/cr.json', ce: 'entites/recherche/ce.json' },
+    tailles: { as: 3, cr: 1, ce: 1 },
+    frequents: ['commune'],
+    canaux: ['Crédits de l’État aux associations', 'Subventions par convention'],
+    contexte: '_recherche/org/',
+    morceaux: ['77', '78'],
+    total: 3,
+  },
+  fichiers: {
+    'entites/recherche/as.json': {
+      entrees: [
+        ['775000001', 'ASSOCIATION DES AMIS DU LIVRE', 2, '44'],
+        ['775000002', 'ASSOCIATION DES AMIES DU LIVRE', 3, '69'],
+        ['785000003', 'ASSOCIATION SPORTIVE DE NANTES', 2, '44'],
+      ],
+    },
+    'entites/recherche/cr.json': { entrees: [['785000004', 'CROIX ROUGE FRANCAISE', 5, '75']] },
+    '_recherche/org/77.json': {
+      entrees: {
+        '775000001': ['ASSOCIATION DES AMIS DU LIVRE', 2, '44', 2023, 1500, 0],
+        '775000002': ['ASSOCIATION DES AMIES DU LIVRE', 3, '69', 2024, 9_000_000, 1],
+      },
+    },
+    '_recherche/org/78.json': { entrees: { '785000004': ['CROIX ROUGE FRANCAISE', 5, '75', null, null, null] } },
+  } as Record<string, unknown>,
+}
+const moteurOrg = () => {
+  const brut: IndexBrut = {
+    format: indexFixtures.format,
+    familles: [{ cle: 'organisation', nom: 'Organisation', groupe: 'Entreprises, associations et autres organisations', modele: '#/beneficiaires/organisation?siren=' }],
+    entrees: [],
+    departements: {},
+    communes: { famille: -1, par_departement: {} },
+    organisations: ORG.config,
+  }
+  for (const [k, v] of Object.entries(ORG.fichiers)) servisEnPlus.set(k, v)
+  return construireMoteur(brut)
+}
+
+describe('recherche globale : organisations (fichiers publiés par préfixe, chargés à la demande)', () => {
+  it('nom, faute de frappe, SIREN et SIRET exacts ; ligne de contexte avec le dernier montant publié', async () => {
+    const m = moteurOrg()
+    requetes.length = 0
+    const r = await chercherOrganisations(m, 'croix rouge', 5)
+    expect(r.map((x) => x.e.nom)).toEqual(['CROIX ROUGE FRANCAISE'])
+    expect(adresse(m, r[0].e)).toBe('#/beneficiaires/organisation?siren=785000004')
+    // Seuls les fichiers du mot le plus rare et le morceau de contexte du résultat sont lus.
+    expect(requetes.filter((u) => u.startsWith('data/entites/'))).toEqual(['data/entites/recherche/cr.json'])
+    expect((await chercherOrganisations(m, 'assocation livre', 5)).map((x) => x.e.nom)).toContain('ASSOCIATION DES AMIS DU LIVRE')
+    const s = await chercherOrganisations(m, '775 000 001', 0)
+    expect(s.map((x) => x.e.nom)).toEqual(['ASSOCIATION DES AMIS DU LIVRE'])
+    expect(s[0].e.precision.replace(/[\u202f\u00a0]/g, ' ')).toBe('SIREN 775 000 001 · 2 sources du site · département 44 · dernier montant publié : 1 500 € en 2023 (Crédits de l’État aux associations)')
+    expect((await chercherOrganisations(m, '77500000100017', 0))[0]?.e.cible).toBe('775000001')
+    expect(await chercherOrganisations(m, '999999999', 0)).toEqual([])
+    expect(sirenDe('775 000 001')).toBe('775000001')
+    expect(sirenDe('12345')).toBeNull()
+    // Sans montant publié lisible : pas de montant dans la ligne, jamais 0.
+    const croix = (await chercherOrganisations(m, 'croix rouge', 5))[0]
+    expect(croix.e.precision).toBe('SIREN 785 000 004 · 5 sources du site · département 75')
+    expect(contexteOrg(ORG.config, '775000002', 3, '69', ['x', 3, '69', 2024, 9_000_000, 1]).replace(/[\u202f\u00a0]/g, ' ')).toContain('9 000 000 € en 2024 (Subventions par convention)')
+  })
+
+  it('ordre : texte seulement, jamais le montant (à égalité de texte : nom le plus court, puis alphabétique)', async () => {
+    const m = moteurOrg()
+    const r = await chercherOrganisations(m, 'association livre', 5)
+    // AMIES (9 M€) et AMIS (1 500 €) : même note du texte ; AMIS, plus court, d'abord.
+    expect(r.map((x) => x.e.nom)).toEqual(['ASSOCIATION DES AMIS DU LIVRE', 'ASSOCIATION DES AMIES DU LIVRE'])
+    // Même résultat en inversant les montants publiés.
+    const f = ORG.fichiers['_recherche/org/77.json'] as { entrees: Record<string, unknown[]> }
+    const avant = JSON.parse(JSON.stringify(f))
+    ;[f.entrees['775000001'][4], f.entrees['775000002'][4]] = [f.entrees['775000002'][4], f.entrees['775000001'][4]]
+    const r2 = await chercherOrganisations(moteurOrg(), 'association livre', 5)
+    ORG.fichiers['_recherche/org/77.json'] = avant
+    expect(r2.map((x) => x.e.nom)).toEqual(r.map((x) => x.e.nom))
+  })
+
+  it('chercherTout : organisations et index dans un même classement, groupés par famille', async () => {
+    const m = moteurOrg()
+    const r = await chercherTout(m, 'croix rouge')
+    expect(r.resultats[0].e.nom).toBe('CROIX ROUGE FRANCAISE')
+    expect(precision(m, r.resultats[0].e)).toMatch(/^Organisation · SIREN 785 000 004/)
+  })
+
+  it('montantRecent : année la plus récente avec un seul montant publié, aucun calcul, jamais additionné entre sources', () => {
+    const canaux = ['a', 'b']
+    const fiche = {
+      recoit: [
+        { canal: 'a', series: [{ valeurs: [[2022, 10], [2024, 5]] }] },
+        { canal: 'b', series: [{ valeurs: [[2024, 1_000_000]] }] },
+      ],
+    }
+    // 2024 dans les deux sources : la première dans l'ordre de la fiche, pas la plus grosse, et pas la somme.
+    expect(script.montantRecent(fiche, canaux)).toEqual([2024, 5, 0])
+    // Deux lignes la même année (même avec une somme publiée) : année sautée, le site n'additionne rien.
+    expect(script.montantRecent({ recoit: [{ canal: 'a', series: [{ valeurs: [[2024, 1]] }, { valeurs: [[2024, 2]] }, { valeurs: [[2023, 7]] }], sommes_par_annee: [[2024, 3, 2]] }] }, canaux)).toEqual([2023, 7, 0])
+    expect(script.montantRecent({ recoit: [{ canal: 'b', series: [{ valeurs: [[2024, 1]] }, { valeurs: [[2024, 2]] }] }] }, canaux)).toBeNull()
+    // Montant non publié (null) : jamais 0.
+    expect(script.montantRecent({ recoit: [{ canal: 'a', series: [{ valeurs: [[2024, null]] }] }] }, canaux)).toBeNull()
+  })
+})
+
+describe('recherche globale : index par type, parlementaires, glossaire', () => {
+  it('découpé par type : noyau et morceaux réassemblés donnent le même moteur', () => {
+    const { noyau, morceaux } = script.decouperIndex(indexFixtures)
+    expect(Object.keys(noyau.morceaux)).toContain('communes')
+    expect(noyau.entrees.length).toBeLessThan(indexFixtures.entrees.length)
+    const m = construireMoteur(assembler(noyau, Object.values(morceaux)))
+    expect(m.entrees.length).toBe(moteur.entrees.length)
+    expect(chercher(m, 'villeurbanne').resultats[0].e.nom).toBe('Villeurbanne')
+    // Un morceau manquant : son type manque, sans erreur.
+    expect(construireMoteur(assembler(noyau, [null])).entrees.length).toBe(noyau.entrees.length)
+  })
+
+  it('le moteur chargé par le site lit le noyau puis ses morceaux par type', async () => {
+    const { noyau, morceaux } = script.decouperIndex(indexFixtures)
+    servi = noyau
+    for (const [t, x] of Object.entries(morceaux)) servisEnPlus.set(noyau.morceaux[t], x)
+    requetes.length = 0
+    oublierMoteur()
+    const { chargerMoteur } = await import('../src/composants/recherche')
+    const m = (await chargerMoteur())!
+    expect(chercher(m, 'lyon').resultats[0].e.nom).toBe('Lyon')
+    expect(requetes).toContain('data/_recherche/communes.json')
+  })
+
+  it('glossaire : chaque terme, avec son sigle et sa forme développée, mène à sa définition', () => {
+    const g = moteur.familles.findIndex((f) => f.cle === 'glossaire')
+    expect(moteur.comptes[g]).toBe(GLOSSAIRE.termes.length)
+    const t = GLOSSAIRE.termes.find((x) => x.id === 'aah')!
+    const r = chercher(moteur, t.forme!).resultats.find((x) => x.e.f === g)!
+    expect(r.e.nom).toBe(t.terme)
+    expect(adresse(moteur, r.e)).toBe('#/methode/glossaire?terme=aah')
+  })
+
+  it('parlementaires : député par sa circonscription, auteur d’amendement par la page de ses amendements, groupe tel que publié', () => {
+    const lire = (c: string) =>
+      ({
+        'qui_a_vote/index.json': { source: 'AN', millesime: '17e', impots: [{ id: 'csg', libelle: 'CSG', fichier: 'impot_csg.json' }], departements: [{ code: '44', nom: 'Loire-Atlantique', fichier: 'departements/44.json', circonscriptions: [1] }] },
+        'qui_a_vote/departements/44.json': { circonscriptions: [{ numero: 1, deputes: [{ depute: 'PA1', nom: 'Camille Exemple', fin: null, votes: [[3, 'pour', 0, 'Groupe A', null], [9, 'contre', 0, 'Groupe B', null]] }, { depute: 'PA2', nom: null, votes: [] }] }] },
+        'qui_a_vote/impot_csg.json': { amendements_adoptes: [{ chambre: 'Sénat', date: '2025-01-02', auteur: { type: 'sénateur', nom: 'Dominique Essai', groupe: 'groupe Union' } }] },
+        'decisions/index.json': { fichiers: ['decisions/programme_141.json'] },
+        'decisions/programme_141.json': {
+          programme: '141',
+          annees: {
+            2025: {
+              amendements_adoptes: [
+                { chambre: 'AN', date: '2025-11-01', auteur: { type: 'député', nom: 'Camille Exemple', groupe: 'Groupe B' } },
+                { chambre: 'AN', date: '2025-11-02', auteur: { type: 'gouvernement', nom: 'Gouvernement', groupe: null } },
+              ],
+            },
+          },
+        },
+      })[c] ?? null
+    const existe = new Set(['/decisions/qui-a-vote', '/decisions/votes'])
+    const p = script.parlementaires({ lire, qav: lire('qui_a_vote/index.json'), existe })
+    expect(p.map((x: { nom: string }) => x.nom)).toEqual(['Camille Exemple', 'Dominique Essai'])
+    expect(p[0].cible).toBe('#/decisions/qui-a-vote?dep=44&circo=1')
+    expect(p[0].precision).toBe('Député · Loire-Atlantique (44), 1re circonscription · groupe B (dernier scrutin retenu) · 2 votes nominatifs · 1 amendement adopté')
+    expect(p[1].cible).toBe('#/decisions/qui-a-vote?impot=csg')
+    expect(p[1].precision).toBe('Sénat · groupe Union (dernier amendement) · 1 amendement adopté')
+  })
+
+  it('règle d’ordre identique dans l’index et à l’écran ; la taille d’une commune ne compte pas', () => {
+    expect(indexFixtures.regle_ordre).toBe(REGLE_ORDRE)
+    // Deux noms identiques : départagés par le code, jamais par la population.
+    const brut: IndexBrut = { ...indexFixtures, entrees: [], communes: { famille: indexFixtures.communes.famille, par_departement: { '69': '001nSaint-Essai|002aSaint-Essai' } } }
+    const m = construireMoteur(brut)
+    expect(chercher(m, 'saint essai').resultats.map((r) => r.e.cible)).toEqual(['69001', '69002'])
+    const inverse = construireMoteur({ ...brut, communes: { ...brut.communes, par_departement: { '69': '001aSaint-Essai|002nSaint-Essai' } } })
+    expect(chercher(inverse, 'saint essai').resultats.map((r) => r.e.cible)).toEqual(['69001', '69002'])
+  })
+})
+
+describe('recherche globale : clavier et confidentialité', () => {
+  const champ = () => document.getElementById('recherche-champ') as HTMLInputElement
+
+  it('raccourci « / » : focus dans le champ de l’en-tête, sauf pendant une saisie ailleurs', () => {
+    brancherEntete()
+    expect(champ().getAttribute('aria-keyshortcuts')).toBe('/')
+    ;(document.activeElement as HTMLElement | null)?.blur?.()
+    const ev = new KeyboardEvent('keydown', { key: '/', bubbles: true, cancelable: true })
+    document.body.dispatchEvent(ev)
+    expect(ev.defaultPrevented).toBe(true)
+    expect(document.activeElement).toBe(champ())
+    const autre = document.createElement('input')
+    document.body.append(autre)
+    autre.focus()
+    const ev2 = new KeyboardEvent('keydown', { key: '/', bubbles: true, cancelable: true })
+    autre.dispatchEvent(ev2)
+    expect(ev2.defaultPrevented).toBe(false)
+    expect(document.activeElement).toBe(autre)
+    autre.remove()
+  })
+
+  it('règle d’ordre écrite sous les suggestions ; rien de la saisie n’est gardé (ni stockage, ni cookie) ni envoyé ailleurs', async () => {
+    brancherEntete()
+    const ecrits: string[] = []
+    const espion = vi.spyOn(Storage.prototype, 'setItem').mockImplementation((k: string) => {
+      ecrits.push(k)
+    })
+    const cookie = document.cookie
+    requetes.length = 0
+    champ().value = 'villeurbanne'
+    champ().dispatchEvent(new Event('input', { bubbles: true }))
+    const liste = document.getElementById('recherche-suggestions')!
+    await attendreQue(() => !liste.hidden && liste.textContent!.includes('« villeurbanne »'))
+    const regle = document.getElementById('recherche-regle-entete')!
+    expect(regle.hidden).toBe(false)
+    expect(regle.textContent).toBe(REGLE_ORDRE)
+    expect(ecrits).toEqual([])
+    expect(document.cookie).toBe(cookie)
+    for (const u of requetes) expect(u).toMatch(/^data\//)
+    espion.mockRestore()
+    champ().dispatchEvent(new FocusEvent('blur'))
+    expect(regle.hidden).toBe(true)
+  })
+})
+
+describe.skipIf(!existsSync(join(SITE_DATA, 'entites', 'index.json')))('recherche globale sur les données publiées (site/data)', () => {
+  // Contexte des organisations construit comme au build, puis servi comme les fichiers du site.
+  let reel: { index: IndexBrut; bilan: Record<string, number> }
+  let mo: { morceaux: Record<string, Record<string, [string, ...unknown[]]>> }
+  const L = lecteur(SITE_DATA)
+  beforeAll(() => {
+    reel = construire(SITE_DATA)
+    mo = script.morceauxOrganisations(L)
+    ;(reel.index.organisations as { morceaux?: string[] }).morceaux = Object.keys(mo.morceaux)
+  }, 120000)
+  const servirReel = () => {
+    racineEnPlus = SITE_DATA
+    for (const [k, v] of Object.entries(mo.morceaux)) servisEnPlus.set(`_recherche/org/${k}.json`, { entrees: v })
+  }
+
+  it('règle de nommage : chaque nom indexé de personne ou d’organisation existe dans les données publiées', () => {
+    // Organisations : nom identique à celui des fichiers de recherche publiés, pour le même SIREN.
+    const publies = new Map<string, string>()
+    const idx = L.lire('entites/index.json')
+    for (const f of new Set(Object.values(idx.fichiers.recherche) as string[])) for (const e of L.lire(f)?.entrees ?? []) publies.set(e[0], e[1])
+    let n = 0
+    for (const m of Object.values(mo.morceaux))
+      for (const [siren, c] of Object.entries(m)) {
+        expect(publies.get(siren), siren).toBe(c[0])
+        n++
+      }
+    expect(n).toBe(publies.size)
+    // Parlementaires : nommés par un vote nominatif publié ou comme auteur d'un amendement adopté publié.
+    const noms = new Set<string>()
+    const qav = L.lire('qui_a_vote/index.json')
+    for (const d of qav.departements) for (const c of L.lire(`qui_a_vote/${d.fichier}`).circonscriptions) for (const x of c.deputes) if (x.nom) noms.add(x.nom)
+    for (const i of qav.impots) for (const a of L.lire(`qui_a_vote/${i.fichier}`).amendements_adoptes ?? []) if (a.auteur?.nom) noms.add(a.auteur.nom)
+    for (const f of L.lire('decisions/index.json').fichiers) for (const an of Object.values(L.lire(f).annees ?? {}) as { amendements_adoptes?: { auteur: { nom: string } }[] }[]) for (const a of an.amendements_adoptes ?? []) if (a.auteur?.nom) noms.add(a.auteur.nom)
+    const fp = reel.index.familles.findIndex((f) => f.cle === 'parlementaire')
+    const indexes = reel.index.entrees.filter((e) => e[0] === fp)
+    expect(indexes.length).toBeGreaterThan(577)
+    for (const e of indexes) expect(noms.has(e[1]), e[1]).toBe(true)
+    // Aucune autre famille de personnes ; aucune organisation dans le noyau (elles viennent des fichiers publiés).
+    expect(reel.index.familles.map((f) => f.cle).filter((c) => /candidat|benefic|elu|personne|dirigeant/.test(c))).toEqual([])
+    expect(reel.index.entrees.some((e) => reel.index.familles[e[0]].cle === 'organisation')).toBe(false)
+  })
+
+  it('temps de réponse mesuré : index complet et organisations, sous 300 ms chacun (hors premier chargement)', async () => {
+    servirReel()
+    const { noyau, morceaux } = script.decouperIndex(reel.index)
+    const m = construireMoteur(assembler(noyau, Object.values(morceaux)))
+    const mesures: Record<string, number> = {}
+    for (const [q, attendu] of [
+      ['cnrs', 'CENTRE NATIONAL DE LA RECHERCHE SCIENTIFIQUE (CNRS)'],
+      ['180089013', 'CENTRE NATIONAL DE LA RECHERCHE SCIENTIFIQUE (CNRS)'],
+      ['croix rouge francaise', 'CROIX ROUGE FRANCAISE (CRF)'],
+      ['croix rouje', 'CROIX ROUGE FRANCAISE (CRF)'],
+      ['nantes', 'Nantes'],
+      ['tva', null],
+      ['programme 141', 'Enseignement scolaire public du second degré'],
+    ] as [string, string | null][]) {
+      await chercherTout(m, q, 10) // premier chargement des fichiers
+      const t = performance.now()
+      const r = await chercherTout(m, q, 10)
+      mesures[q] = Math.round(performance.now() - t)
+      expect(mesures[q], q).toBeLessThan(300)
+      if (attendu) expect(r.resultats.map((x) => x.e.nom).slice(0, 3), q).toContain(attendu)
+    }
+    const depute = reel.index.entrees.find((e) => reel.index.familles[e[0]].cle === 'parlementaire' && String(e[2]).includes('circo='))!
+    expect((await chercherTout(m, depute[1])).resultats[0].e.nom).toBe(depute[1])
+    console.log(`Temps de réponse (ms, après chargement) : ${JSON.stringify(mesures)}`)
+  }, 120000)
 })

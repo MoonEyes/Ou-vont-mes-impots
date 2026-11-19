@@ -1,6 +1,7 @@
 // Index de la recherche dans tout le site, construit au build juste après la copie des données (npm run copier-donnees).
 //
-// Contenu : les pages de la table des routes, les départements et les communes (données locales), les grands postes,
+// Contenu : les pages de la table des routes, les parlementaires nommés par les fichiers publiés (votes nominatifs,
+// amendements adoptés), les termes du glossaire, les impôts de « Qui a voté tes impôts », les départements et les communes (données locales), les grands postes,
 // missions, programmes et actions du budget de l'État, les opérateurs de l'État, les prestations sociales, les
 // organismes de la Sécurité sociale, les grands impôts, les intercommunalités, et les entités publiques d'autres
 // fichiers dès qu'une page du site les affiche (page trouvée dans le code de ses écrans). Rien n'est ajouté aux données
@@ -17,14 +18,18 @@
 // une lettre de taille (a à n : 100 habitants ou moins à plus de 500 000 ; en majuscule quand la commune a sa propre
 // page), puis le nom ; entrées séparées par « | ».
 //
+// Organisations (entreprises, associations : fiches /beneficiaires/organisation) : pas dans l'index, trop nombreuses.
+// La recherche lit à la demande les fichiers publiés par préfixe de mot (entites/recherche/<préfixe>.json) et, pour la
+// ligne de contexte, un morceau par 2 premiers chiffres du SIREN écrit à côté de l'index (_recherche/org/<nn>.json).
+//
 // Usage : node scripts/index-recherche.mjs [--donnees <dossier>] [--sortie <fichier>]
 //         par défaut : données de OVMI_DONNEES ou ../site/data, index écrit dans public/data/_recherche.json
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { gzipSync } from 'node:zlib'
 
-export const FORMAT = 'recherche-1'
+export const FORMAT = 'recherche-2'
 /** Taille visée pour l'index, avant compression (le serveur le compresse en plus à l'envoi). */
 export const TAILLE_VISEE = 1_000_000
 /** Bornes des classes de taille des communes (habitants) : la classe sert au classement, jamais à l'affichage. */
@@ -67,6 +72,9 @@ const FAMILLES = {
   prestation: { nom: 'Prestation sociale', groupe: 'Prestations sociales' },
   organisme: { nom: 'Sécurité sociale', groupe: 'Sécurité sociale : organismes et branches', modele: '#/explorer/secu?id=' },
   impot: { nom: 'Impôt ou cotisation', groupe: 'Impôts et cotisations', modele: '#/explorer/recettes?i=' },
+  parlementaire: { nom: 'Parlementaire', groupe: 'Parlementaires : votes et amendements' },
+  glossaire: { nom: 'Glossaire', groupe: 'Mots et sigles du glossaire', modele: '#/methode/glossaire?terme=' },
+  organisation: { nom: 'Organisation', groupe: 'Entreprises, associations et autres organisations', modele: '#/beneficiaires/organisation?siren=' },
 }
 
 /**
@@ -118,17 +126,6 @@ const AUTRES_ENTITES = [
     groupe: 'Ministères',
     extraire: (d) => (d.ministeres ?? []).filter((x) => typeof x?.ministere === 'string').map((x) => ({ nom: x.ministere, precision: 'Effectifs et masse salariale' })),
   },
-  {
-    cle: 'organisation',
-    fichier: 'entites/recherche_globale.json',
-    nom: 'Organisation',
-    groupe: 'Organisations présentes dans plusieurs sources du site',
-    // Organisations reliées par leur SIREN dans plusieurs sources (pipeline/entites.py) : la cible est leur fiche.
-    extraire: (d) =>
-      (d.entrees ?? [])
-        .filter((x) => Array.isArray(x) && /^\d{9}$/.test(x[0]) && typeof x[1] === 'string')
-        .map((x) => ({ nom: x[1], precision: `${x[2]} sources du site`, cles: x[0], cible: `#/beneficiaires/organisation?siren=${x[0]}` })),
-  },
 ]
 
 /** Sigles des établissements pénitentiaires (direction de l'administration pénitentiaire). */
@@ -142,6 +139,13 @@ const SIGLES_PENITENTIAIRES = {
   CPA: 'centre pour peines aménagées',
 }
 
+/** Ordre des résultats, écrit à l'écran (page de résultats et suggestions de l'en-tête). */
+export const REGLE_ORDRE =
+  'Ordre des résultats : correspondance du texte seulement (nom identique, puis début du nom, puis mot approchant), à égalité nom le plus court puis ordre alphabétique ; jamais par montant, par taille ni par groupe politique.'
+
+/** Noms d'usage des impôts de « Qui a voté tes impôts ». */
+const NOMS_IMPOTS_VOTES = { tva: 'TVA', csg: 'CSG', crds: 'CRDS', impot_revenu: 'IR prélèvement à la source', taxe_fonciere: 'TFPB', teom: 'TEOM ordures ménagères', accises_energie: 'TICPE carburants accise électricité gaz' }
+
 /** Noms courants des grands impôts (codes Eurostat de recettes.json), pour les retrouver par leur nom d'usage. */
 const NOMS_IMPOTS = {
   D211: 'TVA taxe sur la valeur ajoutée',
@@ -151,6 +155,179 @@ const NOMS_IMPOTS = {
   D214A: 'accises carburants TICPE tabac alcool',
   D29: 'impôts sur la production taxe foncière des entreprises',
   D91: 'droits de succession donation',
+}
+
+const ordinal = (n) => (n === 1 ? '1re' : `${n}e`)
+const cleNom = (x) =>
+  String(x)
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+
+/**
+ * Parlementaires nommés par les fichiers publiés : députés des circonscriptions (qui_a_vote/departements, vote
+ * nominatif aux scrutins publics retenus) et auteurs d'amendements adoptés (decisions/programme_*.json et
+ * qui_a_vote/impot_*.json). Groupe : celui que la source écrit au dernier vote ou au dernier amendement.
+ */
+export function parlementaires({ lire, qav, existe }) {
+  const out = []
+  const parNom = new Map()
+  // Auteurs d'amendements adoptés (Assemblée et Sénat), avec la page où l'amendement est montré.
+  const auteurs = new Map()
+  const noter = (a, chambre, page, programme) => {
+    const au = a?.auteur
+    if (!au || typeof au.nom !== 'string' || !au.nom.trim() || !['député', 'sénateur', 'rapporteur'].includes(au.type)) return
+    const k = cleNom(au.nom)
+    const x = auteurs.get(k) ?? { nom: au.nom, chambres: new Set(), n: 0, date: '', groupe: null, programmes: new Set(), pages: new Set() }
+    x.n++
+    x.chambres.add(/s[ée]nat/i.test(chambre) ? 'Sénat' : 'Assemblée nationale')
+    if (programme) x.programmes.add(programme)
+    x.pages.add(page)
+    if (String(a.date ?? '') >= x.date) {
+      x.date = String(a.date ?? '')
+      if (au.groupe) x.groupe = au.groupe
+    }
+    auteurs.set(k, x)
+  }
+  if (existe.has('/decisions/votes')) {
+    const di = lire('decisions/index.json')
+    for (const f of di?.fichiers ?? []) {
+      const d = lire(f)
+      const programme = String(d?.programme ?? '')
+      for (const an of Object.values(d?.annees ?? {})) for (const a of an?.amendements_adoptes ?? []) noter(a, a.chambre ?? '', `#/decisions/votes?p=${encodeURIComponent(programme)}`, programme)
+    }
+  }
+  if (existe.has('/decisions/qui-a-vote'))
+    for (const i of qav?.impots ?? []) {
+      const d = lire(`qui_a_vote/${i.fichier}`)
+      for (const a of d?.amendements_adoptes ?? []) noter(a, a.chambre ?? '', `#/decisions/qui-a-vote?impot=${encodeURIComponent(i.id)}`, null)
+    }
+  const amendements = (x) => (x ? ` · ${x.n} amendement${x.n > 1 ? 's' : ''} adopté${x.n > 1 ? 's' : ''}` : '')
+  const groupe = (g) => `groupe ${String(g).replace(/^groupe\s+/i, '')}`
+
+  // Députés par circonscription : la page « Qui a voté tes impôts » ouverte sur leur circonscription.
+  if (existe.has('/decisions/qui-a-vote'))
+    for (const dep of qav?.departements ?? []) {
+      const d = lire(`qui_a_vote/${dep.fichier}`)
+      for (const c of d?.circonscriptions ?? [])
+        for (const x of c.deputes ?? []) {
+          if (typeof x?.nom !== 'string' || !x.nom.trim()) continue
+          let dernier = null
+          for (const v of x.votes ?? []) if (Array.isArray(v) && (!dernier || v[0] > dernier[0])) dernier = v
+          const k = cleNom(x.nom)
+          const a = auteurs.get(k)
+          if (a) a.vu = true
+          parNom.set(k, true)
+          out.push({
+            nom: x.nom,
+            cible: `#/decisions/qui-a-vote?dep=${encodeURIComponent(dep.code)}&circo=${c.numero}`,
+            precision: `Député · ${dep.nom} (${dep.code}), ${ordinal(c.numero)} circonscription${x.fin ? ` · mandat terminé le ${x.fin.split('-').reverse().join('/')}` : ''}${dernier?.[3] ? ` · ${groupe(dernier[3])} (dernier scrutin retenu)` : ''} · ${x.votes?.length ?? 0} vote${(x.votes?.length ?? 0) > 1 ? 's' : ''} nominatif${(x.votes?.length ?? 0) > 1 ? 's' : ''}${amendements(a)}`,
+            cles: `député ${dep.nom}`,
+          })
+        }
+    }
+  // Auteurs sans circonscription dans les fichiers (sénateurs, anciens députés) : la page de leurs amendements.
+  for (const [, a] of [...auteurs.entries()].sort((x, y) => (x[0] < y[0] ? -1 : 1))) {
+    if (a.vu) continue
+    const programmes = [...a.programmes].sort()
+    const page = [...a.pages].sort()[0]
+    const chambre = [...a.chambres].sort().join(' et ')
+    out.push({
+      nom: a.nom,
+      cible: page,
+      precision: `${chambre === 'Sénat' ? 'Sénat' : `Parlementaire, ${chambre}`}${a.groupe ? ` · ${groupe(a.groupe)} (dernier amendement)` : ''}${amendements(a)}${programmes.length ? ` (programme${programmes.length > 1 ? 's' : ''} ${programmes.slice(0, 4).join(', ')}${programmes.length > 4 ? '…' : ''})` : ''}`,
+      cles: chambre === 'Sénat' ? 'sénateur sénatrice' : 'député',
+    })
+  }
+  return out
+}
+
+/** Configuration de la recherche des organisations : fichiers de recherche publiés par préfixe de mot. */
+export function configOrganisations(idx, existe) {
+  const f = idx?.fichiers
+  if (!f?.recherche || typeof f.recherche !== 'object' || !existe.has('/beneficiaires/organisation')) return null
+  return {
+    prefixes: f.recherche,
+    ...(f.recherche_entrees ? { tailles: f.recherche_entrees } : {}),
+    frequents: (f.mots_frequents ?? []).map((m) => m.mot).filter((m) => typeof m === 'string'),
+    canaux: (idx.canaux ?? []).map((c) => String(c.titre ?? c.id)),
+    contexte: MORCEAUX_ORGANISATIONS,
+    total: idx.comptes?.organisations_avec_fiche ?? null,
+  }
+}
+
+/** Taille visée d'un morceau de contexte des organisations (octets, avant compression). */
+export const TAILLE_MORCEAU_ORG = 200_000
+
+/** Dossier des morceaux de contexte des organisations (à côté de l'index), un fichier par 2 premiers chiffres du SIREN. */
+export const MORCEAUX_ORGANISATIONS = '_recherche/org/'
+
+/**
+ * Montant le plus récent d'une fiche, tel que publié, sans aucun calcul du site : l'année la plus récente pour
+ * laquelle une source publie un seul montant (une seule série, une seule valeur). Une année avec plusieurs lignes
+ * (qu'il faudrait additionner) est sautée. Plusieurs sources la même année : la première dans l'ordre de la fiche
+ * (identifiant de la source), jamais la plus grosse. Rien n'est additionné, ni dans une source ni entre sources.
+ */
+export function montantRecent(fiche, canaux) {
+  let choix = null
+  for (const b of fiche?.recoit ?? []) {
+    const canal = canaux.indexOf(b.canal)
+    const parAnnee = new Map()
+    for (const s of b.series ?? [])
+      for (const [an, m] of s.valeurs ?? []) {
+        if (typeof an !== 'number') continue
+        const x = parAnnee.get(an) ?? { n: 0, m }
+        x.n++
+        parAnnee.set(an, x)
+      }
+    const annees = [...parAnnee.keys()].filter((an) => parAnnee.get(an).n === 1 && typeof parAnnee.get(an).m === 'number').sort((a, b) => b - a)
+    if (annees.length && (!choix || annees[0] > choix[0])) choix = [annees[0], parAnnee.get(annees[0]).m, canal]
+  }
+  return choix
+}
+
+/**
+ * Morceaux de contexte des organisations qui ont une fiche : { siren: [dénomination, nombre de sources,
+ * département ou null, année, montant publié, indice de la source] }, regroupés par 2 premiers chiffres
+ * du SIREN. La dénomination est celle des fichiers de recherche publiés (entites/recherche/), jamais une autre.
+ */
+export function morceauxOrganisations({ lire, lister }) {
+  const idx = lire('entites/index.json')
+  if (!idx?.fichiers?.recherche) return null
+  const noms = new Map()
+  for (const f of new Set(Object.values(idx.fichiers.recherche))) for (const e of lire(f)?.entrees ?? []) if (Array.isArray(e) && /^\d{9}$/.test(e[0])) noms.set(e[0], e)
+  const canaux = (idx.canaux ?? []).map((c) => c.id)
+  const morceaux = {}
+  const fichiers = new Set(Object.values(idx.fichiers.fiches ?? {}))
+  if (!fichiers.size) for (const n of lister('entites/fiches')) if (n.endsWith('.json')) fichiers.add(`entites/fiches/${n}`)
+  const vus = new Set()
+  for (const f of [...fichiers].sort())
+    for (const [siren, fiche] of Object.entries(lire(f)?.fiches ?? {})) {
+      const e = noms.get(siren)
+      if (!e || vus.has(siren)) continue
+      vus.add(siren)
+      const m = montantRecent(fiche, canaux)
+      ;(morceaux[siren.slice(0, 2)] ??= {})[siren] = [e[1], e[2] ?? null, e[3] ?? null, ...(m ?? [null, null, null])]
+    }
+  // Organisations des fichiers de recherche sans fiche lue : nom seul.
+  for (const [siren, e] of noms) if (!vus.has(siren)) (morceaux[siren.slice(0, 2)] ??= {})[siren] = [e[1], e[2] ?? null, e[3] ?? null, null, null, null]
+  // Un morceau trop gros (communes et groupements : SIREN 21…) est redécoupé par un chiffre de plus.
+  const decoupe = {}
+  const placer = (k, contenu) => {
+    if (JSON.stringify(contenu).length <= TAILLE_MORCEAU_ORG || k.length >= 6) {
+      decoupe[k] = contenu
+      return
+    }
+    const sous = {}
+    for (const [siren, v] of Object.entries(contenu)) (sous[siren.slice(0, k.length + 1)] ??= {})[siren] = v
+    for (const [kk, c] of Object.entries(sous)) placer(kk, c)
+  }
+  for (const [k, c] of Object.entries(morceaux)) placer(k, c)
+  const tries = {}
+  for (const k of Object.keys(decoupe).sort()) tries[k] = Object.fromEntries(Object.entries(decoupe[k]).sort((a, b) => (a[0] < b[0] ? -1 : 1)))
+  return { format: FORMAT, millesime: String(idx.millesime ?? ''), source: String(idx.source ?? ''), morceaux: tries }
 }
 
 /**
@@ -335,6 +512,35 @@ export function construireIndex({ lire, lister, routes, sourceEcran, outils }) {
     }
   }
 
+  // Impôts suivis par « Qui a voté tes impôts » : la page de l'impôt (articles, scrutins, amendements adoptés).
+  const qav = lire('qui_a_vote/index.json')
+  if (Array.isArray(qav?.impots) && existe.has('/decisions/qui-a-vote')) {
+    famille('impot', FAMILLES.impot, origine(rec ?? qav))
+    for (const i of qav.impots) {
+      if (typeof i?.id !== 'string' || typeof i?.libelle !== 'string') continue
+      ajouter('impot', i.libelle, `#/decisions/qui-a-vote?impot=${encodeURIComponent(i.id)}`, 'Qui a voté cet impôt : articles des lois de finances, scrutins et amendements (17e législature)', NOMS_IMPOTS_VOTES[i.id] ?? '')
+    }
+  }
+
+  // Parlementaires : seulement ceux que les fichiers publiés nomment (vote nominatif aux scrutins publics retenus,
+  // auteur d'un amendement adopté), avec leur groupe tel que publié. Aucune autre donnée personnelle.
+  const parl = parlementaires({ lire, lister, qav, existe })
+  if (parl.length) {
+    famille('parlementaire', FAMILLES.parlementaire, { source: String(qav?.source ?? lire('decisions/index.json')?.source ?? ''), millesime: String(qav?.millesime ?? '') })
+    for (const x of parl) ajouter('parlementaire', x.nom, x.cible, x.precision, x.cles)
+  }
+
+  // Glossaire du site (src/glossaire.json) : chaque terme, avec son sigle, ses variantes et sa forme développée.
+  const glo = outils.glossaire
+  if (Array.isArray(glo?.termes) && existe.has('/methode/glossaire')) {
+    famille('glossaire', FAMILLES.glossaire, { source: 'Glossaire du site', ...(glo.maj ? { millesime: String(glo.maj) } : {}) })
+    for (const t of glo.termes) {
+      if (typeof t?.id !== 'string' || typeof t?.terme !== 'string') continue
+      const def = String(t.forme ?? t.definition ?? '')
+      ajouter('glossaire', t.terme, t.id, `Glossaire${def ? ` · ${def.length > 90 ? def.slice(0, 89).replace(/\s+\S*$/, '') + '…' : def}` : ''}`, [t.sigle, ...(t.variantes ?? []), t.forme].filter((x) => typeof x === 'string' && x).join(' ; '))
+    }
+  }
+
   // Autres entités publiques déjà publiées : seulement si une page les affiche.
   const sansPage = []
   for (const a of AUTRES_ENTITES) {
@@ -360,9 +566,15 @@ export function construireIndex({ lire, lister, routes, sourceEcran, outils }) {
     }
   }
 
+  // Organisations (fiches /beneficiaires/organisation) : pas d'entrée ici, la recherche lit à la demande les fichiers
+  // de recherche publiés par préfixe de mot (entites/recherche/) et le contexte de chaque organisation (morceaux par
+  // début de SIREN, écrits à côté de l'index).
+  const org = configOrganisations(lire('entites/index.json'), existe)
+  if (org) famille('organisation', FAMILLES.organisation, origine(lire('entites/index.json')))
+
   // Familles sans entrée (fichier absent ou vide) : retirées, les indices des entrées restent cohérents.
   const avecEntrees = new Set(entrees.map((e) => e[0]))
-  const utilisees = familles.map((f, i) => i).filter((i) => avecEntrees.has(i) || (familles[i].cle === 'commune' && Object.keys(communes).length))
+  const utilisees = familles.map((f, i) => i).filter((i) => avecEntrees.has(i) || (familles[i].cle === 'commune' && Object.keys(communes).length) || (familles[i].cle === 'organisation' && org))
   const renum = new Map(utilisees.map((ancien, nouveau) => [ancien, nouveau]))
   const date = [lire('mise_a_jour.json')?.genere_le, lire('meta.json')?.genere_le].find((x) => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}/.test(x))
   const index = {
@@ -372,8 +584,32 @@ export function construireIndex({ lire, lister, routes, sourceEcran, outils }) {
     entrees: entrees.map((e) => [renum.get(e[0]), ...e.slice(1)]),
     departements,
     communes: { famille: renum.get(familles.findIndex((f) => f.cle === 'commune')) ?? -1, par_departement: communes },
+    ...(org ? { organisations: { famille: renum.get(familles.findIndex((f) => f.cle === 'organisation')), ...org } } : {}),
+    regle_ordre: REGLE_ORDRE,
   }
   return { index, bilan: { ...bilan, entites_sans_page: sansPage } }
+}
+
+/** Morceaux par type, lus seulement à la première recherche, en même temps que le noyau. */
+export const MORCEAUX_TYPES = { communes: ['commune', 'intercommunalite'], parlementaires: ['parlementaire'] }
+
+/**
+ * Découpe l'index par type : un noyau (pages, budget, impôts, glossaire, départements...) et un morceau par type
+ * volumineux (communes et intercommunalités, parlementaires). Le site les réassemble (src/composants/recherche.ts).
+ */
+export function decouperIndex(index) {
+  const noyau = { ...index, entrees: [], communes: { famille: index.communes.famille, par_departement: {} }, morceaux: {} }
+  const morceaux = {}
+  const typeDe = new Map()
+  for (const [nom, cles] of Object.entries(MORCEAUX_TYPES)) for (const c of cles) typeDe.set(index.familles.findIndex((f) => f.cle === c), nom)
+  for (const e of index.entrees) {
+    const t = typeDe.get(e[0])
+    if (t) (morceaux[t] ??= { format: index.format, entrees: [] }).entrees.push(e)
+    else noyau.entrees.push(e)
+  }
+  if (Object.keys(index.communes.par_departement).length) (morceaux.communes ??= { format: index.format, entrees: [] }).communes = index.communes.par_departement
+  for (const t of Object.keys(morceaux).sort()) noyau.morceaux[t] = `_recherche/${t}.json`
+  return { noyau, morceaux }
 }
 
 /** Écrit l'index (JSON compact, ordre stable) et renvoie ses tailles brute et compressée. */
@@ -422,7 +658,7 @@ async function principal() {
     const { TOUS_DEPARTEMENTS } = await vite.ssrLoadModule('/src/departements.ts')
     const { libelle } = await vite.ssrLoadModule('/src/util.ts')
     routes = ROUTES.map((r) => ({ ...r, ecran: /(\/src\/[\w/.-]+\.ts)/.exec(String(r.charger))?.[1] ?? null }))
-    outils = { aUnePage: chemins.aUnePage, libelle, departements: TOUS_DEPARTEMENTS }
+    outils = { aUnePage: chemins.aUnePage, libelle, departements: TOUS_DEPARTEMENTS, glossaire: JSON.parse(readFileSync(join(WEB, 'src', 'glossaire.json'), 'utf8')) }
   } finally {
     await vite.close()
   }
@@ -440,15 +676,32 @@ async function principal() {
     return sources.get(r.ecran)
   }
   const { index, bilan } = construireIndex({ lire, lister, routes, sourceEcran, outils })
-  const tailles = ecrireIndex(index, sortie)
+  // Morceaux à côté de l'index (un dossier régénéré à chaque construction) : types volumineux, contexte des organisations.
+  rmSync(join(dirname(sortie), '_recherche'), { recursive: true, force: true })
+  const dossierOrg = join(dirname(sortie), MORCEAUX_ORGANISATIONS)
+  let org = { n: 0, octets: 0, max: 0 }
+  const mo = index.organisations ? morceauxOrganisations({ lire, lister }) : null
+  if (mo) index.organisations.morceaux = Object.keys(mo.morceaux)
+  const { noyau, morceaux } = decouperIndex(index)
+  const tailles = ecrireIndex(noyau, sortie)
+  const parType = Object.entries(morceaux).map(([t, m]) => [t, ecrireIndex(m, join(dirname(sortie), noyau.morceaux[t]))])
+  if (mo) {
+    for (const [k, entrees] of Object.entries(mo.morceaux)) {
+      const t = ecrireIndex({ format: mo.format, millesime: mo.millesime, source: mo.source, entrees }, join(dossierOrg, `${k}.json`))
+      org = { n: org.n + Object.keys(entrees).length, octets: org.octets + t.octets, max: Math.max(org.max, t.octets), fichiers: (org.fichiers ?? 0) + 1 }
+    }
+  }
   const parts = Object.entries(bilan)
     .filter(([k]) => k !== 'entites_sans_page')
     .map(([k, v]) => `${v} ${k}`)
   console.log(
-    `Index de recherche : ${parts.join(', ')} ; ${(tailles.octets / 1e6).toFixed(2)} Mo (${(tailles.octets_gzip / 1e3).toFixed(0)} Ko compressé) dans ${relative(process.cwd(), sortie) || sortie}.` +
+    `Index de recherche : ${parts.join(', ')} ; noyau ${(tailles.octets / 1e6).toFixed(2)} Mo (${(tailles.octets_gzip / 1e3).toFixed(0)} Ko compressé) dans ${relative(process.cwd(), sortie) || sortie}` +
+      parType.map(([t, x]) => `, ${t} ${(x.octets / 1e6).toFixed(2)} Mo (${(x.octets_gzip / 1e3).toFixed(0)} Ko compressé)`).join('') +
+      '.' +
+      (mo ? ` Organisations : ${org.n} dans ${org.fichiers} morceaux (${(org.octets / 1e6).toFixed(2)} Mo, ${(org.max / 1e3).toFixed(0)} Ko au plus).` : '') +
       (bilan.entites_sans_page.length ? ` Pas encore de page pour : ${bilan.entites_sans_page.join(', ')}.` : ''),
   )
-  if (tailles.octets > TAILLE_VISEE) console.warn(`Index de recherche : ${tailles.octets} octets, au-delà des ${TAILLE_VISEE} visés.`)
+  for (const [t, x] of [['noyau', tailles], ...parType]) if (x.octets > TAILLE_VISEE) console.warn(`Index de recherche (${t}) : ${x.octets} octets, au-delà des ${TAILLE_VISEE} visés.`)
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await principal()

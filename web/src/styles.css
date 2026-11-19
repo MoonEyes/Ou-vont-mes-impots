@@ -2752,6 +2752,31 @@ fieldset.saisie-groupe {
   margin-top: 0.75rem;
 }
 
+/* recherche globale : panneau des suggestions (liste puis règle d'ordre), ajouté le 19/11/2026 */
+.recherche-panneau {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 0.375rem);
+  left: 0;
+  right: 0;
+}
+.recherche-panneau .recherche-suggestions {
+  position: static;
+}
+.recherche-regle {
+  margin: 0.375rem 0 0;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--secondaire);
+  background: var(--papier);
+  border: var(--trait) solid var(--contour);
+  border-radius: 0.75rem;
+}
+.recherche-regle[hidden] {
+  display: none;
+}
+
 /* glossaire */
 /* Sigle relié à sa définition : souligné en pointillé, dans la graisse du texte qui l'entoure. */
 .glossaire-sigle {

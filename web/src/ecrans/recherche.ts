@@ -1,13 +1,13 @@
 // Page « Rechercher dans le site » : tous les résultats d'une recherche, par famille (pages, communes, budget de
-// l'État...), avec le nombre de résultats annoncé. La recherche se fait dans le navigateur (src/composants/recherche.ts)
+// l'État, organisations, parlementaires, glossaire...), avec le nombre de résultats annoncé et la règle d'ordre. La recherche se fait dans le navigateur (src/composants/recherche.ts)
 // sur l'index construit au build ; il n'est lu qu'au moment de chercher.
-import { adresse, chargerMoteur, chercher, grouper, type Moteur, moteurCharge, pluriel, precision, type Resultat } from '../composants/recherche'
+import { adresse, chargerMoteur, chercherTout, grouper, type Moteur, moteurCharge, pluriel, precision, REGLE_ORDRE, type Resultat } from '../composants/recherche'
 import { lien } from '../routeur'
 import { absent, h, source } from '../util'
 
 const PAR_GROUPE = 10
 const DE_PLUS = 50
-const EXEMPLES = ['Lyon', 'programme 141', 'allocations familiales', 'Agirc-Arrco']
+const EXEMPLES = ['Lyon', 'programme 141', 'CNRS', 'CSG']
 
 const ligne = (m: Moteur, r: Resultat) => `<li><a href="${h(adresse(m, r.e))}">${h(r.e.nom)}</a><span class="dest">${h(precision(m, r.e, false))}</span></li>`
 
@@ -22,8 +22,9 @@ export function rendre(cible: HTMLElement, params: URLSearchParams) {
   const q = (params.get('q') ?? '').trim().slice(0, 120)
   cible.innerHTML = `
 <h1>Rechercher dans le site</h1>
-<p class="chapeau">Une commune, un département, une page du site, une mission ou un programme du budget de l’État, un opérateur, une prestation sociale : tape un nom ou un code. La recherche se fait sur ton appareil, rien de ce que tu tapes n’est envoyé.</p>
-<p>Elle ne cherche ni dans les montants ni parmi les bénéficiaires nommés (associations, entreprises) : pour eux, va dans <a href="#/beneficiaires">Qui reçoit l’argent</a>.</p>
+<p class="chapeau">Une entreprise ou une association (nom ou SIREN), un député ou un sénateur, une commune, un département, une mission ou un programme du budget de l’État, un impôt, un mot du glossaire, une page du site : tape un nom ou un code. La recherche se fait sur ton appareil, rien de ce que tu tapes n’est envoyé ni gardé.</p>
+<p>Elle ne cherche pas dans les montants. Seuls les noms que le site publie déjà sont cherchés : les organisations qui ont une fiche (personnes morales présentes dans au moins deux sources), les parlementaires nommés par leurs votes publics ou leurs amendements adoptés.</p>
+<p class="aide" data-regle-ordre>${h(REGLE_ORDRE)}</p>
 <form id="recherche-page" class="carte carte-contour recherche-formulaire" role="search" aria-label="Recherche dans le site, page de résultats">
   <label for="recherche-q">Ce que tu cherches</label>
   <div class="recherche-ligne"><input id="recherche-q" name="q" type="search" value="${h(q)}" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-describedby="recherche-consigne" /><button type="submit" class="bouton-principal">Rechercher</button></div>
@@ -65,7 +66,8 @@ export function rendre(cible: HTMLElement, params: URLSearchParams) {
     }
     const z = cible.querySelector<HTMLElement>('#recherche-zone-sources')
     if (z && !z.innerHTML) z.innerHTML = sources(m)
-    const { resultats, elargie } = chercher(m, texte)
+    const { resultats, elargie } = await chercherTout(m, texte, PAR_GROUPE)
+    if (moi !== tour) return
     const groupes = grouper(resultats)
     if (!resultats.length) {
       zone.innerHTML = `<p>Aucun résultat pour « ${h(texte)} ». Vérifie l’orthographe ou essaie un seul mot. Tu peux aussi parcourir <a href="#/explorer">les dépenses publiques</a>, <a href="#/local">le budget de ta commune</a> ou <a href="#/beneficiaires">qui reçoit l’argent</a>.</p>`
