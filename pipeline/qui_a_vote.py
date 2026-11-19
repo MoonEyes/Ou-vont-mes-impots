@@ -31,8 +31,9 @@ amendement, il porte sur un article lui-même rattaché (« article visé »). L
 sont ignorés. Un article dont le texte n'est pas retrouvé n'est pas rattaché.
 
 Personnes : élus nommés comme auteurs d'amendements et par leur vote nominatif publié (décision du propriétaire du
-19/11/2026, docs/NEUTRALITE.md). Seuls le nom, le groupe, la circonscription, le vote et l'amendement sont écrits ; un
-élu candidat à une élection nationale reste non nommé ici (règle 2.11, `decisions.masquer`).
+19/11/2026, docs/NEUTRALITE.md). Seuls le nom, le groupe, la circonscription, le vote et l'amendement sont écrits. Un
+élu qui a été candidat à une élection nationale est nommé comme les autres (décision du 19/11/2026, levée du masquage
+de la règle 2.11) ; rien d'autre n'est écrit sur lui.
 """
 from __future__ import annotations
 
@@ -49,7 +50,7 @@ from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import decisions as D  # noqa: E402  (lecteurs AN/Sénat, dump Ameli, masquage des candidats nationaux)
+import decisions as D  # noqa: E402  (lecteurs AN/Sénat, dump Ameli)
 
 ROOT = Path(__file__).resolve().parent.parent
 LAKE = ROOT / "data" / "lake"
@@ -197,7 +198,6 @@ REGLE_ORDRE_LISTES = ("Textes du plus récent au plus ancien ; dans un texte, ar
 REGLE_PERSONNES = ("Les parlementaires sont nommés comme auteurs d'amendements et par leur vote nominatif publié aux "
                    "scrutins publics : nom, groupe, circonscription, vote. Aucune autre donnée personnelle (ni date de "
                    "naissance, ni adresse, ni profession, ni patrimoine, ni photo).")
-AUTEUR_OBJET = r" (?:de|du) (?:M\.|Mme|MM\.|Mmes)\s.*?(?= (?:à|après|avant|au|aux|de rétablissement) |\s*\(|$)"
 POSITIONS = {"pours": "pour", "contres": "contre", "abstentions": "abstention", "nonVotants": "non_votant",
              "nonVotantsVolontaires": "non_votant"}
 
@@ -721,11 +721,9 @@ def produire(sortie: Path = SORTIE) -> dict:
                              "python pipeline/qui_a_vote.py collecter ; zips de l'étape decisions)")
     t0 = time.time()
     noms, groupes, mandats, deps = acteurs()
-    candidats = D.candidats_nationaux()
-    masque = {pa for pa, n in noms.items() if n and D.contient(n, candidats)}
 
     def nom_publie(pa: str | None) -> str | None:
-        return None if (pa is None or pa in masque) else noms.get(pa)
+        return None if pa is None else noms.get(pa)
 
     dos = dossiers()
     amdts, docs = amendements_an(dos, noms, groupes)
@@ -802,23 +800,12 @@ def produire(sortie: Path = SORTIE) -> dict:
         a["rattachement"] = {i: {"methode": "code_cite", "preuves": p} for i, p in
                              impots_cites(citations(texte_brut(a["dispositif"]))).items()}
 
-    nb_masques = 0
-
     def auteur_publie(a: dict) -> dict:
-        nonlocal nb_masques
-        x = {"type": a["auteur"]["type"], "nom": a["auteur"]["nom"], "groupe": a["auteur"]["groupe"]}
-        if x["nom"] and x["type"] not in ("gouvernement", "commission") and D.contient(x["nom"], candidats):
-            x = {**x, "nom": None, "masque": D.MASQUE}
-            nb_masques += 1
-        return x
+        return {"type": a["auteur"]["type"], "nom": a["auteur"]["nom"], "groupe": a["auteur"]["groupe"]}
 
     def cle_nom(kv) -> tuple:
-        """Ordre alphabétique du nom publié ; un élu non nommé ici passe en fin de liste."""
+        """Ordre alphabétique du nom publié ; un identifiant sans nom dans la source passe en fin de liste."""
         return (nom_fr(nom_publie(kv[0]) or "~"), kv[0])
-
-    def objet_publie(objet: str) -> str:
-        """Objet du scrutin tel que publié ; sans le nom de l'auteur s'il est candidat à une élection nationale."""
-        return re.sub(AUTEUR_OBJET, "", objet) if D.contient(objet, candidats) else objet
 
     sortie.mkdir(parents=True, exist_ok=True)
     for f in sortie.rglob("*.json"):
@@ -864,7 +851,7 @@ def produire(sortie: Path = SORTIE) -> dict:
                 vg.append({"groupe": groupes.get(g["organe"], g["organe"]), **par_pos, "par_delegation": deleg})
             am = s.get("amendement")
             scs.append({"numero": s["numero"], "date": s["date"], "texte": s["texte"], "lecture": s["lecture"],
-                        "objet": objet_publie(s["objet"]), "type": "article" if s["article"] is not None else
+                        "objet": s["objet"], "type": "article" if s["article"] is not None else
                         "amendement", "article": s["article"], "amendement": am["numero_long"] if am else None,
                         "rattachement": (am["rattachement"][iid] if am else
                                          rattach_articles[(s["document"], s["article"])][iid]),
@@ -895,8 +882,7 @@ def produire(sortie: Path = SORTIE) -> dict:
             "articles": arts, "scrutins": scs, "amendements_adoptes": ams, "fichier_votes": f"votes_{iid}.json"})
         dump(sortie / f"votes_{iid}.json", {
             **entete, "impot": iid, "regle_ordre_groupes": REGLE_ORDRE_GROUPES,
-            "deputes": {pa: nom_publie(pa) for pa in deputes},
-            "masque": D.MASQUE, "votes": votes})
+            "deputes": {pa: nom_publie(pa) for pa in deputes}, "votes": votes})
         comptes_impots.append({"id": iid, "libelle": imp["libelle"], "articles": len(arts), "scrutins": len(scs),
                                "amendements_adoptes": len(ams),
                                "amendements_adoptes_assemblee": sum(a["chambre"] == "Assemblée nationale" for a in ams),
@@ -905,7 +891,7 @@ def produire(sortie: Path = SORTIE) -> dict:
 
     # 5. scrutins retenus (tous impôts) et votes par circonscription
     liste = [{"numero": s["numero"], "date": s["date"], "texte": s["texte"], "lecture": s["lecture"],
-              "objet": objet_publie(s["objet"]), "impots": s["impots"], "resultat": s["resultat"], "url": s["url"]}
+              "objet": s["objet"], "impots": s["impots"], "resultat": s["resultat"], "url": s["url"]}
              for s in sorted(retenus, key=lambda s: s["numero"])]
     dump(sortie / "scrutins.json", {**entete, "regle_ordre": "Scrutins par numéro (ordre chronologique).",
                                     "scrutins": liste})
@@ -932,7 +918,6 @@ def produire(sortie: Path = SORTIE) -> dict:
             for pm, m in sorted(par_dep[dep][c], key=lambda x: (x[1]["debut"] or "", x[0])):
                 deputes_couverts.add(m["acteur"])
                 ds.append({"depute": m["acteur"], "nom": nom_publie(m["acteur"]),
-                           **({"masque": D.MASQUE} if m["acteur"] in masque else {}),
                            "debut": m["debut"], "fin": m["fin"], "votes": par_mandat.get(pm, [])})
             circos.append({"numero": c, "deputes": ds})
         code = dep.lstrip("0").zfill(2) if dep.isdigit() and len(dep.lstrip("0")) <= 2 else dep.lstrip("0") or dep
@@ -969,8 +954,6 @@ def produire(sortie: Path = SORTIE) -> dict:
                                                            not in ("gouvernement", "commission", "autre")
                                                            and a["auteur"]["nom"]}),
                        "deputes_votants": len(tous_deputes_votants), "deputes_circonscriptions": len(deputes_couverts),
-                       "auteurs_non_nommes_candidats_nationaux": nb_masques,
-                       "deputes_non_nommes_candidats_nationaux": len(masque & deputes_couverts),
                        "textes_non_retrouves": manquants},
            "limites": [
                "Scrutins publics de l'Assemblée nationale seulement : les votes à main levée ne sont pas nominatifs.",
@@ -981,7 +964,7 @@ def produire(sortie: Path = SORTIE) -> dict:
                "Les cotisations sociales ne sont pas couvertes : leurs taux sont fixés par décret."],
            "recherche_publique": {"date": "2026-11-19", "trouvailles": [
                {"nom": "pipeline/decisions.py (ce dépôt)", "verdict": "réutilisable tel quel",
-                "detail": "lecteurs des zips de l'Assemblée et du dump Ameli, masquage des candidats nationaux"},
+                "detail": "lecteurs des zips de l'Assemblée et du dump Ameli"},
                {"nom": "NosDéputés.fr / Regards Citoyens (cpc-api)", "verdict": "inspiration seulement",
                 "detail": "votes par député, licence ODbL ; pas de rattachement aux impôts ; données de l'Assemblée "
                           "lues directement ici"},

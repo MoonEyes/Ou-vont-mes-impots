@@ -240,7 +240,7 @@ def test_amendements_adoptes_nommes_et_ordonnes_par_date():
             assert a["sort"] == "Adopté" and a["url"].startswith("https://")
             au = a["auteur"]
             if au["type"] in ("député", "sénateur"):
-                assert au["nom"] or au.get("masque"), a["numero"]
+                assert au["nom"] and "masque" not in au, a["numero"]  # décision du 19/11/2026 : tous nommés
             if a["rattachement"]["methode"] == "article_vise":
                 assert a["article_vise"]
 
@@ -255,8 +255,22 @@ def test_ton_depute_circonscriptions_et_votes():
     for c in d["circonscriptions"]:
         assert c["deputes"]
         for x in c["deputes"]:
-            assert set(x) <= {"depute", "nom", "masque", "debut", "fin", "votes"}
+            assert set(x) <= {"depute", "nom", "debut", "fin", "votes"}
             for v in x["votes"]:
                 assert v[0] in retenus and v[1] in ("pour", "contre", "abstention", "non_votant", None)
                 assert x["debut"] <= next(s["date"] for s in charger("scrutins.json")["scrutins"] if s["numero"] == v[0])
     assert next(x for x in i["departements"] if x["code"] == "44")["circonscriptions"] == list(range(1, 11))
+
+
+@pytestmark_donnees
+def test_candidats_nationaux_nommes_comme_les_autres():
+    """Décision du propriétaire du 19/11/2026 : plus aucun masquage (ni `masque`, ni compteur de non-nommés)."""
+    i = charger("index.json")
+    assert not any("candidats_nationaux" in k for k in i["comptes"])
+    for f in sorted(DATA.rglob("*.json")):
+        assert '"masque"' not in f.read_text(encoding="utf-8"), f.name
+    for x in i["impots"]:
+        v = charger(x["fichier_votes"])
+        votants = {pa for s in v["votes"].values() for g in s["groupes"]
+                   for k in ("pour", "contre", "abstention", "non_votant") for pa in g[k]}
+        assert all(v["deputes"][pa] for pa in votants), x["id"]

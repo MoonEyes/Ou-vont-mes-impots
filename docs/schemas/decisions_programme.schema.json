@@ -69,7 +69,7 @@
   "$defs": {
     "auteur": {
       "type": "object",
-      "description": "Seuls les élus, le Gouvernement et les commissions sont nommés ; `masque` : élu candidat à une élection nationale, nom publié seulement dans vie_politique.",
+      "description": "Seuls les élus, le Gouvernement et les commissions sont nommés ; un élu qui a été candidat à une élection nationale est nommé comme les autres (décision du 19/11/2026).",
       "required": ["type", "nom", "groupe"],
       "additionalProperties": false,
       "properties": {
@@ -81,9 +81,6 @@
         },
         "groupe": {
           "type": ["string", "null"]
-        },
-        "masque": {
-          "type": "string"
         }
       }
     },
