@@ -87,39 +87,52 @@
     <div id="annonce" class="visuellement-cache" aria-live="polite"></div>
     <footer class="pied">
       <div class="conteneur">
-        <div class="pied-grille">
-          <div>
-            <a class="marque" href="#/"><svg class="logo" width="40" height="34" viewBox="0 0 40 34" aria-hidden="true" focusable="false"><use href="#logo-formes"/></svg><span>Où vont mes impôts</span></a>
-            <p>Site citoyen et indépendant, gratuit, sans publicité. Il ne remplace pas impots.gouv.fr et ne juge aucune dépense.</p>
-          </div>
-          <nav aria-labelledby="pied-site">
-            <h3 id="pied-site">Le site</h3>
+        <div class="pied-tete">
+          <a class="marque" href="#/"><svg class="logo" width="40" height="34" viewBox="0 0 40 34" aria-hidden="true" focusable="false"><use href="#logo-formes"/></svg><span>Où vont mes impôts</span></a>
+          <nav class="pied-essentiels" aria-label="Liens essentiels">
             <ul>
               <li><a href="#/calcul">Mon salaire</a></li>
               <li><a href="#/local">Ma commune</a></li>
-              <li><a href="#/beneficiaires">Qui reçoit l’argent</a></li>
-              <li><a href="#/decisions">Qui décide</a></li>
-              <li><a href="#/explorer">Explorer</a></li>
-            </ul>
-          </nav>
-          <nav aria-labelledby="pied-sources">
-            <h3 id="pied-sources">Sources et méthode</h3>
-            <ul>
               <li><a href="#/methode">Méthode et sources</a></li>
-              <li><a href="#/methode/tracabilite">D’où vient chaque montant</a></li>
-              <li><a href="#/methode/limites">Ce qui n’est pas publié</a></li>
-              <li><a href="#/methode/glossaire">Glossaire des sigles</a></li>
-            </ul>
-          </nav>
-          <nav aria-labelledby="pied-projet">
-            <h3 id="pied-projet">Le projet</h3>
-            <ul>
-              <li><a href="#/demarche">La démarche</a></li>
-              <li><a href="#/mentions">Mentions légales et confidentialité</a></li>
+              <li><a href="#/mentions">Mentions légales</a></li>
             </ul>
           </nav>
         </div>
-        <p class="pied-bas">Tout est calculé dans ton navigateur, à partir de données publiques ouvertes (Licence Ouverte 2.0, Eurostat). Code sous licence MIT. Aucun cookie, aucune mesure d’audience, aucune donnée saisie envoyée.</p>
+        <details class="pied-plus">
+          <summary>Tous les liens, la démarche, la confidentialité</summary>
+          <div class="pied-grille">
+            <div>
+              <p>Site citoyen et indépendant, gratuit, sans publicité. Il ne remplace pas impots.gouv.fr et ne juge aucune dépense.</p>
+            </div>
+            <nav aria-labelledby="pied-site">
+              <h3 id="pied-site">Le site</h3>
+              <ul>
+                <li><a href="#/calcul">Mon salaire</a></li>
+                <li><a href="#/local">Ma commune</a></li>
+                <li><a href="#/beneficiaires">Qui reçoit l’argent</a></li>
+                <li><a href="#/decisions">Qui décide</a></li>
+                <li><a href="#/explorer">Explorer</a></li>
+              </ul>
+            </nav>
+            <nav aria-labelledby="pied-sources">
+              <h3 id="pied-sources">Sources et méthode</h3>
+              <ul>
+                <li><a href="#/methode">Méthode et sources</a></li>
+                <li><a href="#/methode/tracabilite">D’où vient chaque montant</a></li>
+                <li><a href="#/methode/limites">Ce qui n’est pas publié</a></li>
+                <li><a href="#/methode/glossaire">Glossaire des sigles</a></li>
+              </ul>
+            </nav>
+            <nav aria-labelledby="pied-projet">
+              <h3 id="pied-projet">Le projet</h3>
+              <ul>
+                <li><a href="#/demarche">La démarche</a></li>
+                <li><a href="#/mentions">Mentions légales et confidentialité</a></li>
+              </ul>
+            </nav>
+          </div>
+          <p class="pied-bas">Tout est calculé dans ton navigateur, à partir de données publiques ouvertes (Licence Ouverte 2.0, Eurostat). Code sous licence MIT. Aucun cookie, aucune mesure d’audience, aucune donnée saisie envoyée.</p>
+        </details>
       </div>
     </footer>
     <script type="module" src="./src/main.ts"></script>

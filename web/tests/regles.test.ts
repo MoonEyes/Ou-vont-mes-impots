@@ -101,6 +101,17 @@ describe('navigation et métadonnées', () => {
     for (const l of ['#/calcul', '#/explorer', '#/local', '#/beneficiaires', '#/decisions', '#/methode', '#/methode/tracabilite', '#/methode/limites', '#/demarche', '#/mentions']) expect(pied).toContain(`href="${l}"`)
     expect(pied).toContain('Aucun cookie, aucune mesure d’audience')
   })
+  it('pied replié au téléphone (finitions du 19/11 : 745 px avant, 216 px après à 360 px) : marque et liens essentiels visibles, le reste dans un repli ouvert sur grand écran', () => {
+    const pied = /<footer class="pied">[\s\S]*?<\/footer>/.exec(html)![0]
+    const tete = /<div class="pied-tete">([\s\S]*?)<details/.exec(pied)![1]
+    for (const l of ['#/calcul', '#/local', '#/methode', '#/mentions']) expect(tete).toContain(`href="${l}"`)
+    expect(tete).toContain('class="marque"')
+    const repli = /<details class="pied-plus">([\s\S]*?)<\/details>/.exec(pied)![1]
+    expect(repli).toMatch(/^\s*<summary>[^<]+<\/summary>/)
+    for (const t of ['Le site', 'Sources et méthode', 'Le projet', 'Aucun cookie']) expect(repli).toContain(t)
+    // Grand écran : repli affiché sans résumé seulement là où le navigateur sait l'ouvrir par la feuille de style.
+    expect(css).toMatch(/@supports selector\(::details-content\) \{\s*@media \(min-width: 45rem\) \{[\s\S]*?\.pied-plus::details-content \{\s*content-visibility: visible;/)
+  })
   it('cibles de la navigation >= 48 px, bouton « Menu » compris', () => {
     const bloc = /\.navigation ul a \{([\s\S]*?)\}/.exec(css)![1]
     expect(Number(/min-height: (\d+)px/.exec(bloc)![1])).toBeGreaterThanOrEqual(48)
