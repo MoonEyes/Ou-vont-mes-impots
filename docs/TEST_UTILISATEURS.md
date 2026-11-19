@@ -68,3 +68,11 @@ Score sur 18. Seuil proposé pour lancer : chaque tâche réussie par au moins 4
 ## Après les tests
 
 Rassembler les grilles ; chaque blocage cité par au moins 2 personnes devient une correction, chaque remarque de parti pris est examinée avec `docs/NEUTRALITE.md`, même citée une seule fois.
+
+## À valider en test (lot 3 du design, 19/11/2026)
+
+Trois nouveautés, une question chacune, posée après les 5 tâches et avant les questions de fin. Noter les mots exacts ; une proposition est gardée si au moins 4 personnes sur 5 la comprennent sans aide et si personne n'y voit un parti pris.
+
+1. **La découpe** (le billet se découpe une fois en arrivant sur le résultat) : « Qu'avez-vous vu se passer sur le billet, et qu'est-ce que cela vous a dit ? » (gardée si la personne décrit 100 € partagés entre des destinataires ; à revoir si elle parle d'une perte, d'un gaspillage ou ne l'a pas remarquée sans gêne).
+2. **Ton billet te suit** (petit billet en haut des pages Explorer après le calcul) : sur le budget de l'État, « Que veut dire le petit billet en haut de cette page ? » (gardée si la personne relie la part mise en évidence à ce qu'elle verse elle-même à l'État).
+3. **Le reçu de l'année** (bouton « Mon reçu de l'année » sur le résultat) : « Imprimeriez-vous ou partageriez-vous ce reçu, et que montre-t-il de vous ? » (gardée si la personne voit que, par défaut, il ne montre ni son salaire ni ses montants, et comprend les motifs dans la marge).

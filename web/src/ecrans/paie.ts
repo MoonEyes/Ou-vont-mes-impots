@@ -360,6 +360,7 @@ export async function rendre(cible: HTMLElement) {
     <div class="actions">
       <a class="bouton bouton-principal" href="${h(suivreMes)}">Suivre mes euros${premiere ? `<span class="visuellement-cache"> : ${h(premiere.libelle)}, étape par étape</span>` : ''}</a>
       <button type="button" id="partager-carte">Partager ma carte</button>
+      <a class="bouton" href="#/calcul/recu">Mon reçu de l’année</a>
     </div>
     <p class="aide" id="partage-info" role="status">Image de ton billet créée sur ton appareil ; rien n’est envoyé au site.</p>
   </div>
