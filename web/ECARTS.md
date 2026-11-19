@@ -50,13 +50,13 @@ Explications :
 
 ---
 
-# Profils étendus (`calculerProfil`) : 37 cas types
+# Profils étendus (`calculerProfil`) : 43 cas types
 
 Référence : `tests/cas_types/cas_types_profils.json`, générée le 17/11/2026 par `tests/cas_types/generer_reference_profils.py` à partir de l'API OpenFisca (`openfisca-france` 175.0.45) et de l'API mon-entreprise de l'Urssaf. Millésime : revenus 2025. Test : `tests/cas_types_profils.test.ts` (tolérance 1 % ; `ECARTS_PROFILS=1 npm test` écrit le détail dans `ecarts_cas_types_profils.json`, non versionné). API : `src/calcul/README.md`.
 
 L'API mon-entreprise repose sur la même base de règles que le site (modele-social) : elle vérifie l'intégration (situation transmise, dates), pas la règle. OpenFisca est une source indépendante.
 
-## Résultat : les 37 cas passent
+## Résultat : les 43 cas passent
 
 | Profil | Cas | Référence | Agrégats exigés | Écart maximal |
 |---|---|---|---|---|
@@ -69,6 +69,7 @@ L'API mon-entreprise repose sur la même base de règles que le site (modele-soc
 | Apprenti | E01 à E03 | mon-entreprise ; OpenFisca pour E01 | brut, cotisations, CSG, CRDS | 0,004 % |
 | Temps partiel | T01 à T03 | OpenFisca | brut, cotisations, CSG, CRDS, impôt | 0,06 % (T03) |
 | SMIC et réduction générale | S01 à S03 | OpenFisca | les mêmes, plus la réduction générale | 0,02 % (S01, réduction générale) |
+| Outre-mer (Guadeloupe, Martinique, Guyane, La Réunion) | D01 à D06 | OpenFisca (commune transmise : réduction d'impôt de l'article 197, I-3), mon-entreprise (micro) | agrégats du profil, impôt du foyer avec la réduction | 0,14 % (D04, impôt 717 € contre 718 €, abattements des retraités, point 2) ; cotisations 0,06 % (D06) ; impôt identique à l'euro pour D01, D02 (plafond de 4 050 € atteint), D03, D05, D06 |
 
 ## Corrections et tolérances documentées
 
@@ -78,6 +79,7 @@ L'API mon-entreprise repose sur la même base de règles que le site (modele-soc
 4. **Fonctionnaires** : OpenFisca ajoute d'office une indemnité de résidence, un supplément familial et l'indemnité compensatrice de CSG. Le profil du site les attend dans `primes_mensuelles` ; la référence les met à 0 dans OpenFisca.
 5. **Apprentis** : OpenFisca ne modélise que l'exonération totale des contrats conclus avant mars 2025 sous 79 % du SMIC (cas E01). Pour E02 et E03, la seule référence est mon-entreprise ; leur impôt (nul, salaire sous l'exonération à hauteur du SMIC annuel) n'est pas recoupé.
 6. **Versement libératoire** : l'impôt des autres revenus du foyer est calculé au taux effectif (impôt brut sur le revenu total, réduit au prorata, décote ensuite), ordre vérifié sur X03 et M04 à M06.
+7. **Outre-mer** : OpenFisca n'a pas de seuils de CSG sur les pensions propres à l'outre-mer ; le profil d'un retraité d'outre-mer porte le taux du relevé et la référence transmet un revenu fiscal de référence de métropole de la même tranche (D04). Les cas évitent un impôt entre 1 € et 60 € : OpenFisca applique le seuil de mise en recouvrement de 61 €, pas le site (impôt dû).
 
 ## Hors critère : part employeur
 

@@ -2,11 +2,32 @@
 // l'écran de saisie l'utilise sur le fil principal, avant de charger le calcul (Web Worker). Le calcul
 // (moteur-etendu.ts) appelle la même fonction : un profil refusé ici l'est aussi là, avec le même message.
 import { BAREMES_2025 as B, MILLESIME_BAREMES } from './baremes-2025'
-import type { ActiviteMicro, MotifHorsPerimetre, PersonneEtendue, ProfilCalcule, ProfilEtendu, ResultatErreurEtendu } from './types'
+import type { ActiviteMicro, MotifHorsPerimetre, PersonneEtendue, ProfilCalcule, ProfilEtendu, ResultatErreurEtendu, TerritoireOutreMer } from './types'
+
+/** Départements d'outre-mer calculés, avec le code INSEE de leur département. */
+export const TERRITOIRES_DOM: Record<Exclude<TerritoireOutreMer, 'autre_com'>, { nom: string; departement: string }> = {
+  guadeloupe: { nom: 'Guadeloupe', departement: '971' },
+  martinique: { nom: 'Martinique', departement: '972' },
+  guyane: { nom: 'Guyane', departement: '973' },
+  reunion: { nom: 'La Réunion', departement: '974' },
+  mayotte: { nom: 'Mayotte', departement: '976' },
+}
+
+/** Territoire d'outre-mer d'un code commune INSEE (971 à 976), sinon null. */
+export function territoireDeCommune(insee: string | undefined): Exclude<TerritoireOutreMer, 'autre_com'> | null {
+  if (!insee) return null
+  const t = Object.entries(TERRITOIRES_DOM).find(([, v]) => insee.startsWith(v.departement))
+  return t ? (t[0] as Exclude<TerritoireOutreMer, 'autre_com'>) : null
+}
 
 /** Messages des profils hors périmètre (motif de l'erreur PROFIL_HORS_V1). */
 export const MESSAGES_HORS_PERIMETRE: Partial<Record<MotifHorsPerimetre, string>> = {
   dom: "Les taux et abattements propres aux départements d'outre-mer ne sont pas encore couverts. Tu peux explorer le budget sans calcul personnel.",
+  mayotte:
+    "À Mayotte, la sécurité sociale a ses propres cotisations et la CSG ne s'applique pas aux pensions : ces règles ne sont pas modélisées par le site. Tu peux explorer le budget sans calcul personnel.",
+  collectivite_outre_mer:
+    "Saint-Martin, Saint-Barthélemy, Saint-Pierre-et-Miquelon, la Polynésie française, la Nouvelle-Calédonie et Wallis-et-Futuna ont leurs propres impôts : ces cas ne sont pas couverts.",
+  independant_reel_outre_mer: "Les cotisations des indépendants au régime réel ne sont pas calculées outre-mer.",
   etranger: "Les non-résidents sont imposés différemment : ce cas n'est pas encore couvert.",
   frontalier: "Un travailleur frontalier verse ses cotisations dans le pays où il travaille : ce cas n'est pas couvert.",
   demandeur_emploi: 'Les prélèvements sur les allocations chômage ne sont pas encore couverts.',
@@ -136,7 +157,24 @@ export function verifierProfilEtendu(p: ProfilEtendu, options: { autoriserNonVer
     }
   }
 
-  if (p.residence.zone === 'dom') return hors('dom')
+  if (p.residence.zone === 'dom') {
+    const t = p.residence.territoire
+    if (!t || !(t in TERRITOIRES_DOM || t === 'autre_com')) return invalide('/residence/territoire', 'Indique le territoire d’outre-mer où tu vis.')
+    if (t === 'autre_com') return hors('collectivite_outre_mer')
+    if (p.residence.alsace_moselle) return invalide('/residence/alsace_moselle', 'Alsace-Moselle et outre-mer ne vont pas ensemble.')
+    const tc = territoireDeCommune(p.residence.commune_insee)
+    if (p.residence.commune_insee && tc !== t) return invalide('/residence/commune_insee', `Cette commune n’est pas en ${TERRITOIRES_DOM[t].nom}.`)
+    if (t === 'mayotte') return hors('mayotte')
+    for (let i = 0; i < p.personnes.length; i++) {
+      const c = p.personnes[i].csg_pension
+      if (p.personnes[i].statut_activite === 'retraite' && c && !('taux' in c))
+        return invalide(
+          `/personnes/${i}/csg_pension`,
+          'Outre-mer, indique le taux de CSG lu sur le relevé de pension : les seuils de revenu fiscal de référence propres à l’outre-mer pour 2025 ne figurent pas dans les données du site.',
+        )
+    }
+    if (p.personnes.some((q) => profilDe(q) === 'independant_reel')) return hors('independant_reel_outre_mer')
+  } else if (territoireDeCommune(p.residence.commune_insee)) return invalide('/residence/zone', 'Cette commune est en outre-mer : choisis « J’habite en outre-mer » et le territoire.')
   if (p.residence.zone === 'etranger') return hors('etranger')
   if (p.personnes.some((q) => q.frontalier)) return hors('frontalier')
   if (p.personnes.some((q) => q.statut_activite === 'demandeur_emploi')) return hors('demandeur_emploi')

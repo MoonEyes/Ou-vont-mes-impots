@@ -12,6 +12,11 @@ Deux sources publiques, appelees ici seulement (jamais depuis le site) :
   et des apprentis, controle des salaries d'Alsace-Moselle. Meme base de regles que le site (modele-social) :
   cette source verifie l'integration, pas la regle.
 
+Outre-mer (groupe 'outre_mer') : la commune (depcom du menage et depcom_foyer du foyer fiscal) est transmise a
+OpenFisca, qui applique la reduction d'impot de l'article 197, I-3 du CGI. OpenFisca n'a pas de seuils de CSG sur les
+pensions propres a l'outre-mer : un retraite d'outre-mer saisit son taux (releve de pension) et la reference transmet un
+revenu fiscal de reference de metropole situe dans la meme tranche (RFR_PAR_TAUX), sans effet sur le taux lui-meme.
+
 Corrections documentees (jamais de valeur fabriquee) :
 - Alsace-Moselle : OpenFisca 175.0.45 applique 1,5 % (taux en vigueur jusqu'au 31/03/2022) ; le taux legal est
   1,3 % depuis le 01/04/2022. La reference retire 0,2 % de l'assiette aux cotisations salariales et l'ajoute au net
@@ -50,10 +55,12 @@ FOYER = ["impot_revenu_restant_a_payer", "ip_net", "rni", "nbptr", "microsocial"
 ENTREES = ["salaire_de_base", "categorie_salarie", "contrat_de_travail", "heures_remunerees_volume", "effectif_entreprise",
            "date_naissance", "salarie_regime_alsace_moselle", "traitement_indiciaire_brut", "primes_fonction_publique",
            "retraite_brute", "rfr", "remuneration_apprenti", "apprenti", "apprentissage_contrat_debut", "caseT",
-           "indemnite_residence", "supplement_familial_traitement", "indemnite_compensatrice_csg", "mbic_impv", "mbic_imps", "mbnc_impo", "ebic_impv", "ebic_imps", "ebnc_impo", "statut_occupation_logement"]
+           "indemnite_residence", "supplement_familial_traitement", "indemnite_compensatrice_csg", "mbic_impv", "mbic_imps", "mbnc_impo", "ebic_impv", "ebic_imps", "ebnc_impo", "statut_occupation_logement", "depcom", "depcom_foyer"]
 CASES_MICRO = {("vente", False): "mbic_impv", ("service_bic", False): "mbic_imps", ("service_bnc", False): "mbnc_impo",
                ("vente", True): "ebic_impv", ("service_bic", True): "ebic_imps", ("service_bnc", True): "ebnc_impo"}
 A_INVERSER = ("salarie_prive", "contractuel_public")
+# Revenu fiscal de reference (une part, seuils de metropole 2025 d'OpenFisca) situe dans la tranche du taux saisi.
+RFR_PAR_TAUX = {"exonere": 10000, "reduit": 14000, "median": 20000, "normal": 40000}
 
 
 def verifier_variables(session: requests.Session) -> str:
@@ -144,14 +151,23 @@ def situation(cas_liste: list[dict], bruts: dict[str, float], imposables: dict[s
         retraites = [x for x in p["personnes"] if x["statut_activite"] == "retraite"]
         if retraites:
             csg = retraites[0]["csg_pension"]
+            if "taux" in csg:
+                if len(p["personnes"]) > 1:
+                    raise SystemExit(f"{cid} : taux de CSG saisi pour un couple, pas de RFR de reference defini")
+                csg = {"revenu_fiscal_reference": RFR_PAR_TAUX[csg["taux"]], "parts": 1}
             ff["rfr"] = {str(ANNEE - 2): csg["revenu_fiscal_reference"]}
             ff["nbptr"] = {AN: None, str(ANNEE - 2): csg["parts"]}
+        commune = p["residence"].get("commune_insee", "")
+        if p["residence"]["zone"] == "dom":
+            ff["depcom_foyer"] = {AN: commune}
         foyers[f"{cid}_f1"] = ff
         familles[f"{cid}_fam"] = {"parents": adultes, "enfants": enfants}
         menage = {"personne_de_reference": [adultes[0]], "enfants": enfants,
                   "statut_occupation_logement": par_mois(LOGEMENT[p["logement"]["statut"]])}
         if len(adultes) > 1:
             menage["conjoint"] = [adultes[1]]
+        if p["residence"]["zone"] == "dom":
+            menage["depcom"] = par_mois(commune)
         menages[f"{cid}_men"] = menage
     return {"individus": individus, "foyers_fiscaux": foyers, "familles": familles, "menages": menages}
 

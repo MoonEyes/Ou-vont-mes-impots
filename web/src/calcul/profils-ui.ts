@@ -2,6 +2,7 @@
 // limites (« ce qui n'est pas calculé »). Aucun calcul ni moteur ici (module léger, fil principal) : les limites
 // reprennent calcul/README.md (section « Limites ») et les vérifications viennent du résultat (VERIFICATIONS).
 import { BAREMES_2025, MILLESIME_BAREMES, tauxCsgPension } from './baremes-2025'
+import { TERRITOIRES_DOM } from './perimetre-etendu'
 import type {
   ActiviteMicro,
   EntreePersonneEtendue,
@@ -31,6 +32,7 @@ export const LIBELLE_PROFIL: Record<VerificationProfil['profil'], string> = {
   sans_activite: 'Sans activité professionnelle',
   alsace_moselle: 'Régime local d’Alsace-Moselle',
   foyer: 'Impôt sur le revenu du foyer',
+  outre_mer: 'Outre-mer',
 }
 export const LIBELLE_VERSANT: Record<Versant, string> = {
   etat: 'fonction publique de l’État',
@@ -162,7 +164,18 @@ export function descriptionFoyer(profil: ProfilEtendu): string {
   if (s === 'parent_isole') return `Seul·e, ${enfantsTexte(profil)} (parent isolé).`
   return `${SITUATIONS[s]}, ${enfantsTexte(profil)}.`
 }
+/** Territoire d'outre-mer calculé du profil (zone 'dom'), sinon null. */
+export function territoireCalcule(profil: ProfilEtendu): keyof typeof TERRITOIRES_DOM | null {
+  const t = profil.residence.territoire
+  return profil.residence.zone === 'dom' && t && t in TERRITOIRES_DOM ? (t as keyof typeof TERRITOIRES_DOM) : null
+}
+
 export function descriptionLieu(profil: ProfilEtendu, commune: string | null): string {
+  const t = territoireCalcule(profil)
+  if (t) {
+    const r = BAREMES_2025.outreMer.reductionImpot[t]
+    return `${TERRITOIRES_DOM[t].nom} : réduction d’impôt sur le revenu de ${Math.round(r.taux * 100)} % (au plus ${eur(r.plafond)}) ; ${commune ? `commune : ${commune}` : 'commune non précisée'}.`
+  }
   const lieu = profil.residence.alsace_moselle
     ? 'Alsace-Moselle : cotisation maladie du régime local appliquée aux salaires du secteur privé'
     : 'France métropolitaine, hors Alsace-Moselle'
@@ -247,6 +260,24 @@ export function limitesDuCalcul(profil: ProfilEtendu, r: ResultatOk, communeConn
       'Micro-entreprise : aide à la création ou à la reprise d’entreprise (Acre), activité mixte et professions libérales affiliées à la caisse interprofessionnelle de prévoyance et d’assurance vieillesse (Cipav) non couvertes ; plafond de revenu fiscal de référence ouvrant droit au versement libératoire non contrôlé.',
       'Cotisation foncière des entreprises (impôt local dû par l’entreprise) : non comptée.',
     )
+  const t = territoireCalcule(profil)
+  if (t) {
+    const tva = BAREMES_2025.outreMer.tva[t]
+    out.push(
+      `Taxes sur la consommation outre-mer : non chiffrées. L’estimation du site repose sur la consommation des ménages de métropole ; ${
+        tva
+          ? `en ${TERRITOIRES_DOM[t].nom}, la TVA est de ${String(tva.normal * 100).replace('.', ',')} % (taux normal) et ${String(tva.reduit * 100).replace('.', ',')} % (taux réduit)`
+          : `en ${TERRITOIRES_DOM[t].nom}, la TVA ne s’applique pas pour l’instant`
+      }. L’octroi de mer, taxe propre aux départements d’outre-mer perçue sur les biens, n’est pas modélisé.`,
+    )
+    if (types.has('salarie_prive') || types.has('apprenti'))
+      out.push('Part de l’employeur d’un salarié du privé : non calculée outre-mer (exonérations Lodeom selon le secteur, l’effectif et le chiffre d’affaires de l’entreprise).')
+    if (types.has('fonctionnaire'))
+      out.push('Fonctionnaires outre-mer : la majoration de traitement et l’indexation sont à inclure dans les primes saisies ; elles n’entrent pas dans la retenue pour pension.')
+    if (types.has('retraite')) out.push('Retraités outre-mer : taux de CSG lu sur le relevé de pension (seuils de revenu fiscal de référence propres à l’outre-mer non repris).')
+    if (types.has('micro_entrepreneur'))
+      out.push('Micro-entrepreneurs outre-mer : exonération de début d’activité propre aux départements d’outre-mer non appliquée ; taux de métropole.')
+  }
   if (estResultatEtendu(r)) {
     const nonVerifies = r.verifications.filter((v) => v.statut !== 'verifie').map((v) => LIBELLE_PROFIL[v.profil].toLowerCase())
     if (nonVerifies.length) out.push(`Non vérifié contre une autre source : ${nonVerifies.join(', ')}.`)

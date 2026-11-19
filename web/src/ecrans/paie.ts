@@ -208,7 +208,11 @@ function blocTotal(r: ResultatOk, c: Complet | null, pour = ''): string {
         : ''
     }
     <p class="aide">Soit ${h(eur(t.central / 12))} par mois, pour ${h(eur(net))} ${REVENU_ANNUEL[natureRevenus(r)]}. ${
-      r.prelevements.some((l) => l.famille === 'cotisation_patronale') ? 'Hors cotisations de ton employeur (plus bas)' : 'Pas de cotisations d’employeur pour ces revenus'
+      r.prelevements.some((l) => l.famille === 'cotisation_patronale')
+        ? 'Hors cotisations de ton employeur (plus bas)'
+        : session.profil?.residence.zone === 'dom' && session.profil.personnes.some((x) => x.statut_activite === 'salarie_prive' || x.statut_activite === 'apprenti')
+          ? 'Part de l’employeur non calculée outre-mer'
+          : 'Pas de cotisations d’employeur pour ces revenus'
     }${c?.lignes.some((l) => l.non_chiffre) ? ' ; les montants « non chiffré » ne sont pas comptés' : ''}.</p>
     <p class="source">calcul sur ton appareil (modele-social et barèmes 2025 du site, vérifiés face à OpenFisca${
       phrasesVerifications(r).some((v) => v.includes('mon-entreprise')) ? ' et au simulateur mon-entreprise de l’Urssaf' : ''
