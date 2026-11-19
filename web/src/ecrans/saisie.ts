@@ -1,30 +1,51 @@
 // Écran 1 : saisie du salaire net avant impôt (chemin simple, par défaut) et, dans « Préciser ma situation », des
 // autres profils calculés par calculerProfil : fonction publique, apprentissage, retraite, micro-entreprise.
 // Contrôle léger sur le fil principal (perimetre-etendu.ts), calcul dans un Web Worker : rien n'est envoyé.
-import { saisieInvalide, verifierProfilEtendu } from '../calcul/perimetre-etendu'
+import { TERRITOIRES_DOM, saisieInvalide, territoireDeCommune, verifierProfilEtendu } from '../calcul/perimetre-etendu'
 import { ANNEE_NAISSANCE_65_ANS } from '../calcul/profils-ui'
-import type { ActiviteMicro, PersonneEtendue, ProfilEtendu, ResultatErreurEtendu, StatutActivite, TauxCsgRetraite, Versant } from '../calcul/types'
+import type { ActiviteMicro, PersonneEtendue, ProfilEtendu, ResultatErreurEtendu, StatutActivite, TauxCsgRetraite, TerritoireOutreMer, Versant } from '../calcul/types'
 import { enregistrerDestinataires } from '../calcul/destinataires'
-import { ALSACE_MOSELLE, DEPARTEMENTS, departementDe } from '../departements'
+import { ALSACE_MOSELLE, TOUS_DEPARTEMENTS, departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { session } from '../etat'
 import { cartesRayons } from '../composants/hub'
 import { annoncer, h } from '../util'
 
+/** Situations proposées d'abord, avant le montant ; les autres sont regroupées ensuite. */
 const STATUTS: [StatutActivite, string][] = [
   ['salarie_prive', 'Salarié·e du secteur privé'],
-  ['sans_activite', 'Sans activité professionnelle'],
   ['fonctionnaire', 'Fonctionnaire titulaire'],
-  ['contractuel_public', 'Contractuel·le de la fonction publique'],
-  ['independant', 'Indépendant·e ou micro-entrepreneur·se'],
   ['retraite', 'Retraité·e'],
-  ['demandeur_emploi', 'Demandeur·se d’emploi indemnisé·e (pas encore couvert)'],
+  ['independant', 'Micro-entrepreneur·se'],
+]
+const AUTRES_STATUTS: [StatutActivite, string][] = [
+  ['contractuel_public', 'Contractuel·le de la fonction publique'],
   ['apprenti', 'Apprenti·e'],
+  ['sans_activite', 'Sans activité professionnelle'],
+  ['demandeur_emploi', 'Demandeur·se d’emploi indemnisé·e (pas encore couvert)'],
   ['etudiant', 'Étudiant·e'],
 ]
 
+/** Territoires proposés avec la case « J'habite en outre-mer » (les cas non calculés renvoient un message). */
+const TERRITOIRES: [TerritoireOutreMer, string][] = [
+  ['guadeloupe', 'Guadeloupe'],
+  ['martinique', 'Martinique'],
+  ['guyane', 'Guyane'],
+  ['reunion', 'La Réunion'],
+  ['mayotte', 'Mayotte (pas encore couvert)'],
+  ['autre_com', 'Autre collectivité d’outre-mer (pas couvert)'],
+]
+
+/** Libellé du montant principal selon la situation (salaire, traitement et primes). */
+const LIBELLE_NET: Partial<Record<StatutActivite, string>> = {
+  fonctionnaire: 'Salaire net avant impôt, par mois, primes comprises (en euros)',
+}
+const LIBELLE_NET_DEFAUT = 'Salaire net avant impôt, par mois (en euros)'
+
 /** Situations dont le calcul part du salaire net avant impôt (le champ du chemin simple). */
 const AVEC_SALAIRE = new Set<StatutActivite>(['salarie_prive', 'fonctionnaire', 'contractuel_public', 'apprenti'])
+/** Situations dont les précisions facultatives (cadre, temps partiel, frontalier) sont dans « Préciser ma situation ». */
+const AVEC_PRECISIONS = new Set<StatutActivite>(['salarie_prive', 'contractuel_public'])
 
 /** Précision affichée sous la situation choisie : ce qui n'est pas couvert, et vers quel choix aller. */
 const NOTES_STATUT: Partial<Record<StatutActivite, string>> = {
@@ -67,24 +88,51 @@ function blocPersonne(n: 1 | 2, p?: PersonneEtendue): string {
   const rfr = c && 'revenu_fiscal_reference' in c ? c : undefined
   const age = p?.annee_naissance === undefined ? undefined : p.annee_naissance <= ANNEE_NAISSANCE_65_ANS ? 'plus65' : 'moins65'
   const contrat = p?.apprentissage ? (p.apprentissage.contrat_avant_mars_2025 ? 'avant' : 'depuis') : undefined
-  // Précisions ouvertes au retour sur la saisie si elles ont servi (autre situation, cadre, temps partiel, frontalier).
-  const ouvert = statut !== 'salarie_prive' || !!p?.cadre || tp !== null || !!p?.frontalier
+  // Précisions ouvertes au retour sur la saisie si elles ont servi (cadre, temps partiel, frontalier).
+  const ouvert = !!p?.cadre || tp !== null || !!p?.frontalier
+  const options = (l: [StatutActivite, string][]) => l.map(([v, lib]) => `<option value="${v}"${v === statut ? ' selected' : ''}>${h(lib)}</option>`).join('')
   return `<fieldset id="${id('bloc')}" ${n === 2 ? 'hidden' : ''}>
   <legend>${n === 1 ? 'Toi' : 'Ton ou ta conjoint·e'}</legend>
+  <label for="${id('statut')}">${n === 1 ? 'Ta situation' : 'Sa situation'}</label>
+  <select id="${id('statut')}" name="${id('statut')}" aria-describedby="${id('note-statut')}">
+    ${options(STATUTS)}
+    <optgroup label="Autres situations">${options(AUTRES_STATUTS)}</optgroup>
+  </select>
+  <p class="aide" id="${id('note-statut')}"${NOTES_STATUT[statut] ? '' : ' hidden'}>${h(NOTES_STATUT[statut] ?? '')}</p>
   <div id="${id('salaire')}">
-    <label for="${id('net')}">Salaire net avant impôt, par mois (en euros)</label>
+    <label for="${id('net')}" id="${id('net-libelle')}">${h(LIBELLE_NET[statut] ?? LIBELLE_NET_DEFAUT)}</label>
     <input id="${id('net')}" name="${id('net')}" type="text" inputmode="decimal" spellcheck="false" autocomplete="off" aria-describedby="${id('aide')} ${id('msg')}" value="${p?.salaire_net_avant_impot_mensuel ?? ''}" />
     <p class="message-champ" id="${id('msg')}" hidden></p>
     <details><summary>Où trouver ce montant ?</summary><p class="aide" id="${id('aide')}">${AIDE_SALAIRE}</p></details>
   </div>
+  <div id="${id('opt-fonctionnaire')}">
+    ${groupe(id('versant'), 'Versant de la fonction publique', radios(id('versant'), [['etat', 'Fonction publique de l’État'], ['territoriale', 'Fonction publique territoriale'], ['hospitaliere', 'Fonction publique hospitalière']], p?.versant))}
+    ${champ(id('primes'), 'Primes et indemnités, total brut par mois (en euros)', p?.primes_mensuelles, 'Additionne les primes et indemnités de la fiche de paie : indemnité de résidence, supplément familial de traitement, primes ; outre-mer, la majoration de traitement. Écris 0 s’il n’y en a pas.')}
+    ${champ(id('traitement'), 'Traitement indiciaire brut, par mois (facultatif)', p?.traitement_indiciaire_brut_mensuel, 'Ligne « traitement brut » de la fiche de paie. S’il est indiqué, le calcul part de ce traitement et des primes, et le salaire net est recalculé.')}
+  </div>
+  <div id="${id('opt-apprenti')}">
+    ${groupe(id('contrat'), 'Signature du contrat d’apprentissage', radios(id('contrat'), [['avant', 'Avant le 1er mars 2025'], ['depuis', 'Le 1er mars 2025 ou après']], contrat), 'Pour un contrat signé depuis le 1er mars 2025, la part du salaire exonérée de cotisations est plus basse et la CSG est due.')}
+  </div>
+  <div id="${id('opt-retraite')}">
+    ${champ(id('pension-base'), 'Pension de retraite de base, par mois (en euros)', p?.pension_base_mensuelle, 'Régime général, fonction publique, régime agricole ou autre régime de base.')}
+    ${champ(id('pension-compl'), 'Pension de retraite complémentaire, par mois (en euros)', p?.pension_complementaire_mensuelle || undefined, 'Agirc-Arrco, Ircantec, retraite additionnelle de la fonction publique. Laisse vide s’il n’y en a pas.')}
+    ${groupe(id('pension-saisie'), 'Ces montants sont', radios(id('pension-saisie'), [['nette_avant_impot', 'Nets avant impôt (versés avant le prélèvement à la source)'], ['brute', 'Bruts (avant CSG et cotisations)']], p?.pension_saisie ?? 'nette_avant_impot'))}
+    ${groupe(id('csg'), `Taux de CSG sur ${n === 1 ? 'ta' : 'sa'} pension`, radios(id('csg'), [['normal', 'Taux normal (8,3 %)'], ['median', 'Taux médian (6,6 %)'], ['reduit', 'Taux réduit (3,8 %)'], ['exonere', 'Exonération de CSG'], ['rfr', 'Je ne sais pas : le déduire de l’avis d’impôt (métropole seulement)']], csg), 'Il figure sur le relevé de pension et dépend du revenu fiscal de référence d’il y a deux ans.')}
+    <div id="${id('rfr-bloc')}"${csg === 'rfr' ? '' : ' hidden'}>
+      ${champ(id('rfr'), 'Revenu fiscal de référence de l’avis d’impôt 2024 (revenus 2023)', rfr?.revenu_fiscal_reference)}
+      ${champ(id('parts'), 'Nombre de parts de cet avis', rfr?.parts, 'Par exemple 1 pour une personne seule, 2 pour un couple marié ou pacsé.')}
+    </div>
+    ${groupe(id('age'), 'Âge au 31 décembre 2025', radios(id('age'), [['plus65', '65 ans ou plus (né·e en 1960 ou avant)'], ['moins65', 'Moins de 65 ans']], age), 'Sert à l’abattement d’impôt des personnes de 65 ans ou plus.')}
+  </div>
+  <div id="${id('opt-independant')}">
+    ${champ(id('ca'), 'Chiffre d’affaires encaissé en 2025, hors taxes (en euros, sur l’année)', ind?.chiffre_affaires_annuel)}
+    ${groupe(id('activite'), 'Nature de l’activité', radios(id('activite'), [['vente', 'Vente de marchandises'], ['service_bic', 'Prestations de services commerciales ou artisanales'], ['service_bnc', 'Activité libérale, affiliée au régime général']], ind?.activite))}
+    <div id="${id('artisan-bloc')}"><label class="case"><input type="checkbox" id="${id('artisan')}"${ind?.artisan ? ' checked' : ''} /> Activité artisanale (inscrite au répertoire des métiers)</label></div>
+    ${groupe(id('vl'), 'Versement libératoire de l’impôt sur le revenu', radios(id('vl'), [['oui', 'Oui, l’impôt est versé avec les cotisations'], ['non', 'Non']], ind?.versement_liberatoire === undefined ? undefined : ind.versement_liberatoire ? 'oui' : 'non'))}
+  </div>
   <details id="${id('preciser')}"${ouvert ? ' open' : ''}>
     <summary>Préciser ${n === 1 ? 'ma' : 'sa'} situation</summary>
-    <p class="aide">Par défaut, le calcul retient un salaire du secteur privé, à temps plein, non cadre. Fonction publique, apprentissage, retraite, micro-entreprise, temps partiel ou statut cadre : précise-le ici.</p>
-    <label for="${id('statut')}">Situation professionnelle</label>
-    <select id="${id('statut')}" name="${id('statut')}" aria-describedby="${id('note-statut')}">
-      ${STATUTS.map(([v, l]) => `<option value="${v}"${v === statut ? ' selected' : ''}>${h(l)}</option>`).join('')}
-    </select>
-    <p class="aide" id="${id('note-statut')}"${NOTES_STATUT[statut] ? '' : ' hidden'}>${h(NOTES_STATUT[statut] ?? '')}</p>
+    <p class="aide">Par défaut, le calcul retient un emploi à temps plein, non cadre. Temps partiel, statut cadre ou travail hors de France : précise-le ici.</p>
     <div id="${id('opt-salarie')}">
       <label class="case"><input type="checkbox" id="${id('cadre')}"${p?.cadre ? ' checked' : ''} /> Statut cadre</label>
       <label class="case"><input type="checkbox" id="${id('frontalier')}"${p?.frontalier ? ' checked' : ''} /> Travail hors de France (frontalier)</label>
@@ -97,31 +145,6 @@ function blocPersonne(n: 1 | 2, p?: PersonneEtendue): string {
         <p class="message-champ" id="${id('msg-q')}" hidden></p>
       </div>
     </div>
-    <div id="${id('opt-fonctionnaire')}">
-      ${groupe(id('versant'), 'Versant de la fonction publique', radios(id('versant'), [['etat', 'Fonction publique de l’État'], ['territoriale', 'Fonction publique territoriale'], ['hospitaliere', 'Fonction publique hospitalière']], p?.versant))}
-      ${champ(id('primes'), 'Primes et indemnités, total brut par mois (en euros)', p?.primes_mensuelles, 'Additionne les primes et indemnités de la fiche de paie : indemnité de résidence, supplément familial de traitement, primes. Écris 0 s’il n’y en a pas.')}
-      ${champ(id('traitement'), 'Traitement indiciaire brut, par mois (facultatif)', p?.traitement_indiciaire_brut_mensuel, 'Ligne « traitement brut » de la fiche de paie. S’il est indiqué, le calcul part de ce traitement et des primes, et le salaire net est recalculé.')}
-    </div>
-    <div id="${id('opt-apprenti')}">
-      ${groupe(id('contrat'), 'Signature du contrat d’apprentissage', radios(id('contrat'), [['avant', 'Avant le 1er mars 2025'], ['depuis', 'Le 1er mars 2025 ou après']], contrat), 'Pour un contrat signé depuis le 1er mars 2025, la part du salaire exonérée de cotisations est plus basse et la CSG est due.')}
-    </div>
-    <div id="${id('opt-retraite')}">
-      ${champ(id('pension-base'), 'Retraite de base, par mois (en euros)', p?.pension_base_mensuelle, 'Régime général, fonction publique, régime agricole ou autre régime de base.')}
-      ${champ(id('pension-compl'), 'Retraite complémentaire, par mois (en euros)', p?.pension_complementaire_mensuelle || undefined, 'Agirc-Arrco, Ircantec, retraite additionnelle de la fonction publique. Laisse vide s’il n’y en a pas.')}
-      ${groupe(id('pension-saisie'), 'Ces montants sont', radios(id('pension-saisie'), [['nette_avant_impot', 'Nets avant impôt (versés avant le prélèvement à la source)'], ['brute', 'Bruts (avant CSG et cotisations)']], p?.pension_saisie ?? 'nette_avant_impot'))}
-      ${groupe(id('csg'), `Taux de CSG sur ${n === 1 ? 'ta' : 'sa'} pension`, radios(id('csg'), [['normal', 'Taux normal (8,3 %)'], ['median', 'Taux médian (6,6 %)'], ['reduit', 'Taux réduit (3,8 %)'], ['exonere', 'Exonération de CSG'], ['rfr', 'Je ne sais pas : le déduire de l’avis d’impôt']], csg), 'Il figure sur le relevé de pension et dépend du revenu fiscal de référence d’il y a deux ans.')}
-      <div id="${id('rfr-bloc')}"${csg === 'rfr' ? '' : ' hidden'}>
-        ${champ(id('rfr'), 'Revenu fiscal de référence de l’avis d’impôt 2024 (revenus 2023)', rfr?.revenu_fiscal_reference)}
-        ${champ(id('parts'), 'Nombre de parts de cet avis', rfr?.parts, 'Par exemple 1 pour une personne seule, 2 pour un couple marié ou pacsé.')}
-      </div>
-      ${groupe(id('age'), 'Âge au 31 décembre 2025', radios(id('age'), [['plus65', '65 ans ou plus (né·e en 1960 ou avant)'], ['moins65', 'Moins de 65 ans']], age), 'Sert à l’abattement d’impôt des personnes de 65 ans ou plus.')}
-    </div>
-    <div id="${id('opt-independant')}">
-      ${groupe(id('activite'), 'Nature de l’activité', radios(id('activite'), [['vente', 'Vente de marchandises'], ['service_bic', 'Prestations de services commerciales ou artisanales'], ['service_bnc', 'Activité libérale, affiliée au régime général']], ind?.activite))}
-      <div id="${id('artisan-bloc')}"><label class="case"><input type="checkbox" id="${id('artisan')}"${ind?.artisan ? ' checked' : ''} /> Activité artisanale (inscrite au répertoire des métiers)</label></div>
-      ${champ(id('ca'), 'Chiffre d’affaires encaissé en 2025, hors taxes (en euros, sur l’année)', ind?.chiffre_affaires_annuel)}
-      ${groupe(id('vl'), 'Versement libératoire de l’impôt sur le revenu', radios(id('vl'), [['oui', 'Oui, l’impôt est versé avec les cotisations'], ['non', 'Non']], ind?.versement_liberatoire === undefined ? undefined : ind.versement_liberatoire ? 'oui' : 'non'))}
-    </div>
   </details>
 </fieldset>`
 }
@@ -132,7 +155,9 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
   const nbEnfants = pr?.foyer.enfants.length ?? 0
   const nbAlternee = pr?.foyer.enfants.filter((e) => e.garde_alternee).length ?? 0
   const logement = pr?.logement?.statut ?? 'locataire'
-  const zone = pr?.residence.zone === 'metropole' && pr.residence.alsace_moselle ? 'alsace_moselle' : (pr?.residence.zone ?? 'metropole')
+  const outremer = pr?.residence.zone === 'dom'
+  const territoire = (pr as ProfilEtendu | null)?.residence.territoire ?? ''
+  const zone = outremer ? 'metropole' : pr?.residence.zone === 'metropole' && pr.residence.alsace_moselle ? 'alsace_moselle' : (pr?.residence.zone ?? 'metropole')
   const choix = (nom: string, valeur: string, courant: string, texte: string) =>
     `<label><input type="radio" name="${nom}" value="${valeur}"${valeur === courant ? ' checked' : ''} /> ${texte}</label>`
 
@@ -144,7 +169,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
 ${depuisAccueil ? '<p class="calcul-en-cours" id="statut-haut" role="status">Calcul en cours sur ton appareil… Le résultat s’affiche dans un instant. Tu pourras ensuite préciser ta situation ici.</p>' : ''}
 ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abord ton salaire : le résultat se calcule à partir de ta saisie, et rien n’est gardé d’une visite à l’autre.</p>' : ''}
 <p class="chapeau">Indique ton salaire : le site calcule ce que tu verses chaque année, à qui va l’argent, puis montre où va l’argent public. Le calcul se fait <strong>sur ton appareil</strong> : rien de ce que tu saisis n’est envoyé ni enregistré.</p>
-<p class="aide">Revenus 2025, en France métropolitaine (Alsace-Moselle comprise). Par défaut, le calcul retient un salaire du secteur privé ; fonction publique, apprentissage, retraite et micro-entreprise se choisissent dans « Préciser ma situation ». Pas encore couverts : outre-mer, étranger, travail frontalier, allocations chômage, indépendants au régime réel.</p>
+<p class="aide">Revenus 2025, en France métropolitaine (Alsace-Moselle comprise), en Guadeloupe, en Martinique, en Guyane et à La Réunion. Choisis d’abord ta situation (salarié·e du secteur privé, fonctionnaire, retraité·e, micro-entrepreneur·se), puis le montant demandé : salaire net avant impôt, pension ou chiffre d’affaires. Pas encore couverts : Mayotte et les collectivités d’outre-mer, étranger, travail frontalier, allocations chômage, indépendants au régime réel.</p>
 <form id="formulaire" novalidate>
   <fieldset class="choix">
     <legend>Ton foyer</legend>
@@ -158,6 +183,19 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
       <label for="alternee">Dont en garde alternée</label>
       <input id="alternee" type="number" inputmode="numeric" min="0" max="10" step="1" value="${nbAlternee}" aria-describedby="msg-alternee" />
       <p class="message-champ" id="msg-alternee" hidden></p>
+    </div>
+  </fieldset>
+  <fieldset class="choix" id="bloc-outremer">
+    <legend>Outre-mer</legend>
+    <label class="case"><input type="checkbox" id="outremer"${outremer ? ' checked' : ''} /> J’habite en outre-mer</label>
+    <div id="territoire-bloc"${outremer ? '' : ' hidden'}>
+      <label for="territoire">Territoire</label>
+      <select id="territoire" aria-describedby="territoire-aide territoire-msg">
+        <option value="">Choisir</option>
+        ${TERRITOIRES.map(([v, l]) => `<option value="${v}"${v === territoire ? ' selected' : ''}>${h(l)}</option>`).join('')}
+      </select>
+      <p class="aide" id="territoire-aide">Impôt sur le revenu réduit de 30 % (Guadeloupe, Martinique, La Réunion) ou de 40 % (Guyane), dans une limite. Les taxes sur la consommation (TVA à taux propres, octroi de mer) ne sont pas chiffrées.</p>
+      <p class="message-champ" id="territoire-msg" hidden></p>
     </div>
   </fieldset>
   ${blocPersonne(1, pr?.personnes[0])}
@@ -190,21 +228,24 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
   </fieldset>
   <fieldset>
     <legend>Où tu vis</legend>
-    <label for="zone">Lieu de résidence</label>
-    <select id="zone">
-      <option value="metropole"${zone === 'metropole' ? ' selected' : ''}>France métropolitaine (hors Alsace-Moselle)</option>
-      <option value="alsace_moselle"${zone === 'alsace_moselle' ? ' selected' : ''}>Alsace-Moselle (Bas-Rhin, Haut-Rhin, Moselle)</option>
-      <option value="dom"${zone === 'dom' ? ' selected' : ''}>Outre-mer</option>
-      <option value="etranger"${zone === 'etranger' ? ' selected' : ''}>À l’étranger</option>
-    </select>
+    <div id="zone-bloc"${outremer ? ' hidden' : ''}>
+      <label for="zone">Lieu de résidence</label>
+      <select id="zone" aria-describedby="zone-msg">
+        <option value="metropole"${zone === 'metropole' ? ' selected' : ''}>France métropolitaine (hors Alsace-Moselle)</option>
+        <option value="alsace_moselle"${zone === 'alsace_moselle' ? ' selected' : ''}>Alsace-Moselle (Bas-Rhin, Haut-Rhin, Moselle)</option>
+        <option value="etranger"${zone === 'etranger' ? ' selected' : ''}>À l’étranger</option>
+      </select>
+      <p class="message-champ" id="zone-msg" hidden></p>
+    </div>
     <label for="departement">Département (facultatif, pour les taux locaux)</label>
     <select id="departement">
       <option value="">Ne pas préciser</option>
-      ${DEPARTEMENTS.map(([c, n]) => `<option value="${c}">${c} ${h(n)}</option>`).join('')}
+      ${TOUS_DEPARTEMENTS.map(([c, n]) => `<option value="${c}">${c} ${h(n)}</option>`).join('')}
     </select>
     <div id="commune-bloc" hidden>
       <label for="commune">Commune</label>
-      <select id="commune"></select>
+      <select id="commune" aria-describedby="commune-msg"></select>
+      <p class="message-champ" id="commune-msg" hidden></p>
     </div>
   </fieldset>
   <div class="actions"><button class="bouton-principal" type="submit">Calculer</button></div>
@@ -222,6 +263,7 @@ ${cartesRayons('/calcul')}`
   // moteurs de rendu (happy-dom des tests lit la 2e option dès que la 3e ou une suivante est choisie).
   for (const n of [1, 2] as const) $<HTMLSelectElement>(`#p${n}-statut`).value = pr?.personnes[n - 1]?.statut_activite ?? 'salarie_prive'
   $<HTMLSelectElement>('#zone').value = zone
+  $<HTMLSelectElement>('#territoire').value = territoire
 
   const majVisibilite = () => {
     const s = situation()
@@ -231,6 +273,8 @@ ${cartesRayons('/calcul')}`
     for (const n of [1, 2]) {
       const st = $<HTMLSelectElement>(`#p${n}-statut`).value as StatutActivite
       $(`#p${n}-salaire`).hidden = !AVEC_SALAIRE.has(st)
+      $(`#p${n}-net-libelle`).textContent = LIBELLE_NET[st] ?? LIBELLE_NET_DEFAUT
+      $(`#p${n}-preciser`).hidden = !AVEC_PRECISIONS.has(st)
       $(`#p${n}-opt-salarie`).hidden = st !== 'salarie_prive'
       $(`#p${n}-opt-partiel`).hidden = st !== 'salarie_prive' && st !== 'contractuel_public'
       $(`#p${n}-quotite-bloc`).hidden = !$<HTMLInputElement>(`#p${n}-partiel`).checked
@@ -242,6 +286,9 @@ ${cartesRayons('/calcul')}`
       note.hidden = !NOTES_STATUT[st]
     }
     $('#tf-bloc').hidden = radio('logement') !== 'proprietaire'
+    const om = $<HTMLInputElement>('#outremer').checked
+    $('#territoire-bloc').hidden = !om
+    $('#zone-bloc').hidden = om
   }
   form.addEventListener('change', majVisibilite)
   majVisibilite()
@@ -262,8 +309,31 @@ ${cartesRayons('/calcul')}`
       liste.map(([c, v]) => `<option value="${c}"${c === choisie ? ' selected' : ''}>${h(v[0])}</option>`).join('')
     if (choisie && communes[choisie]) comSel.value = choisie
     if (ALSACE_MOSELLE.has(dep)) $<HTMLSelectElement>('#zone').value = 'alsace_moselle'
+    const t = territoireDeCommune(dep + '00')
+    if (t) {
+      $<HTMLInputElement>('#outremer').checked = true
+      $<HTMLSelectElement>('#territoire').value = t
+      majVisibilite()
+    }
   }
-  depSel.addEventListener('change', () => chargerCommunes(depSel.value))
+  depSel.addEventListener('change', () => {
+    // Département d'outre-mer choisi : la case et le territoire suivent (et inversement plus bas).
+    const t = territoireDeCommune(depSel.value + '00')
+    if (t) {
+      $<HTMLInputElement>('#outremer').checked = true
+      $<HTMLSelectElement>('#territoire').value = t
+    } else if (depSel.value) $<HTMLInputElement>('#outremer').checked = false
+    majVisibilite()
+    return chargerCommunes(depSel.value)
+  })
+  $('#territoire').addEventListener('change', () => {
+    const t = $<HTMLSelectElement>('#territoire').value as TerritoireOutreMer
+    const dep = t && t in TERRITOIRES_DOM ? TERRITOIRES_DOM[t as keyof typeof TERRITOIRES_DOM].departement : ''
+    if (dep && depSel.value !== dep) {
+      depSel.value = dep
+      void chargerCommunes(dep)
+    }
+  })
   const insee = pr?.residence.commune_insee
   if (insee) {
     depSel.value = departementDe(insee)
@@ -396,7 +466,9 @@ ${cartesRayons('/calcul')}`
     const couple = s.startsWith('couple')
     const nb = s === 'celibataire' ? 0 : Math.max(0, Math.min(10, Math.floor(Number($<HTMLInputElement>('#enfants').value) || 0)))
     const alt = Math.max(0, Math.min(nb, Math.floor(Number($<HTMLInputElement>('#alternee').value) || 0)))
-    const z = $<HTMLSelectElement>('#zone').value
+    const om = $<HTMLInputElement>('#outremer').checked
+    const territoire = $<HTMLSelectElement>('#territoire').value as TerritoireOutreMer | ''
+    const z = om ? 'dom' : $<HTMLSelectElement>('#zone').value
     const logement = (form.querySelector('input[name=logement]:checked') as HTMLInputElement).value as 'locataire'
     const tf = nombre($<HTMLInputElement>('#tf').value)
     const commune = comSel.value
@@ -406,6 +478,7 @@ ${cartesRayons('/calcul')}`
       residence: {
         zone: z === 'alsace_moselle' ? 'metropole' : (z as 'metropole'),
         alsace_moselle: z === 'alsace_moselle',
+        ...(om && territoire ? { territoire } : {}),
         ...(commune ? { commune_insee: commune } : {}),
       },
       foyer: {
@@ -441,21 +514,30 @@ ${cartesRayons('/calcul')}`
     'apprentissage/contrat_avant_mars_2025': (n) => `#p${n}-contrat`,
     // Pension de base lisible mais complémentaire illisible : l'erreur porte sur la complémentaire.
     pension_base_mensuelle: (n) => (valide(`#p${n}-pension-base`) && $<HTMLInputElement>(`#p${n}-pension-compl`).value.trim() && !valide(`#p${n}-pension-compl`) ? `#p${n}-pension-compl` : `#p${n}-pension-base`),
-    csg_pension: (n) => (radio(`p${n}-csg`) !== 'rfr' ? `#p${n}-csg` : valide(`#p${n}-rfr`) ? `#p${n}-parts` : `#p${n}-rfr`),
+    // Outre-mer, le taux de CSG doit être lu sur le relevé : l'erreur porte sur le choix du taux.
+    csg_pension: (n) => (radio(`p${n}-csg`) !== 'rfr' || $<HTMLInputElement>('#outremer').checked ? `#p${n}-csg` : valide(`#p${n}-rfr`) ? `#p${n}-parts` : `#p${n}-rfr`),
     annee_naissance: (n) => `#p${n}-age`,
     'independant/activite': (n) => `#p${n}-activite`,
     'independant/chiffre_affaires_annuel': (n) => `#p${n}-ca`,
     'independant/versement_liberatoire': (n) => `#p${n}-vl`,
   }
+  /** Champs du lieu de résidence (pointeurs /residence/...). */
+  const CHAMPS_RESIDENCE: Record<string, string> = {
+    '/residence/territoire': '#territoire',
+    '/residence/commune_insee': '#commune',
+    '/residence/zone': '#outremer',
+    '/residence/alsace_moselle': '#territoire',
+  }
   /** Message d'erreur d'un champ : ceux du chemin simple gardent leurs identifiants (p1-msg, p1-msg-q). */
-  const messageDe = (sel: string) => (/-net$/.test(sel) ? sel.replace(/-net$/, '-msg') : /-quotite$/.test(sel) ? sel.replace(/-quotite$/, '-msg-q') : `${sel}-msg`)
+  const messageDe = (sel: string) =>
+    /-net$/.test(sel) ? sel.replace(/-net$/, '-msg') : /-quotite$/.test(sel) ? sel.replace(/-quotite$/, '-msg-q') : sel === '#outremer' ? '#zone-msg' : `${sel}-msg`
 
   const montrerErreur = (err: ResultatErreurEtendu) => {
     statutHaut('Le calcul n’a pas abouti : le message est affiché à côté du champ concerné, plus bas.')
     const e = err.erreur
     if (e.code === 'SAISIE_INVALIDE' && e.champ) {
       const m = /^\/personnes\/(\d)\/(.+)$/.exec(e.champ)
-      const sel = m ? CHAMPS[m[2]]?.(Number(m[1]) + 1) : undefined
+      const sel = m ? CHAMPS[m[2]]?.(Number(m[1]) + 1) : CHAMPS_RESIDENCE[e.champ]
       if (sel) {
         const champ = $(sel)
         const msg = $(messageDe(sel))

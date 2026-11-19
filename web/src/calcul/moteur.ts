@@ -281,6 +281,11 @@ export interface FoyerFiscal {
    * personnes concernées : `plein` jusqu'au premier seuil de revenu net global, `reduit` jusqu'au second
    */
   abattementAge?: { plein: number; seuilPlein: number; reduit: number; seuilReduit: number }
+  /**
+   * réduction d'impôt des foyers domiciliés outre-mer (CGI art. 197, I-3) : taux appliqué à l'impôt après plafonnement
+   * du quotient familial, dans la limite du plafond, avant la décote
+   */
+  reductionOutreMer?: { taux: number; plafond: number }
 }
 
 /** Taux de la décote (CGI art. 197, I-4-a) : elle vaut le plafond moins 45,25 % de l'impôt brut. */
@@ -313,14 +318,18 @@ export function impotFoyer(ff: FoyerFiscal, anneeRevenus: number): number {
       s['impôt . foyer fiscal . nombre de parts . majoration personne seule avec enfant'] = '0.25 part'
   }
   const liberatoire = ff.revenusTauxEffectif ?? 0
-  if (liberatoire > 0) {
+  const dom = ff.reductionOutreMer
+  if (liberatoire > 0 || dom) {
     // Taux effectif : impôt brut calculé sur le revenu total, réduit au prorata des revenus hors versement
     // libératoire ; la décote s'applique ensuite au montant ainsi réduit (plafond lu dans modele-social).
+    // Outre-mer : la réduction de l'article 197, I-3 s'applique à cet impôt brut, puis la décote.
     const total = abattu + liberatoire
+    if (total <= 0) return 0
     e.setSituation({ ...s, 'impôt . foyer fiscal . revenu imposable . autres revenus imposables': '0 €/an' } as never)
     const plafondDecote = evaluer(e, 'impôt . foyer fiscal . impôt sur le revenu . décote')
     e.setSituation({ ...s, 'impôt . foyer fiscal . revenu imposable . autres revenus imposables': `${total} €/an` } as never)
-    const brut = (evaluer(e, 'impôt . foyer fiscal . impôt sur le revenu . impôt brut') * abattu) / total
+    let brut = (evaluer(e, 'impôt . foyer fiscal . impôt sur le revenu . impôt brut') * abattu) / total
+    if (dom) brut -= Math.min(dom.taux * brut, dom.plafond)
     return Math.max(0, Math.round(brut - Math.max(0, plafondDecote - TAUX_DECOTE * brut)))
   }
   e.setSituation(s as never)

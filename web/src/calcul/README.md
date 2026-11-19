@@ -12,11 +12,11 @@ Deux entrées :
 | `verifierProfilEtendu(profil, options)` | `perimetre-etendu.ts` (réexporté par `moteur-etendu.ts`) | Contrôle de saisie et de périmètre seul (`null` si calculable), sans le moteur : utilisable sur le fil principal. |
 | libellés, profil retenu, limites | `profils-ui.ts` | Textes de l'écran résultat (`descriptionPersonne`, `limitesDuCalcul`, `phrasesVerifications`), sans le moteur. |
 
-Écran de saisie (`ecrans/saisie.ts`) : le salaire net avant impôt reste le seul champ du chemin par défaut ; le bloc « Préciser ma situation » (un par personne) ouvre la situation professionnelle et les champs du profil choisi. Conventions de la saisie : retraite complémentaire laissée vide = 0 ; âge des retraités demandé par la saisie (65 ans ou plus fin 2025 = `annee_naissance` 1960, sinon 1961) ; traitement indiciaire facultatif (s'il est indiqué, le net n'est pas transmis) ; seul le régime micro est proposé. L'écran résultat (`ecrans/paie.ts`) affiche le profil retenu, les vérifications du résultat et `limitesDuCalcul`. Test : `web/tests/profils_ui.test.ts`.
+Écran de saisie (`ecrans/saisie.ts`) : la situation se choisit avant le montant (salarié du privé par défaut, fonctionnaire, retraité, micro-entrepreneur, puis « Autres situations ») ; le libellé du montant suit la situation (salaire net avant impôt, pension, chiffre d'affaires). Une case « J'habite en outre-mer » ouvre le choix du territoire, lié au département. Le bloc « Préciser ma situation » ne garde que les précisions facultatives des salariés (cadre, temps partiel, frontalier). Conventions de la saisie : retraite complémentaire laissée vide = 0 ; âge des retraités demandé par la saisie (65 ans ou plus fin 2025 = `annee_naissance` 1960, sinon 1961) ; traitement indiciaire facultatif (s'il est indiqué, le net n'est pas transmis) ; seul le régime micro est proposé. L'écran résultat (`ecrans/paie.ts`) affiche le profil retenu, les vérifications du résultat et `limitesDuCalcul`. Test : `web/tests/profils_ui.test.ts`.
 
 ## Entrée : `ProfilEtendu` (`types.ts`)
 
-Champs communs du contrat 1.0 (`annee_revenus` = 2025, `residence`, `foyer`, `logement`, `personnes[]` avec `role` et `statut_activite`). Champs par profil, tous dans `personnes[i]` :
+Champs communs du contrat 1.0 (`annee_revenus` = 2025, `residence`, `foyer`, `logement`, `personnes[]` avec `role` et `statut_activite`). Outre-mer : `residence.zone = 'dom'` et `residence.territoire` (`guadeloupe`, `martinique`, `guyane`, `reunion` ; `mayotte` et `autre_com` sont refusés avec leur motif). Champs par profil, tous dans `personnes[i]` :
 
 | Profil | `statut_activite` | Champs à saisir |
 |---|---|---|
@@ -45,7 +45,7 @@ Même forme que le résultat du contrat 1.0 (`prelevements[]`, `totaux`, `averti
 
 Familles de lignes : les cotisations personnelles d'un indépendant ou d'un retraité utilisent la famille `cotisation_salariale` (cotisations versées par la personne) ; le versement libératoire est une ligne `impot_revenu`.
 
-Erreurs : `SAISIE_INVALIDE` (avec `champ`), `PROFIL_HORS_V1` avec `motif` : `dom`, `etranger`, `frontalier`, `demandeur_emploi`, `etudiant`, `sans_activite_seul`, `annee_non_couverte`, `independant_reel_non_verifie`, `retraite_alsace_moselle`, `independant_alsace_moselle_non_verifie` (régime local hors salarié du privé : contractuel, apprenti, micro-entrepreneur artisan).
+Erreurs : `SAISIE_INVALIDE` (avec `champ`, dont `/residence/territoire`, `/residence/commune_insee` pour une commune hors du territoire, `/residence/zone` pour une commune d'outre-mer sans la case, `/personnes/<i>/csg_pension` pour un retraité d'outre-mer sans taux lu sur le relevé), `PROFIL_HORS_V1` avec `motif` : `mayotte`, `collectivite_outre_mer`, `independant_reel_outre_mer`, `etranger`, `frontalier`, `demandeur_emploi`, `etudiant`, `sans_activite_seul`, `annee_non_couverte`, `independant_reel_non_verifie`, `retraite_alsace_moselle`, `independant_alsace_moselle_non_verifie` (régime local hors salarié du privé : contractuel, apprenti, micro-entrepreneur artisan).
 
 ## Ce qui est calculé, par profil
 
@@ -56,6 +56,7 @@ Erreurs : `SAISIE_INVALIDE` (avec `champ`), `PROFIL_HORS_V1` avec `motif` : `dom
 | Retraité | CSG au taux du revenu fiscal de référence, CRDS, Casa, cotisation maladie de 1 % sur la complémentaire | aucune | `baremes-2025.ts` |
 | Micro-entrepreneur | forfait micro-social réparti (maladie, invalidité-décès, retraite de base et complémentaire, CSG, CRDS), formation, taxe de chambre consulaire, versement libératoire | aucune | modele-social |
 | Apprenti, temps partiel, SMIC, Alsace-Moselle | lignes du salarié du privé ; en Alsace-Moselle, cotisation maladie du régime local 1,3 % | lignes du salarié, réduction générale 2025 | modele-social |
+| Outre-mer (Guadeloupe, Martinique, Guyane, La Réunion) | mêmes lignes que le profil ; réduction d'impôt de 30 % (plafond 2 450 €) ou 40 % (Guyane, plafond 4 050 €) après le plafonnement du quotient familial, avant la décote ; taxes sur la consommation « non chiffré » (taux de TVA du territoire affichés, octroi de mer non modélisé) | salarié du privé et apprenti : non calculée (exonérations Lodeom) ; fonctionnaire et contractuel : comme en métropole | `baremes-2025.ts` (OpenFisca `abat_dom`, impots.gouv.fr pour la TVA) |
 | Impôt du foyer | barème et quotient familial ; abattement de 10 % par salaire, de 10 % plafonné par foyer sur les pensions, forfaitaire sur le chiffre d'affaires micro ; abattement des plus de 65 ans ; taux effectif avec versement libératoire ; salaire d'apprenti exonéré jusqu'au SMIC annuel | | modele-social + `baremes-2025.ts` |
 
 ## Limites
@@ -65,5 +66,6 @@ Erreurs : `SAISIE_INVALIDE` (avec `champ`), `PROFIL_HORS_V1` avec `motif` : `dom
 - Contractuels : contribution chômage de l'employeur public non comptée (auto-assurance ou adhésion, selon l'employeur).
 - Retraités : pas de lissage du taux de CSG en cas de franchissement de seuil une seule année ; seuils de métropole ; pas de régime local d'Alsace-Moselle ; la cotisation de 1 % s'applique à toute la pension saisie comme complémentaire.
 - Micro-entrepreneurs : pas d'Acre, pas d'activité mixte, pas de professions libérales relevant de la Cipav ; l'éligibilité au versement libératoire (plafond de revenu fiscal de référence) n'est pas contrôlée.
-- Impôt : sans autres revenus, frais réels, réductions ni crédits d'impôt.
+- Impôt : sans autres revenus, frais réels, réductions ni crédits d'impôt ; impôt dû avant le seuil de mise en recouvrement (61 €).
+- Outre-mer : Mayotte (sécurité sociale propre, pas de CSG sur les pensions) et collectivités à fiscalité propre refusées ; part employeur des salariés du privé non calculée (Lodeom) ; retraités : taux de CSG du relevé exigé (seuils de revenu fiscal de référence d'outre-mer 2025 non trouvés dans une source officielle accessible) ; fonctionnaires : majoration de traitement à saisir dans les primes ; micro-entrepreneurs : taux de métropole, exonération de début d'activité outre-mer non appliquée ; TVA, accises et octroi de mer non estimés (aucune estimation publiée par niveau de vie pour l'outre-mer).
 - Vérification et écarts constatés : `web/ECARTS.md` ; cas types : `tests/cas_types/cas_types_profils.json`, test `web/tests/cas_types_profils.test.ts`.

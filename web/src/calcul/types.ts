@@ -225,7 +225,15 @@ export interface PersonneEtendue extends Personne {
   apprentissage?: { contrat_avant_mars_2025: boolean }
 }
 
-export interface ProfilEtendu extends Omit<Profil, 'personnes'> {
+/**
+ * Départements et régions d'outre-mer (zone 'dom'). Les collectivités d'outre-mer à fiscalité propre (Saint-Martin,
+ * Saint-Barthélemy, Saint-Pierre-et-Miquelon, Polynésie française, Nouvelle-Calédonie, Wallis-et-Futuna) : 'autre_com'.
+ */
+export type TerritoireOutreMer = 'guadeloupe' | 'martinique' | 'guyane' | 'reunion' | 'mayotte' | 'autre_com'
+
+export interface ProfilEtendu extends Omit<Profil, 'personnes' | 'residence'> {
+  /** territoire : obligatoire quand zone = 'dom' */
+  residence: Profil['residence'] & { territoire?: TerritoireOutreMer }
   personnes: PersonneEtendue[]
 }
 
@@ -261,7 +269,7 @@ export interface AffectationManquante {
 }
 
 export interface VerificationProfil {
-  profil: ProfilCalcule | 'alsace_moselle' | 'foyer'
+  profil: ProfilCalcule | 'alsace_moselle' | 'foyer' | 'outre_mer'
   statut: 'verifie' | 'non verifie'
   /** source de la vérification et tolérance (détail dans web/ECARTS.md) */
   reference: string
@@ -282,6 +290,9 @@ export type MotifHorsPerimetre =
   | 'independant_reel_non_verifie'
   | 'retraite_alsace_moselle'
   | 'independant_alsace_moselle_non_verifie'
+  | 'mayotte'
+  | 'collectivite_outre_mer'
+  | 'independant_reel_outre_mer'
 
 export interface ResultatErreurEtendu {
   statut: 'erreur'

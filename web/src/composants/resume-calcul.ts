@@ -34,7 +34,8 @@ export function resumer(r: ResultatOk, c: Complet | null): ResumeCalcul {
     sur100: Object.fromEntries(ORDRE_ADMIN.filter((a) => (s100[a] ?? 0) > 0).map((a) => [a, s100[a]])),
     sources: {
       salaire: arrondir(sousTotal(lignes.filter((l) => ['cotisation_salariale', 'csg_crds', 'impot_revenu'].includes(l.famille)))),
-      achats: c && c.conso.length ? arrondir(sousTotal(c.conso)) : null,
+      // Outre-mer, les taxes sur la consommation sont toutes « non chiffré » : pas de montant à afficher.
+      achats: c && c.conso.some((l) => !l.non_chiffre) ? arrondir(sousTotal(c.conso)) : null,
       ordures: c && c.locaux.some((l) => !l.non_chiffre) ? arrondir(sousTotal(c.locaux)) : null,
     },
   }
