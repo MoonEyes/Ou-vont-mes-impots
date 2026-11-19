@@ -448,45 +448,51 @@ function rendreEtapes(aff: Affectation, e: Etat): string {
   const surBase = `Sur ${e.base === 1 ? '1 €' : '100 €'} de ${nomDepart.charAt(0).toLowerCase()}${nomDepart.slice(1)}`
   const etapes = e.niveaux.map((n, i) => {
     const choisi = e.piste[i]
-    const arrive = i === 0 ? '' : `<p class="suivre-arrive">${h(surBase)}, <strong>${h(montant(c[i], e.base))}</strong> arrivent à cette étape.</p>`
-    const options = n.options.length
-      ? `<ul class="suivre-options" aria-label="Pistes possibles à l’étape ${i + 1}">${n.options
-          .map((o) => {
-            const negatif = o.part < 0
-            const valeur = negatif ? `en déduction : ${montant(-o.part * c[i], e.base)}` : montant(o.part * c[i], e.base)
-            const nom = o.suite && !negatif
-              ? `<button type="button" class="suivre-choix" data-etape="${i}" data-cle="${h(o.cle)}" aria-pressed="${choisi === o.cle}">${h(o.nom)}</button>`
-              : `<span class="nom">${h(o.nom)}</span>`
-            return `<li${choisi === o.cle ? ' class="actif"' : ''}><div class="barre-tete">${nom}<span class="valeur">${h(valeur)} ${badgeStatut(o.statut)}</span></div>${
-              o.detail ? `<div class="aide">${h(o.detail)}</div>` : ''
-            }<div class="barre" aria-hidden="true"><span class="barre-remplissage statut-${o.statut}" data-l="${Math.max(0, Math.min(100, Math.abs(o.part) * 100)).toFixed(2)}"></span></div></li>`
-          })
-          .join('')}</ul>`
-      : ''
+    const arrive = i === 0 ? '' : `<p class="suivre-arrive">Arrivent ici : <strong>${h(montant(c[i], e.base))}</strong> <span class="visuellement-cache">${h(surBase.charAt(0).toLowerCase() + surBase.slice(1))}</span><span aria-hidden="true">sur ${e.base === 1 ? '1 €' : '100 €'}</span></p>`
+    const ligne = (o: Option) => {
+      const negatif = o.part < 0
+      const valeur = negatif ? `en déduction : ${montant(-o.part * c[i], e.base)}` : montant(o.part * c[i], e.base)
+      const nom = o.suite && !negatif
+        ? `<button type="button" class="suivre-choix" data-etape="${i}" data-cle="${h(o.cle)}" aria-pressed="${choisi === o.cle}">${h(o.nom)}</button>`
+        : `<span class="nom">${h(o.nom)}</span>`
+      return `<li${choisi === o.cle ? ' class="actif"' : ''}><div class="barre-tete">${nom}<span class="valeur">${h(valeur)} ${badgeStatut(o.statut)}</span></div>${
+        o.detail ? `<div class="aide">${h(o.detail)}</div>` : ''
+      }<div class="barre" aria-hidden="true"><span class="barre-remplissage statut-${o.statut}" data-l="${Math.max(0, Math.min(100, Math.abs(o.part) * 100)).toFixed(2)}"></span></div></li>`
+    }
+    // Étape repliée (audit du 19/11, « Suivre un euro » à 360 px) : la piste choisie reste visible ; les autres pistes,
+    // la note de calcul et la source sont dans un repli fermé, sans rien retirer. Sans choix à cette étape, tout est ouvert.
+    const retenue = n.options.find((o) => o.cle === choisi)
+    const autres = retenue ? n.options.filter((o) => o !== retenue) : n.options
+    const liste = (os: Option[], quoi: string) =>
+      os.length ? `<ul class="suivre-options" aria-label="${h(quoi)} à l’étape ${i + 1}">${os.map(ligne).join('')}</ul>` : ''
     const fin = n.fin
       ? `<div class="suivre-fin">
-  <h3>${n.fin.statut ? `${badgeStatut(n.fin.statut)} ` : ''}La piste s’arrête ici</h3>
+  <h4>${n.fin.statut ? `${badgeStatut(n.fin.statut)} ` : ''}La piste s’arrête ici</h4>
   <p>${h(n.fin.texte)}</p>
   ${n.fin.alternative ? `<p><button type="button" class="suivre-choix" data-etape="${i}" data-cle="${h(n.fin.alternative.cle)}" aria-pressed="${choisi === n.fin.alternative.cle}">${h(n.fin.alternative.nom)}</button> ${badgeStatut(n.fin.alternative.statut)}</p>` : ''}
   ${n.fin.liens?.length ? `<ul>${n.fin.liens.map((l) => `<li><a href="${h(l.href)}">${h(l.texte)}</a></li>`).join('')}</ul>` : ''}
 </div>`
       : ''
     const consigne = n.options.some((o) => o.suite && o.part > 0) && !choisi ? '<p class="aide">Choisis une piste pour continuer.</p>' : ''
+    const note = n.note ? `<p class="aide">${h(n.note)}</p>` : ''
+    const source = n.source ? `<p class="source">${h(n.source)}${n.millesime ? ` (${h(n.millesime)})` : ''}</p>` : ''
+    const contenuRepli = `${retenue ? note : ''}${retenue ? liste(autres, 'Autres pistes possibles') : ''}${source}`
+    const quoi = [retenue && autres.length ? `${autres.length} autre${autres.length > 1 ? 's' : ''} piste${autres.length > 1 ? 's' : ''}` : '', retenue && n.note ? 'note' : '', n.source ? 'source' : ''].filter(Boolean)
+    const resumeRepli = quoi.length ? `${quoi.join(', ').replace(/, ([^,]*)$/, ' et $1')}${n.millesime ? ` (${annee(n.millesime)})` : ''}` : ''
     return `<li class="carte carte-contour suivre-etape" id="suivre-etape-${i}">
-  <h2 tabindex="-1">Étape ${i + 1} · ${h(n.titre)}</h2>
+  <h3 tabindex="-1">Étape ${i + 1} · ${h(n.titre)}</h3>
   ${arrive}
-  ${n.note ? `<p class="aide">${h(n.note)}</p>` : ''}
-  ${options}
+  ${retenue ? liste([retenue], 'Piste suivie') : `${note}${liste(autres, 'Pistes possibles')}`}
   ${consigne}
   ${fin}
-  ${n.source ? `<p class="source">${h(n.source)}${n.millesime ? ` (${h(n.millesime)})` : ''}</p>` : ''}
+  ${resumeRepli ? `<details class="suivre-repli"><summary>${h(resumeRepli.charAt(0).toUpperCase() + resumeRepli.slice(1))}</summary>${contenuRepli}</details>` : ''}
 </li>`
   })
   const annees = [...new Set(e.niveaux.map((n) => n.millesime).filter(Boolean).map(annee))]
   const melange = annees.length > 1
     ? `<p class="avertissement">Les étapes ne portent pas toutes sur la même année (${annees.map(h).join(', ')}) : la répartition du prélèvement et les dépenses des organismes viennent de documents différents. Le montant suivi est un ordre de grandeur.</p>`
     : ''
-  return `${melange}<ol class="suivre-etapes">${etapes.join('')}</ol>`
+  return `<h2 id="suivre-titre-etapes">Étape par étape</h2>${melange}<ol class="suivre-etapes" aria-labelledby="suivre-titre-etapes">${etapes.join('')}</ol>`
 }
 
 function maillons(aff: Affectation, e: Etat): MaillonPiste[] {
@@ -525,7 +531,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   cible.innerHTML = `
 <h1>Suivre un euro</h1>
 ${retourResultat()}
-<p class="chapeau">Choisis un prélèvement : le site suit 1 € de ce que tu verses, étape par étape, de l’organisme qui le reçoit jusqu’au dernier niveau publié. Là où plus rien n’est publié, la piste s’arrête et la page le dit.</p>
+<p class="chapeau">Le site suit 1 € de ce que tu verses, de l’organisme qui le reçoit jusqu’au dernier niveau publié. Là où plus rien n’est publié, la piste s’arrête et la page le dit.</p>
 ${legendeStatuts()}
 <section class="carte" aria-labelledby="suivre-titre-depart">
   <h2 id="suivre-titre-depart">D’où part ton euro</h2>
@@ -538,7 +544,7 @@ ${legendeStatuts()}
   <p id="suivre-jauge-texte"></p>
   <div class="barre" aria-hidden="true"><span class="barre-remplissage" id="suivre-jauge" data-l="100"></span></div>
   <div id="suivre-dessin"></div>
-  <p class="aide">Au départ, la piste suit la plus grande part à chaque étape. Choisis une autre piste à n’importe quelle étape. Chaque part est celle de l’étape précédente : l’argent d’un organisme n’est pas fléché ligne à ligne, ton euro suit donc la répartition de ses dépenses.</p>
+  <details class="suivre-repli"><summary>Comment la piste est choisie</summary><p class="aide">Au départ, la piste suit la plus grande part à chaque étape. Choisis une autre piste à n’importe quelle étape : ses autres pistes sont dans le repli sous la piste suivie. Chaque part est celle de l’étape précédente : l’argent d’un organisme n’est pas fléché ligne à ligne, ton euro suit donc la répartition de ses dépenses.</p></details>
 </section>
 <div id="suivre-etapes"></div>`
 
@@ -552,12 +558,12 @@ ${legendeStatuts()}
     dessin.innerHTML = resume(aff, e)
     const c = cumuls(e)
     const dernier = c[c.length - 1]
-    jaugeTexte.innerHTML = `Sur ${e.base === 1 ? '1 €' : '100 €'} au départ, <strong>${h(montant(dernier, e.base))}</strong> suivis jusqu’à la dernière étape (${c.length} étape${c.length > 1 ? 's' : ''}).`
+    jaugeTexte.innerHTML = `<strong>${h(montant(dernier, e.base))}</strong> sur ${e.base === 1 ? '1 €' : '100 €'} suivis jusqu’à la dernière étape (${c.length} étape${c.length > 1 ? 's' : ''}).`
     jauge.dataset.l = Math.max(0.5, dernier * 100).toFixed(2)
     jauge.style.width = `${jauge.dataset.l}%`
     zoneEtapes.querySelectorAll<HTMLElement>('[data-l]').forEach((el) => (el.style.width = `${el.dataset.l}%`))
     if (focusEtape !== undefined) {
-      const cibleEtape = zoneEtapes.querySelector<HTMLElement>(`#suivre-etape-${focusEtape} h2`)
+      const cibleEtape = zoneEtapes.querySelector<HTMLElement>(`#suivre-etape-${focusEtape} h3`)
       if (cibleEtape) {
         const reduit = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
         cibleEtape.focus({ preventScroll: true })

@@ -3304,7 +3304,21 @@ fieldset.saisie-groupe {
   margin-top: 0.75rem;
   padding-top: 0.75rem;
 }
-.suivre-fin h3 {
+/* Au téléphone, la liste déroulante suffit : les six départs fréquents y sont aussi (mêmes choix, 370 px gagnés). */
+@media (max-width: 44.99rem) {
+  .suivre-departs {
+    display: none;
+  }
+}
+.suivre-tous select {
+  width: 100%;
+}
+.suivre-etape > h3 {
+  margin-top: 0;
+}
+.suivre-fin h4 {
+  margin: 0 0 0.5rem;
+  font-size: var(--t1);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -3313,7 +3327,17 @@ fieldset.saisie-groupe {
 .fil-piste svg {
   max-width: 30rem;
 }
-.suivre-etape h2:focus-visible {
+.suivre-repli {
+  margin: 0.25rem 0 0;
+}
+.suivre-repli > summary {
+  color: var(--secondaire);
+  font-weight: 600;
+}
+.suivre-repli .suivre-options {
+  margin-top: 0.25rem;
+}
+.suivre-etape h3:focus-visible {
   outline: 3px solid var(--contour);
   outline-offset: 4px;
 }

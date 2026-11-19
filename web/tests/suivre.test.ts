@@ -102,8 +102,8 @@ describe('suivre un euro', () => {
     await ecran('#/suivre-un-euro')
     await cliquer(choix('Allocations familiales'))
     expect(etapes()).toHaveLength(2)
-    expect(etapes()[1].querySelector('h2')?.textContent).toContain('Famille')
-    expect(document.activeElement).toBe(etapes()[1].querySelector('h2'))
+    expect(etapes()[1].querySelector('h3')?.textContent).toContain('Famille')
+    expect(document.activeElement).toBe(etapes()[1].querySelector('h3'))
     expect(appels.at(-1)).toMatchObject({ behavior: 'auto' })
     // Branche sans détail : fin de piste avec la ligne la plus fine publiée.
     expect(etapes()[1].querySelector('.suivre-fin')?.textContent).toContain('ligne la plus fine publiée')
@@ -177,6 +177,28 @@ describe('suivre un euro', () => {
     expect(main.querySelector(`.suivre-departs [data-depart="${autre}"]`)?.getAttribute('aria-pressed')).toBe('true')
     // Piste : libellés entiers (plus de troncature « … »), montant à droite.
     expect(main.querySelector('.fil-piste')?.textContent).not.toContain('…')
+  })
+
+  it('étapes repliées (360 px, ≤ 8 écrans) : piste suivie visible, autres pistes, note et source dans un repli fermé, rien de retiré', async () => {
+    await ecran('#/suivre-un-euro')
+    const csg = aff.prelevements.csg_activite.ventilation as unknown[]
+    for (const [i, e] of etapes().entries()) {
+      const repli = e.querySelectorAll(':scope > details.suivre-repli')
+      expect(repli, `étape ${i + 1}`).toHaveLength(1)
+      expect(repli[0].hasAttribute('open')).toBe(false)
+      expect(repli[0].querySelector('.source')).not.toBeNull()
+      expect(repli[0].querySelector('summary')?.textContent).toMatch(/source/i)
+      // La piste suivie reste hors du repli, pressée.
+      const visible = e.querySelector(':scope > .suivre-options [aria-pressed="true"]')
+      if (i < etapes().length - 1) expect(visible, `étape ${i + 1}`).not.toBeNull()
+    }
+    // Étape 1 : toutes les pistes restent dans la page (1 visible + les autres repliées).
+    expect(etapes()[0].querySelectorAll('.suivre-options li')).toHaveLength(csg.length)
+    expect(etapes()[0].querySelector('summary')?.textContent).toContain(`${csg.length - 1} autres pistes`)
+    // Piste résumée en haut, avant les étapes ; titres d'étape en H3 sous un seul H2.
+    expect(main.querySelector('#suivre-dessin')!.compareDocumentPosition(main.querySelector('.suivre-etapes')!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(main.querySelectorAll('.suivre-etape h2')).toHaveLength(0)
+    expect(main.querySelector('#suivre-titre-etapes')?.tagName).toBe('H2')
   })
 
   it('libellés et montants', () => {
