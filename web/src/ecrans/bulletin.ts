@@ -10,6 +10,7 @@ import { additionner, type Affectation } from '../calcul/agregats'
 import { destinataire, enregistrerDestinataires, LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
 import { sur100Entiers } from '../calcul/repartition'
 import type { Administration, Fourchette, Personne, Prelevement, Profil, ResultatOk } from '../calcul/types'
+import { retourResultat } from '../composants/retour-resultat'
 import { chargerSiPresent } from '../donnees'
 import { session } from '../etat'
 import { lien, type Rendu } from '../routeur'
@@ -836,6 +837,7 @@ export function rendre(cible: HTMLElement): Rendu {
   const annuel = session.resultat ? '#/calcul/resultat' : '#/calcul'
   cible.innerHTML = `
 <h1>Ta fiche de paie expliquée</h1>
+${retourResultat()}
 <p class="chapeau">Chaque ligne d’une fiche de paie, rangée comme sur le modèle officiel : son montant, ce qu’elle finance, qui la reçoit et où va cet argent. Ce qui dépend de ton entreprise (mutuelle, prévoyance, taux d’accidents du travail) est signalé, pas inventé ; tes primes, absences et remboursements n’y sont pas.</p>
 <p class="aide">${origine(saisie, saisie ? session.profil : null)}</p>
 ${r0 && !saisie ? '<p class="avertissement">Ta saisie ne comporte pas de salaire, et une pension ou un revenu d’indépendant n’a pas de fiche de paie : voici celle de l’exemple du site.</p>' : ''}

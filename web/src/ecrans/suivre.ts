@@ -5,6 +5,7 @@
 // Mouvement seulement après un choix de la personne (jauge et défilement), coupé sous prefers-reduced-motion.
 import { filPiste, type MaillonPiste } from '../composants/fil-euro'
 import { statutPart } from '../composants/tracabilite'
+import { retourResultat } from '../composants/retour-resultat'
 import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import { annoncer, badgeStatut, h, legendeStatuts, libelle, md, STATUTS, sur100, type Statut } from '../util'
@@ -508,6 +509,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
 
   cible.innerHTML = `
 <h1>Suivre un euro</h1>
+${retourResultat()}
 <p class="chapeau">Choisis un prélèvement : le site suit 1 € de ce que tu verses, étape par étape, de l’organisme qui le reçoit jusqu’au dernier niveau publié. Là où plus rien n’est publié, la piste s’arrête et la page le dit.</p>
 ${legendeStatuts()}
 <section class="carte" aria-labelledby="suivre-titre-depart">

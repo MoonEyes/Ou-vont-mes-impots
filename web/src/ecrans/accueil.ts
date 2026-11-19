@@ -29,8 +29,9 @@ export function rendre(cible: HTMLElement) {
     <h2>Et ton billet à toi ?</h2>
     <div class="heros-champs">
       <div>
-        <label for="heros-net">Ton salaire net par mois</label>
-        <span class="champ-euro"><input id="heros-net" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="${h(entier(ex.profil.net_mensuel))}" aria-describedby="heros-msg" /></span>
+        <label for="heros-net">Ton salaire net avant impôt, par mois</label>
+        <span class="champ-euro"><input id="heros-net" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="Par exemple ${h(entier(ex.profil.net_mensuel))}" aria-describedby="heros-aide heros-msg" /></span>
+        <p class="aide" id="heros-aide">Ligne « Net à payer avant impôt sur le revenu » de ta fiche de paie.</p>
       </div>
       <div>
         <label for="heros-dep">Ton département</label>
@@ -121,6 +122,10 @@ ${tuiles()}
   const dep = cible.querySelector<HTMLSelectElement>('#heros-dep')!
   const com = cible.querySelector<HTMLSelectElement>('#heros-com')!
   const msg = cible.querySelector<HTMLElement>('#heros-msg')!
+  // Le moteur de calcul (Web Worker, environ 160 Ko compressés) se charge pendant que l'on écrit son salaire,
+  // et non plus après le clic : le résultat arrive plus vite.
+  const prechauffer = () => void import('../calcul/hors-fil').then((m) => m.prechauffer()).catch(() => {})
+  champ.addEventListener('focus', prechauffer, { once: true })
   dep.addEventListener('change', async () => {
     cible.querySelector<HTMLElement>('#heros-com-bloc')!.hidden = !dep.value
     if (!dep.value) return

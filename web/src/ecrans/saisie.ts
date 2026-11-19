@@ -136,8 +136,12 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
   const choix = (nom: string, valeur: string, courant: string, texte: string) =>
     `<label><input type="radio" name="${nom}" value="${valeur}"${valeur === courant ? ' checked' : ''} /> ${texte}</label>`
 
+  // Arrivée depuis l'accueil avec un salaire : le calcul part tout de suite ; l'état est dit en haut de l'écran
+  // (et non sous le formulaire, hors de la vue sur un téléphone).
+  const depuisAccueil = !!session.amorce
   cible.innerHTML = `
 <h1>Ton salaire</h1>
+${depuisAccueil ? '<p class="calcul-en-cours" id="statut-haut" role="status">Calcul en cours sur ton appareil… Le résultat s’affiche dans un instant. Tu pourras ensuite préciser ta situation ici.</p>' : ''}
 ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abord ton salaire : le résultat se calcule à partir de ta saisie, et rien n’est gardé d’une visite à l’autre.</p>' : ''}
 <p class="chapeau">Indique ton salaire : le site calcule ce que tu verses chaque année, à qui va l’argent, puis montre où va l’argent public. Le calcul se fait <strong>sur ton appareil</strong> : rien de ce que tu saisis n’est envoyé ni enregistré.</p>
 <p class="aide">Revenus 2025, en France métropolitaine (Alsace-Moselle comprise). Par défaut, le calcul retient un salaire du secteur privé ; fonction publique, apprentissage, retraite et micro-entreprise se choisissent dans « Préciser ma situation ». Pas encore couverts : outre-mer, étranger, travail frontalier, allocations chômage, indépendants au régime réel.</p>
@@ -284,6 +288,11 @@ ${cartesRayons('/calcul')}`
   $('#p1-statut').addEventListener('focus', precharger, { once: true })
 
   const retour = $('#retour')
+  /** Le calcul lancé depuis l'accueil s'est arrêté (saisie à compléter, erreur) : le message du haut renvoie au formulaire. */
+  const statutHaut = (texte: string) => {
+    const p = cible.querySelector<HTMLElement>('#statut-haut')
+    if (p) p.textContent = texte
+  }
   const effacerErreurs = () => {
     cible.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'))
     cible.querySelectorAll<HTMLElement>('.message-champ').forEach((el) => (el.hidden = true))
@@ -442,6 +451,7 @@ ${cartesRayons('/calcul')}`
   const messageDe = (sel: string) => (/-net$/.test(sel) ? sel.replace(/-net$/, '-msg') : /-quotite$/.test(sel) ? sel.replace(/-quotite$/, '-msg-q') : `${sel}-msg`)
 
   const montrerErreur = (err: ResultatErreurEtendu) => {
+    statutHaut('Le calcul n’a pas abouti : le message est affiché à côté du champ concerné, plus bas.')
     const e = err.erreur
     if (e.code === 'SAISIE_INVALIDE' && e.champ) {
       const m = /^\/personnes\/(\d)\/(.+)$/.exec(e.champ)
@@ -520,6 +530,7 @@ ${cartesRayons('/calcul')}`
       location.hash = '#/calcul/resultat'
     } catch (e) {
       console.error(e)
+      statutHaut('Le calcul est indisponible pour le moment : voir le message sous le formulaire.')
       retour.innerHTML = '<p class="erreur">Le calcul est indisponible pour le moment. Tu peux toujours <a href="#/explorer/etat">explorer le budget</a>.</p>'
     }
   })

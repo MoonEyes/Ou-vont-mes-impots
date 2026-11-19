@@ -3258,3 +3258,81 @@ fieldset.saisie-groupe {
 .croiser-mediane { stroke: var(--encre); stroke-width: 2; }
 .croiser-point { fill: var(--encre); stroke: var(--papier); stroke-width: 1.5; }
 .croiser-point-ailleurs { fill: var(--papier); stroke: var(--encre); stroke-width: 2; }
+
+/* ---------- Parcours principal : accueil, calcul, résultat, où va l'argent (docs/AUDIT_PARCOURS.md) ---------- */
+/* Retour au résultat, en haut des pages du parcours quand un calcul a été fait pendant la visite. */
+.retour-resultat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin: 0 0 1rem;
+}
+.retour-resultat a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+/* État du calcul lancé depuis l'accueil : en haut de l'écran, pas sous le formulaire. */
+.calcul-en-cours {
+  background: var(--papier);
+  border: var(--trait) solid var(--contour);
+  border-radius: 1.25rem;
+  padding: 0.875rem 1.25rem;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+/* Profil retenu, juste sous le total (le total et la phrase « sur 100 € » passent devant). */
+.recap .recap-profil {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--secondaire);
+}
+@media (max-width: 44.99rem) {
+  /* Téléphone (360 px) : titres du parcours resserrés pour que le champ salaire, le total et la phrase
+     « sur 100 € » tiennent dans le premier écran ; même police, mêmes formes, mêmes couleurs. */
+  .heros {
+    gap: 1rem;
+    padding-top: 0.5rem;
+  }
+  .heros h1,
+  h1.titre-resultat {
+    font-size: 2.125rem;
+    line-height: 1.05;
+    margin-bottom: 0.5rem;
+  }
+  .heros .chapeau {
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+  .heros-form {
+    padding: 1rem 1.125rem 1.125rem;
+  }
+  .heros-form h2 {
+    font-size: 1.25rem;
+  }
+  .heros-champs label:first-child {
+    margin-top: 0.25rem;
+  }
+  h1.titre-resultat {
+    font-size: 1.875rem;
+    gap: 0.5rem 0.75rem;
+  }
+  h1.titre-resultat .picto-grand {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  h1.titre-resultat + .colonnes {
+    margin-top: 0;
+  }
+  h1.titre-resultat + .colonnes .recap {
+    margin-top: 0.25rem;
+    padding: 1rem 1.125rem 1.125rem;
+    gap: 0.5rem;
+  }
+  .recap-titre {
+    font-size: 1rem;
+  }
+  .recap .grand-chiffre {
+    font-size: 2.75rem;
+  }
+}
