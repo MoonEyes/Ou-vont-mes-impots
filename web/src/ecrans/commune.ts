@@ -1,5 +1,6 @@
 // Ta commune (site/data/local/) : budget de la commune, bloc communal, département, région,
 // dotations de l'État, taux votés, subventions publiées. Chaque niveau à part : on n'additionne jamais.
+import { type NiveauCollectivite, pastilleNiveau } from '../composants/niveaux'
 import { fragmentCommune, fragmentDepartement } from '../chemins'
 import { partPersonnelle } from '../composants/hub'
 import { ouCest } from '../composants/trame'
@@ -65,18 +66,18 @@ function lire(b: Budgets, eur: Record<string, (number | null)[]>, an: string, k:
  * publiée avec les comptes de la même année (même source, même périmètre). */
 export const METHODE_PAR_HABITANT = 'montant de l’année divisé par la population de la même année, publiée avec les comptes par l’OFGL'
 
-export function blocBudget(b: Budgets, c: Budgets['collectivites'][string], titre: string, cle: boolean): string {
+export function blocBudget(b: Budgets, c: Budgets['collectivites'][string], titre: string, cle: boolean, niveau?: NiveauCollectivite): string {
   const an = [...b.annees].reverse().find((a) => c.eur[a]) ?? b.annees[b.annees.length - 1]
   const total = lire(b, c.eur, an, 'depenses_totales')
-  if (total === null || total <= 0) return `<h2>${h(titre)}</h2>${absent()}`
+  if (total === null || total <= 0) return `<h2>${pastilleNiveau(niveau)}${h(titre)}</h2>${absent()}`
   const pop = c.population[an]
   const rec = lire(b, c.eur, an, 'recettes_fonctionnement')
   const etat = lire(b, c.eur, an, 'concours_etat')
   const impots = lire(b, c.eur, an, 'impots_locaux')
   const dette = lire(b, c.eur, an, 'encours_dette')
   const lignes = DEPENSES.map(([k, n]) => ({ k, n, v: lire(b, c.eur, an, k) })).filter((x) => x.v !== null && x.v > 0)
-  return `<h2>${h(titre)}</h2>
-<div class="carte"${cle ? ' data-cle' : ''}>
+  return `<h2>${pastilleNiveau(niveau)}${h(titre)}</h2>
+<div class="carte"${cle ? ' data-cle' : ''}${niveau ? ` data-niveau="${niveau}"` : ''}>
   <p class="grand-chiffre">${cle ? surligne(eurLisible(total)) : h(eurLisible(total))}</p>
   <p class="sous-chiffre">de dépenses en ${h(an)}${pop ? `, soit ${h(eur(total / pop))} par habitant` : ''}. Sur 100 € dépensés :</p>
   ${barres(
@@ -193,10 +194,10 @@ ${partPersonnelle()}`
     const reg = br?.collectivites[g.region]
     remplir(
       'sec-budgets',
-      `${commune && bc ? clesBudget(bc, commune) : ''}${commune && bc ? blocBudget(bc, commune, `Le budget ${deCommune(commune.nom)}`, true) : absent('Budget de la commune non disponible.')}
-${bloc && be ? blocBudget(be, bloc, `Le bloc communal (communes et intercommunalité, sans double compte)`, false) : ep && be ? blocBudget(be, ep, `L’intercommunalité : ${ep.nom}`, false) : ''}
-${dpt && bd ? blocBudget(bd, dpt, `Le département : ${dpt.nom}`, false) : ''}
-${reg && br ? blocBudget(br, reg, `La région : ${reg.nom}`, false) : ''}`,
+      `${commune && bc ? clesBudget(bc, commune) : ''}${commune && bc ? blocBudget(bc, commune, `Le budget ${deCommune(commune.nom)}`, true, 'commune') : absent('Budget de la commune non disponible.')}
+${bloc && be ? blocBudget(be, bloc, `Le bloc communal (communes et intercommunalité, sans double compte)`, false) : ep && be ? blocBudget(be, ep, `L’intercommunalité : ${ep.nom}`, false, 'epci') : ''}
+${dpt && bd ? blocBudget(bd, dpt, `Le département : ${dpt.nom}`, false, 'departement') : ''}
+${reg && br ? blocBudget(br, reg, `La région : ${reg.nom}`, false, 'region') : ''}`,
     )
   })()
 

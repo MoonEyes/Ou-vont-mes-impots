@@ -154,6 +154,8 @@ export interface ElementBarre {
   lien?: string
   detail?: string
   statut?: Statut
+  /** pastille décorative avant le nom (niveau de collectivité, composants/niveaux.ts), HTML construit par le code */
+  pastille?: string
 }
 
 /**
@@ -165,7 +167,7 @@ export function barres(elements: ElementBarre[], max?: number, etiquette?: strin
   return `<ul class="barres"${etiquette ? ` aria-label="${h(etiquette)}"` : ''}>${elements
     .map((e, i) => {
       const w = m > 0 ? Math.max(0, Math.min(100, (e.valeur / m) * 100)) : 0
-      const nom = e.lien ? `<a href="${h(e.lien)}">${h(e.nom)}</a>` : `<span class="nom">${h(e.nom)}</span>`
+      const nom = e.lien ? `<a href="${h(e.lien)}">${e.pastille ?? ''}${h(e.nom)}</a>` : `<span class="nom">${e.pastille ?? ''}${h(e.nom)}</span>`
       const statut = e.statut ? ` statut-${e.statut}` : ''
       return `<li${i === actif ? ' class="actif"' : ''}><div class="barre-tete">${nom}<span class="valeur">${h(e.texte)}${
         e.statut ? ` ${badgeStatut(e.statut)}` : ''

@@ -23,6 +23,7 @@ import { session } from '../etat'
 import { ORDRE_ADMIN, NOM_SUR100 } from '../calcul/repartition'
 import { billet, type Famille as FamilleBillet, FAMILLE_ADMIN, listeParts, partsAdministrations, tableauBillet } from '../composants/billet'
 import { decouperQuandVisible } from '../composants/decoupe'
+import { niveauDestinataire, pastilleNiveau } from '../composants/niveaux'
 import { filEuro } from '../composants/fil-euro'
 import { resumer, sorties } from '../composants/resume-calcul'
 import { METHODE_TOTAL, phrasePosition, positionCentrale } from '../calcul/fourchette'
@@ -331,6 +332,7 @@ export async function rendre(cible: HTMLElement) {
           nom: x.destinataire === 'non_affecte' ? destinataire(x.destinataire).nom : nomAvecFamille(destinataire(x.destinataire).nom, LIBELLE_ADMINISTRATION[destinataire(x.destinataire).administration]),
           valeur: x.montant_annuel_eur.central,
           texte: fourchette(x.montant_annuel_eur),
+          pastille: pastilleNiveau(niveauDestinataire(x.destinataire)),
         })),
         undefined,
         'Montant annuel par destinataire',

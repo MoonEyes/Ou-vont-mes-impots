@@ -4,6 +4,7 @@
 // collectivités locales (arbre_administrations/). La piste s'arrête là où plus rien n'est publié, et la page le dit.
 // Mouvement seulement après un choix de la personne (jauge et défilement), coupé sous prefers-reduced-motion.
 import { filPiste, type MaillonPiste } from '../composants/fil-euro'
+import { niveauDestinataire, pastilleNiveau } from '../composants/niveaux'
 import { statutPart } from '../composants/tracabilite'
 import { retourResultat } from '../composants/retour-resultat'
 import { chargerSiPresent } from '../donnees'
@@ -73,6 +74,8 @@ interface Option {
   part: number
   statut: Statut
   detail?: string
+  /** pastille du niveau de collectivité (commune, intercommunalité…), décorative */
+  pastille?: string
   suite?: () => Promise<Niveau>
 }
 /** Une étape : soit des pistes à choisir, soit la fin de la piste. */
@@ -169,6 +172,7 @@ class Lecteur {
         part: v.part,
         statut: 'trace' as Statut,
         detail: v.source,
+        pastille: pastilleNiveau(niveauDestinataire(v.destinataire)),
         suite: () => this.destinataire(v.destinataire),
       }))
       .sort((a, b) => b.part - a.part)
@@ -453,8 +457,8 @@ function rendreEtapes(aff: Affectation, e: Etat): string {
       const negatif = o.part < 0
       const valeur = negatif ? `en déduction : ${montant(-o.part * c[i], e.base)}` : montant(o.part * c[i], e.base)
       const nom = o.suite && !negatif
-        ? `<button type="button" class="suivre-choix" data-etape="${i}" data-cle="${h(o.cle)}" aria-pressed="${choisi === o.cle}">${h(o.nom)}</button>`
-        : `<span class="nom">${h(o.nom)}</span>`
+        ? `<button type="button" class="suivre-choix" data-etape="${i}" data-cle="${h(o.cle)}" aria-pressed="${choisi === o.cle}">${o.pastille ?? ''}${h(o.nom)}</button>`
+        : `<span class="nom">${o.pastille ?? ''}${h(o.nom)}</span>`
       return `<li${choisi === o.cle ? ' class="actif"' : ''}><div class="barre-tete">${nom}<span class="valeur">${h(valeur)} ${badgeStatut(o.statut)}</span></div>${
         o.detail ? `<div class="aide">${h(o.detail)}</div>` : ''
       }<div class="barre" aria-hidden="true"><span class="barre-remplissage statut-${o.statut}" data-l="${Math.max(0, Math.min(100, Math.abs(o.part) * 100)).toFixed(2)}"></span></div></li>`

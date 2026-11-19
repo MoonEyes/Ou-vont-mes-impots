@@ -9,6 +9,7 @@ import { sur100Entiers } from '../calcul/repartition'
 import type { Prelevement, ResultatOk } from '../calcul/types'
 import type { Complet } from '../calcul/hors-bulletin'
 import { ADRESSE_SITE, MENTION } from '../composants/carte-partage'
+import { type NiveauCollectivite, niveauDestinataire, pastilleNiveau } from '../composants/niveaux'
 import { session } from '../etat'
 import { annoncer, badgeCalcule, estFourchette, fourchette, h, STATUTS, type Statut, traitStatut } from '../util'
 
@@ -17,6 +18,8 @@ export const METHODE_RECU =
 
 export interface LigneRecu {
   nom: string
+  /** niveau de collectivité du destinataire (pastille de couleur), null sinon */
+  niveau: NiveauCollectivite | null
   statut: Statut
   sur100: number
   montant: string
@@ -49,6 +52,7 @@ export function lignesRecu(r: ResultatOk, c: Complet | null): LigneRecu[] {
     return {
       // Nom seul, comme sur un ticket : la famille (Sécurité sociale, État…) est déjà dans le billet du résultat.
       nom: d.nom,
+      niveau: niveauDestinataire(g.destinataire),
       statut: g.destinataire === 'non_affecte' ? 'nonpub' : (statuts.get(g.destinataire) ?? 'trace'),
       sur100: s100[g.destinataire] ?? 0,
       montant: fourchette(g.montant_annuel_eur),
@@ -73,7 +77,7 @@ export function ticket(r: ResultatOk, c: Complet | null, montants: boolean, aujo
   <table class="recu-lignes"><caption class="visuellement-cache">${montants ? 'Montant annuel' : 'Part sur 100 €'} par destinataire, avec le statut de chaque ligne</caption>
   <thead><tr><th scope="col"><span class="visuellement-cache">Statut</span></th><th scope="col">Destinataire</th><th scope="col" class="nombre">${colonne}</th></tr></thead>
   <tbody>${lignes
-    .map((l) => `<tr><td class="recu-marge">${traitStatut(l.statut)}<span class="visuellement-cache">${h(STATUTS[l.statut].libelle)}</span></td><th scope="row">${h(l.nom)}</th><td class="nombre">${h(montants ? l.montant : part100(l.sur100))}</td></tr>`)
+    .map((l) => `<tr><td class="recu-marge">${traitStatut(l.statut)}<span class="visuellement-cache">${h(STATUTS[l.statut].libelle)}</span></td><th scope="row">${pastilleNiveau(l.niveau)}${h(l.nom)}</th><td class="nombre">${h(montants ? l.montant : part100(l.sur100))}</td></tr>`)
     .join('')}</tbody>
   <tfoot><tr><td></td><th scope="row">Total</th><td class="nombre">${h(montants ? fourchette(total) : '100 €')}</td></tr></tfoot>
   </table>

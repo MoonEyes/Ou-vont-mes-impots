@@ -98,7 +98,7 @@ ${partPersonnelle()}`
     const z = cible.querySelector<HTMLElement>('#sec-budget-dep')!
     const bd = await chargerSiPresent<Budgets>('local/budgets/departements.json')
     const dpt = bd?.collectivites[dep]
-    z.innerHTML = bd && dpt ? clesBudget(bd, dpt) + blocBudget(bd, dpt, `Le budget du département : ${dpt.nom}`, true) : `<h2>Le budget du département</h2>${absent('Budget du département non disponible.')}`
+    z.innerHTML = bd && dpt ? clesBudget(bd, dpt) + blocBudget(bd, dpt, `Le budget du département : ${dpt.nom}`, true, 'departement') : `<h2>Le budget du département</h2>${absent('Budget du département non disponible.')}`
     z.removeAttribute('aria-busy')
     appliquerLargeurs(z)
   })()
