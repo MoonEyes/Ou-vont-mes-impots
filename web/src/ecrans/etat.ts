@@ -1,5 +1,5 @@
 // Écran 3 : où va l'argent de l'État « sur 100 € », avec la part empruntée.
-import { billet, FAMILLES_TOURNANTES, type Part, partsAdministrations } from '../composants/billet'
+import { billet, type Part, partsAdministrations, ton } from '../composants/billet'
 import { eurosNonPublies } from '../composants/chiffres-site'
 import { blocTracabilite } from '../composants/tracabilite'
 import { charger, chargerSiPresent, deplier, type Noeud, urlDonnee, VUES_ARBRE, vueArbre } from '../donnees'
@@ -91,7 +91,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
     nom: libelle(p.nom),
     valeur: p.md,
     texte: sur100((p.md / total) * 100),
-    famille: FAMILLES_TOURNANTES[i % FAMILLES_TOURNANTES.length],
+    famille: ton('etat', i),
     lien: lien('/explorer/etat', { m: v.cle, poste: p.id }),
     detail: md(p.md),
   }))
@@ -109,7 +109,7 @@ ${billet(
     nom: libelle(e.nom),
     valeur: e.md,
     texte: sur100((e.md / total) * 100),
-    famille: FAMILLES_TOURNANTES[(i + 2) % FAMILLES_TOURNANTES.length],
+    famille: ton('etat', i),
     lien: lien('/explorer/etat/detail', { m: v.cle, id: e.id }),
     detail: md(e.md),
   })),

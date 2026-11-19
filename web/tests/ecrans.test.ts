@@ -199,7 +199,7 @@ describe('écrans', () => {
     expect(texte()).toContain('5e décile')
     expect(texte()).toContain('dans tes charges')
     expect(main.querySelector('.recap .surligne')?.textContent?.replace(/\s+/g, ' ')).toBe(eurFr(c.total.central))
-    expect(texte()).toContain(`Fourchette : ${eurFr(c.total.bas)} à ${eurFr(c.total.haut)}`)
+    expect(texte()).toContain(`Fourchette : entre ${eurFr(c.total.bas)} et ${eurFr(c.total.haut)}`)
     // Sur 100 € : la somme des parts affichées fait 100.
     const parts = [...(main.querySelector('.recap-sur100')?.textContent ?? '').matchAll(/(\d+) €/g)].map((m) => Number(m[1]))
     expect(parts.slice(1).reduce((a, b) => a + b, 0)).toBe(100)

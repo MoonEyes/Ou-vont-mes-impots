@@ -11,7 +11,8 @@ import { DEPARTEMENTS } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { session } from '../etat'
 import exemple from '../exemple-lyon.json'
-import { badgeStatut, entier, eur, h, nomVille } from '../util'
+import { METHODE_TOTAL, phrasePosition, positionCentrale } from '../calcul/fourchette'
+import { badgeCalcule, badgeStatut, entier, eur, h, jaugeFourchette, nomVille } from '../util'
 
 export function rendre(cible: HTMLElement) {
   const ex = exemple
@@ -91,19 +92,20 @@ ${tuiles()}
 
 <div class="colonnes">
   <section class="carte carte-principale" aria-labelledby="titre-exemple-total" data-cle>
-    <p id="titre-exemple-total" class="recap-titre">Ce que tu verses en un an, environ</p>
+    <p id="titre-exemple-total" class="recap-titre">Ce que tu verses en un an${etendue > 0 ? ', estimation de référence' : ''}</p>
     <p class="grand-chiffre">${h(eur(ex.total.central))}</p>
     ${
       etendue > 0
-        ? `<div class="jauge" aria-hidden="true"><span class="j-plein" data-l="${((ex.total.bas / ex.total.haut) * 100).toFixed(1)}"></span><span class="j-points" data-l="${((etendue / ex.total.haut) * 100).toFixed(1)}"></span></div>
-    <p class="jauge-bornes"><span>Au moins ${h(eur(ex.total.bas))}</span><span>Au plus ${h(eur(ex.total.haut))}</span></p>
-    <p class="aide">La fourchette dépend de ce que tu achètes et de ta taxe sur les ordures.</p>`
+        ? `<p class="recap-fourchette">Fourchette : <strong>entre ${h(eur(ex.total.bas))} et ${h(eur(ex.total.haut))}</strong></p>
+    ${jaugeFourchette(ex.total)}
+    <p class="aide">${h(phrasePosition(positionCentrale(ex.total)))} La fourchette dépend de ce que tu achètes et de ta taxe sur les ordures.</p>`
         : ''
     }
+    <p class="aide">${badgeCalcule(METHODE_TOTAL.replace('ton foyer', 'ce foyer'))}</p>
   </section>
   <div>
     <h2>Un exemple : ${h(net)} net à ${h(ville)}</h2>
-    <p class="chapeau">Sur une année, cette personne verse environ ${h(eur(ex.total.central))}. Une partie est connue à l’euro près, une autre dépend de ses achats : on te montre toujours la fourchette.</p>
+    <p class="chapeau">Sur une année, cette personne verse ${h(eur(ex.total.central))} selon l’estimation de référence. Une partie est connue à l’euro près, une autre dépend de ses achats : on te montre toujours la fourchette.</p>
     <ul class="postes">${lignes
       .map((l) => `<li><span class="p-nom">${h(l.nom)}<small>${h(l.detail)}</small></span><span class="p-montant">${h(l.texte)}</span>${badgeStatut(l.statut)}</li>`)
       .join('')}</ul>

@@ -5,7 +5,7 @@
 // comptabilités ne s'additionnent jamais, et une valeur absente de la source reste « non publié », jamais 0.
 import { parAdministration } from '../calcul/repartition'
 import type { Fourchette, Prelevement } from '../calcul/types'
-import { billet, FAMILLES_TOURNANTES, listeParts, type Part } from '../composants/billet'
+import { billet, listeParts, type Part, ton } from '../composants/billet'
 import { partPersonnelle } from '../composants/hub'
 import { plage, statutPlage } from '../composants/resume-calcul'
 import { chargerSiPresent, type Noeud } from '../donnees'
@@ -419,7 +419,7 @@ function blocRegimesMontants(p: Pensions | undefined, cps: Racine | null): strin
       nom,
       valeur: (v / total) * 100,
       texte: sur100((v / total) * 100),
-      famille: i < 5 ? FAMILLES_TOURNANTES[i % FAMILLES_TOURNANTES.length] : 'papier',
+      famille: i < 5 ? ton('secu', i) : 'papier',
       lien: lienOk ? lien('/explorer/secu', { m: 'protection2024', id: `${r.code_secteur}/${r.regime}` }) : undefined,
       detail: `${lisible(v)}${nom !== r.regime ? ` · libellé de la source : « ${r.regime} »` : ''}`,
     }
@@ -511,7 +511,7 @@ function blocCas(etat: Etat | null, idx: Index): string {
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
   const parts: Part[] = origines.map(([k, v], i) => {
     const s = cas.recettes_par_origine_pct[k] ?? (v / cas.recettes_eur) * 100
-    return { nom: NOMS_ORIGINES[k] ?? k, valeur: s, texte: sur100(s), famille: FAMILLES_TOURNANTES[i % FAMILLES_TOURNANTES.length], detail: `${lisible(v)} · ${fin(cas.origines[k] ?? '')}` }
+    return { nom: NOMS_ORIGINES[k] ?? k, valeur: s, texte: sur100(s), famille: ton('secu', i), detail: `${lisible(v)} · ${fin(cas.origines[k] ?? '')}` }
   })
   const src = idx.sources.plf25_recettes_cas
   return `<h3>Le compte des pensions de l’État (prévision pour 2025)</h3>

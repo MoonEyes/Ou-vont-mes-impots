@@ -10,6 +10,8 @@ import { enPrerendu, h } from '../util'
 export const CONTACT = 'proton.me.easel124@passinbox.com'
 /** Adresse publique du site quand la page ne la porte pas (développement, tests, prérendu). */
 export const SITE_DEFAUT = __URL_SITE__
+/** Pages sans bloc « Signaler » : l'accueil ne montre aucune donnée chiffrée propre, sa dernière impression reste le site. */
+export const PAGES_SANS_SIGNALER = new Set(['/'])
 /** Au-delà, la liste des fichiers est tronquée (référence de taille raisonnable). */
 export const MAX_FICHIERS = 40
 
@@ -55,11 +57,12 @@ export function texteReference(p: PageSignalee): string {
   return lignes.join('\n')
 }
 
-/** Bloc de fin de page : l'adresse de contact, la référence à copier et l'avertissement (aucune donnée personnelle).
+/** Bloc de fin de page, replié derrière un lien discret « Signaler une erreur sur cette page » : l'adresse de contact,
+ * la référence à copier et l'avertissement (aucune donnée personnelle). Absent de l'accueil (voir PAGES_SANS_SIGNALER).
  * Dans le navigateur, le champ est rempli par majSignaler (valeur seulement) : l'adresse de la page, ses paramètres et
  * la liste des fichiers restent hors du texte de la page ; le HTML prérendu porte la référence courte. */
 export function blocSignaler(p: PageSignalee): string {
-  return `<aside class="signaler" aria-label="Signaler une erreur"><p class="signaler-titre"><strong>Signaler une erreur sur cette page</strong></p><p class="aide">Écris à <span class="signaler-contact">${h(CONTACT)}</span> en indiquant l’adresse de cette page et les fichiers de données affichés : la référence ci-dessous est prête à copier. Le site n’envoie rien lui-même. N’ajoute aucune donnée personnelle inutile, ni ton salaire, ni ta saisie.</p><textarea class="signaler-reference" readonly rows="4" aria-label="Référence de la page à copier dans ton courriel">${enPrerendu() ? h(texteReference(p)) : ''}</textarea></aside>`
+  return `<aside class="signaler" aria-label="Signaler une erreur"><details><summary>Signaler une erreur sur cette page</summary><p class="aide">Écris à <span class="signaler-contact">${h(CONTACT)}</span> en indiquant l’adresse de cette page et les fichiers de données affichés : la référence ci-dessous est prête à copier. Le site n’envoie rien lui-même. N’ajoute aucune donnée personnelle inutile, ni ton salaire, ni ta saisie.</p><textarea class="signaler-reference" readonly rows="4" aria-label="Référence de la page à copier dans ton courriel">${enPrerendu() ? h(texteReference(p)) : ''}</textarea></details></aside>`
 }
 
 /** Fichiers lus par la page affichée, avec le millésime qu'ils déclarent (lus dans le cache, sans nouvelle requête). */

@@ -7,7 +7,7 @@ import { picto } from './composants/pictos'
 import { marquerSigles } from './composants/sigles'
 import { brancherExports } from './composants/exporter'
 import { annoncer, appliquerLargeurs, h, enPrerendu } from './util'
-import { blocSignaler, majSignaler } from './composants/signaler'
+import { blocSignaler, majSignaler, PAGES_SANS_SIGNALER } from './composants/signaler'
 import { oublierLectures } from './donnees'
 import { META_PAGES, NOM_SITE, TITRE_ACCUEIL, titreSite } from './metadonnees'
 
@@ -234,7 +234,7 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
       }
     }
     zone.insertAdjacentHTML('beforeend', voirAussi(routes, route))
-    zone.insertAdjacentHTML('beforeend', blocSignaler({ titre: propre.titre ?? route.titre, adresse: fragment }))
+    if (!PAGES_SANS_SIGNALER.has(route.chemin)) zone.insertAdjacentHTML('beforeend', blocSignaler({ titre: propre.titre ?? route.titre, adresse: fragment }))
     appliquerLargeurs(zone)
     cible.replaceChildren(zone)
     brancherExports(cible)
@@ -273,6 +273,6 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
       console.error(e)
     }
   }
-  if (moi === jeton) await majSignaler(cible, { titre: propre.titre ?? route.titre, adresse: fragment }).catch((e) => console.error(e))
+  if (moi === jeton && !PAGES_SANS_SIGNALER.has(route.chemin)) await majSignaler(cible, { titre: propre.titre ?? route.titre, adresse: fragment }).catch((e) => console.error(e))
   return page
 }

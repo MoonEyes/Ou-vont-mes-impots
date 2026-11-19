@@ -15,7 +15,10 @@
 }
 
 /* Direction « le billet découpé » (maquette W_Systeme). Contrastes vérifiés dans les deux modes : tests/contrastes.test.ts.
-   Les couleurs de famille ne changent pas en mode sombre et portent toujours un texte encre (blanc sur la famille État).
+   Les couleurs de famille portent toujours un texte encre, sauf les tons foncés de l'État (texte --sur-etat, blanc en
+   mode clair). Seule l'État change en mode sombre : son violet foncé disparaissait sur le papier sombre (1,9:1), il
+   s'éclaircit (6,7:1) et porte alors un texte encre. Tons d'une famille (--etat-2...) : billet découpé d'une seule
+   famille, foncé et clair en alternance, jamais la couleur d'une autre famille.
    Aucune couleur ne porte un sens seule : chaque forme colorée a un contour et un libellé. */
 :root {
   --fond: #f3f0ff;
@@ -39,6 +42,16 @@
   --niches: #ffa552;
   --operateurs: #b6e36b;
   --prestations: #c9b8ff;
+  --sur-etat: #ffffff;
+  --etat-2: #ad9cff;
+  --etat-3: #3a2199;
+  --etat-4: #d6cbfa;
+  --secu-2: #fff1c7;
+  --secu-3: #e0a400;
+  --secu-4: #ffe08a;
+  --collectivites-2: #c9f1ec;
+  --collectivites-3: #5fd3c5;
+  --collectivites-4: #8fe0d6;
   --accent: #4f2fcc;
   --taupe: #c9b8ff;
   --rayon: 1.5rem;
@@ -64,6 +77,11 @@
     --principal: #ffc93c;
     --principal-survol: #ffffff;
     --sur-principal: #1e1548;
+    --etat: #ad9cff;
+    --sur-etat: #1e1548;
+    --etat-2: #ddd3ff;
+    --etat-3: #c4b6ff;
+    --etat-4: #efebff;
     --accent: #c9b8ff;
     --taupe: #7a6bb5;
   }
@@ -544,7 +562,7 @@ h1.avec-picto {
 }
 .f-etat {
   --famille: var(--etat);
-  --sur-famille: var(--blanc);
+  --sur-famille: var(--sur-etat);
 }
 .f-collectivites {
   --famille: var(--collectivites);
@@ -777,6 +795,25 @@ h1.avec-picto {
 .jauge .j-points {
   background: radial-gradient(circle, var(--contour) 1.5px, transparent 1.7px) 0 0 / 6px 6px;
   border-left: 2px solid var(--contour);
+}
+/* Repère de l'estimation de référence : trait jaune bordé d'encre, comme le surligneur du chiffre clé. */
+.jauge {
+  position: relative;
+}
+.jauge .j-repere {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  margin-left: -4px;
+  background: var(--secu);
+  border-inline: 2px solid var(--encre);
+}
+.jauge .j-repere[data-g='100.0'] {
+  margin-left: -8px;
+}
+.recap-fourchette {
+  font-weight: 600;
 }
 .jauge-bornes {
   display: flex;
@@ -1276,7 +1313,8 @@ td.nombre {
 }
 .lignes li {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+  /* Téléphone : une seule colonne, le montant ou la méta passe sous le nom (jamais un nom écrit lettre par lettre). */
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.125rem 1rem;
   padding: 0.875rem 0;
   border-bottom: 1.5px solid var(--filet);
@@ -1290,14 +1328,16 @@ td.nombre {
 .lignes .montant {
   font-weight: 800;
   font-size: 1.125rem;
-  text-align: right;
-  max-width: 11rem;
 }
-@media (min-width: 34rem) {
+@media (min-width: 45rem) {
+  .lignes li {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 16rem);
+  }
+  .lignes li > :nth-child(2) {
+    text-align: right;
+  }
   .lignes .montant {
     font-size: 1.25rem;
-    max-width: none;
-    white-space: nowrap;
   }
 }
 .lignes .dest {
@@ -1818,7 +1858,7 @@ td.nombre {
   fill: var(--texte);
 }
 .billet .b-clair {
-  fill: var(--blanc);
+  fill: var(--sur-etat);
 }
 .billet .b-etiquette {
   fill: var(--blanc);
@@ -1896,6 +1936,15 @@ td.nombre {
 .fam-papier {
   fill: var(--papier);
 }
+.fam-etat-2 { fill: var(--etat-2); }
+.fam-etat-3 { fill: var(--etat-3); }
+.fam-etat-4 { fill: var(--etat-4); }
+.fam-secu-2 { fill: var(--secu-2); }
+.fam-secu-3 { fill: var(--secu-3); }
+.fam-secu-4 { fill: var(--secu-4); }
+.fam-collectivites-2 { fill: var(--collectivites-2); }
+.fam-collectivites-3 { fill: var(--collectivites-3); }
+.fam-collectivites-4 { fill: var(--collectivites-4); }
 .billet-note {
   display: flex;
   flex-wrap: wrap;
@@ -1984,7 +2033,7 @@ td.nombre {
   fill: var(--encre);
 }
 .fil-euro .fe-sur-etat {
-  fill: var(--blanc);
+  fill: var(--sur-etat);
 }
 .fil-euro .fe-boite {
   fill: var(--papier);
@@ -2238,7 +2287,7 @@ td.nombre {
 }
 .etapes li:nth-child(2)::before {
   background: var(--etat);
-  color: var(--blanc);
+  color: var(--sur-etat);
 }
 .etapes li:nth-child(3)::before {
   background: var(--collectivites);
@@ -2436,6 +2485,15 @@ td.nombre {
 .fond-operateurs { background: var(--operateurs); }
 .fond-prestations { background: var(--prestations); }
 .fond-papier { background: var(--papier); }
+.fond-etat-2 { background: var(--etat-2); }
+.fond-etat-3 { background: var(--etat-3); }
+.fond-etat-4 { background: var(--etat-4); }
+.fond-secu-2 { background: var(--secu-2); }
+.fond-secu-3 { background: var(--secu-3); }
+.fond-secu-4 { background: var(--secu-4); }
+.fond-collectivites-2 { background: var(--collectivites-2); }
+.fond-collectivites-3 { background: var(--collectivites-3); }
+.fond-collectivites-4 { background: var(--collectivites-4); }
 .seulement-compact { display: block; }
 .seulement-large { display: none; }
 @media (min-width: 45rem) {
@@ -2645,8 +2703,7 @@ fieldset.saisie-groupe {
 }
 .recherche-boite {
   position: relative;
-  flex: 1 1 auto;
-  max-width: 24rem;
+  flex: 0 1 22rem;
 }
 .recherche-entete input[type='search'] {
   min-height: 2.75rem;
@@ -3234,6 +3291,33 @@ fieldset.saisie-groupe {
 .signaler {
   margin-top: 2rem;
 }
+/* Résultat : actions et légende des motifs sous les deux colonnes, en bandeau pleine largeur (équilibre des colonnes). */
+.resultat-bandeau {
+  display: grid;
+  gap: 0 2rem;
+  align-items: start;
+  margin: 0.5rem 0 1.5rem;
+}
+.resultat-bandeau .actions {
+  margin-top: 0;
+}
+@media (min-width: 62rem) {
+  .resultat-bandeau {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .resultat-bandeau > .carte {
+    margin-top: 0;
+  }
+}
+/* Par destinataire : barres d'une teinte neutre (aucune couleur de famille pour des destinataires de familles mêlées),
+   3:1 au moins sur le papier dans les deux modes. */
+#par-destinataire .barre-remplissage {
+  background: var(--secondaire);
+}
+/* Un lien discret qui déplie la référence : la fin de page reste au contenu, pas à l'outil de signalement. */
+.signaler summary {
+  font-weight: 600;
+}
 .signaler p {
   margin: 0;
 }
@@ -3454,6 +3538,18 @@ fieldset.saisie-groupe {
     display: inline-flex;
     margin-left: auto;
   }
+  /* Marque, loupe et menu : au moins 12 px entre la marque et la loupe, boutons de 44 x 44 px. */
+  .marque {
+    gap: 0.375rem;
+    margin-right: 0.25rem;
+  }
+  #bouton-recherche,
+  #bouton-menu {
+    min-height: 44px;
+  }
+  #bouton-recherche {
+    min-width: 44px;
+  }
   .navigation {
     margin-left: 0;
   }
@@ -3473,7 +3569,7 @@ fieldset.saisie-groupe {
 @media (max-width: 25.99rem) {
   #bouton-menu {
     padding: 0;
-    min-width: 48px;
+    min-width: 44px;
   }
   .bouton-menu-texte {
     position: absolute;

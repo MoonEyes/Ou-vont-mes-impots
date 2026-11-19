@@ -39,6 +39,16 @@ export function fourchette(f: Fourchette, diviseur = 1): string {
 }
 export const estFourchette = (f: Fourchette) => Math.round(f.bas) !== Math.round(f.haut)
 
+/**
+ * Jauge d'une fourchette : plein jusqu'à la borne basse, pointillé jusqu'à la borne haute, et un repère (trait jaune,
+ * comme le surligneur du chiffre clé) à l'estimation de référence. Les deux bornes sont écrites aux deux bouts.
+ */
+export function jaugeFourchette(f: Fourchette): string {
+  const pc = (x: number) => ((x / f.haut) * 100).toFixed(1)
+  return `<div class="jauge" aria-hidden="true"><span class="j-plein" data-l="${pc(f.bas)}"></span><span class="j-points" data-l="${pc(f.haut - f.bas)}"></span><span class="j-repere" data-g="${pc(f.central)}"></span></div>
+    <p class="jauge-bornes"><span>${h(eur(f.bas))}</span><span>${h(eur(f.haut))}</span></p>`
+}
+
 /** Libellés accentués pour les clés de l'arbre (le pipeline les livre sans accent). */
 const ACCENTS: Record<string, string> = {
   'Education et recherche': 'Éducation et recherche',

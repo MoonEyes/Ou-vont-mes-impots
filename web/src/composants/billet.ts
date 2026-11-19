@@ -4,7 +4,26 @@
 // téléphone ; la feuille de style n'en montre qu'un. Chaque part est un lien quand elle mène quelque part.
 import { h } from '../util'
 
-export type Famille = 'secu' | 'etat' | 'collectivites' | 'ue' | 'dette' | 'niches' | 'operateurs' | 'prestations' | 'papier' | 'nonpub'
+export type Famille =
+  | 'secu'
+  | 'etat'
+  | 'collectivites'
+  | 'ue'
+  | 'dette'
+  | 'niches'
+  | 'operateurs'
+  | 'prestations'
+  | 'papier'
+  | 'nonpub'
+  | 'etat-2'
+  | 'etat-3'
+  | 'etat-4'
+  | 'secu-2'
+  | 'secu-3'
+  | 'secu-4'
+  | 'collectivites-2'
+  | 'collectivites-3'
+  | 'collectivites-4'
 
 export interface Part {
   nom: string
@@ -32,8 +51,20 @@ export interface OptionsBillet {
   base?: number
 }
 
-/** Familles tournantes pour des postes sans couleur attitrée (grands postes de l'État, missions). */
-export const FAMILLES_TOURNANTES: Famille[] = ['ue', 'dette', 'niches', 'prestations', 'operateurs', 'collectivites', 'secu']
+/**
+ * Tons d'une famille, pour découper le billet d'une seule famille (postes de l'État, régimes de retraite...).
+ * À l'intérieur d'une famille, une seule teinte et ses dégradés, alternés foncé et clair : une couleur d'une autre
+ * famille (rose de la dette, jaune de la Sécurité sociale) ne doit jamais signifier autre chose que sa famille.
+ */
+export const TONS: Record<'etat' | 'secu' | 'collectivites', Famille[]> = {
+  etat: ['etat', 'etat-2', 'etat-3', 'etat-4'],
+  secu: ['secu', 'secu-2', 'secu-3', 'secu-4'],
+  collectivites: ['collectivites', 'collectivites-2', 'collectivites-3', 'collectivites-4'],
+}
+/** Ton de rang i (en boucle) de la famille. */
+export const ton = (famille: keyof typeof TONS, i: number): Famille => TONS[famille][((i % 4) + 4) % 4]
+/** Tons foncés : texte clair dessus (blanc en mode clair, encre en mode sombre où ces tons s'éclaircissent). */
+const TONS_FONCES = new Set<Famille>(['etat', 'etat-3'])
 
 let compteur = 0
 
@@ -108,7 +139,7 @@ function tracer(parts0: Part[], o: OptionsBillet, t: Trace, classe: string): str
     const etiquette = nonpub
       ? `<rect class="b-etiquette" x="${(cx - Math.min(lt, w - 10) / 2).toFixed(1)}" y="${(cy - c * 0.72).toFixed(1)}" width="${Math.min(lt, w - 10).toFixed(1)}" height="${(c * 1.44).toFixed(1)}" rx="${(c * 0.3).toFixed(1)}"/>`
       : ''
-    const mot = `<text class="${p.famille === 'etat' ? 'b-clair' : p.famille === 'papier' ? 'b-sur-papier' : ''}" x="${cx.toFixed(1)}" y="${(cy + c * 0.35).toFixed(1)}" font-size="${c.toFixed(1)}" text-anchor="middle">${h(texte)}</text>`
+    const mot = `<text class="${TONS_FONCES.has(p.famille) ? 'b-clair' : p.famille === 'papier' ? 'b-sur-papier' : ''}" x="${cx.toFixed(1)}" y="${(cy + c * 0.35).toFixed(1)}" font-size="${c.toFixed(1)}" text-anchor="middle">${h(texte)}</text>`
     const nom = `${p.nom} : ${p.texte}${/sur 100/.test(p.texte) ? '' : ` ${unite}`}`
     const contenu = `${fond}${rond}${etiquette}${mot}`
     formes.push(p.lien ? `<a href="${h(p.lien)}" aria-label="${h(nom)}">${contenu}</a>` : `<g role="img" aria-label="${h(nom)}">${contenu}</g>`)

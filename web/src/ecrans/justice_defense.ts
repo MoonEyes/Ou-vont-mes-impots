@@ -5,7 +5,7 @@
 // Le montant par journée de détention et le montant par établissement calculés par le pipeline (prisons.json,
 // montant_calcule et montant_calcule_eur) attendent l'arbitrage de l'éditeur : ils ne sont jamais lus ni affichés. Seul un
 // montant publié par une source officielle, cité tel quel, pourrait l'être ; aucun ne figure dans les données reprises.
-import { billet, type Famille, FAMILLES_TOURNANTES, type Part, tableauBillet } from '../composants/billet'
+import { billet, type Famille, type Part, tableauBillet, ton } from '../composants/billet'
 import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent, type Noeud, VUES_ARBRE } from '../donnees'
 import { lien, type Rendu } from '../routeur'
@@ -263,7 +263,7 @@ function blocSur100(racine: Noeud | null, m: Missions): string {
   const s = (x: number) => (x / total) * 100
   const j = m.justice.mission
   const d = m.defense.mission
-  const famille = (poste: Noeud): Famille => FAMILLES_TOURNANTES[Math.max(0, (racine.enfants ?? []).indexOf(poste)) % FAMILLES_TOURNANTES.length]
+  const famille = (poste: Noeud): Famille => ton('etat', Math.max(0, (racine.enfants ?? []).indexOf(poste)))
   const deux = [
     { nom: d.nom, noeud: d, famille: famille(m.defense.poste) },
     { nom: j.nom, noeud: j, famille: famille(m.justice.poste) },

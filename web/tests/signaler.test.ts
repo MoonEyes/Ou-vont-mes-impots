@@ -51,6 +51,10 @@ describe('référence à copier', () => {
     expect(ref.textContent).toBe('')
     expect(zone.querySelector('b')).toBeNull()
     expect(zone.textContent).toContain('Signaler une erreur sur cette page')
+    // Replié : un lien discret (résumé d'un <details>), la référence n'apparaît qu'à l'ouverture.
+    expect(zone.querySelector('details > summary')?.textContent).toBe('Signaler une erreur sur cette page')
+    expect(zone.querySelector('details')?.hasAttribute('open')).toBe(false)
+    expect(zone.querySelector('details .signaler-reference')).not.toBeNull()
     expect(zone.textContent).toContain('N’ajoute aucune donnée personnelle inutile')
     expect(zone.innerHTML).not.toMatch(/github\.com|\/issues|ticket|mailto:/i)
     expect(zone.textContent).not.toContain('—')
@@ -88,7 +92,8 @@ describe('sur les pages', () => {
       expect(document.body.querySelector('a[href*="github.com"]'), f).toBeNull()
       // Page qui renvoie ailleurs sans saisie (résultat du calcul) : c'est la page d'arrivée qui porte le bloc.
       if (location.hash !== f) continue
-      expect(main.querySelectorAll('.signaler-reference').length, f).toBe(1)
+      // Accueil : pas de bloc (audit design du 19/11, problème 12).
+      expect(main.querySelectorAll('.signaler-reference').length, f).toBe(f === '#/' ? 0 : 1)
     }
   }, 180000)
 })

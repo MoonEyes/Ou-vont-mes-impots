@@ -24,7 +24,8 @@ import { ORDRE_ADMIN, NOM_SUR100 } from '../calcul/repartition'
 import { billet, type Famille as FamilleBillet, FAMILLE_ADMIN, listeParts, partsAdministrations, tableauBillet } from '../composants/billet'
 import { filEuro } from '../composants/fil-euro'
 import { resumer, sorties } from '../composants/resume-calcul'
-import { appliquerLargeurs, badgeStatut, barres, entier, eur, estFourchette, fourchette, h, lireLesMotifs, nomVille, pct, source, type Statut, STATUTS, surligne, traitStatut } from '../util'
+import { METHODE_TOTAL, phrasePosition, positionCentrale } from '../calcul/fourchette'
+import { appliquerLargeurs, badgeCalcule, badgeStatut, barres, entier, eur, estFourchette, fourchette, h, jaugeFourchette, lireLesMotifs, nomVille, pct, source, type Statut, STATUTS, surligne, traitStatut } from '../util'
 
 const FAMILLES: [Famille, string][] = [
   ['cotisation_salariale', 'Cotisations sociales prélevées sur ton salaire'],
@@ -189,24 +190,26 @@ export function phraseSur100(s100: Record<string, number>): string {
 }
 
 /** Carte principale « Ce que tu verses en un an » : total, répartition sur 100 €, jauge de la fourchette. */
-function blocTotal(r: ResultatOk, c: Complet | null, pour = ''): string {
+export function blocTotal(r: ResultatOk, c: Complet | null, pour = ''): string {
   const t = c ? c.total : r.totaux.paye_par_le_foyer
   const net = r.entree.personnes.reduce((s, p) => s + p.salaire_net_avant_impot_annuel, 0)
   const s100 = resumer(r, c).sur100
+  const position = positionCentrale(t)
   const plage = estFourchette(t)
   // Phrase-clé juste sous le total (lue sans défiler sur un écran de 360 px), la fourchette ensuite.
   return `<section class="recap" data-cle aria-labelledby="titre-recap">
-    <h2 id="titre-recap" class="recap-titre">Ce que tu verses en un an${plage ? ', environ' : ''}</h2>
+    <h2 id="titre-recap" class="recap-titre">Ce que tu verses en un an${plage ? ', estimation de référence' : ''}</h2>
     <p class="grand-chiffre">${surligne(eur(t.central))}</p>
+    ${plage ? `<p class="recap-fourchette">Fourchette : <strong>entre ${h(eur(t.bas))} et ${h(eur(t.haut))}</strong></p>` : ''}
     <p class="recap-sur100">${phraseSur100(s100)}</p>
     ${pour ? `<p class="recap-profil">Calcul pour : ${h(pour)}. <a href="#/calcul">Modifier ma saisie</a></p>` : ''}
     ${
-      plage
-        ? `<div class="jauge" aria-hidden="true"><span class="j-plein" data-l="${((t.bas / t.haut) * 100).toFixed(1)}"></span><span class="j-points" data-l="${(((t.haut - t.bas) / t.haut) * 100).toFixed(1)}"></span></div>
-    <p class="jauge-bornes">Fourchette : ${h(eur(t.bas))} à ${h(eur(t.haut))}</p>
-    <p class="aide">La fourchette dépend de ce que tu achètes et de tes impôts locaux.</p>`
+      plage && position !== 'hors'
+        ? `${jaugeFourchette(t)}
+    <p class="aide">${h(phrasePosition(position))} La fourchette dépend de ce que tu achètes et de tes impôts locaux.</p>`
         : ''
     }
+    <p class="aide">${badgeCalcule(METHODE_TOTAL)}</p>
     <p class="aide">Soit ${h(eur(t.central / 12))} par mois, pour ${h(eur(net))} ${REVENU_ANNUEL[natureRevenus(r)]}. ${
       r.prelevements.some((l) => l.famille === 'cotisation_patronale')
         ? 'Hors cotisations de ton employeur (plus bas)'
@@ -336,17 +339,21 @@ export async function rendre(cible: HTMLElement) {
 <div class="colonnes">
   <div>
     ${blocTotal(r, c, `${profilTexte(r)}${session.communeNom ? `, à ${nomVille(session.communeNom)}` : ''}`)}
+  </div>
+  <div>
     ${bb.gauche}
+    ${bb.droite}
+  </div>
+</div>
+<div class="resultat-bandeau">
+  <div>
     <div class="actions">
       <a class="bouton bouton-principal" href="${h(suivreMes)}">Suivre mes euros${premiere ? `<span class="visuellement-cache"> : ${h(premiere.libelle)}, étape par étape</span>` : ''}</a>
       <button type="button" id="partager-carte">Partager ma carte</button>
     </div>
     <p class="aide" id="partage-info">La carte est une image de ton billet, créée sur ton appareil. Aucun montant n’est mis dans une adresse ni envoyé au site.</p>
-    ${lireLesMotifs()}
   </div>
-  <div>
-    ${bb.droite}
-  </div>
+  ${lireLesMotifs()}
 </div>
 ${bb.fil}
 ${avert}
