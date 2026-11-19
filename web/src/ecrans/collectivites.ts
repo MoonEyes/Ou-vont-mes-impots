@@ -1,5 +1,6 @@
 // Les collectivités locales, vue nationale : comptes (Eurostat), fonctions (COFOG), régions et départements (OFGL).
 import { partPersonnelle } from '../composants/hub'
+import { pastilleNiveau } from '../composants/niveaux'
 import { chargerSiPresent, type Noeud } from '../donnees'
 import { absent, barres, eurLisible, h, md, source, sur100, surligne } from '../util'
 
@@ -57,9 +58,9 @@ ${
     : ''
 }
 <h2>Régions et départements</h2>
-<ul>
-  ${reg ? `<li>Les 18 régions : ${h(eurLisible(reg.eur))} de dépenses en ${h(reg.annee)}.</li>` : ''}
-  ${dep ? `<li>Les départements : ${h(eurLisible(dep.eur))} de dépenses en ${h(dep.annee)}.</li>` : ''}
+<ul class="liste-niveaux">
+  ${reg ? `<li>${pastilleNiveau('region')}Les 18 régions : ${h(eurLisible(reg.eur))} de dépenses en ${h(reg.annee)}.</li>` : ''}
+  ${dep ? `<li>${pastilleNiveau('departement')}Les départements : ${h(eurLisible(dep.eur))} de dépenses en ${h(dep.annee)}.</li>` : ''}
 </ul>
 ${regions ? source(regions.source, regions.millesime) : ''}
 <p class="aide">Ne pas additionner les niveaux : une partie de l’argent passe de l’un à l’autre (dotations, reversements).</p>

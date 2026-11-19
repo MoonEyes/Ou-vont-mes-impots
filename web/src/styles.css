@@ -52,6 +52,12 @@
   --collectivites-2: #c9f1ec;
   --collectivites-3: #5fd3c5;
   --collectivites-4: #8fe0d6;
+  /* Niveaux de collectivité (composants/niveaux.ts) : une teinte de sarcelle par niveau, 3:1 au moins sur le fond et le
+     papier (WCAG 1.4.11) ; plus foncées en clair, plus claires en sombre. */
+  --niveau-commune: #0f8f82;
+  --niveau-epci: #127c8c;
+  --niveau-departement: #1a6f5a;
+  --niveau-region: #0e4f63;
   --accent: #4f2fcc;
   --taupe: #c9b8ff;
   /* Échelle typographique : 7 crans (ratio 1,25 environ, base 18 px), plancher 14 px. Aucune autre taille
@@ -96,6 +102,10 @@
     --etat-4: #efebff;
     --accent: #c9b8ff;
     --taupe: #7a6bb5;
+    --niveau-commune: #19c3b1;
+    --niveau-epci: #3fb8d0;
+    --niveau-departement: #2fd4a0;
+    --niveau-region: #7fd8e8;
   }
 }
 
@@ -454,10 +464,31 @@ main > .chargement {
 .pied :focus-visible {
   outline-color: var(--sur-bandeau);
 }
+/* Pied de page (finitions du 19/11) : au téléphone, la marque et quatre liens essentiels, le reste dans un repli
+   (745 px avant, moins de 320 px après). Sur grand écran, le repli s'affiche ouvert, sans résumé, là où le
+   navigateur sait ouvrir un repli par la feuille de style (::details-content) ; ailleurs, le résumé reste cliquable. */
+.pied-tete {
+  display: grid;
+  gap: 0.25rem 1.5rem;
+  padding-top: 1.25rem;
+}
+.pied-essentiels ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1rem;
+}
+.pied-plus {
+  margin: 0;
+  padding-bottom: 0.75rem;
+}
+.pied-plus > summary {
+  color: var(--sur-bandeau);
+  font-weight: 600;
+}
 .pied-grille {
   display: grid;
-  gap: 2rem 2.5rem;
-  padding-block: 3rem 2rem;
+  gap: 1.25rem 1.5rem;
+  padding-block: 1rem 1.25rem;
   grid-template-columns: 1fr 1fr;
 }
 .pied-grille > :first-child {
@@ -471,7 +502,7 @@ main > .chargement {
 }
 .pied-grille p {
   max-width: 22rem;
-  margin: 0.5rem 0 0;
+  margin: 0;
 }
 .pied h3 {
   font-size: var(--t1);
@@ -485,14 +516,31 @@ main > .chargement {
 }
 .pied-bas {
   border-top: 1.5px solid var(--sur-bandeau);
-  padding-block: 1.25rem 2rem;
+  padding-block: 1.25rem 1.25rem;
   font-size: var(--t-1);
   margin: 0;
+}
+@media (min-width: 45rem) {
+  .pied-tete {
+    padding-top: 2.5rem;
+  }
+}
+@supports selector(::details-content) {
+  @media (min-width: 45rem) {
+    .pied-essentiels,
+    .pied-plus > summary {
+      display: none;
+    }
+    .pied-plus::details-content {
+      content-visibility: visible;
+    }
+  }
 }
 @media (min-width: 62rem) {
   .pied-grille {
     grid-template-columns: 2fr 1fr 1fr 1fr;
-    padding-top: 3.5rem;
+    padding-top: 1.5rem;
+    gap: 2rem 2.5rem;
   }
   .pied-grille > :first-child {
     grid-column: auto;
@@ -3304,7 +3352,21 @@ fieldset.saisie-groupe {
   margin-top: 0.75rem;
   padding-top: 0.75rem;
 }
-.suivre-fin h3 {
+/* Au téléphone, la liste déroulante suffit : les six départs fréquents y sont aussi (mêmes choix, 370 px gagnés). */
+@media (max-width: 44.99rem) {
+  .suivre-departs {
+    display: none;
+  }
+}
+.suivre-tous select {
+  width: 100%;
+}
+.suivre-etape > h3 {
+  margin-top: 0;
+}
+.suivre-fin h4 {
+  margin: 0 0 0.5rem;
+  font-size: var(--t1);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -3313,7 +3375,17 @@ fieldset.saisie-groupe {
 .fil-piste svg {
   max-width: 30rem;
 }
-.suivre-etape h2:focus-visible {
+.suivre-repli {
+  margin: 0.25rem 0 0;
+}
+.suivre-repli > summary {
+  color: var(--secondaire);
+  font-weight: 600;
+}
+.suivre-repli .suivre-options {
+  margin-top: 0.25rem;
+}
+.suivre-etape h3:focus-visible {
   outline: 3px solid var(--contour);
   outline-offset: 4px;
 }
@@ -3902,10 +3974,6 @@ fieldset.saisie-groupe {
     padding: 0.75rem 1.125rem;
     gap: 0.25rem;
   }
-  .pied-grille {
-    gap: 1.25rem 1.5rem;
-    padding-block: 2rem 1.25rem;
-  }
 }
 .recap-plus,
 .partage-options {
@@ -4007,7 +4075,7 @@ fieldset.saisie-groupe {
   position: relative;
   max-width: 20rem;
   margin: 1.5rem 0;
-  padding: 1.75rem 1.25rem 1.5rem 2.25rem;
+  padding: 1.25rem 1rem 1.25rem 2.25rem;
   background: var(--papier);
   color: var(--texte);
   border-inline: var(--trait) solid var(--contour);
@@ -4045,7 +4113,7 @@ fieldset.saisie-groupe {
 }
 .recu-lignes {
   width: 100%;
-  margin: 1rem 0 0.75rem;
+  margin: 0.75rem 0 0.5rem;
   border-collapse: collapse;
   font-variant-numeric: tabular-nums;
   font-size: var(--t0);
@@ -4053,7 +4121,7 @@ fieldset.saisie-groupe {
 }
 .recu-lignes th,
 .recu-lignes td {
-  padding: 0.375rem 0;
+  padding: 0.3125rem 0;
   border-bottom: 1.5px dashed var(--filet);
   text-align: left;
   vertical-align: top;
@@ -4106,12 +4174,114 @@ fieldset.saisie-groupe {
   border-top: 1.5px dashed var(--contour);
   padding-top: 0.75rem;
 }
+/* Ligne « autres » : destinataires de moins de 1 € sur 100, dépliés à la demande (tous imprimés). */
+.recu-autres details {
+  margin: 0;
+}
+.recu-autres summary {
+  font-weight: 400;
+}
+.recu-autres-liste {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  font-size: var(--t-1);
+}
+.recu-autres-liste li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+  border-top: 1px dashed var(--filet);
+}
+.recu-autres-liste .motif {
+  flex: none;
+}
+.recu-autres-nom {
+  flex: 1;
+}
+.recu-autres-liste .nombre {
+  font-family: var(--chiffres);
+  font-weight: 800;
+  white-space: nowrap;
+}
 @media print {
   .recu-options {
     display: none !important;
+  }
+  .recu-autres details::details-content {
+    content-visibility: visible;
+  }
+  .recu-autres summary::before {
+    display: none;
   }
   .recu {
     margin: 0;
     max-width: 80mm;
   }
+}
+
+/* Niveaux de collectivité (audit du 19/11, problème 13) : une teinte par niveau, partout où les niveaux apparaissent
+   (Ma commune, pages commune et département, collectivités, résultat, reçu, Suivre un euro). Pastille avec contour,
+   toujours à côté du nom du niveau ; barres d'un bloc de niveau dans sa teinte (les motifs de statut restent prioritaires). */
+[data-niveau='commune'] {
+  --niveau: var(--niveau-commune);
+}
+[data-niveau='epci'] {
+  --niveau: var(--niveau-epci);
+}
+[data-niveau='departement'] {
+  --niveau: var(--niveau-departement);
+}
+[data-niveau='region'] {
+  --niveau: var(--niveau-region);
+}
+.pastille-niveau {
+  display: inline-block;
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--niveau);
+  border: 2px solid var(--contour);
+  vertical-align: -0.125em;
+  margin-right: 0.375rem;
+}
+[data-niveau] .barre-remplissage:not([class*='statut-']) {
+  background: var(--niveau);
+}
+/* Ma commune (onglets de ma_commune.ts) : pastille dans chaque onglet, barres du panneau dans la teinte du niveau. */
+#mc-commune-onglet,
+#mc-commune-panneau {
+  --niveau: var(--niveau-commune);
+}
+#mc-epci-onglet,
+#mc-epci-panneau {
+  --niveau: var(--niveau-epci);
+}
+#mc-departement-onglet,
+#mc-departement-panneau {
+  --niveau: var(--niveau-departement);
+}
+#mc-region-onglet,
+#mc-region-panneau {
+  --niveau: var(--niveau-region);
+}
+.onglets [role='tab'][id^='mc-']::before {
+  content: '';
+  display: inline-block;
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--niveau);
+  border: 2px solid currentColor;
+  margin-right: 0.5rem;
+}
+.ma-commune-bloc[role='tabpanel'] .barre-remplissage:not([class*='statut-']) {
+  background: var(--niveau);
+}
+.ma-commune-bloc[role='tabpanel'] > h2 {
+  border-left: 0.5rem solid var(--niveau);
+  padding-left: 0.75rem;
 }

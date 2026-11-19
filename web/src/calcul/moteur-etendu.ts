@@ -25,6 +25,7 @@ import {
   f,
   f3,
   impotFoyer,
+  impotRecouvre,
   lignesSalarie,
   obtenirMoteur,
   situationSalarie,
@@ -837,7 +838,8 @@ export function calculerProfil(profil: ProfilEtendu, options: OptionsCalculEtend
       libelle: 'Impôt sur le revenu du foyer',
       montant: impotDuFoyer(sit === 'couple_marie_pacse', sit === 'parent_isole', enfants, calculs.map((c) => c.revenus), annee, dom),
     })
-  for (const l of lignesIR)
+  for (const l of lignesIR) {
+    const ir = impotRecouvre(l.montant, annee)
     prelevements.push({
       id: l.id,
       libelle: l.libelle,
@@ -845,18 +847,23 @@ export function calculerProfil(profil: ProfilEtendu, options: OptionsCalculEtend
       personne: 'foyer',
       assiette_annuelle_eur: null,
       taux: null,
-      montant_annuel_eur: f(l.montant),
+      montant_annuel_eur: f(ir.montant),
       destinataire: DESTINATAIRES.etat,
       inclus_dans_total_paye: true,
       regle: 'impôt . foyer fiscal . impôt sur le revenu',
       hypothese_fourchette:
         "Sans autres revenus, frais réels ni réductions ou crédits d'impôt (dons, emploi à domicile, garde d'enfants) : non pris en compte.",
-      ...(dom
+      ...(dom || ir.note
         ? {
-            note: `Réduction d’impôt outre-mer appliquée (CGI art. 197, I-3) : ${Math.round(dom.taux * 100)} % de l’impôt, au plus ${dom.plafond.toLocaleString('fr-FR')} €, avant la décote.`,
+            note: [
+              dom ? `Réduction d’impôt outre-mer appliquée (CGI art. 197, I-3) : ${Math.round(dom.taux * 100)} % de l’impôt, au plus ${dom.plafond.toLocaleString('fr-FR')} €, avant la décote.` : '',
+              ir.note ?? '',
+            ].filter(Boolean).join(' '),
+            ...(ir.source ? { source: ir.source } : {}),
           }
         : {}),
     })
+  }
   const brutTotal = calculs.reduce((s, c) => s + c.brutEmployeur, 0)
   const base = assemblerResultat(profil, options, prelevements, avertissements, calculs.map((c) => c.entree), brutTotal)
   const profils = [...new Set(calculs.map((c) => c.entree.profil))]
