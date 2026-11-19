@@ -9,7 +9,7 @@ import { enPrerendu, h } from '../util'
 /** Seul moyen de contact du site (alias dédié, aussi cité dans les mentions légales), affiché en texte simple. */
 export const CONTACT = 'proton.me.easel124@passinbox.com'
 /** Adresse publique du site quand la page ne la porte pas (développement, tests, prérendu). */
-export const SITE_DEFAUT = 'https://mooneyes.github.io/Ou-vont-mes-impots/'
+export const SITE_DEFAUT = __URL_SITE__
 /** Au-delà, la liste des fichiers est tronquée (référence de taille raisonnable). */
 export const MAX_FICHIERS = 40
 

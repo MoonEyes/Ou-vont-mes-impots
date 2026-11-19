@@ -88,7 +88,8 @@ describe('prérendu', () => {
       expect(balise(p.html, /<meta property="og:url" content="([^"]*)"/)).toBe(p.canonique)
       expect(balise(p.html, /<meta property="og:title" content="([^"]*)"/)).toBe(p.titre)
       expect(balise(p.html, /<meta property="og:description" content="([^"]*)"/)).toBe(p.description)
-      expect(balise(p.html, /<meta name="twitter:title" content="([^"]*)"/)).toBe(p.titre)
+      // Carte X/Twitter : seule twitter:card est écrite, titre, description et image sont repris d'Open Graph.
+      expect(p.html.includes('<meta name="twitter:card" content="summary_large_image" />'), p.chemin).toBe(true)
     }
   })
 

@@ -25,6 +25,8 @@
 # données mises à jour chaque semaine, noms stables : 1 h en cache, puis revalidation en arrière-plan
 /data/*
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+  # fichiers JSON du site : téléchargeables, mais pas proposés seuls dans les résultats des moteurs (docs/AUDIT_SEO.md)
+  X-Robots-Tag: noindex
 
 /favicon.svg
   Cache-Control: public, max-age=86400

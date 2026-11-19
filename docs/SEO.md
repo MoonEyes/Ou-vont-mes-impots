@@ -42,8 +42,8 @@ Mesures du 17/11/2026 (données complètes) : 2 380 pages, 53,9 Mo de HTML (envi
 
 ## Balises et données structurées
 
-- `title`, `meta description`, `link rel="canonical"`, Open Graph et carte Twitter : propres à chaque page, uniques (test). Titres et descriptions des routes : `web/src/routes.ts` (`titrePage`, `description`), soumis au lexique neutre.
-- JSON-LD : `WebSite` partout ; `WebPage` et `BreadcrumbList` sur chaque page sauf l'accueil ; `Dataset` sur l'accueil.
+- `title`, `meta description`, `link rel="canonical"` et Open Graph : propres à chaque page, uniques (test). Carte X/Twitter : seule `twitter:card` est écrite, X reprend titre, description et image d'Open Graph. Image de partage `og.png` générée au build depuis `web/scripts/og.html` par Chrome sans interface quand il est présent, sinon l'image versionnée. Titres et descriptions des routes : `web/src/routes.ts` (`titrePage`, `description`), soumis au lexique neutre.
+- JSON-LD : `WebSite` partout (avec `SearchAction` vers `/recherche/?q=` sur l'accueil) ; `WebPage` et `BreadcrumbList` sur chaque page sauf l'accueil ; `Dataset` (`@id` `<site>#donnees`) sur l'accueil.
 - `Dataset` : les champs viennent de `docs/datapackage/schemaorg.jsonld`, produit par `pipeline/datapackage.py` (`keywords`, `temporalCoverage`, `version`, `sameAs`, `distribution`). `dateModified` est la date des données, `spatialCoverage` la France, `url` l'adresse du site, `creator` « Projet citoyen Où vont mes impôts ». Une distribution n'est gardée que si son fichier existe dans `dist/data` (une par famille, 25 au plus). Rien n'est rédigé à la main.
 - `sitemap.xml` : les pages indexables. `lastmod` est la date des données, pas celle du build : `data/mise_a_jour.json` (`genere_le`), à défaut `data/meta.json` ; pour les pages locales, la date de collecte de `data/local/index.json`.
 - `robots.txt` : autorise tout et déclare le plan du site.
@@ -62,8 +62,8 @@ Sans changer le cadrage du site (« ce que tu verses », `docs/NEUTRALITE.md`) :
 
 ## Limites et points d'attention
 
-- **`robots.txt` est ignoré sur GitHub Pages en sous-répertoire.** Les robots ne lisent que `https://mooneyes.github.io/robots.txt`, pas `/Ou-vont-mes-impots/robots.txt`. Le fichier sert dès que le site est à la racine d'un domaine (Cloudflare). En attendant, déclarer `https://mooneyes.github.io/Ou-vont-mes-impots/sitemap.xml` dans la Search Console (propriété « préfixe d'URL ») et Bing Webmaster Tools.
-- **Adresse publique.** `canonical`, Open Graph et le plan du site utilisent `OVMI_URL_SITE` (défaut : `https://mooneyes.github.io/Ou-vont-mes-impots/`). Si le site est publié sur un autre domaine, construire avec cette variable, sinon les pages désignent GitHub Pages comme adresse canonique.
+- **`robots.txt` est ignoré sur GitHub Pages en sous-répertoire.** Les robots ne lisent que `https://mooneyes.github.io/robots.txt`, pas `/Ou-vont-mes-impots/robots.txt`. Le fichier sert dès que le site est à la racine d'un domaine (Cloudflare). Le site principal étant sur Cloudflare, c'est son plan du site qu'on déclare dans la Search Console et Bing Webmaster Tools (`docs/AUDIT_SEO.md`, « À faire »).
+- **Adresse publique (19/11/2026).** Une seule source : `web/adresse-site.json` (hôte Cloudflare tant que le domaine définitif n'existe pas). Canonique, Open Graph, plan du site, `robots.txt`, carte de partage, référence d'un signalement et pied d'impression la reprennent ; `OVMI_URL_SITE` la remplace le temps d'un build. La copie GitHub Pages désigne donc l'hôte principal comme canonique ; `OVMI_COPIE_SECOURS=1` la passe en plus en `noindex` sans plan du site. Audit et mesures : `docs/AUDIT_SEO.md`.
 - **Ne pas relancer le prérendu seul sur un `dist/` déjà prérendu** : `dist/index.html` est alors la page d'accueil et non le gabarit. Le script le détecte et demande de relancer `vite build`.
 - Les barres proportionnelles n'ont pas de largeur sans JavaScript (la CSP interdit les styles en ligne) ; les montants sont en texte à côté.
 - Variantes par paramètre (`?m=lfi2025`, `?p=141`) : l'adresse canonique est la page sans paramètre.
@@ -74,8 +74,8 @@ Sans changer le cadrage du site (« ce que tu verses », `docs/NEUTRALITE.md`) :
 
 1. Durée : le build passe d'environ 30 s à 75 s ; `timeout-minutes: 20` suffit.
 2. Garder l'ordre `npm run build` puis `npm test` : lancé seul, `npm test` reconstruit et prérend lui-même (plus lent).
-3. Si un domaine personnalisé est branché sur GitHub Pages : ajouter `env: OVMI_URL_SITE: https://<domaine>/` à l'étape `npm run build`.
-4. `deploy/cloudflare/publier.sh --construire` : exporter `OVMI_URL_SITE` avec l'adresse Cloudflare avant le build, et servir les pages HTML avec `Cache-Control: no-cache` dans `_headers` (aujourd'hui seulement `/` et `/index.html`).
+3. Copie GitHub Pages : ajouter `env: OVMI_COPIE_SECOURS: "1"` à l'étape `npm run build` de `pages.yml`.
+4. Cloudflare : plus rien à exporter, l'adresse vient de `web/adresse-site.json`. Les pages HTML sont déjà servies avec `Cache-Control: public, max-age=0, must-revalidate` (défaut de Workers Static Assets, relevé le 19/11/2026).
 5. Facultatif : après le déploiement, vérifier que `sitemap.xml` répond 200 et qu'une adresse inconnue répond 404.
 
 ## Vérifications

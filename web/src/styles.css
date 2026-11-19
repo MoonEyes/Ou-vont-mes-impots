@@ -2955,7 +2955,7 @@ fieldset.saisie-groupe {
     overflow: visible;
   }
   main::after {
-    content: 'Où vont mes impôts · site citoyen non officiel · mooneyes.github.io/Ou-vont-mes-impots';
+    content: 'Où vont mes impôts · site citoyen non officiel · ' attr(data-adresse);
     display: block;
     margin-top: 1.5rem;
     padding-top: 0.5rem;

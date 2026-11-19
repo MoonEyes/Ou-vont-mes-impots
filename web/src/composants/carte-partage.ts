@@ -11,7 +11,7 @@ import { eur } from '../util'
 import { estPlage, plage, resumer } from './resume-calcul'
 
 /** Adresse publique du site, imprimée en pied d'image. */
-export const ADRESSE_SITE = 'mooneyes.github.io/Ou-vont-mes-impots'
+export const ADRESSE_SITE = __ADRESSE_SITE__
 export const MENTION = 'Site citoyen non officiel, calcul fait sur mon appareil'
 
 export interface OptionsCarte {

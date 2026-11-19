@@ -65,7 +65,8 @@ describe('récapitulatif à partager', () => {
     expect(k.sorties.reduce((s, x) => s + x.sur100, 0)).toBe(100)
     expect(k.parts.reduce((s, x) => s + x.v, 0)).toBe(100)
     expect(k.mention).toContain('non officiel')
-    expect(k.adresse).toBe('mooneyes.github.io/Ou-vont-mes-impots')
+    expect(k.adresse).toBe(JSON.parse(readFileSync(join(process.cwd(), 'adresse-site.json'), 'utf8')).url.replace(/^https:\/\//, '').replace(/\/$/, ''))
+    expect(k.adresse).not.toMatch(/github|mooneyes/i)
   })
 
   it('image par défaut : ni total, ni salaire, ni montant de sortie ; mention et adresse présentes', async () => {
@@ -130,7 +131,8 @@ describe('récapitulatif à partager', () => {
     const bloc = css.slice(css.indexOf('/* recap-partage */'))
     expect(bloc).toContain('@media print')
     for (const sel of ['.navigation', '.fil-ariane', '.pied', '.actions', '.partage-options', 'main button']) expect(bloc).toContain(sel)
-    expect(bloc).toMatch(/main::after\s*\{\s*content: '[^']*site citoyen non officiel[^']*mooneyes\.github\.io\/Ou-vont-mes-impots'/)
+    // Adresse reprise de l'attribut data-adresse de <main>, posé depuis web/adresse-site.json (index.html, vite.config.ts).
+    expect(bloc).toMatch(/main::after\s*\{\s*content: '[^']*site citoyen non officiel[^']*' attr\(data-adresse\);/)
     expect(bloc).toContain('--fond: #ffffff')
     expect(bloc).not.toContain('—')
   })

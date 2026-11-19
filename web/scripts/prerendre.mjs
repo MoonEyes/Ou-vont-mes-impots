@@ -8,10 +8,15 @@
 //
 // Usage : node scripts/prerendre.mjs            (toutes les pages)
 //         OVMI_PRERENDU_COMMUNES=0 node ...     (sans les pages département et commune)
-//         OVMI_URL_SITE=https://exemple.fr/     (adresse publique : canonical, Open Graph, sitemap)
-import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
+//         OVMI_URL_SITE=https://exemple.fr/     (remplace web/adresse-site.json le temps d'un build)
+//         OVMI_COPIE_SECOURS=1 node ...         (copie de secours, GitHub Pages : toutes les pages en noindex, sans
+//                                                plan du site ; la canonique désigne toujours l'adresse principale)
+//         OVMI_CHROME=/chemin/chrome            (navigateur qui génère l'image de partage, sinon cherché dans le PATH)
+import { spawnSync } from 'node:child_process'
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { Window } from 'happy-dom'
 import { createServer } from 'vite'
 
@@ -19,7 +24,9 @@ const debut = Date.now()
 const WEB = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(WEB, 'dist')
 const DONNEES = join(DIST, 'data')
-const SITE = (process.env.OVMI_URL_SITE ?? 'https://mooneyes.github.io/Ou-vont-mes-impots/').replace(/\/*$/, '/')
+// Adresse publique : une seule source, web/adresse-site.json (même lecture que vite.config.ts).
+const SITE = (process.env.OVMI_URL_SITE || JSON.parse(readFileSync(join(WEB, 'adresse-site.json'), 'utf8')).url).replace(/\/*$/, '/')
+const COPIE_SECOURS = process.env.OVMI_COPIE_SECOURS === '1'
 const AVEC_COMMUNES = process.env.OVMI_PRERENDU_COMMUNES !== '0'
 /** Limite de fichiers d'un déploiement Cloudflare (offre gratuite) : le build échoue au-delà. */
 const LIMITE_FICHIERS = 20000
@@ -32,6 +39,10 @@ const gabarit = readFileSync(join(DIST, 'index.html'), 'utf8')
 // Le gabarit doit être celui de Vite : une fois prérendu, dist/index.html est la page d'accueil et ne peut plus servir.
 if (/data-racine=/.test(gabarit) || !gabarit.includes('<html lang="fr">') || !/<main id="contenu"[^>]*>[\s\S]*<\/main>/.test(gabarit)) {
   console.error('dist/index.html a déjà été prérendu (ou n’est pas le gabarit attendu) : relancer « vite build » avant le prérendu.')
+  process.exit(1)
+}
+if (gabarit.includes('%OVMI_')) {
+  console.error('dist/index.html : adresse du site non remplacée (%OVMI_…%), voir le greffon ovmi-adresse-site de vite.config.ts.')
   process.exit(1)
 }
 
@@ -114,11 +125,17 @@ function jeuDeDonnees(defaut) {
   return jeu
 }
 const ldSource = JSON.parse(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(gabarit)[1])
-const siteLd = { ...ldSource['@graph'].find((x) => x['@type'] === 'WebSite'), '@id': `${SITE}#site`, url: SITE }
+const siteLd = {
+  ...ldSource['@graph'].find((x) => x['@type'] === 'WebSite'),
+  '@id': `${SITE}#site`,
+  url: SITE,
+  // Recherche interne (écran /recherche, paramètre q, exécutée sur l'appareil) : décrite pour les moteurs.
+  potentialAction: { '@type': 'SearchAction', target: { '@type': 'EntryPoint', urlTemplate: `${SITE}${versChemin('#/recherche?q=')}{search_term_string}` }, 'query-input': 'required name=search_term_string' },
+}
 // Pages autres que l'accueil : le site n'est décrit qu'une fois (accueil) ; ailleurs, son nom, son adresse et son
 // identifiant suffisent à le relier (2 352 pages locales, budgets de poids, docs/PERF.md).
 const siteLdCourt = { '@type': 'WebSite', '@id': siteLd['@id'], name: siteLd.name, url: SITE }
-const jeuLd = jeuDeDonnees(ldSource['@graph'].find((x) => x['@type'] === 'Dataset'))
+const jeuLd = { '@id': `${SITE}#donnees`, ...jeuDeDonnees(ldSource['@graph'].find((x) => x['@type'] === 'Dataset')) }
 
 // Polices du premier écran (texte courant et titres), préchargées : elles arrivent avec la feuille de style, avant le
 // premier affichage, ce qui évite le décalage de mise en page au remplacement de la police de repli.
@@ -128,6 +145,51 @@ const polices = readdirSync(join(DIST, 'assets')).filter((f) => f.endsWith('.wof
 // l'émet dans assets/ avec une empreinte ; dans le prérendu, le module le désigne par son chemin source, remplacé
 // ici par le fichier construit, relatif à la page. Une seule copie, mise en cache, au lieu de 17 Ko par page.
 const trameFrance = readdirSync(join(DIST, 'assets')).find((f) => /^trame-france-[\w-]+\.svg$/.test(f))
+
+/** Dimensions d'un PNG (en-tête IHDR), ou null si ce n'est pas un PNG. */
+function dimensionsPng(chemin) {
+  try {
+    const b = readFileSync(chemin)
+    if (b.length < 24 || b.toString('latin1', 1, 4) !== 'PNG' || b.toString('latin1', 12, 16) !== 'IHDR') return null
+    return { largeur: b.readUInt32BE(16), hauteur: b.readUInt32BE(20) }
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Image de partage (Open Graph, carte Twitter) : dist/og.png généré au build depuis scripts/og.html (polices du projet,
+ * aucune photo, aucune ressource externe) par un navigateur sans interface déjà présent (Chrome ou Chromium : poste,
+ * runner GitHub). Sans navigateur, ou si la capture n'a pas la bonne taille, l'image versionnée public/og.png (copiée
+ * par Vite) reste en place. Aucune dépendance ajoutée.
+ */
+function imagePartage() {
+  const source = join(WEB, 'scripts', 'og.html')
+  const candidats = [process.env.OVMI_CHROME, 'google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser'].filter(Boolean)
+  for (const navigateur of candidats) {
+    const tmp = mkdtempSync(join(tmpdir(), 'ovmi-og-'))
+    try {
+      const capture = join(tmp, 'og.png')
+      const r = spawnSync(
+        navigateur,
+        ['--headless', '--no-sandbox', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--force-device-scale-factor=1', `--user-data-dir=${join(tmp, 'profil')}`, '--window-size=1200,630', '--virtual-time-budget=5000', `--screenshot=${capture}`, pathToFileURL(source).href],
+        { stdio: 'ignore', timeout: 60000 },
+      )
+      if (r.error?.code === 'ENOENT') continue
+      const d = dimensionsPng(capture)
+      if (r.status === 0 && d?.largeur === 1200 && d?.hauteur === 630) {
+        copyFileSync(capture, join(DIST, 'og.png'))
+        return 'générée au build'
+      }
+    } finally {
+      rmSync(tmp, { recursive: true, force: true })
+    }
+  }
+  const d = dimensionsPng(join(DIST, 'og.png'))
+  if (d?.largeur !== 1200 || d?.hauteur !== 630) throw new Error('image de partage absente ou pas en 1200 x 630 (public/og.png)')
+  console.warn('Image de partage : aucun navigateur sans interface trouvé, public/og.png (versionnée) est gardée.')
+  return 'fichier versionné'
+}
 
 const pages = []
 
@@ -157,12 +219,10 @@ function composer({ chemin, titre, description, fil, contenu, indexable, racine 
   html = meta(html, /(<meta property="og:title" content=")[^"]*(")/, titre)
   html = meta(html, /(<meta property="og:description" content=")[^"]*(")/, description)
   html = meta(html, /(<meta property="og:url" content=")[^"]*(")/, url)
-  html = meta(html, /(<meta name="twitter:title" content=")[^"]*(")/, titre)
-  html = meta(html, /(<meta name="twitter:description" content=")[^"]*(")/, description)
-  html = html.replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${SITE}og.png$2`).replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${SITE}og.png$2`)
+  html = meta(html, /(<meta property="og:image" content=")[^"]*(")/, `${SITE}og.png`)
   if (!html.includes('<link rel="stylesheet"')) throw new Error('gabarit : feuille de style absente')
   html = html.replace('<link rel="stylesheet"', `${polices.map((f) => `<link rel="preload" href="./assets/${f}" as="font" type="font/woff2" crossorigin />\n    `).join('')}<link rel="stylesheet"`)
-  if (!indexable) html = html.replace('<title>', '<meta name="robots" content="noindex, follow" />\n    <title>')
+  if (!indexable || COPIE_SECOURS) html = html.replace('<title>', '<meta name="robots" content="noindex, follow" />\n    <title>')
   html = html.replace(/(<script type="application\/ld\+json">)[\s\S]*?(<\/script>)/, (_, a, b) => `${a}\n${jsonLd({ '@context': 'https://schema.org', '@graph': graphe })}\n    ${b}`)
   // Fichiers du site (scripts, styles, icône) et liens de l'en-tête et du pied : relatifs à la page.
   html = html.replace(/((?:src|href)=")\.\/(?!\/)/g, `$1${prefixe}`)
@@ -239,7 +299,8 @@ try {
 
   // Plan du site : les pages indexables, datées par les données qu'elles affichent.
   const indexables = pages.filter((p) => p.indexable)
-  writeFileSync(
+  if (!COPIE_SECOURS)
+    writeFileSync(
     join(DIST, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${indexables
       .map((p) => `<url><loc>${echapper(SITE + p.chemin)}</loc>${p.lastmod ? `<lastmod>${p.lastmod}</lastmod>` : ''}</url>`)
@@ -247,7 +308,9 @@ try {
   )
   // robots.txt n'est lu qu'à la racine d'un domaine : sous https://<compte>.github.io/<depot>/ il est ignoré
   // (docs/SEO.md). Il sert dès que le site est publié à la racine (Cloudflare, domaine personnalisé).
-  writeFileSync(join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}sitemap.xml\n`)
+  // Copie de secours : pas de plan du site (il listerait des adresses d'un autre domaine), pages en noindex.
+  writeFileSync(join(DIST, 'robots.txt'), COPIE_SECOURS ? 'User-agent: *\nAllow: /\n' : `User-agent: *\nAllow: /\n\nSitemap: ${SITE}sitemap.xml\n`)
+  const image = imagePartage()
 
   // Bilan : nombre de fichiers et poids du site construit (limite Cloudflare : 20 000 fichiers).
   let fichiers = 0
@@ -267,6 +330,8 @@ try {
   compter(DIST)
   const bilan = {
     site: SITE,
+    copie_secours: COPIE_SECOURS,
+    image_partage: image,
     pages: pages.length,
     pages_routes: nbRoutes,
     pages_departements: pages.filter((p) => /^local\/(\d{2,3}|2[AB])-/.test(p.chemin)).length,

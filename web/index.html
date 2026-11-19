@@ -13,30 +13,28 @@
     <meta name="theme-color" content="#1e1548" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
     <title>Où vont mes impôts : vois où va l’argent que tu verses</title>
-    <link rel="canonical" href="https://mooneyes.github.io/Ou-vont-mes-impots/" />
+    <link rel="canonical" href="%OVMI_URL_SITE%" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:site_name" content="Où vont mes impôts" />
     <meta property="og:title" content="Où vont mes impôts : vois où va l’argent que tu verses" />
     <meta property="og:description" content="Indique ton salaire. Tu vois ce que tu verses chaque année, à qui, et à quoi cet argent sert. Calcul sur ton téléphone, données publiques ouvertes." />
-    <meta property="og:url" content="https://mooneyes.github.io/Ou-vont-mes-impots/" />
-    <meta property="og:image" content="https://mooneyes.github.io/Ou-vont-mes-impots/og.png" />
+    <meta property="og:url" content="%OVMI_URL_SITE%" />
+    <meta property="og:image" content="%OVMI_URL_SITE%og.png" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Où vont mes impôts : sur 100 € que tu verses, à qui va l’argent. Site citoyen non officiel." />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Où vont mes impôts : vois où va l’argent que tu verses" />
-    <meta name="twitter:description" content="Ce que tu verses chaque année, à qui, et à quoi cet argent sert. Calcul sur ton téléphone, données publiques ouvertes." />
-    <meta name="twitter:image" content="https://mooneyes.github.io/Ou-vont-mes-impots/og.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
           {
             "@type": "WebSite",
-            "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/#site",
+            "@id": "%OVMI_URL_SITE%#site",
             "name": "Où vont mes impôts",
-            "url": "https://mooneyes.github.io/Ou-vont-mes-impots/",
+            "url": "%OVMI_URL_SITE%",
             "inLanguage": "fr",
             "description": "Site citoyen non officiel : à partir de ton salaire, ce que tu verses chaque année, à qui, et à quoi cet argent sert, d’après les données publiques ouvertes.",
             "creator": { "@type": "Organization", "name": "Projet citoyen Où vont mes impôts" }
@@ -45,12 +43,12 @@
             "@type": "Dataset",
             "name": "Où vont mes impôts : données publiques retraitées sur les dépenses et recettes publiques",
             "description": "Budget de l’État, Sécurité sociale, collectivités, recettes, dette, bénéficiaires et décisions, retraités à partir de sources publiques ouvertes (data.economie.gouv.fr, Eurostat, Insee, DGFiP, Assemblée nationale, CNCCFP).",
-            "url": "https://mooneyes.github.io/Ou-vont-mes-impots/methode/",
+            "url": "%OVMI_URL_SITE%methode/",
             "license": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
             "isAccessibleForFree": true,
             "inLanguage": "fr",
             "creator": { "@type": "Organization", "name": "Projet citoyen Où vont mes impôts" },
-            "isPartOf": { "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/#site" }
+            "isPartOf": { "@id": "%OVMI_URL_SITE%#site" }
           }
         ]
       }
@@ -82,7 +80,7 @@
         <button type="submit">Rechercher</button>
       </form>
     </header>
-    <main id="contenu" tabindex="-1">
+    <main id="contenu" tabindex="-1" data-adresse="%OVMI_ADRESSE_SITE%">
       <noscript><p>Ce site a besoin de JavaScript pour faire le calcul sur ton appareil, sans rien envoyer.</p></noscript>
     </main>
     <div id="annonce" class="visuellement-cache" aria-live="polite"></div>
