@@ -29,5 +29,5 @@
   "engines": {
     "node": ">=20.19"
   },
-  "description": "Site « Où vont mes impôts » : calcul personnel dans le navigateur (modele-social) et exploration du budget public"
+  "description": "Site « Le billet découpé » : calcul personnel dans le navigateur (modele-social) et exploration du budget public"
 }

@@ -262,7 +262,7 @@ export async function dessinerCarte(r: ResultatOk, c: Complet | null, o: Options
   ctx.fillRect(0, H - hPied, W, hPied)
   ctx.fillStyle = K.papier
   ctx.font = `800 40px ${titre}`
-  ctx.fillText('Où vont mes impôts', M, H - hPied + 62)
+  ctx.fillText('Le billet découpé', M, H - hPied + 62)
   ctx.font = `400 26px ${texte}`
   ctx.fillText(k.mention, M, H - hPied + 108, W - 2 * M)
   ctx.font = `700 26px ${texte}`

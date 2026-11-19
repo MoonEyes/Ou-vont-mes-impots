@@ -404,7 +404,7 @@ describe('page « Rechercher dans le site »', () => {
     await ecran('#/recherche?q=lyon')
     await attendreQue(() => /résultat/.test(statut()))
     expect(statut()).toMatch(/^\d+ résultats? pour « lyon »/)
-    expect(document.title).toBe('Recherche « lyon » · Où vont mes impôts')
+    expect(document.title).toBe('Recherche « lyon » · Le billet découpé')
     expect((main.querySelector('#recherche-q') as HTMLInputElement).value).toBe('lyon')
     const groupe = main.querySelector('.recherche-groupe')!
     expect(groupe.querySelector('h2')?.textContent).toMatch(/^Communes \(\d+\)$/)

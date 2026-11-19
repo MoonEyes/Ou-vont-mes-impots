@@ -67,7 +67,7 @@ describe('/decisions/application-des-lois', () => {
     expect(r.voisins!.length).toBeLessThanOrEqual(3)
     for (const v of r.voisins ?? []) expect(ROUTES.some((x) => x.chemin === v), v).toBe(true)
     expect(r.description.length).toBeLessThanOrEqual(200)
-    expect(`${r.titrePage} · Où vont mes impôts`.length).toBeLessThanOrEqual(100)
+    expect(`${r.titrePage} · Le billet découpé`.length).toBeLessThanOrEqual(100)
   })
 
   it('fonctions de lecture : taux publié, délai calculé, absence jamais lue comme zéro', () => {

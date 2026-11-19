@@ -138,7 +138,7 @@ describe('manifeste web', () => {
   const m = JSON.parse(readFileSync(join(PUBLIC, 'manifest.webmanifest'), 'utf8'))
 
   it('site consultable, pas une application : affichage navigateur, adresses relatives (GitHub Pages)', () => {
-    expect(m.name).toBe('Où vont mes impôts')
+    expect(m.name).toBe('Le billet découpé')
     expect(m.lang).toBe('fr')
     expect(m.display).toBe('browser')
     for (const k of ['id', 'start_url', 'scope']) expect(m[k]).toBe('./')

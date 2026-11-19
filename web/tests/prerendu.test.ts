@@ -58,6 +58,30 @@ const contenu = (p: Page) => /<main id="contenu"[^>]*>([\s\S]*)<\/main>/.exec(p.
 const texte = (p: Page) => contenu(p).replace(/<[^>]+>/g, ' ').replace(/&nbsp;|\u00a0|\u202f/g, ' ').replace(/\s+/g, ' ')
 
 describe('prérendu', () => {
+  it('nom du site : l’ancien nom « Où vont mes impôts » absent de toutes les pages prérendues et des fichiers publics, sauf la phrase de non-affiliation', () => {
+    const NON_AFFILIATION = 'Le billet découpé est sans lien avec le site ouvontmesimpots.fr.'
+    const ANCIEN_NOM = /o[uù]\s+vont\s+mes\s+imp[oô]ts/i
+    // Seule exception tolérée : le producteur écrit par pipeline/formation.py dans site/data/formation/cpf_organismes.json
+    // (donnée publiée, hors web/), à renommer par le pipeline formation ; à retirer d'ici dès que la donnée est régénérée.
+    const DONNEE_FORMATION = 'projet Où vont mes impôts (calcul du pipeline)'
+    const avecPhrase: string[] = []
+    for (const p of pages) {
+      const html = p.html.replace(/&nbsp;|\u00a0|\u202f/g, ' ')
+      if (html.includes(NON_AFFILIATION)) avecPhrase.push(p.chemin)
+      const exceptions = p.chemin === 'explorer/formation-professionnelle/' ? [NON_AFFILIATION, DONNEE_FORMATION] : [NON_AFFILIATION]
+      expect(exceptions.reduce((x, e) => x.split(e).join(' '), html), p.chemin || '/').not.toMatch(ANCIEN_NOM)
+      expect(p.titre.endsWith(' · Le billet découpé') || p.titre.startsWith('Le billet découpé') || !p.titre.includes('·'), p.chemin).toBe(true)
+    }
+    for (const f of ['manifest.webmanifest', 'sw.js', '404.html']) {
+      if (existsSync(join(DIST, f))) expect(readFileSync(join(DIST, f), 'utf8'), f).not.toMatch(ANCIEN_NOM)
+    }
+    const manifeste = JSON.parse(readFileSync(join(DIST, 'manifest.webmanifest'), 'utf8'))
+    expect([manifeste.name, manifeste.short_name]).toEqual(['Le billet découpé', 'Billet découpé'])
+    expect(page('').html).toContain('"name":"Le billet découpé"')
+    // Une seule fois sur le site : la page des mentions légales.
+    expect(avecPhrase).toEqual(['mentions/'])
+  })
+
   it('chaque route a sa page HTML, avec le titre et la description de src/metadonnees.ts', () => {
     for (const r of ROUTES) {
       const p = page(versChemin('#' + r.chemin))
@@ -142,7 +166,7 @@ describe('prérendu', () => {
     }
     const ld = JSON.parse(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(page('').html)![1])
     const jeu = ld['@graph'].find((x: { '@type': string }) => x['@type'] === 'Dataset')
-    expect(jeu.creator.name).toBe('Projet citoyen Où vont mes impôts')
+    expect(jeu.creator.name).toBe('Projet citoyen Le billet découpé')
     expect(jeu.url).toBe(site)
     expect(jeu.spatialCoverage).toEqual({ '@type': 'Place', name: 'France' })
     expect(jeu.dateModified).toBe(bilan.date_donnees)
@@ -187,7 +211,7 @@ describe('prérendu', () => {
 
   it('accueil et pages de recherche : contenu lisible sans JavaScript', () => {
     const accueil = page('')
-    expect(texte(accueil).includes('Voilà où ils partent.')).toBe(true)
+    expect(texte(accueil).includes('découpé selon où va chaque euro.')).toBe(true)
     // Le billet découpé est dans la page servie, avec ses proportions (SVG en attributs), et les tuiles ont leurs chiffres.
     expect(/<svg class="billet-large"[^>]*role="group"/.test(contenu(accueil))).toBe(true)
     expect(/data-caisse="etat">[\s\S]*?<span class="t-chiffre">\d+ Md€<\/span>/.test(contenu(accueil))).toBe(true)
@@ -210,7 +234,7 @@ describe('prérendu', () => {
     expect(departements.length).toBe(readdirSync(join(DIST, 'data', 'local', 'geo')).length)
     expect(communes.length).toBeGreaterThan(1500)
     for (const p of communes) {
-      expect(p.titre, p.chemin).toMatch(/^Budget (de |d’|du |des ).+ \((\d{2,3}|2[AB])\)( : dépenses(, dotations)?, impôts locaux| · Où vont mes impôts)?$/)
+      expect(p.titre, p.chemin).toMatch(/^Budget (de |d’|du |des ).+ \((\d{2,3}|2[AB])\)( : dépenses(, dotations)?, impôts locaux| · Le billet découpé)?$/)
       const t = texte(p)
       // Population, dépenses totales et dépenses par habitant, ou à défaut dotation ou taux : au moins trois chiffres.
       const chiffres = [/[\d ]+ habitants/, /de dépenses en \d{4}/, /€ par habitant/, /Dette en cours : [\d, ]+/, /DGF totale/, /Taxe foncière bâti/].filter((re) => re.test(t))

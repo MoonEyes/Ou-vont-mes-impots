@@ -296,21 +296,6 @@ td.nombre,
 .logo {
   flex: none;
 }
-.logo rect {
-  stroke: var(--contour);
-}
-.logo .l-papier {
-  fill: var(--papier);
-}
-.logo .l-secu {
-  fill: var(--secu);
-}
-.logo .l-etat {
-  fill: var(--etat);
-}
-.logo .l-coll {
-  fill: var(--collectivites);
-}
 .navigation {
   margin-left: auto;
   display: flex;
@@ -374,8 +359,8 @@ td.nombre,
     min-width: 0;
   }
   .entete .logo {
-    width: 34px;
-    height: 29px;
+    width: 38px;
+    height: 23px;
   }
   .navigation ul {
     flex-basis: 100%;
@@ -496,9 +481,6 @@ main > .chargement {
 }
 .pied .marque {
   color: var(--sur-bandeau);
-}
-.pied .logo rect {
-  stroke: var(--bandeau);
 }
 .pied-grille p {
   max-width: 22rem;
@@ -3148,7 +3130,7 @@ fieldset.saisie-groupe {
     overflow: visible;
   }
   main::after {
-    content: 'Où vont mes impôts · site citoyen non officiel · ' attr(data-adresse);
+    content: 'Le billet découpé · site citoyen non officiel · ' attr(data-adresse);
     display: block;
     margin-top: 1.5rem;
     padding-top: 0.5rem;
@@ -3877,26 +3859,37 @@ fieldset.saisie-groupe {
   }
 }
 
-/* Logo écrit une seule fois (en-tête) ; le pied de page le reprend par <use href="#logo-formes">. Les formes clonées
-   reçoivent le trait par une propriété héritée, posée sur le logo du pied.
-   Dans la copie, les sélecteurs sont lus sans les ancêtres : règles par classe seule. */
-.l-papier,
-.l-secu,
-.l-etat,
-.l-coll {
-  stroke: var(--logo-trait, var(--contour));
-}
-.l-papier {
-  fill: var(--papier);
-}
-.l-secu {
+/* Logo « Le billet découpé » : un billet coupé selon les parts de l'exemple (57 Sécurité sociale, 23 État, 9 collectivités),
+   perforations pointillées entre les parts, la part sans destinataire publié détachée. Défini une seule fois (symbole
+   #logo-billet dans l'en-tête), repris par <use> dans l'en-tête et le pied. Les formes clonées par <use> sont lues sans
+   leurs ancêtres : règles par classe seule, trait transmis par la propriété héritée --logo-trait. Couleurs des jetons :
+   version claire et sombre suivent le thème. Aucun mouvement. */
+.lb-secu {
   fill: var(--secu);
 }
-.l-etat {
+.lb-etat {
   fill: var(--etat);
 }
-.l-coll {
+.lb-coll {
   fill: var(--collectivites);
+}
+.lb-papier {
+  fill: var(--papier);
+}
+.lb-trait {
+  fill: none;
+  stroke: var(--logo-trait, var(--contour));
+  stroke-width: 2;
+}
+.lb-papier.lb-trait {
+  fill: var(--papier);
+}
+.lb-perfo {
+  fill: none;
+  stroke: var(--logo-trait, var(--contour));
+  stroke-width: 2;
+  stroke-dasharray: 0 3.75;
+  stroke-linecap: round;
 }
 .pied .logo {
   --logo-trait: var(--bandeau);

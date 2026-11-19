@@ -1,4 +1,4 @@
-// Service worker du site « Où vont mes impôts » : relire hors ligne les pages déjà vues sur cet appareil.
+// Service worker du site « Le billet découpé » : relire hors ligne les pages déjà vues sur cet appareil.
 // Ce n'est pas une application : rien à installer, aucune invite, aucune notification.
 //
 // - Coquille (scripts, styles, polices, images de assets/, au nom haché par Vite) : cache d'abord. Le cache porte la
@@ -123,7 +123,7 @@ const avecDelai = (promesse, ms) =>
 /** Page de repli : adresse jamais consultée sur cet appareil, et pas de connexion. */
 function pageIndisponible() {
   const accueil = portee().pathname
-  const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pas de connexion : Où vont mes impôts</title></head><body><main><h1>Pas de connexion</h1><p>Cette page n’a pas encore été ouverte sur cet appareil : aucune copie n’est enregistrée. Les pages déjà consultées restent lisibles sans connexion.</p><p><a href="${accueil}">Revenir à l’accueil</a></p></main></body></html>`
+  const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pas de connexion : Le billet découpé</title></head><body><main><h1>Pas de connexion</h1><p>Cette page n’a pas encore été ouverte sur cet appareil : aucune copie n’est enregistrée. Les pages déjà consultées restent lisibles sans connexion.</p><p><a href="${accueil}">Revenir à l’accueil</a></p></main></body></html>`
   return new Response(html, {
     status: 503,
     statusText: 'Hors ligne',

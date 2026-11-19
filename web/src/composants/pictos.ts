@@ -37,6 +37,3 @@ export function picto(nom: string, classe = ''): string {
   if (!t) return ''
   return `<span class="picto${classe ? ' ' + classe : ''}" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${t}</svg></span>`
 }
-
-export const LOGO = (classe = 'logo') =>
-  `<svg class="${classe}" width="40" height="34" viewBox="0 0 40 34" aria-hidden="true" focusable="false"><rect class="l-papier" x="1.5" y="5" width="9" height="24" rx="3.5" stroke-width="2.5"/><rect class="l-secu" x="13" y="2" width="12" height="24" rx="3.5" stroke-width="2.5"/><rect class="l-etat" x="27.5" y="8" width="5" height="24" rx="2.5" stroke-width="2.5"/><rect class="l-coll" x="35" y="4" width="3.5" height="24" rx="1.75" stroke-width="2"/></svg>`

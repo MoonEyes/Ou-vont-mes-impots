@@ -7,7 +7,7 @@
 import { annoncer, h } from '../util'
 
 /** Nom du site (le même que NOM_SITE du routeur, recopié pour ne pas créer d'import circulaire). */
-const NOM_SITE_EXPORT = 'Où vont mes impôts'
+const NOM_SITE_EXPORT = 'Le billet découpé'
 
 const SEP = ';'
 const ESPACES = /[\s   ]+/g

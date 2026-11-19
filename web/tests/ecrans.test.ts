@@ -17,6 +17,14 @@ const ecran = async (fragment: string) => {
   return main
 }
 const texte = () => main.textContent?.replace(/\s+/g, ' ') ?? ''
+// Ancien nom du site (décision du 19/11/2026 : le site s'appelle « Le billet découpé ») : absent de tout rendu, sauf la
+// phrase de non-affiliation des mentions légales.
+const NON_AFFILIATION = 'Le billet découpé est sans lien avec le site ouvontmesimpots.fr.'
+const ANCIEN_NOM = /o[uù]\s+vont\s+mes\s+imp[oô]ts/i
+// Seule autre exception : le producteur écrit par pipeline/formation.py dans la donnée publiée (hors web/), à renommer par
+// le pipeline formation ; à retirer d'ici dès que la donnée est régénérée.
+const DONNEE_FORMATION = 'projet Où vont mes impôts (calcul du pipeline)'
+const sansNonAffiliation = (x: string) => [NON_AFFILIATION, DONNEE_FORMATION].reduce((t, e) => t.split(e).join(' '), x)
 
 beforeAll(() => {
   monterPage()
@@ -26,7 +34,7 @@ beforeAll(() => {
 describe('écrans', () => {
   it('accueil : billet découpé de l’exemple, champ qui lance le calcul, étapes, garanties', async () => {
     await ecran('#/')
-    expect(main.querySelector('h1')?.textContent?.replace(/\s+/g, ' ')).toBe('Tu verses 100 €. Voilà où ils partent.')
+    expect(main.querySelector('h1')?.textContent?.replace(/\s+/g, ' ')).toBe('Ton billet de 100 €, découpé selon où va chaque euro.')
     expect(texte()).toContain('on additionne tout ce que tu verses en un an, puis on suit chaque euro jusqu’à ceux qui le reçoivent.')
     // Un seul bouton principal : celui du champ salaire, qui lance le calcul.
     const boutons = Array.from(main.querySelectorAll('.bouton-principal'))
@@ -78,7 +86,7 @@ describe('écrans', () => {
     const zone = document.createElement('div')
     const rendu = rendre(zone)
     // Rendu synchrone : le titre, le billet, l'action et les rubriques sont là avant toute lecture de données.
-    expect(zone.querySelector('h1')?.textContent).toContain('Voilà où ils partent.')
+    expect(zone.querySelector('h1')?.textContent).toContain('découpé selon où va chaque euro.')
     expect(zone.querySelector('.billet svg')).not.toBeNull()
     expect(Array.from(zone.querySelectorAll('h2')).map((x) => x.textContent)).toContain('À quoi servent mes impôts ?')
     expect(zone.querySelector('#nb-sources')?.textContent).toBe('Des sources publiques')
@@ -91,7 +99,7 @@ describe('écrans', () => {
     await ecran('#/nimporte-quoi')
     expect(main.querySelector('h1')?.textContent).toBe('Ce billet-là, on ne le trouve pas')
     expect(Array.from(main.querySelectorAll('.actions a')).map((a) => a.getAttribute('href'))).toEqual(['#/', '#/explorer'])
-    expect(document.title).toBe('Page introuvable · Où vont mes impôts')
+    expect(document.title).toBe('Page introuvable · Le billet découpé')
     expect(document.querySelector('.entete [aria-current=page]')).toBeNull()
   })
 
@@ -385,6 +393,18 @@ describe('écrans', () => {
       // Ancres qui nomment leur destination (pas de « cliquez ici »).
       for (const a of sorties) expect(a.textContent ?? '', r.chemin).not.toMatch(/^\s*(ici|cliquez ici|lien|en savoir plus)\s*$/i)
     }
+  }, 120000)
+
+  it('nom du site : « Le billet découpé » partout, l’ancien nom absent de chaque écran rendu (en-tête, pied, titre)', async () => {
+    const params: Record<string, string> = { '/explorer/etat/detail': '?id=Justice', '/local/commune': '?insee=69123', '/local/departement': '?dep=69', '/beneficiaires/programme': '?p=141' }
+    expect(document.querySelector('header .marque')?.textContent?.trim()).toBe('Le billet découpé')
+    for (const r of ROUTES) {
+      await ecran(`#${r.chemin}${params[r.chemin] ?? ''}`)
+      const tout = `${document.title} ${document.body.textContent ?? ''} ${document.body.innerHTML}`.replace(/\s+/g, ' ')
+      expect(sansNonAffiliation(tout), r.chemin).not.toMatch(ANCIEN_NOM)
+    }
+    await ecran('#/mentions')
+    expect(texte().split(NON_AFFILIATION).length - 1).toBe(1)
   }, 120000)
 
   it('pages des jeux branchés : secu, UE, dette, niches, commune, votes, contrôle', async () => {

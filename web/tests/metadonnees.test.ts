@@ -24,7 +24,7 @@ function neutre(texte: string, ou: string) {
 
 describe('règles des titres et descriptions', () => {
   it('nom du site en suffixe seulement s’il tient dans 60 caractères', () => {
-    expect(titreSite('La dette publique')).toBe('La dette publique · Où vont mes impôts')
+    expect(titreSite('La dette publique')).toBe('La dette publique · Le billet découpé')
     const long = 'Budget de Nantes (44) : dépenses, dotations, impôts locaux'
     expect(titreSite(long)).toBe(long)
     for (const n of [30, 39, 40, 60]) expect(titreSite('x'.repeat(n)).length).toBeLessThanOrEqual(TITRE_MAX)

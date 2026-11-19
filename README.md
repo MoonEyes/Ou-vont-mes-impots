@@ -1,4 +1,4 @@
-# Où vont mes impôts
+# Le billet découpé
 
 Site citoyen gratuit : à partir de ton salaire net, voir où va ton argent (État, Sécurité sociale, collectivités), et pour chaque euro du budget de l'État, ce qui a été prévu, dépensé, à qui et avec quels résultats. Uniquement des données publiques ouvertes, chaque montant renvoie à sa source.
 

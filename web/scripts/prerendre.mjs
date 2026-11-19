@@ -103,7 +103,7 @@ const jsonLd = (objet) => JSON.stringify(objet).replace(/</g, '\\u003c')
 /** Jeu de données décrit par le pipeline (docs/datapackage/schemaorg.jsonld) : seuls des champs vérifiables y figurent. */
 function jeuDeDonnees(defaut) {
   const s = json(join(WEB, '..', 'docs', 'datapackage', 'schemaorg.jsonld'))
-  const createur = { '@type': 'Organization', name: 'Projet citoyen Où vont mes impôts' }
+  const createur = { '@type': 'Organization', name: 'Projet citoyen Le billet découpé' }
   const jeu = { ...defaut, url: SITE, creator: createur, isPartOf: { '@id': `${SITE}#site` } }
   if (dateDonnees) jeu.dateModified = dateDonnees
   jeu.spatialCoverage = { '@type': 'Place', name: 'France' }

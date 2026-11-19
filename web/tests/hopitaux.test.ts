@@ -75,7 +75,7 @@ describe('page hôpitaux', () => {
     for (const v of r.voisins ?? []) expect(ROUTES.some((x) => x.chemin === v), v).toBe(true)
     expect(r.description.length).toBeGreaterThanOrEqual(70)
     expect(r.description.length).toBeLessThanOrEqual(200)
-    expect(`${r.titrePage} · Où vont mes impôts`.length).toBeLessThanOrEqual(100)
+    expect(`${r.titrePage} · Le billet découpé`.length).toBeLessThanOrEqual(100)
     verifierLexique(`${r.titre} ${r.titrePage} ${r.description} ${r.resume}`, 'route')
   })
 

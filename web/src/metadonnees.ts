@@ -5,8 +5,8 @@
 // Les pages paramétrées (commune, département) passent par metaCommune et metaDepartement. Contrôle sur toutes les
 // pages prérendues : web/tests/metadonnees.test.ts.
 
-export const NOM_SITE = 'Où vont mes impôts'
-export const TITRE_ACCUEIL = 'Où vont mes impôts : vois où va l’argent que tu verses'
+export const NOM_SITE = 'Le billet découpé'
+export const TITRE_ACCUEIL = 'Le billet découpé : vois où va l’argent que tu verses'
 export const TITRE_MAX = 60
 export const DESCRIPTION_MIN = 120
 export const DESCRIPTION_MAX = 155
@@ -132,5 +132,5 @@ export const META_PAGES: Record<string, { titre?: string; description: string }>
   '/methode/fraicheur': { titre: 'Fraîcheur des données : collecte et millésime', description: 'Pour chaque source publique utilisée : date de la dernière collecte, année couverte, date de publication par la source, prochaine édition et statut.' },
   '/methode/glossaire': { titre: 'Glossaire : sigles et mots du budget', description: 'Glossaire des sigles et des mots du budget public (LFI, PLF, CSG, ONDAM…) : définitions courtes en langage courant, avec la source officielle de chacune.' },
   '/recherche': { titre: 'Rechercher une commune, un programme, une page', description: 'Recherche dans tout le site : pages, communes, départements, missions et programmes du budget de l’État, opérateurs, prestations. Faite sur ton appareil.' },
-  '/introuvable': { titre: 'Page introuvable', description: 'Cette adresse ne correspond à aucune page du site Où vont mes impôts. Le calcul, le budget de l’État et le budget de chaque commune restent accessibles.' },
+  '/introuvable': { titre: 'Page introuvable', description: 'Cette adresse ne correspond à aucune page du site « Le billet découpé ». Le calcul, le budget de l’État et le budget de chaque commune restent accessibles.' },
 }

@@ -61,7 +61,7 @@ describe('citation', () => {
   const date = new Date(2026, 10, 18)
   it('titre, page, site, source et millésime, adresse, date de consultation', () => {
     expect(texteCitation(tables()[0], date, 'https://exemple.test/dette/')).toBe(
-      '« Dette fin d’année, milliards d’euros », page « La dette », Où vont mes impôts (site citoyen non officiel). Données : Insee, comptes nationaux (2024). https://exemple.test/dette/. Consulté le 18 novembre 2026.',
+      '« Dette fin d’année, milliards d’euros », page « La dette », Le billet découpé (site citoyen non officiel). Données : Insee, comptes nationaux (2024). https://exemple.test/dette/. Consulté le 18 novembre 2026.',
     )
   })
   it('sans légende ni source : titre de section, renvoi vers la méthode', () => {
@@ -118,7 +118,7 @@ describe('boutons', () => {
     expect(citer.getAttribute('aria-expanded')).toBe('true')
     expect(panneau.hidden).toBe(false)
     const texte = panneau.querySelector('.exporter-texte')!.textContent!
-    expect(texte).toMatch(/^« Dette fin d’année, milliards d’euros », page « La dette », Où vont mes impôts/)
+    expect(texte).toMatch(/^« Dette fin d’année, milliards d’euros », page « La dette », Le billet découpé/)
     expect(texte).toMatch(/Consulté le \d{1,2} \S+ \d{4}\.$/)
     expect(ecrit).toHaveBeenCalledWith(texte)
     await attendreQue(() => panneau.querySelector('[role="status"]')!.textContent === 'Citation copiée dans le presse-papiers.')

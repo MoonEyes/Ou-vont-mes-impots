@@ -12,19 +12,19 @@
     <meta name="theme-color" content="#1e1548" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#1e1548" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
-    <title>Où vont mes impôts : vois où va l’argent que tu verses</title>
+    <title>Le billet découpé : vois où va l’argent que tu verses</title>
     <link rel="canonical" href="%OVMI_URL_SITE%" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
-    <meta property="og:site_name" content="Où vont mes impôts" />
-    <meta property="og:title" content="Où vont mes impôts : vois où va l’argent que tu verses" />
+    <meta property="og:site_name" content="Le billet découpé" />
+    <meta property="og:title" content="Le billet découpé : vois où va l’argent que tu verses" />
     <meta property="og:description" content="Indique ton salaire. Tu vois ce que tu verses chaque année, à qui, et à quoi cet argent sert. Calcul sur ton téléphone, données publiques ouvertes." />
     <meta property="og:url" content="%OVMI_URL_SITE%" />
     <meta property="og:image" content="%OVMI_URL_SITE%og.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Où vont mes impôts : sur 100 € que tu verses, à qui va l’argent. Site citoyen non officiel." />
+    <meta property="og:image:alt" content="Le billet découpé : ton billet de 100 €, découpé selon où va chaque euro. Site citoyen non officiel." />
     <meta name="twitter:card" content="summary_large_image" />
     <script type="application/ld+json">
       {
@@ -33,21 +33,21 @@
           {
             "@type": "WebSite",
             "@id": "%OVMI_URL_SITE%#site",
-            "name": "Où vont mes impôts",
+            "name": "Le billet découpé",
             "url": "%OVMI_URL_SITE%",
             "inLanguage": "fr",
             "description": "Site citoyen non officiel : à partir de ton salaire, ce que tu verses chaque année, à qui, et à quoi cet argent sert, d’après les données publiques ouvertes.",
-            "creator": { "@type": "Organization", "name": "Projet citoyen Où vont mes impôts" }
+            "creator": { "@type": "Organization", "name": "Projet citoyen Le billet découpé" }
           },
           {
             "@type": "Dataset",
-            "name": "Où vont mes impôts : données publiques retraitées sur les dépenses et recettes publiques",
+            "name": "Le billet découpé : données publiques retraitées sur les dépenses et recettes publiques",
             "description": "Budget de l’État, Sécurité sociale, collectivités, recettes, dette, bénéficiaires et décisions, retraités à partir de sources publiques ouvertes (data.economie.gouv.fr, Eurostat, Insee, DGFiP, Assemblée nationale, CNCCFP).",
             "url": "%OVMI_URL_SITE%methode/",
             "license": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
             "isAccessibleForFree": true,
             "inLanguage": "fr",
-            "creator": { "@type": "Organization", "name": "Projet citoyen Où vont mes impôts" },
+            "creator": { "@type": "Organization", "name": "Projet citoyen Le billet découpé" },
             "isPartOf": { "@id": "%OVMI_URL_SITE%#site" }
           }
         ]
@@ -61,7 +61,7 @@
     <header class="entete">
       <div class="bandeau"><p class="conteneur"><strong><span class="non-officiel">Site citoyen, non officiel</span>.</strong><span class="bandeau-suite"> Il ne remplace pas impots.gouv.fr et ne juge aucune dépense.</span></p></div>
       <div class="conteneur entete-ligne">
-        <a class="marque" href="#/" data-rubrique="/"><svg class="logo" width="40" height="34" viewBox="0 0 40 34" aria-hidden="true" focusable="false"><g id="logo-formes"><rect class="l-papier" x="1.5" y="5" width="9" height="24" rx="3.5" stroke-width="2.5"/><rect class="l-secu" x="13" y="2" width="12" height="24" rx="3.5" stroke-width="2.5"/><rect class="l-etat" x="27.5" y="8" width="5" height="24" rx="2.5" stroke-width="2.5"/><rect class="l-coll" x="35" y="4" width="3.5" height="24" rx="1.75" stroke-width="2"/></g></svg><span>Où vont mes impôts</span></a>
+        <a class="marque" href="#/" data-rubrique="/"><svg class="logo" width="46" height="28" viewBox="0 0 46 28" aria-hidden="true" focusable="false"><symbol id="logo-billet" viewBox="0 0 46 28"><path class="lb-secu" d="M5 4H24.8V24H5A3 3 0 0 1 2 21V7A3 3 0 0 1 5 4Z"/><rect class="lb-etat" x="24.8" y="4" width="9.2" height="20"/><path class="lb-coll" d="M34 4H34.6A3 3 0 0 1 37.6 7V21A3 3 0 0 1 34.6 24H34Z"/><rect class="lb-trait" x="2" y="4" width="35.6" height="20" rx="3"/><path class="lb-perfo" d="M24.8 6.5V21.5M34 6.5V21.5"/><rect class="lb-papier lb-trait" x="39.6" y="6.5" width="4.6" height="20" rx="2.3"/></symbol><use href="#logo-billet"/></svg><span>Le billet découpé</span></a>
         <button type="button" id="bouton-recherche" aria-expanded="false" aria-controls="recherche-entete" aria-label="Rechercher dans le site"></button>
         <nav id="navigation" class="navigation" aria-label="Navigation principale">
           <button type="button" id="bouton-menu" aria-expanded="false" aria-controls="menu"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="bouton-menu-texte">Menu</span></button>
@@ -88,7 +88,7 @@
     <footer class="pied">
       <div class="conteneur">
         <div class="pied-tete">
-          <a class="marque" href="#/"><svg class="logo" width="40" height="34" viewBox="0 0 40 34" aria-hidden="true" focusable="false"><use href="#logo-formes"/></svg><span>Où vont mes impôts</span></a>
+          <a class="marque" href="#/"><svg class="logo" width="46" height="28" viewBox="0 0 46 28" aria-hidden="true" focusable="false"><use href="#logo-billet"/></svg><span>Le billet découpé</span></a>
           <nav class="pied-essentiels" aria-label="Liens essentiels">
             <ul>
               <li><a href="#/calcul">Mon salaire</a></li>

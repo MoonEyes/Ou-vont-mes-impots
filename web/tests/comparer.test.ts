@@ -27,7 +27,7 @@ describe('comparer deux communes', () => {
   it('sans paramètre : formulaire département puis commune, de chaque côté, et rappel sur les compétences', async () => {
     await ecran('#/local/comparer')
     expect(main.querySelector('h1')?.textContent).toBe('Comparer deux communes')
-    expect(document.title).toBe('Comparer le budget de deux communes · Où vont mes impôts')
+    expect(document.title).toBe('Comparer le budget de deux communes · Le billet découpé')
     expect(main.querySelectorAll('#choix-comparer fieldset')).toHaveLength(2)
     expect(main.querySelector('label[for="dep-a"]')).not.toBeNull()
     expect(main.querySelector('label[for="com-b"]')).not.toBeNull()

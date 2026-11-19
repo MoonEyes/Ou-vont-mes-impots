@@ -24,7 +24,7 @@ export function rendre(cible: HTMLElement) {
   cible.innerHTML = `
 <div class="heros heros-portes">
   <div class="heros-intro">
-    <h1>Tu verses 100 €. Voilà où ils partent.</h1>
+    <h1>Ton billet de 100 €, découpé selon où va chaque euro.</h1>
     <p class="chapeau">Cotisations, impôt sur le revenu, TVA, taxes locales : on additionne tout ce que tu verses en un an, puis on suit chaque euro jusqu’à ceux qui le reçoivent.</p>
   </div>
   <h2 id="portes-titre" class="visuellement-cache">Par où commencer</h2>

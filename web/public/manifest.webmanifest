@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "Où vont mes impôts",
-  "short_name": "Mes impôts",
+  "name": "Le billet découpé",
+  "short_name": "Billet découpé",
   "description": "Site citoyen gratuit et non officiel : à partir de ton salaire net, vois ce que tu verses, à qui, et où va l’argent public. Calcul fait sur ton appareil, données publiques ouvertes.",
   "lang": "fr",
   "dir": "ltr",

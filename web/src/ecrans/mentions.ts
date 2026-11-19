@@ -22,7 +22,8 @@ export async function rendre(cible: HTMLElement) {
 <h1>Mentions légales et confidentialité</h1>
 <p><strong>Site citoyen indépendant, sans lien avec l’administration</strong> : ce n’est pas un site officiel de l’État.</p>
 <h2>Éditeur</h2>
-<p>« Où vont mes impôts » est un projet citoyen non commercial, publié à titre non professionnel.</p>
+<p>« Le billet découpé » est un projet citoyen non commercial, publié à titre non professionnel.</p>
+<p>Le billet découpé est sans lien avec le site ouvontmesimpots.fr.</p>
 <p>Identité de l’éditeur : l’éditeur, une personne physique agissant à titre non professionnel, a communiqué ses éléments d’identification (nom, prénom, domicile, numéro de téléphone) à l’hébergeur, comme le permet l’article 1-1, II, de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique (LCEN) ; seules les coordonnées de l’hébergeur sont donc publiées.</p>
 <p>Contact : ${h(CONTACT)} (seul moyen de contact du site, y compris pour signaler une erreur).</p>
 <h2>Hébergeur</h2>

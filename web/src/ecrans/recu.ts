@@ -103,7 +103,7 @@ export function ticket(r: ResultatOk, c: Complet | null, montants: boolean, aujo
   const total = c ? c.total : r.totaux.paye_par_le_foyer
   const colonne = montants ? 'En un an' : 'Sur 100 €'
   return `<article class="recu" aria-labelledby="recu-titre">
-  <p class="recu-marque">Où vont mes impôts</p>
+  <p class="recu-marque">Le billet découpé</p>
   <h2 id="recu-titre">Reçu de l’année ${h(r.annee_legislation)}</h2>
   <p class="recu-sous">${montants ? 'Ce que tu verses en un an, par destinataire' : 'Sur 100 € que tu verses, par destinataire'}</p>
   <table class="recu-lignes"><caption class="visuellement-cache">${montants ? 'Montant annuel' : 'Part sur 100 €'} par destinataire, avec le statut de chaque ligne</caption>
@@ -131,7 +131,7 @@ export function texteRecu(r: ResultatOk, c: Complet | null, montants: boolean, a
   const total = c ? c.total : r.totaux.paye_par_le_foyer
   const ligne = (l: LigneRecu) => `${montants ? l.montant : part100(l.sur100)} : ${l.nom} (${STATUTS[l.statut].libelle.toLowerCase()})`
   return [
-    `Mon reçu de l’année ${r.annee_legislation} (Où vont mes impôts)`,
+    `Mon reçu de l’année ${r.annee_legislation} (Le billet découpé)`,
     montants ? 'Ce que je verse en un an, par destinataire :' : 'Sur 100 € que je verse :',
     ...visibles.map(ligne),
     ...(groupe ? [ligne(groupe), ...autres.map((l) => `  dont ${montants ? l.montant : 'moins de 1 €'} : ${l.nom} (${STATUTS[l.statut].libelle.toLowerCase()})`)] : []),
