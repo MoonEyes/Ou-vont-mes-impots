@@ -1,0 +1,4 @@
+{
+ "note": "Pertes de lignes admises par axe pour le prochain passage (pipeline/garde_lignes.py). Une entrée : axe, lignes_max, motif en clair, jusqu_au (AAAA-MM-JJ). Vide par défaut.",
+ "pertes": []
+}

@@ -275,8 +275,20 @@ def test_sources_inaccessibles_et_recherche_publique(index):
 @pytest.mark.skipif(not (retraites.BRUT / "retraites_eacr_part1.xlsx").exists(),
                     reason="entrepôt data/lake/secu absent : reproductibilité non vérifiable ici")
 def test_production_reproductible(tmp_path, monkeypatch):
-    avant = {f.name: f.read_bytes() for f in sorted(DOSSIER.glob("*.json"))}
-    monkeypatch.setattr(retraites, "SORTIE", tmp_path)
-    retraites.produire()
-    apres = {f.name: f.read_bytes() for f in sorted(tmp_path.glob("*.json"))}
-    assert apres == avant
+    """Deux productions identiques (date injectée depuis pipeline/lignee.json) ; égales aux sorties publiées si
+    l'entrepôt contient exactement les versions enregistrées, comparaison sautée avec motif sinon."""
+    import entrepot_distant as ed
+    monkeypatch.delenv("SOURCE_DATE_EPOCH", raising=False)
+    for k, v in ed.env_lignee("retraites").items():
+        monkeypatch.setenv(k, v)
+    passages = []
+    for i in (1, 2):
+        (tmp_path / str(i)).mkdir()
+        monkeypatch.setattr(retraites, "SORTIE", tmp_path / str(i))
+        retraites.produire()
+        passages.append({f.name: f.read_bytes() for f in sorted((tmp_path / str(i)).glob("*.json"))})
+    assert passages[0] == passages[1]
+    ok, motif = ed.etat_lignee("retraites")
+    if not ok:
+        pytest.skip(motif)
+    assert passages[0] == {f.name: f.read_bytes() for f in sorted(DOSSIER.glob("*.json"))}

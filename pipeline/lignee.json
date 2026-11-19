@@ -1,0 +1,506 @@
+{
+ "note": "Versions des entrées (data/lake) avec lesquelles les sorties publiées de site/data ont été produites (python pipeline/entrepot_distant.py lignee). Les tests de reproductibilité ne comparent aux sorties publiées que si l'entrepôt local contient exactement ces versions ; `restaurer` les retrouve dans le bucket par leur sha256.",
+ "etapes": {
+  "millesimes": {
+   "fichiers": {
+    "data/lake/etat/etat_plrg_2024/Annexe1-Etat_AE-2024.csv": {
+     "sha256": "1c6611456b2f8ba0e9162f31a6532f91efd50da2ce1fa4b525b3dd9bfbb06420",
+     "octets": 35919,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/Annexe1-Etat_AE_CP-2024.csv": {
+     "sha256": "5c374be4eb01bf71d007a1c25855d9c81116a09232e3cf653dd166536b8585fa",
+     "octets": 2865,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/Annexe1-Etat_CP-2024.csv": {
+     "sha256": "2ec0b30f934104ea11c863fc044932c5e260930d0c06e8e05aa0977aa315e90b",
+     "octets": 36318,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/Annexe1-Etat_FDC_ADP-2024.csv": {
+     "sha256": "d025c1ca1318027a93e50f838c04c9463a355cf2b132e8a564e913e44b2e13c1",
+     "octets": 12016,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/Annexe1-Etat_Recettes.csv": {
+     "sha256": "79812995f0429e31f1d60bdf749290ef9d6f003d9c14d018f267cd171d5eb35a",
+     "octets": 199845,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/Annexe1-Etat_Titre_Cat-2024.csv": {
+     "sha256": "1308a9e8574866d4402b42c9b413c7b6eb6cab451e19836c142b488fe2aabc68",
+     "octets": 88267,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/Annexe2-Dec_Auto-2024.csv": {
+     "sha256": "dded98d482c0bdadc79b5d9c36be8f497214637adb6a35149a2e22b286a697b2",
+     "octets": 1492,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/Annexe2-Etat_AE-2024.csv": {
+     "sha256": "42d52e3e51336002b6c16d670a249ba5e07826e55f89f76a131f4b88379688a8",
+     "octets": 9815,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/Annexe2-Etat_CP-2024.csv": {
+     "sha256": "5acf533d6fe5c7be08f7671556f611b94e8fd8304abdef671579b1e3c6fd13d0",
+     "octets": 10431,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/Annexe2-Etat_Comptable-2024.csv": {
+     "sha256": "1f298641d8994a824f820c6ad618067669558f01c08f13965c7475d28e9f1da9",
+     "octets": 3514,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/Annexe2-Etat_Recouvt-2024.csv": {
+     "sha256": "9c7bcf1e556ef7081a8c0f79b63298a8e8d2a5fe59db5cbc677e410c53158741",
+     "octets": 141004,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/AnnexeSec-Fonc-2024.csv": {
+     "sha256": "f214710646791d8443c106bbb6e639baf9a469fc9b7576b46da54bc591c65907",
+     "octets": 1944,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/AnnexeSec-Invest-2024.csv": {
+     "sha256": "3d10e60844511e1439c1c065b3feb83860b0c4c75f9a1f12e8acdf3afbbb4a04",
+     "octets": 1066,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BACEA-Bilan-2024.csv": {
+     "sha256": "a05663af17129e93422f95df2d884697dc2005e793a994dd258383e2bfa9d346",
+     "octets": 5054,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BACEA-Dev_AEN-2024.csv": {
+     "sha256": "f228d76635d2ac85c05731d2e08bb05351082b21b2a2111bdfaced9c3513856a",
+     "octets": 2558,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BACEA-Dev_CPN-2024.csv": {
+     "sha256": "ae3010cb114d9f5c3dc71f0642232ef4a4e90e323a019f8f9a8b38061f723c95",
+     "octets": 2713,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BACEA-Pres_Bud-2024.csv": {
+     "sha256": "e99487cc14384de04e75d1926330909ce95918c6b64dfb3ad2249bd20991314f",
+     "octets": 1936,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BACEA-Recettes-2024.csv": {
+     "sha256": "def3f82dfed99ef762a68f527c86829a6971455cdb8898d5de4b59d5773627aa",
+     "octets": 1890,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BACEA-Resultat-2024.csv": {
+     "sha256": "c9451c2d54ce393e8fbe16af5631dca71622d9e2825ca0e6b5d5d302a8f138dc",
+     "octets": 6943,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BAPOIA-Bilan-2024.csv": {
+     "sha256": "ac11dc0017f22be65550b97d549af021737dc6945319e63f12e0f1b5ad815e34",
+     "octets": 2765,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BAPOIA-CDR-2024.csv": {
+     "sha256": "b4a9f42c3ae949708bd2795fbe76892e866b6190169cbafeeb0b087cef14353f",
+     "octets": 3120,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BAPOIA-Pres_Bud-2024.csv": {
+     "sha256": "b45d558f09cfa39f6a87122d2d48fabbd2d2549f7467b16c5aa4806786c5f9e5",
+     "octets": 1561,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BAPOIA-Recettes-2024.csv": {
+     "sha256": "a5893031b7e21d9cf45f08c739312f8e24c62c7801921fe0e18628788c877342",
+     "octets": 1268,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BAPOIA-Synt_AE-2024.csv": {
+     "sha256": "eaad858196b75b3846581bb7fe2a466d2107d88761886d6ae158538c435a0c1f",
+     "octets": 1660,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/BAPOIA-Synt_CP-2024.csv": {
+     "sha256": "8c1c82297527c283c085671a87592f72ab60cb888e50e27011834120668a158c",
+     "octets": 1934,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/ListDepFisc-PLRN-2024.csv": {
+     "sha256": "78bce09c297c0b06025ba0ab622c7a8403305788d405d48ff316100e8565e64c",
+     "octets": 173228,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2024/notices_par_fichiers_csv_plrg_2024.zip": {
+     "sha256": "3b7faaad363affbdd1eeceb23e42fddb273488627a1f1c3f40f72c72eccad924",
+     "octets": 4203630,
+     "source": "etat_plrg_2024",
+     "collecte_le": "2026-11-18T09:27:07+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Annexe1-Etat_AE-2025.csv": {
+     "sha256": "df97f73aefe4073f4ed37e05d9aed62d7332840c3a0a65d82d2fcfd72d644b96",
+     "octets": 34624,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Annexe1-Etat_AE_CP-2025.csv": {
+     "sha256": "ffa348ed5e4a219557884687b84333ac89b3f3bf1e2814a9396404f81e90d7dd",
+     "octets": 2895,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Annexe1-Etat_CP-2025.csv": {
+     "sha256": "6e9e0ddb861a6eb47857b0a481d3e1a293ba8ce96bb9c880431f9d689ce9d5c8",
+     "octets": 34516,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Annexe1-Etat_FDC_ADP-2025.csv": {
+     "sha256": "ce4621459a0f45fd0a807ad27f749747bf14e6271686a75ce7e8041b94d309cc",
+     "octets": 12260,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Annexe1-Etat_Recettes_2025.csv": {
+     "sha256": "a5522721ac13758c7ee0bf1b8fcea4f0922ef34673ad5a9af38d5bc94b92ae31",
+     "octets": 114979,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Annexe1-Etat_Titre_Cat-2025.csv": {
+     "sha256": "f1e4c8dcacd389e67d384e8fd55d2705c9eb533218cd954aa503a06620ca1288",
+     "octets": 88002,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Annexe2-Dec_Auto-2025.csv": {
+     "sha256": "cd45ec71e9671e355ec57cc26c10de00258e56c9e6da0ffc381f7e9174b553b4",
+     "octets": 1488,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Annexe2-Etat_AE-2025.csv": {
+     "sha256": "bf577fecf323a72bf4c8d233e9569a22d4a826241d0238db6af6a7b9e03b7be7",
+     "octets": 9574,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Annexe2-Etat_CP-2025.csv": {
+     "sha256": "d477ba4e77303ee0b18e0f8317154dd930f7cecd0d5abe35a7623fa56797e159",
+     "octets": 9918,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Annexe2-Etat_Comptable-2025.csv": {
+     "sha256": "7129eafec650d84fc5e331f1dadf95300b31697da4d331ad8d14452f4a678227",
+     "octets": 2994,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Annexe2-Etat_Recouvt-2025.csv": {
+     "sha256": "cf9ec2dbf54438b9d89d7b60bbb713003100d0b6baa37a7c3d1fc844f1643520",
+     "octets": 147633,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/AnnexeSec-Fonc-2025.csv": {
+     "sha256": "689ce557a6ba16399458951747c3dc8af4c8cb06f89225af89684ce8646d48b4",
+     "octets": 1943,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/AnnexeSec-Invest-2025.csv": {
+     "sha256": "7fc4f91d4c270c48a6d5739e59a6d0593cb6204f2253a3fa21b820e54a567e6d",
+     "octets": 1066,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BACEA-Bilan-2025.csv": {
+     "sha256": "8630793ceaa4523ad203835c9208821becda429d2975499c4f532eb51f0bab8c",
+     "octets": 4618,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BACEA-Dev_AEN-2025.csv": {
+     "sha256": "e5a2328ecf216a52b8351e61595ffc7ca852960c2201b57ebd5b45d6ee5d9397",
+     "octets": 2650,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BACEA-Dev_CPN-2025.csv": {
+     "sha256": "de7a9201badb89c24f8b368b85be925d21574e1a8cce369f68b89b49a3a49333",
+     "octets": 2794,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BACEA-Pres_Bud-2025.csv": {
+     "sha256": "d844816044f3e818d1e3cd8be5e01228d3d95bb696a2a519df611de04137985e",
+     "octets": 2019,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BACEA-Recettes-2025.csv": {
+     "sha256": "430427f3a6fe431a56021926f1a869ed32de1d8ba422a58fc5e2c890023d611d",
+     "octets": 1738,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BACEA-Resultat-2025.csv": {
+     "sha256": "cda72b6ff10d9536a4051b3dc4927b6c6895bcc5a282615bc83ac6293d130108",
+     "octets": 5666,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BAPOIA-Bilan-2025.csv": {
+     "sha256": "97f3cd2b7b949889e94f47d89503e0fcbf6d796dd5549a62f1fce675079aedd7",
+     "octets": 2784,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BAPOIA-CDR-2025.csv": {
+     "sha256": "406c9055f56ec51e1679056e57aab1f61628873caeb3f57277ba52d5b22131e8",
+     "octets": 3122,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BAPOIA-Pres_Bud-2025.csv": {
+     "sha256": "ae6a4dc9025c4240c9bc000ffea68ac8899f33308c442ce33215fb8a345b9e6e",
+     "octets": 1565,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BAPOIA-Recettes-2025.csv": {
+     "sha256": "01b97896d5a0ffad0b397199d764c65f4e2fc004f4668b912ea5cdb81974de23",
+     "octets": 1256,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BAPOIA-Synt_AE-2025.csv": {
+     "sha256": "e7473cefbcfdf4e9aca5755921baa131b036f7ff65f48e207887bfa9298488dd",
+     "octets": 1639,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/BAPOIA-Synt_CP-2025.csv": {
+     "sha256": "d4b8430da08f09a5169cc89e8e8185558ff77931a13462dfc156074a4b618c70",
+     "octets": 1862,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/ListDepFisc-PLRN-2025.csv": {
+     "sha256": "60b1d3bd207c387bb24abf35aa11c2f4637839fc6ceefd0881603a8da98cdd46",
+     "octets": 170297,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    },
+    "data/lake/etat/etat_plrg_2025/Notices_par_fichier.zip": {
+     "sha256": "005d4de2edd5f0cb1a1dcb0356f0db5666323f028690082e90ed556da91dd846",
+     "octets": 1781672,
+     "source": "etat_plrg_2025",
+     "collecte_le": "2026-11-17T18:38:26+00:00"
+    }
+   },
+   "date_sources": "2026-11-18T00:00:00Z"
+  },
+  "niches": {
+   "fichiers": {
+    "data/lake/aides_entreprises/aides_urssaf_exos_secteur_prive_france_entiere_par_me.parquet": {
+     "sha256": "c9368f3b91d903b41f4f61961d8662fe4c85b98d8c25444a091d323919d11480",
+     "octets": 16250,
+     "source": "aides_urssaf_exos_secteur_prive_france_entiere_par_me",
+     "collecte_le": "2026-11-17T18:54:04+00:00"
+    },
+    "data/lake/etat/economie__projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje/PLF_2021_Liste_des_depenses_fiscales.xlsx": {
+     "sha256": "f38e1657188735b6c43fa95fdccd4e6877bcb9d7e1cb3a4ad5f0c249e7a813d5",
+     "octets": 246520,
+     "source": "economie__projet-de-loi-de-finances-pour-2021-plf-2021-donnees-du-plf-et-des-annexes-proje",
+     "collecte_le": "2026-11-17T19:01:37+00:00"
+    },
+    "data/lake/etat/economie__projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje/PLF_2022_Liste_depenses_fiscales.xlsx": {
+     "sha256": "26abb68a12210621185c7b99f1da49de250f906cb6724a331f1185cb80a63122",
+     "octets": 229487,
+     "source": "economie__projet-de-loi-de-finances-pour-2022-plf-2022-donnees-du-plf-et-des-annexes-proje",
+     "collecte_le": "2026-11-17T19:30:40+00:00"
+    },
+    "data/lake/fiscalite/economie__plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales/PLF2023_voies_et_moyens_t2_liste_des_depenses_fiscales.xlsx": {
+     "sha256": "4bb64d4d3012f64077409bab4852c7a550e78b959e2da99bbf9fd66fbb713088",
+     "octets": 236622,
+     "source": "economie__plf2023_voies_et_moyens_t2_liste_des_depenses_fiscales",
+     "collecte_le": "2026-11-17T19:30:32+00:00"
+    },
+    "data/lake/fiscalite/niches_vm/igf2011_scores.csv": {
+     "sha256": "26a5530c4199e3c6ab035db85baa3d87e2448e66e6019aa7b0510431301f8479",
+     "octets": 266503,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/fiscalite/niches_vm/plfss2026_annexe4.pdf": {
+     "sha256": "eef09fb110a8d9a9956500737f3784eaac4c5d840eac886e7728ed64ee5cb3d8",
+     "octets": 1160058,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/fiscalite/niches_vm/vm2_plf2024.pdf": {
+     "sha256": "f64b2eb2b91689017a30ce194f0b26b46cf268731960368c07289ff5f763b230",
+     "octets": 1018694,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/fiscalite/niches_vm/vm2_plf2025.pdf": {
+     "sha256": "037fa53f1d04a07a6fd2f79e2d2bf25f063bc94f3e21ea8750bf1b81d66e4d45",
+     "octets": 4321007,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/fiscalite/niches_vm/vm2_plf2026.pdf": {
+     "sha256": "f8fdf8072037fbc0cff1839c880718f184ea0c011572ae43bf58a12b20142214",
+     "octets": 1556078,
+     "source": null,
+     "collecte_le": null
+    }
+   },
+   "date_sources": "2026-11-16T00:00:00Z"
+  },
+  "retraites": {
+   "fichiers": {
+    "data/lake/secu/retraites_cdc_cnracl_actifs.json": {
+     "sha256": "2032b5b50747330273cc02c2bde08b973c6f88c7f27f807f78fafb351aace243",
+     "octets": 37129,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_cdc_cnracl_retraites.json": {
+     "sha256": "f8f76b49fd0c066c382821d252774988cf48284e2887de645233df4dc269744a",
+     "octets": 10240,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_cdc_ircantec_cotisants.json": {
+     "sha256": "1ab9f5e3c31cc1252e4f999dab3542e1faabb709a63d310d6a78e81d11a756e0",
+     "octets": 3929,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_drees_cotisants_2004_2016.xlsx": {
+     "sha256": "76a5cddb3f734d13bdc6dd97f28f02c4a4667e4da6a07154004b00811b2eb549",
+     "octets": 11411,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_eacr_part1.xlsx": {
+     "sha256": "b286834e5da0dcc37888d68c8d41d1b3c76578db586c7f05072e8266c7fb3cbe",
+     "octets": 24070107,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_msa_stock/ret_stock_2016.csv": {
+     "sha256": "4a29c3f8166bc8cb591d4e31dc525709715937d93d849565276a81b79d75b1a9",
+     "octets": 87494,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_msa_stock/ret_stock_2017.csv": {
+     "sha256": "0e84bbe32ffd6043f4e4200932402997d524eb8489f8843385811014d44d7744",
+     "octets": 87482,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_msa_stock/ret_stock_2018.csv": {
+     "sha256": "ddd47978b8db777941532f0ab0f92b9c648d270e8289a017474ef19045add9e1",
+     "octets": 87459,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_msa_stock/ret_stock_2019.csv": {
+     "sha256": "230eef2aa3fa1a785c4f68e1a8d865a80fae81f3515bd730d92e6c4e3e1ac883",
+     "octets": 87435,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_msa_stock/ret_stock_2020.csv": {
+     "sha256": "523ceaac557750564b6d4744ee8f38673a959ffa670b4e93f5ffc87940ff698f",
+     "octets": 87408,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_msa_stock/ret_stock_2021.csv": {
+     "sha256": "94720bb1e05347cd0490a577102246def74e9dd99965c2b91662e0b5f049274c",
+     "octets": 87375,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_msa_stock/ret_stock_2022.csv": {
+     "sha256": "40d49c853f830f2558618a00373d75613de33c69b30e5cf097a2d5540b9619f5",
+     "octets": 87342,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_msa_stock/ret_stock_2023.csv": {
+     "sha256": "fc0531f4f30b8cebfc2f29e98194fd6c39a3ada8fc90466c59e353f69dead0fc",
+     "octets": 87302,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_plf25_depenses_destination.json": {
+     "sha256": "2ac8ce53a22253764daec04f74c80d01b3f7aefb47337148df586703155d5abf",
+     "octets": 1344480,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_plf25_recettes_cas.json": {
+     "sha256": "e523e522e2216fb94eeb8b7610774c7e3ea33595648330dc06552e9f0abed5c3",
+     "octets": 48155,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_sre_civils.json": {
+     "sha256": "2237e71ecf638046fd57f16e5efbea583aeea1c7d90966341fbc54f735f681eb",
+     "octets": 205507,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_sre_gendarmes.json": {
+     "sha256": "9e11d12bcf6d06c5b95ea853b5986181cac084fad15a85fce4a8a7a9696240a0",
+     "octets": 11899,
+     "source": null,
+     "collecte_le": null
+    },
+    "data/lake/secu/retraites_sre_militaires.json": {
+     "sha256": "b01e018b7839a3e671ced3d27883e35c97bf94544d22b67da121080a4913c456",
+     "octets": 37432,
+     "source": null,
+     "collecte_le": null
+    }
+   },
+   "date_sources": "2026-11-17T00:00:00Z"
+  }
+ }
+}
