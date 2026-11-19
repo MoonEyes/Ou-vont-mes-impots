@@ -3659,3 +3659,28 @@ fieldset.saisie-groupe {
     grid-template-columns: 8.5rem minmax(0, 1fr);
   }
 }
+
+/* Logo écrit une seule fois (en-tête) ; le pied de page le reprend par <use href="#logo-formes">. Les formes clonées
+   reçoivent le trait par une propriété héritée, posée sur le logo du pied.
+   Dans la copie, les sélecteurs sont lus sans les ancêtres : règles par classe seule. */
+.l-papier,
+.l-secu,
+.l-etat,
+.l-coll {
+  stroke: var(--logo-trait, var(--contour));
+}
+.l-papier {
+  fill: var(--papier);
+}
+.l-secu {
+  fill: var(--secu);
+}
+.l-etat {
+  fill: var(--etat);
+}
+.l-coll {
+  fill: var(--collectivites);
+}
+.pied .logo {
+  --logo-trait: var(--bandeau);
+}
