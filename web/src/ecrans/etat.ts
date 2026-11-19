@@ -11,10 +11,22 @@ import { retourResultat } from '../composants/retour-resultat'
 import { absent, appliquerLargeurs, barres, eur, h, libelle, lireLesMotifs, md, pct, source, sur100, surligne } from '../util'
 
 interface Deficit {
-  etat: { lecture: string; perimetre: string; comptabilite: string; annees: Record<string, { part_empruntee: number; solde_budgetaire_md: number }> }
+  etat: { lecture: string; perimetre: string; comptabilite: string; annees: Record<string, { part_empruntee: number; solde_budgetaire_md: number; depenses_nettes_bg_md?: number; prelevements_sur_recettes_md?: number }> }
   administrations_publiques: { comptabilite: string; annees: Record<string, { part_empruntee: number; B9_md: number; TE_md: number }> }
   source: string
   avertissement: string
+}
+
+/**
+ * Chiffres officiels de la même année à côté du total de l'arbre (docs/VERIFICATION_TOTAUX.md) : le total du site n'est
+ * pas publié tel quel, le visiteur peut le comparer aux agrégats de la situation budgétaire. Aucun calcul : deux montants
+ * publiés, lus dans deficit.json pour le millésime affiché.
+ */
+export function noteChiffresOfficiels(millesime: string, a?: { depenses_nettes_bg_md?: number; prelevements_sur_recettes_md?: number }): string {
+  if (typeof a?.depenses_nettes_bg_md !== 'number' || typeof a?.prelevements_sur_recettes_md !== 'number') return ''
+  const annee = /(\d{4})/.exec(millesime)?.[1] ?? millesime
+  const texte = millesime.startsWith('LFI') ? `loi de finances initiale pour ${annee}` : `situation budgétaire de l’État au 31 décembre ${annee}`
+  return `<p class="aide" data-officiel>Ce total n’est pas un chiffre publié tel quel : il retire tous les remboursements et dégrèvements d’impôts, y compris locaux, et suit le périmètre décrit dans la méthode. Chiffres officiels de la même année : dépenses nettes du budget général ${h(md(a.depenses_nettes_bg_md))}, prélèvements sur recettes ${h(md(a.prelevements_sur_recettes_md))} (${h(texte)}, DGFiP).</p>`
 }
 
 /** Totaux publiés par pipeline/millesimes.py (site/data/millesimes/index.json, contrat 2.48), en euros. */
@@ -186,6 +198,7 @@ ${
     ? `<div class="carte" data-cle>
   <div class="empile" aria-hidden="true"><span class="recettes-seg" data-l="${(100 - emprunt.part_empruntee * 100).toFixed(2)}"></span><span class="emprunt-seg" data-l="${(emprunt.part_empruntee * 100).toFixed(2)}"></span></div>
   <p>Sur 100 € dépensés par l’État (${h(md(total))} au total) : <strong class="texte-accent">${h(sur100(100 - emprunt.part_empruntee * 100))}</strong> venaient des recettes de l’année, <strong class="texte-emprunt">${surligne(sur100(emprunt.part_empruntee * 100))}</strong> ont été empruntés (${h(periode)}).</p>
+  ${noteChiffresOfficiels(an, emprunt)}
 </div>`
     : absent('Part empruntée non disponible pour ce millésime.')
 }

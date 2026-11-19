@@ -57,7 +57,10 @@ ${barres(
       return `<tr><th scope="row">${a}</th><td>${h(x.statut)}</td><td class="nombre">${h(entier(x.chiffre_meur))}</td><td class="nombre">${x.total_publie_meur !== null ? h(entier(x.total_publie_meur)) : '–'}</td><td class="nombre">${h(entier(x.nc))}</td></tr>`
     })
     .join('')}</tbody></table></div>
-<p class="aide">Les mesures « non chiffrées » par l’administration ne sont jamais comptées pour zéro : elles sont exclues de la somme.</p>
+<p class="aide">Les mesures « non chiffrées » par l’administration ne sont jamais comptées pour zéro : elles sont exclues de la somme.${annees
+    .filter((a) => idx.totaux[a].ecart_meur && idx.totaux[a].ecart_explication)
+    .map((a) => ` ${a} : écart avec le total publié, ${h(idx.totaux[a].ecart_explication!)}.`)
+    .join('')}</p>
 <h2>Exonérations de cotisations sociales (souvent appelées niches sociales)</h2>
 <p>Exonérations et allègements de cotisations : ${h(md(idx.niches_sociales.exonerations_robss_md['2024']))} en 2024. Elles sont en grande partie compensées à la Sécurité sociale par l’État : ne pas les ajouter aux dépenses fiscales.</p>
 <p class="aide">${h(idx.beneficiaires_nommes.constat)}</p>
