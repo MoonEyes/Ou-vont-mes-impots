@@ -3,7 +3,7 @@
 // Avec ECARTS_PROFILS=1, le test écrit le détail dans ecarts_cas_types_profils.json (non versionné).
 import { readFileSync, writeFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { SCENARIOS_OPENFISCA } from '../src/calcul/moteur'
+import { impotRecouvre, SCENARIOS_OPENFISCA, SEUIL_RECOUVREMENT_IR } from '../src/calcul/moteur'
 import { affectationsManquantes, agregatsProfil, calculerProfil, pensionsApresAbattement, profilDe, verifierProfilEtendu } from '../src/calcul/moteur-etendu'
 import { tauxCsgPension } from '../src/calcul/baremes-2025'
 import type { Affectation } from '../src/calcul/agregats'
@@ -38,6 +38,33 @@ const impot = (profil: ProfilEtendu) => {
   if (r.statut !== 'ok') throw new Error(JSON.stringify(r.erreur))
   return r.prelevements.filter((l) => l.famille === 'impot_revenu' && !l.id.startsWith('impot_revenu_versement_liberatoire')).reduce((s, l) => s + l.montant_annuel_eur.central, 0)
 }
+
+describe('seuil de mise en recouvrement de l’impôt sur le revenu (61 €, CGI art. 1657, 1 bis)', () => {
+  it('sous 61 € : 0 € prélevé, impôt calculé dit, avec la source et sa date ; à 61 € et au-delà : prélevé tel quel', () => {
+    expect(impotRecouvre(0, 2025)).toEqual({ montant: 0 })
+    expect(impotRecouvre(61, 2025)).toEqual({ montant: 61 })
+    expect(impotRecouvre(1200, 2025)).toEqual({ montant: 1200 })
+    for (const x of [1, 38, 60]) {
+      const r = impotRecouvre(x, 2025)
+      expect(r.montant).toBe(0)
+      expect(r.note).toContain(`Impôt calculé ${x} €, non recouvré car inférieur à 61 €`)
+      expect(r.note).toMatch(/art\. 1657, 1 bis/)
+      expect(r.note).toMatch(/consulté le \d{2}\/\d{2}\/\d{4}/)
+      expect(r.source).toBe(SEUIL_RECOUVREMENT_IR.source)
+    }
+  })
+  it('cas type T04 (zone du seuil) : même montant prélevé qu’OpenFisca (0 €), ligne explicative, total sans impôt', () => {
+    const cas = donnees.cas.find((c: { id: string }) => c.id === 'T04')
+    expect(cas.reference.foyer.impot_revenu).toBe(0)
+    const r = calculerProfil(cas.profil as ProfilEtendu, { scenarios: SCENARIOS_OPENFISCA })
+    if (r.statut !== 'ok') throw new Error('calcul')
+    const l = r.prelevements.find((x) => x.id === 'impot_revenu')!
+    expect(l.montant_annuel_eur.central).toBe(0)
+    const avant = Number(/Impôt calculé (\d+) €/.exec(l.note ?? '')![1])
+    expect(avant).toBeGreaterThan(0)
+    expect(avant).toBeLessThan(61)
+  })
+})
 
 describe('cas types des profils étendus (tolérance 1 %)', () => {
   it('la référence est générée', () => {

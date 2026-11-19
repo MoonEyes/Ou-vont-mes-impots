@@ -288,6 +288,29 @@ export interface FoyerFiscal {
   reductionOutreMer?: { taux: number; plafond: number }
 }
 
+/**
+ * Seuil de mise en recouvrement de l'impôt sur le revenu (CGI, art. 1657, 1 bis) : une cotisation initiale inférieure à
+ * 61 € avant imputation des crédits d'impôt n'est pas mise en recouvrement. Le site affiche ce qui est réellement
+ * prélevé (0 €) et dit l'impôt calculé avant le seuil ; OpenFisca applique la même règle (impot_revenu_restant_a_payer).
+ */
+export const SEUIL_RECOUVREMENT_IR = {
+  eur: 61,
+  reference: 'Code général des impôts, art. 1657, 1 bis',
+  source: 'https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006069577',
+  consulte: '2026-11-19',
+} as const
+
+/** Ligne d'impôt sur le revenu d'un foyer : montant prélevé après le seuil de recouvrement, et sa note s'il s'applique. */
+export function impotRecouvre(avantSeuil: number, anneeRevenus: number): { montant: number; note?: string; source?: string } {
+  const s = SEUIL_RECOUVREMENT_IR
+  if (avantSeuil <= 0 || avantSeuil >= s.eur) return { montant: Math.max(0, avantSeuil) }
+  return {
+    montant: 0,
+    note: `Impôt calculé ${avantSeuil} €, non recouvré car inférieur à ${s.eur} € : rien n’est prélevé. Source : ${s.reference}, seuil des revenus ${anneeRevenus} (Légifrance, consulté le ${s.consulte.split('-').reverse().join('/')}).`,
+    source: s.source,
+  }
+}
+
 /** Taux de la décote (CGI art. 197, I-4-a) : elle vaut le plafond moins 45,25 % de l'impôt brut. */
 const TAUX_DECOTE = 0.4525
 
@@ -584,7 +607,8 @@ export function calculer(profil: Profil, options: OptionsCalcul = {}): Resultat 
     )
     lignesIR.push({ id: 'impot_revenu', libelle: 'Impôt sur le revenu du foyer', montant: ir })
   }
-  for (const l of lignesIR)
+  for (const l of lignesIR) {
+    const ir = impotRecouvre(l.montant, annee)
     prelevements.push({
       id: l.id,
       libelle: l.libelle,
@@ -592,13 +616,15 @@ export function calculer(profil: Profil, options: OptionsCalcul = {}): Resultat 
       personne: 'foyer',
       assiette_annuelle_eur: null,
       taux: null,
-      montant_annuel_eur: f(l.montant),
+      montant_annuel_eur: f(ir.montant),
+      ...(ir.note ? { note: ir.note, source: ir.source } : {}),
       destinataire: DESTINATAIRES.etat,
       inclus_dans_total_paye: true,
       regle: 'impôt . foyer fiscal . impôt sur le revenu',
       hypothese_fourchette:
         "Sans autres revenus, frais réels ni réductions ou crédits d'impôt (dons, emploi à domicile, garde d'enfants) : non pris en compte.",
     })
+  }
 
   return assemblerResultat(profil, options, prelevements, avertissements, entree, brutTotal)
 }

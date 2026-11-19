@@ -2396,6 +2396,68 @@
    }
   },
   {
+   "id": "T04",
+   "groupe": "temps_partiel",
+   "libelle": "Temps partiel a 80 %, non cadre, impot calcule sous le seuil de recouvrement de 61 EUR (CGI art. 1657, 1 bis)",
+   "profil": {
+    "version_contrat": "1.0",
+    "annee_revenus": 2025,
+    "residence": {
+     "zone": "metropole",
+     "alsace_moselle": false,
+     "commune_insee": "44109"
+    },
+    "foyer": {
+     "situation": "celibataire",
+     "enfants": []
+    },
+    "logement": {
+     "statut": "locataire"
+    },
+    "personnes": [
+     {
+      "role": "declarant1",
+      "annee_naissance": 1985,
+      "statut_activite": "salarie_prive",
+      "frontalier": false,
+      "cadre": false,
+      "temps_travail": {
+       "type": "temps_partiel",
+       "quotite": 0.8
+      },
+      "salaire_net_avant_impot_mensuel": 1560
+     }
+    ]
+   },
+   "reference": {
+    "sources": [
+     "openfisca"
+    ],
+    "personnes": {
+     "declarant1": {
+      "salaire_brut": 23648.41,
+      "salaire_net_avant_impot": 18719.98,
+      "salaire_imposable": 19393.79,
+      "cotisations_salariales": 2674.68,
+      "csg_deductible": 1579.95,
+      "csg_non_deductible": 557.63,
+      "csg": 2137.58,
+      "crds": 116.17,
+      "cotisations_patronales_avant_reduction": 8251.49,
+      "reduction_generale": 2170.92,
+      "cotisations_patronales": 6080.56
+     }
+    },
+    "mon_entreprise": {},
+    "foyer": {
+     "impot_revenu": 0.0,
+     "revenu_net_imposable": 17454.78,
+     "nombre_de_parts": 1.0,
+     "versement_liberatoire": 0.0
+    }
+   }
+  },
+  {
    "id": "S01",
    "groupe": "smic",
    "libelle": "SMIC a temps plein (reduction generale maximale)",
