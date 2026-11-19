@@ -193,8 +193,10 @@ describe('parcours principal, de la saisie au Sankey', () => {
   it('feuille de style : règles du téléphone pour le héros et le résultat, focus visible, rien de retiré', () => {
     const css = readFileSync(join(process.cwd(), 'src/styles.css'), 'utf8')
     const mobile = [...css.matchAll(/@media \(max-width: 44\.99rem\) \{([\s\S]*?)\n\}/g)].map((m) => m[1]).join('\n')
-    expect(mobile).toMatch(/\.heros h1,\s*h1\.titre-resultat \{\s*font-size: 2\.125rem/)
-    expect(mobile).toMatch(/h1\.titre-resultat \{\s*font-size: 1\.875rem/)
+    // Jetons typographiques (lot 2 de l'audit design) : H1 du héros au cran --t5, titre du résultat plus petit (--t3)
+    // pour garder le total visible sans défiler.
+    expect(mobile).toMatch(/\.heros h1,\s*h1\.titre-resultat \{\s*font-size: var\(--t5\)/)
+    expect(mobile).toMatch(/h1\.titre-resultat \{\s*font-size: var\(--t3\)/)
     expect(css).toMatch(/:focus-visible \{\s*outline: 3px solid var\(--contour\)/)
     expect(css).toMatch(/\.retour-resultat a \{[^}]*min-height: 2\.75rem/)
   })

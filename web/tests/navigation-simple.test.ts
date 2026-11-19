@@ -130,7 +130,10 @@ describe('en-tête compact à 360 px', () => {
   }
   it('budget de hauteur : bandeau d’une ligne + ligne marque, loupe, menu + filet ≤ 96 px', () => {
     const b = compact()
-    const bandeau = /\.bandeau \{[^}]*font-size: ([\d.]+rem);[^}]*line-height: ([\d.]+);/.exec(b)!
+    // Taille du bandeau : un jeton typographique (--t-1 = 0,875rem), résolu dans la feuille de style.
+    const jeton = (v: string) => (/^var\(/.test(v) ? new RegExp(`${v.slice(4, -1)}: ([\\d.]+rem);`).exec(css)![1] : v)
+    const bandeau0 = /\.bandeau \{[^}]*font-size: ((?:var\(--t-?\d\))|[\d.]+rem);[^}]*line-height: ([\d.]+);/.exec(b)!
+    const bandeau = [bandeau0[0], jeton(bandeau0[1]), bandeau0[2]]
     const marge = /\.bandeau \.conteneur \{[^}]*padding-block: ([\d.]+rem);/.exec(b)!
     const ligne = /\.entete-ligne \{[^}]*min-height: ([\d.]+rem);/.exec(b)!
     const hauteur = px(bandeau[1]) * Number(bandeau[2]) + 2 * px(marge[1]) + px(ligne[1]) + 2.5

@@ -2,6 +2,7 @@
 // Tout est en SVG, donc en attributs : rien ne dépend d'un style en ligne (CSP stricte) et la page prérendue
 // porte déjà les bonnes proportions. Deux tracés sont produits, l'un pour les écrans larges, l'autre pour le
 // téléphone ; la feuille de style n'en montre qu'un. Chaque part est un lien quand elle mène quelque part.
+import { cran } from '../typo'
 import { h } from '../util'
 
 export type Famille =
@@ -80,7 +81,7 @@ interface Trace {
   corps: [number, number]
 }
 const LARGE: Trace = { l: 1200, hauteur: 208, talon: 128, ecart: 6, min: 60, max: 12, decalages: [0, 18, 6, 24, 10, 20], rayon: 20, corps: [22, 100] }
-const COMPACT: Trace = { l: 350, hauteur: 118, talon: 56, ecart: 4, min: 30, max: 6, decalages: [0, 10, 3, 13, 6], rayon: 10, corps: [13, 44] }
+const COMPACT: Trace = { l: 350, hauteur: 118, talon: 56, ecart: 4, min: 30, max: 6, decalages: [0, 10, 3, 13, 6], rayon: 10, corps: [14, 44] }
 
 /** Au-delà du nombre de parts lisibles, les plus petites sont regroupées dans une part « Autres postes ». */
 function regrouper(parts: Part[], max: number, base: number): Part[] {
@@ -127,7 +128,7 @@ function tracer(parts0: Part[], o: OptionsBillet, t: Trace, classe: string): str
     const y = 2 + t.decalages[i % t.decalages.length]
     // Corps du texte : limité par la largeur de la part ; l'unité tombe quand la part est étroite.
     let texte = p.texte
-    const corps = (s: string) => Math.max(t.corps[0], Math.min(t.corps[1], (w - 12) / (s.length * 0.6), haut * 0.5))
+    const corps = (s: string) => cran(Math.max(t.corps[0], Math.min(t.corps[1], (w - 12) / (s.length * 0.6), haut * 0.5)))
     if ((w - 12) / (texte.length * 0.6) < t.corps[0] * 1.25) texte = texte.replace(/\s*(€|Md€|M€|%)$/, '')
     const c = corps(texte)
     const cx = x + w / 2
@@ -139,7 +140,7 @@ function tracer(parts0: Part[], o: OptionsBillet, t: Trace, classe: string): str
     const etiquette = nonpub
       ? `<rect class="b-etiquette" x="${(cx - Math.min(lt, w - 10) / 2).toFixed(1)}" y="${(cy - c * 0.72).toFixed(1)}" width="${Math.min(lt, w - 10).toFixed(1)}" height="${(c * 1.44).toFixed(1)}" rx="${(c * 0.3).toFixed(1)}"/>`
       : ''
-    const mot = `<text class="${TONS_FONCES.has(p.famille) ? 'b-clair' : p.famille === 'papier' ? 'b-sur-papier' : ''}" x="${cx.toFixed(1)}" y="${(cy + c * 0.35).toFixed(1)}" font-size="${c.toFixed(1)}" text-anchor="middle">${h(texte)}</text>`
+    const mot = `<text class="${TONS_FONCES.has(p.famille) ? 'b-clair' : p.famille === 'papier' ? 'b-sur-papier' : ''}" x="${cx.toFixed(1)}" y="${(cy + c * 0.35).toFixed(1)}" font-size="${c}" text-anchor="middle">${h(texte)}</text>`
     const nom = `${p.nom} : ${p.texte}${/sur 100/.test(p.texte) ? '' : ` ${unite}`}`
     const contenu = `${fond}${rond}${etiquette}${mot}`
     formes.push(p.lien ? `<a href="${h(p.lien)}" aria-label="${h(nom)}">${contenu}</a>` : `<g role="img" aria-label="${h(nom)}">${contenu}</g>`)
@@ -159,7 +160,7 @@ function tracer(parts0: Part[], o: OptionsBillet, t: Trace, classe: string): str
       const ly = bas + 44 + rangee * 36
       const rx = dernier ? Math.min(t.l - 5, x + w - 6) : x + 6
       legendes.push(
-        `<path class="b-repere" d="M${rx.toFixed(1)} ${y + haut + 8}V${ly + 4}"/><text class="b-legende" x="${ancre.toFixed(1)}" y="${ly}" font-size="21"${dernier ? ' text-anchor="end"' : ''}><tspan>${h(p.nom)}</tspan>${avecDetail ? `<tspan> ${h(p.detail)}</tspan>` : ''}</text>`,
+        `<path class="b-repere" d="M${rx.toFixed(1)} ${y + haut + 8}V${ly + 4}"/><text class="b-legende" x="${ancre.toFixed(1)}" y="${ly}" font-size="22"${dernier ? ' text-anchor="end"' : ''}><tspan>${h(p.nom)}</tspan>${avecDetail ? `<tspan> ${h(p.detail)}</tspan>` : ''}</text>`,
       )
     }
     x += w + t.ecart
@@ -167,9 +168,9 @@ function tracer(parts0: Part[], o: OptionsBillet, t: Trace, classe: string): str
   const totalH = bas + 6 + (legendes.length ? 34 + (finRangee[1] ? 68 : 34) : 0)
   const ty = 2 + t.decalages[2 % t.decalages.length]
   const tw = t.talon
-  const corpsTalon = large ? 50 : 22
-  const grand = talon.grand.length > 3 ? corpsTalon * 0.7 : corpsTalon
-  const talonSvg = `<g class="b-talon"><rect class="b-forme b-papier" x="2" y="${ty}" width="${tw - 2}" height="${haut}" rx="${t.rayon}"/><circle class="b-pointille" cx="${tw / 2 + 1}" cy="${ty + haut * 0.24}" r="${large ? 22 : 10}"/><text x="${tw / 2 + 1}" y="${ty + haut * 0.24 + (large ? 9 : 4.5)}" font-size="${large ? 26 : 13}" text-anchor="middle">€</text><text x="${tw / 2 + 1}" y="${ty + haut * 0.68}" font-size="${grand}" text-anchor="middle">${h(talon.grand)}</text><text class="b-petit" x="${tw / 2 + 1}" y="${ty + haut * 0.68 + (large ? 32 : 16)}" font-size="${large ? 20 : 11}" text-anchor="middle">${h(talon.petit)}</text></g>`
+  const corpsTalon = large ? 40 : 22
+  const grand = talon.grand.length > 3 ? (large ? 28 : 16) : corpsTalon
+  const talonSvg = `<g class="b-talon"><rect class="b-forme b-papier" x="2" y="${ty}" width="${tw - 2}" height="${haut}" rx="${t.rayon}"/><circle class="b-pointille" cx="${tw / 2 + 1}" cy="${ty + haut * 0.24}" r="${large ? 22 : 10}"/><text x="${tw / 2 + 1}" y="${ty + haut * 0.24 + (large ? 9 : 4.5)}" font-size="${large ? 28 : 14}" text-anchor="middle">€</text><text x="${tw / 2 + 1}" y="${ty + haut * 0.68}" font-size="${grand}" text-anchor="middle">${h(talon.grand)}</text><text class="b-petit" x="${tw / 2 + 1}" y="${ty + haut * 0.68 + (large ? 32 : 16)}" font-size="${large ? 22 : 14}" text-anchor="middle">${h(talon.petit)}</text></g>`
   const motif = large ? [14, 5] : [7, 2.6]
   return `<svg class="${classe}" viewBox="0 0 ${t.l} ${totalH}" role="group" aria-label="${h(o.etiquette)}" focusable="false"><defs><pattern id="${id}-h" width="${motif[0]}" height="${motif[0]}" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="b-hach-fond" width="${motif[0]}" height="${motif[0]}"/><rect class="b-hach-trait" width="${motif[1]}" height="${motif[0]}"/></pattern></defs>${talonSvg}${formes.join('')}${legendes.join('')}</svg>`
 }

@@ -1,5 +1,6 @@
 // Le fil de l'euro : de ce qui sort de la poche jusqu'à ceux qui reçoivent. L'épaisseur de chaque ruban suit le montant.
 // SVG en attributs seulement (CSP stricte) ; un tracé horizontal pour les écrans larges, un tracé vertical pour le téléphone.
+import { cran } from '../typo'
 import { h, type Statut, STATUTS } from '../util'
 import type { Famille } from './billet'
 
@@ -83,9 +84,9 @@ function large(sources: SourceFil[], total: string, dest: DestFil[], id: string)
     out.push(`<path ${remplissage(id, x.statut)} d="${rubanH(210, s[i], 410, ps[i])}"/>`)
     const [y, hh] = s[i]
     out.push(`<rect class="fe-boite" x="1.5" y="${n(y)}" width="208" height="${n(hh)}" rx="12"/>`)
-    if (hh >= 78) out.push(`<text x="16" y="${n(y + 26)}" font-size="16">${h(x.nom)}</text><text class="fe-titre" x="16" y="${n(y + 52)}" font-size="20">${h(x.texte)}</text><text class="fe-leger" x="16" y="${n(y + 73)}" font-size="13">${h(STATUTS[x.statut].libelle.toLowerCase())}</text>`)
-    else if (hh >= 50) out.push(`<text x="16" y="${n(y + 21)}" font-size="14">${h(x.nom)}</text><text class="fe-titre" x="16" y="${n(y + 42)}" font-size="17">${h(x.texte)}</text>`)
-    else out.push(`<text x="14" y="${n(y + hh / 2 - 2)}" font-size="12.5">${h(x.nom)}</text><text class="fe-titre" x="14" y="${n(y + hh / 2 + 13)}" font-size="13.5">${h(x.texte)}</text>`)
+    if (hh >= 78) out.push(`<text x="16" y="${n(y + 26)}" font-size="16">${h(x.nom)}</text><text class="fe-titre" x="16" y="${n(y + 52)}" font-size="18">${h(x.texte)}</text><text class="fe-leger" x="16" y="${n(y + 73)}" font-size="14">${h(STATUTS[x.statut].libelle.toLowerCase())}</text>`)
+    else if (hh >= 50) out.push(`<text x="16" y="${n(y + 21)}" font-size="14">${h(x.nom)}</text><text class="fe-titre" x="16" y="${n(y + 42)}" font-size="16">${h(x.texte)}</text>`)
+    else out.push(`<text x="14" y="${n(y + hh / 2 - 2)}" font-size="14">${h(x.nom)}</text><text class="fe-titre" x="14" y="${n(y + hh / 2 + 13)}" font-size="14">${h(x.texte)}</text>`)
   })
   out.push(`<rect class="fe-boite" x="410" y="${y0 + 12}" width="42" height="${H - 24}" rx="12"/><text class="fe-titre" x="431" y="${y0 + H + 22}" font-size="18" text-anchor="middle">${h(total)}</text>`)
   dest.forEach((x, i) => {
@@ -94,12 +95,12 @@ function large(sources: SourceFil[], total: string, dest: DestFil[], id: string)
     out.push(`<rect ${remplissageFamille(id, x.famille).replace('fe-flux', 'fe-flux fe-dest')} x="610" y="${n(y)}" width="178" height="${n(hh)}" rx="12" stroke-width="2.5"/>`)
     const sur = surFamille(x.famille)
     if (x.famille === 'nonpub') out.push(`<rect class="fe-boite" x="620" y="${n(y + hh / 2 - 13)}" width="158" height="26" rx="8"/>`)
-    if (hh >= 60 && x.famille !== 'nonpub') out.push(`<text class="${sur}" x="626" y="${n(y + hh / 2 - 4)}" font-size="15">${h(x.nom)}</text><text class="fe-titre ${sur}" x="626" y="${n(y + hh / 2 + 19)}" font-size="20">${h(x.texte)}</text>`)
-    else out.push(`<text class="${sur}" x="628" y="${n(y + hh / 2 + 5)}" font-size="13.5">${h(x.nom)}</text><text class="fe-titre ${sur}" x="772" y="${n(y + hh / 2 + 5)}" font-size="14" text-anchor="end">${h(x.texte)}</text>`)
+    if (hh >= 60 && x.famille !== 'nonpub') out.push(`<text class="${sur}" x="626" y="${n(y + hh / 2 - 4)}" font-size="14">${h(x.nom)}</text><text class="fe-titre ${sur}" x="626" y="${n(y + hh / 2 + 19)}" font-size="18">${h(x.texte)}</text>`)
+    else out.push(`<text class="${sur}" x="628" y="${n(y + hh / 2 + 5)}" font-size="14">${h(x.nom)}</text><text class="fe-titre ${sur}" x="772" y="${n(y + hh / 2 + 5)}" font-size="14" text-anchor="end">${h(x.texte)}</text>`)
     const pas = Math.min(22, hh / Math.max(1, x.pour.length))
     x.pour.forEach((b, k) => {
       const by = y + hh / 2 + (k - (x.pour.length - 1) / 2) * pas
-      out.push(`<path class="fe-lien" d="M790 ${n(y + hh / 2)}Q806 ${n(y + hh / 2)} 820 ${n(by)}"/><text class="fe-leger" x="828" y="${n(by + 5)}" font-size="14.5">${h(b)}</text>`)
+      out.push(`<path class="fe-lien" d="M790 ${n(y + hh / 2)}Q806 ${n(y + hh / 2)} 820 ${n(by)}"/><text class="fe-leger" x="828" y="${n(by + 5)}" font-size="14">${h(b)}</text>`)
     })
   })
   return `<svg class="fil-large" viewBox="0 0 1000 ${y0 + H + 34}" aria-hidden="true" focusable="false">${out.join('')}</svg>`
@@ -115,17 +116,17 @@ function compact(sources: SourceFil[], total: string, dest: DestFil[], id: strin
   sources.forEach((x, i) => {
     out.push(`<path ${remplissage(id, x.statut)} d="${rubanV(58, s[i], 118, ps[i])}"/>`)
     const [px, w] = s[i]
-    out.push(`<rect class="fe-boite" x="${n(px)}" y="1.5" width="${n(w)}" height="56" rx="10"/><text x="${n(px + w / 2)}" y="23" font-size="13" text-anchor="middle">${h(x.court ?? x.nom)}</text><text class="fe-titre" x="${n(px + w / 2)}" y="43" font-size="${w < 100 ? 11.5 : 14}" text-anchor="middle">${h(x.texte)}</text>`)
+    out.push(`<rect class="fe-boite" x="${n(px)}" y="1.5" width="${n(w)}" height="56" rx="10"/><text x="${n(px + w / 2)}" y="23" font-size="14" text-anchor="middle">${h(x.court ?? x.nom)}</text><text class="fe-titre" x="${n(px + w / 2)}" y="43" font-size="14" text-anchor="middle">${h(x.texte)}</text>`)
   })
-  out.push(`<rect class="fe-boite" x="12" y="118" width="${L - 24}" height="40" rx="12"/><text class="fe-titre" x="${L / 2}" y="144" font-size="17" text-anchor="middle">${h(total)} en un an</text>`)
+  out.push(`<rect class="fe-boite" x="12" y="118" width="${L - 24}" height="40" rx="12"/><text class="fe-titre" x="${L / 2}" y="144" font-size="16" text-anchor="middle">${h(total)} en un an</text>`)
   dest.forEach((x, i) => {
     out.push(`<path ${remplissageFamille(id, x.famille)} d="${rubanV(158, pd[i], 218, d[i])}"/>`)
     const [px, w] = d[i]
     out.push(`<rect ${remplissageFamille(id, x.famille)} x="${n(px)}" y="218" width="${n(w)}" height="62" rx="10" stroke-width="2.5"/>`)
     const court = x.texte.replace(/\s*€$/, '')
-    const c = Math.min(30, Math.max(13, (w - 10) / (court.length * 0.6)))
+    const c = cran(Math.min(30, Math.max(14, (w - 10) / (court.length * 0.6))))
     if (x.famille === 'nonpub') out.push(`<rect class="fe-boite" x="${n(px + w / 2 - Math.min(w - 8, 30) / 2)}" y="${n(249 - c * 0.75)}" width="${n(Math.min(w - 8, 30))}" height="${n(c * 1.5)}" rx="6"/>`)
-    out.push(`<text class="fe-titre ${surFamille(x.famille)}" x="${n(px + w / 2)}" y="${n(249 + c * 0.36)}" font-size="${n(c)}" text-anchor="middle">${h(court)}</text>`)
+    out.push(`<text class="fe-titre ${surFamille(x.famille)}" x="${n(px + w / 2)}" y="${n(249 + c * 0.36)}" font-size="${c}" text-anchor="middle">${h(court)}</text>`)
   })
   return `<svg class="fil-compact" viewBox="0 0 ${L} 284" aria-hidden="true" focusable="false">${out.join('')}</svg>`
 }
@@ -170,7 +171,7 @@ export function filPiste(maillons: MaillonPiste[]): string {
     }
     out.push(`<rect ${remplissage(id, m.statut)} x="${n(c - w / 2)}" y="${n(y)}" width="${n(w)}" height="${haut}" rx="${w > 12 ? 6 : 1.5}"/>`)
     const nom = m.nom.length > 34 ? `${m.nom.slice(0, 33)}…` : m.nom
-    out.push(`<text x="${L + 16}" y="${n(y + 11)}" font-size="13">${h(nom)}</text><text class="fe-titre" x="${L + 16}" y="${n(y + 29)}" font-size="15">${h(m.texte)}</text>`)
+    out.push(`<text x="${L + 16}" y="${n(y + 11)}" font-size="14">${h(nom)}</text><text class="fe-titre" x="${L + 16}" y="${n(y + 29)}" font-size="14">${h(m.texte)}</text>`)
   })
   const H = (maillons.length - 1) * pas + haut + 3
   return `<div class="fil-euro fil-piste"><svg viewBox="0 0 400 ${H}" aria-hidden="true" focusable="false">${out.join('')}</svg></div>`

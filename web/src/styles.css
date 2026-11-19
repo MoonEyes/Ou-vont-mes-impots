@@ -54,6 +54,18 @@
   --collectivites-4: #8fe0d6;
   --accent: #4f2fcc;
   --taupe: #c9b8ff;
+  /* Échelle typographique : 7 crans (ratio 1,25 environ, base 18 px), plancher 14 px. Aucune autre taille
+     (tests/typographie.test.ts). Un titre de carte qui doit être petit devient un H3. */
+  --t-1: 0.875rem;
+  --t0: 1rem;
+  --t1: 1.125rem;
+  --t2: 1.375rem;
+  --t3: 1.75rem;
+  --t4: 2.5rem;
+  --t5: clamp(2.25rem, 6vw, 4.75rem);
+  /* Mesure du texte courant : 68 caractères. En Figtree, 1ch (largeur du zéro) vaut 1,45 caractère moyen :
+     « 68ch » laissait passer 99 caractères ; 28em donne 66 à 72 caractères réels (mesuré à 16 et 18 px). */
+  --mesure: 28em;
   --rayon: 1.5rem;
   --rayon-champ: 0.875rem;
   --trait: 2.5px;
@@ -111,7 +123,7 @@ body {
   background: var(--fond);
   color: var(--texte);
   font-family: var(--texte-police);
-  font-size: 1.125rem;
+  font-size: var(--t1);
   line-height: 1.55;
   font-variant-numeric: lining-nums;
   overflow-wrap: break-word;
@@ -127,18 +139,23 @@ h3 {
   text-wrap: balance;
 }
 h1 {
-  font-size: clamp(2.5rem, 1.55rem + 4.6vw, 4.75rem);
+  font-size: var(--t5);
   line-height: 1.02;
   letter-spacing: -0.025em;
   margin: 0.5rem 0 1rem;
 }
 h2 {
-  font-size: clamp(1.75rem, 1.45rem + 1.5vw, 2.5rem);
+  font-size: var(--t3);
   line-height: 1.1;
   margin: 3rem 0 1rem;
 }
+@media (min-width: 45rem) {
+  h2 {
+    font-size: var(--t4);
+  }
+}
 h3 {
-  font-size: 1.375rem;
+  font-size: var(--t2);
   line-height: 1.2;
   letter-spacing: 0;
   margin: 1.75rem 0 0.5rem;
@@ -149,8 +166,15 @@ ol,
 dl {
   margin: 0 0 1rem;
 }
-:where(.ecran, .section-donnees, .colonnes > div, .colonnes > section) > :where(p, ul, ol, dl, h2, h3) {
+:where(.ecran, .section-donnees, .colonnes > div, .colonnes > section) > :where(ul, ol, dl, h2, h3) {
   max-width: 46rem;
+}
+/* Mesure : 68 caractères au plus pour le texte courant, où qu'il soit (encadré, carte, bloc « Signaler »).
+   Les listes à classe (lignes, barres, cartes) et les tableaux gardent leur largeur. */
+main :where(p, dd, .aide, .source),
+main :where(ul, ol):not([class]) > li,
+main .lignes li > :first-child {
+  max-width: var(--mesure);
 }
 
 a {
@@ -226,7 +250,7 @@ td.nombre,
 .bandeau {
   background: var(--bandeau);
   color: var(--sur-bandeau);
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   line-height: 1.4;
 }
 .bandeau .conteneur {
@@ -253,7 +277,7 @@ td.nombre,
   min-height: 2.75rem;
   font-family: var(--titre);
   font-weight: 800;
-  font-size: 1.3125rem;
+  font-size: var(--t2);
   letter-spacing: -0.01em;
   color: var(--texte);
   text-decoration: none;
@@ -297,7 +321,7 @@ td.nombre,
   border: 2px solid transparent;
   border-radius: 999px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--t0);
   color: var(--texte);
   text-decoration: none;
   white-space: nowrap;
@@ -335,7 +359,7 @@ td.nombre,
     gap: 0 0.75rem;
   }
   .marque {
-    font-size: 1.0625rem;
+    font-size: var(--t0);
     gap: 0.5rem;
     min-width: 0;
   }
@@ -366,7 +390,7 @@ td.nombre,
   .navigation ul a {
     min-height: 52px;
     padding: 0 1rem;
-    font-size: 1.125rem;
+    font-size: var(--t1);
   }
   #bouton-menu[aria-expanded='false'] + ul {
     display: none;
@@ -417,7 +441,7 @@ main > .chargement {
 .pied {
   background: var(--bandeau);
   color: var(--sur-bandeau);
-  font-size: 1rem;
+  font-size: var(--t0);
   line-height: 1.5;
 }
 .pied a {
@@ -450,7 +474,7 @@ main > .chargement {
   margin: 0.5rem 0 0;
 }
 .pied h2 {
-  font-size: 1.125rem;
+  font-size: var(--t1);
   letter-spacing: 0;
   margin: 0 0 0.5rem;
 }
@@ -462,7 +486,7 @@ main > .chargement {
 .pied-bas {
   border-top: 1.5px solid var(--sur-bandeau);
   padding-block: 1.25rem 2rem;
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   margin: 0;
 }
 @media (min-width: 62rem) {
@@ -477,19 +501,25 @@ main > .chargement {
 
 /* ---------- Texte ---------- */
 .chapeau {
-  font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
+  font-size: var(--t1);
   line-height: 1.55;
   color: var(--secondaire);
   max-width: 40rem;
 }
+@media (min-width: 62rem) {
+  .chapeau {
+    font-size: var(--t2);
+    line-height: 1.45;
+  }
+}
 .aide {
-  font-size: 0.9375rem;
+  font-size: var(--t0);
   line-height: 1.45;
   color: var(--secondaire);
   margin: 0.25rem 0 0.75rem;
 }
 .source {
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   line-height: 1.45;
   color: var(--secondaire);
   margin-top: 0.75rem;
@@ -597,7 +627,7 @@ h1.avec-picto {
   margin-bottom: 0;
 }
 .carte h2 {
-  font-size: 1.75rem;
+  font-size: var(--t3);
 }
 .carte-contour,
 .en-cours {
@@ -620,13 +650,13 @@ h1.avec-picto {
   color: inherit;
 }
 .encadre h2 {
-  font-size: 1.375rem;
+  font-size: var(--t2);
   letter-spacing: 0;
 }
 
 .grand-chiffre {
   font-family: var(--titre);
-  font-size: clamp(2.25rem, 1.7rem + 2.6vw, 3.5rem);
+  font-size: var(--t4);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -658,7 +688,7 @@ h1.avec-picto {
 .cles strong {
   font-family: var(--titre);
   font-weight: 800;
-  font-size: clamp(1.875rem, 1.6rem + 1.2vw, 2.5rem);
+  font-size: var(--t3);
   line-height: 1;
   letter-spacing: -0.02em;
 }
@@ -666,7 +696,7 @@ h1.avec-picto {
   margin-left: 0;
 }
 .cles span {
-  font-size: 1rem;
+  font-size: var(--t0);
   line-height: 1.4;
 }
 @media (min-width: 45rem) {
@@ -739,13 +769,13 @@ h1.avec-picto {
 }
 .recap-titre {
   font-family: var(--texte-police);
-  font-size: 1.125rem;
+  font-size: var(--t1);
   font-weight: 600;
   letter-spacing: 0;
   margin: 0;
 }
 .recap .grand-chiffre {
-  font-size: clamp(3rem, 2rem + 4.2vw, 4.75rem);
+  font-size: var(--t5);
   line-height: 1.12;
   margin: 0;
 }
@@ -819,7 +849,7 @@ h1.avec-picto {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   font-weight: 700;
 }
 
@@ -837,7 +867,7 @@ legend {
   width: 100%;
   font-family: var(--titre);
   font-weight: 800;
-  font-size: 1.375rem;
+  font-size: var(--t2);
   line-height: 1.2;
   padding: 0;
   margin-bottom: 0.5rem;
@@ -848,7 +878,7 @@ legend + * {
 label {
   display: block;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--t0);
   margin: 1rem 0 0.375rem;
 }
 .choix label,
@@ -857,7 +887,7 @@ label.case {
   align-items: center;
   gap: 0.625rem;
   font-weight: 400;
-  font-size: 1.0625rem;
+  font-size: var(--t1);
   min-height: 44px;
   margin: 0;
 }
@@ -888,7 +918,7 @@ input[inputmode='numeric'],
 input[inputmode='decimal'] {
   font-family: var(--chiffres);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: var(--t2);
 }
 input:hover,
 select:hover {
@@ -899,20 +929,25 @@ input[aria-invalid='true'] {
 }
 .message-champ {
   font-weight: 700;
-  font-size: 0.9375rem;
+  font-size: var(--t0);
   margin: 0.375rem 0;
 }
 
-/* Boutons : pastille, un seul bouton principal par écran. Survol = changement de fond, sans animation. */
+/* Trois boutons seulement (tests/typographie.test.ts) :
+   - secondaire (par défaut pour button et .bouton, ou .bouton-secondaire) : 16 px, 10 x 22 px, contour ;
+   - principal (.bouton-principal, un seul par écran) : 18 px, 14 x 28 px, fond encre, ombre jaune 4 px ;
+   - lien d'action (.bouton-lien) : texte souligné, sans contour ni fond.
+   Survol = changement de fond, sans animation. Les réglettes (.bascule) et puces reprennent le secondaire. */
 button,
-.bouton {
+.bouton,
+.bouton-secondaire {
   font: inherit;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--t0);
   line-height: 1.2;
-  min-height: 3rem;
+  min-height: 44px;
   min-width: 44px;
-  padding: 0.5rem 1.5rem;
+  padding: 0.625rem 1.375rem;
   border-radius: 999px;
   border: var(--trait) solid var(--contour);
   background: var(--papier);
@@ -931,14 +966,34 @@ button:hover,
 }
 .bouton-principal {
   font-family: var(--titre);
-  font-size: 1.125rem;
+  font-size: var(--t1);
   min-height: 3.5rem;
-  padding-inline: 1.75rem;
+  padding: 0.875rem 1.75rem;
   border-color: var(--principal);
   background: var(--principal);
   color: var(--sur-principal);
-  box-shadow: 0 5px 0 var(--secu);
-  margin-bottom: 5px;
+  box-shadow: 0 4px 0 var(--secu);
+  margin-bottom: 4px;
+}
+button.bouton-lien,
+.bouton-lien {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--texte);
+  font-size: var(--t0);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+button.bouton-lien:hover,
+.bouton-lien:hover {
+  background: none;
+  color: var(--texte);
+  text-decoration-thickness: 3px;
 }
 .bouton-principal:hover {
   background: var(--principal-survol);
@@ -947,7 +1002,7 @@ button:hover,
 }
 @media (prefers-color-scheme: dark) {
   .bouton-principal {
-    box-shadow: 0 5px 0 var(--etat);
+    box-shadow: 0 4px 0 var(--etat);
   }
 }
 button[aria-pressed='true'],
@@ -988,8 +1043,6 @@ button:disabled {
 .bascule button {
   border-color: transparent;
   background: transparent;
-  min-height: 44px;
-  padding-inline: 1.125rem;
 }
 .bascule .bouton:hover,
 .bascule button:hover {
@@ -1061,7 +1114,7 @@ details[open] > summary::before {
   display: inline-flex;
   align-items: center;
   font-weight: 700;
-  font-size: 1.0625rem;
+  font-size: var(--t1);
   line-height: 1.25;
 }
 .barre-tete .valeur {
@@ -1069,7 +1122,7 @@ details[open] > summary::before {
   grid-row: 1;
   white-space: nowrap;
   font-weight: 800;
-  font-size: 1.375rem;
+  font-size: var(--t2);
   text-align: right;
 }
 .barres .aide {
@@ -1150,7 +1203,7 @@ details[open] > summary::before {
     repeating-linear-gradient(90deg, var(--contour) 0 1.5px, var(--papier) 1.5px 6px);
 }
 .methode-calcul {
-  font-size: 0.9em;
+  font-size: var(--t-1);
 }
 /* Sur un fond de famille (encre en clair comme en sombre), le motif suit le texte de la carte. */
 :where(.cle-famille, .carte-famille) .motif {
@@ -1160,18 +1213,27 @@ details[open] > summary::before {
   display: inline-flex;
   align-items: center;
   font-family: var(--texte-police);
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   font-weight: 700;
   white-space: nowrap;
   margin-left: 0.5rem;
   text-transform: lowercase;
+}
+/* Composant de statut : pastille 16 px + mot 14 px gras ; quatre valeurs (data-statut : trace, approche, nonpub, calcule). */
+.statut .motif {
+  width: 1rem;
+  height: 1rem;
+  border-width: 2px;
+  border-radius: 0.3rem;
+  margin-right: 0.375rem;
+  vertical-align: -0.125rem;
 }
 .badge-admin {
   text-transform: none;
   padding: 0 0.5rem;
   border: 1.5px solid currentColor;
   border-radius: 999px;
-  font-size: 0.875rem;
+  font-size: var(--t-1);
 }
 .legende-statuts {
   list-style: none;
@@ -1184,7 +1246,7 @@ details[open] > summary::before {
   display: flex;
   align-items: flex-start;
   gap: 0.25rem;
-  font-size: 1rem;
+  font-size: var(--t0);
   line-height: 1.4;
 }
 .legende-statuts .motif {
@@ -1263,7 +1325,7 @@ caption {
   text-align: left;
   font-weight: 600;
   color: var(--secondaire);
-  font-size: 1rem;
+  font-size: var(--t0);
   padding: 0.5rem 0.75rem;
 }
 th,
@@ -1272,10 +1334,10 @@ td {
   padding: 0.75rem;
   border-bottom: 1.5px solid var(--filet);
   vertical-align: middle;
-  font-size: 1rem;
+  font-size: var(--t0);
 }
 thead th {
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   font-weight: 700;
   border-bottom: var(--trait) solid var(--contour);
   vertical-align: bottom;
@@ -1327,7 +1389,7 @@ td.nombre {
 }
 .lignes .montant {
   font-weight: 800;
-  font-size: 1.125rem;
+  font-size: var(--t1);
 }
 @media (min-width: 45rem) {
   .lignes li {
@@ -1337,14 +1399,20 @@ td.nombre {
     text-align: right;
   }
   .lignes .montant {
-    font-size: 1.25rem;
+    font-size: var(--t2);
   }
 }
 .lignes .dest {
   grid-column: 1 / -1;
-  font-size: 0.9375rem;
+  font-size: var(--t0);
   line-height: 1.45;
   color: var(--secondaire);
+}
+.lignes .dest details {
+  margin: 0.125rem 0 0;
+}
+.lignes .dest details p {
+  margin: 0.25rem 0 0;
 }
 /* Réduction : signe « − » et texte, sans couleur connotée (pas de vert « bonne nouvelle »). */
 .reduction .montant {
@@ -1384,14 +1452,14 @@ td.nombre {
   line-height: 1.3;
 }
 .postes .p-nom small {
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   font-weight: 400;
   color: var(--secondaire);
 }
 .postes .p-montant {
   font-family: var(--chiffres);
   font-weight: 800;
-  font-size: 1.375rem;
+  font-size: var(--t2);
   white-space: nowrap;
   text-align: right;
 }
@@ -1451,14 +1519,14 @@ td.nombre {
   line-height: 1.3;
 }
 .parts .p-nom strong {
-  font-size: 1.0625rem;
+  font-size: var(--t1);
 }
 .parts a .p-nom strong {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 .parts .p-nom small {
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   color: var(--secondaire);
 }
 @media (min-width: 45rem) {
@@ -1478,7 +1546,7 @@ td.nombre {
   text-align: right;
   font-family: var(--chiffres);
   font-weight: 800;
-  font-size: 1.375rem;
+  font-size: var(--t2);
   white-space: nowrap;
 }
 
@@ -1491,7 +1559,7 @@ td.nombre {
   flex-wrap: wrap;
   align-items: center;
   gap: 0 0.625rem;
-  font-size: 1rem;
+  font-size: var(--t0);
 }
 .fil-ariane li {
   display: inline-flex;
@@ -1627,13 +1695,13 @@ td.nombre {
   gap: 0.75rem;
   font-family: var(--titre);
   font-weight: 800;
-  font-size: 1.375rem;
+  font-size: var(--t2);
   line-height: 1.2;
 }
 .cartes span {
   display: block;
   color: var(--secondaire);
-  font-size: 1rem;
+  font-size: var(--t0);
   line-height: 1.45;
 }
 .cartes .picto {
@@ -1685,14 +1753,14 @@ td.nombre {
 }
 .t-nom {
   font-weight: 700;
-  font-size: 1.0625rem;
+  font-size: var(--t1);
   line-height: 1.2;
 }
 .t-visuel {
   display: none;
   flex-direction: column;
   gap: 0.375rem;
-  font-size: 0.875rem;
+  font-size: var(--t-1);
 }
 .t-visuel svg {
   display: block;
@@ -1708,13 +1776,13 @@ td.nombre {
 .t-chiffre {
   font-family: var(--titre);
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: var(--t2);
   line-height: 1.1;
   letter-spacing: -0.01em;
   min-height: 1.65rem;
 }
 .t-legende {
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   line-height: 1.3;
 }
 .t-puces {
@@ -1731,7 +1799,7 @@ td.nombre {
   border: 2px solid var(--encre);
   border-radius: 999px;
   padding: 0.125rem 0.75rem;
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   font-weight: 700;
 }
 @media (min-width: 45rem) {
@@ -1748,10 +1816,10 @@ td.nombre {
     display: inline-flex;
   }
   .t-nom {
-    font-size: 1.125rem;
+    font-size: var(--t1);
   }
   .t-legende {
-    font-size: 1rem;
+    font-size: var(--t0);
   }
   .tuiles-visuels a {
     min-height: 18.5rem;
@@ -1760,7 +1828,7 @@ td.nombre {
     display: flex;
   }
   .tuiles-visuels .t-chiffre {
-    font-size: 2rem;
+    font-size: var(--t3);
   }
 }
 @media (min-width: 45rem) and (max-width: 61.99rem) {
@@ -1775,7 +1843,7 @@ td.nombre {
   padding-top: 0.5rem;
 }
 .voir-aussi h2 {
-  font-size: 1.375rem;
+  font-size: var(--t2);
   letter-spacing: 0;
   margin-top: 1.5rem;
 }
@@ -1946,12 +2014,13 @@ td.nombre {
 .fam-collectivites-3 { fill: var(--collectivites-3); }
 .fam-collectivites-4 { fill: var(--collectivites-4); }
 .billet-note {
+  max-width: none;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 0.25rem 1.5rem;
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   font-weight: 600;
   color: var(--secondaire);
   margin: 0.5rem 0 0;
@@ -1984,7 +2053,7 @@ td.nombre {
   background: var(--famille);
   color: var(--sur-famille);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--t0);
   white-space: nowrap;
   overflow: hidden;
 }
@@ -2093,7 +2162,7 @@ td.nombre {
 .trame text {
   font-family: var(--texte-police);
   font-weight: 600;
-  font-size: 15px;
+  font-size: var(--t-1);
   fill: var(--texte);
   text-anchor: middle;
   pointer-events: none;
@@ -2136,7 +2205,7 @@ td.nombre {
   }
 }
 .entete-local h1 {
-  font-size: clamp(2.5rem, 1.6rem + 3vw, 4rem);
+  font-size: var(--t5);
 }
 .ou-cest h2 {
   margin-top: 0;
@@ -2176,7 +2245,7 @@ td.nombre {
   margin: 0;
 }
 .heros-form h2 {
-  font-size: 1.375rem;
+  font-size: var(--t2);
   letter-spacing: 0;
   margin: 0 0 0.25rem;
 }
@@ -2258,13 +2327,13 @@ td.nombre {
   flex-direction: column;
   gap: 0.25rem;
   color: var(--secondaire);
-  font-size: 1.0625rem;
+  font-size: var(--t1);
 }
 .etapes li strong {
   display: block;
   font-family: var(--titre);
   font-weight: 800;
-  font-size: 1.375rem;
+  font-size: var(--t2);
   line-height: 1.2;
   color: var(--texte);
   margin-bottom: 0.25rem;
@@ -2283,7 +2352,7 @@ td.nombre {
   color: var(--encre);
   font-family: var(--titre);
   font-weight: 800;
-  font-size: 1.375rem;
+  font-size: var(--t2);
 }
 .etapes li:nth-child(2)::before {
   background: var(--etat);
@@ -2322,7 +2391,6 @@ td.nombre {
 }
 .demarche-bloc h2 {
   margin: 0 0 0.75rem;
-  font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
 }
 .demarche-bloc a:not(.bouton) {
   color: var(--encre);
@@ -2348,14 +2416,14 @@ td.nombre {
   border: var(--trait) solid var(--encre);
   border-radius: 1.25rem;
   padding: 1rem 1.125rem;
-  font-size: 1rem;
+  font-size: var(--t0);
   line-height: 1.45;
 }
 .garanties strong {
   display: block;
   font-family: var(--titre);
   font-weight: 800;
-  font-size: 1.1875rem;
+  font-size: var(--t1);
   line-height: 1.2;
   margin-bottom: 0.375rem;
 }
@@ -2512,7 +2580,7 @@ td.nombre {
 }
 .appel h2 {
   margin: 0 0 0.5rem;
-  font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  font-size: var(--t3);
 }
 .appel .chapeau {
   margin: 0;
@@ -2523,7 +2591,7 @@ td.nombre {
   }
 }
 .titre-niveau {
-  font-size: 1.375rem;
+  font-size: var(--t2);
   letter-spacing: 0;
   margin-top: 1.5rem;
   max-width: none;
@@ -2533,7 +2601,7 @@ td.nombre {
   padding: 0;
   columns: 22rem auto;
   column-gap: 2rem;
-  font-size: 1rem;
+  font-size: var(--t0);
 }
 .liste-niveau li {
   break-inside: avoid;
@@ -2550,14 +2618,14 @@ td.nombre {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  font-size: 1rem;
+  font-size: var(--t0);
   line-height: 1.35;
 }
 .deux-chiffres strong {
   display: block;
   font-family: var(--titre);
   font-weight: 800;
-  font-size: 2rem;
+  font-size: var(--t3);
   line-height: 1.1;
 }
 .jauge .statut-nonpub {
@@ -2638,7 +2706,7 @@ fieldset.saisie-groupe {
 }
 .saisie-groupe > legend {
   font-family: inherit;
-  font-size: 1rem;
+  font-size: var(--t0);
   font-weight: 700;
   line-height: 1.3;
   margin-bottom: 0.25rem;
@@ -2678,7 +2746,7 @@ fieldset.saisie-groupe {
 .hub-compte {
   font-family: var(--texte-police);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--t0);
   letter-spacing: 0;
   color: var(--secondaire);
 }
@@ -2710,10 +2778,7 @@ fieldset.saisie-groupe {
   max-width: none;
   font-weight: 500;
 }
-.recherche-entete button {
-  min-height: 2.75rem;
-  padding-inline: 1.125rem;
-}
+
 @media (max-width: 61.99rem) {
   .recherche-boite {
     max-width: none;
@@ -2760,7 +2825,7 @@ fieldset.saisie-groupe {
   font-weight: 700;
 }
 .recherche-precision {
-  font-size: 0.875rem;
+  font-size: var(--t-1);
   color: var(--secondaire);
 }
 .recherche-suggestions li:hover .recherche-precision,
@@ -2787,7 +2852,7 @@ fieldset.saisie-groupe {
   margin-top: 1.5rem;
 }
 .recherche-groupe h2 {
-  font-size: 1.375rem;
+  font-size: var(--t2);
   letter-spacing: 0;
   margin: 2rem 0 0.5rem;
 }
@@ -2823,7 +2888,7 @@ fieldset.saisie-groupe {
 .recherche-regle {
   margin: 0.375rem 0 0;
   padding: 0.375rem 0.75rem;
-  font-size: 0.8125rem;
+  font-size: var(--t-1);
   line-height: 1.35;
   color: var(--secondaire);
   background: var(--papier);
@@ -2876,7 +2941,7 @@ fieldset.saisie-groupe {
   font-style: normal;
   font-family: var(--titre);
   font-weight: 800;
-  font-size: 1.25rem;
+  font-size: var(--t2);
 }
 .glossaire-forme {
   display: block;
@@ -2925,7 +2990,7 @@ fieldset.saisie-groupe {
 .recouvrement-valeur strong {
   font-family: var(--titre);
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: var(--t2);
 }
 .recouvrement-estimation dl,
 .recouvrement-definitions {
@@ -3005,7 +3070,7 @@ fieldset.saisie-groupe {
   body {
     background: #ffffff;
     color: #1e1548;
-    font-size: 11pt;
+    font-size: var(--t-1);
   }
   /* Les parts colorées du billet et les motifs gardent leurs couleurs : elles ont aussi un contour et un libellé. */
   * {
@@ -3042,7 +3107,7 @@ fieldset.saisie-groupe {
     margin-top: 1.5rem;
     padding-top: 0.5rem;
     border-top: var(--trait) solid #1e1548;
-    font-size: 9pt;
+    font-size: var(--t-1);
   }
   .colonnes {
     display: block;
@@ -3130,10 +3195,10 @@ fieldset.saisie-groupe {
 .sl-etiquette {
   fill: var(--secondaire);
   font-family: var(--texte-police);
-  font-size: 12px;
+  font-size: var(--t-1);
 }
 .sl-grand .sl-etiquette {
-  font-size: 13px;
+  font-size: var(--t-1);
 }
 .sl-multiples {
   list-style: none;
@@ -3153,11 +3218,11 @@ fieldset.saisie-groupe {
   margin: 0 0 0.25rem;
 }
 .sl-lecture {
-  font-size: 0.9375rem;
+  font-size: var(--t0);
   margin: 0.375rem 0 0;
 }
 .sl-notes {
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   color: var(--secondaire);
   padding-left: 1.25rem;
 }
@@ -3167,7 +3232,7 @@ fieldset.saisie-groupe {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 1.5rem;
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
 }
 .sl-legende li {
   display: flex;
@@ -3230,8 +3295,6 @@ fieldset.saisie-groupe {
   font-weight: 800;
 }
 .suivre-choix {
-  min-height: 44px;
-  padding: 0.375rem 1rem;
   text-align: left;
   justify-content: flex-start;
 }
@@ -3265,13 +3328,9 @@ fieldset.saisie-groupe {
 .exporter-boutons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0 1.5rem;
 }
-.exporter-boutons button {
-  font-size: 0.9375rem;
-  min-height: 2.75rem;
-  padding: 0.25rem 1rem;
-}
+
 .exporter-citation {
   margin-top: 0.5rem;
   background: var(--papier);
@@ -3336,7 +3395,7 @@ fieldset.saisie-groupe {
   box-sizing: border-box;
   color: inherit;
   font: inherit;
-  font-size: 0.875rem;
+  font-size: var(--t-1);
   resize: vertical;
   overflow-wrap: anywhere;
   user-select: all;
@@ -3351,7 +3410,7 @@ fieldset.saisie-groupe {
   color: var(--texte);
   font-family: var(--texte-police);
   font-weight: 600;
-  font-size: 15px;
+  font-size: var(--t-1);
   text-anchor: middle;
   pointer-events: none;
 }
@@ -3392,7 +3451,7 @@ fieldset.saisie-groupe {
 }
 /* Profil retenu, juste sous le total (le total et la phrase « sur 100 € » passent devant). */
 .recap .recap-profil {
-  font-size: 0.9375rem;
+  font-size: var(--t-1);
   line-height: 1.45;
   color: var(--secondaire);
 }
@@ -3405,25 +3464,25 @@ fieldset.saisie-groupe {
   }
   .heros h1,
   h1.titre-resultat {
-    font-size: 2.125rem;
+    font-size: var(--t5);
     line-height: 1.05;
     margin-bottom: 0.5rem;
   }
   .heros .chapeau {
-    font-size: 1rem;
+    font-size: var(--t0);
     line-height: 1.45;
   }
   .heros-form {
     padding: 1rem 1.125rem 1.125rem;
   }
   .heros-form h2 {
-    font-size: 1.25rem;
+    font-size: var(--t2);
   }
   .heros-champs label:first-child {
     margin-top: 0.25rem;
   }
   h1.titre-resultat {
-    font-size: 1.875rem;
+    font-size: var(--t3);
     gap: 0.5rem 0.75rem;
   }
   h1.titre-resultat .picto-grand {
@@ -3439,10 +3498,10 @@ fieldset.saisie-groupe {
     gap: 0.5rem;
   }
   .recap-titre {
-    font-size: 1rem;
+    font-size: var(--t0);
   }
   .recap .grand-chiffre {
-    font-size: 2.75rem;
+    font-size: var(--t4);
   }
 }
 
@@ -3524,7 +3583,7 @@ fieldset.saisie-groupe {
 @media (max-width: 61.99rem) {
   /* En-tête compact : une ligne de bandeau, puis marque, loupe et menu sur une seule ligne (96 px au plus à 360 px). */
   .bandeau {
-    font-size: 0.8125rem;
+    font-size: var(--t-1);
     line-height: 1.3;
   }
   .bandeau .conteneur {
@@ -3538,17 +3597,10 @@ fieldset.saisie-groupe {
     display: inline-flex;
     margin-left: auto;
   }
-  /* Marque, loupe et menu : au moins 12 px entre la marque et la loupe, boutons de 44 x 44 px. */
+  /* Marque, loupe et menu : au moins 12 px entre la marque et la loupe (boutons de 48 x 48 px gardés). */
   .marque {
     gap: 0.375rem;
     margin-right: 0.25rem;
-  }
-  #bouton-recherche,
-  #bouton-menu {
-    min-height: 44px;
-  }
-  #bouton-recherche {
-    min-width: 44px;
   }
   .navigation {
     margin-left: 0;
@@ -3569,7 +3621,7 @@ fieldset.saisie-groupe {
 @media (max-width: 25.99rem) {
   #bouton-menu {
     padding: 0;
-    min-width: 44px;
+    min-width: 48px;
   }
   .bouton-menu-texte {
     position: absolute;
@@ -3619,7 +3671,7 @@ fieldset.saisie-groupe {
   color: var(--encre);
 }
 .porte-titre {
-  font-size: 1.375rem;
+  font-size: var(--t2);
   letter-spacing: 0;
   margin: 0 0 0.25rem;
 }
@@ -3645,7 +3697,7 @@ fieldset.saisie-groupe {
 }
 .porte-texte {
   margin: 0;
-  font-size: 1rem;
+  font-size: var(--t0);
   line-height: 1.45;
 }
 .porte-salaire .porte-texte {
@@ -3676,7 +3728,7 @@ fieldset.saisie-groupe {
   margin: 1.5rem 0;
 }
 .plan-rubrique h2 {
-  font-size: 1.375rem;
+  font-size: var(--t2);
   letter-spacing: 0;
   margin: 0 0 0.5rem;
 }
@@ -3732,7 +3784,7 @@ fieldset.saisie-groupe {
   margin: 0;
   display: grid;
   gap: 0.25rem;
-  font-size: 1rem;
+  font-size: var(--t0);
   line-height: 1.45;
 }
 .manque dl > div {

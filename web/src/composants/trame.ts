@@ -38,7 +38,7 @@ function cases(): Case[] {
 }
 
 const carre = (c: Case) => `<rect x="${c.px}" y="${c.py}" width="40" height="40" rx="10"/>`
-const numero = (c: Case) => `<text x="${c.px + 20}" y="${c.py + 25.5}"${c.code.length > 2 ? ' font-size="12.5"' : ''}>${c.code}</text>`
+const numero = (c: Case) => `<text x="${c.px + 20}" y="${c.py + 25.5}">${c.code}</text>`
 const lien = (c: Case, ici?: string) =>
   `<a href="${fragmentDepartement(c.code, c.nom)}" aria-label="${c.code} ${h(c.nom)}"${c.code === ici ? ' class="t-ici" aria-current="true"' : ''}>${carre(c)}${numero(c)}</a>`
 

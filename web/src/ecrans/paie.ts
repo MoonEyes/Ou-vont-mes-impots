@@ -25,7 +25,7 @@ import { billet, type Famille as FamilleBillet, FAMILLE_ADMIN, listeParts, parts
 import { filEuro } from '../composants/fil-euro'
 import { resumer, sorties } from '../composants/resume-calcul'
 import { METHODE_TOTAL, phrasePosition, positionCentrale } from '../calcul/fourchette'
-import { appliquerLargeurs, badgeCalcule, badgeStatut, barres, entier, eur, estFourchette, fourchette, h, jaugeFourchette, lireLesMotifs, nomVille, pct, source, type Statut, STATUTS, surligne, traitStatut } from '../util'
+import { appliquerLargeurs, badgeCalcule, badgeStatut, barres, entier, eur, estFourchette, fourchette, h, jaugeFourchette, lireLesMotifs, nomVille, pct, source, type Statut, surligne } from '../util'
 
 const FAMILLES: [Famille, string][] = [
   ['cotisation_salariale', 'Cotisations sociales prélevées sur ton salaire'],
@@ -66,7 +66,13 @@ function statutLigne(l: Prelevement): string {
     : l.famille === 'taxe_consommation' || estFourchette(l.montant_annuel_eur) || (l.famille === 'impot_local' && l.regle.startsWith('prelevements/'))
       ? 'approche'
       : null
-  return s ? `${traitStatut(s)}<strong>${STATUTS[s].libelle}</strong> · ` : ''
+  return s ? `${badgeStatut(s)} · ` : ''
+}
+
+/** « Nom (famille) », sans répéter la famille quand elle redit le nom (« État (État) », « Plusieurs… (Plusieurs…) »). */
+export function nomAvecFamille(nom: string, famille: string): string {
+  const premier = (x: string) => x.split(/[\s(]/)[0].toLowerCase()
+  return !famille || famille === nom || premier(famille) === premier(nom) ? nom : `${nom} (${famille})`
 }
 
 function ligne(l: Prelevement, couple: boolean): string {
@@ -76,14 +82,16 @@ function ligne(l: Prelevement, couple: boolean): string {
   const dest = parts
     ? l.ventilation!.map((v) => `${destinataire(v.destinataire).nom} ${pct(v.part * 100, v.part < 0.01 ? 1 : 0)}`).join(', ')
     : l.destinataire.nom
+  // Répartition entre plus de deux destinataires : une ligne courte, le détail replié (audit du 19/11, problème 15).
+  const replie = parts && l.ventilation!.length > 2
   const nonSourcee = l.statut_affectation === 'non sourcee' ? ' · répartition non sourcée' : ''
   const montant = l.non_chiffre ? 'non chiffré' : `${l.nature === 'reduction' ? '− ' : ''}${fourchette(m)}`
   return `<li${l.nature === 'reduction' ? ' class="reduction"' : ''}>
     <span>${h(l.libelle)}${couple ? h(PERSONNES[l.personne] ?? '') : ''}</span>
     <span class="montant">${h(montant)}${l.non_chiffre ? '' : '<span class="visuellement-cache"> par an</span>'}</span>
-    <span class="dest">${statutLigne(l)}Va à : ${h(dest)}${!parts && admin !== dest && l.destinataire.id !== 'non_affecte' ? ` <span class="badge badge-admin">${h(admin)}</span>` : ''}${h(nonSourcee)}${
+    <div class="dest">${statutLigne(l)}${replie ? `Va à ${l.ventilation!.length} destinataires` : `Va à : ${h(dest)}`}${!parts && admin !== dest && l.destinataire.id !== 'non_affecte' ? ` <span class="badge badge-admin">${h(admin)}</span>` : ''}${h(nonSourcee)}${
       !l.non_chiffre && estFourchette(m) ? ` · estimation (central ${h(eur(m.central))})` : ''
-    }${l.note ? `<br />${h(l.note)}` : ''}${lienSuivi(l)}</span>
+    }${l.note ? `<br />${h(l.note)}` : ''}${lienSuivi(l)}${replie ? `<details class="repartition"><summary>Détail de la répartition</summary><p>${h(dest)}</p></details>` : ''}</div>
   </li>`
 }
 
@@ -323,7 +331,7 @@ export async function rendre(cible: HTMLElement) {
       const lignes = parDestinataire(avecPatronal ? [...toutes, ...patronales] : toutes, avecPatronal)
       return barres(
         lignes.map((x) => ({
-          nom: x.destinataire === 'non_affecte' ? destinataire(x.destinataire).nom : `${destinataire(x.destinataire).nom} (${LIBELLE_ADMINISTRATION[destinataire(x.destinataire).administration]})`,
+          nom: x.destinataire === 'non_affecte' ? destinataire(x.destinataire).nom : nomAvecFamille(destinataire(x.destinataire).nom, LIBELLE_ADMINISTRATION[destinataire(x.destinataire).administration]),
           valeur: x.montant_annuel_eur.central,
           texte: fourchette(x.montant_annuel_eur),
         })),

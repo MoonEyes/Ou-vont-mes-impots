@@ -218,7 +218,7 @@ function actions(table: HTMLTableElement): HTMLElement {
   const div = document.createElement('div')
   div.className = 'exporter'
   // Espace final : le texte du bloc ne se colle pas à celui qui suit (lecture du texte de la page, copie).
-  div.innerHTML = `<div class="exporter-boutons"><button type="button" data-action="csv">Télécharger (CSV)<span class="visuellement-cache"> : ${h(titre)}</span></button><button type="button" data-action="citer" aria-expanded="false" aria-controls="citation-${n}">Citer<span class="visuellement-cache"> : ${h(titre)}</span></button></div><div class="exporter-citation" id="citation-${n}" hidden><p class="exporter-texte"></p><p class="aide" role="status"></p></div> `
+  div.innerHTML = `<div class="exporter-boutons"><button type="button" class="bouton-lien" data-action="csv">Télécharger (CSV)<span class="visuellement-cache"> : ${h(titre)}</span></button><button type="button" class="bouton-lien" data-action="citer" aria-expanded="false" aria-controls="citation-${n}">Citer<span class="visuellement-cache"> : ${h(titre)}</span></button></div><div class="exporter-citation" id="citation-${n}" hidden><p class="exporter-texte"></p><p class="aide" role="status"></p></div> `
   const panneau = div.querySelector<HTMLElement>('.exporter-citation')!
   const texte = div.querySelector<HTMLElement>('.exporter-texte')!
   const etat = div.querySelector<HTMLElement>('[role="status"]')!

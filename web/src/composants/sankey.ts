@@ -86,7 +86,7 @@ export async function dessinerSankey(conteneur: HTMLElement, n: Noeud, totalMd?:
         emphasis: { focus: 'adjacency', lineStyle: { color: c.accent, opacity: 0.75 } },
         lineStyle: { color: c.taupe, opacity: 0.35 },
         itemStyle: { color: c.taupe, borderWidth: 0 },
-        label: { color: c.texte, fontSize: 13, overflow: 'truncate', width: 220 },
+        label: { color: c.texte, fontSize: 14, overflow: 'truncate', width: 220 },
         levels: [
           { depth: 0, itemStyle: { color: c.accent } },
           { depth: 1, itemStyle: { color: c.taupe } },

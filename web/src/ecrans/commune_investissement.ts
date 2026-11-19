@@ -4,7 +4,7 @@
 // qu'au clic. Montants tracés (balances DGFiP), somme « équipement » calculée par le site, crédits votés tracés
 // (document budgétaire publié par la commune) ; aucun taux ni écart calculé (règle 13).
 import { chargerSiPresent } from '../donnees'
-import { absent, badgeStatut, eur, h, pct, source, traitStatut, badgeCalcule } from '../util'
+import { absent, badgeStatut, eur, h, pct, source, badgeCalcule } from '../util'
 import { encadreManque, MANQUES } from '../composants/manque'
 
 export interface InvIndex {
@@ -74,7 +74,7 @@ export interface Contexte {
 
 export const TITRE = 'Investissement réalisé et délibérations publiées'
 const montant = (x: number | undefined | null) => (x === undefined || x === null ? '–' : h(eur(x)))
-const nonPublie = () => `<span class="badge">${traitStatut('nonpub')}Non publié</span>`
+const nonPublie = () => badgeStatut('nonpub')
 
 /** Tableau des dépenses d'équipement mandatées, exercice par exercice, avec les crédits votés quand ils sont publiés. */
 export function blocInvestissement(idx: InvIndex, dep: InvDep | null, ctx: Contexte): string {
