@@ -34,7 +34,7 @@ describe('comparer deux communes', () => {
     expect(main.querySelector<HTMLElement>('#com-a-bloc')!.hidden).toBe(true)
     expect(texte()).toContain('Les communes n’ont ni la même taille ni les mêmes compétences')
     expect(texte()).not.toContain('Chargement…')
-    expect(Array.from(main.querySelectorAll('.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Chez moi', 'Comparer'])
+    expect(Array.from(main.querySelectorAll('.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Ma commune', 'Comparer'])
   })
 
   it('le formulaire écrit les deux communes dans l’adresse (lien partageable)', async () => {

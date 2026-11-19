@@ -78,7 +78,7 @@ describe('fiche de paie expliquée', () => {
     session.profil = null
     await ecran()
     expect(net(main.querySelector('h1')?.textContent)).toBe('Ta fiche de paie expliquée')
-    expect(Array.from(main.querySelectorAll('nav.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Mon calcul', 'Fiche de paie'])
+    expect(Array.from(main.querySelectorAll('nav.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Mon salaire', 'Fiche de paie'])
     expect(texte()).toContain(`Exemple du site : ${eurFr(PROFIL_EXEMPLE.personnes[0].salaire_net_avant_impot_mensuel!)} net avant impôt par mois`)
     expect(main.querySelector('a[href="#/calcul"]')).not.toBeNull()
     expect(main.querySelector('.erreur')).toBeNull()

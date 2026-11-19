@@ -11,6 +11,7 @@ import { session } from '../etat'
 import { lien, type Rendu } from '../routeur'
 import { absent, appliquerLargeurs, badgeCalcule, badgeStatut, barres, entier, eur, eurLisible, h, source, sur100 } from '../util'
 import { blocBudget, deCommune, type Budgets, type Geo } from './commune'
+import { encadreManque, MANQUES } from '../composants/manque'
 import { adresseSynthese, brancherFormulaire, chargerIndex, formulaire } from './ma_commune_recherche'
 
 export * from './ma_commune_recherche'
@@ -127,7 +128,7 @@ export function blocSubventions(nom: string, d: DecisionsAnnee | null, max = 5):
 ${source(d.source, d.millesime)}`
 }
 
-type OperationsIndex = { listes: { id: string; fichier: string; autorite_de_gestion: string; region: string }[] }
+type OperationsIndex = { listes: { id: string; fichier: string; autorite_de_gestion: string; region: string; collecte_le?: string }[]; sources_inaccessibles?: { url: string; constat: string }[] }
 type Operations = { source: string; millesime: string; autorite_de_gestion: string; colonnes: string[]; operations: (string | number | null)[][] }
 
 /** Opérations des fonds européens situées dans la commune (listes des autorités de gestion), contribution de l'Union. */
@@ -136,7 +137,7 @@ export function blocFondsEuropeens(insee: string, nom: string, region: { code: s
   if (!idx) return `${absent('Listes d’opérations des fonds européens non disponibles.')}<p>${lien_}</p>`
   const lues = listes.filter((l): l is Operations => !!l)
   if (!lues.length)
-    return `<p>La liste des opérations cofinancées par l’Union européenne, commune par commune, n’est pas publiée en données ouvertes par l’autorité de gestion de la région ${h(region.nom)}, ou pas encore reprise par le site (listes reprises : ${h(idx.listes.map((l) => l.autorite_de_gestion).filter((v, i, a) => a.indexOf(v) === i).join(', '))}). Les montants par région restent consultables : ${lien_}.</p>`
+    return `${encadreManque(MANQUES.fondsEuropeensCommunes({ region: region.nom, listes: idx.listes, inaccessible: idx.sources_inaccessibles?.[0] }))}<p>Les montants par région restent consultables : ${lien_}.</p>`
   const lignes: { den: string; intitule: string; periode: string; fonds: string; ue: number | null; annee: number | null; autorite: string }[] = []
   for (const o of lues) {
     const c = (k: string) => o.colonnes.indexOf(k)
@@ -286,7 +287,7 @@ ${idxMc ? source(idxMc.source, idxMc.millesime) : ''}`
         ? blocCollectivite({ titre: epci.nom, f: fe, fc: fe?.epci?.[g.epci], noms, b: be, bc: be?.collectivites[g.epci], motif: 'Budget de l’intercommunalité non disponible.' })
         : `<p>${h(g.nom)} n’appartient à aucune intercommunalité à fiscalité propre dans le code officiel géographique (cas des communes isolées et des îles mono-communales).</p>`,
     )
-    remplir('mc-departement', blocCollectivite({ titre: geo.departement.nom, f: null, fc: undefined, noms, b: bd, bc: bd?.collectivites[g.departement], motif: `Budget du département ${geo.departement.nom} non disponible (collectivité à statut particulier : ses comptes sont publiés avec ceux de la région ou de la ville).`, sansFonction: 'le site ne publie les dépenses par fonction des départements que pour quelques départements pilotes (contrat, local/budgets/fonctions).' }))
+    remplir('mc-departement', blocCollectivite({ titre: geo.departement.nom, f: null, fc: undefined, noms, b: bd, bc: bd?.collectivites[g.departement], motif: `Budget du département ${geo.departement.nom} non disponible (collectivité à statut particulier : ses comptes sont publiés avec ceux de la région ou de la ville).`, sansFonction: 'le budget par fonction au format national n’est pas publié pour ce département (voir l’encadré).' }) + (bd?.collectivites[g.departement] ? encadreManque(MANQUES.departementFonctions(geo.departement.nom, bd.millesime)) : ''))
     remplir('mc-region', blocCollectivite({ titre: `Région ${geo.region.nom}`, f: fr, fc: fr?.regions?.[g.region], noms, b: br, bc: br?.collectivites[g.region], motif: `Budget de la région ${geo.region.nom} non disponible.` }))
   })()
 

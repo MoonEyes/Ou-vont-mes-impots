@@ -107,7 +107,7 @@ describe('écrans', () => {
     expect(main.querySelectorAll('.trame a')).toHaveLength(101)
     await ecran('#/local/commune?insee=69123')
     expect(document.title).toBe('Budget de Lyon (Rhône) : dépenses, dotations, taux · Où vont mes impôts')
-    expect(Array.from(main.querySelectorAll('.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Chez moi', 'Rhône', 'Lyon'])
+    expect(Array.from(main.querySelectorAll('.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Ma commune', 'Rhône', 'Lyon'])
     // Au moins trois chiffres propres à la commune, en texte.
     expect(texte()).toMatch(/[\d\s]+ habitants/)
     expect(texte()).toMatch(/de dépenses en \d{4}, soit [\d\s]+ € par habitant/)
@@ -128,7 +128,7 @@ describe('écrans', () => {
     expect(texte()).toContain('Net à payer avant impôt sur le revenu')
     expect(texte()).toContain('rien de ce que tu saisis n’est envoyé')
     expect(document.querySelector('.navigation [aria-current=page]')?.getAttribute('href')).toBe('#/calcul')
-    expect(Array.from(main.querySelectorAll('nav.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Mon calcul'])
+    expect(Array.from(main.querySelectorAll('nav.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Mon salaire'])
   })
 
   it('1. saisie : salaire manquant signalé sur le champ', async () => {
@@ -475,7 +475,8 @@ describe('écrans', () => {
     expect(main.querySelector('.liens-sortie')?.textContent).toBe('Une erreur ? Écris à proton.me.easel124@passinbox.com')
     expect(main.querySelector('a[href*="github.com"]')).toBeNull()
     expect(main.querySelector('a[href="#/methode"]')?.textContent).toBe('Méthode détaillée')
-    expect(document.querySelector('.navigation [aria-current=page]')?.getAttribute('href')).toBe('#/demarche')
+    // La démarche n'est plus une entrée du menu principal (pied de page) : aucune entrée du menu n'est marquée.
+    expect(document.querySelector('.navigation [aria-current=page]')).toBeNull()
     await ecran('#/')
     expect(main.querySelector('#nb-sources')?.textContent).toBe('Plus de 120 sources publiques')
     expect(main.querySelector('a[href="#/demarche"]')?.textContent).toBe('Lire la démarche')

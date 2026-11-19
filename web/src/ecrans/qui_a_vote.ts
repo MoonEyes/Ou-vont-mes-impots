@@ -9,6 +9,7 @@ import { charger, chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
 import { absent, entier, h, rendreDefilables, source } from '../util'
 import { enCours } from './dette'
+import { encadreManque, MANQUES } from '../composants/manque'
 
 const CHEMIN = '/decisions/qui-a-vote'
 
@@ -280,6 +281,9 @@ ${
 }`
 }
 
+/** Date du relevé de data.senat.fr écrite dans les limites publiées (« relevé du 19/11/2026 »), sinon date des données. */
+const releveSenat = (idx: Index) => idx.limites.map((l) => /Sénat[^]*relevé du (\d{2}\/\d{2}\/\d{4})/.exec(l)?.[1]).find(Boolean) ?? idx.donnees_au ?? null
+
 export async function rendre(cible: HTMLElement, params: URLSearchParams = new URLSearchParams()) {
   const idx = await chargerSiPresent<Index>('qui_a_vote/index.json')
   if (!idx) {
@@ -290,6 +294,8 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
   const nomsImpots = new Map(idx.impots.map((i) => [i.id, i.libelle]))
   cible.innerHTML = `<h1>Qui a voté tes impôts</h1>
 <p class="chapeau">${h(idx.presentation)} Elle montre les décisions publiées par l’Assemblée nationale et le Sénat depuis juillet 2024 ; elle ne montre ni les votes à main levée ni les scrutins nominatifs du Sénat, qui ne sont pas publiés en données ouvertes.</p>
+${encadreManque(MANQUES.senatScrutins(releveSenat(idx)))}
+${idx.non_couverts.some((n) => n.id === 'cotisations') ? encadreManque(MANQUES.cotisationsDecret()) : ''}
 ${avertissements(idx.avertissements)}
 <details class="carte"><summary>Comment un vote est relié à un impôt</summary><p>${h(idx.methode)}</p><p>${h(idx.regle_personnes)}</p><ul>${idx.limites.map((l) => `<li>${h(l)}</li>`).join('')}</ul></details>
 <h2>Choisis un impôt</h2>

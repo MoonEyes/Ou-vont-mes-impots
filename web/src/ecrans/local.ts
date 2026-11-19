@@ -1,6 +1,6 @@
 // Hub « Chez moi » : choisir sa commune (fichiers par département, chargés à la demande).
 import { fragmentCommune, fragmentDepartement } from '../chemins'
-import { cartesRayons, partPersonnelle } from '../composants/hub'
+import { cartesRayons, partPersonnelle, planRubrique } from '../composants/hub'
 import { trame } from '../composants/trame'
 import { TOUS_DEPARTEMENTS, departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
@@ -14,6 +14,7 @@ export async function rendre(cible: HTMLElement) {
   cible.innerHTML = `
 <h1>Budget de ma commune</h1>
 <p class="chapeau">Ce que dépensent ta commune, ton intercommunalité, ton département et ta région, ce que l’État leur verse, et les taux d’impôts locaux votés.</p>
+${planRubrique('/local')}
 <div class="colonnes c-6-6">
   <div>
     <h2>Ma commune en un écran</h2>

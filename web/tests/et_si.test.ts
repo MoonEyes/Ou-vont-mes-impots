@@ -372,7 +372,7 @@ describe('et si : écran', () => {
     session.profil = null
   }, 120000)
 
-  it('route : sous « Mon calcul », fil d’Ariane, voisins existants, lien depuis le résultat', async () => {
+  it('route : sous « Mon salaire », fil d’Ariane, voisins existants, lien depuis le résultat', async () => {
     const r = ROUTES.find((x) => x.chemin === '/calcul/et-si')!
     expect(r).toBeTruthy()
     expect(r.parent).toBe('/calcul')
@@ -382,7 +382,7 @@ describe('et si : écran', () => {
     session.profil = null
     location.hash = '#/calcul/et-si'
     await afficher(ROUTES, main, '#/calcul/et-si')
-    expect(Array.from(main.querySelectorAll('nav.fil-ariane a')).map((a) => texte(a))).toEqual(['Accueil', 'Mon calcul', r.court ?? r.titre])
+    expect(Array.from(main.querySelectorAll('nav.fil-ariane a')).map((a) => texte(a))).toEqual(['Accueil', 'Mon salaire', r.court ?? r.titre])
     expect(main.querySelector('nav.fil-ariane [aria-current=page]')?.getAttribute('href')).toBe('#/calcul/et-si')
     expect(main.querySelector('h1 .picto')).not.toBeNull()
     expect(main.querySelector('.voir-aussi a[href="#/calcul"]')).not.toBeNull()

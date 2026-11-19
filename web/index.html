@@ -59,22 +59,23 @@
   <body>
     <a class="evitement" href="#contenu">Aller au contenu</a>
     <header class="entete">
-      <div class="bandeau"><p class="conteneur"><strong><span class="non-officiel">Site citoyen, non officiel</span>.</strong> Il ne remplace pas impots.gouv.fr et ne juge aucune dépense.</p></div>
+      <div class="bandeau"><p class="conteneur"><strong><span class="non-officiel">Site citoyen, non officiel</span>.</strong><span class="bandeau-suite"> Il ne remplace pas impots.gouv.fr et ne juge aucune dépense.</span></p></div>
       <div class="conteneur entete-ligne">
         <a class="marque" href="#/" data-rubrique="/"><svg class="logo" width="40" height="34" viewBox="0 0 40 34" aria-hidden="true" focusable="false"><rect class="l-papier" x="1.5" y="5" width="9" height="24" rx="3.5" stroke-width="2.5"/><rect class="l-secu" x="13" y="2" width="12" height="24" rx="3.5" stroke-width="2.5"/><rect class="l-etat" x="27.5" y="8" width="5" height="24" rx="2.5" stroke-width="2.5"/><rect class="l-coll" x="35" y="4" width="3.5" height="24" rx="1.75" stroke-width="2"/></svg><span>Où vont mes impôts</span></a>
+        <button type="button" id="bouton-recherche" aria-expanded="false" aria-controls="recherche-entete" aria-label="Rechercher dans le site"></button>
         <nav id="navigation" class="navigation" aria-label="Navigation principale">
-          <button type="button" id="bouton-menu" aria-expanded="false" aria-controls="menu"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Menu</button>
+          <button type="button" id="bouton-menu" aria-expanded="false" aria-controls="menu"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="bouton-menu-texte">Menu</span></button>
           <ul id="menu">
-            <li><a href="#/calcul" data-rubrique="/calcul">Mon calcul</a></li>
+            <li><a href="#/calcul" data-rubrique="/calcul">Mon salaire</a></li>
+            <li><a href="#/local/ma-commune" data-rubrique="/local">Ma commune</a></li>
+            <li><a href="#/beneficiaires" data-rubrique="/beneficiaires">Qui reçoit l’argent</a></li>
+            <li><a href="#/decisions" data-rubrique="/decisions">Qui décide</a></li>
             <li><a href="#/explorer" data-rubrique="/explorer">Explorer</a></li>
-            <li><a href="#/local" data-rubrique="/local">Chez moi</a></li>
-            <li><a href="#/beneficiaires" data-rubrique="/beneficiaires">Qui reçoit</a></li>
-            <li><a href="#/decisions" data-rubrique="/decisions">Décisions</a></li>
-            <li><a href="#/demarche" data-rubrique="/demarche">La démarche</a></li>
+            <li><a href="#/methode" data-rubrique="/methode">Méthode</a></li>
           </ul>
         </nav>
       </div>
-      <form id="recherche-entete" class="conteneur recherche-entete" role="search" action="#/recherche" aria-label="Recherche dans le site">
+      <form id="recherche-entete" class="conteneur recherche-entete repliee" role="search" action="#/recherche" aria-label="Recherche dans le site">
         <label class="visuellement-cache" for="recherche-champ">Rechercher dans le site</label>
         <div class="recherche-boite"><input id="recherche-champ" name="q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="Une commune, une organisation, un député, un impôt…" aria-keyshortcuts="/" /></div>
         <button type="submit">Rechercher</button>
@@ -94,11 +95,11 @@
           <nav aria-labelledby="pied-site">
             <h2 id="pied-site">Le site</h2>
             <ul>
-              <li><a href="#/calcul">Mon calcul</a></li>
+              <li><a href="#/calcul">Mon salaire</a></li>
+              <li><a href="#/local">Ma commune</a></li>
+              <li><a href="#/beneficiaires">Qui reçoit l’argent</a></li>
+              <li><a href="#/decisions">Qui décide</a></li>
               <li><a href="#/explorer">Explorer</a></li>
-              <li><a href="#/local">Chez moi</a></li>
-              <li><a href="#/beneficiaires">Qui reçoit</a></li>
-              <li><a href="#/decisions">Décisions</a></li>
             </ul>
           </nav>
           <nav aria-labelledby="pied-sources">

@@ -13,9 +13,14 @@ function demarrer() {
   // Téléphone : la navigation s'ouvre par le bouton « Menu » (sur ordinateur elle est toujours visible).
   const menu = document.querySelector<HTMLButtonElement>('#bouton-menu')
   const liste = document.getElementById('menu')
-  const fermer = () => menu?.setAttribute('aria-expanded', 'false')
+  // Fermer : menu replié, et recherche repliée sur téléphone (changement de page, ouverture de l'autre panneau).
+  const fermer = () => {
+    menu?.setAttribute('aria-expanded', 'false')
+    replierRecherche()
+  }
   menu?.addEventListener('click', () => {
     const ouvert = menu.getAttribute('aria-expanded') === 'true'
+    replierRecherche()
     menu.setAttribute('aria-expanded', String(!ouvert))
     if (!ouvert) liste?.querySelector<HTMLElement>('a')?.focus()
   })
@@ -31,7 +36,36 @@ function demarrer() {
   // Le menu se referme quand le focus clavier en sort (il ne masque pas l'élément actif).
   document.getElementById('navigation')?.addEventListener('focusout', (e) => {
     const vers = (e as FocusEvent).relatedTarget as Node | null
-    if (vers && !document.getElementById('navigation')!.contains(vers)) fermer()
+    if (vers && !document.getElementById('navigation')!.contains(vers)) menu?.setAttribute('aria-expanded', 'false')
+  })
+  // Téléphone : la recherche se range derrière le bouton loupe (en-tête compact) ; sur ordinateur elle reste visible.
+  // Le raccourci « / » l'ouvre avant que src/composants/recherche.ts ne donne le focus au champ.
+  const loupe = document.querySelector<HTMLButtonElement>('#bouton-recherche')
+  const formRecherche = document.getElementById('recherche-entete')
+  function replierRecherche() {
+    document.querySelector('#bouton-recherche')?.setAttribute('aria-expanded', 'false')
+    document.getElementById('recherche-entete')?.classList.add('repliee')
+  }
+  const basculerRecherche = (ouvrir: boolean, focus = true) => {
+    if (!loupe || !formRecherche) return
+    loupe.setAttribute('aria-expanded', String(ouvrir))
+    formRecherche.classList.toggle('repliee', !ouvrir)
+    if (ouvrir && focus) document.querySelector<HTMLInputElement>('#recherche-champ')?.focus()
+  }
+  loupe?.addEventListener('click', () => {
+    const ouvrir = loupe.getAttribute('aria-expanded') !== 'true'
+    menu?.setAttribute('aria-expanded', 'false')
+    basculerRecherche(ouvrir)
+  })
+  formRecherche?.addEventListener('keydown', (e) => {
+    if ((e as KeyboardEvent).key === 'Escape' && !e.defaultPrevented && loupe?.getAttribute('aria-expanded') === 'true') {
+      basculerRecherche(false)
+      loupe.focus()
+    }
+  })
+  document.addEventListener('keydown', (e) => {
+    const cibleTouche = e.target as HTMLElement | null
+    if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey && !cibleTouche?.closest?.('input, textarea, select, [contenteditable]')) basculerRecherche(true, false)
   })
   // Champ « Rechercher » de l'en-tête : suggestions et page de résultats (src/composants/recherche.ts, chargé à part).
   import('./composants/recherche').then((m) => m.brancherEntete()).catch((e) => console.error(e))

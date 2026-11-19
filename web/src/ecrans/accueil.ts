@@ -1,4 +1,5 @@
-// Accueil : le billet découpé d'un exemple, le champ qui lance le calcul, trois étapes, les caisses à explorer.
+// Accueil : quatre portes (mon salaire, ma commune, qui reçoit l'argent, qui décide), le billet découpé d'un exemple,
+// trois étapes, les caisses à explorer.
 // Le texte et le billet s'affichent tout de suite (l'exemple est un petit fichier du site, écrit par les tests à
 // partir du vrai calcul) ; les chiffres des tuiles et le nombre de sources, lus dans les données, complètent ensuite.
 import { billet, listeParts, partsAdministrations } from '../composants/billet'
@@ -20,32 +21,50 @@ export function rendre(cible: HTMLElement) {
   const lignes = sorties(ex.sources)
   const etendue = ex.total.haut - ex.total.bas
   cible.innerHTML = `
-<div class="heros">
-  <div>
-    <h1>Tu verses 100 €. Voilà où ils partent.</h1>
+<div class="heros heros-portes">
+  <div class="heros-intro">
+    <h1>Tu verses 100 €. Voilà où ils partent.</h1>
     <p class="chapeau">Cotisations, impôt sur le revenu, TVA, taxes locales : on additionne tout ce que tu verses en un an, puis on suit chaque euro jusqu’à ceux qui le reçoivent.</p>
   </div>
-  <form id="heros-form" class="carte carte-principale heros-form" novalidate>
-    <h2>Et ton billet à toi ?</h2>
-    <div class="heros-champs">
-      <div>
-        <label for="heros-net">Ton salaire net avant impôt, par mois</label>
-        <span class="champ-euro"><input id="heros-net" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="Par exemple ${h(entier(ex.profil.net_mensuel))}" aria-describedby="heros-aide heros-msg" /></span>
-        <p class="aide" id="heros-aide">Ligne « Net à payer avant impôt sur le revenu » de ta fiche de paie.</p>
-      </div>
-      <div>
-        <label for="heros-dep">Ton département</label>
-        <select id="heros-dep"><option value="">Ne pas préciser</option>${DEPARTEMENTS.map(([c, n]) => `<option value="${c}">${c} ${h(n)}</option>`).join('')}</select>
-      </div>
-      <div id="heros-com-bloc" hidden>
-        <label for="heros-com">Ta commune</label>
-        <select id="heros-com"></select>
-      </div>
-    </div>
-    <p class="message-champ" id="heros-msg" hidden></p>
-    <button type="submit" class="bouton-principal">Découper mon billet</button>
-    <p class="aide">Le calcul se fait dans ton navigateur. Aucun compte, rien n’est envoyé. Environ 2 minutes.</p>
-  </form>
+  <ol class="portes" aria-label="Par où commencer">
+    <li class="porte porte-salaire">
+      <form id="heros-form" class="carte carte-principale heros-form" novalidate aria-labelledby="porte-salaire">
+        <h2 id="porte-salaire" class="porte-titre">Mon salaire</h2>
+        <p class="porte-texte">Ton billet à toi : ce que tu verses en un an et à qui, calculé tout de suite.</p>
+        <div class="heros-champs">
+          <div>
+            <label for="heros-net">Ton salaire net avant impôt, par mois</label>
+            <span class="champ-euro"><input id="heros-net" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="Par exemple ${h(entier(ex.profil.net_mensuel))}" aria-describedby="heros-aide heros-msg" /></span>
+            <p class="aide" id="heros-aide">Ligne « Net à payer avant impôt sur le revenu » de ta fiche de paie.</p>
+          </div>
+          <div>
+            <label for="heros-dep">Ton département</label>
+            <select id="heros-dep"><option value="">Ne pas préciser</option>${DEPARTEMENTS.map(([c, n]) => `<option value="${c}">${c} ${h(n)}</option>`).join('')}</select>
+          </div>
+          <div id="heros-com-bloc" hidden>
+            <label for="heros-com">Ta commune</label>
+            <select id="heros-com"></select>
+          </div>
+        </div>
+        <p class="message-champ" id="heros-msg" hidden></p>
+        <button type="submit" class="bouton-principal">Découper mon billet</button>
+        <p class="calcul-en-cours" id="heros-statut" role="status" hidden></p>
+        <p class="aide">Le calcul se fait dans ton navigateur. Aucun compte, rien n’est envoyé. Environ 2 minutes. Situation par défaut : personne seule, salariée du privé, à temps plein ; tu la précises ensuite avec <a href="#/calcul">le formulaire complet</a>.</p>
+      </form>
+    </li>
+    <li class="porte">
+      <h2 class="porte-titre"><a href="#/local/ma-commune">Ma commune</a></h2>
+      <p class="porte-texte">Code postal ou nom : ce que ta commune, ton intercommunalité, ton département et ta région font de l’argent public.</p>
+    </li>
+    <li class="porte">
+      <h2 class="porte-titre"><a href="#/beneficiaires">Qui reçoit l’argent</a></h2>
+      <p class="porte-texte">Subventions, marchés publics, opérateurs : les organismes qui reçoivent de l’argent public, nommés quand ce sont des personnes morales.</p>
+    </li>
+    <li class="porte">
+      <h2 class="porte-titre"><a href="#/decisions">Qui décide</a></h2>
+      <p class="porte-texte">Votes du Parlement, mouvements de crédits, ce qui a été fait et qui contrôle.</p>
+    </li>
+  </ol>
 </div>
 
 ${billet(parts, { etiquette: `Billet de 100 € découpé : exemple d’un salaire de ${net} net par mois, à ${ville}`, legendes: true })}
@@ -116,8 +135,8 @@ ${tuiles()}
 </section>
 <p class="source">data.economie.gouv.fr, Insee, Eurostat, DGFiP, Urssaf (modele-social), Assemblée nationale, Cour des comptes, CNCCFP. <a href="#/methode">Méthode et sources</a></p>`
 
-  // Le héros lance le calcul : salaire et commune sont gardés en mémoire le temps d'ouvrir le formulaire,
-  // jamais écrits dans une adresse. Sans salaire, on arrive sur le formulaire vide.
+  // Le héros lance le calcul : salaire et commune restent en mémoire (jamais écrits dans une adresse), le résultat
+  // s'ouvre directement. Sans salaire, on arrive sur le formulaire vide.
   const champ = cible.querySelector<HTMLInputElement>('#heros-net')!
   const dep = cible.querySelector<HTMLSelectElement>('#heros-dep')!
   const com = cible.querySelector<HTMLSelectElement>('#heros-com')!
@@ -144,8 +163,36 @@ ${tuiles()}
       champ.focus()
       return
     }
-    session.amorce = brut ? { net: brut, insee: com.value || undefined } : null
-    location.hash = '#/calcul'
+    if (!brut) {
+      session.amorce = null
+      location.hash = '#/calcul'
+      return
+    }
+    // Porte « Mon salaire » : calcul direct, puis l'écran résultat. Si le chemin simple ne suffit pas (saisie à
+    // préciser, moteur indisponible), le formulaire prend le relais avec le salaire déjà saisi.
+    const insee = com.value || undefined
+    const bouton = cible.querySelector<HTMLButtonElement>('#heros-form button[type=submit]')!
+    const statut = cible.querySelector<HTMLElement>('#heros-statut')!
+    bouton.disabled = true
+    statut.hidden = false
+    statut.textContent = 'Calcul en cours sur ton appareil… Le résultat s’affiche dans un instant.'
+    const relais = () => {
+      session.amorce = { net: brut, insee }
+      location.hash = '#/calcul'
+    }
+    import('./accueil-calcul')
+      .then((m) => m.calculerDepuisAccueil(brut, insee))
+      .then((issue) => {
+        if (issue === 'resultat') location.hash = '#/calcul/resultat'
+        else relais()
+      })
+      .catch((err) => {
+        console.error(err)
+        relais()
+      })
+      .finally(() => {
+        bouton.disabled = false
+      })
   })
   cible.querySelector('#voir-exemple')!.addEventListener('click', () => {
     session.amorce = { net: String(ex.profil.net_mensuel), insee: ex.profil.insee }

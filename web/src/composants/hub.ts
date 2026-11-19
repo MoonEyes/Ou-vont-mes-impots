@@ -104,6 +104,23 @@ export function rubriques(parent: string, o: { exclure?: string[]; extra?: Carte
     : `<div class="hub-rubriques">${corps}</div>`
 }
 
+/**
+ * Plan d'une rubrique : toutes ses pages en liens courts, rangées par thème (même ordre que les cartes), posé en haut
+ * du hub pour voir d'un coup d'œil ce que la rubrique contient. Les cartes détaillées restent plus bas.
+ */
+export function planRubrique(parent: string, o: { exclure?: string[]; extra?: Carte[]; routes?: Route[] } = {}): string {
+  const groupes = grouper(parent, o)
+  if (!groupes.length) return ''
+  const id = `plan-${ident(parent)}`
+  const n = groupes.reduce((s, g) => s + g.cartes.length, 0)
+  return `<nav class="plan-rubrique" aria-labelledby="${id}"><h2 id="${id}">Dans cette rubrique <span class="hub-compte">${n} page${n > 1 ? 's' : ''}</span></h2><div class="plan-groupes">${groupes
+    .map(
+      (g) =>
+        `<div class="plan-groupe"><p class="plan-theme">${h(g.theme.nom)}</p><ul>${g.cartes.map((c) => `<li><a href="${lien(c.chemin)}">${h(c.tri ?? c.titre)}</a></li>`).join('')}</ul></div>`,
+    )
+    .join('')}</div></nav>`
+}
+
 /** Compatibilité : cartes d'un hub vers ses rayons, rangées par thème quand il y en a plusieurs. */
 export function cartesRayons(parent: string, extra: { chemin: string; titre: string; resume: string }[] = []): string {
   return rubriques(parent, { extra })

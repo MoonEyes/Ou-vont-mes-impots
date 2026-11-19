@@ -5,6 +5,7 @@
 // (document budgétaire publié par la commune) ; aucun taux ni écart calculé (règle 13).
 import { chargerSiPresent } from '../donnees'
 import { absent, badgeStatut, eur, h, pct, source, traitStatut, badgeCalcule } from '../util'
+import { encadreManque, MANQUES } from '../composants/manque'
 
 export interface InvIndex {
   millesime: string
@@ -116,7 +117,7 @@ export function phraseCouverture(d: DelibIndex): string {
 
 /** Délibérations d'une collectivité : comptes par année, récentes par matière, exclusions comptées. */
 export function blocDeliberations(d: DelibIndex, coll: DelibColl | null, nom: string): string {
-  if (!coll) return `<p>${h(nom)} ${h(d.absence)} (${h(d.absence_detail)})</p>`
+  if (!coll) return encadreManque(MANQUES.deliberations(nom, d))
   const annees = Object.keys(coll.comptes).sort().reverse()
   const total = annees.reduce((s, a) => s + Object.values(coll.comptes[a]).reduce((x, y) => x + y, 0), 0)
   const exclus = Object.values(coll.exclus).reduce((s, v) => s + Object.values(v).reduce((x, y) => x + y, 0), 0)

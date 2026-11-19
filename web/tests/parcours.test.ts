@@ -66,21 +66,34 @@ describe('parcours principal, de la saisie au Sankey', () => {
     expect(accueil).not.toMatch(/^import[^\n]*calcul\/hors-fil/m)
   })
 
-  it('saisie lancée depuis l’accueil (touche Entrée) : état du calcul en haut de l’écran, puis résultat', async () => {
+  it('porte « Mon salaire » (touche Entrée) : calcul direct depuis l’accueil, état annoncé dans le héros, puis résultat sans passer par le formulaire', async () => {
     session.resultat = null
     session.complet = null
+    session.amorce = null
     await ecran('#/')
     main.querySelector<HTMLInputElement>('#heros-net')!.value = '2100'
     // Entrée dans le champ = envoi du formulaire.
     main.querySelector<HTMLFormElement>('#heros-form')!.dispatchEvent(new Event('submit', { cancelable: true }))
-    expect(location.hash).toBe('#/calcul')
-    expect(session.amorce?.net).toBe('2100')
+    const statut = main.querySelector('#heros-statut')
+    expect(statut?.getAttribute('role')).toBe('status')
+    expect(texte(statut)).toContain('Calcul en cours sur ton appareil')
+    await attendreQue(() => session.resultat !== null && location.hash === '#/calcul/resultat', 60000)
+    // Jamais d'écran formulaire entre les deux : rien n'a été confié au formulaire, le profil est gardé pour « Modifier ma saisie ».
+    expect(session.amorce).toBeNull()
+    expect(session.profil?.personnes[0].salaire_net_avant_impot_mensuel).toBe(2100)
+  }, 90000)
+
+  it('relais vers le formulaire (saisie à préciser) : état du calcul en haut de l’écran, puis résultat', async () => {
+    const profil = session.profil
+    const resultat = session.resultat
+    session.amorce = { net: '2100' }
     await ecran('#/calcul')
     const statut = main.querySelector('#statut-haut')
     expect(statut?.getAttribute('role')).toBe('status')
     expect(texte(statut)).toContain('Calcul en cours sur ton appareil')
     expect(avant(statut, main.querySelector('#formulaire'))).toBe(true)
-    await attendreQue(() => session.resultat !== null && location.hash === '#/calcul/resultat', 60000)
+    await attendreQue(() => session.resultat !== resultat && location.hash === '#/calcul/resultat', 60000)
+    expect(session.profil).not.toBe(profil)
   }, 90000)
 
   it('résultat (360 px) : total, puis la phrase « sur 100 € que tu verses », puis le profil et « Modifier ma saisie », focus sur le titre', async () => {

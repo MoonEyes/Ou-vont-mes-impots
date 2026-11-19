@@ -81,11 +81,11 @@ describe('identité', () => {
 
 describe('navigation et métadonnées', () => {
   const html = readFileSync(join(RACINE, 'index.html'), 'utf8')
-  it('site web : navigation horizontale à 6 entrées dans l’en-tête, bouton « Menu » sur téléphone, plus de barre d’onglets', () => {
+  it('site web : navigation horizontale à 6 entrées (les 4 portes, Explorer, Méthode), bouton « Menu » sur téléphone, plus de barre d’onglets', () => {
     const nav = /<nav id="navigation"[\s\S]*?<\/nav>/.exec(html)![0]
     const entrees = [...nav.matchAll(/data-rubrique="([^"]+)"/g)].map((m) => m[1])
-    expect(entrees).toEqual(['/calcul', '/explorer', '/local', '/beneficiaires', '/decisions', '/demarche'])
-    expect([...nav.matchAll(/<a [^>]*>([^<]+)<\/a>/g)].map((m) => m[1])).toEqual(['Mon calcul', 'Explorer', 'Chez moi', 'Qui reçoit', 'Décisions', 'La démarche'])
+    expect(entrees).toEqual(['/calcul', '/local', '/beneficiaires', '/decisions', '/explorer', '/methode'])
+    expect([...nav.matchAll(/<a [^>]*>([^<]+)<\/a>/g)].map((m) => m[1])).toEqual(['Mon salaire', 'Ma commune', 'Qui reçoit l’argent', 'Qui décide', 'Explorer', 'Méthode'])
     expect(nav).not.toMatch(/>\s*\d+\.\s/)
     expect(nav).toMatch(/<button type="button" id="bouton-menu" aria-expanded="false" aria-controls="menu">/)
     expect(html).toMatch(/<header class="entete">[\s\S]*<nav id="navigation"[\s\S]*<\/header>/)

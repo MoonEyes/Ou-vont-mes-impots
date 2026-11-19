@@ -8,6 +8,7 @@
 // null = non publié (jamais 0). Aucun classement par montant : fonds dans l'ordre publié, régions par code Insee,
 // opérations par ordre alphabétique. Seules les personnes morales sont nommées (règle appliquée par le pipeline).
 import { partPersonnelle } from '../composants/hub'
+import { encadreManque, MANQUES } from '../composants/manque'
 import { charger, chargerSiPresent, DonneeAbsente } from '../donnees'
 import type { Rendu } from '../routeur'
 import { absent, appliquerLargeurs, badgeStatut, barres, entier, eurLisible, h, legendeStatuts, pct, source, sur100, surligne, badgeCalcule } from '../util'
@@ -714,6 +715,7 @@ function blocOperations(ops: IndexOperations | null, choisie: string | null, q: 
 <p>Chaque région qui gère des fonds européens doit publier la liste des opérations qu’elle finance. Le site reprend ${h(entier(ops.listes.length))} listes publiées en données ouvertes : elles couvrent <strong>${h(
     entier(c.programmes_couverts.length),
   )} programmes régionaux sur ${h(entier(c.programmes_regionaux))}</strong> (fonds régionaux, fonds social, emploi des jeunes et transition juste). Les autres régions ne sont pas reprises, et le développement rural n’a volontairement aucune liste.</p>
+${encadreManque(MANQUES.fondsEuropeensCommunes({ listes: ops.listes, inaccessible: ops.sources_inaccessibles?.[0] }))}
 <p>${badgeStatut('trace')} Seuls les organismes et les entreprises en société (personnes morales) sont nommés, sous leur nom au répertoire SIRENE. Les autres opérations sont comptées ensemble, sans nom ni intitulé, avec la raison : <strong>agrégées</strong>.</p>
 <div class="tableau-defile"><table><caption>Listes d’opérations reprises, ${h(ops.millesime)}</caption><thead><tr><th scope="col">Liste</th><th scope="col">Périodes</th><th scope="col">Fonds</th><th scope="col" class="nombre">Opérations</th><th scope="col" class="nombre">dont nommées</th><th scope="col" class="nombre">Part du coût des opérations nommées</th></tr></thead><tbody>${ops.listes
     .map(

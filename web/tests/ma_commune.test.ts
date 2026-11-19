@@ -144,7 +144,7 @@ describe('écran', () => {
     expect(main.querySelector('#mc-epci')!.textContent).toContain('Sur 100 € dépensés')
     expect(main.querySelector('#mc-departement-titre')!.textContent).toBe('Le département : Loire-Atlantique')
     expect(main.querySelector('#mc-departement')!.textContent).toContain('Par nature de dépense')
-    expect(main.querySelector('#mc-departement')!.textContent).toContain('départements pilotes')
+    expect(main.querySelector('#mc-departement')!.textContent).toContain('collectivités pilotes')
     expect(main.querySelector('#mc-region')!.textContent).toContain('Sur 100 € dépensés')
     for (const id of ['mc-commune', 'mc-epci', 'mc-departement', 'mc-region', 'mc-beneficiaires', 'mc-europe', 'mc-projets', 'mc-comparer'])
       expect(main.querySelector(`#${id} .source`), `${id} : source`).not.toBeNull()
