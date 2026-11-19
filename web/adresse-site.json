@@ -1,4 +1,4 @@
 {
-  "url": "https://ou-vont-mes-impots.megabigben44.workers.dev/",
+  "url": "https://lebilletdecoupe.fr/",
   "note": "Adresse publique principale du site (canonical, Open Graph, sitemap.xml, robots.txt, carte de partage, signalement, pied d'impression). Seul endroit à changer quand le nom de domaine définitif existera ; la variable d'environnement OVMI_URL_SITE la remplace le temps d'un build. Voir docs/SEO.md."
 }
