@@ -377,6 +377,26 @@ interface Etat {
   niveaux: Niveau[]
 }
 
+/**
+ * Six départs fréquents en puces (audit du 19/11, problème 8 : 30 puces avant le contenu) ; tous les prélèvements,
+ * fréquents compris, restent dans la liste « Tous les prélèvements », groupée comme avant (fiche de paie, achats,
+ * logement, autres). Un départ venu d'ailleurs (lien du résultat) s'ajoute aux puces pour rester visible.
+ */
+const FREQUENTS = ['csg_activite', 'impot_revenu', 'tva', 'vieillesse_plafonnee', 'taxe_fonciere', 'ticpe']
+
+function puces(aff: Affectation, depart: string): string {
+  const cles = FREQUENTS.filter((k) => aff.prelevements[k])
+  if (!cles.includes(depart)) cles.push(depart)
+  return cles.map((k) => `<button type="button" data-depart="${h(k)}" aria-pressed="${k === depart}">${h(propre(COURTS[k] ?? aff.prelevements[k].libelle))}</button>`).join('')
+}
+
+function listeDeparts(aff: Affectation, depart: string): string {
+  return `<label for="suivre-tous">Tous les prélèvements (${Object.keys(aff.prelevements).length})</label>
+<select id="suivre-tous">${groupes(aff)
+    .map((g) => `<optgroup label="${h(g.titre)}">${g.cles.map((k) => `<option value="${h(k)}"${k === depart ? ' selected' : ''}>${h(propre(COURTS[k] ?? aff.prelevements[k].libelle))}</option>`).join('')}</optgroup>`)
+    .join('')}</select>`
+}
+
 const groupes = (aff: Affectation) => {
   const paie = [...new Set(Object.values(aff.correspondance_calcul ?? {}))].filter((k) => aff.prelevements[k])
   const toutes = Object.keys(aff.prelevements)
@@ -499,13 +519,8 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const e: Etat = { depart, base, piste: [], niveaux: [] }
   Object.assign(e, await construire(lecteur, depart, pisteDemandee ? pisteDemandee.split('~').filter(Boolean) : null))
 
-  const boutonsDepart = groupes(aff)
-    .map(
-      (g) => `<h3>${h(g.titre)}</h3><div class="bascule suivre-departs">${g.cles
-        .map((k) => `<button type="button" data-depart="${h(k)}" aria-pressed="${k === e.depart}">${h(propre(COURTS[k] ?? aff.prelevements[k].libelle))}</button>`)
-        .join('')}</div>`,
-    )
-    .join('')
+  const boutonsDepart = `<div class="bascule suivre-departs" role="group" aria-label="Départs fréquents">${puces(aff, e.depart)}</div>
+<div class="suivre-tous">${listeDeparts(aff, e.depart)}</div>`
 
   cible.innerHTML = `
 <h1>Suivre un euro</h1>
@@ -553,17 +568,33 @@ ${legendeStatuts()}
   peindre()
 
   let enCoursDeCalcul = false
+  const rangee = cible.querySelector('.suivre-departs') as HTMLElement
+  const tous = cible.querySelector('#suivre-tous') as HTMLSelectElement
+  const changerDepart = async (k: string) => {
+    if (!aff.prelevements[k]) return
+    e.depart = k
+    Object.assign(e, await construire(lecteur, e.depart, null))
+    rangee.innerHTML = puces(aff, k)
+    tous.value = k
+    peindre()
+    annoncer(`Piste de départ : ${propre(COURTS[k] ?? aff.prelevements[k].libelle)}`)
+  }
+  tous.addEventListener('change', async () => {
+    if (enCoursDeCalcul || !tous.value || tous.value === e.depart) return
+    enCoursDeCalcul = true
+    try {
+      await changerDepart(tous.value)
+    } finally {
+      enCoursDeCalcul = false
+    }
+  })
   cible.addEventListener('click', async (ev) => {
     const b = (ev.target as HTMLElement).closest('button')
     if (!b || !cible.contains(b) || enCoursDeCalcul) return
     enCoursDeCalcul = true
     try {
       if (b.dataset.depart) {
-        e.depart = b.dataset.depart
-        Object.assign(e, await construire(lecteur, e.depart, null))
-        cible.querySelectorAll('[data-depart]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
-        peindre()
-        annoncer(`Piste de départ : ${b.textContent ?? ''}`)
+        await changerDepart(b.dataset.depart)
       } else if (b.dataset.base) {
         e.base = b.dataset.base === '100' ? 100 : 1
         cible.querySelectorAll('[data-base]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)))

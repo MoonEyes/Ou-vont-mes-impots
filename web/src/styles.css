@@ -473,7 +473,7 @@ main > .chargement {
   max-width: 22rem;
   margin: 0.5rem 0 0;
 }
-.pied h2 {
+.pied h3 {
   font-size: var(--t1);
   letter-spacing: 0;
   margin: 0 0 0.5rem;
@@ -550,8 +550,13 @@ h1.avec-picto {
   gap: 0.75rem 1rem;
 }
 @media (max-width: 44.99rem) {
+  /* Téléphone : pictogramme réduit à côté du titre (et non au-dessus), une ligne de gagnée sur chaque page. */
   h1.avec-picto {
-    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem 0.75rem;
+  }
+  h1.avec-picto > .picto {
+    width: 2.25rem;
+    height: 2.25rem;
   }
 }
 .picto {
@@ -626,9 +631,7 @@ h1.avec-picto {
 .carte > :last-child {
   margin-bottom: 0;
 }
-.carte h2 {
-  font-size: var(--t3);
-}
+
 .carte-contour,
 .en-cours {
   border: var(--trait) solid var(--contour);
@@ -649,10 +652,7 @@ h1.avec-picto {
 .carte-famille .source {
   color: inherit;
 }
-.encadre h2 {
-  font-size: var(--t2);
-  letter-spacing: 0;
-}
+
 
 .grand-chiffre {
   font-family: var(--titre);
@@ -1842,7 +1842,7 @@ td.nombre {
   margin-top: 4rem;
   padding-top: 0.5rem;
 }
-.voir-aussi h2 {
+.voir-aussi h3 {
   font-size: var(--t2);
   letter-spacing: 0;
   margin-top: 1.5rem;
@@ -2244,7 +2244,7 @@ td.nombre {
   padding: 1.375rem 1.5rem 1.5rem;
   margin: 0;
 }
-.heros-form h2 {
+.heros-form h3 {
   font-size: var(--t2);
   letter-spacing: 0;
   margin: 0 0 0.25rem;
@@ -2580,7 +2580,6 @@ td.nombre {
 }
 .appel h2 {
   margin: 0 0 0.5rem;
-  font-size: var(--t3);
 }
 .appel .chapeau {
   margin: 0;
@@ -2852,7 +2851,6 @@ fieldset.saisie-groupe {
   margin-top: 1.5rem;
 }
 .recherche-groupe h2 {
-  font-size: var(--t2);
   letter-spacing: 0;
   margin: 2rem 0 0.5rem;
 }
@@ -3475,7 +3473,7 @@ fieldset.saisie-groupe {
   .heros-form {
     padding: 1rem 1.125rem 1.125rem;
   }
-  .heros-form h2 {
+  .heros-form h3 {
     font-size: var(--t2);
   }
   .heros-champs label:first-child {
@@ -3728,7 +3726,6 @@ fieldset.saisie-groupe {
   margin: 1.5rem 0;
 }
 .plan-rubrique h2 {
-  font-size: var(--t2);
   letter-spacing: 0;
   margin: 0 0 0.5rem;
 }
@@ -3831,4 +3828,125 @@ fieldset.saisie-groupe {
 }
 .pied .logo {
   --logo-trait: var(--bandeau);
+}
+
+/* ---------- Lot 3 (audit du 19/11) : un écran de synthèse, le reste à la demande ---------- */
+/* Section repliée : le H2 reste dans le plan de la page, le résumé annonce le contenu ; tout s'imprime ouvert. */
+.repli {
+  margin-top: 1rem;
+}
+.repli > h2 {
+  margin: 0 0 0.25rem;
+}
+.repli > details {
+  margin: 0;
+}
+.repli > details > summary {
+  color: var(--secondaire);
+  font-weight: 600;
+}
+.repli-corps {
+  padding-top: 0.5rem;
+}
+.repli-corps > .carte:first-child {
+  margin-top: 0;
+}
+/* Motifs du résultat : les trois pastilles dans le résumé, les phrases à la demande. */
+.motifs-repli .motifs-apercu {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+.motifs-repli .motifs-apercu .motif {
+  margin-right: 0;
+}
+/* Fil de l'euro au téléphone : dessin à l'échelle 1 (300 px utiles à 360 px), textes de 14 px vraiment à 14 px. */
+@media (max-width: 55.99rem) {
+  .fil-euro {
+    padding: 1rem 0.5rem;
+  }
+}
+/* Barres au téléphone : mêmes informations, lignes resserrées (seul un lien garde sa cible de 44 px). */
+@media (max-width: 44.99rem) {
+  .barres li {
+    padding: 0.5rem 0;
+  }
+  .barre-tete .nom {
+    min-height: 0;
+  }
+  /* Deux lignes par barre : libellé et part, puis la barre et le montant (au lieu de trois). */
+  .barres li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .barres li > .barre {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: center;
+    height: 0.75rem;
+    margin: 0;
+  }
+  .barres li > .aide {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .parts a,
+  .parts .part-ligne {
+    padding: 0.5rem 0;
+    min-height: 3rem;
+  }
+  .cartes {
+    gap: 0.75rem;
+  }
+  .cartes a {
+    padding: 0.75rem 1.125rem;
+    gap: 0.25rem;
+  }
+  .pied-grille {
+    gap: 1.25rem 1.5rem;
+    padding-block: 2rem 1.25rem;
+  }
+}
+.recap-plus,
+.partage-options {
+  margin: 0;
+}
+/* Ma commune : une collectivité à la fois, onglets collants (cible 44 px, onglet actif fond encre). */
+.onglets-collants {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--fond);
+  margin: 0.5rem 0 0;
+  padding: 0.375rem 0;
+  border-bottom: var(--trait) solid var(--contour);
+}
+.onglets {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.onglets [role='tab'] {
+  flex: none;
+  min-height: 44px;
+  border-radius: 999px;
+}
+.onglets [role='tab'][aria-selected='true'] {
+  background: var(--principal);
+  color: var(--sur-principal);
+}
+.ma-commune-bloc[role='tabpanel'] {
+  border-top: 0;
+}
+.entete-local.entete-serre {
+  margin-bottom: 0;
+  gap: 1rem;
+}
+.ma-commune-bloc[role='tabpanel'] > h2 {
+  margin-top: 0.5rem;
+  scroll-margin-top: 4.5rem;
+}
+.avant-lecture {
+  margin: 1rem 0;
 }

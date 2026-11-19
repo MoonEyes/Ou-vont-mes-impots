@@ -734,7 +734,7 @@ function recap(v: Vue, r: ResultatOk): string {
   const parts = sur100Entiers({ cotisations: f.cotisations, csg: f.csgCrds, ...(f.pas ? { impot: pas } : {}), verse: f.net - pas })
   const periode = v.periode === 'mois' ? 'par mois' : 'sur un an'
   return `<section class="recap" data-cle aria-labelledby="titre-bulletin-net">
-  <h2 id="titre-bulletin-net" class="recap-titre">Montant net à payer, ${periode}${f.pas ? '' : ', avant impôt sur le revenu'}</h2>
+  <p id="titre-bulletin-net" class="recap-titre">Montant net à payer, ${periode}${f.pas ? '' : ', avant impôt sur le revenu'}</p>
   <p class="grand-chiffre">${surligne(eur((f.net - pas) / d))}</p>
   <ul class="recap-lignes">
     <li><span>Montant brut</span><span>${h(eur(f.brut / d))}</span></li>

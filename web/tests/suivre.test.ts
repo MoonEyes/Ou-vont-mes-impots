@@ -158,6 +158,27 @@ describe('suivre un euro', () => {
     expect(main.querySelector('.suivre-etapes')).toBeNull()
   })
 
+  it('départ : six puces fréquentes et une liste groupée de tous les prélèvements (lot 3, pas de mur de puces)', async () => {
+    await ecran('#/suivre-un-euro')
+    const puces = [...main.querySelectorAll<HTMLButtonElement>('.suivre-departs [data-depart]')]
+    expect(puces.length).toBeLessThanOrEqual(7)
+    expect(puces.find((b) => b.dataset.depart === 'csg_activite')?.getAttribute('aria-pressed')).toBe('true')
+    const liste = main.querySelector<HTMLSelectElement>('#suivre-tous')!
+    expect(main.querySelector('label[for="suivre-tous"]')).not.toBeNull()
+    expect(liste.querySelectorAll('optgroup').length).toBeGreaterThan(1)
+    const toutes = [...liste.querySelectorAll('option')].map((o) => o.value)
+    for (const p of puces) expect(toutes).toContain(p.dataset.depart)
+    // Un départ hors des puces, choisi dans la liste : la piste change et le départ rejoint les puces, pressé.
+    const autre = toutes.find((k) => !puces.some((p) => p.dataset.depart === k))!
+    const avant = main.querySelector('#suivre-etapes')!.innerHTML
+    liste.value = autre
+    liste.dispatchEvent(new Event('change'))
+    await attendreQue(() => main.querySelector('#suivre-etapes')!.innerHTML !== avant)
+    expect(main.querySelector(`.suivre-departs [data-depart="${autre}"]`)?.getAttribute('aria-pressed')).toBe('true')
+    // Piste : libellés entiers (plus de troncature « … »), montant à droite.
+    expect(main.querySelector('.fil-piste')?.textContent).not.toContain('…')
+  })
+
   it('libellés et montants', () => {
     expect(propre('ONDAM : établissements de santé')).toBe('Établissements de santé')
     expect(propre('Santé n.c.a.')).toBe('Santé (non classé ailleurs)')

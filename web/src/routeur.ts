@@ -135,7 +135,7 @@ function voirAussi(routes: Route[], route: Route): string {
   const hub = routes.find((r) => r.chemin === route.parent)
   const voisins = (route.voisins ?? []).map((v) => routes.find((r) => r.chemin === v)).filter((r): r is Route => !!r)
   if (!hub && !voisins.length) return ''
-  return `<nav class="voir-aussi" aria-label="Voir aussi"><h2>Voir aussi</h2><ul>${[
+  return `<nav class="voir-aussi" aria-label="Voir aussi"><h3>Voir aussi</h3><ul>${[
     ...voisins.map((v) => `<li><a href="#${v.chemin}">${h(v.titre)}</a></li>`),
     hub ? `<li><a href="#${hub.chemin}">Retour à : ${h(hub.titre)}</a></li>` : '',
   ].join('')}</ul></nav>`

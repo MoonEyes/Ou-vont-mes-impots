@@ -293,15 +293,17 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams = new U
   const choisi = idx.impots.find((i) => i.id === params.get('impot'))
   const nomsImpots = new Map(idx.impots.map((i) => [i.id, i.libelle]))
   cible.innerHTML = `<h1>Qui a voté tes impôts</h1>
-<p class="chapeau">${h(idx.presentation)} Elle montre les décisions publiées par l’Assemblée nationale et le Sénat depuis juillet 2024 ; elle ne montre ni les votes à main levée ni les scrutins nominatifs du Sénat, qui ne sont pas publiés en données ouvertes.</p>
-${encadreManque(MANQUES.senatScrutins(releveSenat(idx)))}
-${idx.non_couverts.some((n) => n.id === 'cotisations') ? encadreManque(MANQUES.cotisationsDecret()) : ''}
-${avertissements(idx.avertissements)}
-<details class="carte"><summary>Comment un vote est relié à un impôt</summary><p>${h(idx.methode)}</p><p>${h(idx.regle_personnes)}</p><ul>${idx.limites.map((l) => `<li>${h(l)}</li>`).join('')}</ul></details>
+<p class="chapeau">${h(idx.presentation)} Décisions publiées par l’Assemblée nationale et le Sénat depuis juillet 2024.</p>
 <h2>Choisis un impôt</h2>
 <form class="carte" id="qav-form-impot"><label for="qav-impot">Impôt</label><select id="qav-impot"><option value="">Choisir…</option>${idx.impots
     .map((i) => `<option value="${h(i.id)}"${choisi?.id === i.id ? ' selected' : ''}>${h(i.libelle)}</option>`)
     .join('')}</select></form>
+<details class="carte avant-lecture"><summary>Ce que cette page montre et ne montre pas</summary>
+<p>Elle ne montre ni les votes à main levée ni les scrutins nominatifs du Sénat, qui ne sont pas publiés en données ouvertes.</p>
+${encadreManque(MANQUES.senatScrutins(releveSenat(idx)))}
+${idx.non_couverts.some((n) => n.id === 'cotisations') ? encadreManque(MANQUES.cotisationsDecret()) : ''}
+${avertissements(idx.avertissements)}
+<h3>Comment un vote est relié à un impôt</h3><p>${h(idx.methode)}</p><p>${h(idx.regle_personnes)}</p><ul>${idx.limites.map((l) => `<li>${h(l)}</li>`).join('')}</ul></details>
 <div class="tableau-defile"><table><caption>Décisions reliées à chaque impôt du simulateur (17e législature)</caption><thead><tr><th scope="col">Impôt</th><th scope="col" class="nombre">Articles</th><th scope="col" class="nombre">Scrutins publics</th><th scope="col" class="nombre">Amendements adoptés</th></tr></thead><tbody>${idx.impots
     .map((i) => `<tr><th scope="row"><a href="${lien(CHEMIN, { impot: i.id })}">${h(i.libelle)}</a></th><td class="nombre">${entier(i.articles)}</td><td class="nombre">${entier(i.scrutins)}</td><td class="nombre">${entier(i.amendements_adoptes)}</td></tr>`)
     .join('')}</tbody></table></div>

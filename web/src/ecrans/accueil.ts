@@ -27,10 +27,11 @@ export function rendre(cible: HTMLElement) {
     <h1>Tu verses 100 €. Voilà où ils partent.</h1>
     <p class="chapeau">Cotisations, impôt sur le revenu, TVA, taxes locales : on additionne tout ce que tu verses en un an, puis on suit chaque euro jusqu’à ceux qui le reçoivent.</p>
   </div>
-  <ol class="portes" aria-label="Par où commencer">
+  <h2 id="portes-titre" class="visuellement-cache">Par où commencer</h2>
+  <ol class="portes" aria-labelledby="portes-titre">
     <li class="porte porte-salaire">
       <form id="heros-form" class="carte carte-principale heros-form" novalidate aria-labelledby="porte-salaire">
-        <h2 id="porte-salaire" class="porte-titre">Mon salaire</h2>
+        <h3 id="porte-salaire" class="porte-titre">Mon salaire</h3>
         <p class="porte-texte">Ton billet à toi : ce que tu verses en un an et à qui, calculé tout de suite.</p>
         <div class="heros-champs">
           <div>
@@ -54,15 +55,15 @@ export function rendre(cible: HTMLElement) {
       </form>
     </li>
     <li class="porte">
-      <h2 class="porte-titre"><a href="#/local/ma-commune">Ma commune</a></h2>
+      <h3 class="porte-titre"><a href="#/local/ma-commune">Ma commune</a></h3>
       <p class="porte-texte">Code postal ou nom : ce que ta commune, ton intercommunalité, ton département et ta région font de l’argent public.</p>
     </li>
     <li class="porte">
-      <h2 class="porte-titre"><a href="#/beneficiaires">Qui reçoit l’argent</a></h2>
+      <h3 class="porte-titre"><a href="#/beneficiaires">Qui reçoit l’argent</a></h3>
       <p class="porte-texte">Subventions, marchés publics, opérateurs : les organismes qui reçoivent de l’argent public, nommés quand ce sont des personnes morales.</p>
     </li>
     <li class="porte">
-      <h2 class="porte-titre"><a href="#/decisions">Qui décide</a></h2>
+      <h3 class="porte-titre"><a href="#/decisions">Qui décide</a></h3>
       <p class="porte-texte">Votes du Parlement, mouvements de crédits, ce qui a été fait et qui contrôle.</p>
     </li>
   </ol>

@@ -96,7 +96,8 @@ describe('navigation et métadonnées', () => {
   })
   it('pied de page complet : le site, sources et méthode, le projet et les mentions', () => {
     const pied = /<footer class="pied">[\s\S]*?<\/footer>/.exec(html)![0]
-    for (const t of ['Le site', 'Sources et méthode', 'Le projet']) expect(pied).toContain(`>${t}</h2>`)
+    // Titres du pied en H3 (lot 3 du design : un H2 a toujours la même taille, les petits titres sont des H3).
+    for (const t of ['Le site', 'Sources et méthode', 'Le projet']) expect(pied).toContain(`>${t}</h3>`)
     for (const l of ['#/calcul', '#/explorer', '#/local', '#/beneficiaires', '#/decisions', '#/methode', '#/methode/tracabilite', '#/methode/limites', '#/demarche', '#/mentions']) expect(pied).toContain(`href="${l}"`)
     expect(pied).toContain('Aucun cookie, aucune mesure d’audience')
   })

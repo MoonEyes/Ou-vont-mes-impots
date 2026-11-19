@@ -9,7 +9,7 @@ import { departementDe } from '../departements'
 import { chargerSiPresent } from '../donnees'
 import { session } from '../etat'
 import { lien, type Rendu } from '../routeur'
-import { absent, appliquerLargeurs, badgeCalcule, badgeStatut, barres, entier, eur, eurLisible, h, source, sur100 } from '../util'
+import { absent, appliquerLargeurs, badgeCalcule, badgeStatut, barres, entier, eur, eurLisible, h, repli, source, sur100 } from '../util'
 import { blocBudget, deCommune, type Budgets, type Geo } from './commune'
 import { encadreManque, MANQUES } from '../composants/manque'
 import { adresseSynthese, brancherFormulaire, chargerIndex, formulaire } from './ma_commune_recherche'
@@ -84,7 +84,7 @@ function blocCollectivite(opts: { titre: string; f: Fonctions | null; fc: ColFon
   const parNature = opts.b && opts.bc ? blocBudget(opts.b, opts.bc, opts.titre, false).replace(/^\s*<h2>[\s\S]*?<\/h2>/, '') : null
   if (parNature && !parNature.includes('class="absent"')) {
     const pourquoi = opts.sansFonction ?? (opts.fc?.statut === 'non_publie' && opts.f ? opts.f.non_publie : 'présentation par fonction absente des balances comptables lues par le site pour cette collectivité.')
-    return `<h3>Par nature de dépense</h3>${parNature}<p class="aide">Par nature (personnel, achats, aides versées, équipements) et non par fonction : ${h(pourquoi)}</p>`
+    return `<h3>Par nature de dépense</h3>${parNature}<details class="aide"><summary>Pourquoi par nature et non par fonction</summary><p>Par nature (personnel, achats, aides versées, équipements) et non par fonction : ${h(pourquoi)}</p></details>`
   }
   return absent(opts.motif)
 }
@@ -193,17 +193,49 @@ ${source(idx.source, idx.millesime)}
 <p><a href="${h(lien('/local/croiser', { insee }))}">Comparer ${h(ligne.nom)} avec des communes qui se ressemblent, chiffre par chiffre</a></p>`
 }
 
-const SECTIONS: [string, string][] = [
-  ['mc-commune', 'La commune'],
-  ['mc-epci', 'L’intercommunalité'],
-  ['mc-departement', 'Le département'],
-  ['mc-region', 'La région'],
-  ['mc-beneficiaires', 'Qui reçoit les subventions publiées'],
-  ['mc-europe', 'Les fonds européens dans la commune'],
-  ['mc-projets', 'Les projets aidés par l’État'],
-  ['mc-deliberations', 'Les délibérations publiées'],
-  ['mc-comparer', 'Les communes qui se ressemblent'],
+/** Les quatre collectivités, en onglets (audit du 19/11, lot 3, problèmes 2 et 13) : une seule ouverte à la fois. */
+const ONGLETS: [string, string, string][] = [
+  ['mc-commune', 'La commune', 'Commune'],
+  ['mc-epci', 'L’intercommunalité', 'Intercommunalité'],
+  ['mc-departement', 'Le département', 'Département'],
+  ['mc-region', 'La région', 'Région'],
 ]
+/** Le reste de la page, replié : titre et contenu annoncés, ouvert à la demande. */
+const SECTIONS: [string, string, string][] = [
+  ['mc-beneficiaires', 'Subventions publiées', 'Bénéficiaires nommés'],
+  ['mc-europe', 'Fonds européens', 'Opérations dans la commune'],
+  ['mc-projets', 'Projets aidés', 'Dotations de l’État et Fonds vert'],
+  ['mc-deliberations', 'Délibérations', 'Ce qui est publié'],
+  ['mc-comparer', 'Communes semblables', 'Même densité, même taille'],
+]
+
+/**
+ * Onglets accessibles (motif « tabs » de l'APG ARIA) : flèches gauche et droite, Début et Fin ; la sélection suit le
+ * focus. Aucune donnée n'est retirée : chaque panneau est dans la page, les autres sont seulement masqués.
+ */
+export function brancherOnglets(racine: HTMLElement): void {
+  const onglets = [...racine.querySelectorAll<HTMLButtonElement>('[role="tab"]')]
+  const choisir = (o: HTMLButtonElement, focus: boolean) => {
+    for (const x of onglets) {
+      const actif = x === o
+      x.setAttribute('aria-selected', String(actif))
+      x.tabIndex = actif ? 0 : -1
+      const panneau = racine.querySelector<HTMLElement>(`#${x.getAttribute('aria-controls')}`)
+      if (panneau) panneau.hidden = !actif
+    }
+    if (focus) o.focus()
+  }
+  onglets.forEach((o, i) => {
+    o.addEventListener('click', () => choisir(o, false))
+    o.addEventListener('keydown', (e) => {
+      const k = e.key
+      const j = k === 'ArrowRight' ? (i + 1) % onglets.length : k === 'ArrowLeft' ? (i - 1 + onglets.length) % onglets.length : k === 'Home' ? 0 : k === 'End' ? onglets.length - 1 : -1
+      if (j < 0) return
+      e.preventDefault()
+      choisir(onglets[j], true)
+    })
+  })
+}
 
 async function synthese(cible: HTMLElement, insee: string): Promise<Rendu | void> {
   const dep = departementDe(insee)
@@ -222,37 +254,36 @@ async function synthese(cible: HTMLElement, insee: string): Promise<Rendu | void
     'mc-epci': epci ? `L’intercommunalité : ${epci.nom}` : 'L’intercommunalité',
     'mc-departement': `Le département : ${geo.departement.nom}`,
     'mc-region': `La région : ${geo.region.nom}`,
-    'mc-europe': `Les fonds européens à ${g.nom}`,
   }
   const zone = (id: string) => `<div id="${id}" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>`
-  cible.innerHTML = `<div class="entete-local">
+  cible.innerHTML = `<div class="entete-local entete-serre">
   <div>
     <h1>${h(g.nom)}</h1>
-    <p class="chapeau">${h(entier(g.population))} habitants${epci ? `, ${h(epci.nom)}` : ''}, ${h(geo.departement.nom)} (${h(dep)}), région ${h(geo.region.nom)}. Ce que la commune et les collectivités dont elle fait partie font de l’argent public.</p>
+    <p class="chapeau">${h(entier(g.population))} habitants${epci ? `, ${h(epci.nom)}` : ''}, ${h(geo.departement.nom)} (${h(dep)}), région ${h(geo.region.nom)}.</p>
     <p class="aide">${h(NE_PAS_ADDITIONNER)}</p>
     ${arr ? `<p class="aide">${h(arr.note)}</p>` : ''}
   </div>
 </div>
-<nav aria-label="Sur cette page" class="ma-commune-sommaire"><ul>${SECTIONS.map(([id, t]) => `<li><a href="#${id}-titre" data-ancre>${h(t)}</a></li>`).join('')}</ul></nav>
-${SECTIONS.map(([id, t]) => `<section aria-labelledby="${id}-titre" class="ma-commune-bloc"><h2 id="${id}-titre" tabindex="-1">${h(titres[id] ?? t)}</h2>${zone(id)}</section>`).join('\n')}
-<h2>Pour aller plus loin</h2>
-<ul class="liens-sortie">
+<div class="onglets-collants"><div role="tablist" aria-label="Budget de chaque collectivité, une à la fois" class="onglets">${ONGLETS.map(
+    ([id, , court], i) => `<button type="button" role="tab" id="${id}-onglet" aria-controls="${id}-panneau" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${h(court)}</button>`,
+  ).join('')}</div></div>
+${ONGLETS.map(([id, t], i) => `<section role="tabpanel" id="${id}-panneau" aria-labelledby="${id}-onglet" class="ma-commune-bloc"${i === 0 ? '' : ' hidden'}><h2 id="${id}-titre" tabindex="-1">${h(titres[id] ?? t)}</h2>${zone(id)}</section>`).join('\n')}
+${SECTIONS.map(([id, t, resume]) => repli({ id: `${id}-repli`, idTitre: `${id}-titre`, titre: titres[id] ?? t, resume: h(resume), contenu: zone(id) })).join('\n')}
+${repli({
+  id: 'mc-plus-repli',
+  idTitre: 'mc-plus-titre',
+  titre: 'Pour aller plus loin',
+  resume: 'Budget détaillé, comparer',
+  contenu: `<ul class="liens-sortie">
   <li><a href="${fragmentCommune(insee, g.nom, g.population)}">Le budget ${h(deCommune(g.nom))} en détail : dotations, taux votés, organismes rattachés</a></li>
   <li><a href="${h(lien('/local/comparer', { a: insee }))}">Comparer ${h(g.nom)} avec une autre commune</a></li>
   <li><a href="${h(lien('/local/projets', { insee }))}">Tous les projets subventionnés par l’État pour ${h(g.nom)}</a></li>
   <li><a href="${fragmentDepartement(dep, geo.departement.nom)}">Les communes du département ${h(geo.departement.nom)}</a></li>
   <li><a href="${h(lien('/local/ma-commune'))}">Chercher une autre commune</a></li>
 </ul>
-${idxMc ? source(idxMc.source, idxMc.millesime) : ''}`
-  // Liens d'ancre internes : le routeur lit le fragment, on fait défiler sans changer d'adresse.
-  cible.querySelectorAll<HTMLAnchorElement>('a[data-ancre]').forEach((a) =>
-    a.addEventListener('click', (e) => {
-      e.preventDefault()
-      const t = cible.querySelector<HTMLElement>(a.getAttribute('href')!)
-      t?.scrollIntoView?.()
-      t?.focus()
-    }),
-  )
+${idxMc ? source(idxMc.source, idxMc.millesime) : ''}`,
+})}`
+  brancherOnglets(cible)
   const remplir = (id: string, html: string) => {
     const z = cible.querySelector<HTMLElement>(`#${id}`)
     if (!z) return

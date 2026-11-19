@@ -107,7 +107,9 @@ function large(sources: SourceFil[], total: string, dest: DestFil[], id: string)
 }
 
 function compact(sources: SourceFil[], total: string, dest: DestFil[], id: string): string {
-  const L = 350
+  // Largeur du dessin = largeur utile d'un écran de 360 px (360 moins les marges de la page et du cadre, 60 px) : 1 unité = 1 pixel,
+  // les textes de 14 px restent à 14 px (audit du 19/11, problème 9 : ils tombaient à 12,6 px avec 350).
+  const L = 300
   const s = empiler(sources.map((x) => x.valeur), 1.5, L - 3, 5, 78)
   const ps = contigus(sources.map((x) => x.valeur), 14, L - 28)
   const pd = contigus(dest.map((x) => x.valeur), 14, L - 28)
@@ -138,7 +140,18 @@ export function filEuro(sources: SourceFil[], total: string, dest: DestFil[]): s
   if (!src.length || !dst.length) return ''
   const id = `f${++compteur}`
   const lecture = `${src.map((x) => `${x.nom.toLowerCase()} : ${x.texte}`).join(' ; ')}. Au total ${total} en un an. Sur 100 € : ${dst.map((x) => `${x.texte} ${x.nom}`).join(', ')}.`
-  return `<div class="fil-euro">${large(src, total, dst, id)}${compact(src, total, dst, `${id}c`)}<p class="visuellement-cache">${h(lecture)}</p></div>`
+  return `<div class="fil-euro">${large(src, total, dst, id)}${compact(src, total, dst, `${id}c`)}<p class="visuellement-cache">${h(lecture)}</p></div>${tableauFil(src, total, dst)}`
+}
+
+/** Le fil de l'euro en tableau, replié : les mêmes chiffres que le dessin, avec « pour qui » (absent du dessin au téléphone). */
+export function tableauFil(src: SourceFil[], total: string, dst: DestFil[]): string {
+  return `<details class="fil-tableau"><summary>Lire le fil de l’euro en tableau</summary>
+<div class="tableau-defile"><table><caption>Ce que tu verses, d’où ça sort (au total ${h(total)} en un an)</caption><thead><tr><th scope="col">D’où ça sort</th><th scope="col" class="nombre">En un an</th><th scope="col">Statut</th></tr></thead><tbody>${src
+    .map((x) => `<tr><th scope="row">${h(x.nom)}</th><td class="nombre">${h(x.texte)}</td><td>${h(STATUTS[x.statut].libelle)}</td></tr>`)
+    .join('')}</tbody></table></div>
+<div class="tableau-defile"><table><caption>Qui reçoit, sur 100 € que tu verses</caption><thead><tr><th scope="col">Qui reçoit</th><th scope="col" class="nombre">Sur 100 €</th><th scope="col">Pour qui (exemples)</th></tr></thead><tbody>${dst
+    .map((x) => `<tr><th scope="row">${h(x.nom)}</th><td class="nombre">${h(x.texte)}</td><td>${h(x.pour.join(', ') || 'non précisé')}</td></tr>`)
+    .join('')}</tbody></table></div></details>`
 }
 
 /** Un maillon de la piste d'un euro : nom, montant affiché, valeur suivie (1 = l'euro de départ) et statut de la source. */
@@ -157,22 +170,44 @@ export function filPiste(maillons: MaillonPiste[]): string {
   if (!maillons.length) return ''
   const id = `p${++compteur}`
   const L = 120
-  const pas = 58
+  const W = 480
   const haut = 26
   const c = L / 2
   const larg = (v: number) => Math.max(3, Math.min(1, Math.max(0, v)) * L)
+  // Libellés entiers sur plusieurs lignes (audit du 19/11, problème 8 : plus de troncature), montant en 22 px à droite.
+  const lignes = maillons.map((m) => couper(m.nom, 30))
+  const ys: number[] = []
+  let y = 1.5
+  for (const l of lignes) {
+    ys.push(y)
+    y += Math.max(58, l.length * 17 + 30)
+  }
   const out: string[] = [motifs(id)]
   maillons.forEach((m, i) => {
     const w = larg(m.valeur)
-    const y = i * pas + 1.5
+    const yi = ys[i]
     if (i > 0) {
       const wp = larg(maillons[i - 1].valeur)
-      out.push(`<path ${remplissage(id, m.statut)} d="${rubanV(y - pas + haut, [c - wp / 2, wp], y, [c - w / 2, w])}"/>`)
+      out.push(`<path ${remplissage(id, m.statut)} d="${rubanV(ys[i - 1] + haut, [c - wp / 2, wp], yi, [c - w / 2, w])}"/>`)
     }
-    out.push(`<rect ${remplissage(id, m.statut)} x="${n(c - w / 2)}" y="${n(y)}" width="${n(w)}" height="${haut}" rx="${w > 12 ? 6 : 1.5}"/>`)
-    const nom = m.nom.length > 34 ? `${m.nom.slice(0, 33)}…` : m.nom
-    out.push(`<text x="${L + 16}" y="${n(y + 11)}" font-size="14">${h(nom)}</text><text class="fe-titre" x="${L + 16}" y="${n(y + 29)}" font-size="14">${h(m.texte)}</text>`)
+    out.push(`<rect ${remplissage(id, m.statut)} x="${n(c - w / 2)}" y="${n(yi)}" width="${n(w)}" height="${haut}" rx="${w > 12 ? 6 : 1.5}"/>`)
+    out.push(`<text x="${L + 16}" y="${n(yi + 14)}" font-size="14">${lignes[i].map((t, k) => `<tspan x="${L + 16}" dy="${k ? 17 : 0}">${h(t)}</tspan>`).join('')}</text>`)
+    out.push(`<text class="fe-titre" x="${W - 4}" y="${n(yi + 20)}" font-size="22" text-anchor="end">${h(m.texte)}</text>`)
   })
-  const H = (maillons.length - 1) * pas + haut + 3
-  return `<div class="fil-euro fil-piste"><svg viewBox="0 0 400 ${H}" aria-hidden="true" focusable="false">${out.join('')}</svg></div>`
+  const H = ys[ys.length - 1] + Math.max(haut, lignes[lignes.length - 1].length * 17) + 4
+  return `<div class="fil-euro fil-piste"><svg viewBox="0 0 ${W} ${n(H)}" aria-hidden="true" focusable="false">${out.join('')}</svg></div>`
+}
+
+/** Coupe un libellé en lignes d'au plus `max` caractères, aux espaces (un mot plus long garde sa ligne). */
+export function couper(texte: string, max: number): string[] {
+  const out: string[] = []
+  let l = ''
+  for (const mot of texte.split(/\s+/).filter(Boolean)) {
+    if (l && (l + ' ' + mot).length > max) {
+      out.push(l)
+      l = mot
+    } else l = l ? `${l} ${mot}` : mot
+  }
+  if (l) out.push(l)
+  return out.length ? out : ['']
 }

@@ -103,7 +103,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const niveauBas =
     choisi && missions.length
       ? `<section aria-labelledby="titre-niveau">
-<h2 id="titre-niveau" class="titre-niveau">Un niveau plus bas : ${h(libelle(choisi.nom))} (${h(md(choisi.md))}), mission par mission</h2>
+<h3 id="titre-niveau" class="titre-niveau">Un niveau plus bas : ${h(libelle(choisi.nom))} (${h(md(choisi.md))}), mission par mission</h3>
 ${billet(
   missions.map((e, i) => ({
     nom: libelle(e.nom),

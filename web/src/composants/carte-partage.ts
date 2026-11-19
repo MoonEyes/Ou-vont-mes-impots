@@ -313,9 +313,10 @@ export function monterPartage(cible: ParentNode) {
   imprimer.textContent = 'Imprimer'
   imprimer.addEventListener('click', () => window.print())
   actions.append(imprimer)
-  const options = document.createElement('div')
+  // Replié (audit du 19/11, lot 3) : le résumé dit la règle (pas de montants par défaut), la case s'ouvre à la demande.
+  const options = document.createElement('details')
   options.className = 'partage-options'
-  options.innerHTML = `<label class="case"><input type="checkbox" id="partage-montants" aria-describedby="partage-montants-aide" /> Ajouter mes montants à l’image</label>
+  options.innerHTML = `<summary>Sans tes montants, sauf si tu les ajoutes</summary><label class="case"><input type="checkbox" id="partage-montants" aria-describedby="partage-montants-aide" /> Ajouter mes montants à l’image</label>
 <p class="aide" id="partage-montants-aide">Sans cette case, l’image montre seulement les parts sur 100 € : ni ce que tu verses en euros, ni ton salaire. Avec, elle montre ton total, sa fourchette et ton salaire net.</p>`
   actions.after(options)
 }

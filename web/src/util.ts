@@ -109,10 +109,39 @@ export function legendeStatuts(statuts: Statut[] = ['trace', 'approche', 'nonpub
     .join('')}</ul>`
 }
 /** Légende longue « Comment lire les motifs ». */
-export function lireLesMotifs(): string {
-  return `<div class="carte carte-contour"><h3>Comment lire les motifs</h3><ul class="legende-statuts">${(['trace', 'approche', 'nonpub'] as Statut[])
+export function lireLesMotifs(replie = false): string {
+  const liste = `<ul class="legende-statuts">${(['trace', 'approche', 'nonpub'] as Statut[])
     .map((s) => `<li>${traitStatut(s)}<span><strong>${STATUTS[s].motif} : ${STATUTS[s].libelle.toLowerCase()}.</strong> ${STATUTS[s].phrase}</span></li>`)
-    .join('')}</ul></div>`
+    .join('')}</ul>`
+  // Replié (résultat) : les trois motifs restent visibles dans le résumé, leurs phrases s'ouvrent à la demande.
+  if (replie)
+    return `<details class="motifs-repli"><summary>Comment lire les motifs <span class="motifs-apercu" aria-hidden="true">${(['trace', 'approche', 'nonpub'] as Statut[]).map(traitStatut).join('')}</span></summary>${liste}</details>`
+  return `<div class="carte carte-contour"><h3>Comment lire les motifs</h3>${liste}</div>`
+}
+
+/**
+ * Section repliée (audit du 19/11, lot 3, problème 2 : « un écran de synthèse, le reste à la demande »). Le titre reste
+ * un H2 hors du <summary>, dans le plan de la page ; le résumé dit ce que contient la section (nombre de lignes, total
+ * déjà affiché ailleurs) pour qu'on sache s'il faut l'ouvrir. Rien n'est retiré : tout s'ouvre, et tout s'imprime
+ * (ouvrirPourImpression, branché dans main.ts).
+ */
+export function repli(o: { id: string; titre: string; resume: string; contenu: string; ouvert?: boolean; titreHtml?: boolean; idTitre?: string }): string {
+  const t = o.idTitre ?? `${o.id}-titre`
+  return `<section class="repli" aria-labelledby="${t}"><h2 id="${t}">${o.titreHtml ? o.titre : h(o.titre)}</h2><details id="${o.id}" data-repli${o.ouvert ? ' open' : ''}><summary>${o.resume}</summary><div class="repli-corps">${o.contenu}</div></details></section>`
+}
+
+/** Impression : les sections repliées s'ouvrent le temps d'imprimer, puis reprennent leur état. */
+export function ouvrirPourImpression(racine: Document = document): void {
+  const ouverts: HTMLDetailsElement[] = []
+  addEventListener('beforeprint', () => {
+    racine.querySelectorAll<HTMLDetailsElement>('details:not([open])').forEach((d) => {
+      d.open = true
+      ouverts.push(d)
+    })
+  })
+  addEventListener('afterprint', () => {
+    for (const d of ouverts.splice(0)) d.open = false
+  })
 }
 
 /** Le chiffre clé de l'écran (un seul surligneur par écran). */

@@ -166,6 +166,40 @@ describe('écran', () => {
     expect(document.title).toContain('Nantes')
   })
 
+  it('onglets des quatre collectivités (lot 3) : une visible à la fois, clavier, rien de retiré ; le reste replié', async () => {
+    await ecran('#/local/ma-commune?insee=44109')
+    await pret()
+    const liste = main.querySelector('[role="tablist"]')!
+    expect(liste.closest('.onglets-collants')).not.toBeNull()
+    const onglets = [...liste.querySelectorAll<HTMLButtonElement>('[role="tab"]')]
+    expect(onglets.map((o) => o.textContent)).toEqual(['Commune', 'Intercommunalité', 'Département', 'Région'])
+    const visibles = () => [...main.querySelectorAll<HTMLElement>('[role="tabpanel"]')].filter((p) => !p.hidden).map((p) => p.id)
+    expect(visibles()).toEqual(['mc-commune-panneau'])
+    for (const o of onglets) {
+      const panneau = main.querySelector(`#${o.getAttribute('aria-controls')}`)!
+      expect(panneau.getAttribute('aria-labelledby')).toBe(o.id)
+      expect(panneau.querySelector('.source'), 'chaque panneau garde sa source').not.toBeNull()
+    }
+    expect(onglets.map((o) => o.tabIndex)).toEqual([0, -1, -1, -1])
+    onglets[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
+    expect(visibles()).toEqual(['mc-epci-panneau'])
+    expect(onglets[1].getAttribute('aria-selected')).toBe('true')
+    expect(document.activeElement).toBe(onglets[1])
+    onglets[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }))
+    expect(visibles()).toEqual(['mc-region-panneau'])
+    onglets[3].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
+    expect(visibles()).toEqual(['mc-commune-panneau'])
+    onglets[2].click()
+    expect(visibles()).toEqual(['mc-departement-panneau'])
+    // Le reste de la page : un H2 hors du résumé, le contenu dans un <details> fermé, présent dans la page.
+    for (const id of ['mc-beneficiaires', 'mc-europe', 'mc-projets', 'mc-deliberations', 'mc-comparer']) {
+      const d = main.querySelector<HTMLDetailsElement>(`#${id}-repli`)!
+      expect(d.open, id).toBe(false)
+      expect(d.querySelector(`#${id}`)).not.toBeNull()
+      expect(d.closest('section')!.querySelector(':scope > h2')?.id).toBe(`${id}-titre`)
+    }
+  })
+
   it('commune sans liste de subventions ni délibérations : chaque bloc dit pourquoi', async () => {
     await ecran('#/local/ma-commune?insee=44066')
     await pret()

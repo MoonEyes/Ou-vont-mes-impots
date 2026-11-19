@@ -25,7 +25,7 @@ import { billet, type Famille as FamilleBillet, FAMILLE_ADMIN, listeParts, parts
 import { filEuro } from '../composants/fil-euro'
 import { resumer, sorties } from '../composants/resume-calcul'
 import { METHODE_TOTAL, phrasePosition, positionCentrale } from '../calcul/fourchette'
-import { appliquerLargeurs, badgeCalcule, badgeStatut, barres, entier, eur, estFourchette, fourchette, h, jaugeFourchette, lireLesMotifs, nomVille, pct, source, type Statut, surligne } from '../util'
+import { appliquerLargeurs, badgeCalcule, badgeStatut, barres, entier, eur, estFourchette, fourchette, h, jaugeFourchette, lireLesMotifs, nomVille, pct, repli, source, type Statut, surligne } from '../util'
 
 const FAMILLES: [Famille, string][] = [
   ['cotisation_salariale', 'Cotisations sociales prélevées sur ton salaire'],
@@ -119,8 +119,7 @@ function blocProfil(r: ResultatOk): string {
     .join('')
   const verifications = phrasesVerifications(r)
   const sansEmployeur = !r.prelevements.some((l) => l.famille === 'cotisation_patronale')
-  return `<section class="carte carte-contour" aria-labelledby="titre-profil">
-  <h2 id="titre-profil">Le profil retenu pour ce calcul</h2>
+  return `<div class="carte carte-contour">
   <dl class="fiche-rgpd">
     ${personnes}
     <dt>Foyer</dt><dd>${h(descriptionFoyer(p))}</dd>
@@ -136,7 +135,7 @@ function blocProfil(r: ResultatOk): string {
   <h3>Ce qui n’est pas calculé</h3>
   <ul>${limitesDuCalcul(p, r, !!p.residence.commune_insee).map((l) => `<li>${h(l)}</li>`).join('')}</ul>
   <p class="aide">Calcul fait sur ton appareil : rien de ce que tu as saisi n’est envoyé ni enregistré.</p>
-</section>`
+</div>`
 }
 
 /** « En plus : ce que paie ton employeur » : lignes patronales, hypothèses de la fourchette, ce qui n'est pas compté. */
@@ -155,15 +154,14 @@ function blocPatronal(r: ResultatOk, patronales: Prelevement[], couple: boolean)
     ...(fonctionnaire ? ['contributions au Centre national de la fonction publique territoriale, aux centres de gestion et à l’Association nationale pour la formation permanente du personnel hospitalier'] : []),
     ...(statuts.has('contractuel_public') ? ['contribution de l’employeur public à l’assurance chômage'] : []),
   ]
-  return `<section class="carte" aria-labelledby="titre-patronal">
-  <h2 id="titre-patronal">En plus : ce que paie ton employeur</h2>
+  return `<div class="carte">
   <p>Ces cotisations ne sont pas prélevées sur ton salaire brut : ton employeur les verse en plus. Elles financent les mêmes caisses. Total annuel : <strong>${h(fourchette(r.totaux.patronal))}</strong>${
     r.totaux.cout_total_employeur ? `. Coût total pour l’employeur (brut et cotisations patronales) : ${h(fourchette(r.totaux.cout_total_employeur))}` : ''
   }.</p>
   ${estFourchette(r.totaux.patronal) && hypotheses.length ? `<p class="aide">Fourchette : ${hypotheses.join(' ; ')} dépendent de ton employeur, que le site ne connaît pas.</p>` : ''}
   <ul class="lignes">${patronales.map((l) => ligne(l, couple)).join('')}</ul>
   ${nonComptees.length ? `<p class="aide">Non comptées : ${nonComptees.join(' ; ')}.</p>` : ''}
-</section>`
+</div>`
 }
 
 /** Qui bénéficie, en exemples sans montant (les montants sont dans chaque thème d'Explorer). */
@@ -206,18 +204,15 @@ export function blocTotal(r: ResultatOk, c: Complet | null, pour = ''): string {
   const plage = estFourchette(t)
   // Phrase-clé juste sous le total (lue sans défiler sur un écran de 360 px), la fourchette ensuite.
   return `<section class="recap" data-cle aria-labelledby="titre-recap">
-    <h2 id="titre-recap" class="recap-titre">Ce que tu verses en un an${plage ? ', estimation de référence' : ''}</h2>
+    <p id="titre-recap" class="recap-titre">Ce que tu verses en un an${plage ? ', estimation de référence' : ''}</p>
     <p class="grand-chiffre">${surligne(eur(t.central))}</p>
     ${plage ? `<p class="recap-fourchette">Fourchette : <strong>entre ${h(eur(t.bas))} et ${h(eur(t.haut))}</strong></p>` : ''}
     <p class="recap-sur100">${phraseSur100(s100)}</p>
     ${pour ? `<p class="recap-profil">Calcul pour : ${h(pour)}. <a href="#/calcul">Modifier ma saisie</a></p>` : ''}
-    ${
-      plage && position !== 'hors'
-        ? `${jaugeFourchette(t)}
-    <p class="aide">${h(phrasePosition(position))} La fourchette dépend de ce que tu achètes et de tes impôts locaux.</p>`
-        : ''
-    }
+    ${plage && position !== 'hors' ? jaugeFourchette(t) : ''}
     <p class="aide">${badgeCalcule(METHODE_TOTAL)}</p>
+    <details class="recap-plus"><summary>Par mois, place dans la fourchette, sources</summary>
+    ${plage && position !== 'hors' ? `<p class="aide">${h(phrasePosition(position))} La fourchette dépend de ce que tu achètes et de tes impôts locaux.</p>` : ''}
     <p class="aide">Soit ${h(eur(t.central / 12))} par mois, pour ${h(eur(net))} ${REVENU_ANNUEL[natureRevenus(r)]}. ${
       r.prelevements.some((l) => l.famille === 'cotisation_patronale')
         ? 'Hors cotisations de ton employeur (plus bas)'
@@ -228,11 +223,12 @@ export function blocTotal(r: ResultatOk, c: Complet | null, pour = ''): string {
     <p class="source">calcul sur ton appareil (modele-social et barèmes 2025 du site, vérifiés face à OpenFisca${
       phrasesVerifications(r).some((v) => v.includes('mon-entreprise')) ? ' et au simulateur mon-entreprise de l’Urssaf' : ''
     }), Insee, projets de budget 2026 de l’État (PLF) et de la Sécurité sociale (PLFSS), DGFiP. <a href="#/methode">Méthode</a></p>
+    </details>
   </section>`
 }
 
 /** Billet personnel, parts sur 100 €, les trois sorties et le fil de l'euro. */
-function blocBillet(r: ResultatOk, c: Complet | null): { gauche: string; droite: string; fil: string } {
+function blocBillet(r: ResultatOk, c: Complet | null): { gauche: string; droite: string; sources: string; nbSources: number; fil: string } {
   const res = resumer(r, c)
   const parts = partsAdministrations(res.sur100, ORDRE_ADMIN)
   const locataire = session.profil?.logement?.statut !== 'proprietaire'
@@ -246,9 +242,9 @@ function blocBillet(r: ResultatOk, c: Complet | null): { gauche: string; droite:
 ${billet(parts, { etiquette: 'Ton billet de 100 € découpé par destinataire' })}
 ${tableauBillet(parts, 'Sur 100 € que tu verses, par destinataire')}`,
     droite: `<h2>Où ça va, sur 100 €</h2>
-${listeParts(parts, 'Où vont 100 € que tu verses')}
-<h2>D’où ça sort</h2>
-<p class="chapeau">${lignes.length > 1 ? `Ce qui est pris ${SUR[nature]}, ce que tu verses en achetant, et tes impôts locaux.` : `Ce qui est pris ${SUR[nature]}.`}</p>
+${listeParts(parts, 'Où vont 100 € que tu verses')}`,
+    nbSources: lignes.length + (consoAbsente ? 1 : 0) + (orduresNonChiffre ? 1 : 0),
+    sources: `<p class="chapeau">${lignes.length > 1 ? `Ce qui est pris ${SUR[nature]}, ce que tu verses en achetant, et tes impôts locaux.` : `Ce qui est pris ${SUR[nature]}.`}</p>
 <ul class="postes">${lignes
       .map((l) => `<li><span class="p-nom">${h(l.nom)}<small>${h(l.detail)}</small></span><span class="p-montant">${h(l.texte)}</span>${badgeStatut(l.statut)}</li>`)
       .join('')}${consoAbsente ? `<li><span class="p-nom">Sur tes achats<small>TVA et taxes sur la consommation</small></span><span class="p-montant">non disponible</span>${badgeStatut('nonpub')}</li>` : ''}${
@@ -342,6 +338,11 @@ export async function rendre(cible: HTMLElement) {
   }
 
   const bb = blocBillet(r, c)
+  const nbDest = parDestinataire(toutes, false).length
+  const sourceMoteur = `<p class="source">Calcul sur ton appareil avec modele-social ${h(r.moteur.version)} (règles de l’Urssaf, licence MIT) et publicodes ${h(r.moteur.publicodes ?? '')}, complétés par les barèmes ${h(r.annee_legislation)} du site pour la fonction publique et les pensions ; législation ${h(r.annee_legislation)}. Vérifications et limites : ci-dessus et dans la <a href="#/methode">méthode</a>.</p>`
+  const pluriel = (n: number, mot: string) => `${entier(n)} ${mot}${n > 1 ? 's' : ''}`
+  // Un écran de synthèse, le reste à la demande (audit du 19/11, lot 3, problème 2) : total, billet, « Où ça va », fil de
+  // l'euro dépliés ; profil, lignes, destinataires et part de l'employeur repliés, leur titre et leur contenu annoncés.
   cible.innerHTML = `
 <h1 class="titre-resultat">Ce que tu verses en un an</h1>
 <div class="colonnes">
@@ -359,33 +360,50 @@ export async function rendre(cible: HTMLElement) {
       <a class="bouton bouton-principal" href="${h(suivreMes)}">Suivre mes euros${premiere ? `<span class="visuellement-cache"> : ${h(premiere.libelle)}, étape par étape</span>` : ''}</a>
       <button type="button" id="partager-carte">Partager ma carte</button>
     </div>
-    <p class="aide" id="partage-info">La carte est une image de ton billet, créée sur ton appareil. Aucun montant n’est mis dans une adresse ni envoyé au site.</p>
+    <p class="aide" id="partage-info" role="status">Image de ton billet créée sur ton appareil ; rien n’est envoyé au site.</p>
   </div>
-  ${lireLesMotifs()}
+  ${lireLesMotifs(true)}
 </div>
 ${bb.fil}
 ${avert}
-${blocProfil(r)}
-<h2>Ligne par ligne, et qui le reçoit</h2>
-<p class="aide"><a href="#/calcul/bulletin">Ta fiche de paie expliquée</a> : chaque ligne de ton bulletin, ce qu’elle finance, qui la reçoit et où va cet argent.</p>
+${repli({ id: 'repli-sources', titre: 'D’où ça sort', resume: `Les ${h(pluriel(bb.nbSources, 'sortie'))} de ta poche, montant et statut`, contenu: bb.sources })}
+${repli({ id: 'repli-profil', idTitre: 'titre-profil', titre: 'Le profil retenu pour ce calcul', resume: 'Foyer, lieu, barèmes, vérifications, limites', contenu: `${blocProfil(r)}${sourceMoteur}` })}
+${repli({
+  id: 'repli-lignes',
+  titre: 'Ligne par ligne, et qui le reçoit',
+  resume: `Les ${h(pluriel(toutes.length, 'prélèvement'))} et qui les reçoit`,
+  contenu: `<p class="aide"><a href="#/calcul/bulletin">Ta fiche de paie expliquée</a> : chaque ligne de ton bulletin, ce qu’elle finance, qui la reçoit et où va cet argent.</p>
 <p class="aide"><a href="#/explorer/retraites">Les retraites, régime par régime</a> : qui verse les pensions, combien de personnes les reçoivent et leur montant moyen.</p>
 ${groupes}
 ${csgAbsente ? `<p class="aide">${h(csgAbsente.message)}</p>` : ''}
-${blocTaxeFonciere()}
-<h2>Par destinataire</h2>
-${
-  patronales.length
-    ? `<div class="bascule" role="group" aria-label="Contenu de la répartition">
+${blocTaxeFonciere()}`,
+})}
+${repli({
+  id: 'repli-destinataires',
+  titre: 'Par destinataire',
+  resume: `Les ${h(pluriel(nbDest, 'destinataire'))}, montant par montant`,
+  contenu: `${
+    patronales.length
+      ? `<div class="bascule" role="group" aria-label="Contenu de la répartition">
   <button type="button" id="sans-patronal" aria-pressed="true">Ce que tu verses</button>
   <button type="button" id="avec-patronal" aria-pressed="false">Avec la part de l’employeur</button>
 </div>`
+      : ''
+  }
+<div id="par-destinataire" aria-live="polite"></div>`,
+})}
+${
+  patronales.length
+    ? repli({
+        id: 'repli-employeur',
+        idTitre: 'titre-patronal',
+        titre: 'En plus : ce que paie ton employeur',
+        resume: `${h(fourchette(r.totaux.patronal))} par an, ${h(pluriel(patronales.length, 'cotisation'))}`,
+        contenu: blocPatronal(r, patronales, couple),
+      })
     : ''
 }
-<div id="par-destinataire" aria-live="polite"></div>
-${patronales.length ? blocPatronal(r, patronales, couple) : ''}
-<p class="source">Calcul sur ton appareil avec modele-social ${h(r.moteur.version)} (règles de l’Urssaf, licence MIT) et publicodes ${h(r.moteur.publicodes ?? '')}, complétés par les barèmes ${h(r.annee_legislation)} du site pour la fonction publique et les pensions ; législation ${h(r.annee_legislation)}. Vérifications et limites : « Le profil retenu pour ce calcul », plus haut, et la <a href="#/methode">méthode</a>.</p>
-<div class="actions"><a class="bouton" href="#/calcul">Modifier ma saisie</a></div>
-<p><a href="#/calcul/et-si">Et si ton salaire changeait ? Ce que tu verserais avec un autre salaire</a></p>
+<div class="actions"><a class="bouton" href="#/calcul">Modifier ma saisie</a><a class="bouton-lien" href="#/calcul/et-si">Et si ton salaire changeait ?</a></div>
 <h2>Et maintenant ?</h2>
 <ul class="cartes par-3">
   <li><a href="#/explorer/etat"><strong>Où va l’argent de l’État</strong><span>Les grands postes du budget, jusqu’à la ligne votée.</span></a></li>

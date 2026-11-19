@@ -2,7 +2,7 @@ import './styles.css'
 import { versChemin, versFragment } from './chemins'
 import { definirRacine } from './donnees'
 import { afficher, brancherAdresses, lireFragment, REDIRECTIONS } from './routeur'
-import { rendreDefilables } from './util'
+import { ouvrirPourImpression, rendreDefilables } from './util'
 import { ROUTES } from './routes'
 import { brancherHorsLigne } from './hors-ligne'
 
@@ -69,6 +69,8 @@ function demarrer() {
   })
   // Champ « Rechercher » de l'en-tête : suggestions et page de résultats (src/composants/recherche.ts, chargé à part).
   import('./composants/recherche').then((m) => m.brancherEntete()).catch((e) => console.error(e))
+  // Impression : sections repliées ouvertes le temps d'imprimer (rien ne manque sur le papier).
+  ouvrirPourImpression()
   // Tableaux insérés après le rendu (fiches dépliées, pagination) : rendus atteignables au clavier.
   if (typeof MutationObserver !== 'undefined') new MutationObserver(() => rendreDefilables(main)).observe(main, { childList: true, subtree: true })
   const racine = document.documentElement.dataset.racine

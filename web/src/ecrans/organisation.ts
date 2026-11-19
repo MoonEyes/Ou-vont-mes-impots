@@ -243,7 +243,8 @@ function renduFiche(idx: Index, f: Fiche): string {
   return `
 <p class="aide"><a href="${h(lien(PAGE))}">Chercher une autre organisation</a></p>
 <h1>${h(f.denomination)}</h1>
-<p class="chapeau">Tout ce que cette organisation reçoit de l’argent public d’après les sources publiées sur le site, source par source et année par année, avec le montant tel que chaque source le publie. Les sources n’ont ni la même définition du montant (engagé, attribué, notifié, versé, programmé) ni la même période : leurs montants sont montrés côte à côte, jamais additionnés. Cette page ne montre pas ce que les sources ne publient pas : une absence ne veut pas dire qu’aucun montant n’a été reçu.</p>
+<p class="chapeau">Ce que cette organisation reçoit de l’argent public, source par source et année par année, tel que chaque source le publie. Les montants sont montrés côte à côte, jamais additionnés.</p>
+<details class="avant-lecture"><summary>Ce que cette page montre et ne montre pas</summary><p>Les sources n’ont ni la même définition du montant (engagé, attribué, notifié, versé, programmé) ni la même période. Cette page ne montre pas ce que les sources ne publient pas : une absence ne veut pas dire qu’aucun montant n’a été reçu.</p></details>
 <ul class="cles" aria-label="Identité de l’organisation">
   <li class="cle-famille"><strong>${surligne(`${entier(n)} source${n > 1 ? 's' : ''}`)}</strong><span>du site où figure cette organisation, reliées par son SIREN</span></li>
   <li><strong>${h(sirenLisible(f.siren))}</strong><span>SIREN · ${h(formeJuridique(f.categorie_juridique))} (catégorie juridique ${h(f.categorie_juridique)})</span></li>
@@ -272,11 +273,7 @@ function renduRecherche(idx: Index, q: string): string {
   const c = idx.comptes
   return `
 <h1>Une organisation dans toutes les sources</h1>
-<p class="chapeau">Cherche une association, une entreprise, une commune ou un établissement public par son nom ou son SIREN : sa fiche réunit ce qu’elle reçoit de l’argent public dans toutes les sources du site (subventions, crédits aux associations, marchés publics, aides aux entreprises, fonds européens, projets des collectivités, opérateurs, hôpitaux, recherche), source par source et année par année. Elle ne fait pas de total toutes sources confondues, et ne montre que ce qui est publié en données ouvertes. Seules les personnes morales sont nommées.</p>
-<div class="carte" data-cle>
-  <p class="grand-chiffre">${surligne(entier(c.organisations_avec_fiche))}</p>
-  <p class="sous-chiffre">organisations ont une fiche : elles figurent dans au moins deux sources du site (ou dans une source et un rapprochement probable). ${h(entier(c.organisations_reliees_par_siren))} organisations au total sont reliées par leur SIREN ; celles qui ne figurent que dans une source sont sur la page de cette source.</p>
-</div>
+<p class="chapeau">Cherche une association, une entreprise, une commune ou un établissement public par son nom ou son SIREN. Sa fiche montre ce qu’elle reçoit, source par source, sans total toutes sources confondues.</p>
 <form id="org-form" class="carte" role="search" aria-label="Chercher une organisation">
   <label for="org-q">Nom ou SIREN de l’organisation</label>
   <input id="org-q" name="q" type="search" autocomplete="off" value="${h(q)}" />
@@ -284,6 +281,13 @@ function renduRecherche(idx: Index, q: string): string {
 </form>
 <p id="org-statut" class="aide" aria-live="polite"></p>
 <div id="org-resultats"><p>Écris au moins trois lettres d’un mot du nom, ou les 9 chiffres du SIREN.</p></div>
+<details class="carte avant-lecture"><summary>Ce que cette page montre et ne montre pas</summary>
+<p>Les sources réunies : subventions, crédits aux associations, marchés publics, aides aux entreprises, fonds européens, projets des collectivités, opérateurs, hôpitaux, recherche, année par année. Elle ne fait pas de total toutes sources confondues, et ne montre que ce qui est publié en données ouvertes. Seules les personnes morales sont nommées.</p>
+</details>
+<div class="carte" data-cle>
+  <p class="grand-chiffre">${surligne(entier(c.organisations_avec_fiche))}</p>
+  <p class="sous-chiffre">organisations ont une fiche : elles figurent dans au moins deux sources du site (ou dans une source et un rapprochement probable). ${h(entier(c.organisations_reliees_par_siren))} organisations au total sont reliées par leur SIREN ; celles qui ne figurent que dans une source sont sur la page de cette source.</p>
+</div>
 <h2>Les sources reliées</h2>
 ${enPrerendu() ? AFFICHE_DANS_LE_NAVIGATEUR : `<div class="tableau-defile"><table id="org-canaux"><caption>Sources du site relues pour relier les organisations</caption><thead><tr><th scope="col">Source</th><th scope="col" class="nombre">Organisations reliées</th><th scope="col" class="nombre">dont avec une fiche</th><th scope="col">Page du site</th></tr></thead><tbody>${idx.canaux
     .map((k) => {

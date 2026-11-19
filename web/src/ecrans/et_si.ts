@@ -378,7 +378,7 @@ function blocCle(a: Point, b: Point, e: Ecart, m: Marginal | null): string {
   const verse = m ? versePour100(m) : null
   const chiffre = sens || m ? surligne(signe(e.total)) : h(signe(e.total))
   return `<section class="recap" data-cle aria-labelledby="es-titre-cle">
-    <h2 id="es-titre-cle" class="recap-titre">${sens ? `Ce que tu verserais en ${sens}, en un an` : 'Ce que tu verserais en plus, en un an'}</h2>
+    <p id="es-titre-cle" class="recap-titre">${sens ? `Ce que tu verserais en ${sens}, en un an` : 'Ce que tu verserais en plus, en un an'}</p>
     <p class="grand-chiffre">${chiffre}</p>
     <p>${sens ? `Soit ${h(signe(e.total / 12))} par mois. ` : 'Les deux salaires sont égaux : aucune différence. '}Avec ${h(parMois(b.net_mensuel))}, tu verserais ${h(eur(b.total))} par an ; avec ${h(parMois(a.net_mensuel))}, ${h(eur(a.total))}.</p>
     ${phrase ? `<p class="recap-sur100">Sur 100 € versés en ${sens} : ${phrase}.</p>` : ''}

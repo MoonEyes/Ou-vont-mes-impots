@@ -22,9 +22,7 @@ export function rendre(cible: HTMLElement, params: URLSearchParams) {
   const q = (params.get('q') ?? '').trim().slice(0, 120)
   cible.innerHTML = `
 <h1>Rechercher dans le site</h1>
-<p class="chapeau">Une entreprise ou une association (nom ou SIREN), un député ou un sénateur, une commune, un département, une mission ou un programme du budget de l’État, un impôt, un mot du glossaire, une page du site : tape un nom ou un code. La recherche se fait sur ton appareil, rien de ce que tu tapes n’est envoyé ni gardé.</p>
-<p>Elle ne cherche pas dans les montants. Seuls les noms que le site publie déjà sont cherchés : les organisations qui ont une fiche (personnes morales présentes dans au moins deux sources), les parlementaires nommés par leurs votes publics ou leurs amendements adoptés.</p>
-<p class="aide" data-regle-ordre>${h(REGLE_ORDRE)}</p>
+<p class="chapeau">Une organisation, un parlementaire, une commune, un programme du budget, un impôt, un mot ou une page du site. La recherche se fait sur ton appareil : rien de ce que tu tapes n’est envoyé ni gardé.</p>
 <form id="recherche-page" class="carte carte-contour recherche-formulaire" role="search" aria-label="Recherche dans le site, page de résultats">
   <label for="recherche-q">Ce que tu cherches</label>
   <div class="recherche-ligne"><input id="recherche-q" name="q" type="search" value="${h(q)}" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-describedby="recherche-consigne" /><button type="submit" class="bouton-principal">Rechercher</button></div>
@@ -32,6 +30,10 @@ export function rendre(cible: HTMLElement, params: URLSearchParams) {
 </form>
 <p id="recherche-statut" class="recherche-statut" role="status"></p>
 <div id="recherche-resultats"></div>
+<details class="avant-lecture"><summary>Ce que cette page montre et ne montre pas</summary>
+<p>Entreprises et associations (nom ou SIREN), députés et sénateurs, communes, départements, missions et programmes du budget de l’État, impôts, mots du glossaire, pages du site. Elle ne cherche pas dans les montants. Seuls les noms que le site publie déjà sont cherchés : les organisations qui ont une fiche (personnes morales présentes dans au moins deux sources), les parlementaires nommés par leurs votes publics ou leurs amendements adoptés.</p>
+<p class="aide" data-regle-ordre>${h(REGLE_ORDRE)}</p>
+</details>
 <div id="recherche-zone-sources"></div>`
 
   const champ = cible.querySelector<HTMLInputElement>('#recherche-q')!
