@@ -7,7 +7,8 @@ import { LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
 import { ORDRE_ADMIN, parAdministration, sur100Entiers } from '../calcul/repartition'
 import { session } from '../etat'
 import { lien } from '../routeur'
-import { absent, barres, eur, h, libelle, lireLesMotifs, md, pct, source, sur100, surligne } from '../util'
+import { retourResultat } from '../composants/retour-resultat'
+import { absent, appliquerLargeurs, barres, eur, h, libelle, lireLesMotifs, md, pct, source, sur100, surligne } from '../util'
 
 interface Deficit {
   etat: { lecture: string; perimetre: string; comptabilite: string; annees: Record<string, { part_empruntee: number; solde_budgetaire_md: number }> }
@@ -66,11 +67,9 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const vues = VUES_ARBRE.filter((v) => v.cle !== 'nature2025')
   const v = vues.includes(vue) ? vue : vues[0]
   const en2025 = v.cle === VUE_2025
-  const [racine, deficit, millesimes] = await Promise.all([
-    charger<Noeud>(`${v.dossier}/racine.json`),
-    chargerSiPresent<Deficit>('deficit.json'),
-    v.cle === 'execution2024' || en2025 ? chargerSiPresent<Millesimes>(FICHIER_MILLESIMES) : Promise.resolve(null),
-  ])
+  // Seuls l'arbre et la part empruntée retiennent l'affichage ; les blocs « deux méthodes », « jusqu'où on suit
+  // l'argent » et la traçabilité (millesimes/index.json, tracabilite/resume.json) se complètent ensuite.
+  const [racine, deficit] = await Promise.all([charger<Noeud>(`${v.dossier}/racine.json`), chargerSiPresent<Deficit>('deficit.json')])
   const total = racine.md
   const postes = racine.enfants ?? []
   const emprunt = deficit?.etat.annees[racine.millesime ?? v.millesime]
@@ -128,8 +127,7 @@ ${billet(
         .map((p) => `<li class="${p.famille === 'nonpub' ? 'r-nonpub' : `f-${p.famille}`}${p.famille === 'etat' ? ' r-actif' : ''}" data-f="${p.valeur}"><span>${p.famille === 'etat' ? `État : ${h(p.texte)}` : h(p.texte)}</span><span class="visuellement-cache"> ${h(p.nom)}</span></li>`)
         .join('')}</ul><p class="aide">Tu as ouvert la part de l’État. Voici ses 100 € à lui :</p>`
     : ''
-  const nonPub = await eurosNonPublies()
-  const suivi =
+  const blocSuivi = (nonPub: Awaited<ReturnType<typeof eurosNonPublies>>) =>
     nonPub && nonPub.millesime === an
       ? `<section class="carte carte-principale" aria-labelledby="titre-suivi">
   <h2 id="titre-suivi">Jusqu’où on suit l’argent</h2>
@@ -152,11 +150,12 @@ ${billet(
     ${vues.map((x) => `<a class="bouton" href="${lien('/explorer/etat', { m: x.cle })}"${x === v ? ' aria-current="true"' : ''}>${h(x.libelle)}</a>`).join('')}
   </div>
 </div>
+${retourResultat()}
 ${perso}
 ${billet(partsPostes, { etiquette: `Billet de 100 € dépensés par l’État en grands postes (${periode})` })}
 ${niveauBas}
 ${noteProgrammes}
-${blocMethode(v.cle, millesimes)}
+<div id="bloc-methode"></div>
 <div class="colonnes c-8-4">
   <div>
     <h2>Les grands postes</h2>
@@ -168,7 +167,7 @@ ${blocMethode(v.cle, millesimes)}
           valeur: p.md,
           texte: sur100((p.md / total) * 100),
           lien: lien('/explorer/etat/detail', { m: v.cle, id: p.id }),
-          detail: `${md(p.md)}${ir > 0 ? ` · sur ce que tu verses à l’État : ${eur((ir * p.md) / total)} par an` : ''}`,
+          detail: md(p.md),
         })),
         undefined,
         'Grands postes, en euros sur 100 €',
@@ -177,7 +176,7 @@ ${blocMethode(v.cle, millesimes)}
     </div>
   </div>
   <div>
-    ${suivi}
+    <div id="bloc-suivi"></div>
     ${lireLesMotifs()}
   </div>
 </div>
@@ -198,7 +197,7 @@ ${
           ([a, v]) =>
             `<li>${h(eur(v))}, soit ${s100Admin[a] ?? 0} € sur 100 €, ${a === 'Plusieurs' ? 'sans destinataire publié' : `pour : ${h(LIBELLE_ADMINISTRATION[a as 'Etat'])}`}</li>`,
         )
-        .join('')}</ul><p class="aide">La part qui va à l’État (${h(eur(ir))}) n’est pas fléchée vers un poste : la liste ci-dessus l’applique au prorata du budget de l’État, pour donner un ordre de grandeur. Le reste va à la Sécurité sociale et aux collectivités.</p></div>`
+        .join('')}</ul><p class="aide">La part qui va à l’État (${h(eur(ir))}) n’est pas fléchée vers un poste du budget : aucun document public ne dit quel poste elle finance, le site ne la répartit donc pas entre les postes. Le reste va à la Sécurité sociale et aux collectivités.</p></div>`
     : ''
 }
 ${
@@ -217,6 +216,18 @@ ${
 }
 <div id="trac"></div>
 <div class="actions"><a class="bouton bouton-principal" href="${lien('/explorer/etat/detail', { m: v.cle })}">Voir le détail, aussi loin que tu veux</a><a class="bouton" href="#/explorer/recettes">D’où vient l’argent ?</a></div>`
-  const t = await blocTracabilite('racine', 'racine', racine.millesime ?? v.millesime)
-  ;(cible.querySelector('#trac') as HTMLElement).innerHTML = t
+  const poser = (id: string, html: string) => {
+    const z = cible.querySelector<HTMLElement>(id)
+    if (z) {
+      z.innerHTML = html
+      appliquerLargeurs(z)
+    }
+  }
+  return {
+    suite: Promise.all([
+      (v.cle === 'execution2024' || en2025 ? chargerSiPresent<Millesimes>(FICHIER_MILLESIMES) : Promise.resolve(null)).then((m) => poser('#bloc-methode', blocMethode(v.cle, m))),
+      eurosNonPublies().then((n) => poser('#bloc-suivi', blocSuivi(n))),
+      blocTracabilite('racine', 'racine', racine.millesime ?? v.millesime).then((t) => poser('#trac', t)),
+    ]).then(() => undefined),
+  }
 }

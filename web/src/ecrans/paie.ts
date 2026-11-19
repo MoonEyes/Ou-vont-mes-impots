@@ -1,5 +1,7 @@
 // Écran 2 : ce que tu verses (total annuel, ligne par ligne avec destinataire, patronal à part).
-import { parDestinataire } from '../calcul/agregats'
+import { type Affectation, cleAffectation, parDestinataire } from '../calcul/agregats'
+import { chargerSiPresent } from '../donnees'
+import { lien } from '../routeur'
 import { destinataire, LIBELLE_ADMINISTRATION } from '../calcul/destinataires'
 import type { Complet } from '../calcul/hors-bulletin'
 import {
@@ -80,8 +82,17 @@ function ligne(l: Prelevement, couple: boolean): string {
     <span class="montant">${h(montant)}${l.non_chiffre ? '' : '<span class="visuellement-cache"> par an</span>'}</span>
     <span class="dest">${statutLigne(l)}Va à : ${h(dest)}${!parts && admin !== dest && l.destinataire.id !== 'non_affecte' ? ` <span class="badge badge-admin">${h(admin)}</span>` : ''}${h(nonSourcee)}${
       !l.non_chiffre && estFourchette(m) ? ` · estimation (central ${h(eur(m.central))})` : ''
-    }${l.note ? `<br />${h(l.note)}` : ''}</span>
+    }${l.note ? `<br />${h(l.note)}` : ''}${lienSuivi(l)}</span>
   </li>`
+}
+
+/** Clé de prelevements/affectation.json de chaque ligne du calcul, posée par rendre (null : pas de piste publiée). */
+let cleSuivi: (l: Prelevement) => string | null = () => null
+
+/** Passage direct d'une ligne à sa piste « Suivre un euro » (organisme qui reçoit, puis ses dépenses publiées). */
+function lienSuivi(l: Prelevement): string {
+  const cle = l.non_chiffre ? null : cleSuivi(l)
+  return cle ? ` · <a href="${h(lien('/suivre-un-euro', { depart: cle }))}">Suivre 1 €<span class="visuellement-cache"> de la ligne ${h(l.libelle)}</span></a>` : ''
 }
 
 function profilTexte(r: ResultatOk): string {
@@ -154,18 +165,41 @@ const POUR_QUI: Record<string, string[]> = {
   Plusieurs: ['Destinataire non publié'],
 }
 
-/** Carte principale « Ce que tu verses en un an » : total, jauge de la fourchette, répartition sur 100 €. */
-function blocTotal(r: ResultatOk, c: Complet | null): string {
+/** Destinataire de la phrase « sur 100 € », avec son article. */
+const VERS_SUR100: Record<string, string> = {
+  'Securite sociale': 'à la Sécurité sociale',
+  Etat: 'à l’État',
+  'Collectivites locales': 'aux collectivités locales',
+  Plusieurs: 'sans destinataire publié',
+}
+
+/**
+ * « Sur 100 € que tu verses, 57 € vont à la Sécurité sociale, 30 € à l’État… » : parts du calcul personnel (un seul
+ * calcul, une seule année de législation), dont la méthode est donnée par la source du bloc et la page Méthode.
+ */
+export function phraseSur100(s100: Record<string, number>): string {
+  const parts = ORDRE_ADMIN.filter((a) => (s100[a] ?? 0) > 0)
+  if (!parts.length) return 'Répartition sur 100 € non disponible pour ce calcul.'
+  const morceaux = parts.map((a, i) => {
+    const verbe = i === 0 && a !== 'Plusieurs' ? (s100[a] < 2 ? ' va ' : ' vont ') : ' '
+    return `<strong>${s100[a]} €</strong>${verbe}${h(VERS_SUR100[a] ?? NOM_SUR100[a])}`
+  })
+  const liste = morceaux.length > 1 ? `${morceaux.slice(0, -1).join(', ')} et ${morceaux[morceaux.length - 1]}` : morceaux[0]
+  return `Sur 100 € que tu verses, ${liste}.`
+}
+
+/** Carte principale « Ce que tu verses en un an » : total, répartition sur 100 €, jauge de la fourchette. */
+function blocTotal(r: ResultatOk, c: Complet | null, pour = ''): string {
   const t = c ? c.total : r.totaux.paye_par_le_foyer
   const net = r.entree.personnes.reduce((s, p) => s + p.salaire_net_avant_impot_annuel, 0)
   const s100 = resumer(r, c).sur100
-  const phrase = ORDRE_ADMIN.filter((a) => s100[a] !== undefined)
-    .map((a) => `<strong>${s100[a]} €</strong> ${h(NOM_SUR100[a])}`)
-    .join(', ')
   const plage = estFourchette(t)
+  // Phrase-clé juste sous le total (lue sans défiler sur un écran de 360 px), la fourchette ensuite.
   return `<section class="recap" data-cle aria-labelledby="titre-recap">
     <h2 id="titre-recap" class="recap-titre">Ce que tu verses en un an${plage ? ', environ' : ''}</h2>
     <p class="grand-chiffre">${surligne(eur(t.central))}</p>
+    <p class="recap-sur100">${phraseSur100(s100)}</p>
+    ${pour ? `<p class="recap-profil">Calcul pour : ${h(pour)}. <a href="#/calcul">Modifier ma saisie</a></p>` : ''}
     ${
       plage
         ? `<div class="jauge" aria-hidden="true"><span class="j-plein" data-l="${((t.bas / t.haut) * 100).toFixed(1)}"></span><span class="j-points" data-l="${(((t.haut - t.bas) / t.haut) * 100).toFixed(1)}"></span></div>
@@ -173,7 +207,6 @@ function blocTotal(r: ResultatOk, c: Complet | null): string {
     <p class="aide">La fourchette dépend de ce que tu achètes et de tes impôts locaux.</p>`
         : ''
     }
-    <p class="recap-sur100">Sur 100 € : ${phrase}.</p>
     <p class="aide">Soit ${h(eur(t.central / 12))} par mois, pour ${h(eur(net))} ${REVENU_ANNUEL[natureRevenus(r)]}. ${
       r.prelevements.some((l) => l.famille === 'cotisation_patronale') ? 'Hors cotisations de ton employeur (plus bas)' : 'Pas de cotisations d’employeur pour ces revenus'
     }${c?.lignes.some((l) => l.non_chiffre) ? ' ; les montants « non chiffré » ne sont pas comptés' : ''}.</p>
@@ -251,6 +284,20 @@ export async function rendre(cible: HTMLElement) {
   const couple = r.entree.personnes.length > 1
   const toutes = c ? c.lignes : r.prelevements.filter((l) => l.inclus_dans_total_paye)
   const nature = natureRevenus(r)
+  // Piste « Suivre un euro » de chaque ligne : clé publiée dans affectation.json (fichier déjà lu par le calcul, en cache).
+  const aff = await chargerSiPresent<Affectation>('prelevements/affectation.json')
+  const tout = [...toutes, ...patronales]
+  cleSuivi = (l) => {
+    if (!aff?.prelevements) return null
+    const cle = cleAffectation(l, tout, aff)
+    return aff.prelevements[cle] ? cle : null
+  }
+  // Bouton principal : la piste de la ligne la plus élevée de ce que tu verses (CSG, impôt, cotisation…).
+  const premiere = toutes
+    .filter((l) => !l.non_chiffre && l.nature !== 'reduction' && cleSuivi(l))
+    .sort((a, b) => b.montant_annuel_eur.central - a.montant_annuel_eur.central)[0]
+  const suivreMes = premiere ? lien('/suivre-un-euro', { depart: cleSuivi(premiere) }) : '#/suivre-un-euro'
+
   const groupes = FAMILLES.map(([fam, libelle]) => {
     const titre = fam === 'cotisation_salariale' ? COTISATIONS[nature] : libelle
     const ls = toutes.filter((l) => l.famille === fam)
@@ -281,14 +328,13 @@ export async function rendre(cible: HTMLElement) {
 
   const bb = blocBillet(r, c)
   cible.innerHTML = `
-<h1>Ce que tu verses en un an</h1>
-<p class="chapeau">${h(profilTexte(r))}${session.communeNom ? `, à ${h(nomVille(session.communeNom))}` : ''}. <a href="#/calcul">Modifier ma saisie</a></p>
+<h1 class="titre-resultat">Ce que tu verses en un an</h1>
 <div class="colonnes">
   <div>
-    ${blocTotal(r, c)}
+    ${blocTotal(r, c, `${profilTexte(r)}${session.communeNom ? `, à ${nomVille(session.communeNom)}` : ''}`)}
     ${bb.gauche}
     <div class="actions">
-      <a class="bouton bouton-principal" href="#/explorer/etat">Suivre mes euros</a>
+      <a class="bouton bouton-principal" href="${h(suivreMes)}">Suivre mes euros${premiere ? `<span class="visuellement-cache"> : ${h(premiere.libelle)}, étape par étape</span>` : ''}</a>
       <button type="button" id="partager-carte">Partager ma carte</button>
     </div>
     <p class="aide" id="partage-info">La carte est une image de ton billet, créée sur ton appareil. Aucun montant n’est mis dans une adresse ni envoyé au site.</p>
