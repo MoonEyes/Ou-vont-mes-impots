@@ -3959,3 +3959,46 @@ fieldset.saisie-groupe {
   stroke-linecap: round;
   pointer-events: none;
 }
+/* Ton billet te suit : billet miniature de 32 px en tête des pages Explorer, après un calcul (mémoire de la page). */
+.billet-suiveur {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.875rem;
+  margin: 0 0 1rem;
+  padding: 0.5rem 0.875rem;
+  background: var(--papier);
+  border: var(--trait) solid var(--contour);
+  border-radius: var(--rayon-champ);
+}
+.bs-dessin {
+  flex: none;
+  display: block;
+  width: 10rem;
+  height: 2rem;
+}
+.bs-part {
+  stroke: var(--contour);
+  stroke-width: 1.5;
+}
+.bs-part.bs-ici {
+  stroke-width: 3;
+}
+.bs-part.bs-eteint {
+  opacity: 0.3;
+}
+.bs-hach-fond {
+  fill: var(--blanc);
+}
+.bs-hach-trait {
+  fill: var(--encre);
+}
+.bs-texte {
+  margin: 0;
+  flex: 1 1 14rem;
+}
+.billet-suiveur .bs-methode {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: var(--t-1);
+}

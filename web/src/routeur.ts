@@ -9,6 +9,7 @@ import { brancherExports } from './composants/exporter'
 import { annoncer, appliquerLargeurs, h, enPrerendu } from './util'
 import { blocSignaler, majSignaler, PAGES_SANS_SIGNALER } from './composants/signaler'
 import { oublierLectures } from './donnees'
+import { session } from './etat'
 import { META_PAGES, NOM_SITE, TITRE_ACCUEIL, titreSite } from './metadonnees'
 
 /**
@@ -226,6 +227,23 @@ export async function afficher(routes: Route[], cible: HTMLElement, fragment = a
     const redirige = lireFragment(adresse.lire()).chemin
     if (redirige !== chemin && routes.some((r) => r.chemin === redirige)) return
     zone.insertAdjacentHTML('afterbegin', route === ROUTE_INTROUVABLE ? '' : filAriane(maillons(routes, route, propre.fil)))
+    // Ton billet te suit : calcul fait pendant la visite (mémoire seulement), billet miniature en tête des pages Explorer.
+    // Ornement facultatif : s'il échoue, la page s'affiche sans lui.
+    if (session.resultat && route !== ROUTE_INTROUVABLE) {
+      const suiveur = await import('./composants/billet-suiveur')
+      if (moi !== jeton) return
+      if (suiveur.estPageExplorer(route)) {
+        let html = ''
+        try {
+          html = suiveur.billetSuiveur(route.famille, !zone.querySelector('.retour-resultat'))
+        } catch (e) {
+          console.error(e)
+        }
+        const ariane = zone.querySelector('.fil-ariane')
+        if (ariane) ariane.insertAdjacentHTML('afterend', html)
+        else zone.insertAdjacentHTML('afterbegin', html)
+      }
+    }
     if (route.picto) {
       const t = zone.querySelector('h1')
       if (t && !t.querySelector('.picto')) {
