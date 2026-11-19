@@ -26,11 +26,11 @@ Périmètre : site construit (`web/dist`, 2 411 pages prérendues : 59 routes, 1
 | 6 | `Dataset` sans identifiant | mineure | `@id` `<site>#donnees` |
 | 7 | `twitter:title`, `twitter:description`, `twitter:image` recopiaient Open Graph (environ 400 octets par page) | mineure | retirés : X reprend Open Graph ; `og:image:type` ajouté. Le HTML total passe de 47,7 Mo (avec la nouvelle adresse, plus longue) à 46,2 Mo, sous le budget de 47,5 Mo |
 | 8 | Fichiers JSON de `data/` indexables seuls | mineure | `X-Robots-Tag: noindex` sur `/data/*` (`web/public/_headers`) ; les pages qui les citent restent indexées |
-| 9 | Titres longs : médiane 82 caractères, 2 378 pages au-delà de 65 (pages commune : « Budget de X (Département) : dépenses, dotations, taux · Où vont mes impôts ») ; descriptions : médiane 213 caractères | mineure (Google tronque l'affichage, pas l'indexation) | non modifié : titres et descriptions viennent des écrans (`src/routes.ts`, écrans commune et département) tenus par d'autres agents. Proposition : « Budget de Nantes (44) : dépenses, dotations, taux » et descriptions de 150 caractères |
+| 9 | Titres longs : médiane 82 caractères, 2 378 pages au-delà de 65 (pages commune : « Budget de X (Département) : dépenses, dotations, taux · Où vont mes impôts ») ; descriptions : médiane 213 caractères | mineure (Google tronque l'affichage, pas l'indexation) | corrigé le 19/11/2026 : une seule source `web/src/metadonnees.ts` ; titres de 60 caractères au plus (médiane 57), descriptions de 120 à 155 (médiane 148), uniques et neutres sur toutes les pages, contrôlés par `web/tests/metadonnees.test.ts` (`docs/SEO.md`, « Titres et descriptions ») |
 | 10 | Adresses sans barre finale : redirection 307 (temporaire) de Cloudflare vers l'adresse avec barre | mineure | non modifié (`deploy/cloudflare/wrangler.toml`, hors périmètre) ; la canonique et le plan du site portent déjà la bonne forme |
 | 11 | Source tierce citée en texte sur `/decisions/resultats/` : `https://github.com/DITP-pilotage/barometre-resultats` (fichiers du baromètre de la DITP) | à décider | gardée : c'est la source officielle d'un producteur public, en texte et sans lien ; le test la tolère nommément et refuse toute autre adresse GitHub |
 
-Vérifiés sans écart : `lang="fr"` sur toutes les pages, pas de `hreflang` (site monolingue, inutile), un seul `<h1>`, une seule canonique, un seul titre, une seule description par page, titres et descriptions uniques (2 411 pages), 3 pages sans contenu propre en `noindex` et hors plan du site, 404 réelle, JSON-LD `WebSite` partout, `WebPage` et `BreadcrumbList` hors accueil.
+Vérifiés sans écart : `lang="fr"` sur toutes les pages, pas de `hreflang` (site monolingue, inutile), un seul `<h1>`, une seule canonique, un seul titre, une seule description par page, titres et descriptions uniques (2 411 pages), 3 pages sans contenu propre en `noindex` et hors plan du site, 404 réelle, JSON-LD `WebSite` et `Dataset` sur l'accueil, `BreadcrumbList` sur les autres pages (`WebPage` retiré le 19/11/2026, il répétait les balises de la page).
 
 ## Performance et accessibilité vues par les moteurs
 
@@ -52,7 +52,7 @@ Aucun point majeur. Seul signal récurrent : la feuille de style bloque le premi
 - Adresse publique : `web/adresse-site.json`, clé `url`. `OVMI_URL_SITE` la remplace le temps d'un build.
 - Copie de secours : `OVMI_COPIE_SECOURS=1` au build (noindex partout, pas de `sitemap.xml`).
 - Image de partage : `web/scripts/og.html` ; navigateur imposé par `OVMI_CHROME`.
-- Contrôles : `web/tests/referencement.test.ts` (plan du site valide et complet par rapport aux routes, une canonique par page, aucune adresse GitHub ni MoonEyes, image 1200 x 630, `SearchAction` et `Dataset`), `web/tests/prerendu.test.ts`, budgets de `web/tests/performance.test.ts` inchangés et respectés.
+- Contrôles : `web/tests/referencement.test.ts` (plan du site valide et complet par rapport aux routes, une canonique par page, aucune adresse GitHub ni MoonEyes, image 1200 x 630, `SearchAction` et `Dataset`), `web/tests/prerendu.test.ts`, budgets de `web/tests/performance.test.ts` (abaissés le 19/11/2026 après l'allègement du HTML, 46,3 à 39,4 Mo, `docs/PERF.md`), titres et descriptions dans `web/tests/metadonnees.test.ts`.
 
 ## À faire hors de ce périmètre
 

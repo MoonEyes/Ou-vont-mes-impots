@@ -5,7 +5,7 @@ import { join, relative } from 'node:path'
 import { beforeAll, describe, expect, it } from 'vitest'
 import { versChemin } from '../src/chemins'
 import { ROUTES } from '../src/routes'
-import { titreDocument } from '../src/routeur'
+import { descriptionPage, titreDocument } from '../src/routeur'
 import { assurerSite } from './construire'
 
 const RACINE = process.cwd()
@@ -58,12 +58,12 @@ const contenu = (p: Page) => /<main id="contenu"[^>]*>([\s\S]*)<\/main>/.exec(p.
 const texte = (p: Page) => contenu(p).replace(/<[^>]+>/g, ' ').replace(/&nbsp;|\u00a0|\u202f/g, ' ').replace(/\s+/g, ' ')
 
 describe('prérendu', () => {
-  it('chaque route a sa page HTML, avec le titre et la description de la table des routes', () => {
+  it('chaque route a sa page HTML, avec le titre et la description de src/metadonnees.ts', () => {
     for (const r of ROUTES) {
       const p = page(versChemin('#' + r.chemin))
       expect(p, r.chemin).toBeTruthy()
       expect(p.titre, r.chemin).toBe(titreDocument(r))
-      expect(p.description, r.chemin).toBe(r.description)
+      expect(p.description, r.chemin).toBe(descriptionPage(r))
       expect(p.indexable, r.chemin).toBe(!r.sansIndex)
       expect(/<h1[ >]/.test(contenu(p)), `${r.chemin} : pas de h1`).toBe(true)
       expect(contenu(p).includes('class="erreur"'), `${r.chemin} : page en erreur`).toBe(false)
@@ -126,7 +126,8 @@ describe('prérendu', () => {
     for (const p of pages) {
       const ld = JSON.parse(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(p.html)![1])
       const graphe = ld['@graph'] as Record<string, any>[]
-      expect(graphe[0]['@type']).toBe('WebSite')
+      // Le site (WebSite) n'est décrit que sur l'accueil ; ailleurs, le fil d'Ariane seul (docs/PERF.md, 19/11/2026).
+      expect(graphe.map((x) => x['@type']), p.chemin).toEqual(p.chemin ? ['BreadcrumbList'] : ['WebSite', 'Dataset'])
       if (!p.chemin) continue
       const fil = graphe.find((x) => x['@type'] === 'BreadcrumbList')!
       expect(fil, p.chemin).toBeTruthy()
@@ -193,7 +194,7 @@ describe('prérendu', () => {
     expect(/<h2>À quoi servent mes impôts \?<\/h2>/.test(contenu(accueil))).toBe(true)
     expect(/Plus de \d+ sources publiques/.test(texte(accueil))).toBe(true)
     expect(contenu(accueil).includes('href="./calcul/"')).toBe(true)
-    expect(page('calcul/').titre).toBe('Combien je verse d’impôts et de cotisations : calcul à partir du salaire · Où vont mes impôts')
+    expect(page('calcul/').titre).toBe('Combien je verse d’impôts : calcul à partir du salaire')
     expect(/<h1[^>]*>(<span class="picto[^>]*>.*?<\/span>)?Budget de ma commune<\/h1>/.test(contenu(page('local/')))).toBe(true)
     expect(/sur 100 €/i.test(texte(page('explorer/etat/')))).toBe(true)
     expect(page('explorer/etat/').html.includes('data-rubrique="/explorer" aria-current="page"')).toBe(true)
@@ -209,7 +210,7 @@ describe('prérendu', () => {
     expect(departements.length).toBe(readdirSync(join(DIST, 'data', 'local', 'geo')).length)
     expect(communes.length).toBeGreaterThan(1500)
     for (const p of communes) {
-      expect(p.titre, p.chemin).toMatch(/^Budget (de |d’|du |des ).+ \(.+\) : dépenses, dotations, taux · Où vont mes impôts$/)
+      expect(p.titre, p.chemin).toMatch(/^Budget (de |d’|du |des ).+ \((\d{2,3}|2[AB])\)( : dépenses(, dotations)?, impôts locaux| · Où vont mes impôts)?$/)
       const t = texte(p)
       // Population, dépenses totales et dépenses par habitant, ou à défaut dotation ou taux : au moins trois chiffres.
       const chiffres = [/[\d ]+ habitants/, /de dépenses en \d{4}/, /€ par habitant/, /Dette en cours : [\d, ]+/, /DGF totale/, /Taxe foncière bâti/].filter((re) => re.test(t))
@@ -218,7 +219,7 @@ describe('prérendu', () => {
     }
     const nantes = page('local/44109-nantes/')
     if (nantes) {
-      expect(nantes.titre).toBe('Budget de Nantes (Loire-Atlantique) : dépenses, dotations, taux · Où vont mes impôts')
+      expect(nantes.titre).toBe('Budget de Nantes (44) : dépenses, dotations, impôts locaux')
       expect(contenu(page('local/44-loire-atlantique/')).includes('href="../../local/44109-nantes/"')).toBe(true)
       // Communes sous le seuil : pas de page propre ; leur liste (vers la page générique, lue avec JavaScript) n'est
       // rendue que dans le navigateur, le HTML prérendu en donne le nombre.

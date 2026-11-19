@@ -97,16 +97,16 @@ describe('écrans', () => {
 
   it('titres de recherche : calcul, hub local, commune et département', async () => {
     await ecran('#/calcul')
-    expect(document.title).toBe('Combien je verse d’impôts et de cotisations : calcul à partir du salaire · Où vont mes impôts')
+    expect(document.title).toBe('Combien je verse d’impôts : calcul à partir du salaire')
     await ecran('#/local')
     expect(main.querySelector('h1')?.textContent).toBe('Budget de ma commune')
-    expect(document.title).toBe('Budget de ma commune · Où vont mes impôts')
+    expect(document.title).toBe('Budget de ma commune : dépenses, dette, impôts locaux')
     expect(main.querySelectorAll('.liste-colonnes a')).toHaveLength(101)
     expect(main.querySelector('.liste-colonnes a[href="#/local/departement?dep=69&page=rhone"]')?.textContent).toBe('Rhône (69)')
     expect(main.querySelector('.trame a[href="#/local/departement?dep=69&page=rhone"]')?.getAttribute('aria-label')).toBe('69 Rhône')
     expect(main.querySelectorAll('.trame a')).toHaveLength(101)
     await ecran('#/local/commune?insee=69123')
-    expect(document.title).toBe('Budget de Lyon (Rhône) : dépenses, dotations, taux · Où vont mes impôts')
+    expect(document.title).toBe('Budget de Lyon (69) : dépenses, dotations, impôts locaux')
     expect(Array.from(main.querySelectorAll('.fil-ariane a')).map((a) => a.textContent)).toEqual(['Accueil', 'Ma commune', 'Rhône', 'Lyon'])
     // Au moins trois chiffres propres à la commune, en texte.
     expect(texte()).toMatch(/[\d\s]+ habitants/)
@@ -115,7 +115,7 @@ describe('écrans', () => {
     await ecran('#/local/departement?dep=69')
     expect(main.querySelector('h1')?.textContent).toBe('Rhône (69)\u00a0: le budget des communes')
     expect(main.querySelector('.ou-cest .trame a.t-ici')?.getAttribute('aria-label')).toBe('69 Rhône')
-    expect(document.title).toBe('Rhône (69) : budget des communes, dépenses, dotations, taux · Où vont mes impôts')
+    expect(document.title).toBe('Rhône (69) : budget des communes et du département')
     expect(main.querySelector('a[href="#/local/commune?insee=69123&page=lyon"]')?.textContent).toBe('Lyon')
     expect(texte()).toContain('Communes de plus de 5 000 habitants')
     const { deCommune } = await import('../src/ecrans/commune')

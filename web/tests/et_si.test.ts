@@ -387,7 +387,7 @@ describe('et si : écran', () => {
     expect(main.querySelector('h1 .picto')).not.toBeNull()
     expect(main.querySelector('.voir-aussi a[href="#/calcul"]')).not.toBeNull()
     expect(main.querySelectorAll('.surligne')).toHaveLength(1)
-    expect(document.title).toBe(`${r.titrePage ?? r.titre} · Où vont mes impôts`)
+    expect(document.title).toBe('Et si mon salaire changeait ? Impôts et cotisations')
     const paie = readFileSync(join(process.cwd(), 'src/ecrans/paie.ts'), 'utf8')
     expect(paie).toContain('href="#/calcul/et-si"')
   }, 120000)

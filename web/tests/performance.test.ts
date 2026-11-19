@@ -15,16 +15,18 @@ const DIST = join(RACINE, 'dist')
 const FICHIER = join(RACINE, 'src', 'composants', 'trame-france.svg')
 
 /**
- * Budgets (octets), docs/PERF.md : mesure du 18/11/2026 plus 10 %. Avant la trame partagée 99,3 Mo de HTML ; avant
- * l'allègement des pages locales 69,9 Mo ; après 43,2 Mo (commune 17,6 Ko au plus, 5,0 Ko transférés ; département
- * 28,4 Ko au plus). Un nouveau bloc des pages commune ou département se rend dans le navigateur (DETAIL_COMMUNE,
- * DETAIL_DEPARTEMENT), le HTML prérendu n'en garde qu'une ligne.
+ * Budgets (octets), docs/PERF.md : mesure du 19/11/2026 plus 10 %. Avant la trame partagée 99,3 Mo de HTML ; avant
+ * l'allègement des pages locales 69,9 Mo ; 46,3 Mo avant l'allègement du 19/11 (blancs, données structurées, encadré
+ * « Signaler » posé par le script sur les pages locales) ; après 39,4 Mo (commune 15,7 Ko au plus, 4,7 Ko transférés ;
+ * département 27,1 Ko au plus ; 15 360 fichiers dans dist/). Un nouveau bloc des pages commune ou département se rend
+ * dans le navigateur (DETAIL_COMMUNE, DETAIL_DEPARTEMENT), le HTML prérendu n'en garde qu'une ligne.
  */
 const BUDGET = {
-  html_total: 47.5e6,
-  page_commune: 19.4e3,
-  page_commune_gzip: 5.5e3,
-  page_departement: 31.2e3,
+  html_total: 43.3e6,
+  page_commune: 17.2e3,
+  page_commune_gzip: 5.2e3,
+  page_departement: 29.8e3,
+  fichiers_dist: 16900,
   encadre_ou_cest: 1500,
   fond_partage: 12e3,
 }
@@ -86,8 +88,9 @@ describe('budgets du site construit', () => {
     bilan = JSON.parse(readFileSync(join(DIST, 'prerendu.json'), 'utf8'))
   }, 600000)
 
-  it('nombre de fichiers et poids de dist sous les limites de l’hébergement (20 000 fichiers par version, 1 Go)', () => {
-    // Marge : 18 000 fichiers au plus (limite Cloudflare gratuite : 20 000) ; regrouper les petits fichiers au-delà.
+  it('nombre de fichiers et poids de dist sous leur budget et sous les limites de l’hébergement (20 000 fichiers par version, 1 Go)', () => {
+    // Budget : mesure plus 10 % (limite Cloudflare gratuite : 20 000) ; au-delà, regrouper les petits fichiers de
+    // données (docs/PERF.md, « Nombre de fichiers »).
     const tout = { n: 0, octets: 0 }
     const parcourir = (d: string) => {
       for (const e of readdirSync(d, { withFileTypes: true })) {
@@ -99,7 +102,7 @@ describe('budgets du site construit', () => {
       }
     }
     parcourir(DIST)
-    expect(tout.n).toBeLessThanOrEqual(18000)
+    expect(tout.n).toBeLessThanOrEqual(BUDGET.fichiers_dist)
     expect(tout.octets).toBeLessThan(1e9)
   })
 
@@ -109,6 +112,21 @@ describe('budgets du site construit', () => {
       expect(bilan.octets_page_commune_max).toBeLessThan(BUDGET.page_commune)
       expect(bilan.octets_page_departement_max).toBeLessThan(BUDGET.page_departement)
     }
+  })
+
+  it('HTML allégé sans changer l’affichage : ni indentation, blancs de <textarea> gardés, « Signaler » posé par le script sur les pages locales', () => {
+    const accueil = readFileSync(join(DIST, 'index.html'), 'utf8')
+    const etat = readFileSync(join(DIST, 'explorer', 'etat', 'index.html'), 'utf8')
+    for (const html of [accueil, etat]) {
+      const horsTexte = html.replace(/<textarea\b[\s\S]*?<\/textarea>/g, '')
+      expect(horsTexte).not.toMatch(/>\n[ \t]+</)
+      expect(horsTexte).not.toMatch(/<\/(?:div|p|li|ul|h2|section|nav)>\s+</)
+    }
+    // Référence à copier : ses sauts de ligne sont du contenu.
+    expect(/<textarea class="signaler-reference"[^>]*>Page : [^<]*\n[^<]*\n/.test(etat)).toBe(true)
+    const local = join(DIST, 'local')
+    const commune = existsSync(local) ? readdirSync(local).find((n) => /^\d{5}-/.test(n)) : undefined
+    if (commune) expect(readFileSync(join(local, commune, 'index.html'), 'utf8')).not.toContain('class="signaler"')
   })
 
   it('page commune : fond de carte lu dans assets/ (chemin relatif juste), poids transféré sous budget', () => {

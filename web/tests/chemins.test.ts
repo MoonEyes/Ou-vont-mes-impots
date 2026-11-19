@@ -63,6 +63,6 @@ describe('chemins', () => {
       expect(r.description.length, r.chemin).toBeLessThanOrEqual(200)
       expect(titreDocument(r).length, r.chemin).toBeLessThanOrEqual(100)
     }
-    expect(titreDocument(ROUTES.find((r) => r.chemin === '/calcul')!)).toBe('Combien je verse d’impôts et de cotisations : calcul à partir du salaire · Où vont mes impôts')
+    expect(titreDocument(ROUTES.find((r) => r.chemin === '/calcul')!)).toBe('Combien je verse d’impôts : calcul à partir du salaire')
   })
 })
