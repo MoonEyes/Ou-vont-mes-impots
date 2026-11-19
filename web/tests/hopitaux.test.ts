@@ -9,6 +9,7 @@ import { ROUTES } from '../src/main'
 import { afficher } from '../src/routeur'
 import { viderCache } from '../src/donnees'
 import { picto } from '../src/composants/pictos'
+import { CONTACT } from '../src/composants/signaler'
 import { attendreQue, monterPage, requetes } from './aide-dom'
 
 const RACINE = process.cwd()
@@ -208,7 +209,8 @@ describe('page hôpitaux', () => {
     expect(Array.from(smur.querySelectorAll('.hd-zone thead th')).map((x) => x.textContent)).toEqual(['Grandeur', '2011', '2012', '2013', '2014', '2015'])
     expect(texte(smur)).toContain('n’est pas publié en données ouvertes')
     // Aucune coordonnée reprise (téléphone, courriel, adresse)
-    expect(texte()).not.toMatch(/@|\b0[1-9](?:[ .]?\d{2}){4}\b/)
+    // (hors adresse de contact du site, dans le bloc « Signaler une erreur »)
+    expect(texte().split(CONTACT).join(' ')).not.toMatch(/@|\b0[1-9](?:[ .]?\d{2}){4}\b/)
   })
 
   it('recherche dans toute la France : comptes Hospi Diag par nom, puis passage au département', async () => {

@@ -1,18 +1,17 @@
-// Lien « Signaler une erreur sur cette page » : ouvre un ticket GitHub public, pré-rempli avec l'adresse de la page,
-// les fichiers de données qu'elle affiche et leur millésime. Rien n'est envoyé par le site : le lien mène à GitHub,
-// où la personne relit et publie elle-même le ticket (gabarit .github/ISSUE_TEMPLATE/erreur-donnee.yml).
-// Aucune donnée personnelle n'est reprise : ni salaire (jamais dans une adresse), ni saisie, ni identité.
+// Bloc « Signaler une erreur sur cette page » : invite à écrire à l'adresse de contact dédiée du site, avec une
+// référence prête à copier (adresse de la page, fichiers de données qu'elle affiche et leur millésime).
+// Rien n'est envoyé par le site : aucun lien, aucun formulaire ni bouton d'envoi, aucun appel réseau ; la personne
+// copie la référence (champ en lecture seule) dans son propre courriel. Aucune donnée personnelle n'est reprise : ni salaire, ni saisie, ni identité.
 import { versChemin } from '../chemins'
 import { fichiersLus, lectureEnCache } from '../donnees'
 import { enPrerendu, h } from '../util'
 
-export const DEPOT = 'https://github.com/MoonEyes/Ou-vont-mes-impots'
-export const GABARIT = 'erreur-donnee.yml'
+/** Seul moyen de contact du site (alias dédié, aussi cité dans les mentions légales), affiché en texte simple. */
+export const CONTACT = 'proton.me.easel124@passinbox.com'
 /** Adresse publique du site quand la page ne la porte pas (développement, tests, prérendu). */
 export const SITE_DEFAUT = 'https://mooneyes.github.io/Ou-vont-mes-impots/'
-/** Au-delà, la liste des fichiers est tronquée (adresse de ticket de taille raisonnable). */
+/** Au-delà, la liste des fichiers est tronquée (référence de taille raisonnable). */
 export const MAX_FICHIERS = 40
-const MAX_ADRESSE = 7000
 
 export interface FichierAffiche {
   /** chemin sous data/ (« arbre/racine.json ») */
@@ -39,7 +38,7 @@ export function adressePublique(fragment: string): string {
 const ligneFichier = (f: FichierAffiche) =>
   `- data/${f.chemin}${f.absent ? ' (fichier non disponible)' : f.millesime ? ` (millésime : ${f.millesime})` : ''}`
 
-/** Texte du champ « fichiers » du ticket. */
+/** Liste des fichiers de données affichés, une ligne par fichier. */
 export function texteFichiers(fichiers: FichierAffiche[]): string {
   if (!fichiers.length) return 'Aucun fichier de données lu par cette page.'
   const vus = fichiers.slice(0, MAX_FICHIERS).map(ligneFichier)
@@ -47,29 +46,20 @@ export function texteFichiers(fichiers: FichierAffiche[]): string {
   return vus.join('\n')
 }
 
-const code = (x: string) => encodeURIComponent(x)
-
-/** Adresse du nouveau ticket, pré-rempli (les clés reprennent les identifiants des champs du gabarit). */
-export function lienTicket(p: PageSignalee): string {
-  const champs = (fichiers: string) =>
-    `${DEPOT}/issues/new?template=${code(GABARIT)}&title=${code(`Erreur sur la page « ${p.titre} »`)}&page=${code(adressePublique(p.adresse))}${fichiers ? `&fichiers=${code(fichiers)}` : ''}`
-  // HTML prérendu : lien court sans liste de fichiers (poids des pages, docs/PERF.md) ; la liste est ajoutée dans le
-  // navigateur par majSignaler, et le gabarit du ticket laisse le champ à remplir sinon.
-  if (enPrerendu()) return champs('')
-  const fichiers = p.fichiers ?? []
-  let url = champs(texteFichiers(fichiers))
-  // Adresse trop longue (page qui lit beaucoup de fichiers) : la liste est raccourcie, jamais coupée au milieu d'une ligne.
-  for (let n = Math.min(fichiers.length, MAX_FICHIERS) - 1; url.length > MAX_ADRESSE && n >= 0; n--) {
-    const garde = fichiers.slice(0, n).map(ligneFichier)
-    garde.push(`- et ${fichiers.length - n} autres fichiers`)
-    url = champs(garde.join('\n'))
-  }
-  return url
+/** Référence à copier dans le courriel : page et fichiers affichés (liste ajoutée dans le navigateur). */
+export function texteReference(p: PageSignalee): string {
+  const lignes = [`Page : ${adressePublique(p.adresse)}`, 'Fichiers de données affichés :']
+  // HTML prérendu : référence courte sans liste de fichiers (poids des pages, docs/PERF.md) ; la liste est ajoutée
+  // dans le navigateur par majSignaler.
+  lignes.push(enPrerendu() || !p.fichiers ? '(liste ajoutée une fois la page chargée)' : texteFichiers(p.fichiers))
+  return lignes.join('\n')
 }
 
-/** Bloc de fin de page : le lien et l'avertissement (ticket public, aucune donnée personnelle). */
+/** Bloc de fin de page : l'adresse de contact, la référence à copier et l'avertissement (aucune donnée personnelle).
+ * Dans le navigateur, le champ est rempli par majSignaler (valeur seulement) : l'adresse de la page, ses paramètres et
+ * la liste des fichiers restent hors du texte de la page ; le HTML prérendu porte la référence courte. */
 export function blocSignaler(p: PageSignalee): string {
-  return `<aside class="signaler" aria-label="Signaler une erreur"><p><a class="signaler-lien" href="${h(lienTicket(p))}" rel="noopener noreferrer">Signaler une erreur sur cette page</a></p><p class="aide">Le lien ouvre un ticket sur GitHub (compte gratuit nécessaire), pré-rempli avec l’adresse de cette page et les fichiers de données affichés. Ce ticket est public : n’y écris aucune donnée personnelle, ni ton nom, ni ton salaire.</p></aside>`
+  return `<aside class="signaler" aria-label="Signaler une erreur"><p class="signaler-titre"><strong>Signaler une erreur sur cette page</strong></p><p class="aide">Écris à <span class="signaler-contact">${h(CONTACT)}</span> en indiquant l’adresse de cette page et les fichiers de données affichés : la référence ci-dessous est prête à copier. Le site n’envoie rien lui-même. N’ajoute aucune donnée personnelle inutile, ni ton salaire, ni ta saisie.</p><textarea class="signaler-reference" readonly rows="4" aria-label="Référence de la page à copier dans ton courriel">${enPrerendu() ? h(texteReference(p)) : ''}</textarea></aside>`
 }
 
 /** Fichiers lus par la page affichée, avec le millésime qu'ils déclarent (lus dans le cache, sans nouvelle requête). */
@@ -95,12 +85,12 @@ export async function fichiersAffiches(): Promise<FichierAffiche[]> {
   return out
 }
 
-/** Met à jour le lien de la page affichée une fois tout chargé (le bloc est ajouté s'il manque). */
+/** Met à jour la référence de la page affichée une fois tout chargé (le bloc est ajouté s'il manque). */
 export async function majSignaler(cible: HTMLElement, p: PageSignalee): Promise<void> {
   if (enPrerendu()) return
   const fichiers = await fichiersAffiches()
-  const lien = cible.querySelector<HTMLAnchorElement>('.signaler-lien')
-  const page = { ...p, fichiers }
-  if (lien) lien.setAttribute('href', lienTicket(page))
-  else (cible.querySelector('.ecran') ?? cible).insertAdjacentHTML('beforeend', blocSignaler(page))
+  if (!cible.querySelector('.signaler-reference')) (cible.querySelector('.ecran') ?? cible).insertAdjacentHTML('beforeend', blocSignaler(p))
+  // Valeur du champ seulement : adresse et fichiers restent hors du texte de la page (sigles, noms de fichiers).
+  const ref = cible.querySelector<HTMLTextAreaElement>('.signaler-reference')
+  if (ref) ref.value = texteReference({ ...p, fichiers })
 }

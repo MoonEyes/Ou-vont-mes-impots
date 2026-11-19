@@ -1,9 +1,8 @@
 // La démarche : pourquoi ce site, comment il est fait, ses règles et ce qu'il ne peut pas dire.
 import { eurosNonPublies, plusDeSources } from '../composants/chiffres-site'
 import { picto } from '../composants/pictos'
+import { CONTACT } from '../composants/signaler'
 import { h } from '../util'
-
-const DEPOT = 'https://github.com/MoonEyes/Ou-vont-mes-impots'
 
 export async function rendre(cible: HTMLElement) {
   const [n, x] = await Promise.all([plusDeSources(), eurosNonPublies()])
@@ -45,7 +44,7 @@ export async function rendre(cible: HTMLElement) {
       ${regle('defense', 'Rien sur toi : le calcul se fait dans ton téléphone.')}
       ${regle('menages', 'Aucune personne nommée, sauf les élus et candidats pour l’argent public de leurs campagnes.')}
       ${regle('controle', 'Aucun accès forcé : une source qui refuse l’accès est signalée, pas contournée.')}
-      ${regle('ecole', `Code et données ouverts : tout est vérifiable et réutilisable (<a href="${DEPOT}" rel="noopener noreferrer">dépôt public sur GitHub</a>, code sous licence MIT, données sous leurs licences d’origine).`)}
+      ${regle('ecole', `Code et données ouverts : tout est vérifiable et réutilisable (code source ouvert sous licence MIT, données sous leurs licences d’origine).`)}
     </ul>
   </div>
   <div>
@@ -59,7 +58,7 @@ export async function rendre(cible: HTMLElement) {
       }
     </ul>
     ${x ? `<p class="source">site/data/tracabilite/resume.json (${h(x.millesime)})</p>` : ''}
-    <p class="liens-sortie">Une erreur ? <a href="${DEPOT}/issues" rel="noopener noreferrer">Signale-la sur GitHub</a></p>
+    <p class="liens-sortie">Une erreur ? Écris à ${h(CONTACT)}</p>
     <p class="actions"><a class="bouton" href="#/methode">Méthode détaillée</a></p>
   </div>
 </div>

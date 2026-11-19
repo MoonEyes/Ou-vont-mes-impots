@@ -56,13 +56,23 @@ describe('bundle', () => {
     const html = readFileSync(join(DIST, 'index.html'), 'utf8')
     expect(html).toContain("default-src 'self'")
     // Le lien canonique et les balises Open Graph nomment l'adresse publique du site : rien n'y est chargé.
-    // Seule exception : le lien de navigation « Signaler une erreur » (balise <a>, rien n'est chargé) vers le
-    // formulaire de ticket du dépôt public ; tout autre lien ou ressource externe reste refusé.
-    const SIGNALER = /<a class="signaler-lien" href="https:\/\/github\.com\/MoonEyes\/Ou-vont-mes-impots\/issues\/new\?[^"]*"(?: rel="noopener noreferrer")?>/g
-    const chargements = html.replace(/<link rel="canonical"[^>]*>/g, '').replace(SIGNALER, '')
+    // Aucun lien externe : « Signaler une erreur » n'est plus un lien de ticket (décision du 19/11/2026).
+    const chargements = html.replace(/<link rel="canonical"[^>]*>/g, '')
+    expect(html).not.toContain('github.com/MoonEyes')
     expect(chargements).not.toMatch(/(?:src|href)=["'](?:https?:)?\/\//)
     expect(html).not.toMatch(/<script[^>]+src=["'](?:https?:)?\/\//)
     for (const f of fichiers(DIST).filter((x) => x.endsWith('.css'))) expect(readFileSync(f, 'utf8')).not.toMatch(/url\(\s*["']?(?:https?:)?\/\//)
+  })
+
+  it('pages prérendues : aucun renvoi vers le dépôt, le compte ou les tickets GitHub (décision du 19/11/2026)', () => {
+    const pages = fichiers(DIST).filter((f) => f.endsWith('.html'))
+    expect(pages.length).toBeGreaterThan(20)
+    for (const f of pages) {
+      const html = readFileSync(f, 'utf8')
+      expect(html, f).not.toContain('github.com/MoonEyes')
+      expect(html, f).not.toContain('/issues')
+      expect(html, f).not.toMatch(/href=["'](?:https?:)?\/\/(?:www\.)?github\.com/)
+    }
   })
 
   it('premier écran léger : moins de 200 Ko de JS compressé hors ECharts et moteur différé', () => {

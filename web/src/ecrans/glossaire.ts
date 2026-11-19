@@ -3,10 +3,10 @@
 // (liens posés par src/composants/sigles.ts). La page elle-même n'est pas marquée (data-sans-sigles).
 import donnees from '../glossaire.json'
 import { normaliser, type Glossaire, type TermeGlossaire } from '../composants/sigles'
+import { CONTACT } from '../composants/signaler'
 import { h } from '../util'
 
 const GLOSSAIRE = donnees as unknown as Glossaire
-const DEPOT = 'https://github.com/MoonEyes/Ou-vont-mes-impots'
 
 /** Clé de tri et lettre d'un terme : sans accents ni ponctuation. */
 const cleTri = (t: TermeGlossaire) => normaliser(t.terme).replace(/[^a-z0-9]+/g, ' ').trim()
@@ -62,7 +62,7 @@ ${lettres
   )
   .join('')}
 <p id="glossaire-aucun" class="absent" hidden>Aucune définition ne correspond. Essaie le sigle seul (par exemple « CSG ») ou un mot de sa forme complète.</p>
-<p>Une définition manque ou te semble inexacte ? <a href="${DEPOT}/issues" rel="noopener noreferrer">Signale-la sur GitHub</a>. Comment les chiffres du site sont obtenus : <a href="#/methode">Méthode et sources</a>.</p>`
+<p>Une définition manque ou te semble inexacte ? écris à ${h(CONTACT)}. Comment les chiffres du site sont obtenus : <a href="#/methode">Méthode et sources</a>.</p>`
 
   // Recherche : filtre les entrées affichées, masque les lettres vides et annonce le nombre de résultats.
   const champ = cible.querySelector<HTMLInputElement>('#glossaire-filtre')!

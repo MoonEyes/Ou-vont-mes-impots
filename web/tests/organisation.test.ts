@@ -67,8 +67,8 @@ function accessibilite() {
     for (const th of Array.from(t.querySelectorAll('tbody th'))) expect(th.getAttribute('scope')).toBe('row')
   }
   expect(main.querySelectorAll('.surligne')).toHaveLength(1)
-  // Lien « Signaler une erreur » (routeur, ticket GitHub du dépôt) : seul lien externe admis hors des sources.
-  for (const a of Array.from(main.querySelectorAll('a[href]:not(.signaler-lien)'))) {
+  // Bloc « Signaler une erreur » (routeur) : texte seul, aucun lien ; aucun lien externe hors des sources.
+  for (const a of Array.from(main.querySelectorAll('a[href]'))) {
     const href = a.getAttribute('href')!
     expect(href.startsWith('#/') || href.startsWith('data/') || href.startsWith('https://www.ccomptes.fr/'), href).toBe(true)
   }

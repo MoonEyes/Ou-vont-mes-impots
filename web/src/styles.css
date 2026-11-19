@@ -3212,10 +3212,25 @@ fieldset.saisie-groupe {
 .signaler p {
   margin: 0;
 }
-.signaler-lien {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
+.signaler-contact {
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+.signaler-reference {
+  margin: 0.5rem 0 0;
+  background: var(--papier);
+  border: var(--trait) solid var(--contour);
+  border-radius: var(--rayon);
+  padding: 0.75rem 1rem;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  color: inherit;
+  font: inherit;
+  font-size: 0.875rem;
+  resize: vertical;
+  overflow-wrap: anywhere;
+  user-select: all;
 }
 
 /* trame partagée : fond de carte des pages département et commune (src/composants/trame-france.svg, par <use>).

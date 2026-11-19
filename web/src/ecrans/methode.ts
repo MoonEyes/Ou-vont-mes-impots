@@ -3,8 +3,6 @@ import { cartesRayons } from '../composants/hub'
 import { charger, chargerSiPresent } from '../donnees'
 import { h, libelle, md, pct, source } from '../util'
 
-const DEPOT = 'https://github.com/MoonEyes/Ou-vont-mes-impots'
-
 interface Meta {
   genere_le: string
   version_contrat?: string
@@ -61,7 +59,7 @@ ${cartesRayons('/methode')}
 <li>modele-social 11 ne code que la loi 2026 pour certaines cotisations patronales. Pour 2025, le site applique la réduction générale de 2025 (jusqu’à 1,6 SMIC) et les taux réduits maladie (7 % jusqu’à 2,25 SMIC) et allocations familiales (3,45 % jusqu’à 3,3 SMIC).</li>
 <li>Non pris en compte : complémentaire santé et prévoyance d’entreprise (variables d’un employeur à l’autre), autres revenus du foyer, frais réels, réductions et crédits d’impôt. Ces limites sont rappelées à côté des chiffres concernés.</li>
 <li><strong>Fourchettes</strong> : le site ne connaît pas ton employeur. Pour les cotisations patronales, la borne basse suppose un taux d’accidents du travail de 0,45 %, pas de versement mobilité, moins de 11 salariés et la réduction générale ; la borne haute 4 %, un versement mobilité de 3,2 % (Paris), 250 salariés et plus, sans réduction générale. La valeur centrale reprend les valeurs par défaut de modele-social.</li>
-<li><strong>Vérification</strong> : 20 cas types (célibataires, parents isolés, couples, cadres, temps partiels, de 0,5 SMIC à 10 000 € net par mois) sont recalculés à chaque modification du site et comparés à OpenFisca, le moteur public de microsimulation. Écart inférieur à 1 % exigé sur le brut, les cotisations salariales, la CSG, la CRDS et l’impôt du foyer. Écarts détaillés : <a href="${DEPOT}/blob/main/web/ECARTS.md" rel="noopener noreferrer">ECARTS.md</a>.</li>
+<li><strong>Vérification</strong> : 20 cas types (célibataires, parents isolés, couples, cadres, temps partiels, de 0,5 SMIC à 10 000 € net par mois) sont recalculés à chaque modification du site et comparés à OpenFisca, le moteur public de microsimulation. Écart inférieur à 1 % exigé sur le brut, les cotisations salariales, la CSG, la CRDS et l’impôt du foyer. Écarts détaillés : fichier web/ECARTS.md du code source.</li>
 <li><strong>Destinataires</strong> : Agirc-Arrco, Unédic et CADES sont rattachés à la Sécurité sociale, comme en comptabilité nationale. ${aff ? 'Chaque prélèvement est réparti selon prelevements/affectation.json (voir plus bas).' : 'La CSG est affichée « plusieurs branches » faute de répartition publiée.'}</li>
 <li>Hors V1 : fonctionnaires, contractuels du public, indépendants, retraités, demandeurs d’emploi, apprentis, frontaliers, outre-mer, Alsace-Moselle. Un message l’explique au lieu d’afficher un chiffre faux.</li>
 </ul>
@@ -169,7 +167,7 @@ ${
 <h2>Licences</h2>
 <ul>
 <li>Données : Licence Ouverte 2.0 (Etalab) ; Eurostat : réutilisation libre avec mention de la source. Exception : les fichiers produits à partir d’un jeu publié sous Open Database License 1.0 (par exemple les données de data.ameli.fr de l’Assurance maladie) sont publiés sous la même licence ODbL 1.0, avec partage à l’identique ; la licence de chaque fichier est écrite dans le Data Package du dépôt (docs/datapackage).</li>
-<li>Code du site : MIT. <a href="${DEPOT}" rel="noopener noreferrer">Dépôt public</a>.</li>
+<li>Code du site : code source ouvert sous licence MIT.</li>
 <li>Bibliothèques : modele-social ${h(__VERSION_MODELE_SOCIAL__)} (MIT), publicodes ${h(__VERSION_PUBLICODES__)} (MIT), Apache ECharts ${h(__VERSION_ECHARTS__)} (Apache-2.0), polices Bricolage Grotesque et Figtree (SIL Open Font License 1.1), hébergées avec le site.</li>
 </ul>
 <p class="aide">Contrat d’interface des données : version ${h(meta.version_contrat ?? '1.0')}. Administrations : ${['Etat', 'Securite sociale', 'Collectivites locales'].map(libelle).join(', ')}.</p>`

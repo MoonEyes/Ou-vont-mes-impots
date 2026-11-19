@@ -97,7 +97,7 @@ function jeuDeDonnees(defaut) {
   if (dateDonnees) jeu.dateModified = dateDonnees
   jeu.spatialCoverage = { '@type': 'Place', name: 'France' }
   if (!s) return jeu
-  if (s.sameAs) jeu.sameAs = s.sameAs
+  // sameAs (dépôt GitHub) non repris : les pages ne renvoient pas vers le dépôt (décision du 19/11/2026).
   if (Array.isArray(s.keywords)) jeu.keywords = s.keywords
   if (typeof s.temporalCoverage === 'string') jeu.temporalCoverage = s.temporalCoverage
   if (typeof s.version === 'string') jeu.version = s.version

@@ -1,37 +1,33 @@
 // @vitest-environment happy-dom
-// Lien « Signaler une erreur sur cette page » : ticket GitHub public pré-rempli, sans donnée personnelle.
+// Bloc « Signaler une erreur sur cette page » : adresse de contact dédiée en texte simple et référence à copier
+// (page, fichiers affichés), sans lien, sans envoi, sans donnée personnelle. Décision du 19/11/2026 : aucune page ne
+// renvoie vers les tickets ni vers le compte ou le dépôt GitHub.
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { beforeAll, describe, expect, it } from 'vitest'
 import { ROUTES } from '../src/main'
 import { afficher } from '../src/routeur'
-import { blocSignaler, DEPOT, GABARIT, lienTicket, MAX_FICHIERS, SITE_DEFAUT, texteFichiers } from '../src/composants/signaler'
+import { blocSignaler, CONTACT, MAX_FICHIERS, SITE_DEFAUT, texteFichiers, texteReference } from '../src/composants/signaler'
 import { monterPage } from './aide-dom'
 
-const params = (url: string) => new URL(url).searchParams
 let main: HTMLElement
+const reference = () => main.querySelector<HTMLTextAreaElement>('.signaler-reference')?.value ?? ''
 
 beforeAll(() => {
   monterPage()
   main = document.getElementById('contenu') as HTMLElement
 })
 
-describe('lien de ticket', () => {
-  it('pointe vers le gabarit du dépôt public, avec la page et les fichiers affichés', () => {
-    const url = lienTicket({
+describe('référence à copier', () => {
+  it('adresse de la page, titre et fichiers affichés avec leur millésime', () => {
+    const t = texteReference({
       titre: 'Budget de l’État',
       adresse: '#/explorer/etat?m=lfi2025',
       fichiers: [{ chemin: 'arbre_lfi2025/racine.json', millesime: 'LFI 2025' }, { chemin: 'meta.json', millesime: null }, { chemin: 'dette/x.json', absent: true }],
     })
-    expect(url.startsWith(`${DEPOT}/issues/new?`)).toBe(true)
-    expect(DEPOT).toBe('https://github.com/MoonEyes/Ou-vont-mes-impots')
-    const p = params(url)
-    expect(p.get('template')).toBe(GABARIT)
-    expect(p.get('title')).toBe('Erreur sur la page « Budget de l’État »')
-    expect(p.get('page')).toBe(`${SITE_DEFAUT}explorer/etat/?m=lfi2025`)
-    expect(p.get('fichiers')).toBe('- data/arbre_lfi2025/racine.json (millésime : LFI 2025)\n- data/meta.json\n- data/dette/x.json (fichier non disponible)')
-    // Rien d'autre que ces quatre champs : aucune saisie, aucune donnée de la personne.
-    expect([...p.keys()]).toEqual(['template', 'title', 'page', 'fichiers'])
+    expect(t).toBe(
+      `Page : ${SITE_DEFAUT}explorer/etat/?m=lfi2025\nFichiers de données affichés :\n- data/arbre_lfi2025/racine.json (millésime : LFI 2025)\n- data/meta.json\n- data/dette/x.json (fichier non disponible)`,
+    )
   })
 
   it('page sans donnée et liste longue raccourcie', () => {
@@ -40,56 +36,61 @@ describe('lien de ticket', () => {
     const t = texteFichiers(beaucoup)
     expect(t.split('\n')).toHaveLength(MAX_FICHIERS + 1)
     expect(t.endsWith(`- et ${300 - MAX_FICHIERS} autres fichiers`)).toBe(true)
-    const url = lienTicket({ titre: 'Ta commune', adresse: '#/local', fichiers: beaucoup })
-    expect(url.length).toBeLessThanOrEqual(7000)
-    expect(params(url).get('fichiers')).toMatch(/- et \d+ autres fichiers$/)
   })
 
-  it('bloc : lien, avertissement de ticket public, texte échappé, aucun formulaire', () => {
+  it('bloc : adresse dédiée en texte simple, aucun lien ni envoi, référence en lecture seule échappée', () => {
     const zone = document.createElement('div')
-    zone.innerHTML = blocSignaler({ titre: '<b>x</b>', adresse: '#/' })
-    const a = zone.querySelector('a.signaler-lien')!
-    expect(a.textContent).toBe('Signaler une erreur sur cette page')
-    expect(params(a.getAttribute('href')!).get('title')).toBe('Erreur sur la page « <b>x</b> »')
+    zone.innerHTML = blocSignaler({ titre: 'x', adresse: '#/?q=<b>x</b>' })
+    expect(CONTACT).toBe('proton.me.easel124@passinbox.com')
+    expect(zone.querySelector('.signaler-contact')?.textContent).toBe(CONTACT)
+    expect(zone.querySelector('a, form, input, button, select')).toBeNull()
+    const ref = zone.querySelector<HTMLTextAreaElement>('textarea.signaler-reference')!
+    expect(ref.hasAttribute('readonly')).toBe(true)
+    expect(ref.getAttribute('aria-label')).toBeTruthy()
+    // Rempli par majSignaler (valeur du champ) : rien de la référence dans le texte de la page.
+    expect(ref.textContent).toBe('')
     expect(zone.querySelector('b')).toBeNull()
-    expect(zone.textContent).toContain('Ce ticket est public : n’y écris aucune donnée personnelle')
-    expect(zone.querySelector('form, input, textarea')).toBeNull()
+    expect(zone.textContent).toContain('Signaler une erreur sur cette page')
+    expect(zone.textContent).toContain('N’ajoute aucune donnée personnelle inutile')
+    expect(zone.innerHTML).not.toMatch(/github\.com|\/issues|ticket|mailto:/i)
     expect(zone.textContent).not.toContain('—')
   })
 })
 
 describe('sur les pages', () => {
-  it('chaque page porte le lien, avec les fichiers lus et leur millésime', async () => {
+  it('chaque page porte la référence, avec les fichiers lus et leur millésime', async () => {
     location.hash = '#/explorer/etat'
     await afficher(ROUTES, main, '#/explorer/etat')
-    const liens = main.querySelectorAll<HTMLAnchorElement>('.signaler a.signaler-lien')
-    expect(liens).toHaveLength(1)
-    const p = params(liens[0].href)
-    expect(p.get('page')).toBe(`${SITE_DEFAUT}explorer/etat/`)
+    expect(main.querySelectorAll('.signaler .signaler-reference')).toHaveLength(1)
+    expect(reference()).toContain(`Page : ${SITE_DEFAUT}explorer/etat/`)
     const racine = JSON.parse(readFileSync(join(process.cwd(), 'tests/fixtures/data/arbre/racine.json'), 'utf8'))
-    expect(p.get('fichiers')).toContain(`- data/arbre/racine.json (millésime : ${racine.millesime})`)
-    expect(p.get('fichiers')).not.toContain('_manifeste.json')
+    expect(reference()).toContain(`- data/arbre/racine.json (millésime : ${racine.millesime})`)
+    expect(reference()).not.toContain('_manifeste.json')
   })
 
-  it('le journal repart de zéro à chaque page, et la page introuvable a aussi son lien', async () => {
+  it('le journal repart de zéro à chaque page, et la page introuvable a aussi son bloc', async () => {
     location.hash = '#/methode'
     await afficher(ROUTES, main, '#/methode')
-    const f = params(main.querySelector<HTMLAnchorElement>('.signaler-lien')!.href).get('fichiers')!
-    expect(f).not.toContain('arbre/racine.json')
+    expect(reference()).not.toContain('arbre/racine.json')
     location.hash = '#/nulle-part'
     await afficher(ROUTES, main, '#/nulle-part')
-    expect(main.querySelectorAll('.signaler-lien')).toHaveLength(1)
+    expect(main.querySelectorAll('.signaler-reference')).toHaveLength(1)
   })
 
-  it('toutes les routes sans paramètre affichent un seul lien', async () => {
-    for (const r of ROUTES) {
-      location.hash = '#' + r.chemin
-      await afficher(ROUTES, main, '#' + r.chemin)
-      // Page qui renvoie ailleurs sans saisie (résultat du calcul) : c'est la page d'arrivée qui porte le lien.
-      if (location.hash !== '#' + r.chemin) continue
-      expect(main.querySelectorAll('.signaler-lien').length, r.chemin).toBe(1)
+  it('toutes les routes : un seul bloc, et aucun renvoi vers GitHub (dépôt, compte ou tickets)', async () => {
+    const vues = ROUTES.map((r) => '#' + r.chemin).concat(['#/decisions/votes?p=141', '#/local/commune?insee=69123', '#/nulle-part'])
+    for (const f of vues) {
+      location.hash = f
+      await afficher(ROUTES, main, f)
+      const page = document.body.innerHTML
+      expect(page, f).not.toContain('github.com/MoonEyes')
+      expect(page, f).not.toContain('/issues')
+      expect(document.body.querySelector('a[href*="github.com"]'), f).toBeNull()
+      // Page qui renvoie ailleurs sans saisie (résultat du calcul) : c'est la page d'arrivée qui porte le bloc.
+      if (location.hash !== f) continue
+      expect(main.querySelectorAll('.signaler-reference').length, f).toBe(1)
     }
-  }, 120000)
+  }, 180000)
 })
 
 describe('gabarit de ticket', () => {

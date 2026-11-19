@@ -100,7 +100,10 @@ describe('recette', () => {
     expect(t).not.toContain('À COMPLÉTER')
     expect(t).toContain('proton.me.easel124@passinbox.com')
     expect(t).toContain('hébergeur')
-    expect(main.querySelector('a[href$="/issues"]')).not.toBeNull()
+    // Décision du 19/11/2026 : plus aucun lien vers les tickets ni vers le dépôt GitHub ; l'adresse dédiée est le
+    // seul contact, en texte simple (pas de lien mailto).
+    expect(main.querySelector('a[href*="github.com"]')).toBeNull()
+    expect(t).not.toMatch(/ticket/i)
     expect(main.querySelector('a[href^="mailto:"]')).toBeNull()
   })
 })
