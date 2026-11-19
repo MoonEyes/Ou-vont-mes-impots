@@ -1,11 +1,10 @@
 // Mentions légales (LCEN), confidentialité des visiteurs et information des personnes nommées
 // (élus, candidats : article 14 du RGPD). Aucune identité d'éditeur n'est inventée : les champs
-// à remplir par l'éditeur sont marqués [À COMPLÉTER PAR L'ÉDITEUR].
+// Contact privé de l'éditeur : alias dédié au site (aucune identité publiée).
 import { chargerSiPresent } from '../donnees'
 import { h } from '../util'
 
 const DEPOT = 'https://github.com/MoonEyes/Ou-vont-mes-impots'
-const A_COMPLETER = '<strong class="a-completer">[À COMPLÉTER PAR L’ÉDITEUR]</strong>'
 
 /** « 2026-11-16T12:30:17Z » ou « 2026-11-16 » vers « 16/11/2026 » ; null si illisible. */
 function dateFr(x: unknown): string | null {
@@ -25,8 +24,8 @@ export async function rendre(cible: HTMLElement) {
 <p><strong>Site citoyen indépendant, sans lien avec l’administration</strong> : ce n’est pas un site officiel de l’État.</p>
 <h2>Éditeur</h2>
 <p>« Où vont mes impôts » est un projet citoyen non commercial, publié à titre non professionnel.</p>
-<p>Identité de l’éditeur : l’éditeur, une personne physique agissant à titre non professionnel, a communiqué ses éléments d’identification (nom, prénom, domicile, numéro de téléphone) à l’hébergeur, comme le permet l’article 1-1, II, de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique ; seules les coordonnées de l’hébergeur sont donc publiées.</p>
-<p>Moyen de contact privé : <a href="mailto:proton.me.easel124@passinbox.com">proton.me.easel124@passinbox.com</a></p>
+<p>Identité de l’éditeur : l’éditeur, une personne physique agissant à titre non professionnel, a communiqué ses éléments d’identification (nom, prénom, domicile, numéro de téléphone) à l’hébergeur, comme le permet l’article 1-1, II, de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique (LCEN) ; seules les coordonnées de l’hébergeur sont donc publiées.</p>
+<p>Moyen de contact privé : proton.me.easel124@passinbox.com</p>
 <p>Contact public : <a href="${DEPOT}/issues" rel="noopener noreferrer">ouvrir un ticket sur le dépôt public</a> (le ticket est visible de tous).</p>
 <h2>Hébergeur</h2>
 <p>Cloudflare, Inc. (Cloudflare Workers), 101 Townsend Street, San Francisco, CA 94107, États-Unis.</p>
@@ -60,7 +59,7 @@ export async function rendre(cible: HTMLElement) {
   <dt>Tes droits</dt>
   <dd>Si tu es une personne nommée sur ce site, tu peux demander l’accès aux données te concernant, leur rectification ou leur effacement, la limitation de leur affichage, et t’opposer à leur publication pour des raisons tenant à ta situation particulière (article 21 du RGPD).</dd>
   <dd>Pour une erreur de recopie, la correction est faite d’après la source officielle. Si la donnée est erronée à la source, la rectification relève de l’organisme qui l’a publiée (CNCCFP, Assemblée nationale, Sénat).</dd>
-  <dd>Demande privée (sans exposer ta demande en public) : <a href="mailto:proton.me.easel124@passinbox.com">proton.me.easel124@passinbox.com</a></dd>
+  <dd>Demande privée (sans exposer ta demande en public) : proton.me.easel124@passinbox.com</dd>
   <dd>Demande publique : <a href="${DEPOT}/issues" rel="noopener noreferrer">ticket sur le dépôt</a> (visible de tous, à éviter pour une demande personnelle).</dd>
   <dd>Réponse dans un délai d’un mois. Tu peux aussi adresser une réclamation à la Commission nationale de l’informatique et des libertés (CNIL) : <a href="https://www.cnil.fr/fr/plaintes" rel="noopener noreferrer">cnil.fr/fr/plaintes</a>.</dd>
 </dl>
