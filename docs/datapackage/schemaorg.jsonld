@@ -2058,6 +2058,36 @@
   },
   {
    "@type": "DataDownload",
+   "name": "impôts du simulateur reliés aux décisions du Parlement (17e législature), méthode de rattachement, avertissements, départements et circonscriptions",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "articles rattachés à un impôt, scrutins publics (décompte par groupe publié), amendements adoptés nommés",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/impot_accises_energie.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "vote nominatif de chaque député à chaque scrutin retenu pour un impôt, par groupe, avec délégations et mises au point",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/votes_accises_energie.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "scrutins publics retenus (tous impôts), pour l'entrée « Ton député »",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/scrutins.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "députés de chaque circonscription pendant la législature (nom, dates du mandat) et position à chaque scrutin retenu ; aucune autre donnée personnelle",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/qui_a_vote/departements/01.json"
+  },
+  {
+   "@type": "DataDownload",
    "name": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "encodingFormat": "text/csv",
    "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/beneficiaires/beneficiaires_publies.csv"

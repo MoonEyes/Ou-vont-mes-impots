@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/qui_a_vote_scrutins.schema.json",
+  "title": "site/data/qui_a_vote/scrutins.json : scrutins publics retenus (tous impôts), pour l'entrée « Ton député »",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "donnees_au",
+    "regle_ordre",
+    "scrutins"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 10
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "donnees_au": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "regle_ordre": {
+      "type": "string"
+    },
+    "scrutins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "numero",
+          "date",
+          "texte",
+          "objet",
+          "impots",
+          "resultat",
+          "url"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "numero": {
+            "type": "integer"
+          },
+          "date": {
+            "type": "string"
+          },
+          "texte": {
+            "type": "string"
+          },
+          "lecture": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "objet": {
+            "type": "string"
+          },
+          "impots": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "resultat": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          }
+        }
+      }
+    }
+  }
+}

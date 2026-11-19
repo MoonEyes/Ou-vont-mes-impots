@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/qui_a_vote_departement.schema.json",
+  "title": "site/data/qui_a_vote/departements/<code>.json : députés de chaque circonscription pendant la législature (nom, dates du mandat) et position à chaque scrutin retenu ; aucune autre donnée personnelle",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "donnees_au",
+    "departement",
+    "colonnes_votes",
+    "positions",
+    "circonscriptions"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 10
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "donnees_au": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "departement": {
+      "type": "object",
+      "required": [
+        "code",
+        "nom"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "nom": {
+          "type": "string"
+        }
+      }
+    },
+    "colonnes_votes": {
+      "const": [
+        "scrutin",
+        "position",
+        "par_delegation",
+        "groupe",
+        "mise_au_point"
+      ]
+    },
+    "positions": {
+      "type": "object"
+    },
+    "circonscriptions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "numero",
+          "deputes"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "numero": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "deputes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "depute",
+                "nom",
+                "debut",
+                "fin",
+                "votes"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "depute": {
+                  "type": "string",
+                  "pattern": "^PA[0-9]+$"
+                },
+                "nom": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "masque": {
+                  "type": "string"
+                },
+                "debut": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "fin": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "votes": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "enum": [
+                          "pour",
+                          "contre",
+                          "abstention",
+                          "non_votant",
+                          null
+                        ]
+                      },
+                      {
+                        "enum": [
+                          0,
+                          1
+                        ]
+                      },
+                      {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      {
+                        "enum": [
+                          "pour",
+                          "contre",
+                          "abstention",
+                          "non_votant",
+                          null
+                        ]
+                      }
+                    ],
+                    "minItems": 5,
+                    "maxItems": 5
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ou-vont-mes-impots.fr/contrat/v1/qui_a_vote_index.schema.json",
+  "title": "site/data/qui_a_vote/index.json : impôts du simulateur reliés aux décisions du Parlement (17e législature), méthode de rattachement, avertissements, départements et circonscriptions",
+  "allOf": [
+    {
+      "$ref": "commun.schema.json#/$defs/entete"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "millesime",
+    "source",
+    "donnees_au",
+    "presentation",
+    "methode",
+    "avertissements",
+    "regle_ordre",
+    "regle_ordre_groupes",
+    "regle_personnes",
+    "confidentialite",
+    "impots",
+    "non_couverts",
+    "textes_examines",
+    "departements",
+    "comptes",
+    "limites",
+    "recherche_publique"
+  ],
+  "properties": {
+    "millesime": {
+      "type": "string",
+      "minLength": 10
+    },
+    "source": {
+      "type": "string",
+      "minLength": 20
+    },
+    "donnees_au": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "presentation": {
+      "type": "string",
+      "minLength": 40
+    },
+    "methode": {
+      "type": "string",
+      "minLength": 40
+    },
+    "avertissements": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "string",
+        "minLength": 20
+      }
+    },
+    "regle_ordre": {
+      "type": "string",
+      "minLength": 20
+    },
+    "regle_ordre_groupes": {
+      "type": "string",
+      "minLength": 20
+    },
+    "regle_personnes": {
+      "type": "string",
+      "minLength": 20
+    },
+    "confidentialite": {
+      "type": "string",
+      "minLength": 20
+    },
+    "impots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "articles",
+          "scrutins",
+          "amendements_adoptes",
+          "fichier",
+          "fichier_votes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z_]+$"
+          },
+          "libelle": {
+            "type": "string"
+          },
+          "articles": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "scrutins": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "amendements_adoptes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "amendements_adoptes_assemblee": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "amendements_adoptes_senat": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "fichier": {
+            "type": "string",
+            "pattern": "^impot_[a-z_]+\\.json$"
+          },
+          "fichier_votes": {
+            "type": "string",
+            "pattern": "^votes_[a-z_]+\\.json$"
+          }
+        }
+      }
+    },
+    "non_couverts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "libelle",
+          "motif"
+        ]
+      }
+    },
+    "correspondance_simulateur": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "textes_examines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "texte",
+          "texte_libelle",
+          "documents"
+        ]
+      }
+    },
+    "departements": {
+      "type": "array",
+      "minItems": 90,
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "nom",
+          "circonscriptions",
+          "fichier"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[0-9AB]{2,3}$"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "circonscriptions": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "fichier": {
+            "type": "string",
+            "pattern": "^departements/[0-9AB]{2,3}\\.json$"
+          }
+        }
+      }
+    },
+    "comptes": {
+      "type": "object",
+      "required": [
+        "impots_couverts",
+        "scrutins_retenus",
+        "amendements_adoptes_nommes",
+        "deputes_votants",
+        "deputes_circonscriptions"
+      ]
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recherche_publique": {
+      "type": "object",
+      "required": [
+        "date",
+        "trouvailles"
+      ]
+    }
+  }
+}

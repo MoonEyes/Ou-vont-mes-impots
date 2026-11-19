@@ -406,6 +406,12 @@ FICHIERS = [
     ("deliberations_index.schema.json", "deliberations/index.json", "existant"),
     ("deliberations_collectivite.schema.json", "deliberations/collectivites/*.json", "existant"),
     ("deliberations_budgets.schema.json", "deliberations/budgets.json", "existant"),
+    # qui a voté tes impôts : articles, scrutins publics nominatifs, amendements adoptés par impôt (pipeline/qui_a_vote.py)
+    ("qui_a_vote_index.schema.json", "qui_a_vote/index.json", "existant"),
+    ("qui_a_vote_impot.schema.json", "qui_a_vote/impot_*.json", "existant"),
+    ("qui_a_vote_votes.schema.json", "qui_a_vote/votes_*.json", "existant"),
+    ("qui_a_vote_scrutins.schema.json", "qui_a_vote/scrutins.json", "existant"),
+    ("qui_a_vote_departement.schema.json", "qui_a_vote/departements/*.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas
