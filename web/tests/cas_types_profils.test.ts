@@ -156,12 +156,43 @@ describe('profils étendus : saisie, inversion, périmètre, affectation', () =>
     const retraite: PersonneEtendue = { role: 'declarant1', statut_activite: 'retraite', pension_base_mensuelle: 1500, pension_complementaire_mensuelle: 0, csg_pension: { taux: 'median' } }
     expect(motif(base([retraite], { residence: { zone: 'metropole', alsace_moselle: true } }))).toBe('retraite_alsace_moselle')
     expect(motif(base([retraite], { annee_revenus: 2026 }))).toBe('annee_non_couverte')
-    expect(motif(base([retraite], { residence: { zone: 'dom', alsace_moselle: false } }))).toBe('dom')
+    // Outre-mer : territoire exigé ; Mayotte et les collectivités à fiscalité propre restent hors calcul.
+    expect(verifierProfilEtendu(base([retraite], { residence: { zone: 'dom', alsace_moselle: false } }))?.erreur.champ).toBe('/residence/territoire')
+    expect(motif(base([retraite], { residence: { zone: 'dom', alsace_moselle: false, territoire: 'mayotte' } }))).toBe('mayotte')
+    expect(motif(base([retraite], { residence: { zone: 'dom', alsace_moselle: false, territoire: 'autre_com' } }))).toBe('collectivite_outre_mer')
+    expect(motif(base([retraite], { residence: { zone: 'dom', alsace_moselle: false, territoire: 'reunion' } }))).toBe('ok')
     expect(motif(base([{ role: 'declarant1', statut_activite: 'demandeur_emploi' }]))).toBe('demandeur_emploi')
     expect(motif(base([{ role: 'declarant1', statut_activite: 'sans_activite' }]))).toBe('sans_activite_seul')
     expect(verifierProfilEtendu(base([{ role: 'declarant1', statut_activite: 'retraite', pension_base_mensuelle: 1500, pension_complementaire_mensuelle: 0 }]))?.erreur.champ).toBe('/personnes/0/csg_pension')
     expect(verifierProfilEtendu(base([{ role: 'declarant1', statut_activite: 'fonctionnaire', versant: 'etat', traitement_indiciaire_brut_mensuel: 2000 }]))?.erreur.champ).toBe('/personnes/0/primes_mensuelles')
     expect(verifierProfilEtendu(base([{ role: 'declarant1', statut_activite: 'independant', independant: { regime: 'micro', activite: 'service_bnc', chiffre_affaires_annuel: 90000, versement_liberatoire: false } }]))?.erreur.champ).toBe('/personnes/0/independant/chiffre_affaires_annuel')
+  })
+
+  it('outre-mer : taux de CSG du relevé exigé, commune du territoire, réduction d’impôt plafonnée, pas de part employeur du privé', () => {
+    const dom = (territoire: 'reunion' | 'guyane', commune_insee?: string) => ({ residence: { zone: 'dom' as const, alsace_moselle: false, territoire, ...(commune_insee ? { commune_insee } : {}) } })
+    const retraiteRfr: PersonneEtendue = { role: 'declarant1', statut_activite: 'retraite', pension_base_mensuelle: 1500, pension_complementaire_mensuelle: 0, csg_pension: { revenu_fiscal_reference: 20000, parts: 1 } }
+    expect(verifierProfilEtendu(base([retraiteRfr], dom('reunion')))?.erreur.champ).toBe('/personnes/0/csg_pension')
+    const salarie: PersonneEtendue = { role: 'declarant1', statut_activite: 'salarie_prive', cadre: false, temps_travail: { type: 'temps_plein' }, salaire_net_avant_impot_mensuel: 2600 }
+    expect(verifierProfilEtendu(base([salarie], dom('reunion', '97302')))?.erreur.champ).toBe('/residence/commune_insee')
+    expect(verifierProfilEtendu(base([salarie], { residence: { zone: 'metropole', alsace_moselle: false, commune_insee: '97411' } }))?.erreur.champ).toBe('/residence/zone')
+    const metro = ok(base([salarie]))
+    const reunion = ok(base([salarie], dom('reunion', '97411')))
+    const ir = (r: typeof metro) => r.prelevements.find((l) => l.id === 'impot_revenu')!.montant_annuel_eur.central
+    // Mêmes cotisations et CSG ; impôt réduit ; aucune ligne de l'employeur (Lodeom non modélisé), pas de coût employeur.
+    const salariales = (r: typeof metro) => r.prelevements.filter((l) => l.famille !== 'impot_revenu' && l.famille !== 'cotisation_patronale').map((l) => [l.id, l.montant_annuel_eur.central])
+    expect(salariales(reunion)).toEqual(salariales(metro))
+    expect(ir(reunion)).toBeLessThan(ir(metro))
+    expect(reunion.prelevements.some((l) => l.famille === 'cotisation_patronale')).toBe(false)
+    expect(reunion.totaux.cout_total_employeur?.central).toBe(0)
+    expect(reunion.verifications.map((v) => v.profil)).toContain('outre_mer')
+    expect(reunion.prelevements.find((l) => l.id === 'impot_revenu')?.note).toContain('197, I-3')
+    // Plafond : 40 % de l'impôt au plus 4 050 € en Guyane.
+    const cadre: PersonneEtendue = { ...salarie, cadre: true, salaire_net_avant_impot_mensuel: 12000 }
+    const avant = ir(ok(base([cadre])))
+    expect(avant - ir(ok(base([cadre], dom('guyane'))))).toBeCloseTo(4050, 0)
+    // Fonctionnaire outre-mer : la part employeur reste calculée (pas de Lodeom pour un employeur public).
+    const f: PersonneEtendue = { role: 'declarant1', statut_activite: 'fonctionnaire', versant: 'etat', traitement_indiciaire_brut_mensuel: 2000, primes_mensuelles: 800 }
+    expect(ok(base([f], dom('reunion'))).prelevements.some((l) => l.id === 'contribution_cas_pensions')).toBe(true)
   })
 
   it('un salarié du privé donne les mêmes lignes que le calcul du contrat 1.0, et les totaux se recoupent', () => {

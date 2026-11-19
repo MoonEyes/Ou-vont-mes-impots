@@ -6,6 +6,7 @@ Les tests sur site/data/millesimes tournent sans réseau ; la reproduction octet
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -133,11 +134,28 @@ def test_neutralite(index):
 @pytest.mark.skipif(not ((LAKE / "etat_plrg_2024").exists() and (LAKE / "etat_plrg_2025").exists()),
                     reason="entrepôt PLRG absent")
 def test_reproductible(tmp_path):
+    """Deux productions identiques ; comparaison aux sorties publiées seulement si l'entrepôt contient exactement les
+    versions enregistrées dans pipeline/lignee.json (sinon, autre version de la source : comparaison sautée, motif
+    affiché). La date injectée est celle de la lignée, pas celle de « ce qui traîne en local »."""
+    sys.path.insert(0, str(ROOT / "pipeline"))
+    import entrepot_distant as ed
+    env = {**{k: v for k, v in os.environ.items() if k != "SOURCE_DATE_EPOCH"}, **ed.env_lignee("millesimes")}
     for i in (1, 2):
         subprocess.run([sys.executable, str(ROOT / "pipeline" / "millesimes.py"), "produire", "--sortie",
-                        str(tmp_path / str(i))], check=True, capture_output=True)
+                        str(tmp_path / str(i))], check=True, capture_output=True, env=env)
     for p in (tmp_path / "1").rglob("*.json"):
         q = tmp_path / "2" / p.relative_to(tmp_path / "1")
         assert p.read_bytes() == q.read_bytes(), p
+    ok, motif = ed.etat_lignee("millesimes")
+    if not ok:
+        pytest.skip(motif)
     for p in (tmp_path / "1").rglob("*.json"):
-        assert p.read_bytes() == (DATA / p.relative_to(tmp_path / "1")).read_bytes(), p
+        publie = DATA / p.relative_to(tmp_path / "1")
+        if p.name == "index.json":
+            # « bascule » inventorie le code du dépôt (pipeline/, web/src), pas la source : il suit chaque nouveau
+            # module et n'est rafraîchi que par le passage hebdomadaire ; le reste est comparé octet pour octet
+            a, b = json.loads(p.read_text(encoding="utf-8")), json.loads(publie.read_text(encoding="utf-8"))
+            a.pop("bascule", None), b.pop("bascule", None)
+            assert a == b, p
+        else:
+            assert p.read_bytes() == publie.read_bytes(), p

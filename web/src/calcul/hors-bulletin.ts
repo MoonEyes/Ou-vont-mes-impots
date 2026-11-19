@@ -3,7 +3,9 @@
 // Aucun appel réseau ici : les fichiers sont fournis par l'écran.
 import { destinataire } from './destinataires'
 import { additionner, appliquerAffectation, type Affectation } from './agregats'
-import type { Fourchette, Prelevement, Profil, ResultatOk } from './types'
+import type { Fourchette, Prelevement, Profil, ResultatOk, TerritoireOutreMer } from './types'
+import { BAREMES_2025 } from './baremes-2025'
+import { TERRITOIRES_DOM } from './perimetre-etendu'
 
 type F = { bas: number; central: number; haut: number }
 interface Tranche {
@@ -144,6 +146,47 @@ export function taxesConsommation(placement: Placement, t: TvaConso, h: Habitude
   return lignes
 }
 
+/**
+ * Outre-mer : taxes sur la consommation non chiffrées. Les montants de tva_conso.json reposent sur la consommation
+ * des ménages de métropole (Budget de famille 2017) et les taux de métropole ; aucune estimation publiée ne donne la
+ * TVA, les accises et l'octroi de mer payés par un ménage d'outre-mer. Les lignes restent visibles, « non chiffré »,
+ * avec les taux de TVA du territoire (source datée dans baremes-2025.ts).
+ */
+export function taxesConsommationOutreMer(territoire: TerritoireOutreMer | undefined): Prelevement[] {
+  const t = territoire && territoire in TERRITOIRES_DOM ? (territoire as keyof typeof TERRITOIRES_DOM) : null
+  const nom = t ? TERRITOIRES_DOM[t].nom : 'outre-mer'
+  const tva = t ? BAREMES_2025.outreMer.tva[t] : null
+  const pct = (x: number) => `${String(Math.round(x * 1000) / 10).replace('.', ',')} %`
+  const commun = 'Non chiffré outre-mer : l’estimation du site repose sur la consommation des ménages de métropole.'
+  const notes: Record<string, string> = {
+    tva: `${commun} ${
+      tva ? `En ${nom}, la TVA est de ${pct(tva.normal)} (taux normal) et ${pct(tva.reduit)} (taux réduit).` : `En ${nom}, la TVA ne s’applique pas pour l’instant.`
+    }`,
+    autres: `${commun} L’octroi de mer, taxe propre aux départements d’outre-mer perçue sur les biens, n’est pas modélisé.`,
+    ticpe: commun,
+    tabac: commun,
+    alcool: commun,
+  }
+  return Object.entries(notes).map(([taxe, note]) => ({
+    id: taxe,
+    libelle: taxe === 'autres' ? 'Autres taxes sur les produits (dont octroi de mer)' : (LIBELLES_CONSO[taxe] ?? taxe),
+    famille: 'taxe_consommation' as const,
+    personne: 'foyer' as const,
+    assiette_annuelle_eur: null,
+    taux: null,
+    montant_annuel_eur: { bas: 0, central: 0, haut: 0 },
+    destinataire:
+      taxe === 'autres'
+        ? { id: 'autres_taxes_produits', nom: 'Plusieurs bénéficiaires (répartition non sourcée)', administration: 'Plusieurs' }
+        : destinataire('etat'),
+    inclus_dans_total_paye: true,
+    regle: 'non chiffré outre-mer',
+    non_chiffre: true,
+    note,
+    ...(taxe === 'tva' ? { source: BAREMES_2025.outreMer.tva.source } : {}),
+  }))
+}
+
 const DEST_TF = ['commune', 'epci', 'syndicats', 'tse', 'region_idf', 'etat']
 
 /**
@@ -236,8 +279,13 @@ export function assembler(
 ): Complet {
   // La taxe foncière de l'avis éventuellement calculée par le moteur est reprise ici avec ses parts : pas de doublon.
   const salaire = r.prelevements.filter((l) => l.inclus_dans_total_paye && l.famille !== 'impot_local')
-  const placement = donnees.tva ? placer(profil, r, donnees.tva) : null
-  const conso = placement && donnees.tva ? appliquerAffectation(taxesConsommation(placement, donnees.tva, habitudes), donnees.affectation) : []
+  const dom = profil.residence.zone === 'dom'
+  const placement = donnees.tva && !dom ? placer(profil, r, donnees.tva) : null
+  const conso = dom
+    ? taxesConsommationOutreMer((profil.residence as { territoire?: TerritoireOutreMer }).territoire)
+    : placement && donnees.tva
+      ? appliquerAffectation(taxesConsommation(placement, donnees.tva, habitudes), donnees.affectation)
+      : []
   const locaux = appliquerAffectation(impotsLocaux(profil, donnees.ligneCommune, donnees.tfDep), donnees.affectation)
   const lignes = [...salaire, ...conso, ...locaux]
   return { lignes, total: additionner(lignes), placement, conso, locaux }

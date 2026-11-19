@@ -12,7 +12,7 @@ import { DESTINATAIRES } from './destinataires'
 import { tauxCsgPensionDesLignes } from './agregats'
 import { BAREMES_2025 as B, MILLESIME_BAREMES, assietteCsgActivite, tauxCsgPension } from './baremes-2025'
 // Contrôle de saisie et de périmètre : module léger, partagé avec l'écran de saisie (fil principal).
-import { profilDe, verifierProfilEtendu } from './perimetre-etendu'
+import { TERRITOIRES_DOM, profilDe, verifierProfilEtendu } from './perimetre-etendu'
 export { profilDe, verifierProfilEtendu }
 import {
   HYPOTHESE_FOURCHETTE_PATRONALE,
@@ -131,6 +131,11 @@ export const VERIFICATIONS: Record<VerificationProfil['profil'], VerificationPro
   sans_activite: { profil: 'sans_activite', statut: 'verifie', reference: 'aucun prélèvement sur le revenu' },
   alsace_moselle: { profil: 'alsace_moselle', statut: 'verifie', reference: 'OpenFisca corrigé du taux en vigueur (1,3 %) et simulateur mon-entreprise de l’Urssaf, 3 cas types, tolérance 1 %' },
   foyer: { profil: 'foyer', statut: 'verifie', reference: 'OpenFisca, 6 foyers à revenus de natures différentes, tolérance 1 % sur l’impôt' },
+  outre_mer: {
+    profil: 'outre_mer',
+    statut: 'verifie',
+    reference: 'OpenFisca (réduction d’impôt outre-mer, salaires, traitement, pension) et simulateur mon-entreprise de l’Urssaf (micro-entreprise), 6 cas types en Guadeloupe, Martinique, Guyane et à La Réunion, tolérance 1 %',
+  },
 }
 
 // --- Calcul par personne ----------------------------------------------------------------------------------------
@@ -450,7 +455,10 @@ function calculerSalarieEtendu(p: PersonneEtendue, profil: ProfilEtendu, sc: Sce
       : undefined
   const c = calculerSalarie({ ...p, cadre: !!p.cadre }, annee, sc, variante)
   const l = lignesSalarie(p, c, `/personnes/${index}/salaire_net_avant_impot_mensuel`)
-  const prelevements = l.prelevements.map((x) =>
+  // Outre-mer : part employeur non calculée (exonérations Lodeom selon le secteur, l'effectif et le chiffre d'affaires
+  // de l'entreprise, inconnus du site) ; la limite est dite à l'écran (profils-ui.ts, limitesDuCalcul).
+  const dom = profil.residence.zone === 'dom'
+  const prelevements = l.prelevements.filter((x) => !(dom && x.famille === 'cotisation_patronale')).map((x) =>
     am && x.id === suffixe('maladie_salarie', role)
       ? { ...x, id: suffixe('maladie_regime_local', role), libelle: "Assurance maladie, régime local d'Alsace-Moselle", destinataire: NON_AFFECTE, statut_affectation: 'non sourcee' as const }
       : x,
@@ -471,7 +479,8 @@ function calculerSalarieEtendu(p: PersonneEtendue, profil: ProfilEtendu, sc: Sce
     prelevements,
     // Un apprenti est rémunéré sous le SMIC par construction : l'alerte « inférieur au SMIC » ne s'applique pas.
     avertissements: apprenti ? [] : l.avertissements,
-    brutEmployeur: c.brut,
+    // Outre-mer : pas de part employeur calculée, donc pas de coût total employeur.
+    brutEmployeur: dom ? 0 : c.brut,
     revenus: { salaire: imposable },
     agregats: {
       salaire_brut: c.brut,
@@ -737,11 +746,25 @@ export function pensionsApresAbattement(pensions: number[]): number {
   return Math.max(0, total - Math.min(abattement, a.plafondParFoyer))
 }
 
-function impotDuFoyer(couple: boolean, parentIsole: boolean, enfants: ProfilEtendu['foyer']['enfants'], revenus: RevenusImposables[], annee: number): number {
+/** Réduction d'impôt des foyers domiciliés dans un département d'outre-mer (CGI art. 197, I-3), sinon undefined. */
+export function reductionOutreMer(profil: ProfilEtendu): { taux: number; plafond: number } | undefined {
+  const t = profil.residence.territoire
+  return profil.residence.zone === 'dom' && t && t in TERRITOIRES_DOM ? B.outreMer.reductionImpot[t as keyof typeof B.outreMer.reductionImpot] : undefined
+}
+
+function impotDuFoyer(
+  couple: boolean,
+  parentIsole: boolean,
+  enfants: ProfilEtendu['foyer']['enfants'],
+  revenus: RevenusImposables[],
+  annee: number,
+  dom?: { taux: number; plafond: number },
+): number {
   const ages = revenus.filter((r) => r.plusDe65).length
   const a = B.impot.abattementAge
   return impotFoyer(
     {
+      ...(dom ? { reductionOutreMer: dom } : {}),
       ...(ages ? { abattementAge: { plein: ages * a.plein, seuilPlein: a.seuilPlein, reduit: ages * a.reduit, seuilReduit: a.seuilReduit } } : {}),
       couple,
       parentIsole,
@@ -803,15 +826,16 @@ export function calculerProfil(profil: ProfilEtendu, options: OptionsCalculEtend
   const revenusDe = (role: Role) => calculs.filter((c) => c.entree.role === role).map((c) => c.revenus)
   const sit = profil.foyer.situation
   const enfants = profil.foyer.enfants
+  const dom = reductionOutreMer(profil)
   const lignesIR: { id: string; libelle: string; montant: number }[] = []
   if (sit === 'couple_union_libre') {
-    lignesIR.push({ id: 'impot_revenu', libelle: 'Impôt sur le revenu (foyer de la personne 1)', montant: impotDuFoyer(false, false, enfants, revenusDe('declarant1'), annee) })
-    lignesIR.push({ id: 'impot_revenu_declarant2', libelle: 'Impôt sur le revenu (foyer de la personne 2)', montant: impotDuFoyer(false, false, [], revenusDe('declarant2'), annee) })
+    lignesIR.push({ id: 'impot_revenu', libelle: 'Impôt sur le revenu (foyer de la personne 1)', montant: impotDuFoyer(false, false, enfants, revenusDe('declarant1'), annee, dom) })
+    lignesIR.push({ id: 'impot_revenu_declarant2', libelle: 'Impôt sur le revenu (foyer de la personne 2)', montant: impotDuFoyer(false, false, [], revenusDe('declarant2'), annee, dom) })
   } else
     lignesIR.push({
       id: 'impot_revenu',
       libelle: 'Impôt sur le revenu du foyer',
-      montant: impotDuFoyer(sit === 'couple_marie_pacse', sit === 'parent_isole', enfants, calculs.map((c) => c.revenus), annee),
+      montant: impotDuFoyer(sit === 'couple_marie_pacse', sit === 'parent_isole', enfants, calculs.map((c) => c.revenus), annee, dom),
     })
   for (const l of lignesIR)
     prelevements.push({
@@ -827,6 +851,11 @@ export function calculerProfil(profil: ProfilEtendu, options: OptionsCalculEtend
       regle: 'impôt . foyer fiscal . impôt sur le revenu',
       hypothese_fourchette:
         "Sans autres revenus, frais réels ni réductions ou crédits d'impôt (dons, emploi à domicile, garde d'enfants) : non pris en compte.",
+      ...(dom
+        ? {
+            note: `Réduction d’impôt outre-mer appliquée (CGI art. 197, I-3) : ${Math.round(dom.taux * 100)} % de l’impôt, au plus ${dom.plafond.toLocaleString('fr-FR')} €, avant la décote.`,
+          }
+        : {}),
     })
   const brutTotal = calculs.reduce((s, c) => s + c.brutEmployeur, 0)
   const base = assemblerResultat(profil, options, prelevements, avertissements, calculs.map((c) => c.entree), brutTotal)
@@ -834,6 +863,7 @@ export function calculerProfil(profil: ProfilEtendu, options: OptionsCalculEtend
   const verifications = profils.map((x) => VERIFICATIONS[x])
   if (profil.residence.alsace_moselle && profils.some((x) => x === 'salarie_prive' || x === 'apprenti' || x === 'contractuel_public')) verifications.push(VERIFICATIONS.alsace_moselle)
   if (profil.personnes.length > 1 || sit === 'parent_isole') verifications.push(VERIFICATIONS.foyer)
+  if (dom) verifications.push(VERIFICATIONS.outre_mer)
   return {
     ...base,
     millesime: { annee_revenus: annee, baremes: `Barèmes sociaux et fiscaux des revenus ${MILLESIME_BAREMES} (modele-social ${base.moteur.version} et calcul/baremes-2025.ts)` },

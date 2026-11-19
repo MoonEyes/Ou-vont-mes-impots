@@ -97,6 +97,38 @@ export const BAREMES_2025 = {
     /** Salaire des apprentis exonéré d'impôt à hauteur du SMIC annuel (CGI art. 81 bis) : 11,88 x 151,67 x 12, arrondi à l'euro. */
     exonerationApprenti: 21622,
   },
+
+  outreMer: {
+    /**
+     * Réduction de l'impôt sur le revenu des foyers domiciliés dans un département d'outre-mer (CGI art. 197, I-3),
+     * appliquée à l'impôt après plafonnement du quotient familial et avant la décote : 30 % plafonnés à 2 450 €
+     * (Guadeloupe, Martinique, La Réunion), 40 % plafonnés à 4 050 € (Guyane, Mayotte), plafonds en vigueur depuis
+     * les revenus 2018. OpenFisca 175.0.45, impot_revenu.calcul_impot_revenu.plaf_qf.abat_dom (référence Légifrance
+     * LEGIARTI000006308322).
+     */
+    reductionImpot: {
+      guadeloupe: { taux: 0.3, plafond: 2450 },
+      martinique: { taux: 0.3, plafond: 2450 },
+      reunion: { taux: 0.3, plafond: 2450 },
+      guyane: { taux: 0.4, plafond: 4050 },
+      mayotte: { taux: 0.4, plafond: 4050 },
+    },
+    /**
+     * TVA : 8,5 % (taux normal) et 2,1 % (taux réduit) en Guadeloupe, Martinique et à La Réunion (CGI art. 296) ;
+     * provisoirement non applicable en Guyane et à Mayotte (CGI art. 294). Source : impots.gouv.fr, « Quels sont les
+     * différents taux de TVA applicables dans les DOM ? », consulté le 19/11/2026. Affichés seulement : le site
+     * n'estime pas la TVA payée outre-mer (voir hors-bulletin.ts).
+     */
+    tva: {
+      source: 'https://www.impots.gouv.fr/professionnel/questions/quels-sont-les-differents-taux-de-tva-applicables-dans-les-dom',
+      consulte: '2026-11-19',
+      guadeloupe: { normal: 0.085, reduit: 0.021 },
+      martinique: { normal: 0.085, reduit: 0.021 },
+      reunion: { normal: 0.085, reduit: 0.021 },
+      guyane: null,
+      mayotte: null,
+    },
+  },
 } as const
 
 export type TauxCsgPension = keyof typeof BAREMES_2025.pensions.taux

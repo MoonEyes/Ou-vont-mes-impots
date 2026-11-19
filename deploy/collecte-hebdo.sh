@@ -3,7 +3,8 @@
 # Collecte -> conversion Parquet -> envoi rclone -> verification -> effacement local, lot par lot.
 # Sortie non nulle = echec visible dans journalctl et alerte (ovmi-collecte-alerte.service) :
 #   75 espace disque insuffisant, 78 configuration absente, 2 envoi(s) en echec, 1 toutes sources en echec,
-#   4 orchestrateur pipeline/tout.py en echec (phase facultative OVMI_PIPELINE=1).
+#   4 orchestrateur pipeline/tout.py en echec (phase facultative OVMI_PIPELINE=1), 2 aussi si l'envoi des entrees
+#   du pipeline (pipeline/entrepot_distant.py envoyer) echoue.
 # Journaux : $RACINE/journaux/collecte-AAAA-MM-JJ.log, compresses apres un jour, 12 gardes (OVMI_JOURNAUX_GARDES).
 set -uo pipefail
 
@@ -75,6 +76,12 @@ if [[ "${OVMI_PIPELINE:-0}" == 1 ]] && (( code != 75 && code != 78 )); then
         rc=${PIPESTATUS[0]}
         log "=== fin de l'orchestrateur : code $rc (detail : data/lake/_cache/tout/journal.json)"
         (( rc != 0 && code == 0 )) && code=4
+        # Entrees du pipeline (octets d'origine, adressees par sha256) vers le bucket public, prefixe _entrees/ :
+        # source durable lue en lecture seule par data.yml. Zone _restreint jamais envoyee (docs/AUDIT_ENTREPOT.md).
+        (cd "$DEPOT" && "$PY" pipeline/entrepot_distant.py envoyer) 2>&1 | tee -a "$JOURNAL"
+        rc=${PIPESTATUS[0]}
+        log "=== entrees envoyees au bucket public : code $rc"
+        (( rc != 0 && code == 0 )) && code=2
     fi
 fi
 

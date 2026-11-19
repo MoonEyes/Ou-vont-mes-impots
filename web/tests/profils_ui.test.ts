@@ -1,6 +1,7 @@
 // @vitest-environment happy-dom
 // Profils étendus dans le parcours de calcul (agent « profils-calcul ») : le chemin simple (salaire seul) ne change ni
-// d'aspect ni de résultat ; « Préciser ma situation » ouvre les autres profils, saisis puis recalculés exactement comme
+// de résultat ; la situation se choisit avant le montant (salarié du privé, fonctionnaire, retraité, micro-entrepreneur,
+// case outre-mer et territoire), les champs de chaque profil sont saisis puis recalculés exactement comme
 // calculerProfil le fait sur les cas types ; l'écran résultat montre le profil retenu et ce qui n'est pas calculé ;
 // erreurs reliées aux champs ; tout est calculé sur l'appareil (aucune requête hors des données du site).
 import { readFileSync } from 'node:fs'
@@ -74,7 +75,7 @@ async function erreurSur(selMessage: string): Promise<string> {
 function versSaisie(p: ProfilEtendu): ProfilEtendu {
   return {
     ...p,
-    residence: { zone: p.residence.zone, alsace_moselle: p.residence.alsace_moselle },
+    residence: { zone: p.residence.zone, alsace_moselle: p.residence.alsace_moselle, ...(p.residence.territoire ? { territoire: p.residence.territoire } : {}) },
     foyer: { situation: p.foyer.situation, enfants: p.foyer.enfants.map(() => ({ annee_naissance: 2015, garde_alternee: false })) },
     logement: { statut: p.logement?.statut ?? 'locataire' },
     personnes: p.personnes.map(({ annee_naissance, ...q }): PersonneEtendue =>
@@ -96,22 +97,44 @@ describe('profils étendus : module de contrôle léger', () => {
 })
 
 describe('chemin simple : salaire net avant impôt seul, par défaut', () => {
-  it('les profils sont repliés dans « Préciser ma situation », le salaire reste le seul champ à remplir', async () => {
+  it('la situation se choisit avant le montant ; « Préciser ma situation » ne garde que cadre, temps partiel et frontalier', async () => {
     session.profil = null
     session.resultat = null
     await ecran('#/calcul')
+    const statut = $<HTMLSelectElement>('#p1-statut')
+    // Choix de situation avant le montant, quatre situations d'abord, les autres regroupées.
+    expect(statut.compareDocumentPosition($('#p1-net')) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(Array.from(statut.querySelectorAll(':scope > option')).map((o) => o.textContent)).toEqual(['Salarié·e du secteur privé', 'Fonctionnaire titulaire', 'Retraité·e', 'Micro-entrepreneur·se'])
+    expect(statut.querySelector('optgroup')?.getAttribute('label')).toBe('Autres situations')
+    expect(statut.value).toBe('salarie_prive')
+    // Case outre-mer et territoire avant le montant, territoire masqué tant que la case n'est pas cochée.
+    expect($('#outremer').compareDocumentPosition($('#p1-net')) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect($('#territoire-bloc').hidden).toBe(true)
     const preciser = $<HTMLDetailsElement>('#p1-preciser')
     expect(preciser.tagName).toBe('DETAILS')
     expect(preciser.open).toBe(false)
     expect(preciser.querySelector('summary')?.textContent).toBe('Préciser ma situation')
-    // Le salaire est hors du bloc replié ; la situation professionnelle et tous les champs des profils y sont.
     expect(preciser.contains($('#p1-net'))).toBe(false)
+    expect(preciser.contains(statut)).toBe(false)
     expect(visible('#p1-net')).toBe(true)
-    for (const id of ['statut', 'cadre', 'partiel', 'primes', 'traitement', 'versant', 'pension-base', 'csg', 'age', 'ca', 'vl', 'activite', 'contrat'])
-      expect(preciser.contains($(`#p1-${id}`)), id).toBe(true)
-    // Salarié du privé par défaut : aucun champ d'un autre profil n'est affiché, même bloc ouvert.
+    expect($('#p1-net-libelle').textContent).toBe('Salaire net avant impôt, par mois (en euros)')
+    for (const id of ['cadre', 'partiel', 'frontalier']) expect(preciser.contains($(`#p1-${id}`)), id).toBe(true)
+    for (const id of ['primes', 'traitement', 'versant', 'pension-base', 'csg', 'age', 'ca', 'vl', 'activite', 'contrat']) expect(preciser.contains($(`#p1-${id}`)), id).toBe(false)
+    // Salarié du privé par défaut : aucun champ d'un autre profil n'est affiché.
     for (const o of ['fonctionnaire', 'apprenti', 'retraite', 'independant']) expect($(`#p1-opt-${o}`).hidden, o).toBe(true)
+    // Libellé du montant adapté à la situation ; précisions masquées hors salariat.
+    choisirStatut(1, 'fonctionnaire')
+    expect($('#p1-net-libelle').textContent).toBe('Salaire net avant impôt, par mois, primes comprises (en euros)')
+    expect($('#p1-preciser').hidden).toBe(true)
+    choisirStatut(1, 'retraite')
+    expect($('#p1-salaire').hidden).toBe(true)
+    expect(main.querySelector('label[for="p1-pension-base"]')?.textContent).toBe('Pension de retraite de base, par mois (en euros)')
+    choisirStatut(1, 'independant')
+    expect(main.querySelector('label[for="p1-ca"]')?.textContent).toContain('Chiffre d’affaires')
+    choisirStatut(1, 'salarie_prive')
+    expect($('#p1-preciser').hidden).toBe(false)
     expect(texte()).toContain('Alsace-Moselle comprise')
+    expect(texte()).toContain('La Réunion')
     expect(texte()).not.toContain('Version 1')
   })
 
@@ -140,7 +163,7 @@ describe('chemin simple : salaire net avant impôt seul, par défaut', () => {
 
 // Chaque cas type passe par le formulaire (prérempli depuis le profil, comme au retour sur la saisie) : le profil relu
 // et le calcul obtenu sont ceux de calculerProfil sur le même cas, vérifié par ailleurs face à OpenFisca.
-const ATTENDUS: Record<string, { limite: string; nature: string; patronal: boolean }> = {
+const ATTENDUS: Record<string, { limite: string; nature: string; patronal: boolean; sansEmployeur?: string; aussi?: string[] }> = {
   F03: { limite: 'Militaires et magistrats', nature: 'Cotisations sociales prélevées sur ton salaire', patronal: true },
   P01: { limite: 'assurance chômage', nature: 'Cotisations sociales prélevées sur ton salaire', patronal: true },
   R03: { limite: 'Cotisation maladie de 1 %', nature: 'Cotisations sociales prélevées sur ta pension', patronal: false },
@@ -150,6 +173,18 @@ const ATTENDUS: Record<string, { limite: string; nature: string; patronal: boole
   X03: { limite: 'Cipav', nature: 'Cotisations sociales sur les revenus du foyer', patronal: true },
   A02: { limite: 'Complémentaire santé', nature: 'Cotisations sociales prélevées sur ton salaire', patronal: true },
   T03: { limite: 'Complémentaire santé', nature: 'Cotisations sociales prélevées sur ton salaire', patronal: true },
+  // Outre-mer : réduction d'impôt dite, taxes sur la consommation « non chiffré » avec les taux de TVA du territoire.
+  D01: {
+    limite: 'non calculée outre-mer (exonérations Lodeom',
+    nature: 'Cotisations sociales prélevées sur ton salaire',
+    patronal: false,
+    sansEmployeur: 'Part de l’employeur non calculée outre-mer',
+    aussi: ['La Réunion : réduction d’impôt sur le revenu de 30 %', '8,5 % (taux normal) et 2,1 % (taux réduit)', 'octroi de mer', 'Outre-mer : vérifié ('],
+  },
+  D03: { limite: 'majoration de traitement', nature: 'Cotisations sociales prélevées sur ton salaire', patronal: true, aussi: ['Martinique : réduction d’impôt sur le revenu de 30 %'] },
+  D04: { limite: 'taux de CSG lu sur le relevé de pension', nature: 'Cotisations sociales prélevées sur ta pension', patronal: false, aussi: ['Guadeloupe'] },
+  D05: { limite: 'exonération de début d’activité', nature: 'Cotisations sociales sur ton chiffre d’affaires', patronal: false, aussi: ['La Réunion'] },
+  D02: { limite: 'la TVA ne s’applique pas pour l’instant', nature: 'Cotisations sociales prélevées sur ton salaire', patronal: false, sansEmployeur: 'Part de l’employeur non calculée outre-mer', aussi: ['Guyane : réduction d’impôt sur le revenu de 40 %'] },
 }
 
 describe('« Préciser ma situation » : chaque profil du moteur étendu, de la saisie au résultat', () => {
@@ -159,8 +194,9 @@ describe('« Préciser ma situation » : chaque profil du moteur étendu, de la 
       const profil = versSaisie(cas.profil)
       session.profil = profil
       await ecran('#/calcul')
-      // Profil autre que le salaire par défaut : les précisions sont ouvertes au retour sur la saisie.
-      if (profil.personnes.some((p) => p.statut_activite !== 'salarie_prive' || p.cadre || p.temps_travail?.type === 'temps_partiel'))
+      // Situation reprise au retour sur la saisie ; précisions (cadre, temps partiel) ouvertes si elles ont servi.
+      expect($<HTMLSelectElement>('#p1-statut').value).toBe(profil.personnes[0].statut_activite)
+      if (profil.personnes.some((p) => p.cadre || p.temps_travail?.type === 'temps_partiel'))
         expect($<HTMLDetailsElement>('#p1-preciser').open || $<HTMLDetailsElement>('#p2-preciser').open).toBe(true)
       const r = await calculerParLaSaisie()
       const direct = calculerProfil(profil, { affectation })
@@ -183,7 +219,14 @@ describe('« Préciser ma situation » : chaque profil du moteur étendu, de la 
       // Part employeur : affichée seulement s'il y en a une (pas pour une pension ni une micro-entreprise seules).
       expect(!!$('#titre-patronal'), 'section employeur').toBe(attendu.patronal)
       expect(!!$('#avec-patronal'), 'bascule employeur').toBe(attendu.patronal)
-      if (!attendu.patronal) expect(t).toContain('Pas de cotisations d’employeur')
+      if (!attendu.patronal) expect(t).toContain(attendu.sansEmployeur ?? 'Pas de cotisations d’employeur')
+      for (const x of attendu.aussi ?? []) expect(norm(t), x).toContain(x)
+      if (profil.residence.zone === 'dom') {
+        // Case outre-mer et territoire repris au retour sur la saisie ; taxes sur la consommation non chiffrées.
+        expect(session.complet?.conso.length).toBeGreaterThan(0)
+        expect(session.complet?.conso.every((l) => l.non_chiffre)).toBe(true)
+        expect(session.complet?.placement).toBeNull()
+      }
       // Aucun identifiant technique ni « plusieurs administrations » pour une ligne sans destinataire publié.
       expect(t).not.toContain('non_affecte')
       await attendreQue(() => main.querySelectorAll('#par-destinataire li').length > 0)
@@ -217,10 +260,8 @@ describe('saisie pas à pas : champs révélés, erreurs reliées aux champs', (
     expect($('#p1-opt-salarie').hidden).toBe(true)
     expect($('#p1-opt-retraite').hidden).toBe(true)
     remplir('#p1-net', '2300')
-    // Bloc replié au moment de l'erreur : il s'ouvre, le message est dans le groupe et relié à lui, le focus va au premier choix.
-    $<HTMLDetailsElement>('#p1-preciser').open = false
+    // Le message est dans le groupe et relié à lui, le focus va au premier choix.
     expect(await erreurSur('#p1-versant-msg')).toContain('versant de la fonction publique')
-    expect($<HTMLDetailsElement>('#p1-preciser').open).toBe(true)
     expect($('#p1-versant').tagName).toBe('FIELDSET')
     expect($('#p1-versant').getAttribute('aria-describedby')).toContain('p1-versant-msg')
     expect($('#p1-versant').contains($('#p1-versant-msg'))).toBe(true)
@@ -314,6 +355,40 @@ describe('saisie pas à pas : champs révélés, erreurs reliées aux champs', (
     expect(texte()).toContain('Ton ou ta conjoint·e')
     expect(texte()).toContain('Sans activité professionnelle : pas de revenu d’activité ni de pension dans ce calcul.')
     expect(texte()).toContain('deux déclarations d’impôt')
+  }, 120000)
+
+  it('outre-mer : territoire exigé, taux de CSG du relevé exigé, Mayotte hors calcul, département et territoire liés', async () => {
+    session.profil = null
+    await ecran('#/calcul')
+    const om = $<HTMLInputElement>('#outremer')
+    om.checked = true
+    om.dispatchEvent(new Event('change', { bubbles: true }))
+    expect($('#territoire-bloc').hidden).toBe(false)
+    expect($('#zone-bloc').hidden).toBe(true)
+    remplir('#p1-net', '2000')
+    expect(await erreurSur('#territoire-msg')).toContain('territoire')
+    expect($('#territoire').getAttribute('aria-invalid')).toBe('true')
+    const t = $<HTMLSelectElement>('#territoire')
+    t.value = 'guadeloupe'
+    t.dispatchEvent(new Event('change', { bubbles: true }))
+    // Le département suit le territoire (communes de Guadeloupe pour la taxe foncière et Ma commune).
+    expect($<HTMLSelectElement>('#departement').value).toBe('971')
+    choisirStatut(1, 'retraite')
+    remplir('#p1-pension-base', '1500')
+    cocher('p1-csg', 'rfr')
+    remplir('#p1-rfr', '20000')
+    remplir('#p1-parts', '1')
+    cocher('p1-age', 'plus65')
+    expect(await erreurSur('#p1-csg-msg')).toContain('relevé de pension')
+    cocher('p1-csg', 'median')
+    const r = await calculerParLaSaisie()
+    expect((session.profil as ProfilEtendu | null)?.residence).toMatchObject({ zone: 'dom', territoire: 'guadeloupe' })
+    expect(r.verifications.map((v) => v.profil)).toContain('outre_mer')
+    t.value = 'mayotte'
+    soumettre()
+    await attendreQue(() => !!main.querySelector('#retour .avertissement'))
+    expect(texte()).toContain('Mayotte')
+    expect(texte()).toContain('Ce cas n’est pas encore couvert par le calcul.')
   }, 120000)
 
   it('hors périmètre : message de sortie focalisable, avec la redirection vers l’exploration', async () => {

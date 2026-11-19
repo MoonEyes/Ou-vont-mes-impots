@@ -145,3 +145,61 @@ Cloudflare construit et publie le site à chaque push sur `main` (dépôt relié
 - variable de build : `NODE_VERSION=22` ; préversions désactivées ; jeton créé et gardé par Cloudflare.
 
 `_headers` et `_redirects` sont dans `web/public/` pour être copiés dans `web/dist` par Vite, sans dépendre de `publier.sh`. GitHub Pages reste publié en secours par `pages.yml`.
+
+## 5. Entrepôt durable des entrées du pipeline (pas à pas pour Benjamin, ajouté le 19/11/2026)
+
+Constat du 19/11/2026 (`docs/AUDIT_ENTREPOT.md`) : ni bucket, ni collecte sur le VPS (pas de minuterie `ovmi-collecte`, pas de `/etc/ovmi`, pas de rclone). Tant que ces étapes ne sont pas faites, `data.yml` marche comme avant (cache GitHub et recollecte) et l'étape « Restaurer l'entrepot depuis le bucket public » ne fait rien.
+
+Règle pour toutes les clés : elles vont dans l'espace client OVH, puis directement dans `/etc/ovmi/stockage.env` sur le VPS ou dans les secrets GitHub. Jamais dans le chat, un courriel, un fichier du dépôt ou une capture.
+
+### A. Console OVH (espace client, onglet Public Cloud)
+
+1. Ouvre https://www.ovh.com/manager/ et connecte-toi.
+2. Clique sur l'onglet **Public Cloud** en haut.
+3. Si aucun projet n'apparaît à gauche, clique **Créer un projet**, nomme-le `ou-vont-mes-impots` et valide (rien de payant n'est créé à cette étape).
+4. Dans le menu de gauche, clique **Object Storage**.
+5. Clique **Créer un conteneur d'objets** (ou « Créer un bucket »).
+6. Choisis l'offre **Standard (API S3)**.
+7. Choisis le déploiement **1-AZ** et la région **Gravelines (GRA)**.
+8. Nomme le bucket `ovmi-lake-public`, laisse l'accès **privé**, active le chiffrement SSE-OMK s'il est proposé, puis valide.
+9. Recommence les étapes 5 à 8 avec le nom `ovmi-lake-prive` (accès privé, chiffrement activé, versioning activé si proposé).
+10. Dans Object Storage, ouvre l'onglet **Utilisateurs S3** et clique **Créer un utilisateur**.
+11. Description : `ovmi-collecte`, rôle **ObjectStore operator** (lecture et écriture), puis valide.
+12. Sur la ligne de `ovmi-collecte`, clique **Voir les identifiants** : garde la fenêtre ouverte pour l'étape 17 (la clé secrète ne s'affiche qu'une fois ; ne la copie nulle part ailleurs que dans le fichier de l'étape 17).
+13. Clique encore **Créer un utilisateur** : description `ovmi-lecture-ci`.
+14. Sur la ligne de `ovmi-lecture-ci`, ouvre le menu **...** puis **Importer une politique (JSON)** et colle la politique ci-dessous (lecture seule, bucket public seulement) :
+    ```json
+    {"Statement": [{"Sid": "lectureSeuleBucketPublic", "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:ListBucket", "s3:GetBucketLocation"],
+      "Resource": ["arn:aws:s3:::ovmi-lake-public", "arn:aws:s3:::ovmi-lake-public/*"]}]}
+    ```
+15. Clique **Voir les identifiants** de `ovmi-lecture-ci` : garde la fenêtre ouverte pour les étapes 25 et 26.
+
+### B. VPS (session SSH `ubuntu@` habituelle)
+
+16. Lance l'installation (relançable, ne collecte rien) : `curl -fsSLO https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/deploy/installer_vps.sh && sudo bash installer_vps.sh`.
+17. Ouvre le fichier de configuration : `sudo nano /etc/ovmi/stockage.env`, et remplis `RCLONE_CONFIG_OVH_ACCESS_KEY_ID` et `RCLONE_CONFIG_OVH_SECRET_ACCESS_KEY` avec les identifiants de `ovmi-collecte` (étape 12).
+18. Dans le même fichier, mets `OVMI_BUCKET_PUBLIC=ovmi-lake-public`, `OVMI_BUCKET_PRIVE=ovmi-lake-prive` et `OVMI_PIPELINE=1`, puis enregistre (Ctrl+O, Entrée, Ctrl+X).
+19. Vérifie l'accès aux buckets : `sudo -u ovmi bash -c 'set -a; . /etc/ovmi/stockage.env; cd /var/lib/ovmi/ou-vont-mes-impots && /var/lib/ovmi/venv/bin/python collecte/stockage.py config'`.
+20. Lance le premier passage à la main : `sudo systemctl start ovmi-collecte.service` (plusieurs heures, priorité basse, le VPS reste utilisable par Hermes).
+21. Suis-le si tu veux : `journalctl -u ovmi-collecte -f` (Ctrl+C pour quitter, la collecte continue).
+22. À la fin, vérifie la minuterie hebdomadaire : `systemctl list-timers ovmi-collecte.timer` doit afficher le prochain lundi 3 h.
+23. Vérifie que les entrées sont arrivées : la fin du journal doit contenir `entrees envoyees au bucket public : code 0`.
+
+### C. GitHub (dépôt MoonEyes/Ou-vont-mes-impots)
+
+24. Ouvre **Settings > Secrets and variables > Actions**, onglet **Secrets**.
+25. Clique **New repository secret** : nom `OVMI_S3_LECTURE_ID`, valeur = clé d'accès de `ovmi-lecture-ci` (étape 15).
+26. Clique **New repository secret** : nom `OVMI_S3_LECTURE_SECRET`, valeur = clé secrète de `ovmi-lecture-ci`.
+27. Passe à l'onglet **Variables** et clique **New repository variable** : `OVMI_LAC_ENDPOINT` = `s3.gra.io.cloud.ovh.net`.
+28. Ajoute la variable `OVMI_LAC_REGION` = `gra`.
+29. Ajoute la variable `OVMI_LAC_BUCKET` = `ovmi-lake-public` (jamais le bucket privé : le workflow le refuse).
+30. Ouvre **Actions > Mise a jour des donnees > Run workflow**, coche **reconstruction**, lance.
+31. À la fin, lis le résumé du job `produire` : l'étape « Restaurer l'entrepot depuis le bucket public » doit dire « signé (clé en lecture seule) : N restauré(s) » ; l'étape « Reconstruction complete » liste les axes encore incomplets, et rien n'est publié tant qu'il en reste.
+
+### D. Si tu veux aller plus vite (facultatif)
+
+32. Depuis la machine qui a encore un entrepôt local (`data/lake`), avec les identifiants de `ovmi-collecte` chargés dans le terminal (jamais dans un fichier du dépôt), lance `python pipeline/entrepot_distant.py envoyer --essai` : la liste de ce qui partirait s'affiche, rien n'est envoyé.
+33. Relance la même commande sans `--essai` pour envoyer les entrées présentes (environ 3 Go, zone restreinte exclue).
+
+Coût : environ 3 Go d'entrées en plus des 90 à 105 Go prévus par `docs/STOCKAGE.md`, soit quelques centimes HT par mois en One Zone Standard.

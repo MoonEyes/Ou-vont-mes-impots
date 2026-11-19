@@ -22,6 +22,10 @@ on:
         description: "Relire l'amont de toutes les sources de l'entrepot (sinon : sources manquantes seulement)"
         type: boolean
         default: false
+      reconstruction:
+        description: "Reconstruction complete : recollecter toutes les sources, regenerer tous les axes ; ne publie rien si un axe reste incomplet"
+        type: boolean
+        default: false
 
 permissions: {}
 
@@ -42,6 +46,7 @@ jobs:
     outputs:
       tests: ${{ steps.tests.outputs.resultat }}
       publiable: ${{ steps.correctif.outputs.publiable }}
+      complet: ${{ steps.complet.outputs.complet }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -73,15 +78,32 @@ jobs:
           key: lac-v1-${{ github.run_id }}
           restore-keys: lac-v1-
 
+      # Source durable de l'entrepot : le bucket PUBLIC OVH (docs/STOCKAGE.md, prefixe _entrees/ rempli par le VPS),
+      # en lecture seule (GET), objets verifies par sha256 ; le cache GitHub ci-dessus n'est qu'un accelerateur.
+      # Sans configuration (variables du depot vides), l'etape ne fait rien. Lecture anonyme si le bucket est ouvert
+      # en lecture ; sinon cle S3 en lecture seule dans les secrets OVMI_S3_LECTURE_ID / OVMI_S3_LECTURE_SECRET.
+      # La zone _restreint n'est jamais lue : refusee par pipeline/entrepot_distant.py, absente de l'index public.
+      - name: Restaurer l'entrepot depuis le bucket public (lecture seule)
+        env:
+          ETAPES: ${{ inputs.etapes }}
+          OVMI_LAC_URL: ${{ vars.OVMI_LAC_URL }}
+          OVMI_LAC_ENDPOINT: ${{ vars.OVMI_LAC_ENDPOINT }}
+          OVMI_LAC_REGION: ${{ vars.OVMI_LAC_REGION }}
+          OVMI_LAC_BUCKET: ${{ vars.OVMI_LAC_BUCKET }}
+          OVMI_S3_LECTURE_ID: ${{ secrets.OVMI_S3_LECTURE_ID }}
+          OVMI_S3_LECTURE_SECRET: ${{ secrets.OVMI_S3_LECTURE_SECRET }}
+        run: python pipeline/entrepot_distant.py restaurer ${ETAPES:+--etapes "$ETAPES"}
+
       - name: Completer l'entrepot (sources du catalogue lues par les etapes)
         env:
           RAFRAICHIR: ${{ inputs.rafraichir }}
+          RECONSTRUCTION: ${{ inputs.reconstruction }}
           ETAPES: ${{ inputs.etapes }}
         run: |
-          # premier lundi du mois ou demande explicite : relecture de l'amont (requetes conditionnelles) ;
-          # sinon seulement les sources absentes du cache.
+          # premier lundi du mois, reconstruction ou demande explicite : relecture de l'amont (requetes
+          # conditionnelles) ; sinon seulement les sources absentes du bucket et du cache.
           opt=""
-          if [ "${RAFRAICHIR:-false}" = "true" ] || [ "$(date -u +%d)" -le 7 ]; then opt="--rafraichir"; fi
+          if [ "${RAFRAICHIR:-false}" = "true" ] || [ "${RECONSTRUCTION:-false}" = "true" ] || [ "$(date -u +%d)" -le 7 ]; then opt="--rafraichir"; fi
           python pipeline/tout.py entrepot $opt ${ETAPES:+--etapes "$ETAPES"} --budget 3600
 
       - name: Regenerer site/data (pipeline/tout.py)
@@ -92,6 +114,22 @@ jobs:
           set +e
           python pipeline/tout.py ${ETAPES:+--etapes "$ETAPES"} --budget 16200
           echo "code=$?" >> "$GITHUB_OUTPUT"
+
+      # Reconstruction complete : chaque axe doit etre « produit » ; un axe conserve, partiel, reporte ou en echec
+      # bloque la publication (job publier saute). Les axes dont une entree est en zone restreinte sont comptes a
+      # part (regeneres sur le VPS seulement).
+      - name: Reconstruction complete (tous les axes produits ?)
+        id: complet
+        if: always() && steps.orchestrateur.outcome != 'skipped'
+        env:
+          RECONSTRUCTION: ${{ inputs.reconstruction }}
+        run: |
+          if [ "${RECONSTRUCTION:-false}" != "true" ]; then echo "complet=sans_objet" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if python pipeline/entrepot_distant.py verifier; then
+            echo "complet=oui" >> "$GITHUB_OUTPUT"
+          else
+            echo "complet=non" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Sauver l'entrepot (cache, meme si une etape a echoue)
         if: always() && steps.orchestrateur.outcome != 'skipped'
@@ -122,6 +160,8 @@ jobs:
           set -euo pipefail
           frictionless validate datapackage.json
           python docs/valider_contrat.py --quiet --strict
+          # garde-fou : aucun axe publie ne perd de lignes sans motif compte (pipeline/pertes_autorisees.json)
+          python pipeline/garde_lignes.py
           pytest -q
           echo "resultat=ok" >> "$GITHUB_OUTPUT"
 
@@ -152,10 +192,19 @@ jobs:
           echo "::error::pipeline/tout.py : au moins une etape en echec (voir le resume et site/data/mise_a_jour.json)"
           exit 1
 
+      - name: Sortie en erreur si la reconstruction complete est incomplete (rien n'est publie)
+        if: always() && steps.complet.outputs.complet == 'non'
+        run: |
+          echo "::error::reconstruction complete : au moins un axe incomplet, publication bloquee (voir l'etape precedente)"
+          exit 1
+
   publier:
     needs: produire
     # publie les etapes reussies meme si une autre a echoue, a condition que les validations soient passees
-    if: always() && needs.produire.outputs.tests == 'ok' && needs.produire.outputs.publiable == 'oui'
+    # en reconstruction complete, seulement si tous les axes ont ete produits
+    if: >-
+      always() && needs.produire.outputs.tests == 'ok' && needs.produire.outputs.publiable == 'oui'
+      && (github.event.inputs.reconstruction != 'true' || needs.produire.outputs.complet == 'oui')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:

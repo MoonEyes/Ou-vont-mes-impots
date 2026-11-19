@@ -1541,9 +1541,21 @@
   "retraites": {
    "sources": {},
    "caches": [],
-   "hors_catalogue": [],
+   "hors_catalogue": [
+    "data/lake/secu/retraites_cdc_cnracl_actifs.json",
+    "data/lake/secu/retraites_cdc_cnracl_retraites.json",
+    "data/lake/secu/retraites_cdc_ircantec_cotisants.json",
+    "data/lake/secu/retraites_drees_cotisants_2004_2016.xlsx",
+    "data/lake/secu/retraites_eacr_part1.xlsx",
+    "data/lake/secu/retraites_msa_stock",
+    "data/lake/secu/retraites_plf25_depenses_destination.json",
+    "data/lake/secu/retraites_plf25_recettes_cas.json",
+    "data/lake/secu/retraites_sre_civils.json",
+    "data/lake/secu/retraites_sre_gendarmes.json",
+    "data/lake/secu/retraites_sre_militaires.json"
+   ],
    "octets_sources": null,
-   "note": "entrées collectées par le module lui-même ; non relevées sous strace (entrepôt purgé)"
+   "note": "entrées collectées par le module lui-même (python pipeline/retraites.py collecter), hors catalogue ; relevé écrit d'après retraites.SOURCES le 19/11/2026"
   },
   "energie_climat": {
    "sources": {
