@@ -1290,6 +1290,27 @@ def dep_unique(v) -> str | None:
     return codes[0] if re.fullmatch(r"\d{2}|2[AB]|97\d", codes[0]) else None
 
 
+REGLE_INTITULES = ("Intitulé d'opération publié tel que l'autorité de gestion l'écrit, sauf s'il peut contenir un nom "
+                   "de personne (motif « nom_de_personne_possible », filtre de prénoms de pipeline/local.py) ou une "
+                   "adresse précise, numéro suivi d'un type de voie (motif « adresse_precise ») : il est alors retiré "
+                   "(null), l'opération et ses montants restent publiés et comptés.")
+
+
+def intitule_publiable(texte, prenoms) -> tuple[str | None, str | None]:
+    """Intitulé publiable et motif du retrait : nom de personne possible, ou adresse précise (« … du site 165 rue de
+    Paris … » désigne un lieu d'habitation et ses occupants) ; filtre d'adresse partagé (local.objet_avec_adresse)."""
+    import local
+    if not texte:
+        return None, None
+    t = local.objet_publiable(texte, prenoms, 200)
+    if t is None:
+        return None, ("nom_de_personne_possible" if local.contient_nom_de_personne(local.propre(texte), prenoms)
+                      else None)
+    if local.objet_avec_adresse(texte):
+        return None, "adresse_precise"
+    return t, None
+
+
 def produire_listes(ref: dict, a: dict, sortie: Path, par_cci: dict) -> dict:
     import local
     rap = charger_rapprochement()
@@ -1297,6 +1318,7 @@ def produire_listes(ref: dict, a: dict, sortie: Path, par_cci: dict) -> dict:
     prenoms = local.prenoms()
     resume = []
     intitules_retires = 0
+    motifs_intitules: dict[str, int] = defaultdict(int)
     for nom, conf in LISTES.items():
         ops, ctl = lire_liste(nom)
         e_src = entree(conf["sid"])
@@ -1321,9 +1343,10 @@ def produire_listes(ref: dict, a: dict, sortie: Path, par_cci: dict) -> dict:
             t[3] += 1
             t[4] += c_cout
             t[5] += c_ue
-            intitule = local.objet_publiable(o["intitule_source"], prenoms, 200)
-            if o["intitule_source"] and intitule is None:
+            intitule, motif_intitule = intitule_publiable(o["intitule_source"], prenoms)
+            if motif_intitule:
                 intitules_retires += 1
+                motifs_intitules[motif_intitule] += 1
             hors_ue = (round(o["cout"] - o["ue"], 2) if o["cout"] is not None and o["ue"] is not None else None)
             ligne = [o["id"], o["periode"], o["fonds"], o["annee_debut"], o["date_fin"], siren, denom, cj, intitule,
                      o["departement"], o["commune_insee"], o["theme"], o["cout"], o["ue"], hors_ue, o["taux"]]
@@ -1439,7 +1462,9 @@ def produire_listes(ref: dict, a: dict, sortie: Path, par_cci: dict) -> dict:
         "rapprochement": {"methode": (rap.get("methode") or "stock SIRENE absent au dernier rapprochement : opérations "
                                                             "sans SIRET agrégées"),
                           "stock_sirene": rap.get("stock_sirene", {}).get("modifie_le"),
-                          "intitules_retires": intitules_retires},
+                          "intitules_retires": intitules_retires,
+                          "intitules_retires_par_motif": {k: motifs_intitules[k] for k in sorted(motifs_intitules)},
+                          "regle_intitules": REGLE_INTITULES},
         "liens": [{"fichier": "ue/beneficiaires/index.json",
                    "lecture": "bénéficiaires nommés de toutes les régions (Kohesio, FTS, Horizon Europe), par département"}],
         "sources_inaccessibles": [x for x in INACCESSIBLES if "Europe en France" in x["source"]],

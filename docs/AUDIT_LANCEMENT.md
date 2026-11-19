@@ -48,6 +48,12 @@ Aucun terme du lexique ni de la liste élargie dans le texte visible des pages :
 
 Les écrans qui calculent (somme des fonds européens, organisation, croiser, projets, hôpitaux, fonction publique, solidarités des départements) appellent `badgeCalcule` avec une méthode. Le seul écart trouvé (euros par habitant des collectivités) est corrigé. Les absences sont rendues « non publié » ; les sources et millésimes sont présents sur chaque bloc (tests existants `regles.test.ts`, `calcule.test.ts`).
 
+### Suite donnée le 19/11 (branche `agent/correctifs-audit`)
+
+- Constat 1 corrigé : le filtre ne lit plus aucun cache. Il charge deux listes versionnées dans `pipeline/donnees_ref/`, produites par `pipeline/prenoms_ref.py` : `prenoms.txt` (Insee, Fichier des prénoms, édition du 9 juillet 2025, naissances 1900 à 2024, Licence Ouverte 2.0 : prénoms donnés au moins 1 000 fois, 3 127 prénoms ; collecte contrôlée par `collecte/integrite.py`) et `prenoms_sirene.txt` (stock SIRENE, prénoms d'au moins 300 entrepreneurs individuels : la liste de production d'origine, 2 269 prénoms, qui couvre les prénoms d'adultes nés hors de France). Union chargée : 3 515 prénoms après les exceptions (`local.NON_PRENOMS`, mots courants, sigles et noms de lieux, aucun ne figurant dans la liste d'origine hormis FRANCE, exclu depuis le début). Fichier absent : erreur, jamais de repli. Apostrophe typographique ramenée à « ' » avant la translittération (« d’une » ne devient plus « DUNE »). Axes régénérés ; seuls les fichiers dont la sortie change avec le filtre sont repris (les autres écarts viennent de l'entrepôt partiel de la machine de contrôle). Aucun texte publié en plus n'est signalé par l'ancienne ou la nouvelle liste. Test : `tests/test_prenoms_ref.py`.
+- Constat 3 corrigé : intitulé retiré (null, montants conservés) ; règle d'adresse précise ajoutée au filtre des intitulés des listes d'opérations (`fonds_europeens.intitule_publiable`, motif `adresse_precise`, comptes dans `rapprochement.intitules_retires_par_motif`).
+- Constat 4 corrigé : `pipeline/controle.py` relancé ; `totaux_par_annee` et `lobbying/ministeres.json` ne comptent plus les organisations exclues (une dénomination de plus passée dans `exclus`).
+
 ## Les 15 passages les plus difficiles pour le grand public
 
 | N° | Page | Passage (début) | Difficulté |

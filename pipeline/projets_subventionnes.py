@@ -16,7 +16,7 @@ Entrées (data/lake, collectées par collecte/collecte.py ; identifiants déclar
   _restreint/subventions/subv_fonds_vert/*.csv          Fonds vert 2023 à 2025 (programmes 380 et 113)
   projets_subventionnes/projets_subv_acv/*.csv          Action cœur de ville, villes du programme
   projets_subventionnes/projets_subv_pvd/*.csv          Petites villes de demain, communes (COG 2026)
-  _cache/local/sirene_unite_legale.parquet, prenoms.json (stock SIRENE et prénoms, pipeline/local.py)
+  _cache/local/sirene_unite_legale.parquet (stock SIRENE, pipeline/local.py) ; prénoms : pipeline/donnees_ref/prenoms.txt
   lecture seule : site/data/local/geo/<dep>.json, site/data/territoires/<dep>.json,
                   site/data/subventions/attribuants/subv_fonds_vert.json
 Sorties (site/data/projets_subventionnes/, chaque fichier < 1 Mo, avec `millesime` et `source`) :

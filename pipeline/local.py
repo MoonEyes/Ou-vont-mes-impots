@@ -864,31 +864,49 @@ def lire_scdl(con, p: Path, cle: str = "") -> list[dict]:
     return res
 
 
+# Échantillon de prénoms très fréquents : sert aux tests seulement, jamais de repli du filtre (voir prenoms()).
 PRENOMS_MINIMAUX = {"JEAN", "MARIE", "PIERRE", "MICHEL", "PHILIPPE", "ALAIN", "ANDRE", "BERNARD", "JACQUES",
                     "NICOLAS", "CHRISTOPHE", "FRANCOIS", "DANIEL", "PATRICK", "CATHERINE", "NATHALIE", "ISABELLE"}
 MOTS_OUTILS = {"DE", "DU", "DES", "LA", "LE", "LES", "ET", "A", "AU", "AUX", "EN", "POUR", "SUR", "D", "L", "ST",
                "STE", "SAINT", "SAINTE"}
-NON_PRENOMS = {"FRANCE"}  # prenom rare, mais surtout nom de pays (« Ile-de-France », « France 2030 »)
+# Prénoms de la liste Insee qui sont d'abord un nom de lieu ou de rivière, un mois, un sigle, une marque ou un mot
+# courant des objets et dénominations publiés (« Ile-de-France », « fête du 1er mai », « don de matériel », « Espérance
+# sportive », « Fleury-Mérogis », « Les Lilas », « ADA » accueil des demandeurs d'asile, « ALEC » agence locale de
+# l'énergie et du climat, « ALMA » réseau Allô maltraitance) : ils ne déclenchent pas le filtre. Choisis parmi les mots
+# qui retiraient le plus de textes et de dénominations d'organismes sur les données publiées le 19/11/2026 ; aucun ne
+# figure dans le complément SIRENE (la liste de production précédente), sauf FRANCE, exclu depuis l'origine : les
+# retirer ne publie aucun texte que la production retirait.
+NON_PRENOMS = {"FRANCE", "MAI", "DON", "CONCEPTION", "FRANC", "ESPERANCE", "LOUP", "NEO", "CANNELLE", "DIVINE", "ALIZE",
+               "ALEC", "ALMA", "ADA", "ARIA", "ANES", "ASSA", "ROSAIRE", "BELLA", "LORETTE", "FLEURY", "ROHAN",
+               "LILAS", "ARON", "SUZON", "GILLETTE"}
+# Listes versionnées (pipeline/prenoms_ref.py) : Insee, Fichier des prénoms (prénoms donnés au moins 1 000 fois
+# depuis 1900), et complément du stock SIRENE (prénoms d'au moins 300 entrepreneurs individuels, la liste de production
+# d'origine). Aucun cache, aucun stock hors dépôt : une machine neuve filtre exactement comme la production.
+FICHIER_PRENOMS = Path(__file__).resolve().parent / "donnees_ref" / "prenoms.txt"
+FICHIER_PRENOMS_SIRENE = FICHIER_PRENOMS.with_name("prenoms_sirene.txt")
 _PRENOMS: set | None = None
+APOSTROPHES_RE = re.compile("[\u2019\u2018\u02bc\u00b4`]")
+
+
+def lire_liste_prenoms(chemin: Path = FICHIER_PRENOMS) -> set:
+    """Prénoms du fichier versionné (lignes « # » = en-tête). Fichier absent ou vide : erreur, jamais de repli."""
+    if not chemin.exists():
+        raise RuntimeError(f"{chemin} absent : la liste de prénoms du filtre est versionnée dans le dépôt "
+                           "(python pipeline/prenoms_ref.py pour la régénérer) ; aucun repli")
+    liste = {l.strip() for l in chemin.read_text(encoding="utf-8").splitlines()
+             if l.strip() and not l.startswith("#")}
+    if not liste:
+        raise RuntimeError(f"{chemin} vide : aucun repli")
+    return liste
 
 
 def prenoms() -> set:
-    """Prenoms frequents (>= 300 entrepreneurs individuels dans SIRENE), en majuscules sans accent ; cache disque."""
+    """Prénoms fréquents en majuscules sans accent : union des deux listes versionnées de pipeline/donnees_ref/."""
     global _PRENOMS
     if _PRENOMS is not None:
         return _PRENOMS
-    c = CACHE / "prenoms.json"
-    if c.exists():
-        _PRENOMS = set(json.loads(c.read_text(encoding="utf-8")))
-    elif (CACHE / "sirene_unite_legale.parquet").exists():
-        r = ddb().execute(f"""select upper(strip_accents(prenom1UniteLegale)) p from
-                          '{CACHE / "sirene_unite_legale.parquet"}' where prenom1UniteLegale is not null
-                          group by 1 having count(*) >= 300""").fetchall()
-        _PRENOMS = {x[0] for x in r if re.match(r"^[A-Z][A-Z-]+$", x[0] or "")}
-        c.write_text(json.dumps(sorted(_PRENOMS), ensure_ascii=False), encoding="utf-8")
-    else:
-        _PRENOMS = set(PRENOMS_MINIMAUX)
-    _PRENOMS = {x for x in _PRENOMS if len(x) >= 3} - NON_PRENOMS - MOTS_OUTILS
+    tous = lire_liste_prenoms(FICHIER_PRENOMS) | lire_liste_prenoms(FICHIER_PRENOMS_SIRENE)
+    _PRENOMS = {x for x in tous if len(x) >= 3} - NON_PRENOMS - MOTS_OUTILS
     return _PRENOMS
 
 
@@ -909,7 +927,10 @@ def contient_nom_de_personne(o: str, liste: set | None = None) -> bool:
     if CIVILITE_RE.search(o):
         return True
     liste = prenoms() if liste is None else liste
-    t = re.findall(r"[A-Z]+", unicodedata.normalize("NFKD", o.upper()).encode("ascii", "ignore").decode())
+    # Apostrophe typographique ramenée à « ' » avant la translittération, qui la supprimerait (« d’une » ne doit pas
+    # devenir le mot « DUNE », prénom de la liste Insee).
+    t = re.findall(r"[A-Z]+", unicodedata.normalize("NFKD", APOSTROPHES_RE.sub("'", o).upper())
+                   .encode("ascii", "ignore").decode())
     for i, m in enumerate(t):
         if m not in liste or i + 1 >= len(t):
             continue

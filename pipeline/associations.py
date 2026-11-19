@@ -429,21 +429,10 @@ def extrait_sirene(sirens: set[str]) -> dict:
 
 @functools.lru_cache(maxsize=1)
 def prenoms() -> frozenset:
-    """Prénoms fréquents (au moins 300 entrepreneurs individuels dans SIRENE), pour le filtre de noms (cache)."""
+    """Prénoms du filtre de noms : la liste versionnée de pipeline/local.py (Insee, pipeline/donnees_ref/prenoms.txt),
+    sans cache ni stock SIRENE."""
     import local
-    c = lire_cache("prenoms.json")
-    if not c.get("prenoms"):
-        if not STOCK_SIRENE.exists():
-            liste = set(local.PRENOMS_MINIMAUX)
-        else:
-            import duckdb
-            r = duckdb.sql(f"""select upper(strip_accents(prenom1UniteLegale)) p from '{STOCK_SIRENE}'
-                               where prenom1UniteLegale is not null group by 1 having count(*) >= 300""").fetchall()
-            liste = {x[0] for x in r if re.match(r"^[A-Z][A-Z-]+$", x[0] or "")}
-            sauver_cache("prenoms.json", {"prenoms": sorted(liste), "source": SOURCE_SIRENE})
-    else:
-        liste = set(c["prenoms"])
-    return frozenset({x for x in liste if len(x) >= 3} - local.NON_PRENOMS - local.MOTS_OUTILS)
+    return frozenset(local.prenoms())
 
 
 ADRESSE_RE = re.compile(r"\b\d{1,4}\s*(?:bis|ter)?\s*,?\s+(?:rue|avenue|av\.?|bd|boulevard|place|chemin|route|all[ée]e|"
