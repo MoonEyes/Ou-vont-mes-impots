@@ -254,6 +254,18 @@ MOTIFS = {
 # --- Utilitaires ----------------------------------------------------------------------------------------------
 
 
+
+# Numéro de téléphone collé à une dénomination du répertoire (« OCCITANIE FILMS (04 67605982) ») : retiré.
+TELEPHONE_RE = re.compile(r"\s*\(?\s*(?:\+33\s?|0)[1-9](?:[\s.-]?\d){8}\s*\)?")
+
+
+def sans_telephone(nom):
+    """Dénomination sans numéro de téléphone (aucune coordonnée n'est publiée)."""
+    if not nom or not TELEPHONE_RE.search(str(nom)):
+        return nom
+    return re.sub(r"\s{2,}", " ", TELEPHONE_RE.sub(" ", str(nom))).strip() or None
+
+
 def dump(path: Path, obj) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     texte = json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
@@ -835,7 +847,7 @@ def beneficiaires(cache_cj: dict, programmes_fts: dict, fts: list[dict]) -> dict
             return
         stats[src]["nomme"] += l["eur"]
         par_dep_src[dep][src]["nomme"] += l["eur"]
-        denominations[siren] = nom_sirene
+        denominations[siren] = sans_telephone(nom_sirene)
         b = benef.setdefault((dep, siren), {"siren": siren, "cj": cj, "eur": 0.0, "detail": defaultdict(lambda: [0.0, 0])})
         b["eur"] += l["eur"]
         prog = l.get("fonds") or l.get("programme")

@@ -405,3 +405,10 @@ describe('couverture du glossaire', () => {
     for (const s of ['LFI', 'PLF', 'CSG', 'TVA']) expect(vus.has(s), s).toBe(true)
   }, 600000)
 })
+
+describe('sigles relevés par l’audit avant lancement (18/11/2026) sur les pages prérendues', () => {
+  it('chaque sigle affiché sans définition a maintenant son entrée', () => {
+    for (const s of ['APL', 'ALF', 'ALS', 'PAJE', 'DGAFP', 'DARES', 'DEPP', 'SDES', 'SRE', 'CNBF', 'FNAL', 'CEG', 'CNDS', 'CNC', 'DITP', 'CIRAD'])
+      expect(GRAPHIES.has(s), s).toBe(true)
+  })
+})

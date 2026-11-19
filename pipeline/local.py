@@ -990,6 +990,14 @@ def lignes_pdl(con) -> tuple[list[dict], dict]:
     return res, programmes
 
 
+def objet_avec_adresse(o: str) -> bool:
+    """Objet qui contient une adresse (numéro suivi d'un type de voie) : il peut désigner le bien d'un particulier
+    (« restauration du patrimoine immobilier privé - dossier 1 rue … »). Filtre partagé avec pipeline/deliberations.py
+    (ADRESSE_NUMERO_RE, motif « adresse_possible ») ; import tardif car deliberations importe local."""
+    import deliberations
+    return bool(deliberations.ADRESSE_NUMERO_RE.search(deliberations.sans_accents(o.lower())))
+
+
 def deliberations_subventions(con) -> dict:
     """SIREN collectivite -> {annee: [[date, id, objet, url]]} pour la matiere 7.5 (subventions), 3 dernieres annees."""
     res = defaultdict(lambda: defaultdict(list))
@@ -1020,6 +1028,8 @@ def deliberations_subventions(con) -> dict:
             if not propre(d.get(cm)).startswith("7.5"):
                 continue
             o = objet_publiable(d.get(co))
+            if o and objet_avec_adresse(o):
+                o = None  # même règle que pipeline/deliberations.py (motif « adresse_possible »)
             if o:
                 res[s][a].append([date, propre(d.get(ci))[:40], o, propre(d.get(cu)) or None])
     return {"subventions": res, "comptes": comptes}

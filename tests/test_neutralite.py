@@ -66,7 +66,8 @@ def fautes(texte: str) -> list[str]:
 def test_lexique_charge_et_regles_actives():
     assert len(REGLES) >= 10
     for exemple in ("seulement 3 %", "un écart énorme", "elle coûte", "pèse sur", "en recul", "la niche sociale",
-                    "le lobbying", "un cadeau fiscal"):
+                    "le lobbying", "un cadeau fiscal", "heureusement", "un record", "la dérive des comptes",
+                    "les dépenses s'envolent"):
         assert fautes(exemple), exemple
     for neutre in ("dans le sens souhaité publié", "coût complet moyen", "plus de 120 sources",
                    "exonérations de cotisations (souvent appelées niches sociales)",

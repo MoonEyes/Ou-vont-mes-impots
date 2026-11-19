@@ -75,3 +75,19 @@ describe('chiffre calculé par le site', () => {
     expect(fautes).toEqual([])
   })
 })
+
+describe('montants par habitant des collectivités (audit avant lancement, 18/11/2026)', () => {
+  it('ratio montant / population de la même année : badge « Calculé par le site » et méthode, jamais « tracé »', async () => {
+    const { clesBudget, blocBudget, METHODE_PAR_HABITANT } = await import('../src/ecrans/commune')
+    const b = JSON.parse(readFileSync(join(process.cwd(), 'tests', 'fixtures', 'data', 'local', 'budgets', 'departements.json'), 'utf8'))
+    const c = Object.values(b.collectivites)[0] as Parameters<typeof clesBudget>[1]
+    const z = document.createElement('div')
+    z.innerHTML = clesBudget(b, c)
+    const parHab = Array.from(z.querySelectorAll('li')).find((li) => li.textContent?.includes('par habitant en'))!
+    expect(parHab.querySelector('[data-calcule]')).not.toBeNull()
+    expect(parHab.textContent).toContain(METHODE_PAR_HABITANT)
+    z.innerHTML = blocBudget(b, c, 'Budget', false)
+    expect(z.textContent).toMatch(/€ par habitant/)
+    expect(z.querySelector('[data-calcule]')).not.toBeNull()
+  })
+})

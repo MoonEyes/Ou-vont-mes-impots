@@ -11,7 +11,8 @@
     {"termes": ["trop"], "raison": "jugement de niveau"},
     {"termes": ["que tu paies", "ce que tu finances", "ce que je finance"], "raison": "cadrage incohérent : le site dit partout « ce que tu verses »"},
     {"termes": ["influenc\\w*", "lobby\\w*", "les plus visés"], "raison": "insinuation : dire « représentation d'intérêts », terme de la HATVP"},
-    {"termes": ["en progrès", "en recul"], "raison": "tendance jugée : dire « dans le sens souhaité publié » ou « à l'inverse du sens souhaité publié »"}
+    {"termes": ["en progrès", "en recul"], "raison": "tendance jugée : dire « dans le sens souhaité publié » ou « à l'inverse du sens souhaité publié »"},
+    {"termes": ["(?:mal)?heureusement", "hélas", "records?", "dérives?", "flambée?s?", "s[’']envol\\w*", "dramatique\\w*", "alarmant\\w*", "inquiétant\\w*"], "raison": "jugement ou image d'intensité (audit avant lancement, 18/11/2026) : le chiffre, sa base et sa source suffisent"}
   ],
   "niche_definie": "souvent appelées? (?:«\\s?)?niches?(?:\\s?»)? (?:fiscales?|sociales?)",
   "exceptions": [

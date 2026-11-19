@@ -524,6 +524,17 @@ def nom_de_personne_seul(nom) -> bool:
     return mots[0] in liste and local.contient_nom_de_personne(str(nom), liste)
 
 
+DOMICILIATION_RE = re.compile(r"\s*CHEZ\s*(?:M|MME|MLLE|MR|MONSIEUR|MADAME|MADEMOISELLE)\b\.?[^-–(]*", re.I)
+
+
+def sans_domiciliation(nom):
+    """Dénomination sans sa domiciliation chez une personne (« ASSOCIATION X CHEZ M. Prénom Nom - 28 » devient
+    « ASSOCIATION X - 28 ») : le nom de la personne qui héberge le siège n'est jamais publié."""
+    if not nom or not DOMICILIATION_RE.search(str(nom)):
+        return nom
+    return re.sub(r"\s{2,}", " ", DOMICILIATION_RE.sub(" ", str(nom))).strip(" -") or None
+
+
 def denomination_nominative(nom) -> bool:
     """Dénomination jamais publiée : association de financement ou mandataire d'une campagne électorale (elle porte
     le nom du candidat), nom d'un candidat national, ou nom de personne seul (nom_de_personne_seul)."""
@@ -606,7 +617,7 @@ def produire_serie(js: dict, ext: dict, sortie: Path) -> dict:
         lignes = []
         for siren, par_an in g["assoc"].items():
             e = ext.get(siren) or {}
-            nom = s["noms_source"][siren][1] or e.get("nom") or None  # dénomination publiée la plus récente
+            nom = sans_domiciliation(s["noms_source"][siren][1] or e.get("nom") or None)  # dénomination la plus récente
             cj = s["noms_source"][siren][2]
             vals = [NC if a in INEXPLOITABLES else (B.eur(par_an[a]) if a in par_an else None) for a in annees]
             lignes.append([siren, nom, cj, B.eur(sum(par_an.values())), vals])

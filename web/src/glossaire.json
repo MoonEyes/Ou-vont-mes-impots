@@ -3337,6 +3337,222 @@
     "nom": "Observatoire des services publics d’eau et d’assainissement",
     "url": "https://www.services.eaufrance.fr/"
    }
+  },
+  {
+   "id": "apl",
+   "terme": "APL",
+   "sigle": "APL",
+   "forme": "aide personnalisée au logement",
+   "definition": "Aide au logement versée par la caisse d’allocations familiales ou la MSA aux locataires d’un logement conventionné et à certains accédants à la propriété, selon les ressources du foyer.",
+   "source": {
+    "nom": "service-public.fr, « Aide personnalisée au logement (APL) »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F12006"
+   },
+   "voir": [
+    "caf",
+    "als",
+    "alf"
+   ]
+  },
+  {
+   "id": "alf",
+   "terme": "ALF",
+   "sigle": "ALF",
+   "forme": "allocation de logement familiale",
+   "definition": "Aide au logement versée aux familles (enfants ou personnes à charge, jeunes ménages) qui ne peuvent pas recevoir l’aide personnalisée au logement.",
+   "source": {
+    "nom": "Caisse d’allocations familiales",
+    "url": "https://www.caf.fr/"
+   },
+   "voir": [
+    "apl",
+    "als"
+   ]
+  },
+  {
+   "id": "als",
+   "terme": "ALS",
+   "sigle": "ALS",
+   "forme": "allocation de logement sociale",
+   "definition": "Aide au logement versée aux personnes qui ne peuvent recevoir ni l’aide personnalisée au logement ni l’allocation de logement familiale (étudiants, personnes seules, couples sans enfant).",
+   "source": {
+    "nom": "Caisse d’allocations familiales",
+    "url": "https://www.caf.fr/"
+   },
+   "voir": [
+    "apl",
+    "alf"
+   ]
+  },
+  {
+   "id": "paje",
+   "terme": "PAJE",
+   "sigle": "PAJE",
+   "variantes": [
+    "Paje"
+   ],
+   "forme": "prestation d’accueil du jeune enfant",
+   "definition": "Ensemble de prestations familiales versées pour un enfant de moins de 6 ans : prime à la naissance, allocation de base, aide à la garde, aide à l’arrêt ou à la réduction d’activité.",
+   "source": {
+    "nom": "service-public.fr, « Allocation de base de la Paje »",
+    "url": "https://www.service-public.fr/particuliers/vosdroits/F2552"
+   },
+   "voir": [
+    "caf"
+   ]
+  },
+  {
+   "id": "dgafp",
+   "terme": "DGAFP",
+   "sigle": "DGAFP",
+   "forme": "direction générale de l’administration et de la fonction publique",
+   "definition": "Direction de l’État chargée des règles communes aux agents publics ; son service statistique publie les effectifs et les rémunérations de la fonction publique.",
+   "source": {
+    "nom": "fonction-publique.gouv.fr",
+    "url": "https://www.fonction-publique.gouv.fr/"
+   }
+  },
+  {
+   "id": "dares",
+   "terme": "DARES",
+   "sigle": "DARES",
+   "variantes": [
+    "Dares"
+   ],
+   "forme": "direction de l’animation de la recherche, des études et des statistiques",
+   "definition": "Service statistique du ministère du Travail : emploi, chômage, formation professionnelle, salaires.",
+   "source": {
+    "nom": "Dares",
+    "url": "https://dares.travail-emploi.gouv.fr/"
+   }
+  },
+  {
+   "id": "depp",
+   "terme": "DEPP",
+   "sigle": "DEPP",
+   "forme": "direction de l’évaluation, de la prospective et de la performance",
+   "definition": "Service statistique du ministère de l’Éducation nationale ; il publie notamment le compte de l’éducation (dépense pour l’éducation de tous les financeurs).",
+   "source": {
+    "nom": "Ministère de l’Éducation nationale",
+    "url": "https://www.education.gouv.fr/"
+   }
+  },
+  {
+   "id": "sdes",
+   "terme": "SDES",
+   "sigle": "SDES",
+   "forme": "service des données et études statistiques",
+   "definition": "Service statistique du ministère de la Transition écologique : énergie, transports, logement, environnement.",
+   "source": {
+    "nom": "SDES",
+    "url": "https://www.statistiques.developpement-durable.gouv.fr/"
+   }
+  },
+  {
+   "id": "sre",
+   "terme": "SRE",
+   "sigle": "SRE",
+   "forme": "service des retraites de l’État",
+   "definition": "Service qui gère les pensions des fonctionnaires de l’État civils et des militaires.",
+   "source": {
+    "nom": "Retraites de l’État",
+    "url": "https://retraitesdeletat.gouv.fr/"
+   },
+   "voir": [
+    "cnracl"
+   ]
+  },
+  {
+   "id": "cnbf",
+   "terme": "CNBF",
+   "sigle": "CNBF",
+   "forme": "Caisse nationale des barreaux français",
+   "definition": "Caisse qui gère la retraite de base et la retraite complémentaire des avocats.",
+   "source": {
+    "nom": "CNBF",
+    "url": "https://www.cnbf.fr/"
+   }
+  },
+  {
+   "id": "fnal",
+   "terme": "FNAL",
+   "sigle": "FNAL",
+   "forme": "Fonds national d’aide au logement",
+   "definition": "Fonds qui finance une partie des aides au logement ; les employeurs lui versent une contribution calculée sur les salaires.",
+   "source": {
+    "nom": "Urssaf",
+    "url": "https://www.urssaf.fr/"
+   },
+   "voir": [
+    "apl"
+   ]
+  },
+  {
+   "id": "ceg",
+   "terme": "CEG",
+   "sigle": "CEG",
+   "forme": "contribution d’équilibre général",
+   "definition": "Cotisation de retraite complémentaire Agirc-Arrco, partagée entre le salarié et l’employeur, qui ne crée pas de points de retraite.",
+   "source": {
+    "nom": "Agirc-Arrco",
+    "url": "https://www.agirc-arrco.fr/"
+   },
+   "voir": [
+    "agirc-arrco"
+   ]
+  },
+  {
+   "id": "cnds",
+   "terme": "CNDS",
+   "sigle": "CNDS",
+   "forme": "Centre national pour le développement du sport",
+   "definition": "Établissement public qui finançait le sport pour tous et les équipements sportifs ; ses missions ont été reprises en 2019 par l’Agence nationale du sport.",
+   "source": {
+    "nom": "Agence nationale du sport",
+    "url": "https://www.agencedusport.fr/"
+   }
+  },
+  {
+   "id": "cnc",
+   "terme": "CNC",
+   "sigle": "CNC",
+   "forme": "Centre national du cinéma et de l’image animée",
+   "definition": "Établissement public qui soutient le cinéma, l’audiovisuel et le jeu vidéo ; il est financé surtout par des taxes affectées.",
+   "source": {
+    "nom": "CNC",
+    "url": "https://www.cnc.fr/"
+   },
+   "voir": [
+    "taxe-affectee"
+   ]
+  },
+  {
+   "id": "ditp",
+   "terme": "DITP",
+   "sigle": "DITP",
+   "forme": "direction interministérielle de la transformation publique",
+   "definition": "Service de l’État qui publie le baromètre des résultats de l’action publique, par politique et par département.",
+   "source": {
+    "nom": "modernisation.gouv.fr",
+    "url": "https://www.modernisation.gouv.fr/"
+   }
+  },
+  {
+   "id": "cirad",
+   "terme": "CIRAD",
+   "sigle": "CIRAD",
+   "variantes": [
+    "Cirad"
+   ],
+   "forme": "Centre de coopération internationale en recherche agronomique pour le développement",
+   "definition": "Organisme public de recherche agronomique qui travaille avec les pays du Sud ; c’est un opérateur de l’État.",
+   "source": {
+    "nom": "Cirad",
+    "url": "https://www.cirad.fr/"
+   },
+   "voir": [
+    "operateur"
+   ]
   }
  ],
  "pas_des_sigles": [

@@ -7,7 +7,7 @@ import { departementDe } from '../departements'
 import { chargerSiPresent, urlDonnee } from '../donnees'
 import { brancherProjets } from './projets'
 import { lien, type Rendu } from '../routeur'
-import { absent, appliquerLargeurs, enPrerendu, badgeStatut, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
+import { absent, appliquerLargeurs, enPrerendu, badgeCalcule, badgeStatut, barres, eur, eurLisible, h, pct, source, sur100, surligne } from '../util'
 import { blocInvestissementCommune, blocOrganismesCommune, blocSruCommune, type Beneficiaire, type FichierCcas, type FichierEau, type FichierMobilite, type FichierSyndicats, type Territoire } from './territoires'
 
 export interface Geo {
@@ -60,6 +60,10 @@ function lire(b: Budgets, eur: Record<string, (number | null)[]>, an: string, k:
   return typeof v === 'number' ? v : null
 }
 
+/** Règle « chiffre calculé par le site » (docs/NEUTRALITE.md, règle 11) : montant de l'année divisé par la population
+ * publiée avec les comptes de la même année (même source, même périmètre). */
+export const METHODE_PAR_HABITANT = 'montant de l’année divisé par la population de la même année, publiée avec les comptes par l’OFGL'
+
 export function blocBudget(b: Budgets, c: Budgets['collectivites'][string], titre: string, cle: boolean): string {
   const an = [...b.annees].reverse().find((a) => c.eur[a]) ?? b.annees[b.annees.length - 1]
   const total = lire(b, c.eur, an, 'depenses_totales')
@@ -85,6 +89,7 @@ export function blocBudget(b: Budgets, c: Budgets['collectivites'][string], titr
     ${etat !== null && rec ? `<li>Versé par l’État (dotations, compensations) : ${h(eurLisible(etat))}, soit ${h(sur100((etat / rec) * 100))} sur 100 € de recettes de fonctionnement.</li>` : ''}
     ${dette !== null ? `<li>Dette en cours : ${h(eurLisible(dette))}${pop ? ` (${h(eur(dette / pop))} par habitant)` : ''}.</li>` : ''}
   </ul>
+  ${pop ? `<p class="aide">Montants par habitant : ${badgeCalcule(METHODE_PAR_HABITANT)}</p>` : ''}
   ${source(b.source, an)}
 </div>`
 }
@@ -98,7 +103,7 @@ export function clesBudget(b: Budgets, c: Budgets['collectivites'][string]): str
   const etat = lire(b, c.eur, an, 'concours_etat')
   const dette = lire(b, c.eur, an, 'encours_dette')
   const items = [
-    pop ? `<li class="cle-famille"><strong>${h(eur(total / pop))}</strong><span>dépensés par habitant en ${h(an)}</span>${badgeStatut('trace')}</li>` : '',
+    pop ? `<li class="cle-famille"><strong>${h(eur(total / pop))}</strong><span>dépensés par habitant en ${h(an)}</span>${badgeCalcule(METHODE_PAR_HABITANT)}</li>` : '',
     etat !== null ? `<li><strong>${h(eurLisible(etat))}</strong><span>versés par l’État : dotations et compensations</span>${badgeStatut('trace')}</li>` : '',
     dette !== null ? `<li><strong>${h(eurLisible(dette))}</strong><span>de dette en cours${pop ? `, soit ${h(eur(dette / pop))} par habitant` : ''}</span>${badgeStatut('trace')}</li>` : '',
   ].filter(Boolean)

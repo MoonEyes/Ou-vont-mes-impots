@@ -124,6 +124,12 @@ CIVILITE = re.compile(r"(?<![\w.])(M\.|MM\.|Mme|Mmes|Mlle|Monsieur|Madame|Mademo
 PRENOM_NOM = re.compile(r"\b[A-ZÉ][a-zéèëï\-]+\s+[A-ZÉÈ]{2,}(?:[\s\-][A-ZÉÈ]{2,})*\b")
 
 
+def nom_de_personne_seul(nom) -> bool:
+    """Filtre partagé de pipeline/associations.py (« Prénom Nom » seul) ; import tardif."""
+    import associations
+    return associations.nom_de_personne_seul(nom)
+
+
 def texte_sans_personne(s: str | None) -> str | None:
     s = propre(s)
     if not s:
@@ -1674,6 +1680,9 @@ def produire_influence() -> dict:
             motif = "identifiant absent"
         if motif is None and not texte_sans_personne(p.get("denomination")):
             motif = "dénomination contenant une civilité"
+        if motif is None and tid != "SIREN" and nom_de_personne_seul(p.get("denomination")):
+            # Sans SIREN, aucune catégorie juridique ne prouve une personne morale : « Prénom Nom » seul n'est pas nommé.
+            motif = "dénomination qui ressemble à un nom de personne, sans SIREN"
         depenses, domaines, cibles, n_act, n_activites = [], Counter(), Counter(), 0, 0
         for e in p.get("exercices", []):
             pc = e["publicationCourante"]
