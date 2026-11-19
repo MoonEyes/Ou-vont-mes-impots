@@ -38,15 +38,14 @@ pytestmark = pytest.mark.skipif(not (LAKE / "manifest.json").exists(),
 
 
 def _entrees_presentes(commande: list[str]) -> bool:
-    """Toutes les sources de l'entrepôt lues par l'étape sont présentes (pipeline/entrees_lac.json, relevé par
-    `python pipeline/tout.py inventorier`). Sur le runner GitHub, l'entrepôt est partiel (cache, sans la zone
-    _restreint) : une étape dont une entrée manque y est « conservée » par pipeline/tout.py et n'est pas rejouée ici."""
-    import json
-    entrees = ROOT / "pipeline" / "entrees_lac.json"
-    if not entrees.exists():
-        return True
-    etape = json.loads(entrees.read_text(encoding="utf-8"))["etapes"].get(Path(commande[0]).stem, {})
-    return all((ROOT / c).exists() for chemins in etape.get("sources", {}).values() for c in chemins)
+    """Toutes les entrées de l'entrepôt lues par l'étape sont présentes (pipeline/entrees_lac.json : sources du
+    catalogue, fichiers hors catalogue et caches des modules). Sur le runner GitHub, l'entrepôt est partiel (bucket
+    public ou cache, jamais la zone _restreint) : une étape dont une entrée manque y est « conservée » par
+    pipeline/tout.py et n'est pas rejouée ici, au lieu d'échouer sur un fichier absent."""
+    sys.path.insert(0, str(ROOT / "pipeline"))
+    import entrepot_distant as ed
+    etape = Path(commande[0]).stem
+    return all((ROOT / x["chemin"]).exists() and ed._fichiers_sous(x["chemin"]) for x in ed.entrees_etape(etape))
 
 
 def _bac(tmp: Path) -> Path:
