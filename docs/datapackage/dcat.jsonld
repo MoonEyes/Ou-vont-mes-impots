@@ -4452,13 +4452,13 @@
   },
   {
    "@type": "dcat:Distribution",
-   "dct:title": "impôt sur le revenu par tranche de revenu fiscal de référence, communes d'un département où la DGFiP publie ce détail (pipeline/revenus_communes.py)",
-   "dct:description": "site/data/revenus_communes/tranches/<annee>/<dep>.json : impôt sur le revenu par tranche de revenu fiscal de référence, communes d'un département où la DGFiP publie ce détail (pipeline/revenus_communes.py). Famille de 2312 fichiers (motif site/data/revenus_communes/tranches/*/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dct:title": "impôt sur le revenu par tranche de revenu fiscal de référence, communes d'un département où la DGFiP publie ce détail, toutes les années, une clé par année (pipeline/revenus_communes.py)",
+   "dct:description": "site/data/revenus_communes/tranches/<dep>.json : impôt sur le revenu par tranche de revenu fiscal de référence, communes d'un département où la DGFiP publie ce détail, toutes les années, une clé par année (pipeline/revenus_communes.py). Famille de 101 fichiers (motif site/data/revenus_communes/tranches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "dcat:accessURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/revenus_communes/tranches/2002/01.json"
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/revenus_communes/tranches/01.json"
    },
    "dcat:downloadURL": {
-    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/revenus_communes/tranches/2002/01.json"
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/revenus_communes/tranches/01.json"
    },
    "dct:format": "JSON",
    "dcat:mediaType": "application/json",

@@ -180,8 +180,12 @@ def test_un_fichier_par_departement_de_local_et_toutes_les_communes():
         assert f.stat().st_size < rc.MAX_OCTETS, f.name
         if geo:
             assert set(d["communes"]) == set(geo[f.stem]["communes"]), f.name
-    for f in (DOSSIER / "tranches").rglob("*.json"):
-        assert f.stat().st_size < rc.MAX_OCTETS, f
+    tranches = sorted((DOSSIER / "tranches").rglob("*.json"))
+    assert tranches and all(f.parent == DOSSIER / "tranches" for f in tranches)   # un fichier par département
+    for f in tranches:
+        assert f.stat().st_size < rc.MAX_OCTETS_TELECHARGEMENT, f
+        d = json.loads(f.read_text(encoding="utf-8"))
+        assert d["annees"] == sorted(int(a) for a in d["par_annee"]) and d["departement"]["code"] == f.stem
 
 
 @publie
@@ -200,15 +204,16 @@ def test_series_alignees_et_raison_de_chaque_ligne_absente():
                     assert ligne[1] <= ligne[0], (f.name, code, a)   # foyers imposés <= foyers
             for a, codes in c.get("recompose", {}).items():
                 assert codes and codes != [code] and c["ircom"][annees.index(int(a))] is not None, (f.name, code, a)
-            for a in c.get("tranches", []):
-                t = json.loads((DOSSIER / "tranches" / str(a) / f"{f.stem}.json").read_text(encoding="utf-8"))
-                assert code in t["communes"], (code, a)
+            if c.get("tranches"):
+                t = json.loads((DOSSIER / "tranches" / f"{f.stem}.json").read_text(encoding="utf-8"))
+                for a in c["tranches"]:
+                    assert code in t["par_annee"][str(a)]["communes"], (code, a)
 
 
 @publie
 def test_valeurs_masquees_null_et_jamais_zero():
-    t = json.loads((DOSSIER / "tranches" / "2024" / "01.json").read_text(encoding="utf-8"))
-    amberieu = t["communes"]["01004"]
+    t = json.loads((DOSSIER / "tranches" / "01.json").read_text(encoding="utf-8"))
+    amberieu = t["par_annee"]["2024"]["communes"]["01004"]
     assert amberieu[1][1] is None   # « n.c. » publié par la DGFiP (foyers imposés, tranche 10 001 à 12 000)
     assert amberieu[0][4] < 0       # impôt net négatif publié tel quel (restitutions)
     idx = _index()

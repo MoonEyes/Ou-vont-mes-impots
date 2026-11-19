@@ -1542,9 +1542,9 @@
   },
   {
    "@type": "DataDownload",
-   "name": "impôt sur le revenu par tranche de revenu fiscal de référence, communes d'un département où la DGFiP publie ce détail (pipeline/revenus_communes.py)",
+   "name": "impôt sur le revenu par tranche de revenu fiscal de référence, communes d'un département où la DGFiP publie ce détail, toutes les années, une clé par année (pipeline/revenus_communes.py)",
    "encodingFormat": "application/json",
-   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/revenus_communes/tranches/2002/01.json"
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/revenus_communes/tranches/01.json"
   },
   {
    "@type": "DataDownload",

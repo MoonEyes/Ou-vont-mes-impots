@@ -11280,9 +11280,9 @@
   },
   {
    "name": "revenus-communes-tranches",
-   "title": "impôt sur le revenu par tranche de revenu fiscal de référence, communes d'un département où la DGFiP publie ce détail (pipeline/revenus_communes.py)",
-   "description": "site/data/revenus_communes/tranches/<annee>/<dep>.json : impôt sur le revenu par tranche de revenu fiscal de référence, communes d'un département où la DGFiP publie ce détail (pipeline/revenus_communes.py). Famille de 2312 fichiers (motif site/data/revenus_communes/tranches/*/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
-   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/revenus_communes/tranches/2002/01.json",
+   "title": "impôt sur le revenu par tranche de revenu fiscal de référence, communes d'un département où la DGFiP publie ce détail, toutes les années, une clé par année (pipeline/revenus_communes.py)",
+   "description": "site/data/revenus_communes/tranches/<dep>.json : impôt sur le revenu par tranche de revenu fiscal de référence, communes d'un département où la DGFiP publie ce détail, toutes les années, une clé par année (pipeline/revenus_communes.py). Famille de 101 fichiers (motif site/data/revenus_communes/tranches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/revenus_communes/tranches/01.json",
    "format": "json",
    "mediatype": "application/json",
    "encoding": "utf-8",
@@ -11314,33 +11314,12 @@
      "path": "https://api.insee.fr/melodi/file/DS_FILOSOFI_CC/DS_FILOSOFI_CC_2023_CSV_FR"
     }
    ],
-   "motif": "site/data/revenus_communes/tranches/*/*.json",
-   "nombre_fichiers": 2312,
+   "motif": "site/data/revenus_communes/tranches/*.json",
+   "nombre_fichiers": 101,
    "etape_pipeline": "revenus_communes",
    "millesimes": [
-    "Revenus 2002 (IRCOM 2003, impôt sur les revenus de 2002 déclarés en 2003)",
-    "Revenus 2003 (IRCOM 2004, impôt sur les revenus de 2003 déclarés en 2004)",
-    "Revenus 2004 (IRCOM 2005, impôt sur les revenus de 2004 déclarés en 2005)",
-    "Revenus 2005 (IRCOM 2006, impôt sur les revenus de 2005 déclarés en 2006)",
-    "Revenus 2006 (IRCOM 2007, impôt sur les revenus de 2006 déclarés en 2007)",
-    "Revenus 2007 (IRCOM 2008, impôt sur les revenus de 2007 déclarés en 2008)",
-    "Revenus 2008 (IRCOM 2009, impôt sur les revenus de 2008 déclarés en 2009)",
-    "Revenus 2009 (IRCOM 2010, impôt sur les revenus de 2009 déclarés en 2010)",
-    "Revenus 2010 (IRCOM 2011, impôt sur les revenus de 2010 déclarés en 2011)",
-    "Revenus 2011 (IRCOM 2012, impôt sur les revenus de 2011 déclarés en 2012)",
-    "Revenus 2012 (IRCOM 2013, impôt sur les revenus de 2012 déclarés en 2013)",
-    "Revenus 2013 (IRCOM 2014, impôt sur les revenus de 2013 déclarés en 2014)",
-    "Revenus 2014 (IRCOM 2015, impôt sur les revenus de 2014 déclarés en 2015)",
-    "Revenus 2015 (IRCOM 2016, impôt sur les revenus de 2015 déclarés en 2016)",
-    "Revenus 2016 (IRCOM 2017, impôt sur les revenus de 2016 déclarés en 2017)",
-    "Revenus 2017 (IRCOM 2018, impôt sur les revenus de 2017 déclarés en 2018)",
-    "Revenus 2018 (IRCOM 2019, impôt sur les revenus de 2018 déclarés en 2019)",
-    "Revenus 2019 (IRCOM 2020, impôt sur les revenus de 2019 déclarés en 2020)",
-    "Revenus 2020 (IRCOM 2021, impôt sur les revenus de 2020 déclarés en 2021)",
-    "Revenus 2021 (IRCOM 2022, impôt sur les revenus de 2021 déclarés en 2022)",
-    "Revenus 2022 (IRCOM 2023, impôt sur les revenus de 2022 déclarés en 2023)",
-    "Revenus 2023 (IRCOM 2024, impôt sur les revenus de 2023 déclarés en 2024)",
-    "Revenus 2024 (IRCOM 2025, impôt sur les revenus de 2024 déclarés en 2025)"
+    "Revenus 2002 à 2024 (IRCOM 2003 à 2025), années où la DGFiP publie ce détail pour au moins une commune du département",
+    "Revenus 2013 à 2024 (IRCOM 2014 à 2025), années où la DGFiP publie ce détail pour au moins une commune du département"
    ],
    "sources_declarees": [
     "DGFiP, « L'impôt sur le revenu par collectivité territoriale (IRCOM) » : foyers fiscaux, revenu fiscal de référence, impôt net, foyers imposés, par commune et par tranche de revenu fiscal de référence ; https://www.data.gouv.fr/datasets/536998cba3a729239d20505e"

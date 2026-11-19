@@ -1348,14 +1348,14 @@ data/lake/revenus_communes/ (IRCOM : une archive par année, classeurs départem
                              table de passage annuelle des communes 2026)
 data/lake/comptes_nationaux/insee_ds_filosofi_cc.zip (Filosofi 2 2023)      site/data/local/geo/<dep>.json
      └─> pipeline/revenus_communes.py ─> site/data/revenus_communes/index.json, communes/<dep>.json,
-                                          tranches/<annee>/<dep>.json (chacun < 1 Mo)
+                                          tranches/<dep>.json (communes et index < 1 Mo, tranches < 5 Mo)
 ```
 
 | Fichier | Schéma | Contenu |
 |---|---|---|
 | `revenus_communes/index.json` | `revenus_communes_index` | `annees[]` (par année de revenus : `annee_imposition`, `ircom`, `url`, `geographie_source`, `rapprochement` avec `non_rattaches[]`, `unite_source`, `libelle_foyers_imposes`, `notes_source`, `tranches[]`, `colonnes_tranches`, `marques_source`, `communes` (comptes), `totaux_departementaux`, `departements_tranches`), `colonnes`, `definitions`, `ruptures[]`, `regle_null`, `etats`, `statuts_filosofi`, `filosofi[]` (millésime, dispositif, géographie, champ, statuts), `departements[]` (lien `fichier`), `controles` (bilan), `methode`, `limites`, `non_repris`, `sources`, `sources_inaccessibles`, `recherche_publique` |
 | `revenus_communes/communes/<dep>.json` | `revenus_communes_communes` | `annees` (années de revenus), `colonnes`, `communes.<insee>` : `nom`, `ircom[]`, `etat`, `perimetre`, `recompose`, `tranches`, `cimr`, `filosofi[]`, `filosofi_anciennes` ; `controles[]` (somme des communes contre total départemental publié) |
-| `revenus_communes/tranches/<annee>/<dep>.json` | `revenus_communes_tranches` | `tranches[]` (`libelle` publié, `de_eur`, `a_eur`), `colonnes`, `communes.<insee>` : une ligne par tranche, dans l'ordre de `tranches` ; un fichier par département et par année, s'il a au moins une commune avec ce détail |
+| `revenus_communes/tranches/<dep>.json` | `revenus_communes_tranches` | `annees[]` (années présentes), `par_annee.<AAAA>` : `millesime`, `annee`, `tranches[]` (`libelle` publié, `de_eur`, `a_eur`), `colonnes`, `communes.<insee>` (une ligne par tranche, dans l'ordre de `tranches` de cette année) ; un fichier par département, toutes années, s'il a au moins une commune avec ce détail une année (regroupement du 19/11/2026 : auparavant `tranches/<annee>/<dep>.json`, 2 312 fichiers ; aucun écran ne le lit, téléchargement seulement) |
 
 | Champ | Sens |
 |---|---|
@@ -1363,7 +1363,7 @@ data/lake/comptes_nationaux/insee_ds_filosofi_cc.zip (Filosofi 2 2023)      site
 | null dans une ligne | valeur non communiquée par la DGFiP (« n.c. », « n.d. » : secret statistique ; « . » ; « #VALUE! » des revenus 2002 dans le Cher ; cellule vide), pour la commune ou pour l'une des anciennes communes recomposées : jamais 0, jamais estimée (`regle_null`) |
 | `etat.<AAAA>` | raison d'une ligne null : `absente` (aucune ligne de la source, par exemple Mayotte avant les revenus 2013, villages sans habitants), `incomplete` (une partie des anciennes communes manque, aucune somme partielle), `perimetre` (un code de la source couvrait aussi le territoire d'une autre commune actuelle, scission postérieure) ; détail dans `perimetre.<AAAA>` |
 | `recompose.<AAAA>` | codes de la source dont la ligne est la somme : anciennes communes d'une commune nouvelle, arrondissements de Paris, Marseille et Lyon (codes Insee des arrondissements), ou ancien code d'une commune qui a changé de code |
-| `tranches` | années de revenus dont le détail par tranche est dans `tranches/<annee>/<dep>.json` (détail publié par la DGFiP, constaté pour les communes d'environ 1 000 foyers ou plus) |
+| `tranches` | années de revenus dont le détail par tranche est dans `tranches/<dep>.json`, clé `par_annee.<AAAA>` (détail publié par la DGFiP, constaté pour les communes d'environ 1 000 foyers ou plus) |
 | `cimr.<AAAA>` | revenus 2018 : `[impot_net_avant_cimr_eur, cimr_eur]` ; `impot_net_eur` de cette année est l'impôt après crédit d'impôt de modernisation du recouvrement (même note « * » de la DGFiP que les autres années) |
 | `filosofi[k]` | aligné sur `filosofi_millesimes` (2021, 2023) : `[mediane_eur, menages, statut]` ; `statut` = `publie`, `secret` (statut « C » de l'Insee), `valeur_manquante` (statut « O »), `hors_champ` (Guadeloupe, Guyane, Mayotte ; Martinique aussi en 2023), `absente`, `perimetre` (commune créée après la géographie du millésime : médianes des anciennes communes dans `filosofi_anciennes`, jamais combinées) ; `menages` null en 2023 (non publié à la commune) |
 | `controles[]` | par année et grandeur (`foyers`, `rfr_eur`, `impot_net_eur`) : `source` = somme des communes publiées, `autre_source` = total départemental publié, `ecart`, `ecart_pct`, `valeurs_non_communiquees` ; lecture dans `controles_lecture` |

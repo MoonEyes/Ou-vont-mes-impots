@@ -117,6 +117,10 @@ Budgets de `web/tests/performance.test.ts` (mesure plus 10 %) : HTML total < 43,
 
 La première ligne suffit à repasser sous 14 000 (13 149). Le contrat (`docs/contrat_interface.md`, `datapackage.json`) change avec elle : ce n'est pas fait ici.
 
+**Fait le 19/11/2026 (première ligne).** `revenus_communes/tranches/<dep>.json` : un fichier par département, toutes années (`par_annee.<AAAA>`), produit par `pipeline/revenus_communes.py` (contenu de chaque année identique à l'ancien fichier, vérifié bloc par bloc sur les 2 312 fichiers ; plus grand fichier 1,7 Mo, département du Nord, sous la limite de 5 Mo des fichiers de téléchargement). Contrat, schémas, `valider_contrat.py` et `docs/datapackage/` mis à jour. Mesure (`npm run build`) : `dist/` passe de 15 366 à 13 155 fichiers (dont 10 625 de données), sous la cible de 13 500. Budget de `web/tests/performance.test.ts` : 14 470 fichiers (mesure plus 10 %).
+
+Autres lignes non faites, car pas sûres sans changer ce que lit le navigateur : regrouper `local/decisions/<siren>/<annee>.json` par collectivité ferait charger toutes les années à `ma_commune` (jusqu'à 1,5 Mo par année aujourd'hui, au-delà de la limite de 1 Mo des fichiers lus par le navigateur une fois regroupés) ; regrouper `deliberations/collectivites/<siren>.json` par département ferait charger à `ma_commune` et `commune_investissement` tout le département pour une collectivité. Elles restent des pistes pour leurs responsables.
+
 ## Déjà fait côté site (sans changement de format)
 
 - Commune : titre, population et liens affichés dès la géographie (environ 7 Ko compressés) ; budgets ensuite, puis dotations, taux et subventions demandés seulement après les budgets.

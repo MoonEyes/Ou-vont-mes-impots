@@ -191,7 +191,7 @@
      },
      "fichiers_tranches": {
       "type": "string",
-      "pattern": "^revenus_communes/tranches/[0-9]{4}/<dep>\\.json$"
+      "pattern": "^revenus_communes/tranches/<dep>\\.json, par_annee\\.[0-9]{4}$"
      },
      "departements_tranches": {
       "type": "array",

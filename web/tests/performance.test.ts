@@ -18,7 +18,8 @@ const FICHIER = join(RACINE, 'src', 'composants', 'trame-france.svg')
  * Budgets (octets), docs/PERF.md : mesure du 19/11/2026 plus 10 %. Avant la trame partagée 99,3 Mo de HTML ; avant
  * l'allègement des pages locales 69,9 Mo ; 46,3 Mo avant l'allègement du 19/11 (blancs, données structurées, encadré
  * « Signaler » posé par le script sur les pages locales) ; après 39,4 Mo (commune 15,7 Ko au plus, 4,7 Ko transférés ;
- * département 27,1 Ko au plus ; 15 360 fichiers dans dist/). Un nouveau bloc des pages commune ou département se rend
+ * département 27,1 Ko au plus ; 15 360 fichiers dans dist/, 13 155 après le regroupement des tranches de revenus
+ * par département du 19/11). Un nouveau bloc des pages commune ou département se rend
  * dans le navigateur (DETAIL_COMMUNE, DETAIL_DEPARTEMENT), le HTML prérendu n'en garde qu'une ligne.
  */
 const BUDGET = {
@@ -26,7 +27,7 @@ const BUDGET = {
   page_commune: 17.2e3,
   page_commune_gzip: 5.2e3,
   page_departement: 29.8e3,
-  fichiers_dist: 16900,
+  fichiers_dist: 14470,
   encadre_ou_cest: 1500,
   fond_partage: 12e3,
 }

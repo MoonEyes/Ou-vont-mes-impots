@@ -11,10 +11,14 @@ Entrées (data/lake, collectées par collecte/collecte.py ; identifiants déclar
   comptes_nationaux/insee_ds_filosofi_cc.zip           Filosofi 2 2023 (Melodi DS_FILOSOFI_CC), géographie 2026
   revenus_communes/revenus_communes_passage_cog.zip    table de passage annuelle des communes 2026 (Insee)
   lecture seule : site/data/local/geo/<dep>.json (communes du COG en vigueur, noms officiels)
-Sorties (site/data/revenus_communes/, chaque fichier < 1 Mo, avec `millesime` et `source`) :
+Sorties (site/data/revenus_communes/, avec `millesime` et `source`) :
   index.json                   années, colonnes, définitions, ruptures, couverture, contrôles, sources, recherche
   communes/<dep>.json          par commune : série IRCOM (cinq grandeurs, toutes les années), médianes Filosofi
-  tranches/<annee>/<dep>.json  par commune et par tranche de revenu fiscal de référence (communes où c'est publié)
+                               (< 1 Mo : lu par le navigateur)
+  tranches/<dep>.json          par commune et par tranche de revenu fiscal de référence, toutes les années où c'est
+                               publié, une clé par année dans `par_annee` (< 5 Mo : téléchargement seulement, aucun
+                               écran ne le lit ; un fichier par département et non par année et par département, pour
+                               rester sous la limite de fichiers de l'hébergeur, docs/PERF.md)
 
 Commandes :
   python pipeline/revenus_communes.py collecter     # réseau : collecte/collecte.py sur les quatre sources
@@ -57,6 +61,7 @@ SITE = ROOT / "site" / "data"
 GEO = SITE / "local" / "geo"
 SORTIE_DEFAUT = SITE / "revenus_communes"
 MAX_OCTETS = 1_000_000          # fichiers lus par le navigateur
+MAX_OCTETS_TELECHARGEMENT = 5_000_000   # tranches/<dep>.json : téléchargement seulement (règle commune : < 5 Mo)
 COG = 2026                      # géographie de la table de passage et de local/geo
 
 ID_IRCOM = "revenus_communes_ircom"
@@ -931,12 +936,12 @@ def filosofi_vigueur(filo: dict, geo: int, passage: dict, cibles: list[str], dep
 
 # --- Production ----------------------------------------------------------------------------------------------------------
 
-def dump(path: Path, obj) -> int:
+def dump(path: Path, obj, max_octets: int = MAX_OCTETS) -> int:
     path.parent.mkdir(parents=True, exist_ok=True)
     txt = json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
     n = len(txt.encode("utf-8"))
-    if n > MAX_OCTETS:
-        raise SystemExit(f"{path} dépasse 1 Mo ({n} octets) : découper")
+    if n > max_octets:
+        raise SystemExit(f"{path} dépasse {max_octets} octets ({n} octets) : découper")
     tmp = path.with_suffix(".part")
     tmp.write_text(txt + "\n", encoding="utf-8")
     tmp.replace(path)
@@ -1051,6 +1056,7 @@ def produire(sortie: Path = SORTIE_DEFAUT, seulement: set[int] | None = None) ->
     etats = defaultdict(dict)
     recompositions = defaultdict(dict)
     avec_tranches = defaultdict(list)
+    tranches_dep = defaultdict(dict)   # dep -> {annee: bloc de l'année}
     details_perimetre = defaultdict(dict)
     cimr = defaultdict(dict)
     infos_annees, controles, totaux = [], defaultdict(list), {}
@@ -1092,17 +1098,11 @@ def produire(sortie: Path = SORTIE_DEFAUT, seulement: set[int] | None = None) ->
         fichiers_tranches = []
         bornes_tr = [{"libelle": x, "de_eur": bornes(x)[0], "a_eur": bornes(x)[1]} for x in tranches]
         for dep, communes in sorted(lignes_tranches.items()):
-            dump(sortie / "tranches" / str(annee) / f"{dep}.json", {
+            tranches_dep[dep][str(annee)] = {
                 "millesime": f"Revenus {annee} (IRCOM {annee + 1}, impôt sur les revenus de {annee} déclarés en "
                              f"{annee + 1})",
-                "source": SOURCES["ircom"]["titre"] + " ; " + SOURCES["ircom"]["page"],
-                "unite": "foyers fiscaux ; euros", "date_sources": date, "annee": annee,
-                "departement": {"code": dep, "nom": vigueur[dep]["nom"]},
-                "tranches": bornes_tr, "colonnes": colonnes_tr, "regle_null": REGLE_NULL,
-                "note": "une ligne par tranche, dans l'ordre de `tranches` ; communes en vigueur ; une commune issue "
-                        "de fusions ne figure que si chacune de ses anciennes communes publie ce détail (somme)",
-                "communes": dict(sorted(communes.items())),
-                "liens": {"communes": f"revenus_communes/communes/{dep}.json"}})
+                "annee": annee, "tranches": bornes_tr, "colonnes": colonnes_tr,
+                "communes": dict(sorted(communes.items()))}
             fichiers_tranches.append(dep)
         # ruptures relevées dans les fichiers (libellés, tranches, colonnes propres à une année)
         libelle = norm_libelle(ircom["libelle_imposes"])
@@ -1144,7 +1144,7 @@ def produire(sortie: Path = SORTIE_DEFAUT, seulement: set[int] | None = None) ->
                         "lignes_sans_commune_ignorees": ircom["lignes_sans_commune"]},
             "communes": dict(sorted(compte.items())),
             "totaux_departementaux": totaux[annee],
-            "fichiers_tranches": f"revenus_communes/tranches/{annee}/<dep>.json",
+            "fichiers_tranches": f"revenus_communes/tranches/<dep>.json, par_annee.{annee}",
             "departements_tranches": fichiers_tranches,
         })
         print(f"revenus {annee} : géographie {geo}, {compte['communes_publiees']} communes, "
@@ -1152,6 +1152,22 @@ def produire(sortie: Path = SORTIE_DEFAUT, seulement: set[int] | None = None) ->
               f"rattachés", flush=True)
     ruptures += ruptures_documentees(totaux)
     ruptures.sort(key=lambda x: (x["annee"], x["grandeur"], x["type"]))
+
+    for dep, par_annee in sorted(tranches_dep.items()):
+        ans = sorted(int(a) for a in par_annee)
+        dump(sortie / "tranches" / f"{dep}.json", {
+            "millesime": f"Revenus {ans[0]} à {ans[-1]} (IRCOM {ans[0] + 1} à {ans[-1] + 1}), années où la DGFiP "
+                         f"publie ce détail pour au moins une commune du département",
+            "source": SOURCES["ircom"]["titre"] + " ; " + SOURCES["ircom"]["page"],
+            "unite": "foyers fiscaux ; euros", "date_sources": date,
+            "departement": {"code": dep, "nom": vigueur[dep]["nom"]},
+            "annees": ans, "regle_null": REGLE_NULL,
+            "note": "par année (`par_annee.<annee>`) : une ligne par tranche, dans l'ordre de `tranches` de cette "
+                    "année ; les tranches changent d'une période à l'autre (voir `ruptures` de l'index) ; communes en "
+                    "vigueur ; une commune issue de fusions ne figure que si chacune de ses anciennes communes publie "
+                    "ce détail (somme)",
+            "par_annee": {str(a): par_annee[str(a)] for a in ans},
+            "liens": {"communes": f"revenus_communes/communes/{dep}.json"}}, MAX_OCTETS_TELECHARGEMENT)
 
     # Filosofi
     filosofi = {}
@@ -1266,7 +1282,7 @@ def produire(sortie: Path = SORTIE_DEFAUT, seulement: set[int] | None = None) ->
         "sources_inaccessibles": inaccessibles,
         "recherche_publique": RECHERCHE_PUBLIQUE,
         "liens": {"geo": "local/geo/<dep>.json", "communes": "revenus_communes/communes/<dep>.json",
-                  "tranches": "revenus_communes/tranches/<annee>/<dep>.json"},
+                  "tranches": "revenus_communes/tranches/<dep>.json"},
     }
     dump(sortie / "index.json", index)
     print(f"revenus_communes : {len(resume)} départements, {len(annees)} années, fichier max {max(tailles.values())} "
