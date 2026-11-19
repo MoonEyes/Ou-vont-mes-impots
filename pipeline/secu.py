@@ -792,16 +792,30 @@ def produire() -> dict:
                "l'Unédic. Chaque nœud : montant (Md€), sources, part du montant lue directement dans une source "
                "(tracabilite_pct) ; chaque feuille : mode de traçabilité. Les écarts avec d'autres sources sont "
                "listés dans `ecarts`, jamais lissés.")
-    avert = ("Les organismes se versent des fonds entre eux : les transferts entre branches et avec le FSV sont "
-             "déduits (nœud négatif) ; restent comptés deux fois les cotisations de retraite complémentaire des "
-             "chômeurs (Unédic vers Agirc-Arrco, 2,5 Md€ en 2024) et les versements du FSV aux régimes "
-             "complémentaires (0,2 Md€). La CADES rembourse la dette passée de la sécurité sociale. La branche "
-             "vieillesse des régimes de base inclut les pensions des fonctionnaires (régimes spéciaux).")
-    for nom, (rows, ecarts), mill, dossier, src_txt in (
+    commun = ("La CADES rembourse la dette passée de la sécurité sociale. La branche vieillesse des régimes de base "
+              "inclut les pensions des fonctionnaires (régimes spéciaux).")
+
+    def officiel(total: float, texte: str) -> str:
+        # Total du tableau d'équilibre voté (article 1), lu dans le texte par verifier_documents().
+        return ("Ce total n'est pas un chiffre publié : il additionne les comptes de plusieurs organismes. Le chiffre "
+                "officiel le plus proche, les dépenses des régimes obligatoires de base et du FSV, est de "
+                f"{f'{total:.1f}'.replace('.', ',')} Md€ ({texte}, article 1).")
+
+    # Avertissement propre à chaque vue : la vue 2025 n'a pas de régimes complémentaires, donc aucun des deux doubles
+    # comptes cités pour 2024 (versements de l'Unédic et du FSV aux régimes complémentaires) ne s'y produit.
+    avert_2024 = ("Les organismes se versent des fonds entre eux : les transferts entre branches et avec le FSV sont "
+                  "déduits (nœud négatif) ; restent comptés deux fois les cotisations de retraite complémentaire des "
+                  "chômeurs (Unédic vers Agirc-Arrco, 2,5 Md€ en 2024) et les versements du FSV aux régimes "
+                  "complémentaires (0,2 Md€). " + commun + " " + officiel(ROBSS_2024_TOTAL_Y_C_FSV, "PLACSS 2024"))
+    avert_2025 = ("Les organismes se versent des fonds entre eux : les transferts entre branches et avec le FSV sont "
+                  "déduits (nœud négatif). " + commun + " Les régimes complémentaires (Agirc-Arrco et autres) ne "
+                  "figurent pas dans cette vue, leurs comptes 2025 n'étant pas collectés : ce total ne se compare pas "
+                  "à celui de 2024. " + officiel(ROBSS_2025_TOTAL_Y_C_FSV, "PLACSS 2025"))
+    for nom, (rows, ecarts), mill, dossier, src_txt, avert in (
             ("arbre", lignes_2024(), "Exécution 2024", SORTIE / "arbre",
-             "PLACSS 2024 (texte, annexes 1, 3, 4, 7), DSS Chiffres clés 2024, Unédic (data.gouv.fr)"),
+             "PLACSS 2024 (texte, annexes 1, 3, 4, 7), DSS Chiffres clés 2024, Unédic (data.gouv.fr)", avert_2024),
             ("arbre_2025", lignes_2025(), "Exécution 2025", SORTIE / "arbre_2025",
-             "PLACSS 2025 (texte), Unédic (data.gouv.fr)")):
+             "PLACSS 2025 (texte), Unédic (data.gouv.fr)", avert_2025)):
         cles = {r["source"] for r in rows} | {e["source"] for v in ecarts.values() for e in v}
         entete = {"millesime": mill, "source": src_txt, "unite": UNITE}
         dest = DEST_ROBSS if nom == "arbre" else {k: v for k, v in DEST_ROBSS.items() if k != "complementaires/agirc_arrco"}
