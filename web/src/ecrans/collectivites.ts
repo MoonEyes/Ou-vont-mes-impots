@@ -2,7 +2,7 @@
 import { partPersonnelle } from '../composants/hub'
 import { pastilleNiveau } from '../composants/niveaux'
 import { chargerSiPresent, type Noeud } from '../donnees'
-import { absent, barres, eurLisible, h, md, source, sur100, surligne } from '../util'
+import { absent, badgeCalcule, barres, eurLisible, h, md, source, sur100, surligne } from '../util'
 
 interface Budgets {
   millesime: string
@@ -59,8 +59,8 @@ ${
 }
 <h2>Régions et départements</h2>
 <ul class="liste-niveaux">
-  ${reg ? `<li>${pastilleNiveau('region')}Les 18 régions : ${h(eurLisible(reg.eur))} de dépenses en ${h(reg.annee)}.</li>` : ''}
-  ${dep ? `<li>${pastilleNiveau('departement')}Les départements : ${h(eurLisible(dep.eur))} de dépenses en ${h(dep.annee)}.</li>` : ''}
+  ${reg ? `<li>${pastilleNiveau('region')}Les régions et collectivités à statut particulier (${h(String(Object.keys(regions!.collectivites).length))} comptes publiés par l’OFGL ; Mayotte est comptée avec les départements) : ${h(eurLisible(reg.eur))} de dépenses en ${h(reg.annee)}. ${badgeCalcule(`somme des dépenses totales de chaque compte publié par l’OFGL pour ${reg.annee}, même année et même base`)}</li>` : ''}
+  ${dep ? `<li>${pastilleNiveau('departement')}Les départements (${h(String(Object.keys(deps!.collectivites).length))} comptes publiés par l’OFGL, dont Paris et la métropole de Lyon) : ${h(eurLisible(dep.eur))} de dépenses en ${h(dep.annee)}. ${badgeCalcule(`somme des dépenses totales de chaque compte publié par l’OFGL pour ${dep.annee}, même année et même base`)}</li>` : ''}
 </ul>
 ${regions ? source(regions.source, regions.millesime) : ''}
 <p class="aide">Ne pas additionner les niveaux : une partie de l’argent passe de l’un à l’autre (dotations, reversements).</p>
