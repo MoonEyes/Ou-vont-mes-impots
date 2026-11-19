@@ -51,7 +51,7 @@ const CAS: [string, Manque][] = [
   ['cotisations', MANQUES.cotisationsDecret()],
   ['délibérations', MANQUES.deliberations('Lécousse', { date_releve: '2026-11-18', absence: 'ne publie pas ses délibérations en données ouvertes', absence_detail: 'aucun jeu trouvé sur data.gouv.fr le 2026-11-18', couverture: { commune: { publient: 1145, total: 34875 } } })],
   ['fonds européens', MANQUES.fondsEuropeensCommunes({ region: 'Occitanie', listes: [{ autorite_de_gestion: 'Région Bretagne', collecte_le: '2026-11-18' }], inaccessible: { url: 'https://www.europe-en-france.gouv.fr/fr', constat: 'vérification anti-robot' } })],
-  ['départements', MANQUES.departementFonctions('Loire-Atlantique', 'Comptes 2025')],
+  ['départements', MANQUES.departementFonctions('Loire-Atlantique', 'Comptes 2025', 97)],
 ]
 
 beforeAll(() => {

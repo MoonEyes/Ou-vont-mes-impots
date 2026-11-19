@@ -89,6 +89,48 @@ function blocCollectivite(opts: { titre: string; f: Fonctions | null; fc: ColFon
   return absent(opts.motif)
 }
 
+/** Présentation fonctionnelle des départements (OFGL), local/budgets/fonctions/departements.json. */
+export interface FonctionsDepartements {
+  millesime: string
+  source: string
+  annees: string[]
+  colonnes: string[]
+  note: string
+  departements: Record<string, { nom: string; population: Record<string, number>; fonctions: Record<string, { libelle: string; eur: Record<string, (number | null)[]> }> }>
+}
+
+export const METHODE_SUR100_DEPARTEMENT =
+  'part de la fonction dans les dépenses de fonctionnement et d’investissement (hors remboursements d’emprunts) publiées par l’OFGL pour chaque fonction, une même année, budget principal et budgets annexes additionnés ; une section sans ligne publiée pour une fonction n’ajoute rien'
+
+/** Libellé de l'OFGL tel quel, sauf écrit tout en capitales (« SERVICES GÉNÉRAUX ») : remis en minuscules. */
+const libelleOfgl = (x: string) => (x === x.toUpperCase() ? x.charAt(0) + x.slice(1).toLowerCase() : x)
+
+/** Dépenses d'un département par fonction (niveau 1) sur 100 €, dernier exercice publié ; null si absent. */
+export function blocFonctionsDepartement(fd: FonctionsDepartements | null, code: string): string | null {
+  const d = fd?.departements[code]
+  if (!fd || !d) return null
+  const an = [...fd.annees].sort().reverse().find((a) => Object.values(d.fonctions).some((f) => f.eur[a]))
+  if (!an) return null
+  const somme = (v: (number | null)[] | undefined) => (v ?? []).reduce<number>((t, x) => t + (typeof x === 'number' ? x : 0), 0)
+  const lignes = Object.keys(d.fonctions)
+    .sort()
+    .map((k) => ({ nom: libelleOfgl(d.fonctions[k].libelle), eur: somme(d.fonctions[k].eur[an]) }))
+  const total = lignes.reduce((t, x) => t + x.eur, 0)
+  if (!(total > 0)) return null
+  const pop = d.population[an]
+  const visibles = lignes.filter((x) => x.eur > 0)
+  return `<h3>Par grande fonction</h3>
+<p>${h(eurLisible(total))} dépensés en ${h(an)} (fonctionnement et investissement hors remboursements d’emprunts, budget principal et budgets annexes)${pop ? `, soit ${h(eur(total / pop))} par habitant` : ''}. Sur 100 € dépensés :</p>
+${barres(
+  visibles.map((x) => ({ nom: x.nom, valeur: (x.eur / total) * 100, texte: sur100((x.eur / total) * 100), detail: eurLisible(x.eur) })),
+  undefined,
+  `Dépenses de ${d.nom} par fonction, en euros sur 100 €`,
+  -1,
+)}
+<p class="aide">Ordre des fonctions : celui de la nomenclature des départements. Les flux entre le budget principal et les budgets annexes ne sont pas retirés par la source. Sur 100 € et total : ${badgeCalcule(METHODE_SUR100_DEPARTEMENT)}</p>
+${source(fd.source, `exercice ${an}`)}`
+}
+
 type Decisions = { source: string; limites?: string; regle?: string; collectivites: Record<string, { type: string; code: string; nom: string; lignes: number; annees: string[] }> }
 type DecisionsAnnee = { source: string; millesime: string; annee: string; colonnes: string[]; lignes: (string | number | null)[][] }
 
@@ -301,7 +343,7 @@ ${idxMc ? source(idxMc.source, idxMc.millesime) : ''}`,
   const fonctionsDep = chargerSiPresent<Fonctions>(`local/fonctions/${dep}.json`)
 
   const budgets = (async () => {
-    const [noms, fc, fe, fr, bc, be, bd, br] = await Promise.all([
+    const [noms, fc, fe, fr, bc, be, bd, br, fdep] = await Promise.all([
       nomsFonctions,
       fonctionsDep,
       epci && epci.departement_siege !== dep ? chargerSiPresent<Fonctions>(`local/fonctions/${epci.departement_siege}.json`) : fonctionsDep,
@@ -310,6 +352,7 @@ ${idxMc ? source(idxMc.source, idxMc.millesime) : ''}`,
       epci ? chargerSiPresent<Budgets>(`local/budgets/epci/${epci.departement_siege}.json`) : Promise.resolve(null),
       chargerSiPresent<Budgets>('local/budgets/departements.json'),
       chargerSiPresent<Budgets>('local/budgets/regions.json'),
+      chargerSiPresent<FonctionsDepartements>('local/budgets/fonctions/departements.json'),
     ])
     remplir('mc-commune', blocCollectivite({ titre: `Le budget ${deCommune(g.nom)}`, f: fc, fc: fc?.communes?.[insee], noms, b: bc, bc: bc?.collectivites[insee], motif: 'Budget de la commune non disponible.' }))
     remplir(
@@ -318,7 +361,14 @@ ${idxMc ? source(idxMc.source, idxMc.millesime) : ''}`,
         ? blocCollectivite({ titre: epci.nom, f: fe, fc: fe?.epci?.[g.epci], noms, b: be, bc: be?.collectivites[g.epci], motif: 'Budget de l’intercommunalité non disponible.' })
         : `<p>${h(g.nom)} n’appartient à aucune intercommunalité à fiscalité propre dans le code officiel géographique (cas des communes isolées et des îles mono-communales).</p>`,
     )
-    remplir('mc-departement', blocCollectivite({ titre: geo.departement.nom, f: null, fc: undefined, noms, b: bd, bc: bd?.collectivites[g.departement], motif: `Budget du département ${geo.departement.nom} non disponible (collectivité à statut particulier : ses comptes sont publiés avec ceux de la région ou de la ville).`, sansFonction: 'le budget par fonction au format national n’est pas publié pour ce département (voir l’encadré).' }) + (bd?.collectivites[g.departement] ? encadreManque(MANQUES.departementFonctions(geo.departement.nom, bd.millesime)) : ''))
+    const parNatureDep = blocCollectivite({ titre: geo.departement.nom, f: null, fc: undefined, noms, b: bd, bc: bd?.collectivites[g.departement], motif: `Budget du département ${geo.departement.nom} non disponible (collectivité à statut particulier : ses comptes sont publiés avec ceux de la région ou de la ville).`, sansFonction: 'la présentation par fonction de l’OFGL ne couvre pas ce département.' })
+    const parFonctionDep = blocFonctionsDepartement(fdep, g.departement)
+    remplir(
+      'mc-departement',
+      parFonctionDep
+        ? `${parFonctionDep}${bd?.collectivites[g.departement] ? `<details class="aide"><summary>Le même département par nature de dépense (personnel, aides versées, équipements)</summary>${blocBudget(bd, bd.collectivites[g.departement], geo.departement.nom, false).replace(/^\s*<h2>[\s\S]*?<\/h2>/, '')}</details>` : ''}${encadreManque(MANQUES.departementFonctions(geo.departement.nom, fdep?.millesime, fdep ? Object.keys(fdep.departements).length : undefined))}`
+        : parNatureDep,
+    )
     remplir('mc-region', blocCollectivite({ titre: `Région ${geo.region.nom}`, f: fr, fc: fr?.regions?.[g.region], noms, b: br, bc: br?.collectivites[g.region], motif: `Budget de la région ${geo.region.nom} non disponible.` }))
   })()
 

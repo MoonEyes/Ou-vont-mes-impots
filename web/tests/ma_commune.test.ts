@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 // « Ma commune » (/local/ma-commune) : recherche par code postal ou nom (sans réseau externe) et page de synthèse,
 // sur des extraits réels de site/data (tests/fixtures/ma_commune/data : ma_commune/index.json complet, cp et noms
-// réduits ; local/geo, local/fonctions, local/budgets réduits à Nantes 44109 et Grandchamp-des-Fontaines 44066 et à
+// réduits ; local/geo, local/fonctions, local/budgets (fonctions des départements : Loire-Atlantique seule) réduits à Nantes 44109 et Grandchamp-des-Fontaines 44066 et à
 // leurs intercommunalités ; subventions publiées de Nantes 2021 et Nantes Métropole 2025 réduites à 30 lignes ;
 // opérations des fonds européens des Pays de la Loire situées dans ces deux communes ; typologies ; projets repris de
 // tests/fixtures/projets). Valeurs non modifiées.
@@ -135,7 +135,7 @@ describe('écran', () => {
     expect(main.querySelector('h1')?.textContent).toBe('Nantes')
     const t = texte()
     expect(t).toContain('ne pas additionner commune, intercommunalité, département et région')
-    // Budgets : commune et intercommunalité par fonction (balances DGFiP), département par nature (OFGL), région par fonction.
+    // Budgets : commune et intercommunalité par fonction (balances DGFiP), département par fonction (OFGL), région par fonction.
     const commune = main.querySelector('#mc-commune')!.textContent ?? ''
     expect(commune).toContain('Sur 100 € dépensés')
     expect(commune).toContain('Services généraux')
@@ -143,8 +143,19 @@ describe('écran', () => {
     expect(main.querySelector('#mc-epci-titre')!.textContent).toBe('L’intercommunalité : Nantes Métropole')
     expect(main.querySelector('#mc-epci')!.textContent).toContain('Sur 100 € dépensés')
     expect(main.querySelector('#mc-departement-titre')!.textContent).toBe('Le département : Loire-Atlantique')
-    expect(main.querySelector('#mc-departement')!.textContent).toContain('Par nature de dépense')
-    expect(main.querySelector('#mc-departement')!.textContent).toContain('collectivités pilotes')
+    // Département : par fonction (présentation fonctionnelle de l'OFGL), par nature replié, encadré sur le budget voté.
+    const departement = main.querySelector('#mc-departement')!
+    expect(departement.textContent).toContain('Par grande fonction')
+    expect(departement.textContent).toContain('Sur 100 € dépensés')
+    expect(departement.textContent).toContain('Action sociale')
+    expect(departement.textContent).toContain('Services généraux')
+    expect(departement.textContent).toContain('ofgl-base-departements-fonctionnelle')
+    expect(departement.querySelector('[data-calcule]')).not.toBeNull()
+    expect(departement.querySelector('details summary')?.textContent).toContain('par nature de dépense')
+    expect(departement.textContent).not.toContain('Pourquoi par nature et non par fonction')
+    const encadre = departement.querySelector('.manque')!
+    expect(encadre.textContent).toContain('budget voté (prévisionnel) par fonction')
+    expect(encadre.textContent).toContain('publiés par l’OFGL pour 1 département.')
     expect(main.querySelector('#mc-region')!.textContent).toContain('Sur 100 € dépensés')
     for (const id of ['mc-commune', 'mc-epci', 'mc-departement', 'mc-region', 'mc-beneficiaires', 'mc-europe', 'mc-projets', 'mc-comparer'])
       expect(main.querySelector(`#${id} .source`), `${id} : source`).not.toBeNull()

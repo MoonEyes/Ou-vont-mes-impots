@@ -82,10 +82,13 @@ export const MANQUES = {
       source: { libelle: 'Europe en France, listes des opérations', url: o.inaccessible?.url ?? 'https://www.europe-en-france.gouv.fr/fr' },
     }
   },
-  /** Budget d'un département par fonction, au format national des budgets. */
-  departementFonctions: (nom: string, millesime?: string): Manque => ({
-    quoi: `Le budget voté par fonction de ${nom} au format national d’échange des budgets (SCDL Budget).`,
-    pourquoi: 'Ce format est publié en données ouvertes par quelques collectivités pilotes (adhérents de Mégalis Bretagne, Nantes Métropole) ; les autres départements ne le publient pas. Cette page montre donc le département par nature de dépense ; la présentation par fonction que l’OFGL calcule à partir des comptes n’y est pas encore reprise.',
+  /**
+   * Département : les comptes par fonction sont repris (présentation fonctionnelle de l'OFGL) ; ce qui manque est le
+   * budget voté par fonction (prévisionnel) en données ouvertes, que seules quelques collectivités pilotes publient.
+   */
+  departementFonctions: (nom: string, millesime?: string, couverts?: number): Manque => ({
+    quoi: `Le budget voté (prévisionnel) par fonction de ${nom} en données ouvertes, au format national d’échange des budgets (SCDL Budget).`,
+    pourquoi: `Les montants par fonction de cette page sont ceux des comptes de l’exercice (dépenses réalisées), publiés par l’OFGL${couverts ? ` pour ${entier(couverts)} département${couverts > 1 ? 's' : ''}` : ''}. Le budget voté par fonction n’est publié au format national que par quelques collectivités pilotes (adhérents de Mégalis Bretagne, Nantes Métropole) ; aucun jeu de ${nom} à ce format n’a été trouvé dans les sources lues par le site.`,
     depuis: `Constat de la collecte${millesime ? ` (${millesime})` : ''}.`,
     source: { libelle: 'Schéma national « Budget » (schema.data.gouv.fr)', url: 'https://schema.data.gouv.fr/scdl/budget.html' },
   }),
