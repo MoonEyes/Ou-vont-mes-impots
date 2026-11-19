@@ -73,17 +73,44 @@
                       ]
                     }
                   }
+                },
+                "libelles": {
+                  "type": "object",
+                  "propertyNames": {
+                    "$ref": "commun.schema.json#/$defs/annee"
+                  },
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "libellé publié par l'OFGL pour chaque exercice ; `libelle` = celui du dernier exercice"
                 }
               },
               "required": [
+                "libelle",
+                "libelles",
                 "eur",
                 "eur_hab"
               ]
             }
+          },
+          "nomenclature": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "commun.schema.json#/$defs/annee"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "M52",
+                "M57"
+              ]
+            },
+            "description": "instruction budgétaire de chaque exercice : les codes de fonction n'ont pas le même sens en M52 et en M57"
           }
         },
         "required": [
           "population",
+          "nomenclature",
           "fonctions"
         ]
       }

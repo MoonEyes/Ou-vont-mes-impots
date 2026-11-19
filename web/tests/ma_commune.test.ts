@@ -147,7 +147,12 @@ describe('écran', () => {
     const departement = main.querySelector('#mc-departement')!
     expect(departement.textContent).toContain('Par grande fonction')
     expect(departement.textContent).toContain('Sur 100 € dépensés')
-    expect(departement.textContent).toContain('Action sociale')
+    // Loire-Atlantique en M57 depuis 2023 : la fonction 5 est « Aménagement des territoires et habitat » (libellé de
+    // l'exercice affiché, pas celui de 2022 en M52, « Action sociale »).
+    expect(departement.textContent).toContain('nomenclature M57 de l’exercice 2025')
+    expect(departement.textContent).toContain('Aménagement des territoires et habitat')
+    expect(departement.textContent).not.toContain('Action sociale ')
+    expect(departement.textContent).toContain('comprend l’allocation personnalisée d’autonomie (APA) et le revenu de solidarité active (RSA)')
     expect(departement.textContent).toContain('Services généraux')
     expect(departement.textContent).toContain('ofgl-base-departements-fonctionnelle')
     expect(departement.querySelector('[data-calcule]')).not.toBeNull()

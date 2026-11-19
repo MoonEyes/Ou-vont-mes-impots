@@ -438,7 +438,7 @@ def budgets_departements_regions(con, annees) -> dict:
 def fonctions_departements(con, annees) -> int:
     """Depenses (fonctionnement, investissement hors remboursements) par fonction de niveau 1, tous budgets."""
     a0 = annees[0]
-    lignes = rows(con, f"""select dep_code, dep_name, year(exer) annee, fonction, nom_fonction, agregat,
+    lignes = rows(con, f"""select dep_code, dep_name, year(exer) annee, nomen, fonction, nom_fonction, agregat,
                            sum(montant) m, max(ptot) pop
                            from '{COLL / 'local_departements_fonction.parquet'}'
                            where year(exer)>={a0} and niveau_hierarchique=1 and agregat in
@@ -446,10 +446,16 @@ def fonctions_departements(con, annees) -> int:
                            group by all order by all""")
     res = {}
     for r in lignes:
-        d = res.setdefault(r["dep_code"], {"nom": r["dep_name"], "population": {}, "fonctions": {}})
+        d = res.setdefault(r["dep_code"], {"nom": r["dep_name"], "population": {}, "nomenclature": {},
+                                           "fonctions": {}})
         a = str(r["annee"])
         d["population"][a] = int(r["pop"])
-        f = d["fonctions"].setdefault(r["fonction"], {"libelle": r["nom_fonction"], "eur": {}, "eur_hab": {}})
+        # Un meme code ne designe pas la meme fonction en M52 et en M57 (5 : action sociale, puis amenagement des
+        # territoires) : nomenclature et libelle lus pour chaque exercice ; `libelle` = celui du dernier exercice.
+        d["nomenclature"][a] = r["nomen"]
+        f = d["fonctions"].setdefault(r["fonction"], {"libelle": None, "libelles": {}, "eur": {}, "eur_hab": {}})
+        f["libelles"][a] = r["nom_fonction"]
+        f["libelle"] = f["libelles"][max(f["libelles"])]
         i = 0 if r["agregat"] == "Dépenses de fonctionnement" else 1
         v = euros(r["m"])
         f["eur"].setdefault(a, [None, None])[i] = v
@@ -459,7 +465,12 @@ def fonctions_departements(con, annees) -> int:
         "colonnes": ["depenses_fonctionnement", "depenses_investissement_hors_remboursements"],
         "unite": "euros ; eur_hab = eur / population de l'exercice",
         "note": "Presentation fonctionnelle de l'OFGL, niveau 1, budget principal et budgets annexes additionnes "
-                "(flux entre budgets non retires) ; APA, RSA et PCH sont dans la fonction 4.",
+                "(flux entre budgets non retires). Les codes de fonction dependent de la nomenclature de l'exercice "
+                "(`nomenclature.<annee>` : M52, puis M57 a partir de 2022 a 2024 selon le departement) : un meme "
+                "code ne se compare pas d'une nomenclature a l'autre ; libelle de chaque exercice dans "
+                "`libelles.<annee>` (`libelle` : dernier exercice). En M57, le montant de la fonction 4 est la somme "
+                "de ses sous-fonctions 41 a 44, APA (43) et RSA (44) compris, malgre la mention « hors APA, RSA » de "
+                "son libelle publie (verifie pour chaque departement et chaque exercice).",
         "departements": res})
     return len(res)
 

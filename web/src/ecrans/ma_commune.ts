@@ -96,7 +96,7 @@ export interface FonctionsDepartements {
   annees: string[]
   colonnes: string[]
   note: string
-  departements: Record<string, { nom: string; population: Record<string, number>; fonctions: Record<string, { libelle: string; eur: Record<string, (number | null)[]> }> }>
+  departements: Record<string, { nom: string; population: Record<string, number>; nomenclature?: Record<string, string>; fonctions: Record<string, { libelle: string | null; libelles?: Record<string, string>; eur: Record<string, (number | null)[]> }> }>
 }
 
 export const METHODE_SUR100_DEPARTEMENT =
@@ -114,11 +114,13 @@ export function blocFonctionsDepartement(fd: FonctionsDepartements | null, code:
   const somme = (v: (number | null)[] | undefined) => (v ?? []).reduce<number>((t, x) => t + (typeof x === 'number' ? x : 0), 0)
   const lignes = Object.keys(d.fonctions)
     .sort()
-    .map((k) => ({ nom: libelleOfgl(d.fonctions[k].libelle), eur: somme(d.fonctions[k].eur[an]) }))
+    .filter((k) => d.fonctions[k].eur[an])
+    .map((k) => ({ nom: libelleOfgl(d.fonctions[k].libelles?.[an] ?? d.fonctions[k].libelle ?? `Fonction ${k}`), eur: somme(d.fonctions[k].eur[an]) }))
   const total = lignes.reduce((t, x) => t + x.eur, 0)
   if (!(total > 0)) return null
   const pop = d.population[an]
   const visibles = lignes.filter((x) => x.eur > 0)
+  const horsApa = lignes.find((x) => /hors APA/i.test(x.nom))
   return `<h3>Par grande fonction</h3>
 <p>${h(eurLisible(total))} dépensés en ${h(an)} (fonctionnement et investissement hors remboursements d’emprunts, budget principal et budgets annexes)${pop ? `, soit ${h(eur(total / pop))} par habitant` : ''}. Sur 100 € dépensés :</p>
 ${barres(
@@ -127,7 +129,7 @@ ${barres(
   `Dépenses de ${d.nom} par fonction, en euros sur 100 €`,
   -1,
 )}
-<p class="aide">Ordre des fonctions : celui de la nomenclature des départements. Les flux entre le budget principal et les budgets annexes ne sont pas retirés par la source. Sur 100 € et total : ${badgeCalcule(METHODE_SUR100_DEPARTEMENT)}</p>
+<p class="aide">Ordre des fonctions et libellés : ceux de la nomenclature ${h(d.nomenclature?.[an] ?? 'budgétaire')} de l’exercice ${h(an)}, tels que publiés par l’OFGL (un même numéro de fonction ne désigne pas la même chose d’une nomenclature à l’autre). Les flux entre le budget principal et les budgets annexes ne sont pas retirés par la source.${horsApa ? ` « ${h(horsApa.nom)} » : libellé publié tel quel ; le montant publié pour cette fonction comprend l’allocation personnalisée d’autonomie (APA) et le revenu de solidarité active (RSA), qui sont deux de ses sous-fonctions dans la présentation de l’OFGL.` : ''} Sur 100 € et total : ${badgeCalcule(METHODE_SUR100_DEPARTEMENT)}</p>
 ${source(fd.source, `exercice ${an}`)}`
 }
 
