@@ -101,3 +101,13 @@ Sinon le chiffre est retiré de l'affichage, et de préférence mis à `null` av
 | Sommes et écarts entre chiffres publiés (facilité pour la reprise, cofinancement national, écarts entre sources, payé dans l'année par différence de cumuls, part des charges de personnel, médiane des prix) | gardés avec le badge et la méthode |
 
 Parts « sur 100 € » (décision du 18/11/2026) : ce sont des parts de chiffres publiés par une même source, sans badge ; une part qui combine deux sources porte le badge « Calculé par le site » et sa méthode (exemple : part des charges de personnel des hôpitaux). La part personnelle (« ce que tu verses ») relève du calcul personnel, décrit sur la page Méthode.
+
+## Personnes nommées (décision du propriétaire, 18-19/11/2026)
+
+Seules des personnes publiques agissant dans leur mandat ou leur candidature sont nommées, à partir de sources officielles :
+
+- candidats : comptes de campagne (CNCCFP, Journal officiel) ;
+- parlementaires : réserve parlementaire (décision « On nomme »), auteurs d'amendements et de motions, votes publiés (décision « On nomme aussi » du 19/11/2026) ;
+- membres du Gouvernement : barèmes par fonction seulement, jamais par nom.
+
+Tous sont présentés de la même façon (même tableau, ordre neutre écrit, aucune mise en avant). Aucune autre personne physique n'est nommée : bénéficiaires, agents, particuliers cités dans des actes restent agrégés ou retirés.
