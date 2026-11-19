@@ -568,7 +568,9 @@ def statut(s: str, stock: dict) -> tuple[str, str | None]:
 
 EXCLUS_CLES = {"pp": "dont_personnes_physiques_eur", "ni": "dont_sans_siren_eur", "in": "dont_siren_introuvable_eur",
                "np": "dont_nom_de_personne_possible_eur"}
-ARTISTIQUES = ("festivals", "adsv")  # équipes artistiques : dénomination passée au filtre de noms de personnes
+# Équipes artistiques : dénomination passée au filtre de noms de personnes ; rétablie si le stock SIRENE confirme une
+# personne morale (sirene.nom_publiable_personne_morale, option B du 19/11/2026).
+ARTISTIQUES = ("festivals", "adsv")
 
 
 def exclus_vide(artistique: bool = False) -> dict:
@@ -636,6 +638,8 @@ def produire() -> dict:
     sirens = {r[2] for lignes in donnees.values() for r in lignes if sirene.siren_valide(r[2])}
     stock = sirene_stock(sirens)
     nommable = filtre_noms()
+    import local
+    raisons = local.raisons_sociales(sirens)  # option B du 19/11/2026 (sirene.nom_publiable_personne_morale)
     date = date_sources("subventions")
     for f in SORTIE.rglob("*.json"):
         f.unlink()
@@ -689,7 +693,8 @@ def produire() -> dict:
                     titres_retires["noms"].add(nom)
                 continue
             st, cj = statut(si, stock)
-            if st == "pm" and artistique and not nommable(stock[si][1] or ""):
+            if st == "pm" and artistique and not nommable(stock[si][1] or "") \
+                    and not sirene.nom_publiable_personne_morale(si, *(raisons.get(si) or (None, None, None))):
                 st = "np"  # dénomination d'une équipe artistique qui contient peut-être un nom de personne
             if st == "pm":
                 b = par_siren.setdefault(si, {"montant": 0.0, "lignes": 0})

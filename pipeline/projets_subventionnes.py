@@ -52,6 +52,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from reproductible import date_sources  # noqa: E402
+import sirene  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 LAKE = ROOT / "data" / "lake"
@@ -343,12 +344,17 @@ def classer(sirens: set[str]) -> tuple[dict, dict]:
     loc = _local()
     stock = loc.sirene_cj(sirens) if sirens else {}
     liste = loc.prenoms()
+    raisons = None
     res = {}
     for s, (cj, denom) in stock.items():
         nom = None
         if denom:
-            # Organisme public (catégorie 7xxx) : dénomination officielle ; sinon filtre de noms de personnes.
+            # Organisme public (catégorie 7xxx) : dénomination officielle ; sinon filtre de noms de personnes, et nom
+            # masqué rétabli si le stock SIRENE confirme une personne morale (raison sociale, option B du 19/11/2026).
             nom = denom if (cj or "").startswith("7") else loc.objet_publiable(denom, liste, 200)
+            if nom is None:
+                raisons = loc.raisons_sociales(sirens) if raisons is None else raisons
+                nom = sirene.nom_publiable_personne_morale(s, *(raisons.get(s) or (None, None, None)))
         res[s] = (cj, nom)
     return res, stock
 

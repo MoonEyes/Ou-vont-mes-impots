@@ -139,7 +139,10 @@ def test_personnes_morales_seulement():
     liste = prenoms()
     for s, f in FICHES.items():
         assert sirene.personne_morale(f["categorie_juridique"]), s
-        assert not contient_nom_de_personne(f["denomination"], liste), s
+        # Nom qui peut contenir celui d'une personne : publié seulement si le stock SIRENE confirme une personne morale
+        # (raison sociale de l'unité légale, décision du 19/11/2026, option B : sirene.nom_publiable_personne_morale).
+        assert not contient_nom_de_personne(f["denomination"], liste) or sirene.nom_publiable_personne_morale(
+            s, f["categorie_juridique"], f["denomination"]) == f["denomination"], s
         assert f["siren"] == s
 
 
