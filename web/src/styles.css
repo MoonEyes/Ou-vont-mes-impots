@@ -3361,3 +3361,51 @@ fieldset.saisie-groupe {
     font-size: 2.75rem;
   }
 }
+
+/* « Ma commune » (/local/ma-commune et page Chez moi) : champ code postal ou nom, propositions, sommaire, repères. */
+.ma-commune-champ label {
+  display: block;
+  font-weight: 700;
+}
+.ma-commune-ligne {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.ma-commune-ligne input[type='search'] {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+.ma-commune-propositions {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+.ma-commune-propositions:empty {
+  display: none;
+}
+.ma-commune-propositions li {
+  border-top: 1px solid var(--filet);
+}
+.ma-commune-propositions a {
+  display: block;
+  padding: 0.5rem 0.25rem;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+.ma-commune-sommaire ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+.ma-commune-bloc {
+  border-top: 1px solid var(--filet);
+  padding-top: 0.5rem;
+}
+.ma-commune-reperes > li {
+  margin-bottom: 0.5rem;
+}

@@ -2061,6 +2061,28 @@ data/lake/decisions/ (amendements, scrutins, dossiers AN L17 ; Ameli)   data/lak
 
 **Pour l'écran** (`/decisions/qui-a-vote`, web/src/ecrans/qui_a_vote.ts) : choix de l'impôt (`impot_<id>.json`), votes nominatifs chargés au clic (`votes_<id>.json`) ; « Ton député » : choix du département puis de la circonscription (`departements/<code>.json` et `scrutins.json`), dans le navigateur, rien n'est envoyé ni conservé.
 
+### 2.71 Ma commune : code postal et nom vers la commune : `ma_commune/` (pipeline/ma_commune.py)
+
+Entrée « Ma commune » du site (`/local/ma-commune`) : un champ unique, code postal ou nom, autocomplété dans le navigateur sans aucune requête hors du site, puis une page de synthèse qui assemble les fichiers déjà publiés (aucun montant nouveau dans `ma_commune/`). Source : base officielle des codes postaux de La Poste (data.laposte.fr `laposte-hexasmal`, fiche data.gouv.fr `base-officielle-des-codes-postaux`, Licence Ouverte 2.0), identifiant `ma_commune_codes_postaux` de `collecte/catalogue.json` (contrôle `collecte/integrite.py`) ; communes, départements et populations lus dans `local/geo/` (code officiel géographique en vigueur). Commandes : `python pipeline/ma_commune.py collecter` (réseau), `python pipeline/ma_commune.py produire [--sortie DOSSIER]` (sans réseau). Tests : `pytest tests/test_ma_commune.py`, `web/tests/ma_commune.test.ts`.
+
+```
+data/lake/ma_commune/ma_commune_codes_postaux.csv + site/data/local/geo/<dep>.json
+     └─> pipeline/ma_commune.py ─> site/data/ma_commune/index.json, cp/<2 chiffres>.json (96 fichiers),
+                                   noms/<préfixe>.json (126 fichiers) ; chacun < 1 Mo (le plus gros : 128 Ko)
+```
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `ma_commune/index.json` | `ma_commune_index` | `presentation`, `normalisation` (règle de la clé de recherche, la même à l'écran), `fichiers`, `prefixes_cp[]`, `cles_noms[]` et `regle_cles` (fichier de noms = plus long préfixe de la clé compacte présent dans la liste), `couverture` (communes du code géographique, communes avec code postal, codes postaux, codes partagés, maximum de communes par code, communes à plusieurs codes, localités, arrondissements, lignes lues), `arrondissements` (Paris 75056, Lyon 69123, Marseille 13055 : note), `hors_perimetre` (collectivités d'outre-mer, Clipperton, Monaco : codes postaux par territoire et motif), `regles[]`, `limites[]`, `recherche_publique[]`, `ordre` |
+| `ma_commune/cp/<2 chiffres>.json` | `ma_commune_cp` | `codes_postaux.<code>` : liste `[insee, nom, departement, population, precision]` ; `precision` = arrondissement (Paris, Lyon, Marseille) ou localités de la ligne 5 de La Poste desservies sous ce code, sinon `null` |
+| `ma_commune/noms/<préfixe>.json` | `ma_commune_noms` | `noms[]` : `[insee, nom, departement, population, codes_postaux, type]` ; `type` = `commune` (nom du code géographique), `localite` (ligne 5 de La Poste : commune déléguée, ancienne commune ou lieu-dit, rattachée à la commune actuelle) ou `arrondissement` |
+
+**Cas particuliers.** Code postal partagé par plusieurs communes (4 200 codes sur 6 187, jusqu'à 46 communes) : toutes proposées, l'écran demande de choisir. Commune à plusieurs codes postaux (359) : tous listés. Communes nouvelles : leurs communes déléguées sont trouvables par leur ancien nom (type `localite`), qui mène à la commune actuelle. Paris, Lyon, Marseille : La Poste donne le code de l'arrondissement municipal, ramené à la commune (seule à publier des comptes), l'arrondissement en précision. Collectivités d'outre-mer (975, 977, 978, 986 à 989) et Monaco : hors périmètre des comptes des collectivités repris par le site, comptés dans `hors_perimetre`.
+
+**Pour l'écran** (`/local/ma-commune`, web/src/ecrans/ma_commune.ts) : saisie normalisée comme `normalisation` ; un code postal (5 chiffres) lit `cp/<2 premiers chiffres>.json`, un nom lit le ou les fichiers de `noms/` désignés par `cles_noms` ; propositions dans l'ordre nom identique, nom qui commence par la saisie, nom qui la contient, puis alphabétique et numéro de département (aucun classement). Page de synthèse `/local/ma-commune?insee=` : budgets par grande fonction sur 100 € (`local/fonctions/`, à défaut par nature `local/budgets/`) de la commune, de l'intercommunalité, du département et de la région, chacun séparément (jamais additionnés) ; bénéficiaires nommés des subventions publiées (`local/decisions/`, personnes morales seulement) et des opérations des fonds européens situées dans la commune (`fonds_europeens/operations/`) ; projets aidés par l'État (`territoires/`, `projets_subventionnes/`) ; délibérations publiées (`deliberations/`) ; repères parmi les communes de même densité et de même strate (`typologies/`, quantiles calculés par le pipeline). Chaque bloc porte sa source et son millésime ; un bloc sans donnée dit pourquoi. Le lien depuis le résultat du simulateur ne transmet que le code Insee de la commune saisie, jamais le salaire.
+
+**Recherche publique (règle n°0, 19/11/2026).** Base officielle des codes postaux de La Poste : réutilisable telle quelle (Licence Ouverte 2.0, fichier mis à jour le 17/11/2026). geo.api.gouv.fr (`codesPostaux`, dérivé de la même base ; dépôt etalab/decoupage-administratif, MIT) : inspiration seulement, une requête externe à chaque frappe est exclue. Paquet `codes-postaux` (BaseAdresseNationale, MIT) : inspiration seulement, un seul fichier d'environ 2 Mo. `local/geo/` : réutilisé tel quel.
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.

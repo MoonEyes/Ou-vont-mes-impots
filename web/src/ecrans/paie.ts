@@ -370,7 +370,7 @@ ${patronales.length ? blocPatronal(r, patronales, couple) : ''}
 <h2>Et maintenant ?</h2>
 <ul class="cartes par-3">
   <li><a href="#/explorer/etat"><strong>Où va l’argent de l’État</strong><span>Les grands postes du budget, jusqu’à la ligne votée.</span></a></li>
-  <li><a href="${session.profil?.residence.commune_insee ? `#/local/commune?insee=${encodeURIComponent(session.profil.residence.commune_insee)}` : '#/local'}"><strong>Ta commune</strong><span>Son budget, ses impôts locaux, ce que l’État lui verse.</span></a></li>
+  <li><a href="${session.profil?.residence.commune_insee ? `#/local/ma-commune?insee=${encodeURIComponent(session.profil.residence.commune_insee)}` : '#/local/ma-commune'}"><strong>Et dans ma commune ?</strong><span>Ce que ta commune, ton intercommunalité, ton département et ta région font de l’argent public.</span></a></li>
   <li><a href="#/beneficiaires"><strong>Qui le reçoit</strong><span>Associations, entreprises, organismes : les bénéficiaires nommés.</span></a></li>
 </ul>`
 
