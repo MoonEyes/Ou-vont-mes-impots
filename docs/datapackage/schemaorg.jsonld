@@ -2088,6 +2088,24 @@
   },
   {
    "@type": "DataDownload",
+   "name": "couverture de la correspondance code postal -> commune, normalisation des noms, fichiers, arrondissements de Paris, Lyon et Marseille, hors périmètre, recherche préalable (pipeline/ma_commune.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "pour chaque code postal, communes desservies [insee, nom, département, population, précision : arrondissement ou localités] (pipeline/ma_commune.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/cp/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "noms de communes, de localités (ligne 5 de La Poste) et d'arrondissements dont la clé compacte commence par le préfixe [insee, nom, département, population, codes postaux, type] (pipeline/ma_commune.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/noms/a.json"
+  },
+  {
+   "@type": "DataDownload",
    "name": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "encodingFormat": "text/csv",
    "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/beneficiaires/beneficiaires_publies.csv"

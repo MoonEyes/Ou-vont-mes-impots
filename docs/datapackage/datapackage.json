@@ -14212,7 +14212,7 @@
   {
    "name": "entites-fiches",
    "title": "fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py)",
-   "description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 752 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "description": "site/data/entites/fiches/<préfixe>.json : fiches des organisations (personnes morales) dont le SIREN commence par le préfixe, apparitions par canal, année et montant tel que publié (pipeline/entites.py). Famille de 762 fichiers (motif site/data/entites/fiches/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/fiches/005.json",
    "format": "json",
    "mediatype": "application/json",
@@ -14234,7 +14234,7 @@
     }
    ],
    "motif": "site/data/entites/fiches/*.json",
-   "nombre_fichiers": 752,
+   "nombre_fichiers": 762,
    "etape_pipeline": "entites",
    "millesimes": [
     "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
@@ -14246,7 +14246,7 @@
   {
    "name": "entites-recherche",
    "title": "organisations dont un mot du nom commence par la clé (pipeline/entites.py)",
-   "description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 724 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "description": "site/data/entites/recherche/<clé>.json : organisations dont un mot du nom commence par la clé (pipeline/entites.py). Famille de 728 fichiers (motif site/data/entites/recherche/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
    "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/entites/recherche/00.json",
    "format": "json",
    "mediatype": "application/json",
@@ -14268,7 +14268,7 @@
     }
    ],
    "motif": "site/data/entites/recherche/*.json",
-   "nombre_fichiers": 724,
+   "nombre_fichiers": 728,
    "etape_pipeline": "entites",
    "millesimes": [
     "Sources du site relues le 2026-11-18 (millésime propre à chaque source, écrit sur chaque ligne)"
@@ -15097,6 +15097,108 @@
    ],
    "sources_declarees": [
     "Assemblée nationale (data.assemblee-nationale.fr, 17e législature : scrutins, amendements, dossiers, acteurs ; textes examinés en séance au format ouvert) ; Sénat (data.senat.fr, base Ameli) ; Licence Ouverte 2.0"
+   ]
+  },
+  {
+   "name": "ma-commune-index",
+   "title": "couverture de la correspondance code postal -> commune, normalisation des noms, fichiers, arrondissements de Paris, Lyon et Marseille, hors périmètre, recherche préalable (pipeline/ma_commune.py)",
+   "description": "site/data/ma_commune/index.json : couverture de la correspondance code postal -> commune, normalisation des noms, fichiers, arrondissements de Paris, Lyon et Marseille, hors périmètre, recherche préalable (pipeline/ma_commune.py). Fichier site/data/ma_commune/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ma_commune_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "La Poste, base officielle des codes postaux (data.laposte.fr, jeu laposte-hexasmal, Licence Ouverte 2.0) ; Insee, code officiel géographique et population municipale (site/data/local/geo, geo.api.gouv.fr)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/ma_commune/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "ma_commune",
+   "millesimes": [
+    "Base officielle des codes postaux de La Poste (version du 2026-11-17) ; code officiel géographique en vigueur (site/data/local/geo)"
+   ],
+   "sources_declarees": [
+    "La Poste, base officielle des codes postaux (data.laposte.fr, jeu laposte-hexasmal, Licence Ouverte 2.0) ; Insee, code officiel géographique et population municipale (site/data/local/geo, geo.api.gouv.fr)"
+   ]
+  },
+  {
+   "name": "ma-commune-cp",
+   "title": "pour chaque code postal, communes desservies [insee, nom, département, population, précision : arrondissement ou localités] (pipeline/ma_commune.py)",
+   "description": "site/data/ma_commune/cp/<2 chiffres>.json : pour chaque code postal, communes desservies [insee, nom, département, population, précision : arrondissement ou localités] (pipeline/ma_commune.py). Famille de 96 fichiers (motif site/data/ma_commune/cp/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/cp/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ma_commune_cp.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "La Poste, base officielle des codes postaux (data.laposte.fr, jeu laposte-hexasmal, Licence Ouverte 2.0) ; Insee, code officiel géographique et population municipale (site/data/local/geo, geo.api.gouv.fr)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/ma_commune/cp/*.json",
+   "nombre_fichiers": 96,
+   "etape_pipeline": "ma_commune",
+   "millesimes": [
+    "Base officielle des codes postaux de La Poste (version du 2026-11-17) ; code officiel géographique en vigueur (site/data/local/geo)"
+   ],
+   "sources_declarees": [
+    "La Poste, base officielle des codes postaux (data.laposte.fr, jeu laposte-hexasmal, Licence Ouverte 2.0) ; Insee, code officiel géographique et population municipale (site/data/local/geo, geo.api.gouv.fr)"
+   ]
+  },
+  {
+   "name": "ma-commune-noms",
+   "title": "noms de communes, de localités (ligne 5 de La Poste) et d'arrondissements dont la clé compacte commence par le préfixe [insee, nom, département, population, codes postaux, type] (pipeline/ma_commune.py)",
+   "description": "site/data/ma_commune/noms/<préfixe>.json : noms de communes, de localités (ligne 5 de La Poste) et d'arrondissements dont la clé compacte commence par le préfixe [insee, nom, département, population, codes postaux, type] (pipeline/ma_commune.py). Famille de 126 fichiers (motif site/data/ma_commune/noms/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ma_commune/noms/a.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ma_commune_noms.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "La Poste, base officielle des codes postaux (data.laposte.fr, jeu laposte-hexasmal, Licence Ouverte 2.0) ; Insee, code officiel géographique et population municipale (site/data/local/geo, geo.api.gouv.fr)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/ma_commune/noms/*.json",
+   "nombre_fichiers": 126,
+   "etape_pipeline": "ma_commune",
+   "millesimes": [
+    "Base officielle des codes postaux de La Poste (version du 2026-11-17) ; code officiel géographique en vigueur (site/data/local/geo)"
+   ],
+   "sources_declarees": [
+    "La Poste, base officielle des codes postaux (data.laposte.fr, jeu laposte-hexasmal, Licence Ouverte 2.0) ; Insee, code officiel géographique et population municipale (site/data/local/geo, geo.api.gouv.fr)"
    ]
   },
   {
