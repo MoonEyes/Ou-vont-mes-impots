@@ -21,10 +21,7 @@ const texte = () => main.textContent?.replace(/\s+/g, ' ') ?? ''
 // phrase de non-affiliation des mentions légales.
 const NON_AFFILIATION = 'Le billet découpé est sans lien avec le site ouvontmesimpots.fr.'
 const ANCIEN_NOM = /o[uù]\s+vont\s+mes\s+imp[oô]ts/i
-// Seule autre exception : le producteur écrit par pipeline/formation.py dans la donnée publiée (hors web/), à renommer par
-// le pipeline formation ; à retirer d'ici dès que la donnée est régénérée.
-const DONNEE_FORMATION = 'projet Où vont mes impôts (calcul du pipeline)'
-const sansNonAffiliation = (x: string) => [NON_AFFILIATION, DONNEE_FORMATION].reduce((t, e) => t.split(e).join(' '), x)
+const sansNonAffiliation = (x: string) => x.split(NON_AFFILIATION).join(' ')
 
 beforeAll(() => {
   monterPage()
@@ -238,6 +235,38 @@ describe('écrans', () => {
     expect(texte()).toContain('Traçabilité de ce bloc')
     await ecran('#/etat?m=lfi2025')
     expect(texte()).toContain('27,4 € ont été empruntés')
+  })
+
+  it('3 bis. part empruntée : même total au numérateur et au dénominateur, méthode et badge (règle 13)', async () => {
+    const deficit = JSON.parse(readFileSync(join(process.cwd(), 'tests/fixtures/data/deficit.json'), 'utf8')) as {
+      etat: { annees: Record<string, { part_empruntee: number; solde_budgetaire_md: number; depenses_nettes_bg_md: number; prelevements_sur_recettes_md: number }> }
+    }
+    const { totalSituationBudgetaire } = await import('../src/ecrans/etat')
+    for (const [m, a] of Object.entries(deficit.etat.annees)) {
+      const t = totalSituationBudgetaire(a)!
+      expect(Math.abs(-a.solde_budgetaire_md / t - a.part_empruntee), m).toBeLessThan(1e-4)
+    }
+    expect(totalSituationBudgetaire({ depenses_nettes_bg_md: 1 })).toBeNull()
+    await ecran('#/etat')
+    const carte = main.querySelector('.empile')!.closest<HTMLElement>('.carte')!
+    const t = carte.textContent!.replace(/\s+/g, ' ')
+    // 443,4 + 67,7 = 511,1 Md€ (Exécution 2024) : le total affiché est celui sur lequel la part est calculée.
+    expect(t).toContain('selon la situation budgétaire (511,1 Md€, Exécution 2024)')
+    expect(t).toContain('30,5 € ont été empruntés')
+    expect(t).not.toMatch(/\(503,0 Md€ au total\)/)
+    expect(carte.querySelector('[data-calcule]')).not.toBeNull()
+    expect(t).toMatch(/Méthode : déficit budgétaire de l’État \(155,9 Md€\) divisé par ses dépenses nettes du budget général \(443,4 Md€\) plus les prélèvements sur recettes \(67,7 Md€\)/)
+    expect(texte()).not.toContain('comme ordre de grandeur')
+  })
+
+  it('dépenses fiscales : aucun ratio entre moindres recettes et dépenses de l’État (règle 13)', async () => {
+    await ecran('#/explorer/niches')
+    expect(texte()).toContain('89,4 Md€')
+    expect(texte()).not.toMatch(/l’équivalent de .* sur 100 €/)
+    expect(texte()).not.toContain('de dépense du budget de l’État')
+    expect(main.querySelector('[data-sans-ratio]')).not.toBeNull()
+    // Sans « sur 100 € » de même périmètre, le montant n'est pas un chiffre clé surligné (règles 1 et 5).
+    expect(main.querySelector('.surligne')).toBeNull()
   })
 
   it('4. détail : fil d’Ariane, barres, sous-arbre chargé à la demande', async () => {

@@ -61,15 +61,11 @@ describe('prérendu', () => {
   it('nom du site : l’ancien nom « Où vont mes impôts » absent de toutes les pages prérendues et des fichiers publics, sauf la phrase de non-affiliation', () => {
     const NON_AFFILIATION = 'Le billet découpé est sans lien avec le site ouvontmesimpots.fr.'
     const ANCIEN_NOM = /o[uù]\s+vont\s+mes\s+imp[oô]ts/i
-    // Seule exception tolérée : le producteur écrit par pipeline/formation.py dans site/data/formation/cpf_organismes.json
-    // (donnée publiée, hors web/), à renommer par le pipeline formation ; à retirer d'ici dès que la donnée est régénérée.
-    const DONNEE_FORMATION = 'projet Où vont mes impôts (calcul du pipeline)'
     const avecPhrase: string[] = []
     for (const p of pages) {
       const html = p.html.replace(/&nbsp;|\u00a0|\u202f/g, ' ')
       if (html.includes(NON_AFFILIATION)) avecPhrase.push(p.chemin)
-      const exceptions = p.chemin === 'explorer/formation-professionnelle/' ? [NON_AFFILIATION, DONNEE_FORMATION] : [NON_AFFILIATION]
-      expect(exceptions.reduce((x, e) => x.split(e).join(' '), html), p.chemin || '/').not.toMatch(ANCIEN_NOM)
+      expect(html.split(NON_AFFILIATION).join(' '), p.chemin || '/').not.toMatch(ANCIEN_NOM)
       expect(p.titre.endsWith(' · Le billet découpé') || p.titre.startsWith('Le billet découpé') || !p.titre.includes('·'), p.chemin).toBe(true)
     }
     for (const f of ['manifest.webmanifest', 'sw.js', '404.html']) {

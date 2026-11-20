@@ -135,6 +135,15 @@ def test_contributeurs_generiques_sans_nom_de_personne(descripteur):
     assert not re.search(r"[\w.+-]+@[\w-]+\.[a-z]{2,}", texte), "adresse électronique dans les métadonnées"
 
 
+def test_nom_du_site_sans_ancien_nom_affichable(descripteur):
+    """Titre et éditeur portent le nom « Le billet découpé » ; l'ancien nom ne reste que dans l'identifiant technique
+    (« name », adresse du dépôt), jamais dans un libellé affiché."""
+    ancien = re.compile(r"o[uù]\s+vont\s+mes\s+imp[oô]ts", re.I)
+    assert descripteur["title"].startswith("Le billet découpé") and dpk.PROJET == "Projet citoyen Le billet découpé"
+    for f in ("datapackage.json", "dcat.jsonld", "schemaorg.jsonld"):
+        assert not ancien.search((SORTIE / f).read_text(encoding="utf-8")), f
+
+
 def test_generation_reproductible(genere, monkeypatch_module):
     assert dpk.construire() == genere
 

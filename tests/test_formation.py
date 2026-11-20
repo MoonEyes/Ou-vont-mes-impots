@@ -214,7 +214,7 @@ def test_usagers_dimensions_somment_au_total():
 def test_organismes_estimation_approchee_et_totaux():
     d = lire("cpf_organismes.json")
     assert d["estimation"]["statut"] == "approché" and INDEX["cpf"]["organismes"]["estimation"] == "approché"
-    assert "prix moyen" in d["estimation"]["methode"] and d["estimation"]["producteur"].startswith("projet")
+    assert "prix moyen" in d["estimation"]["methode"] and d["estimation"]["producteur"] == "Le billet découpé (calcul du site)"
     assert "pas un montant versé" in d["avertissement"]
     assert "montant_approche_eur" in d["colonnes"] and not any(c.endswith("montant_eur") for c in d["colonnes"])
     assert d["ordre"]["cles"] == ["-entrees_cumulees", "siren"]

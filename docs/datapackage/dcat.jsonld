@@ -9,7 +9,7 @@
  "@id": "https://github.com/MoonEyes/Ou-vont-mes-impots#jeu",
  "@type": "dcat:Dataset",
  "dct:identifier": "https://github.com/MoonEyes/Ou-vont-mes-impots",
- "dct:title": "Où vont mes impôts : données publiques retraitées sur les dépenses et recettes publiques",
+ "dct:title": "Le billet découpé : données publiques retraitées sur les dépenses et recettes publiques",
  "dct:description": "Budget de l'État, Sécurité sociale, collectivités, prélèvements, dette, bénéficiaires nommés (personnes morales), décisions et contrôle, retraités à partir de jeux publics ouverts (data.economie.gouv.fr, data.gouv.fr, Eurostat, Insee, DGFiP, OFGL, Assemblée nationale, Sénat, DILA, CNCCFP, HATVP, Cour des comptes). Site citoyen, non officiel. Chaque fichier JSON porte son millésime et sa source ; un montant écarté est publié avec sa raison. Précautions de lecture et exemples : docs/REUTILISER.md.",
  "dcat:keyword": [
   "budget de l'État",
@@ -54,14 +54,14 @@
  },
  "dct:publisher": {
   "@type": "foaf:Agent",
-  "foaf:name": "Projet citoyen Où vont mes impôts",
+  "foaf:name": "Projet citoyen Le billet découpé",
   "foaf:homepage": {
    "@id": "https://github.com/MoonEyes/Ou-vont-mes-impots"
   }
  },
  "dcat:contactPoint": {
   "@type": "vcard:Kind",
-  "vcard:fn": "Projet citoyen Où vont mes impôts",
+  "vcard:fn": "Projet citoyen Le billet découpé",
   "vcard:hasURL": {
    "@id": "https://github.com/MoonEyes/Ou-vont-mes-impots/issues"
   }

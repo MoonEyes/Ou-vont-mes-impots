@@ -9,7 +9,7 @@ import { ORDRE_ADMIN, parAdministration, sur100Entiers } from '../calcul/reparti
 import { session } from '../etat'
 import { lien } from '../routeur'
 import { retourResultat } from '../composants/retour-resultat'
-import { absent, appliquerLargeurs, barres, eur, h, libelle, lireLesMotifs, md, pct, source, sur100, surligne } from '../util'
+import { absent, appliquerLargeurs, badgeCalcule, barres, eur, h, libelle, lireLesMotifs, md, pct, source, sur100, surligne } from '../util'
 
 interface Deficit {
   etat: { lecture: string; perimetre: string; comptabilite: string; annees: Record<string, { part_empruntee: number; solde_budgetaire_md: number; depenses_nettes_bg_md?: number; prelevements_sur_recettes_md?: number }> }
@@ -28,6 +28,20 @@ export function noteChiffresOfficiels(millesime: string, a?: { depenses_nettes_b
   const annee = /(\d{4})/.exec(millesime)?.[1] ?? millesime
   const texte = millesime.startsWith('LFI') ? `loi de finances initiale pour ${annee}` : `situation budgétaire de l’État au 31 décembre ${annee}`
   return `<p class="aide" data-officiel>Ce total n’est pas un chiffre publié tel quel : il retire tous les remboursements et dégrèvements d’impôts, y compris locaux, et suit le périmètre décrit dans la méthode. Chiffres officiels de la même année : dépenses nettes du budget général ${h(md(a.depenses_nettes_bg_md))}, prélèvements sur recettes ${h(md(a.prelevements_sur_recettes_md))} (${h(texte)}, DGFiP).</p>`
+}
+
+/**
+ * Total sur lequel la part empruntée est calculée : dépenses nettes du budget général plus prélèvements sur recettes,
+ * de la même situation budgétaire que le solde (règle 13 : même année, même périmètre). Null si l'un manque.
+ */
+export function totalSituationBudgetaire(a?: { depenses_nettes_bg_md?: number; prelevements_sur_recettes_md?: number } | null): number | null {
+  if (typeof a?.depenses_nettes_bg_md !== 'number' || typeof a?.prelevements_sur_recettes_md !== 'number') return null
+  return a.depenses_nettes_bg_md + a.prelevements_sur_recettes_md
+}
+
+/** Méthode écrite à côté du badge « calculé par le site » de la part empruntée. */
+export function methodeEmprunt(millesime: string, a: { solde_budgetaire_md: number; depenses_nettes_bg_md: number; prelevements_sur_recettes_md: number }): string {
+  return `déficit budgétaire de l’État (${md(-a.solde_budgetaire_md)}) divisé par ses dépenses nettes du budget général (${md(a.depenses_nettes_bg_md)}) plus les prélèvements sur recettes (${md(a.prelevements_sur_recettes_md)}), tous trois tirés de la même situation budgétaire (${millesime}, DGFiP), ramené à 100 €`
 }
 
 /** Totaux publiés par pipeline/millesimes.py (site/data/millesimes/index.json, contrat 2.48), en euros. */
@@ -86,6 +100,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const total = racine.md
   const postes = racine.enfants ?? []
   const emprunt = deficit?.etat.annees[racine.millesime ?? v.millesime]
+  const totalEmprunt = totalSituationBudgetaire(emprunt)
   const annees = deficit ? Object.keys(deficit.administrations_publiques.annees).sort() : []
   const derniere = annees[annees.length - 1]
   const apu = derniere ? deficit!.administrations_publiques.annees[derniere] : null
@@ -184,6 +199,7 @@ ${noteProgrammes}
         'Grands postes, en euros sur 100 €',
       )}
       ${source(racine.source ?? '', racine.millesime)}
+      ${noteChiffresOfficiels(an, emprunt)}
     </div>
   </div>
   <div>
@@ -193,13 +209,14 @@ ${noteProgrammes}
 </div>
 <h2>D’où vient cet argent</h2>
 ${
-  emprunt
+  emprunt && totalEmprunt !== null
     ? `<div class="carte" data-cle>
   <div class="empile" aria-hidden="true"><span class="recettes-seg" data-l="${(100 - emprunt.part_empruntee * 100).toFixed(2)}"></span><span class="emprunt-seg" data-l="${(emprunt.part_empruntee * 100).toFixed(2)}"></span></div>
-  <p>Sur 100 € dépensés par l’État (${h(md(total))} au total) : <strong class="texte-accent">${h(sur100(100 - emprunt.part_empruntee * 100))}</strong> venaient des recettes de l’année, <strong class="texte-emprunt">${surligne(sur100(emprunt.part_empruntee * 100))}</strong> ont été empruntés (${h(periode)}).</p>
-  ${noteChiffresOfficiels(an, emprunt)}
+  <p>Sur 100 € dépensés par l’État selon la situation budgétaire (${h(md(totalEmprunt!))}, ${h(an)}) : <strong class="texte-accent">${h(sur100(100 - emprunt.part_empruntee * 100))}</strong> venaient des recettes de l’année, <strong class="texte-emprunt">${surligne(sur100(emprunt.part_empruntee * 100))}</strong> ont été empruntés.</p>
+  <p class="aide">${badgeCalcule(methodeEmprunt(an, { solde_budgetaire_md: emprunt.solde_budgetaire_md, depenses_nettes_bg_md: emprunt.depenses_nettes_bg_md!, prelevements_sur_recettes_md: emprunt.prelevements_sur_recettes_md! }))}</p>
+  <p class="aide">Ce total de ${h(md(totalEmprunt!))} n’est pas celui du billet plus haut (${h(md(total))}) : la part empruntée est rapportée aux dépenses de la même situation budgétaire que le solde, pour que les deux montants portent sur la même année et le même périmètre.</p>
 </div>`
-    : absent('Part empruntée non disponible pour ce millésime.')
+    : absent('Part empruntée non affichée pour ce millésime : solde budgétaire, dépenses nettes du budget général ou prélèvements sur recettes de la même année non publiés.')
 }
 ${
   ir > 0
@@ -216,10 +233,10 @@ ${
   emprunt && deficit
     ? `<details class="carte"><summary>Comment est calculée la part empruntée ?</summary>
   <p>${h(deficit.etat.lecture)}</p>
-  <p>Solde budgétaire ${h(racine.millesime ?? v.millesime)} : ${h(md(emprunt.solde_budgetaire_md))} (comptabilité ${h(deficit.etat.comptabilite)}). ${h(deficit.etat.perimetre)}</p>
+  <p>Solde budgétaire ${h(racine.millesime ?? v.millesime)} : ${h(md(emprunt.solde_budgetaire_md))} (comptabilité ${h(deficit.etat.comptabilite)}). La part est rapportée aux dépenses de la même situation budgétaire, et non au total du billet, dont le périmètre diffère.</p>
   ${
     apu && derniere
-      ? `<p>Pour l’ensemble des administrations publiques (État, Sécurité sociale, collectivités), en comptabilité nationale, la part empruntée est de ${h(pct(apu.part_empruntee * 100))} en ${h(derniere)} (déficit ${h(md(-apu.B9_md))} pour ${h(md(apu.TE_md))} de dépenses). ${h(deficit.avertissement)}</p>`
+      ? `<p>Pour l’ensemble des administrations publiques (État, Sécurité sociale, collectivités), en comptabilité nationale, la part empruntée est de ${h(pct(apu.part_empruntee * 100))} en ${h(derniere)} (déficit ${h(md(-apu.B9_md))} pour ${h(md(apu.TE_md))} de dépenses). ${badgeCalcule(`besoin de financement des administrations publiques ${derniere} divisé par leurs dépenses totales ${derniere} (Eurostat, comptabilité nationale, même année et même périmètre)`)} ${h(deficit.avertissement)}</p>`
       : ''
   }
   ${source(deficit.source)}
