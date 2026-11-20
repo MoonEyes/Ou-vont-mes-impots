@@ -1,0 +1,51 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/police_municipale_index.schema.json",
+ "title": "site/data/police_municipale/index.json : effectifs de police municipale par commune (ministère de l'Intérieur ; pipeline/police_municipale.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "presentation",
+  "annees",
+  "colonnes",
+  "definitions",
+  "rapprochement",
+  "absence",
+  "licence",
+  "couverture",
+  "recherche_publique"
+ ],
+ "properties": {
+  "annees": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "pattern": "^\\d{4}$"
+   }
+  },
+  "recherche_publique": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "trouvaille",
+     "classement",
+     "licence"
+    ],
+    "properties": {
+     "classement": {
+      "enum": [
+       "réutilisable tel quel",
+       "à adapter",
+       "inspiration seulement"
+      ]
+     }
+    }
+   }
+  }
+ }
+}

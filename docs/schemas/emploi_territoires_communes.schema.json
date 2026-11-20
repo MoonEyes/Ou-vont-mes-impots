@@ -1,0 +1,44 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/emploi_territoires_communes.schema.json",
+ "title": "site/data/emploi_territoires/communes/<dep>.json : inscrits à France Travail en catégories A, B, C au 4e trimestre, par commune (Dares ; pipeline/emploi_territoires.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "departement",
+  "annees",
+  "communes"
+ ],
+ "properties": {
+  "departement": {
+   "type": "string",
+   "pattern": "^(\\d{2}|2[AB]|97\\d)$"
+  },
+  "annees": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "pattern": "^\\d{4}$"
+   }
+  },
+  "communes": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^(\\d{5}|2[AB]\\d{3})$"
+   },
+   "additionalProperties": {
+    "type": "array",
+    "items": {
+     "type": [
+      "integer",
+      "null"
+     ]
+    }
+   }
+  }
+ }
+}

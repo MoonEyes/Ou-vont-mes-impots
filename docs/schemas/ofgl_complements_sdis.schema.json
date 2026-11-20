@@ -1,0 +1,77 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/ofgl_complements_sdis.schema.json",
+ "title": "site/data/ofgl_complements/sdis.json : comptes des SDIS, budget principal, 2012-2025 (OFGL ; pipeline/ofgl_complements.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "colonnes",
+  "annees",
+  "sdis",
+  "definition"
+ ],
+ "properties": {
+  "annees": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "pattern": "^\\d{4}$"
+   }
+  },
+  "sdis": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^(\\d{2}|2[AB]|97\\d)$"
+   },
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "departement",
+     "annees",
+     "par_habitant",
+     "population"
+    ],
+    "properties": {
+     "annees": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^\\d{4}$"
+      },
+      "additionalProperties": {
+       "type": "array",
+       "items": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "minItems": 8,
+       "maxItems": 8
+      }
+     },
+     "par_habitant": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^\\d{4}$"
+      },
+      "additionalProperties": {
+       "type": "array",
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "minItems": 8,
+       "maxItems": 8
+      }
+     }
+    }
+   }
+  }
+ }
+}

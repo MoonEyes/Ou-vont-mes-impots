@@ -2468,6 +2468,71 @@
    "hors_catalogue": [],
    "octets_sources": null,
    "note": "zips de l'Assembl\u00e9e et dump Ameli partag\u00e9s avec l'\u00e9tape decisions (aucune collecte en double) ; AMO30 (catalogue qui_a_vote_an_l17_acteurs) et textes examin\u00e9s en s\u00e9ance (data/lake/qui_a_vote/textes/<uid>.html) collect\u00e9s par python pipeline/qui_a_vote.py collecter"
+  },
+  "ofgl_complements": {
+   "sources": {},
+   "caches": [
+    "data/lake/ofgl_complements",
+    "data/lake/_cache/recherche_entreprises.json"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "exports Parquet filtrés côté serveur collectés par le module lui-même (python pipeline/ofgl_complements.py collecter) ; lit aussi site/data/local/geo"
+  },
+  "elus_indemnites": {
+   "sources": {},
+   "caches": [
+    "data/lake/elus_indemnites",
+    "data/lake/investissement_communes"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "exports agrégés côté serveur collectés par le module lui-même (python pipeline/elus_indemnites.py collecter), extraits `presence` partagés avec investissement_communes ; lit aussi site/data/local/geo"
+  },
+  "caf_communes": {
+   "sources": {},
+   "caches": [
+    "data/lake/caf_communes"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "exports Parquet de data.caf.fr collectés par le module lui-même (python pipeline/caf_communes.py collecter) ; lit aussi site/data/local/geo"
+  },
+  "ifi_communes": {
+   "sources": {},
+   "caches": [
+    "data/lake/ifi_communes"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "classeurs annuels de la fiche data.gouv.fr collectés par le module lui-même (python pipeline/ifi_communes.py collecter) ; lit aussi site/data/local/geo"
+  },
+  "emploi_territoires": {
+   "sources": {},
+   "caches": [
+    "data/lake/emploi_territoires"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "exports Parquet Unédic et Dares collectés par le module lui-même (python pipeline/emploi_territoires.py collecter) ; lit aussi site/data/local/geo"
+  },
+  "pathologies_departements": {
+   "sources": {},
+   "caches": [
+    "data/lake/pathologies_departements"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "export Parquet filtré de data.ameli.fr collecté par le module lui-même (python pipeline/pathologies_departements.py collecter) ; lit aussi site/data/local/geo"
+  },
+  "police_municipale": {
+   "sources": {},
+   "caches": [
+    "data/lake/police_municipale"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "fichiers annuels de la fiche data.gouv.fr collectés par le module lui-même (python pipeline/police_municipale.py collecter) ; lit aussi site/data/local/geo"
   }
  },
  "urls": {

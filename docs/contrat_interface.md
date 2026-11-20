@@ -2083,6 +2083,75 @@ data/lake/ma_commune/ma_commune_codes_postaux.csv + site/data/local/geo/<dep>.js
 
 **Recherche publique (règle n°0, 19/11/2026).** Base officielle des codes postaux de La Poste : réutilisable telle quelle (Licence Ouverte 2.0, fichier mis à jour le 17/11/2026). geo.api.gouv.fr (`codesPostaux`, dérivé de la même base ; dépôt etalab/decoupage-administratif, MIT) : inspiration seulement, une requête externe à chaque frappe est exclue. Paquet `codes-postaux` (BaseAdresseNationale, MIT) : inspiration seulement, un seul fichier d'environ 2 Mo. `local/geo/` : réutilisé tel quel.
 
+### 2.72 Compléments OFGL : FPIC, flux communes et intercommunalité, SDIS, patrimoine, établissements publics locaux : `ofgl_complements/` (pipeline/ofgl_complements.py)
+
+Sept exports Parquet de l'API Explore de data.ofgl.fr filtrés côté serveur (`fpic-ensembles-intercommunaux`, `base-communale-flux-financiers`, `base-intercommunale-flux-financiers`, `ofgl-base-sdis`, `actifs_communes`, `actifs-gfp`, `ofgl-base-epl`), contrôlés par `collecte/integrite.py`. Licence Ouverte 2.0 lue sur chaque fiche ; FPIC et flux : licence non renseignée sur le portail, même traitement que `dotations-communes` (déjà repris par `pipeline/local.py`), écrit dans `index.json` (`sources[].licence_note`). Commandes : `python pipeline/ofgl_complements.py collecter` (réseau ; catégories juridiques des établissements par `pipeline/sirene.py`), `python pipeline/ofgl_complements.py produire [--sortie DOSSIER]`. Tests : `pytest tests/test_ofgl_complements.py`.
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `ofgl_complements/index.json` | `ofgl_complements_index` | `annees` par jeu, `colonnes`, `definitions`, `regles[]`, `sources[]` (jeu, page, licence, `licence_note`, mise à jour), `couverture`, `recherche_publique[]` |
+| `ofgl_complements/communes/<dep>.json` | `ofgl_complements_communes` | `communes.<insee>` : `flux` (attribution de compensation et dotation de solidarité communautaire reçues et versées, 2025, budget principal), `patrimoine` (2025), `fpic` pour une commune isolée ; `epci.<siren>` (département du siège) : `fpic` par année (prélèvement, reversement, solde, garantie), `flux` par année (neuf flux, recettes et dépenses), `patrimoine` ; `sdis` du département ; `organismes[]` : `[siren, nom, catégorie, activité, montants par année]` (nom et SIREN seulement si personne morale) |
+| `ofgl_complements/sdis.json` | `ofgl_complements_sdis` | tous les SDIS, budget principal, 2012-2025 : montants, euros par habitant publiés par l'OFGL, population |
+
+**Règles.** Rien n'est additionné aux budgets de `local/budgets/` (flux, contributions au SDIS et dépenses des établissements y figurent déjà) ; valeur absente : `null` ; aucun ratio calculé par le site. Paris et petite couronne : pas de SDIS (brigade de sapeurs-pompiers de Paris), écrit à l'écran. **Écrans** : « Ma commune » (flux, FPIC, patrimoine ; SDIS et établissements dans l'onglet du département), Explorer « Collectivités » (tableau des SDIS). **Recherche publique (règle n°0).** API OFGL et client `local_satellites.telecharger` : réutilisables tels quels ; podolskyDavid/h-genai (07/12/2025, aucune licence) : inspiration seulement.
+
+### 2.73 Indemnités des élus par commune, total seulement : `elus_indemnites/` (pipeline/elus_indemnites.py)
+
+Compte 653 (indemnités, frais de mission et de formation, cotisations des élus) du budget principal de chaque commune, balances comptables de la DGFiP 2010-2025 (data.economie.gouv.fr, Licence Ouverte 2.0), agrégé côté serveur par SIREN, même méthode que 2.69 (OBNETDEB - OOBDEB ; présence d'une balance lue dans les extraits `presence` de `investissement_communes`). Montant global de la commune, jamais par élu ni par habitant (la source ne publie pas le nombre d'élus indemnisés) ; les sous-comptes diffèrent entre M14 et M57, seul le total du 653 est publié. Commandes : `python pipeline/elus_indemnites.py collecter|produire`. Tests : `pytest tests/test_elus_indemnites.py`.
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `elus_indemnites/index.json` | `elus_indemnites_index` | `annees`, `definitions`, `methode`, `regle_null`, `plafond`, `couverture.par_exercice` |
+| `elus_indemnites/communes/<dep>.json` | `elus_indemnites_communes` | `communes.<insee>.<exercice>` : `[compte 653]` en euros ; exercice absent = pas de balance publiée |
+
+### 2.74 Prestations de la CAF par commune, intercommunalité, IRIS et QPV : `caf_communes/` (pipeline/caf_communes.py)
+
+Jeux CNAF « Toutes prestations - Répartition des allocataires selon la prestation » (`s_ben_com_f`, `s_ben_epci_f`, `s_ben_iris_f`, `s_ben_qpv_f`, data.caf.fr, Licence Ouverte 2.0). Pour sept prestations (au moins une prestation, RSA, prime d'activité, aides au logement, APL, allocations familiales, PAJE) : foyers allocataires et montant versé au titre de décembre, par année depuis 2020. Secret statistique de la source respecté tel quel (arrondi à 5, petits effectifs non diffusés : `null`). Paris, Lyon, Marseille : publiés par arrondissement (`arrondissements`), jamais additionnés. AAH et AEEH : nombre de bénéficiaires à l'échelle de l'intercommunalité seulement (`epci.<siren>.aah_aeeh`). Commandes : `python pipeline/caf_communes.py collecter|produire`. Tests : `pytest tests/test_caf_communes.py`.
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `caf_communes/index.json` | `caf_communes_index` | `prestations`, `colonnes`, `secret_statistique`, `montant`, `aah`, `sources[]`, `couverture` |
+| `caf_communes/communes/<dep>.json` | `caf_communes_communes` | `communes.<insee>` : `annees`, `iris[]` et `qpv[]` `[code, nom, année, valeurs]` (nom passé au filtre de noms), `arrondissements` ; `epci.<siren>` : `annees`, `aah_aeeh` |
+
+### 2.75 Impôt sur la fortune immobilière par commune : `ifi_communes/` (pipeline/ifi_communes.py)
+
+Classeurs annuels 2018-2025 de la fiche data.gouv.fr 5369965ea3a729239d204992 (DGFiP, Licence Ouverte) : villes de plus de 20 000 habitants ayant plus de 50 redevables. Nombre de redevables, patrimoine moyen et impôt moyen publiés par la DGFiP (classeur 2020 en millions et milliers d'euros, converti) ; Paris par arrondissement (`arrondissements`), jamais additionnés ; rupture ISF/IFI écrite. Commandes : `python pipeline/ifi_communes.py collecter|produire`. Tests : `pytest tests/test_ifi_communes.py`.
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `ifi_communes/index.json` | `ifi_communes_index` | `annees`, `definitions`, `seuil`, `rupture`, `conversion`, `sources[]`, `couverture` |
+| `ifi_communes/communes.json` | `ifi_communes_communes` | `communes.<insee>` : `nom`, `annees.<année>` = `[redevables, patrimoine moyen, impôt moyen]`, `arrondissements` |
+
+### 2.76 Emploi dans les territoires : `emploi_territoires/` (pipeline/emploi_territoires.py)
+
+Unédic `evolution_indicateurs_cles_ac` (par département, mensuel depuis 2018) et Dares `dares_defm_communales-brutes` (inscrits en catégories A, B, C au 4e trimestre, par commune, 2015-2025), Licence Ouverte 2.0. Valeurs reprises telles quelles (arrondi à 5 de la Dares), aucun cumul annuel ni ratio. Commandes : `python pipeline/emploi_territoires.py collecter|produire`. Tests : `pytest tests/test_emploi_territoires.py`.
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `emploi_territoires/index.json` | `emploi_territoires_index` | `definitions`, `colonnes_unedic`, `annees_dares`, `dernier_mois_unedic`, `secret_statistique`, `sources[]`, `couverture` |
+| `emploi_territoires/departements.json` | `emploi_territoires_departements` | `departements.<dep>.mois.<AAAA-MM>` (décembres et dernier mois) : allocataires, indemnisés, montant moyen, dépense du mois, part ayant travaillé |
+| `emploi_territoires/communes/<dep>.json` | `emploi_territoires_communes` | `communes.<insee>` : inscrits A, B, C par année (`annees`) |
+
+### 2.77 Patients par pathologie et par département : `pathologies_departements/` (pipeline/pathologies_departements.py)
+
+Cnam, data.ameli.fr `effectifs` (tous régimes, tous âges, tous sexes ; groupes de niveaux 1 et 2), 2015-2024. Base sous **ODbL 1.0** : fichiers dérivés diffusés sous la même licence (`licence`, `licence_url`, `mention` dans chaque fichier). Effectifs et prévalence publiés par la Cnam ; ordre = colonne `tri` de la source ; aucun montant départemental déduit des dépenses nationales par pathologie. Commandes : `python pipeline/pathologies_departements.py collecter|produire`. Tests : `pytest tests/test_pathologies_departements.py`.
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `pathologies_departements/index.json` | `pathologies_departements_index` | `pathologies.<code>` (libellé, groupe, niveau, ordre), `ordre`, `definitions`, `regle`, `sources[]`, `couverture` |
+| `pathologies_departements/departements.json` | `pathologies_departements_departements` | `departements.<dep>.annees.<année>` : `[patients, prévalence]` dans l'ordre de `pathologies` (première ligne : population de référence) |
+
+### 2.78 Polices municipales : `police_municipale/` (pipeline/police_municipale.py)
+
+Fiche data.gouv.fr « Police municipale : Effectifs par commune » (ministère de l'Intérieur, Licence Ouverte), enquêtes 2019-2024. Source sans code Insee : nom normalisé rapproché des communes en vigueur du même département ; lignes sans correspondance unique (intercommunalités, mutualisations, anciennes communes) comptées dans `couverture`. Commune absente une année : rien n'est publié (jamais 0). Commandes : `python pipeline/police_municipale.py collecter|produire`. Tests : `pytest tests/test_police_municipale.py`.
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `police_municipale/index.json` | `police_municipale_index` | `annees`, `definitions`, `rapprochement`, `absence`, `sources[]`, `couverture.par_annee` |
+| `police_municipale/communes.json` | `police_municipale_communes` | `communes.<insee>.<année>` = `[agents de police municipale, ASVP, gardes champêtres]` |
+
+**Pour l'écran « Ma commune »** (2.72 à 2.78) : blocs repliés, chacun avec sa source et son millésime ; un bloc sans donnée pour la commune affiche l'encadré « Donnée non publiée à la source » (`web/src/composants/manque.ts`) avec le motif (seuil de diffusion, échelle de publication, absence de service déclaré). Rien n'est additionné entre blocs ni aux budgets.
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.

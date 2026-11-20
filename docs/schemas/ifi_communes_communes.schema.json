@@ -1,0 +1,79 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/ifi_communes_communes.schema.json",
+ "title": "site/data/ifi_communes/communes.json : redevables, patrimoine moyen et impôt moyen publiés par la DGFiP, par commune et par année (pipeline/ifi_communes.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "colonnes",
+  "communes"
+ ],
+ "properties": {
+  "communes": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^(\\d{5}|2[AB]\\d{3})$"
+   },
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "nom",
+     "annees"
+    ],
+    "properties": {
+     "nom": {
+      "type": "string"
+     },
+     "annees": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^\\d{4}$"
+      },
+      "additionalProperties": {
+       "type": "array",
+       "items": {
+        "type": "integer"
+       },
+       "minItems": 3,
+       "maxItems": 3
+      }
+     },
+     "arrondissements": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^(\\d{5}|2[AB]\\d{3})$"
+      },
+      "additionalProperties": {
+       "type": "object",
+       "required": [
+        "nom_source",
+        "annees"
+       ],
+       "properties": {
+        "annees": {
+         "type": "object",
+         "propertyNames": {
+          "pattern": "^\\d{4}$"
+         },
+         "additionalProperties": {
+          "type": "array",
+          "items": {
+           "type": "integer"
+          },
+          "minItems": 3,
+          "maxItems": 3
+         }
+        }
+       }
+      }
+     }
+    },
+    "additionalProperties": false
+   }
+  }
+ }
+}

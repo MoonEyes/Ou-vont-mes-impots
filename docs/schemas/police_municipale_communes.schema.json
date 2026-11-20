@@ -1,0 +1,40 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/police_municipale_communes.schema.json",
+ "title": "site/data/police_municipale/communes.json : [agents de police municipale, ASVP, gardes champêtres] par commune et par année (pipeline/police_municipale.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "colonnes",
+  "communes"
+ ],
+ "properties": {
+  "communes": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^(\\d{5}|2[AB]\\d{3})$"
+   },
+   "additionalProperties": {
+    "type": "object",
+    "propertyNames": {
+     "pattern": "^\\d{4}$"
+    },
+    "additionalProperties": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "minItems": 3,
+     "maxItems": 3
+    }
+   }
+  }
+ }
+}

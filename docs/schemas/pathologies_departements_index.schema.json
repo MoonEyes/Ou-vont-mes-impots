@@ -1,0 +1,49 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/pathologies_departements_index.schema.json",
+ "title": "site/data/pathologies_departements/index.json : patients par pathologie et par département (Cnam, ODbL ; pipeline/pathologies_departements.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "presentation",
+  "annees",
+  "pathologies",
+  "ordre",
+  "definitions",
+  "licence",
+  "licence_url",
+  "mention",
+  "sources",
+  "couverture",
+  "recherche_publique"
+ ],
+ "properties": {
+  "licence": {
+   "const": "ODbL 1.0"
+  },
+  "recherche_publique": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "trouvaille",
+     "classement",
+     "licence"
+    ],
+    "properties": {
+     "classement": {
+      "enum": [
+       "réutilisable tel quel",
+       "à adapter",
+       "inspiration seulement"
+      ]
+     }
+    }
+   }
+  }
+ }
+}

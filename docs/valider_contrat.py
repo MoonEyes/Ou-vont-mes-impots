@@ -416,6 +416,23 @@ FICHIERS = [
     ("ma_commune_index.schema.json", "ma_commune/index.json", "existant"),
     ("ma_commune_cp.schema.json", "ma_commune/cp/*.json", "existant"),
     ("ma_commune_noms.schema.json", "ma_commune/noms/*.json", "existant"),
+    # lot 2 (inventaire du 20/11) : compléments des pages « Ma commune » et Explorer
+    ("ofgl_complements_index.schema.json", "ofgl_complements/index.json", "existant"),
+    ("ofgl_complements_communes.schema.json", "ofgl_complements/communes/*.json", "existant"),
+    ("ofgl_complements_sdis.schema.json", "ofgl_complements/sdis.json", "existant"),
+    ("elus_indemnites_index.schema.json", "elus_indemnites/index.json", "existant"),
+    ("elus_indemnites_communes.schema.json", "elus_indemnites/communes/*.json", "existant"),
+    ("caf_communes_index.schema.json", "caf_communes/index.json", "existant"),
+    ("caf_communes_communes.schema.json", "caf_communes/communes/*.json", "existant"),
+    ("ifi_communes_index.schema.json", "ifi_communes/index.json", "existant"),
+    ("ifi_communes_communes.schema.json", "ifi_communes/communes.json", "existant"),
+    ("emploi_territoires_index.schema.json", "emploi_territoires/index.json", "existant"),
+    ("emploi_territoires_departements.schema.json", "emploi_territoires/departements.json", "existant"),
+    ("emploi_territoires_communes.schema.json", "emploi_territoires/communes/*.json", "existant"),
+    ("pathologies_departements_index.schema.json", "pathologies_departements/index.json", "existant"),
+    ("pathologies_departements_departements.schema.json", "pathologies_departements/departements.json", "existant"),
+    ("police_municipale_index.schema.json", "police_municipale/index.json", "existant"),
+    ("police_municipale_communes.schema.json", "police_municipale/communes.json", "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

@@ -1,0 +1,52 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/caf_communes_index.schema.json",
+ "title": "site/data/caf_communes/index.json : prestations de la CAF par commune, intercommunalité, IRIS et QPV (CNAF ; pipeline/caf_communes.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "presentation",
+  "annees",
+  "prestations",
+  "colonnes",
+  "secret_statistique",
+  "montant",
+  "aah",
+  "sources",
+  "couverture",
+  "recherche_publique"
+ ],
+ "properties": {
+  "annees": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "pattern": "^\\d{4}$"
+   }
+  },
+  "recherche_publique": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "trouvaille",
+     "classement",
+     "licence"
+    ],
+    "properties": {
+     "classement": {
+      "enum": [
+       "réutilisable tel quel",
+       "à adapter",
+       "inspiration seulement"
+      ]
+     }
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,49 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/emploi_territoires_departements.schema.json",
+ "title": "site/data/emploi_territoires/departements.json : indicateurs de l'Assurance chômage par département, décembre de chaque année et dernier mois (Unédic ; pipeline/emploi_territoires.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "colonnes",
+  "dernier_mois",
+  "departements"
+ ],
+ "properties": {
+  "departements": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^(\\d{2}|2[AB]|97\\d)$"
+   },
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "mois"
+    ],
+    "properties": {
+     "mois": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^\\d{4}-\\d{2}$"
+      },
+      "additionalProperties": {
+       "type": "array",
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "minItems": 5,
+       "maxItems": 5
+      }
+     }
+    }
+   }
+  }
+ }
+}
