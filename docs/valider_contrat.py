@@ -419,6 +419,10 @@ FICHIERS = [
     # Budgets des universités et opérateurs de l'enseignement supérieur (MESR, par établissement) (pipeline/universites.py)
     ('universites_index.schema.json', 'universites/index.json', "existant"),
     ('universites_etablissements.schema.json', 'universites/etablissements.json', "existant"),
+    # Fonds de solidarité aux entreprises, Covid-19 (agrégats par département, région, secteur, mois) (pipeline/fonds_solidarite.py)
+    ('fonds_solidarite_index.schema.json', 'fonds_solidarite/index.json', "existant"),
+    ('fonds_solidarite_departements.schema.json', 'fonds_solidarite/departements.json', "existant"),
+    ('fonds_solidarite_regions_mois.schema.json', 'fonds_solidarite/regions_mois.json', "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

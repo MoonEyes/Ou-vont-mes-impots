@@ -2479,6 +2479,19 @@
    "hors_catalogue": [],
    "octets_sources": 599935,
    "note": "entrée collectée par collecte/collecte.py (python pipeline/universites.py collecter)"
+  },
+  "fonds_solidarite": {
+   "sources": {
+    "aides_fonds_solidarite": [
+     "data/lake/aides_entreprises/aides_fonds_solidarite"
+    ]
+   },
+   "caches": [
+    "data/lake/fonds_solidarite/historique"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "fichiers « latest » collectés par collecte/collecte.py ; instantanés de fin de mois collectés par le module (python pipeline/fonds_solidarite.py collecter)"
   }
  },
  "urls": {

@@ -2103,6 +2103,27 @@ data/lake/etat/etat_esr_operateurs_financiers.parquet
 
 **Recherche publique (règle n°0, 20/11/2026).** Jeu du ministère : réutilisable tel quel (Licence Ouverte 2.0, budget initial 2026 compris). Tableau de bord financier des universités (dataESR) : inspiration seulement (application, pas de code). Jaune « Opérateurs de l'État » (déjà lu par `pipeline/operateurs.py`) : à adapter pour la subvention de l'État par établissement, non fait ici.
 
+### 2.81 Fonds de solidarité aux entreprises (Covid-19, 2020 à 2022) : `fonds_solidarite/` (pipeline/fonds_solidarite.py)
+
+Agrégats du fonds de solidarité publiés par Etalab et la DGFiP : jeu data.gouv.fr `5e9dbdbe71589194c8f7b42f` (Licence Ouverte 2.0), identifiant `aides_fonds_solidarite` de `collecte/catalogue.json` (fichiers « latest » : volet 1 au 24/06/2022, volet 2 au 10/12/2021), et ressource « Historique des données du fonds de solidarité » du même jeu (dépôt etalab/dashboard-aides-entreprises, dossier `published-data/fonds-solidarite`, figé depuis le 29/06/2022), dont le module lit le dernier instantané de chaque mois (26 dates, `raw.githubusercontent.com`, contrôle `collecte/integrite.py`). Commandes : `python pipeline/fonds_solidarite.py collecter` (réseau), `python pipeline/fonds_solidarite.py produire [--sortie DOSSIER]` (sans réseau). Tests : `pytest tests/test_fonds_solidarite.py`, `web/tests/fonds_solidarite.test.ts`.
+
+```
+data/lake/aides_entreprises/aides_fonds_solidarite/*.csv + data/lake/fonds_solidarite/historique/<date>/*.csv
+     └─> pipeline/fonds_solidarite.py ─> site/data/fonds_solidarite/index.json, departements.json, regions_mois.json
+```
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `fonds_solidarite/index.json` | `fonds_solidarite_index` | `presentation`, `volets`, `instantanes` (dernier instantané de chaque volet, fins de mois, fichiers absents), nomenclatures `sections`, `categories_juridiques`, `classes_effectif`, `regions`, `departements`, `couverture`, `fichiers`, `manques[]`, `regles[]`, `limites[]`, `recherche_publique[]`, `ordre` |
+| `fonds_solidarite/departements.json` | `fonds_solidarite_departements` | volet 1 au dernier instantané : `par_section`, `par_categorie_juridique`, `par_classe_effectif` ; chacun `colonnes` + `lignes` `[departement, code, nombre_aides, nombre_entreprises, montant_eur]` |
+| `fonds_solidarite/regions_mois.json` | `fonds_solidarite_regions_mois` | `lignes` `[instantane, volet, region, section, nombre_aides, nombre_entreprises, montant_eur]` : cumuls publiés à chaque fin de mois |
+
+**Règles.** Aucune entreprise nommée : la source ne publie que des agrégats (beaucoup de bénéficiaires sont des entrepreneurs individuels, catégorie 10). Cumuls repris tels quels à la date de chaque fichier : aucun montant mensuel calculé par différence, aucun fichier de date différente additionné, volets 1 (État) et 2 (régions) jamais additionnés ; `null` = valeur non publiée (les premiers instantanés n'ont pas le nombre d'entreprises). Ce qui manque à la source (par commune, par entreprise, montant de chaque mois) : `manques[]`, affiché avec `web/src/composants/manque.ts`.
+
+**Pour l'écran** (bloc « Le fonds de solidarité dans ton département » de `/decisions/controle`, paramètre `fsd=<département>`) : tableau par section d'activité au dernier instantané, répartition par forme juridique et par taille, puis cumuls de fin de mois de la région du département.
+
+**Recherche publique (règle n°0, 20/11/2026).** Jeu data.gouv.fr et historique Etalab : réutilisables tels quels (Licence Ouverte 2.0). Code du tableau de bord aides-entreprises.data.gouv.fr (MIT, dernier commit 29/06/2022) : inspiration seulement. Rapports de la Cour des comptes : inspiration seulement (PDF).
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.
