@@ -131,6 +131,7 @@ export const META_PAGES: Record<string, { titre?: string; description: string }>
   '/mentions': { titre: 'Mentions légales et confidentialité', description: 'Mentions légales et confidentialité du site : éditeur, hébergeur, données personnelles, aucun cookie, aucune mesure d’audience, aucune saisie envoyée.' },
   '/methode/fraicheur': { titre: 'Fraîcheur des données : collecte et millésime', description: 'Pour chaque source publique utilisée : date de la dernière collecte, année couverte, date de publication par la source, prochaine édition et statut.' },
   '/methode/glossaire': { titre: 'Glossaire : sigles et mots du budget', description: 'Glossaire des sigles et des mots du budget public (LFI, PLF, CSG, ONDAM…) : définitions courtes en langage courant, avec la source officielle de chacune.' },
+  '/enseignants': { titre: 'Pour les enseignants : trois activités pour la classe', description: 'Trois activités pour les cours de sciences économiques et sociales et d’enseignement moral et civique : salaire fictif, budget communal, vote d’un impôt.' },
   '/recherche': { titre: 'Rechercher une commune, un programme, une page', description: 'Recherche dans tout le site : pages, communes, départements, missions et programmes du budget de l’État, opérateurs, prestations. Faite sur ton appareil.' },
   '/introuvable': { titre: 'Page introuvable', description: 'Cette adresse ne correspond à aucune page du site « Le billet découpé ». Le calcul, le budget de l’État et le budget de chaque commune restent accessibles.' },
 }

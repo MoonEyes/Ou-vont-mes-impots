@@ -4500,3 +4500,149 @@ fieldset.saisie-groupe {
   border-left: 0.5rem solid var(--niveau);
   padding-left: 0.75rem;
 }
+
+/* Pour les enseignants : chaque activité est une fiche, en-tête à la couleur de sa famille séparé du corps par un
+   pointillé de découpe (le billet découpé) ; à l'impression, une fiche par page, et « Imprimer cette activité »
+   n'imprime que la fiche choisie (classe posée par src/ecrans/enseignants.ts le temps de l'impression). */
+.enseignants-sommaire {
+  margin: 1.5rem 0 1rem;
+  padding-left: 1.5rem;
+  display: grid;
+  gap: 0.5rem;
+}
+.enseignants-sommaire li::marker {
+  font-family: var(--chiffres);
+  font-weight: 800;
+}
+.enseignants-sommaire .aide {
+  display: inline;
+  margin: 0 0 0 0.25rem;
+}
+.fiche {
+  background: var(--papier);
+  border: var(--trait) solid var(--contour);
+  border-radius: 1.75rem;
+  box-shadow: 0 6px 0 var(--contour);
+  margin: 3rem 0;
+  overflow: hidden;
+  scroll-margin-top: 5rem;
+}
+.fiche-tete {
+  background: var(--famille);
+  color: var(--sur-famille);
+  padding: 1.5rem 1.5rem 1.25rem;
+  border-bottom: var(--trait) dashed var(--contour);
+}
+.fiche-tete a {
+  color: inherit;
+}
+.fiche-numero {
+  font-family: var(--titre);
+  font-weight: 800;
+  margin: 0 0 0.25rem;
+}
+.fiche-tete h2 {
+  margin: 0 0 1.25rem;
+}
+.fiche-infos {
+  display: grid;
+  gap: 0.75rem 2rem;
+  margin: 0;
+}
+.fiche-infos dt {
+  font-weight: 700;
+}
+.fiche-infos dd {
+  margin: 0;
+}
+.fiche-pages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.fiche-adresse {
+  display: block;
+  font-size: var(--t-1);
+  overflow-wrap: anywhere;
+}
+.fiche-corps {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+.fiche-objectif {
+  font-size: var(--t1);
+  line-height: 1.5;
+  margin-top: 0;
+}
+.fiche-etapes,
+.fiche-questions {
+  padding-left: 1.75rem;
+  display: grid;
+  gap: 0.5rem;
+  max-width: 46rem;
+}
+.fiche-etapes li::marker,
+.fiche-questions li::marker {
+  font-family: var(--chiffres);
+  font-weight: 800;
+}
+.question-source .aide {
+  display: inline;
+}
+.fiche-vigilance {
+  margin: 1.75rem 0 0;
+  padding: 1rem 1.25rem;
+  border-left: 0.5rem solid var(--contour);
+  background: var(--fond);
+  border-radius: 0 var(--rayon-champ) var(--rayon-champ) 0;
+}
+.fiche-vigilance h3 {
+  margin-top: 0;
+}
+.fiche-vigilance p {
+  margin-bottom: 0;
+}
+.enseignants-contact {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 45rem) {
+  .fiche-tete,
+  .fiche-corps {
+    padding-inline: 2rem;
+  }
+  .fiche-infos {
+    grid-template-columns: 2fr 1fr 2fr;
+  }
+}
+@media print {
+  .enseignants-sommaire,
+  .enseignants-tete nav + .aide {
+    display: none !important;
+  }
+  .fiche {
+    margin: 0;
+    break-before: page;
+    page-break-before: always;
+  }
+  .fiche-infos {
+    grid-template-columns: 2fr 1fr 2fr;
+  }
+  .fiche-etapes li,
+  .fiche-questions li,
+  .fiche-vigilance {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .enseignants-pied {
+    break-before: page;
+    page-break-before: always;
+  }
+  .impression-une-activite .ecran > :not(.enseignants),
+  .impression-une-activite .enseignants > :not(.fiche-imprimee) {
+    display: none !important;
+  }
+  .impression-une-activite .fiche-imprimee {
+    break-before: auto;
+    page-break-before: auto;
+  }
+}
