@@ -1,0 +1,244 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/ofgl_complements_communes.schema.json",
+ "title": "site/data/ofgl_complements/communes/<dep>.json : par commune flux et patrimoine, par intercommunalité FPIC, flux et patrimoine, SDIS et établissements publics locaux du département (OFGL ; pipeline/ofgl_complements.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "departement",
+  "colonnes",
+  "communes",
+  "epci",
+  "sdis",
+  "organismes"
+ ],
+ "properties": {
+  "departement": {
+   "type": "string",
+   "pattern": "^(\\d{2}|2[AB]|97\\d)$"
+  },
+  "communes": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^(\\d{5}|2[AB]\\d{3})$"
+   },
+   "additionalProperties": {
+    "type": "object",
+    "required": [],
+    "properties": {
+     "flux": {
+      "type": "array",
+      "items": {
+       "type": [
+        "integer",
+        "null"
+       ]
+      },
+      "minItems": 6,
+      "maxItems": 6
+     },
+     "patrimoine": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "minItems": 7,
+      "maxItems": 7
+     },
+     "fpic": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^\\d{4}$"
+      },
+      "additionalProperties": {
+       "type": "array",
+       "items": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "minItems": 4,
+       "maxItems": 4
+      }
+     }
+    },
+    "additionalProperties": false
+   }
+  },
+  "epci": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^\\d{9}$"
+   },
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "nom"
+    ],
+    "properties": {
+     "nom": {
+      "type": "string"
+     },
+     "fpic": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^\\d{4}$"
+      },
+      "additionalProperties": {
+       "type": "array",
+       "items": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "minItems": 4,
+       "maxItems": 4
+      }
+     },
+     "flux": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^\\d{4}$"
+      },
+      "additionalProperties": {
+       "type": "array",
+       "items": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "minItems": 18,
+       "maxItems": 18
+      }
+     },
+     "patrimoine": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "minItems": 7,
+      "maxItems": 7
+     }
+    },
+    "additionalProperties": false
+   }
+  },
+  "sdis": {
+   "oneOf": [
+    {
+     "type": "null"
+    },
+    {
+     "type": "object",
+     "required": [
+      "departement",
+      "annees",
+      "par_habitant",
+      "population"
+     ],
+     "properties": {
+      "annees": {
+       "type": "object",
+       "propertyNames": {
+        "pattern": "^\\d{4}$"
+       },
+       "additionalProperties": {
+        "type": "array",
+        "items": {
+         "type": [
+          "integer",
+          "null"
+         ]
+        },
+        "minItems": 8,
+        "maxItems": 8
+       }
+      },
+      "par_habitant": {
+       "type": "object",
+       "propertyNames": {
+        "pattern": "^\\d{4}$"
+       },
+       "additionalProperties": {
+        "type": "array",
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "minItems": 8,
+        "maxItems": 8
+       }
+      }
+     }
+    }
+   ]
+  },
+  "organismes": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "minItems": 5,
+    "maxItems": 5,
+    "prefixItems": [
+     {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^\\d{9}$"
+     },
+     {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^\\d{4}$"
+      },
+      "additionalProperties": {
+       "type": "array",
+       "items": {
+        "type": [
+         "integer",
+         "null"
+        ]
+       },
+       "minItems": 5,
+       "maxItems": 5
+      }
+     }
+    ]
+   }
+  }
+ }
+}

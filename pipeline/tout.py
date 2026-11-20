@@ -211,6 +211,14 @@ ETAPES: tuple[Etape, ...] = (
     axe('jurisprudence', 'Jurisprudence administrative en matière fiscale et budgétaire (DILA, JADE ; comptes et liens)', ('base',), duree_s=900),
     axe('activite_partielle_demandes', 'Activité partielle 2020 : demandes déposées par région et secteur (Etalab)', ('base',), duree_s=10),
     axe('hopitaux_totaux', "Comptes des hôpitaux : totaux publiés par l'ATIH (2020 à 2024)", ('base',), duree_s=10),
+    # Données du lot 2 (inventaire du 20/11) : blocs de « Ma commune » et écrans Explorer.
+    axe("ofgl_complements", "OFGL : FPIC, flux communes-intercommunalité, SDIS, patrimoine, établissements publics locaux", ("local",), duree_s=600),
+    axe("elus_indemnites", "Indemnités des élus par commune, total du compte 653 (balances DGFiP)", ("local", "investissement_communes"), duree_s=600),
+    axe("caf_communes", "Prestations de la CAF par commune, intercommunalité, IRIS et QPV (CNAF)", ("local",), duree_s=300),
+    axe("ifi_communes", "Impôt sur la fortune immobilière par commune (DGFiP)", ("local",), duree_s=60),
+    axe("emploi_territoires", "Assurance chômage par département (Unédic), inscrits à France Travail par commune (Dares)", ("local",), duree_s=300),
+    axe("pathologies_departements", "Patients par pathologie et par département (Cnam, ODbL)", ("local",), duree_s=300),
+    axe("police_municipale", "Effectifs de police municipale par commune (ministère de l'Intérieur)", ("local",), duree_s=60),
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
     # nouvel axe se déclare au-dessus de cette ligne).
     Etape("fraicheur", "Fraîcheur des données (collecte, millésimes, calendriers officiels)", (TOUTES,),

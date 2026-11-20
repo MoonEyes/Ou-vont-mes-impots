@@ -1,0 +1,64 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/pathologies_departements_departements.schema.json",
+ "title": "site/data/pathologies_departements/departements.json : [patients, prévalence] par groupe de pathologies, département et année (Cnam, ODbL ; pipeline/pathologies_departements.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "licence",
+  "pathologies",
+  "colonnes",
+  "departements"
+ ],
+ "properties": {
+  "licence": {
+   "const": "ODbL 1.0"
+  },
+  "departements": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^(\\d{2}|2[AB]|97\\d)$"
+   },
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "nom",
+     "annees"
+    ],
+    "properties": {
+     "annees": {
+      "type": "object",
+      "propertyNames": {
+       "pattern": "^\\d{4}$"
+      },
+      "additionalProperties": {
+       "type": "array",
+       "items": {
+        "oneOf": [
+         {
+          "type": "null"
+         },
+         {
+          "type": "array",
+          "items": {
+           "type": [
+            "number",
+            "null"
+           ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+         }
+        ]
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

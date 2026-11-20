@@ -1,0 +1,44 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/emploi_territoires_index.schema.json",
+ "title": "site/data/emploi_territoires/index.json : assurance chômage par département (Unédic) et inscrits à France Travail par commune (Dares) ; pipeline/emploi_territoires.py",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "presentation",
+  "definitions",
+  "colonnes_unedic",
+  "annees_dares",
+  "secret_statistique",
+  "licence",
+  "sources",
+  "couverture",
+  "recherche_publique"
+ ],
+ "properties": {
+  "recherche_publique": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "trouvaille",
+     "classement",
+     "licence"
+    ],
+    "properties": {
+     "classement": {
+      "enum": [
+       "réutilisable tel quel",
+       "à adapter",
+       "inspiration seulement"
+      ]
+     }
+    }
+   }
+  }
+ }
+}

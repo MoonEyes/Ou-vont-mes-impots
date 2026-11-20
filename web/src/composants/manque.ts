@@ -92,4 +92,39 @@ export const MANQUES = {
     depuis: `Constat de la collecte${millesime ? ` (${millesime})` : ''}.`,
     source: { libelle: 'Schéma national « Budget » (schema.data.gouv.fr)', url: 'https://schema.data.gouv.fr/scdl/budget.html' },
   }),
+  /** Ma commune : flux entre la commune et son intercommunalité absents des comptes repris par l'OFGL. */
+  fluxIntercommunalite: (nom: string, annee?: string | null): Manque => ({
+    quoi: `Les attributions de compensation et la dotation de solidarité communautaire entre ${nom} et son intercommunalité${annee ? ` en ${annee}` : ''}.`,
+    pourquoi: 'L’OFGL publie ces flux à partir des comptes de gestion de l’année ; les comptes de quelques communes n’étaient pas encore intégrés à la date de collecte (intégration annoncée avec les balances définitives de la DGFiP), et une commune sans intercommunalité à fiscalité propre n’a pas de tels flux.',
+    depuis: `Comptes de gestion ${annee ?? 'de la dernière année'}, base communale des flux de l’OFGL.`,
+    source: { libelle: 'OFGL, flux financiers entre communes et intercommunalités', url: 'https://data.ofgl.fr/explore/dataset/base-communale-flux-financiers/' },
+  }),
+  /** Ma commune : effectifs de police municipale non rattachés à la commune. */
+  policeMunicipale: (nom: string, annees?: string[], fiche?: string): Manque => ({
+    quoi: `Des effectifs de police municipale déclarés sous le nom de ${nom}.`,
+    pourquoi: 'L’enquête annuelle du ministère de l’Intérieur liste les communes et intercommunalités qui ont un service de police municipale, sans code Insee. La commune n’y figure pas sous son nom : pas de service déclaré, service porté par l’intercommunalité ou mis en commun avec d’autres communes, ou nom écrit autrement.',
+    depuis: annees?.length ? `Enquêtes ${annees[0]} à ${annees[annees.length - 1]}.` : 'Enquêtes lues par le site.',
+    source: { libelle: 'Police municipale : effectifs par commune (data.gouv.fr)', url: fiche ?? 'https://www.data.gouv.fr/datasets/police-municipale-effectifs-par-commune' },
+  }),
+  /** Ma commune : allocation aux adultes handicapés publiée à l'échelle de l'intercommunalité seulement. */
+  aahCommune: (nom: string): Manque => ({
+    quoi: `Le nombre de bénéficiaires de l’allocation aux adultes handicapés (AAH) domiciliés à ${nom}.`,
+    pourquoi: 'La CNAF publie l’AAH et l’allocation d’éducation de l’enfant handicapé à l’échelle de l’intercommunalité, du département et de la France, pas de la commune.',
+    depuis: 'Jeux de la CNAF publiés depuis décembre 2020.',
+    source: { libelle: 'CNAF, répartition des allocataires par intercommunalité (data.caf.fr)', url: 'https://data.caf.fr/explore/dataset/s_ben_epci_f/' },
+  }),
+  /** Ma commune : impôt sur la fortune immobilière publié au-dessus de seuils seulement. */
+  ifiSousSeuil: (nom: string, annees?: string[], fiche?: string): Manque => ({
+    quoi: `Le nombre de foyers de ${nom} redevables de l’impôt sur la fortune immobilière, leur patrimoine moyen et leur impôt moyen.`,
+    pourquoi: 'La DGFiP ne publie ces chiffres par commune que pour les villes de plus de 20 000 habitants comptant plus de 50 foyers redevables (secret fiscal). La commune est sous l’un de ces seuils dans les classeurs lus.',
+    depuis: annees?.length ? `Classeurs ${annees[0]} à ${annees[annees.length - 1]}.` : 'Classeurs lus par le site.',
+    source: { libelle: 'DGFiP, impôt sur la fortune immobilière par collectivité (data.gouv.fr)', url: fiche ?? 'https://www.data.gouv.fr/datasets/5369965ea3a729239d204992' },
+  }),
+  /** Ma commune, onglet département : pas de comptes de SDIS publiés pour ce département. */
+  sdisAbsent: (nomDep: string): Manque => ({
+    quoi: `Les comptes d’un service départemental d’incendie et de secours (SDIS) pour ${nomDep}.`,
+    pourquoi: 'À Paris et dans les Hauts-de-Seine, la Seine-Saint-Denis et le Val-de-Marne, les secours sont assurés par la brigade de sapeurs-pompiers de Paris, unité militaire financée par l’État et les collectivités : il n’existe pas de SDIS dont l’OFGL publie les comptes. Ailleurs, les comptes du SDIS ne figurent pas dans la base de l’OFGL lue par le site.',
+    depuis: 'Comptes des SDIS 2012 à 2025.',
+    source: { libelle: 'OFGL, comptes des SDIS', url: 'https://data.ofgl.fr/explore/dataset/ofgl-base-sdis/' },
+  }),
 }

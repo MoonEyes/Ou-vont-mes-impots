@@ -17701,6 +17701,550 @@
    ]
   },
   {
+   "name": "ofgl-complements-index",
+   "title": "FPIC, flux communes-intercommunalité, SDIS, patrimoine, établissements publics locaux (OFGL ; pipeline/ofgl_complements.py)",
+   "description": "site/data/ofgl_complements/index.json : FPIC, flux communes-intercommunalité, SDIS, patrimoine, établissements publics locaux (OFGL ; pipeline/ofgl_complements.py). Fichier site/data/ofgl_complements/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ofgl_complements_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "https://data.ofgl.fr/explore/dataset/fpic-ensembles-intercommunaux/ ; https://data.ofgl.fr/explore/dataset/base-communale-flux-financiers/ ; https://data.ofgl.fr/explore/dataset/base-intercommunale-flux-financiers/ ; https://data.ofgl.fr/explore/dataset/ofgl-base-sdis/ ; https://data.ofgl.fr/explore/dataset/actifs_communes/ ; https://data.ofgl.fr/explore/dataset/actifs-gfp/ ; https://data.ofgl.fr/explore/dataset/ofgl-base-epl/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/ofgl_complements/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "ofgl_complements",
+   "millesimes": [
+    "FPIC 2018-2026, flux 2019-2025, patrimoine 2025, SDIS 2012-2025, établissements publics locaux 2018-2025 ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "https://data.ofgl.fr/explore/dataset/fpic-ensembles-intercommunaux/ ; https://data.ofgl.fr/explore/dataset/base-communale-flux-financiers/ ; https://data.ofgl.fr/explore/dataset/base-intercommunale-flux-financiers/ ; https://data.ofgl.fr/explore/dataset/ofgl-base-sdis/ ; https://data.ofgl.fr/explore/dataset/actifs_communes/ ; https://data.ofgl.fr/explore/dataset/actifs-gfp/ ; https://data.ofgl.fr/explore/dataset/ofgl-base-epl/"
+   ]
+  },
+  {
+   "name": "ofgl-complements-communes",
+   "title": "par commune flux et patrimoine, par intercommunalité FPIC, flux et patrimoine, SDIS et établissements publics locaux du département (OFGL ; pipeline/ofgl_complements.py)",
+   "description": "site/data/ofgl_complements/communes/<dep>.json : par commune flux et patrimoine, par intercommunalité FPIC, flux et patrimoine, SDIS et établissements publics locaux du département (OFGL ; pipeline/ofgl_complements.py). Famille de 101 fichiers (motif site/data/ofgl_complements/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/communes/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ofgl_complements_communes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "https://data.ofgl.fr/explore/dataset/fpic-ensembles-intercommunaux/ ; https://data.ofgl.fr/explore/dataset/base-communale-flux-financiers/ ; https://data.ofgl.fr/explore/dataset/base-intercommunale-flux-financiers/ ; https://data.ofgl.fr/explore/dataset/ofgl-base-sdis/ ; https://data.ofgl.fr/explore/dataset/actifs_communes/ ; https://data.ofgl.fr/explore/dataset/actifs-gfp/ ; https://data.ofgl.fr/explore/dataset/ofgl-base-epl/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/ofgl_complements/communes/*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "ofgl_complements",
+   "millesimes": [
+    "FPIC 2018-2026, flux 2019-2025, patrimoine 2025, SDIS 2012-2025, établissements publics locaux 2018-2025 ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "https://data.ofgl.fr/explore/dataset/fpic-ensembles-intercommunaux/ ; https://data.ofgl.fr/explore/dataset/base-communale-flux-financiers/ ; https://data.ofgl.fr/explore/dataset/base-intercommunale-flux-financiers/ ; https://data.ofgl.fr/explore/dataset/ofgl-base-sdis/ ; https://data.ofgl.fr/explore/dataset/actifs_communes/ ; https://data.ofgl.fr/explore/dataset/actifs-gfp/ ; https://data.ofgl.fr/explore/dataset/ofgl-base-epl/"
+   ]
+  },
+  {
+   "name": "ofgl-complements-sdis",
+   "title": "comptes des SDIS, budget principal, 2012-2025 (OFGL ; pipeline/ofgl_complements.py)",
+   "description": "site/data/ofgl_complements/sdis.json : comptes des SDIS, budget principal, 2012-2025 (OFGL ; pipeline/ofgl_complements.py). Fichier site/data/ofgl_complements/sdis.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/sdis.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ofgl_complements_sdis.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "https://data.ofgl.fr/explore/dataset/ofgl-base-sdis/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/ofgl_complements/sdis.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "ofgl_complements",
+   "millesimes": [
+    "FPIC 2018-2026, flux 2019-2025, patrimoine 2025, SDIS 2012-2025, établissements publics locaux 2018-2025 ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "https://data.ofgl.fr/explore/dataset/ofgl-base-sdis/"
+   ]
+  },
+  {
+   "name": "elus-indemnites-index",
+   "title": "indemnités et frais des élus par commune, total du compte 653 (balances DGFiP ; pipeline/elus_indemnites.py)",
+   "description": "site/data/elus_indemnites/index.json : indemnités et frais des élus par commune, total du compte 653 (balances DGFiP ; pipeline/elus_indemnites.py). Fichier site/data/elus_indemnites/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/elus_indemnites/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/elus_indemnites_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr, DGFiP « Balances comptables des communes » 2010 à 2025 (budget principal, agrégé côté serveur), Licence Ouverte 2.0 : https://data.economie.gouv.fr/explore/dataset/balances-comptables-des-communes-en-2025/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/elus_indemnites/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "elus_indemnites",
+   "millesimes": [
+    "exercices 2010 à 2025 ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "data.economie.gouv.fr, DGFiP « Balances comptables des communes » 2010 à 2025 (budget principal, agrégé côté serveur), Licence Ouverte 2.0 : https://data.economie.gouv.fr/explore/dataset/balances-comptables-des-communes-en-2025/"
+   ]
+  },
+  {
+   "name": "elus-indemnites-communes",
+   "title": "compte 653 du budget principal par commune et par exercice, total seulement, jamais par élu (pipeline/elus_indemnites.py)",
+   "description": "site/data/elus_indemnites/communes/<dep>.json : compte 653 du budget principal par commune et par exercice, total seulement, jamais par élu (pipeline/elus_indemnites.py). Famille de 101 fichiers (motif site/data/elus_indemnites/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/elus_indemnites/communes/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/elus_indemnites_communes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "data.economie.gouv.fr, DGFiP « Balances comptables des communes » 2010 à 2025 (budget principal, agrégé côté serveur), Licence Ouverte 2.0 : https://data.economie.gouv.fr/explore/dataset/balances-comptables-des-communes-en-2025/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/elus_indemnites/communes/*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "elus_indemnites",
+   "millesimes": [
+    "exercices 2010 à 2025 ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "data.economie.gouv.fr, DGFiP « Balances comptables des communes » 2010 à 2025 (budget principal, agrégé côté serveur), Licence Ouverte 2.0 : https://data.economie.gouv.fr/explore/dataset/balances-comptables-des-communes-en-2025/"
+   ]
+  },
+  {
+   "name": "caf-communes-index",
+   "title": "prestations de la CAF par commune, intercommunalité, IRIS et QPV (CNAF ; pipeline/caf_communes.py)",
+   "description": "site/data/caf_communes/index.json : prestations de la CAF par commune, intercommunalité, IRIS et QPV (CNAF ; pipeline/caf_communes.py). Fichier site/data/caf_communes/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/caf_communes/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/caf_communes_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "https://data.caf.fr/explore/dataset/s_ben_com_f/ ; https://data.caf.fr/explore/dataset/s_ben_epci_f/ ; https://data.caf.fr/explore/dataset/s_ben_iris_f/ ; https://data.caf.fr/explore/dataset/s_ben_qpv_f/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/caf_communes/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "caf_communes",
+   "millesimes": [
+    "décembre 2020 à décembre 2024 (communes), décembre 2024 (IRIS, QPV) ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "https://data.caf.fr/explore/dataset/s_ben_com_f/ ; https://data.caf.fr/explore/dataset/s_ben_epci_f/ ; https://data.caf.fr/explore/dataset/s_ben_iris_f/ ; https://data.caf.fr/explore/dataset/s_ben_qpv_f/"
+   ]
+  },
+  {
+   "name": "caf-communes-communes",
+   "title": "foyers allocataires et montant de décembre par prestation, communes (arrondissements à Paris, Lyon, Marseille), quartiers, intercommunalités (CNAF ; pipeline/caf_communes.py)",
+   "description": "site/data/caf_communes/communes/<dep>.json : foyers allocataires et montant de décembre par prestation, communes (arrondissements à Paris, Lyon, Marseille), quartiers, intercommunalités (CNAF ; pipeline/caf_communes.py). Famille de 101 fichiers (motif site/data/caf_communes/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/caf_communes/communes/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/caf_communes_communes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "https://data.caf.fr/explore/dataset/s_ben_com_f/ ; https://data.caf.fr/explore/dataset/s_ben_epci_f/ ; https://data.caf.fr/explore/dataset/s_ben_iris_f/ ; https://data.caf.fr/explore/dataset/s_ben_qpv_f/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/caf_communes/communes/*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "caf_communes",
+   "millesimes": [
+    "décembre 2020 à décembre 2024 (communes), décembre 2024 (IRIS, QPV) ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "https://data.caf.fr/explore/dataset/s_ben_com_f/ ; https://data.caf.fr/explore/dataset/s_ben_epci_f/ ; https://data.caf.fr/explore/dataset/s_ben_iris_f/ ; https://data.caf.fr/explore/dataset/s_ben_qpv_f/"
+   ]
+  },
+  {
+   "name": "ifi-communes-index",
+   "title": "impôt sur la fortune immobilière par commune (DGFiP ; pipeline/ifi_communes.py)",
+   "description": "site/data/ifi_communes/index.json : impôt sur la fortune immobilière par commune (DGFiP ; pipeline/ifi_communes.py). Fichier site/data/ifi_communes/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ifi_communes/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ifi_communes_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DGFiP, « Impôt sur la fortune immobilière par collectivité territoriale », data.gouv.fr : https://www.data.gouv.fr/datasets/5369965ea3a729239d204992",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/ifi_communes/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "ifi_communes",
+   "millesimes": [
+    "IFI 2018 à 2025 (classeurs DGFiP) ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "DGFiP, « Impôt sur la fortune immobilière par collectivité territoriale », data.gouv.fr : https://www.data.gouv.fr/datasets/5369965ea3a729239d204992"
+   ]
+  },
+  {
+   "name": "ifi-communes-communes",
+   "title": "redevables, patrimoine moyen et impôt moyen publiés par la DGFiP, par commune et par année (pipeline/ifi_communes.py)",
+   "description": "site/data/ifi_communes/communes.json : redevables, patrimoine moyen et impôt moyen publiés par la DGFiP, par commune et par année (pipeline/ifi_communes.py). Fichier site/data/ifi_communes/communes.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ifi_communes/communes.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ifi_communes_communes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DGFiP, « Impôt sur la fortune immobilière par collectivité territoriale », data.gouv.fr : https://www.data.gouv.fr/datasets/5369965ea3a729239d204992",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/ifi_communes/communes.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "ifi_communes",
+   "millesimes": [
+    "IFI 2018 à 2025 (classeurs DGFiP) ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "DGFiP, « Impôt sur la fortune immobilière par collectivité territoriale », data.gouv.fr : https://www.data.gouv.fr/datasets/5369965ea3a729239d204992"
+   ]
+  },
+  {
+   "name": "emploi-territoires-index",
+   "title": "assurance chômage par département (Unédic) et inscrits à France Travail par commune (Dares) ; pipeline/emploi_territoires.py",
+   "description": "site/data/emploi_territoires/index.json : assurance chômage par département (Unédic) et inscrits à France Travail par commune (Dares) ; pipeline/emploi_territoires.py. Fichier site/data/emploi_territoires/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/emploi_territoires_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "https://data.unedic.org/explore/dataset/evolution_indicateurs_cles_ac/ ; https://data.dares.travail-emploi.gouv.fr/explore/dataset/dares_defm_communales-brutes/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/emploi_territoires/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "emploi_territoires",
+   "millesimes": [
+    "Unédic jusqu'à 2025-12, Dares 4e trimestre 2015 à 2025 ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "https://data.unedic.org/explore/dataset/evolution_indicateurs_cles_ac/ ; https://data.dares.travail-emploi.gouv.fr/explore/dataset/dares_defm_communales-brutes/"
+   ]
+  },
+  {
+   "name": "emploi-territoires-departements",
+   "title": "indicateurs de l'Assurance chômage par département, décembre de chaque année et dernier mois (Unédic ; pipeline/emploi_territoires.py)",
+   "description": "site/data/emploi_territoires/departements.json : indicateurs de l'Assurance chômage par département, décembre de chaque année et dernier mois (Unédic ; pipeline/emploi_territoires.py). Fichier site/data/emploi_territoires/departements.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/departements.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/emploi_territoires_departements.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "https://data.unedic.org/explore/dataset/evolution_indicateurs_cles_ac/ (https://www.data.gouv.fr/datasets/63a4384ab7505d95e39dde9a)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/emploi_territoires/departements.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "emploi_territoires",
+   "millesimes": [
+    "mois de décembre 2018 à 2025, et 2025-12 ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "https://data.unedic.org/explore/dataset/evolution_indicateurs_cles_ac/ (https://www.data.gouv.fr/datasets/63a4384ab7505d95e39dde9a)"
+   ]
+  },
+  {
+   "name": "emploi-territoires-communes",
+   "title": "inscrits à France Travail en catégories A, B, C au 4e trimestre, par commune (Dares ; pipeline/emploi_territoires.py)",
+   "description": "site/data/emploi_territoires/communes/<dep>.json : inscrits à France Travail en catégories A, B, C au 4e trimestre, par commune (Dares ; pipeline/emploi_territoires.py). Famille de 101 fichiers (motif site/data/emploi_territoires/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/communes/01.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/emploi_territoires_communes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "https://data.dares.travail-emploi.gouv.fr/explore/dataset/dares_defm_communales-brutes/ (https://www.data.gouv.fr/datasets/66df098924d76afbdd70938a)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/emploi_territoires/communes/*.json",
+   "nombre_fichiers": 101,
+   "etape_pipeline": "emploi_territoires",
+   "millesimes": [
+    "4e trimestre 2015 à 2025 ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "https://data.dares.travail-emploi.gouv.fr/explore/dataset/dares_defm_communales-brutes/ (https://www.data.gouv.fr/datasets/66df098924d76afbdd70938a)"
+   ]
+  },
+  {
+   "name": "pathologies-departements-index",
+   "title": "patients par pathologie et par département (Cnam, ODbL ; pipeline/pathologies_departements.py)",
+   "description": "site/data/pathologies_departements/index.json : patients par pathologie et par département (Cnam, ODbL ; pipeline/pathologies_departements.py). Fichier site/data/pathologies_departements/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/pathologies_departements/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/pathologies_departements_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Cnam, data.ameli.fr, « Pathologies : effectif de patients » : https://data.ameli.fr/explore/dataset/effectifs/ (https://www.data.gouv.fr/datasets/pathologies-effectif-de-patients-par-pathologie-sexe-classe-dage-et-territoire-departement-region)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/pathologies_departements/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "pathologies_departements",
+   "millesimes": [
+    "années 2015 à 2024 (cartographie des pathologies) ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "Cnam, data.ameli.fr, « Pathologies : effectif de patients » : https://data.ameli.fr/explore/dataset/effectifs/ (https://www.data.gouv.fr/datasets/pathologies-effectif-de-patients-par-pathologie-sexe-classe-dage-et-territoire-departement-region)"
+   ]
+  },
+  {
+   "name": "pathologies-departements-departements",
+   "title": "[patients, prévalence] par groupe de pathologies, département et année (Cnam, ODbL ; pipeline/pathologies_departements.py)",
+   "description": "site/data/pathologies_departements/departements.json : [patients, prévalence] par groupe de pathologies, département et année (Cnam, ODbL ; pipeline/pathologies_departements.py). Fichier site/data/pathologies_departements/departements.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/pathologies_departements/departements.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/pathologies_departements_departements.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Cnam, data.ameli.fr, « Pathologies : effectif de patients » : https://data.ameli.fr/explore/dataset/effectifs/ (https://www.data.gouv.fr/datasets/pathologies-effectif-de-patients-par-pathologie-sexe-classe-dage-et-territoire-departement-region)",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/pathologies_departements/departements.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "pathologies_departements",
+   "millesimes": [
+    "années 2015 à 2024 (cartographie des pathologies) ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "Cnam, data.ameli.fr, « Pathologies : effectif de patients » : https://data.ameli.fr/explore/dataset/effectifs/ (https://www.data.gouv.fr/datasets/pathologies-effectif-de-patients-par-pathologie-sexe-classe-dage-et-territoire-departement-region)"
+   ]
+  },
+  {
+   "name": "police-municipale-index",
+   "title": "effectifs de police municipale par commune (ministère de l'Intérieur ; pipeline/police_municipale.py)",
+   "description": "site/data/police_municipale/index.json : effectifs de police municipale par commune (ministère de l'Intérieur ; pipeline/police_municipale.py). Fichier site/data/police_municipale/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/police_municipale/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/police_municipale_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Ministère de l'Intérieur, « Police municipale : Effectifs par commune », data.gouv.fr : https://www.data.gouv.fr/datasets/police-municipale-effectifs-par-commune",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/police_municipale/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "police_municipale",
+   "millesimes": [
+    "enquêtes 2019 à 2024 ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "Ministère de l'Intérieur, « Police municipale : Effectifs par commune », data.gouv.fr : https://www.data.gouv.fr/datasets/police-municipale-effectifs-par-commune"
+   ]
+  },
+  {
+   "name": "police-municipale-communes",
+   "title": "[agents de police municipale, ASVP, gardes champêtres] par commune et par année (pipeline/police_municipale.py)",
+   "description": "site/data/police_municipale/communes.json : [agents de police municipale, ASVP, gardes champêtres] par commune et par année (pipeline/police_municipale.py). Fichier site/data/police_municipale/communes.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/police_municipale/communes.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/police_municipale_communes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Ministère de l'Intérieur, « Police municipale : Effectifs par commune », data.gouv.fr : https://www.data.gouv.fr/datasets/police-municipale-effectifs-par-commune",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/police_municipale/communes.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "police_municipale",
+   "millesimes": [
+    "enquêtes 2019 à 2024 ; collecte du 2026-11-20"
+   ],
+   "sources_declarees": [
+    "Ministère de l'Intérieur, « Police municipale : Effectifs par commune », data.gouv.fr : https://www.data.gouv.fr/datasets/police-municipale-effectifs-par-commune"
+   ]
+  },
+  {
    "name": "beneficiaires_publies",
    "type": "table",
    "title": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",

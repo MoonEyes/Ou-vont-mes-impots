@@ -2,6 +2,7 @@
 import { partPersonnelle } from '../composants/hub'
 import { pastilleNiveau } from '../composants/niveaux'
 import { chargerSiPresent, type Noeud } from '../donnees'
+import { brancherTerritoire, repliTerritoire } from './explorer_territoires'
 import { absent, badgeCalcule, barres, eurLisible, h, md, source, sur100, surligne } from '../util'
 
 interface Budgets {
@@ -64,6 +65,8 @@ ${
 </ul>
 ${regions ? source(regions.source, regions.millesime) : ''}
 <p class="aide">Ne pas additionner les niveaux : une partie de l’argent passe de l’un à l’autre (dotations, reversements).</p>
+${repliTerritoire('sdis', 'Services d’incendie et de secours, par département', 'Comptes des SDIS (OFGL)')}
 <p class="liens-sortie"><a href="#/local">Ta commune, ton département, ta région</a></p>
 ${partPersonnelle()}`
+  brancherTerritoire(cible, 'sdis')
 }

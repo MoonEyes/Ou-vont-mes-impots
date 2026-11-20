@@ -1,0 +1,51 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/elus_indemnites_index.schema.json",
+ "title": "site/data/elus_indemnites/index.json : indemnités et frais des élus par commune, total du compte 653 (balances DGFiP ; pipeline/elus_indemnites.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "presentation",
+  "annees",
+  "colonnes",
+  "definitions",
+  "methode",
+  "regle_null",
+  "licence",
+  "couverture",
+  "recherche_publique"
+ ],
+ "properties": {
+  "annees": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "pattern": "^\\d{4}$"
+   }
+  },
+  "recherche_publique": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "trouvaille",
+     "classement",
+     "licence"
+    ],
+    "properties": {
+     "classement": {
+      "enum": [
+       "réutilisable tel quel",
+       "à adapter",
+       "inspiration seulement"
+      ]
+     }
+    }
+   }
+  }
+ }
+}

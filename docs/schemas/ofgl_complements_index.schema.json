@@ -1,0 +1,72 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/ofgl_complements_index.schema.json",
+ "title": "site/data/ofgl_complements/index.json : FPIC, flux communes-intercommunalité, SDIS, patrimoine, établissements publics locaux (OFGL ; pipeline/ofgl_complements.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "presentation",
+  "annees",
+  "colonnes",
+  "definitions",
+  "regles",
+  "sources",
+  "couverture",
+  "recherche_publique",
+  "fichiers"
+ ],
+ "properties": {
+  "sources": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "jeu",
+     "titre",
+     "page",
+     "url",
+     "licence"
+    ],
+    "properties": {
+     "licence_note": {
+      "type": [
+       "string",
+       "null"
+      ]
+     }
+    }
+   }
+  },
+  "recherche_publique": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "trouvaille",
+     "classement",
+     "licence"
+    ],
+    "properties": {
+     "classement": {
+      "enum": [
+       "réutilisable tel quel",
+       "à adapter",
+       "inspiration seulement"
+      ]
+     }
+    }
+   }
+  },
+  "regles": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  }
+ }
+}

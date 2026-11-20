@@ -1,0 +1,49 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/elus_indemnites_communes.schema.json",
+ "title": "site/data/elus_indemnites/communes/<dep>.json : compte 653 du budget principal par commune et par exercice, total seulement, jamais par élu (pipeline/elus_indemnites.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "departement",
+  "colonnes",
+  "unite",
+  "communes"
+ ],
+ "properties": {
+  "departement": {
+   "type": "string",
+   "pattern": "^(\\d{2}|2[AB]|97\\d)$"
+  },
+  "unite": {
+   "const": "euros"
+  },
+  "communes": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^(\\d{5}|2[AB]\\d{3})$"
+   },
+   "additionalProperties": {
+    "type": "object",
+    "propertyNames": {
+     "pattern": "^\\d{4}$"
+    },
+    "additionalProperties": {
+     "type": "array",
+     "items": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "minItems": 1,
+     "maxItems": 1
+    }
+   }
+  }
+ }
+}

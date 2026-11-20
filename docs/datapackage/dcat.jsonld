@@ -6504,6 +6504,310 @@
   },
   {
    "@type": "dcat:Distribution",
+   "dct:title": "FPIC, flux communes-intercommunalité, SDIS, patrimoine, établissements publics locaux (OFGL ; pipeline/ofgl_complements.py)",
+   "dct:description": "site/data/ofgl_complements/index.json : FPIC, flux communes-intercommunalité, SDIS, patrimoine, établissements publics locaux (OFGL ; pipeline/ofgl_complements.py). Fichier site/data/ofgl_complements/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ofgl_complements_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "par commune flux et patrimoine, par intercommunalité FPIC, flux et patrimoine, SDIS et établissements publics locaux du département (OFGL ; pipeline/ofgl_complements.py)",
+   "dct:description": "site/data/ofgl_complements/communes/<dep>.json : par commune flux et patrimoine, par intercommunalité FPIC, flux et patrimoine, SDIS et établissements publics locaux du département (OFGL ; pipeline/ofgl_complements.py). Famille de 101 fichiers (motif site/data/ofgl_complements/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/communes/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/communes/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ofgl_complements_communes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "comptes des SDIS, budget principal, 2012-2025 (OFGL ; pipeline/ofgl_complements.py)",
+   "dct:description": "site/data/ofgl_complements/sdis.json : comptes des SDIS, budget principal, 2012-2025 (OFGL ; pipeline/ofgl_complements.py). Fichier site/data/ofgl_complements/sdis.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/sdis.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/sdis.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ofgl_complements_sdis.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "indemnités et frais des élus par commune, total du compte 653 (balances DGFiP ; pipeline/elus_indemnites.py)",
+   "dct:description": "site/data/elus_indemnites/index.json : indemnités et frais des élus par commune, total du compte 653 (balances DGFiP ; pipeline/elus_indemnites.py). Fichier site/data/elus_indemnites/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/elus_indemnites/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/elus_indemnites/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/elus_indemnites_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "compte 653 du budget principal par commune et par exercice, total seulement, jamais par élu (pipeline/elus_indemnites.py)",
+   "dct:description": "site/data/elus_indemnites/communes/<dep>.json : compte 653 du budget principal par commune et par exercice, total seulement, jamais par élu (pipeline/elus_indemnites.py). Famille de 101 fichiers (motif site/data/elus_indemnites/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/elus_indemnites/communes/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/elus_indemnites/communes/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/elus_indemnites_communes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "prestations de la CAF par commune, intercommunalité, IRIS et QPV (CNAF ; pipeline/caf_communes.py)",
+   "dct:description": "site/data/caf_communes/index.json : prestations de la CAF par commune, intercommunalité, IRIS et QPV (CNAF ; pipeline/caf_communes.py). Fichier site/data/caf_communes/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/caf_communes/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/caf_communes/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/caf_communes_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "foyers allocataires et montant de décembre par prestation, communes (arrondissements à Paris, Lyon, Marseille), quartiers, intercommunalités (CNAF ; pipeline/caf_communes.py)",
+   "dct:description": "site/data/caf_communes/communes/<dep>.json : foyers allocataires et montant de décembre par prestation, communes (arrondissements à Paris, Lyon, Marseille), quartiers, intercommunalités (CNAF ; pipeline/caf_communes.py). Famille de 101 fichiers (motif site/data/caf_communes/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/caf_communes/communes/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/caf_communes/communes/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/caf_communes_communes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "impôt sur la fortune immobilière par commune (DGFiP ; pipeline/ifi_communes.py)",
+   "dct:description": "site/data/ifi_communes/index.json : impôt sur la fortune immobilière par commune (DGFiP ; pipeline/ifi_communes.py). Fichier site/data/ifi_communes/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ifi_communes/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ifi_communes/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ifi_communes_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "redevables, patrimoine moyen et impôt moyen publiés par la DGFiP, par commune et par année (pipeline/ifi_communes.py)",
+   "dct:description": "site/data/ifi_communes/communes.json : redevables, patrimoine moyen et impôt moyen publiés par la DGFiP, par commune et par année (pipeline/ifi_communes.py). Fichier site/data/ifi_communes/communes.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ifi_communes/communes.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ifi_communes/communes.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/ifi_communes_communes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "assurance chômage par département (Unédic) et inscrits à France Travail par commune (Dares) ; pipeline/emploi_territoires.py",
+   "dct:description": "site/data/emploi_territoires/index.json : assurance chômage par département (Unédic) et inscrits à France Travail par commune (Dares) ; pipeline/emploi_territoires.py. Fichier site/data/emploi_territoires/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/emploi_territoires_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "indicateurs de l'Assurance chômage par département, décembre de chaque année et dernier mois (Unédic ; pipeline/emploi_territoires.py)",
+   "dct:description": "site/data/emploi_territoires/departements.json : indicateurs de l'Assurance chômage par département, décembre de chaque année et dernier mois (Unédic ; pipeline/emploi_territoires.py). Fichier site/data/emploi_territoires/departements.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/departements.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/departements.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/emploi_territoires_departements.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "inscrits à France Travail en catégories A, B, C au 4e trimestre, par commune (Dares ; pipeline/emploi_territoires.py)",
+   "dct:description": "site/data/emploi_territoires/communes/<dep>.json : inscrits à France Travail en catégories A, B, C au 4e trimestre, par commune (Dares ; pipeline/emploi_territoires.py). Famille de 101 fichiers (motif site/data/emploi_territoires/communes/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/communes/01.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/communes/01.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/emploi_territoires_communes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "patients par pathologie et par département (Cnam, ODbL ; pipeline/pathologies_departements.py)",
+   "dct:description": "site/data/pathologies_departements/index.json : patients par pathologie et par département (Cnam, ODbL ; pipeline/pathologies_departements.py). Fichier site/data/pathologies_departements/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/pathologies_departements/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/pathologies_departements/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/pathologies_departements_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "[patients, prévalence] par groupe de pathologies, département et année (Cnam, ODbL ; pipeline/pathologies_departements.py)",
+   "dct:description": "site/data/pathologies_departements/departements.json : [patients, prévalence] par groupe de pathologies, département et année (Cnam, ODbL ; pipeline/pathologies_departements.py). Fichier site/data/pathologies_departements/departements.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/pathologies_departements/departements.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/pathologies_departements/departements.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/pathologies_departements_departements.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "effectifs de police municipale par commune (ministère de l'Intérieur ; pipeline/police_municipale.py)",
+   "dct:description": "site/data/police_municipale/index.json : effectifs de police municipale par commune (ministère de l'Intérieur ; pipeline/police_municipale.py). Fichier site/data/police_municipale/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/police_municipale/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/police_municipale/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/police_municipale_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "[agents de police municipale, ASVP, gardes champêtres] par commune et par année (pipeline/police_municipale.py)",
+   "dct:description": "site/data/police_municipale/communes.json : [agents de police municipale, ASVP, gardes champêtres] par commune et par année (pipeline/police_municipale.py). Fichier site/data/police_municipale/communes.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/police_municipale/communes.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/police_municipale/communes.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/police_municipale_communes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
    "dct:title": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "dct:description": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique. Table CSV (non publiée sur le site, lue dans le dépôt).",
    "dcat:accessURL": {

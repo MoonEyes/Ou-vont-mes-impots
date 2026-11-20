@@ -7,6 +7,7 @@
 // (Hospi Diag, moins de 1 Mo, chargé seulement quand aucun département n'est choisi). Seuls les établissements dont
 // le gestionnaire est une personne morale sont nommés (filtre du pipeline) ; aucune donnée de patient, aucun
 // professionnel nommé.
+import { brancherTerritoire, repliTerritoire } from './explorer_territoires'
 import { choix, listeRecherche, segmente, valeurChoix } from '../composants/choix'
 import { billet } from '../composants/billet'
 import { partPersonnelle } from '../composants/hub'
@@ -769,9 +770,11 @@ ${HT_PLACE}
 ${sectionRecherche(idx, deps, depInitial, qInitial)}
 ${sectionLimites(lim)}
 ${sectionSources(idx)}
+${repliTerritoire('pathologies', 'Patients par pathologie, par département', 'Diabète et cancers (Assurance maladie)')}
 <ul class="liens-sortie"><li><a href="#/explorer/secu">Toutes les dépenses de la Sécurité sociale</a></li><li><a href="#/explorer/operateurs">Les agences régionales de santé parmi les opérateurs de l’État</a></li></ul>
 ${partPersonnelle()}`
 
+  brancherTerritoire(cible, 'pathologies')
   brancherComptes(cible, fin)
   return { suite: Promise.all([brancherRecherche(cible, idx, deps, firInfo, depInitial, qInitial), hopitauxTotaux(cible)]).then(() => undefined) }
 }
