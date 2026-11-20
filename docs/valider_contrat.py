@@ -423,6 +423,10 @@ FICHIERS = [
     ('fonds_solidarite_index.schema.json', 'fonds_solidarite/index.json', "existant"),
     ('fonds_solidarite_departements.schema.json', 'fonds_solidarite/departements.json', "existant"),
     ('fonds_solidarite_regions_mois.schema.json', 'fonds_solidarite/regions_mois.json', "existant"),
+    # Salaires dans la fonction publique, séries longues et détail par métier (Insee, Melodi) (pipeline/salaires_fonction_publique.py)
+    ('salaires_fonction_publique_index.schema.json', 'salaires_fonction_publique/index.json', "existant"),
+    ('salaires_fonction_publique_series_longues.schema.json', 'salaires_fonction_publique/series_longues.json', "existant"),
+    ('salaires_fonction_publique_annuel.schema.json', 'salaires_fonction_publique/annuel.json', "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

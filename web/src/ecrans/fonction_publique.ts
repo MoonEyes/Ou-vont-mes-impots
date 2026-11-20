@@ -3,7 +3,7 @@
 // budget) sur 100 € de son budget, le coût complet moyen d'un emploi (calcul du site, approché), les évolutions publiées
 // par l'Insee et les écarts entre sources, posés côte à côte sans arbitrage ni addition. Rien d'individuel : aucune
 // rémunération d'une personne, aucun nom ; les cabinets ministériels ne sont repris que par totaux.
-import { listeRecherche } from '../composants/choix'
+import { listeRecherche, segmente, valeurChoix } from '../composants/choix'
 import { fragmentDepartement } from '../chemins'
 import { billet, listeParts, type Part } from '../composants/billet'
 import { partPersonnelle } from '../composants/hub'
@@ -597,6 +597,116 @@ ${source(idx.source, idx.millesime)}
 </details>`
 }
 
+
+// ---------- Salaires nets moyens publiés par l'Insee (site/data/salaires_fonction_publique/) ----------
+type ObsSal = (string | number | null)[]
+interface Nomenclature {
+  libelle: string
+  modalites: Record<string, string>
+}
+interface SalIndex {
+  millesime: string
+  jeux: Record<'series_longues' | 'annuel', { nomenclatures: Record<string, Nomenclature>; annees: number[]; source: string; millesime: string }>
+  definitions: Record<string, string>
+  regles: string[]
+  limites: string[]
+}
+interface SalTable {
+  source: string
+  millesime: string
+  colonnes: string[]
+  observations: ObsSal[]
+}
+const VERSANTS = [
+  { valeur: '_T', libelle: 'Ensemble' },
+  { valeur: '1', libelle: 'État' },
+  { valeur: '2', libelle: 'Territoriale' },
+  { valeur: '3', libelle: 'Hospitalière' },
+]
+const SAL_PLACE = `<section id="fp-salaires" aria-labelledby="fp-salaires-titre"><h2 id="fp-salaires-titre">Salaires nets moyens depuis 1995 (Insee)</h2><p class="aide">Chargement…</p></section>`
+const nfSal = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+
+/** Valeur d'une observation dont chaque dimension vaut le code demandé (« _T » par défaut) ; null si non publiée. */
+function obs(t: SalTable, filtre: Record<string, string>, annee: number): number | null {
+  const dims = t.colonnes.slice(1, -1)
+  const o = t.observations.find((x) => x[0] === annee && dims.every((d, i) => x[i + 1] === (filtre[d] ?? '_T') || (d === 'UNIT_MEASURE' && !(d in filtre))))
+  const v = o?.[o.length - 1]
+  return typeof v === 'number' ? v : null
+}
+const euros = (v: number | null) => (v === null ? `${badgeStatut('nonpub')} non publié` : h(eur(v)))
+
+export function blocSalaires(idx: SalIndex, sl: SalTable, an: SalTable | null, versant: string): string {
+  const M = 'SALAIRE_NET_EQTP_MENSUEL_MOYEN_EUROS_CONSTANTS'
+  const E = 'SALAIRE_NET_EQTP_MENSUEL_MOYEN_EVOLUTION_CONSTANT'
+  const nomV = versant === '_T' ? 'Ensemble de la fonction publique' : (idx.jeux.series_longues.nomenclatures.PUBLIC_LEGAL_FORM?.modalites[versant] ?? versant)
+  const annees = [...new Set(sl.observations.filter((x) => x[1] === M && x[2] === versant).map((x) => x[0] as number))].sort((a, b) => b - a)
+  if (!annees.length) return absent('Salaires non publiés pour ce versant.')
+  const der = annees[0]
+  const parAn = annees
+    .map((a) => {
+      const ev = obs(sl, { DERA_MEASURE: E, PUBLIC_LEGAL_FORM: versant }, a)
+      return `<tr><th scope="row">${a}</th><td class="nombre">${euros(obs(sl, { DERA_MEASURE: M, PUBLIC_LEGAL_FORM: versant }, a))}</td><td class="nombre">${ev === null ? `${badgeStatut('nonpub')} non publié` : `${ev > 0 ? '+' : ''}${h(nfSal.format(ev))} %`}</td></tr>`
+    })
+    .join('')
+  const statuts = idx.jeux.series_longues.nomenclatures.CIVILSERVANT_STATUS?.modalites ?? {}
+  const parStatut = Object.keys(statuts)
+    .filter((k) => k !== '_T')
+    .map((k) => `<tr><th scope="row">${h(statuts[k])}</th><td class="nombre">${euros(obs(sl, { DERA_MEASURE: M, PUBLIC_LEGAL_FORM: versant, CIVILSERVANT_STATUS: k }, der))}</td></tr>`)
+    .join('')
+  const centiles = Object.keys(idx.jeux.series_longues.nomenclatures.QUANTILE?.modalites ?? {})
+    .filter((k) => k.startsWith('CENTILE_'))
+    .sort((a, b) => Number(a.slice(8)) - Number(b.slice(8)))
+  const parCentile = centiles
+    .map((k) => `<tr><th scope="row">${h(k.slice(8))} % des agents gagnent moins que</th><td class="nombre">${euros(obs(sl, { DERA_MEASURE: M, PUBLIC_LEGAL_FORM: versant, QUANTILE: k }, der))}</td></tr>`)
+    .join('')
+  let metiers = ''
+  if (an) {
+    const a = idx.jeux.annuel.annees[idx.jeux.annuel.annees.length - 1]
+    const pcs = idx.jeux.annuel.nomenclatures.PCS_ESE?.modalites ?? {}
+    const lignes = Object.keys(pcs)
+      .filter((k) => k !== '_T')
+      .map((k) => {
+        const s = obs(an, { DERA_MEASURE: 'SALAIRE_NET_EQTP_MENSUEL_MOYENNE', PUBLIC_LEGAL_FORM: versant, PCS_ESE: k }, a)
+        const e = obs(an, { DERA_MEASURE: 'EFFECTIFS_EQTP', PUBLIC_LEGAL_FORM: versant, PCS_ESE: k }, a)
+        return s === null && e === null ? '' : `<tr><th scope="row">${h(pcs[k])}</th><td class="nombre">${euros(s)}</td><td class="nombre">${e === null ? `${badgeStatut('nonpub')} non publié` : h(entier(Math.round(e)))}</td></tr>`
+      })
+      .join('')
+    metiers = `<details><summary>Par métier en ${a} (euros courants)</summary>
+<div class="tableau-defile"><table><caption>${h(nomV)} : salaire net mensuel moyen en équivalent temps plein et effectifs en équivalent temps plein, par métier, ${a} (euros courants)</caption><thead><tr><th scope="col">Métier (nomenclature de l’Insee)</th><th scope="col" class="nombre">Salaire net moyen</th><th scope="col" class="nombre">Effectifs en EQTP</th></tr></thead><tbody>${lignes}</tbody></table></div>
+<p class="aide">Euros courants de ${a} : ces montants ne se comparent pas aux séries en euros constants ci-dessus.</p>${source(an.source, an.millesime)}</details>`
+  }
+  return `<p>${badgeStatut('trace')} Salaire net mensuel moyen en équivalent temps plein, ${h(nomV.toLowerCase())}, en euros constants (corrigés de la hausse des prix), et évolution d’une année sur l’autre, toutes deux publiées par l’Insee.</p>
+<div class="tableau-defile"><table><caption>${h(nomV)} : salaire net mensuel moyen en équivalent temps plein, euros constants, et évolution publiée</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Salaire net moyen</th><th scope="col" class="nombre">Évolution publiée</th></tr></thead><tbody>${parAn}</tbody></table></div>
+<details><summary>En ${der}, par statut et catégorie</summary><div class="tableau-defile"><table><caption>${h(nomV)} : salaire net mensuel moyen en ${der} par statut, euros constants</caption><thead><tr><th scope="col">Statut</th><th scope="col" class="nombre">Salaire net moyen</th></tr></thead><tbody>${parStatut}</tbody></table></div></details>
+<details><summary>En ${der}, du salaire le plus bas au plus haut (centiles)</summary><div class="tableau-defile"><table><caption>${h(nomV)} : centiles du salaire net mensuel en ${der}, euros constants</caption><thead><tr><th scope="col">Centile</th><th scope="col" class="nombre">Salaire net mensuel</th></tr></thead><tbody>${parCentile}</tbody></table></div>
+<p class="aide">${h(idx.definitions.centile ?? '')}.</p></details>
+${metiers}
+${source(sl.source, sl.millesime)}`
+}
+
+async function salairesInsee(cible: HTMLElement, versant: string | null): Promise<void> {
+  const [idx, sl, an] = await Promise.all([
+    chargerSiPresent<SalIndex>('salaires_fonction_publique/index.json'),
+    chargerSiPresent<SalTable>('salaires_fonction_publique/series_longues.json'),
+    chargerSiPresent<SalTable>('salaires_fonction_publique/annuel.json'),
+  ])
+  const zone = cible.querySelector<HTMLElement>('#fp-salaires')
+  if (!zone) return
+  if (!idx || !sl) {
+    zone.innerHTML = `<h2 id="fp-salaires-titre">Salaires nets moyens depuis 1995 (Insee)</h2>${absent('Salaires de l’Insee non disponibles.')}`
+    return
+  }
+  const v = VERSANTS.some((x) => x.valeur === versant) ? versant! : '_T'
+  zone.innerHTML = `<h2 id="fp-salaires-titre">Salaires nets moyens depuis 1995 (Insee)</h2>
+<p>Ce que gagne en moyenne un agent public par mois, après cotisations et avant impôt sur le revenu, ramené à un temps plein : des moyennes et des centiles publiés par l’Insee, jamais le salaire d’une personne.</p>
+${segmente({ id: 'fp-sal-versant', etiquette: 'Fonction publique', options: VERSANTS, valeur: v })}
+<div id="fp-sal-detail" aria-live="polite">${blocSalaires(idx, sl, an, v)}</div>
+<ul class="limites">${[...idx.regles, ...idx.limites].map((x) => `<li>${h(x)}</li>`).join('')}</ul>`
+  zone.querySelector('#fp-sal-versant')?.addEventListener('change', () => {
+    zone.querySelector<HTMLElement>('#fp-sal-detail')!.innerHTML = blocSalaires(idx, sl, an, valeurChoix(zone, 'fp-sal-versant'))
+  })
+}
+
 const section = (id: string, titre: string, corps: string) => (corps ? `<section aria-labelledby="${id}"><h2 id="${id}">${h(titre)}</h2>${corps}</section>` : '')
 
 export async function rendre(cible: HTMLElement, params: URLSearchParams) {
@@ -626,7 +736,7 @@ export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   cible.innerHTML = `
 <h1>La fonction publique</h1>
 <p class="chapeau">Combien de personnes travaillent pour l’État, les collectivités locales et les hôpitaux publics, ce que l’État dépense pour ses agents sur 100 € de son budget, et comment ces effectifs évoluent d’une année sur l’autre.</p>
-<p>Ce que la page ne montre pas : aucun salaire ni aucun nom de personne, uniquement des totaux et des moyennes ; pas encore de salaire moyen par catégorie ; les dépenses de personnel des collectivités et des hôpitaux, qui figurent dans leurs propres comptes.</p>
+<p>Ce que la page ne montre pas : aucun salaire ni aucun nom de personne, uniquement des totaux et des moyennes (les salaires moyens et les centiles publiés par l’Insee) ; les dépenses de personnel des collectivités et des hôpitaux, qui figurent dans leurs propres comptes.</p>
 <ul class="legende-statuts" aria-label="Statut des chiffres de cette page">
   <li>${traitStatut('trace')}<span><strong>Tracé</strong> : chiffre lu tel quel dans une publication (Insee, budget de l’État, annexes du projet de loi de finances)</span></li>
   <li>${traitStatut('approche')}<span><strong>Approché</strong> : rapprochement fait par le site entre deux nomenclatures publiées, méthode écrite à côté</span></li>
@@ -637,6 +747,7 @@ ${section('fp-combien', `Combien de personnes${anSer ? ` fin ${anSer}` : ''}`, b
 ${section('fp-masse', 'Ce que l’État dépense pour ses agents', blocMasse(idx, min, racine, eff))}
 ${section('fp-ministeres', 'Par ministère : emplois votés et dépenses de personnel', min ? blocMinisteres(min, total, b) : absent('Détail par ministère non disponible.'))}
 ${section('fp-remunerations', 'Rémunérations : des moyennes, jamais un salaire individuel', blocRemunerations(min, b))}
+${SAL_PLACE}
 ${section('fp-qui', 'Qui sont les agents', emp ? blocQui(emp) : absent('Caractéristiques des agents non disponibles.'))}
 ${section('fp-evolutions', 'Comment les effectifs évoluent', blocEvolutions(emp, ser))}
 ${section('fp-deux', 'Deux façons de compter les agents de l’État', blocDeuxComptes(min, ser, emp, b))}
@@ -664,4 +775,5 @@ ${partPersonnelle()}`
       rendreDefilables(zone)
     })
   }
+  return { suite: salairesInsee(cible, params.get('versant')) }
 }

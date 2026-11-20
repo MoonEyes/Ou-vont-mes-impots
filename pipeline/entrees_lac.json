@@ -2492,6 +2492,20 @@
    "hors_catalogue": [],
    "octets_sources": null,
    "note": "fichiers « latest » collectés par collecte/collecte.py ; instantanés de fin de mois collectés par le module (python pipeline/fonds_solidarite.py collecter)"
+  },
+  "salaires_fonction_publique": {
+   "sources": {
+    "etat_insee_salaires_fonction_publique": [
+     "data/lake/etat/etat_insee_salaires_fonction_publique.zip"
+    ],
+    "insee_ds_dera_public_annuel": [
+     "data/lake/etat/insee_ds_dera_public_annuel.zip"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 59619,
+   "note": "entrées collectées par collecte/collecte.py (python pipeline/salaires_fonction_publique.py collecter)"
   }
  },
  "urls": {

@@ -758,7 +758,7 @@ export function blocUniversite(idx: UnivIndex, d: UnivEtabs, uai: string, annee:
     typeof perso === 'number' || typeof propres === 'number'
       ? `<p>${badgeStatut('trace')} Sur 100 € de produits encaissables de ${h(e.nom)} en ${h(an)}${
           typeof perso === 'number' ? `, ${h(fmt1(perso))} € correspondent aux charges de personnel` : ''
-        }${typeof propres === 'number' ? `${typeof perso === 'number' ? ' et' : ','} ${h(fmt1(propres))} € sont des ressources propres` : ''} (ratios publiés par le ministère, pas calculés par le site).</p>`
+        }${typeof propres === 'number' ? `${typeof perso === 'number' ? ' et' : ','} ${h(fmt1(propres))} € sont des ressources propres` : ''} (ratios publiés par le ministère : le site ne calcule pas ces ratios).</p>`
       : ''
   const lignes = idx.indicateurs
     .filter((i) => i.unite !== 'euros sur 100 €')

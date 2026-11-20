@@ -51,7 +51,7 @@ describe('budget de chaque université', () => {
     const ratio = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(col('personnel_sur_100'))
     expect(t).toContain(`Sur 100 € de produits encaissables`)
     expect(n(t)).toContain(n(`${ratio} € correspondent aux charges de personnel`))
-    expect(t).toContain('ratios publiés par le ministère, pas calculés par le site')
+    expect(t).toContain('ratios publiés par le ministère : le site ne calcule pas ces ratios')
     const nulls = IDX.indicateurs.filter((i: { cle: string; unite: string }) => i.unite !== 'euros sur 100 €' && col(i.cle) === null).length
     expect(d.querySelectorAll('td [data-statut="nonpub"]').length).toBe(nulls)
     expect(d.querySelector('caption')?.textContent).toContain('compte financier')

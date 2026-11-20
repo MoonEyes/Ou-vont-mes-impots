@@ -2124,6 +2124,27 @@ data/lake/aides_entreprises/aides_fonds_solidarite/*.csv + data/lake/fonds_solid
 
 **Recherche publique (règle n°0, 20/11/2026).** Jeu data.gouv.fr et historique Etalab : réutilisables tels quels (Licence Ouverte 2.0). Code du tableau de bord aides-entreprises.data.gouv.fr (MIT, dernier commit 29/06/2022) : inspiration seulement. Rapports de la Cour des comptes : inspiration seulement (PDF).
 
+### 2.82 Salaires dans la fonction publique, séries longues et détail par métier (Insee) : `salaires_fonction_publique/` (pipeline/salaires_fonction_publique.py)
+
+Salaire net mensuel moyen en équivalent temps plein des agents des trois versants, tel que l'Insee le publie (base Siasp, Licence Ouverte 2.0) : `DS_DERA_PUBLIC_SERIES_LONGUES` (1995 à 2023, euros constants, par versant, statut et catégorie, sexe, âge, centiles ; évolutions et indice publiés par l'Insee) et `DS_DERA_PUBLIC_ANNUEL_2023` (euros courants et effectifs en EQTP, par versant, statut, métier PCS-ESE, sexe, âge, temps de travail). Identifiants `etat_insee_salaires_fonction_publique` et `insee_ds_dera_public_annuel` de `collecte/catalogue.json`. Commandes : `python pipeline/salaires_fonction_publique.py collecter` (réseau), `python pipeline/salaires_fonction_publique.py produire [--sortie DOSSIER]` (sans réseau). Tests : `pytest tests/test_salaires_fonction_publique.py`, `web/tests/salaires_fonction_publique.test.ts`.
+
+```
+data/lake/etat/etat_insee_salaires_fonction_publique.zip, insee_ds_dera_public_annuel.zip
+     └─> pipeline/salaires_fonction_publique.py ─> site/data/salaires_fonction_publique/index.json, series_longues.json, annuel.json
+```
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `salaires_fonction_publique/index.json` | `salaires_fonction_publique_index` | `presentation`, `jeux.<series_longues|annuel>` (nomenclatures : libellé de chaque variable et de chaque modalité, lus dans les métadonnées de l'Insee ; années ; nombre d'observations et de valeurs absentes ; source, URL, page), `definitions`, `regles[]`, `limites[]`, `recherche_publique[]`, `ordre` |
+| `salaires_fonction_publique/series_longues.json` | `salaires_fonction_publique_series_longues` | `colonnes` `[annee, DERA_MEASURE, PUBLIC_LEGAL_FORM, CIVILSERVANT_STATUS, SEX, AGE, QUANTILE, UNIT_MEASURE, valeur]`, `observations[]` |
+| `salaires_fonction_publique/annuel.json` | `salaires_fonction_publique_annuel` | `colonnes` `[annee, DERA_MEASURE, PUBLIC_LEGAL_FORM, CIVILSERVANT_STATUS, PCS_ESE, SEX, AGE, WKTIME, UNIT_MEASURE, valeur]`, `observations[]` |
+
+**Règles.** Agrégats de l'Insee repris tels quels : aucun salaire individuel, aucun calcul par personne, aucune moyenne ni évolution recalculée (les évolutions et l'indice sont ceux de l'Insee). Séries longues (euros constants) et détail annuel (euros courants) jamais comparés entre eux ; les chiffres 2024 des Insee Première déjà publiés dans `fonction_publique/remunerations.json` (2.35) restent à part.
+
+**Pour l'écran** (bloc « Salaires nets moyens depuis 1995 » de `/explorer/fonction-publique`) : choix du versant (segmenté), salaire net moyen en euros constants par année, détail de la dernière année par statut et par centile, puis détail annuel par métier (salaire moyen et effectifs en EQTP).
+
+**Recherche publique (règle n°0, 20/11/2026).** Fichiers Melodi de l'Insee : réutilisables tels quels (Licence Ouverte 2.0, fichiers du 04/12/2025). API Melodi par dimension : à adapter (fichiers complets préférés). Insee Première 2100 à 2102 et rapport annuel de la DGAFP : déjà repris par `pipeline/fonction_publique.py`.
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.
