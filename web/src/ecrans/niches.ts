@@ -1,8 +1,8 @@
 // Dépenses fiscales et exonérations de cotisations (site/data/niches/) : moindres recettes estimées, mesure par mesure.
 import { partPersonnelle } from '../composants/hub'
-import { charger, chargerSiPresent, type Noeud } from '../donnees'
+import { chargerSiPresent } from '../donnees'
 import { lien } from '../routeur'
-import { barres, entier, eurLisible, h, md, source, sur100, surligne } from '../util'
+import { barres, entier, eurLisible, h, md, source } from '../util'
 import { enCours } from './dette'
 
 interface Index {
@@ -21,15 +21,15 @@ export async function rendre(cible: HTMLElement) {
     cible.innerHTML = enCours('Dépenses fiscales et exonérations de cotisations', 'Réductions d’impôt et de cotisations, mesure par mesure.') + partPersonnelle()
     return
   }
-  const budget = (await charger<Noeud>('arbre/racine.json')).md * 1000
   const t24 = idx.totaux['2024']
   const annees = Object.keys(idx.totaux).sort()
   cible.innerHTML = `
 <h1>Dépenses fiscales et exonérations de cotisations</h1>
 <p class="chapeau">Une dépense fiscale (souvent appelée niche fiscale) est une disposition qui réduit l’impôt dû par certains contribuables ou certaines activités : crédit d’impôt, taux réduit, exonération. Elle n’est pas versée : elle diminue les recettes publiques. L’administration en publie une estimation, mesure par mesure.</p>
 <div class="carte" data-cle>
-  <p class="grand-chiffre">${surligne(md(t24.chiffre_meur / 1000))}</p>
-  <p class="sous-chiffre">de dépenses fiscales chiffrées en 2024 (${h(t24.statut)}, ${h(entier(t24.chiffrees))} mesures chiffrées sur ${h(entier(t24.mesures))}), l’équivalent de ${h(sur100((t24.chiffre_meur / budget) * 100))} sur 100 € de dépense du budget de l’État.</p>
+  <p class="grand-chiffre">${h(md(t24.chiffre_meur / 1000))}</p>
+  <p class="sous-chiffre">de dépenses fiscales chiffrées en 2024 (${h(t24.statut)}, ${h(entier(t24.chiffrees))} mesures chiffrées sur ${h(entier(t24.mesures))}).</p>
+  <p class="aide" data-sans-ratio>Ce montant n’est pas rapporté aux dépenses de l’État : une dépense fiscale est une recette en moins, pas une dépense versée, et les deux ne portent pas sur le même périmètre.</p>
   ${source(idx.source, idx.millesime)}
 </div>
 <h2>Les mesures au montant estimé le plus élevé en 2025</h2>
