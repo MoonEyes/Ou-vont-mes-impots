@@ -61,7 +61,7 @@ export type Tableau = keyof typeof TABLEAUX
 
 /** Section repliée, à ajouter en fin de page, puis à brancher. */
 export function repliTerritoire(cle: Tableau, titre: string, resume: string): string {
-  return repli({ id: `et-${cle}-repli`, titre, resume: h(resume), contenu: `<div id="et-${cle}" class="section-donnees"><p class="chargement">Chargement…</p></div>` })
+  return repli({ id: `et-${cle}-repli`, titre, resume: h(resume), contenu: `<div id="et-${cle}" class="section-donnees"><p class="aide" data-attente>Le contenu s’affiche à l’ouverture de la section.</p></div>` })
 }
 
 export function brancherTerritoire(racine: HTMLElement, cle: Tableau): void {

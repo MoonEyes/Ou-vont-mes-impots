@@ -300,7 +300,7 @@ async function synthese(cible: HTMLElement, insee: string): Promise<Rendu | void
   }
   const zone = (id: string) => `<div id="${id}" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>`
   // Section chargée à l'ouverture : occupée (aria-busy) seulement pendant son chargement.
-  const zoneDemande = (id: string) => `<div id="${id}" class="section-donnees"><p class="chargement">Chargement…</p></div>`
+  const zoneDemande = (id: string) => `<div id="${id}" class="section-donnees"><p class="aide" data-attente>Le contenu s’affiche à l’ouverture de la section.</p></div>`
   cible.innerHTML = `<div class="entete-local entete-serre">
   <div>
     <h1>${h(g.nom)}</h1>

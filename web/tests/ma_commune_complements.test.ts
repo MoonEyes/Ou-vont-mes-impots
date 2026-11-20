@@ -55,7 +55,7 @@ async function ouvrir(id: string): Promise<HTMLElement> {
   const d = main.querySelector<HTMLDetailsElement>(`#${id}-repli`)!
   d.open = true
   d.dispatchEvent(new Event('toggle'))
-  await attendreQue(() => !main.querySelector(`#${id}`)!.querySelector('.chargement') && !main.querySelector(`#${id}[aria-busy]`))
+  await attendreQue(() => !main.querySelector(`#${id}`)!.querySelector('[data-attente]') && !main.querySelector(`#${id}[aria-busy]`))
   return main.querySelector<HTMLElement>(`#${id}`)!
 }
 const t = (el: Element) => el.textContent?.replace(/\s+/g, ' ') ?? ''
