@@ -2106,6 +2106,102 @@
   },
   {
    "@type": "DataDownload",
+   "name": "FPIC, flux communes-intercommunalité, SDIS, patrimoine, établissements publics locaux (OFGL ; pipeline/ofgl_complements.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "par commune flux et patrimoine, par intercommunalité FPIC, flux et patrimoine, SDIS et établissements publics locaux du département (OFGL ; pipeline/ofgl_complements.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/communes/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "comptes des SDIS, budget principal, 2012-2025 (OFGL ; pipeline/ofgl_complements.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ofgl_complements/sdis.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "indemnités et frais des élus par commune, total du compte 653 (balances DGFiP ; pipeline/elus_indemnites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/elus_indemnites/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "compte 653 du budget principal par commune et par exercice, total seulement, jamais par élu (pipeline/elus_indemnites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/elus_indemnites/communes/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "prestations de la CAF par commune, intercommunalité, IRIS et QPV (CNAF ; pipeline/caf_communes.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/caf_communes/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "foyers allocataires et montant de décembre par prestation, communes (arrondissements à Paris, Lyon, Marseille), quartiers, intercommunalités (CNAF ; pipeline/caf_communes.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/caf_communes/communes/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "impôt sur la fortune immobilière par commune (DGFiP ; pipeline/ifi_communes.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ifi_communes/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "redevables, patrimoine moyen et impôt moyen publiés par la DGFiP, par commune et par année (pipeline/ifi_communes.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/ifi_communes/communes.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "assurance chômage par département (Unédic) et inscrits à France Travail par commune (Dares) ; pipeline/emploi_territoires.py",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "indicateurs de l'Assurance chômage par département, décembre de chaque année et dernier mois (Unédic ; pipeline/emploi_territoires.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/departements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "inscrits à France Travail en catégories A, B, C au 4e trimestre, par commune (Dares ; pipeline/emploi_territoires.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/emploi_territoires/communes/01.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "patients par pathologie et par département (Cnam, ODbL ; pipeline/pathologies_departements.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/pathologies_departements/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "[patients, prévalence] par groupe de pathologies, département et année (Cnam, ODbL ; pipeline/pathologies_departements.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/pathologies_departements/departements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "effectifs de police municipale par commune (ministère de l'Intérieur ; pipeline/police_municipale.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/police_municipale/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "[agents de police municipale, ASVP, gardes champêtres] par commune et par année (pipeline/police_municipale.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/police_municipale/communes.json"
+  },
+  {
+   "@type": "DataDownload",
    "name": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "encodingFormat": "text/csv",
    "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/beneficiaires/beneficiaires_publies.csv"
