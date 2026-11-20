@@ -2145,6 +2145,29 @@ data/lake/etat/etat_insee_salaires_fonction_publique.zip, insee_ds_dera_public_a
 
 **Recherche publique (règle n°0, 20/11/2026).** Fichiers Melodi de l'Insee : réutilisables tels quels (Licence Ouverte 2.0, fichiers du 04/12/2025). API Melodi par dimension : à adapter (fichiers complets préférés). Insee Première 2100 à 2102 et rapport annuel de la DGAFP : déjà repris par `pipeline/fonction_publique.py`.
 
+### 2.83 Jurisprudence administrative en matière fiscale et budgétaire (DILA, JADE) : `jurisprudence/` (pipeline/jurisprudence.py)
+
+Comptes de décisions de la base JADE de la DILA (Conseil d'État, cours administratives d'appel, Tribunal des conflits et quelques jugements de tribunaux administratifs ; Licence Ouverte 2.0) : archive complète `Freemium_jade_global_<date>.tar.gz` lue en flux (1,2 Go, jamais écrite sur disque) puis flux quotidiens qui la suivent (entrée `decisions_jade_increments` de `collecte/catalogue.json`), suppressions de la DILA appliquées. Seuls l'identifiant, la juridiction, la date, le numéro, le type de recours, la solution, la formation, la publication au Recueil et les codes du plan de classement sont lus ; ni le texte, ni les champs PRESIDENT, AVOCATS, RAPPORTEUR, COMMISSAIRE_GVT, DEMANDEUR, DEFENDEUR, ni le texte des analyses. Commandes : `python pipeline/jurisprudence.py collecter` (réseau, environ 15 minutes), `python pipeline/jurisprudence.py produire [--sortie DOSSIER]` (sans réseau). Tests : `pytest tests/test_jurisprudence.py`, `web/tests/jurisprudence.test.ts`.
+
+```
+echanges.dila.gouv.fr/OPENDATA/JADE (flux) ─> data/lake/jurisprudence/jade_meta.csv.gz, jade_plan.json
+     └─> pipeline/jurisprudence.py ─> site/data/jurisprudence/index.json, comptes.json, rubriques.json,
+                                      decisions/<année>.json (une par année, < 1 Mo chacun)
+```
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `jurisprudence/index.json` | `jurisprudence_index` | `presentation`, `matieres`, `criteres` (classées, fiscale par classement, fiscale par type de recours, budgétaire), `rubriques` et `sous_rubriques` (libellés du plan de classement lus dans les analyses, rubriques 18 et 19 pour les sous-rubriques), `juridictions` (noms normalisés, dans l'ordre d'affichage), `couverture`, `fichiers`, `manques[]`, `regles[]`, `limites[]`, `recherche_publique[]`, `ordre`, `lien_modele` (Légifrance) |
+| `jurisprudence/comptes.json` | `jurisprudence_comptes` | `lignes` `[annee, juridiction, decisions, classees, fiscale_classement, fiscale_type_recours, budgetaire_classement]` |
+| `jurisprudence/rubriques.json` | `jurisprudence_rubriques` | `lignes` `[annee, rubrique, decisions]` (une décision compte dans chacune de ses rubriques) |
+| `jurisprudence/decisions/<année>.json` | `jurisprudence_decisions` | décisions classées en rubrique 18 ou 19 : `[id, juridiction (rang dans index.juridictions), date, numero, matiere, recueil, sous_rubriques]` ; lien = `lien_modele` avec `id` |
+
+**Règles.** Aucun texte de décision, aucun nom de partie (règle de confidentialité, la pseudonymisation de la DILA n'étant pas garantie complète). Les deux critères de la matière fiscale (code 19 du plan de classement ; type de recours contenant « fiscal ») sont publiés côte à côte, jamais additionnés. Variantes d'écriture d'une juridiction ramenées à un nom (correction de coquille documentée dans le module). Décisions antérieures à 1965 (1 261) et dates absentes non comptées, nombre publié dans `couverture`.
+
+**Pour l'écran** (bloc « Les décisions de la justice administrative sur l'impôt et le budget » de `/decisions/controle`, paramètre `jur=<rang>`) : choix d'une juridiction, tableau par année (décisions, classées, fiscales selon chaque critère, budgétaires), puis liste des décisions fiscales ou budgétaires d'une année avec lien vers Légifrance.
+
+**Recherche publique (règle n°0, 20/11/2026).** Base JADE de la DILA : réutilisable telle quelle. Open data des juridictions administratives (Conseil d'État) : à adapter (tribunaux administratifs, non repris ici). Judilibre : inspiration seulement (juridictions judiciaires). Scripts publics de lecture de JADE : inspiration seulement (lecture de l'en-tête réécrite ici).
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.

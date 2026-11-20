@@ -208,6 +208,7 @@ ETAPES: tuple[Etape, ...] = (
     axe('universites', "Budgets des universités et opérateurs de l'enseignement supérieur (MESR, par établissement)", ('base',), duree_s=30),
     axe('fonds_solidarite', 'Fonds de solidarité aux entreprises, Covid-19 (agrégats par département, région, secteur, mois)', ('base',), duree_s=60),
     axe('salaires_fonction_publique', 'Salaires dans la fonction publique, séries longues et détail par métier (Insee, Melodi)', ('base',), duree_s=10),
+    axe('jurisprudence', 'Jurisprudence administrative en matière fiscale et budgétaire (DILA, JADE ; comptes et liens)', ('base',), duree_s=900),
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
     # nouvel axe se déclare au-dessus de cette ligne).
     Etape("fraicheur", "Fraîcheur des données (collecte, millésimes, calendriers officiels)", (TOUTES,),

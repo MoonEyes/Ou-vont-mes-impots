@@ -1,0 +1,103 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/jurisprudence_decisions.schema.json",
+ "title": "site/data/jurisprudence/decisions/<année>.json : décisions classées en matière fiscale ou budgétaire, sans texte ni nom : identifiant (lien Légifrance), juridiction (rang), date, numéro, matière, publication au Recueil, sous-rubriques",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "date_sources",
+  "annee",
+  "lien_modele",
+  "colonnes",
+  "juridiction",
+  "decisions"
+ ],
+ "additionalProperties": false,
+ "properties": {
+  "millesime": {
+   "type": "string"
+  },
+  "source": {
+   "type": "string"
+  },
+  "date_sources": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "annee": {
+   "type": "integer"
+  },
+  "lien_modele": {
+   "type": "string"
+  },
+  "juridiction": {
+   "type": "string"
+  },
+  "colonnes": {
+   "const": [
+    "id",
+    "juridiction",
+    "date",
+    "numero",
+    "matiere",
+    "recueil",
+    "sous_rubriques"
+   ]
+  },
+  "decisions": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "minItems": 7,
+    "maxItems": 7,
+    "prefixItems": [
+     {
+      "type": "string",
+      "pattern": "^[A-Z]+TEXT\\d{12}$"
+     },
+     {
+      "type": "integer",
+      "minimum": 0
+     },
+     {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     },
+     {
+      "type": [
+       "string",
+       "null"
+      ],
+      "maxLength": 400
+     },
+     {
+      "enum": [
+       "fiscale",
+       "budgetaire"
+      ]
+     },
+     {
+      "type": [
+       "string",
+       "null"
+      ],
+      "maxLength": 3
+     },
+     {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "pattern": "^1[89](-\\d{2,3})?$"
+      }
+     }
+    ]
+   }
+  }
+ }
+}

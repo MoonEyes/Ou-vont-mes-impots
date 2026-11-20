@@ -137,6 +137,90 @@ ${source(d.source, idx.millesime)}`
   zone.querySelector('#fsd-section')?.addEventListener('change', majMois)
 }
 
+
+// ---------- Justice administrative : décisions sur l'impôt et le budget (site/data/jurisprudence/) ----------
+interface JurIndex {
+  millesime: string
+  source: string
+  lien_modele: string
+  criteres: Record<string, string>
+  sous_rubriques: Record<string, string>
+  juridictions: string[]
+  fichiers: { decisions: Record<string, { chemin: string; decisions: number }> }
+  manques: Manque[]
+  regles: string[]
+  limites: string[]
+}
+interface JurComptes {
+  source: string
+  millesime: string
+  lignes: [number, string, number, number, number, number, number][]
+}
+interface JurDecisions {
+  annee: number
+  decisions: [string, number, string, string | null, 'fiscale' | 'budgetaire', string | null, string[]][]
+}
+const JUR_PLACE = `<section id="jur" aria-labelledby="jur-titre"><h2 id="jur-titre">Les décisions de la justice administrative sur l’impôt et le budget</h2><p class="aide">Chargement…</p></section>`
+const JUR_MAX_LIENS = 200
+
+export function blocJurComptes(idx: JurIndex, c: JurComptes, j: string): string {
+  const lignes = c.lignes.filter((l) => l[1] === j).sort((a, b) => b[0] - a[0])
+  if (!lignes.length) return absent('Aucune décision de cette juridiction dans la base.')
+  return `<div class="tableau-defile"><table><caption>${h(j)} : décisions publiées dans la base JADE, par année de décision</caption><thead><tr><th scope="col">Année</th><th scope="col" class="nombre">Décisions</th><th scope="col" class="nombre">dont classées</th><th scope="col" class="nombre">Impôt (classement)</th><th scope="col" class="nombre">Impôt (type de recours)</th><th scope="col" class="nombre">Budget et comptabilité publique</th></tr></thead><tbody>${lignes
+    .map((l) => `<tr><th scope="row">${l[0]}</th><td class="nombre">${h(entier(l[2]))}</td><td class="nombre">${h(entier(l[3]))}</td><td class="nombre">${h(entier(l[4]))}</td><td class="nombre">${h(entier(l[5]))}</td><td class="nombre">${h(entier(l[6]))}</td></tr>`)
+    .join('')}</tbody></table></div>
+<p class="aide">Impôt (classement) : ${h(idx.criteres.fiscale_classement)}. Impôt (type de recours) : ${h(idx.criteres.fiscale_type_recours)}. Budget : ${h(idx.criteres.budgetaire_classement)}.</p>`
+}
+
+export function blocJurDecisions(idx: JurIndex, d: JurDecisions, rangJ: number | null): string {
+  const l = d.decisions.filter((x) => rangJ === null || x[1] === rangJ)
+  if (!l.length) return absent(`Aucune décision fiscale ou budgétaire classée en ${d.annee} pour cette juridiction.`)
+  const vues = l.slice(0, JUR_MAX_LIENS)
+  return `<p>${h(entier(l.length))} décision${l.length > 1 ? 's' : ''} classée${l.length > 1 ? 's' : ''} en matière fiscale ou budgétaire en ${d.annee}${l.length > vues.length ? ` ; les ${vues.length} premières par date sont listées` : ''}. Chaque lien ouvre la décision sur Légifrance, où elle est publiée par l’État.</p>
+<ul class="lignes">${vues
+    .map((x) => {
+      const sous = x[6].map((c) => idx.sous_rubriques[c]).filter(Boolean).join(', ')
+      return `<li><span><a href="${h(idx.lien_modele.replace('{id}', x[0]))}" rel="noopener noreferrer">${h(idx.juridictions[x[1]] ?? '')}, ${h(x[2].split('-').reverse().join('/'))}${x[3] ? `, n° ${h(x[3])}` : ''}</a></span><span class="dest">${x[4] === 'fiscale' ? 'Impôt' : 'Budget et comptabilité publique'}${sous ? ` · ${h(sous.toLowerCase())}` : ''}</span></li>`
+    })
+    .join('')}</ul>`
+}
+
+async function jurisprudence(cible: HTMLElement, jDemande: string | null): Promise<void> {
+  const [idx, c] = await Promise.all([chargerSiPresent<JurIndex>('jurisprudence/index.json'), chargerSiPresent<JurComptes>('jurisprudence/comptes.json')])
+  const zone = cible.querySelector<HTMLElement>('#jur')
+  if (!zone) return
+  if (!idx || !c) {
+    zone.innerHTML = `<h2 id="jur-titre">Les décisions de la justice administrative sur l’impôt et le budget</h2>${absent('Décisions non disponibles.')}`
+    return
+  }
+  const rang = jDemande && /^\d+$/.test(jDemande) && idx.juridictions[Number(jDemande)] ? Number(jDemande) : 0
+  const annees = Object.keys(idx.fichiers.decisions).sort().reverse()
+  zone.innerHTML = `<h2 id="jur-titre">Les décisions de la justice administrative sur l’impôt et le budget</h2>
+<p>Quand une personne ou une entreprise conteste un impôt, ou qu’un litige porte sur le budget d’une administration, le Conseil d’État et les cours administratives d’appel tranchent. La page compte leurs décisions publiées par la DILA et renvoie au texte de chacune sur Légifrance ; elle n’en reprend aucun extrait ni aucun nom.</p>
+${listeRecherche({ id: 'jur-j', etiquette: 'Juridiction', options: idx.juridictions.map((j, i) => ({ valeur: String(i), libelle: j })), valeur: String(rang), recherche: true })}
+<div id="jur-comptes" aria-live="polite">${blocJurComptes(idx, c, idx.juridictions[rang])}</div>
+<h3>Les décisions d’une année</h3>
+${listeRecherche({ id: 'jur-an', etiquette: 'Année de décision', options: annees.map((a) => ({ valeur: a, libelle: a })), valeur: annees[0], recherche: true })}
+<div id="jur-liste" aria-live="polite"><p class="aide">Chargement…</p></div>
+${idx.manques.map((x) => encadreManque(x)).join('')}
+<ul class="limites">${[...idx.regles, ...idx.limites].map((x) => `<li>${h(x)}</li>`).join('')}</ul>
+${source(c.source, c.millesime)}`
+  const liste = async () => {
+    const an = valeurChoix(zone, 'jur-an')
+    const f = idx.fichiers.decisions[an]
+    const z = zone.querySelector<HTMLElement>('#jur-liste')!
+    const d = f ? await chargerSiPresent<JurDecisions>(f.chemin) : null
+    if (valeurChoix(zone, 'jur-an') !== an) return
+    z.innerHTML = d ? blocJurDecisions(idx, d, Number(valeurChoix(zone, 'jur-j'))) : absent('Liste non disponible.')
+  }
+  zone.querySelector('#jur-j')?.addEventListener('change', () => {
+    zone.querySelector<HTMLElement>('#jur-comptes')!.innerHTML = blocJurComptes(idx, c, idx.juridictions[Number(valeurChoix(zone, 'jur-j'))])
+    void liste()
+  })
+  zone.querySelector('#jur-an')?.addEventListener('change', () => void liste())
+  await liste()
+}
+
 export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const dep = params.get('dep')
   const [idx, aides, min, depPubs] = await Promise.all([
@@ -190,9 +274,10 @@ ${
     : ''
 }
 ${FSD_PLACE}
+${JUR_PLACE}
 <p class="aide">${h(idx.regle_personnes)}</p>`
   cible.querySelector<HTMLSelectElement>('#dep-controle')?.addEventListener('change', (e) => {
     location.hash = lien('/decisions/controle', { dep: (e.target as HTMLSelectElement).value })
   })
-  return { suite: fondsSolidarite(cible, params.get('fsd') ?? dep) }
+  return { suite: Promise.all([fondsSolidarite(cible, params.get('fsd') ?? dep), jurisprudence(cible, params.get('jur'))]).then(() => undefined) }
 }

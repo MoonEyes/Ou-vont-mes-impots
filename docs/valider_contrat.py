@@ -427,6 +427,11 @@ FICHIERS = [
     ('salaires_fonction_publique_index.schema.json', 'salaires_fonction_publique/index.json', "existant"),
     ('salaires_fonction_publique_series_longues.schema.json', 'salaires_fonction_publique/series_longues.json', "existant"),
     ('salaires_fonction_publique_annuel.schema.json', 'salaires_fonction_publique/annuel.json', "existant"),
+    # Jurisprudence administrative en matière fiscale et budgétaire (DILA, JADE ; comptes et liens) (pipeline/jurisprudence.py)
+    ('jurisprudence_index.schema.json', 'jurisprudence/index.json', "existant"),
+    ('jurisprudence_comptes.schema.json', 'jurisprudence/comptes.json', "existant"),
+    ('jurisprudence_rubriques.schema.json', 'jurisprudence/rubriques.json', "existant"),
+    ('jurisprudence_decisions.schema.json', 'jurisprudence/decisions/*.json', "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

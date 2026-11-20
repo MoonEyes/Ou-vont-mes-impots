@@ -1,0 +1,85 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/jurisprudence_index.schema.json",
+ "title": "site/data/jurisprudence/index.json : critères, rubriques du plan de classement, juridictions, couverture, fichiers, manques, règles et limites des comptes de décisions de la base JADE (pipeline/jurisprudence.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "date_sources",
+  "licence",
+  "page_source",
+  "lien_modele",
+  "presentation",
+  "matieres",
+  "criteres",
+  "rubriques",
+  "sous_rubriques",
+  "juridictions",
+  "couverture",
+  "fichiers",
+  "manques",
+  "regles",
+  "limites",
+  "recherche_publique",
+  "ordre"
+ ],
+ "properties": {
+  "date_sources": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "lien_modele": {
+   "type": "string",
+   "pattern": "^https://www\\.legifrance\\.gouv\\.fr/.*\\{id\\}$"
+  },
+  "juridictions": {
+   "type": "array",
+   "minItems": 2,
+   "items": {
+    "type": "string"
+   }
+  },
+  "fichiers": {
+   "type": "object",
+   "required": [
+    "comptes",
+    "rubriques",
+    "decisions"
+   ],
+   "properties": {
+    "decisions": {
+     "type": "object",
+     "propertyNames": {
+      "pattern": "^\\d{4}$"
+     },
+     "additionalProperties": {
+      "type": "object",
+      "required": [
+       "chemin",
+       "decisions",
+       "octets"
+      ]
+     }
+    }
+   }
+  },
+  "manques": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "quoi",
+     "pourquoi",
+     "depuis",
+     "source"
+    ]
+   }
+  }
+ }
+}

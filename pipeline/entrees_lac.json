@@ -2506,6 +2506,15 @@
    "hors_catalogue": [],
    "octets_sources": 59619,
    "note": "entrées collectées par collecte/collecte.py (python pipeline/salaires_fonction_publique.py collecter)"
+  },
+  "jurisprudence": {
+   "sources": {},
+   "caches": [
+    "data/lake/jurisprudence"
+   ],
+   "hors_catalogue": [],
+   "octets_sources": 6765865,
+   "note": "métadonnées extraites en flux par le module (python pipeline/jurisprudence.py collecter) : archive complète JADE et flux quotidiens (entrée decisions_jade_increments du catalogue)"
   }
  },
  "urls": {

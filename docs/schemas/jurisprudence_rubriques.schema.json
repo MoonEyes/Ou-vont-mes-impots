@@ -1,0 +1,53 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/jurisprudence_rubriques.schema.json",
+ "title": "site/data/jurisprudence/rubriques.json : nombre de décisions classées par année et rubrique du plan de classement (une décision peut relever de plusieurs rubriques)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "date_sources",
+  "unite",
+  "colonnes",
+  "lignes"
+ ],
+ "properties": {
+  "date_sources": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "colonnes": {
+   "const": [
+    "annee",
+    "rubrique",
+    "decisions"
+   ]
+  },
+  "lignes": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "minItems": 3,
+    "maxItems": 3,
+    "prefixItems": [
+     {
+      "type": "integer"
+     },
+     {
+      "type": "string",
+      "pattern": "^\\d{2,3}$"
+     },
+     {
+      "type": "integer",
+      "minimum": 0
+     }
+    ]
+   }
+  }
+ }
+}
