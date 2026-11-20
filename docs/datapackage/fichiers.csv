@@ -1,4 +1,5 @@
 chemin,ressource,schema,url
+activite_partielle_demandes/index.json,activite-partielle-demandes-index,activite_partielle_demandes_index.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/activite_partielle_demandes/index.json
 administrations.json,administrations,administrations.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/administrations.json
 agriculture/developpement_rural.json,agriculture-developpement-rural,agriculture_developpement_rural.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/agriculture/developpement_rural.json
 agriculture/etat.json,agriculture-etat,agriculture_etat.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/agriculture/etat.json

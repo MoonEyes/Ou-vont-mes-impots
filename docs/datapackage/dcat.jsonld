@@ -6466,6 +6466,25 @@
   },
   {
    "@type": "dcat:Distribution",
+   "dct:title": "demandes d'activité partielle déposées en 2020 par région et secteur (pipeline/activite_partielle_demandes.py)",
+   "dct:description": "site/data/activite_partielle_demandes/index.json : demandes d'activité partielle déposées en 2020 par région et secteur (pipeline/activite_partielle_demandes.py). Fichier site/data/activite_partielle_demandes/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/activite_partielle_demandes/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/activite_partielle_demandes/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/activite_partielle_demandes_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
    "dct:title": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "dct:description": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique. Table CSV (non publiée sur le site, lue dans le dépôt).",
    "dcat:accessURL": {

@@ -2178,6 +2178,12 @@
   },
   {
    "@type": "DataDownload",
+   "name": "demandes d'activité partielle déposées en 2020 par région et secteur (pipeline/activite_partielle_demandes.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/activite_partielle_demandes/index.json"
+  },
+  {
+   "@type": "DataDownload",
    "name": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "encodingFormat": "text/csv",
    "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/beneficiaires/beneficiaires_publies.csv"

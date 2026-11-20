@@ -432,6 +432,8 @@ FICHIERS = [
     ('jurisprudence_comptes.schema.json', 'jurisprudence/comptes.json', "existant"),
     ('jurisprudence_rubriques.schema.json', 'jurisprudence/rubriques.json', "existant"),
     ('jurisprudence_decisions.schema.json', 'jurisprudence/decisions/*.json', "existant"),
+    # Activité partielle 2020 : demandes déposées par région et secteur (Etalab) (pipeline/activite_partielle_demandes.py)
+    ('activite_partielle_demandes_index.schema.json', 'activite_partielle_demandes/index.json', "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

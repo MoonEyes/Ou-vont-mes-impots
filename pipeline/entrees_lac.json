@@ -2515,6 +2515,17 @@
    "hors_catalogue": [],
    "octets_sources": 6765865,
    "note": "métadonnées extraites en flux par le module (python pipeline/jurisprudence.py collecter) : archive complète JADE et flux quotidiens (entrée decisions_jade_increments du catalogue)"
+  },
+  "activite_partielle_demandes": {
+   "sources": {
+    "aides_activite_partielle": [
+     "data/lake/aides_entreprises/aides_activite_partielle"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 35359,
+   "note": "entrée collectée par collecte/collecte.py (python pipeline/activite_partielle_demandes.py collecter)"
   }
  },
  "urls": {

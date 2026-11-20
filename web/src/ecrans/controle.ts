@@ -221,6 +221,51 @@ ${source(c.source, c.millesime)}`
   await liste()
 }
 
+
+// ---------- Activité partielle 2020 : demandes déposées (site/data/activite_partielle_demandes/) ----------
+interface ApDemandes {
+  millesime: string
+  source: string
+  date_maj: string
+  definitions: Record<string, string>
+  regions: Record<string, string>
+  secteurs: Record<string, string>
+  lignes: [string, string, number | null, number | null, number | null][]
+  regles: string[]
+  limites: string[]
+  manques: Manque[]
+}
+const AP_PLACE = `<section id="ap" aria-labelledby="ap-titre"><h2 id="ap-titre">Le chômage partiel demandé en 2020</h2><p class="aide">Chargement…</p></section>`
+
+export function blocApRegion(d: ApDemandes, reg: string): string {
+  const l = d.lignes.filter((x) => x[0] === reg)
+  if (!l.length) return absent('Aucune demande publiée pour cette région.')
+  return `<div class="tableau-defile"><table><caption>${h(d.regions[reg] ?? reg)} : demandes d’activité partielle déposées en 2020, fichier du ${h(d.date_maj.split('-').reverse().join('/'))}</caption><thead><tr><th scope="col">Secteur</th><th scope="col" class="nombre">Demandes</th><th scope="col" class="nombre">Salariés concernés</th><th scope="col" class="nombre">Heures demandées</th></tr></thead><tbody>${l
+    .map((x) => `<tr><th scope="row">${h(d.secteurs[x[1]] ?? x[1])}</th><td class="nombre">${nb(x[2])}</td><td class="nombre">${nb(x[3])}</td><td class="nombre">${nb(x[4])}</td></tr>`)
+    .join('')}</tbody></table></div>`
+}
+
+async function activitePartielle(cible: HTMLElement): Promise<void> {
+  const d = await chargerSiPresent<ApDemandes>('activite_partielle_demandes/index.json')
+  const zone = cible.querySelector<HTMLElement>('#ap')
+  if (!zone) return
+  if (!d) {
+    zone.innerHTML = `<h2 id="ap-titre">Le chômage partiel demandé en 2020</h2>${absent('Demandes d’activité partielle non disponibles.')}`
+    return
+  }
+  const regs = Object.keys(d.regions)
+  zone.innerHTML = `<h2 id="ap-titre">Le chômage partiel demandé en 2020</h2>
+<p>${badgeStatut('trace')} Demandes d’autorisation de chômage partiel déposées par les employeurs en 2020, par région et secteur. Ce sont des demandes : ni des heures payées, ni des montants versés. Les montants versés, publiés par l’Unédic et l’Urssaf, sont repris à part dans les données du site (emploi) et ne s’additionnent pas à ces demandes.</p>
+${listeRecherche({ id: 'ap-reg', etiquette: 'Région', options: regs.map((k) => ({ valeur: k, libelle: d.regions[k] })), valeur: regs.includes('52') ? '52' : regs[0], recherche: true })}
+<div id="ap-detail" aria-live="polite">${blocApRegion(d, regs.includes('52') ? '52' : regs[0])}</div>
+<p class="aide">${h(d.definitions.demande ?? '')}.</p>
+${d.manques.map((x) => encadreManque(x)).join('')}
+${source(d.source, d.millesime)}`
+  zone.querySelector('#ap-reg')?.addEventListener('change', () => {
+    zone.querySelector<HTMLElement>('#ap-detail')!.innerHTML = blocApRegion(d, valeurChoix(zone, 'ap-reg'))
+  })
+}
+
 export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const dep = params.get('dep')
   const [idx, aides, min, depPubs] = await Promise.all([
@@ -274,10 +319,11 @@ ${
     : ''
 }
 ${FSD_PLACE}
+${AP_PLACE}
 ${JUR_PLACE}
 <p class="aide">${h(idx.regle_personnes)}</p>`
   cible.querySelector<HTMLSelectElement>('#dep-controle')?.addEventListener('change', (e) => {
     location.hash = lien('/decisions/controle', { dep: (e.target as HTMLSelectElement).value })
   })
-  return { suite: Promise.all([fondsSolidarite(cible, params.get('fsd') ?? dep), jurisprudence(cible, params.get('jur'))]).then(() => undefined) }
+  return { suite: Promise.all([fondsSolidarite(cible, params.get('fsd') ?? dep), jurisprudence(cible, params.get('jur')), activitePartielle(cible)]).then(() => undefined) }
 }

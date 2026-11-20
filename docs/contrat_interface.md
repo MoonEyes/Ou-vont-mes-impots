@@ -2168,6 +2168,16 @@ echanges.dila.gouv.fr/OPENDATA/JADE (flux) ─> data/lake/jurisprudence/jade_met
 
 **Recherche publique (règle n°0, 20/11/2026).** Base JADE de la DILA : réutilisable telle quelle. Open data des juridictions administratives (Conseil d'État) : à adapter (tribunaux administratifs, non repris ici). Judilibre : inspiration seulement (juridictions judiciaires). Scripts publics de lecture de JADE : inspiration seulement (lecture de l'en-tête réécrite ici).
 
+### 2.84 Activité partielle en 2020 : demandes déposées par région et secteur : `activite_partielle_demandes/` (pipeline/activite_partielle_demandes.py)
+
+Demandes d'autorisation d'activité partielle déposées par les employeurs (nombre de demandes, salariés concernés, heures demandées), par région et secteur NACE en 17 postes, fichier arrêté au 27/10/2020 : ressource Etalab `activite-partielle-regional-nace17-latest` (data.gouv.fr `cb195a3c-d8a1-4887-a464-d0497842d069`, Licence Ouverte 2.0), identifiant `aides_activite_partielle` de `collecte/catalogue.json`. Commandes : `python pipeline/activite_partielle_demandes.py collecter|produire`. Tests : `pytest tests/test_activite_partielle_demandes.py`, `web/tests/activite_partielle_demandes.test.ts`.
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `activite_partielle_demandes/index.json` | `activite_partielle_demandes_index` | `presentation`, `definitions`, `regions`, `secteurs`, `colonnes`, `lignes` `[region, secteur, demandes, salaries_concernes, heures_demandees]`, `regles[]`, `limites[]`, `manques[]`, `recherche_publique[]`, `ordre` |
+
+**Règles.** Demandes, pas heures indemnisées ni montants : jamais additionnées ni comparées par différence aux montants de `emploi/activite_partielle.json` (Unédic, Urssaf). Agrégats, aucun employeur nommé ; `null` jamais 0. **Pour l'écran** : bloc « Le chômage partiel demandé en 2020 » de `/decisions/controle` (choix de la région). **Recherche publique (20/11/2026).** Ressource Etalab : réutilisable telle quelle ; séries Dares : inspiration seulement (autre mesure, déjà notée par `pipeline/emploi.py`).
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.

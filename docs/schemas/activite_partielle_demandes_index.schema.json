@@ -1,0 +1,88 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/activite_partielle_demandes_index.schema.json",
+ "title": "site/data/activite_partielle_demandes/index.json : demandes d'activité partielle déposées en 2020 par région et secteur (pipeline/activite_partielle_demandes.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "date_sources",
+  "licence",
+  "date_maj",
+  "presentation",
+  "definitions",
+  "regions",
+  "secteurs",
+  "colonnes",
+  "lignes",
+  "regles",
+  "limites",
+  "manques",
+  "recherche_publique",
+  "ordre"
+ ],
+ "properties": {
+  "colonnes": {
+   "const": [
+    "region",
+    "secteur",
+    "demandes",
+    "salaries_concernes",
+    "heures_demandees"
+   ]
+  },
+  "lignes": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "array",
+    "minItems": 5,
+    "maxItems": 5,
+    "prefixItems": [
+     {
+      "type": "string",
+      "pattern": "^\\d{2}$"
+     },
+     {
+      "type": "string"
+     },
+     {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     {
+      "type": [
+       "integer",
+       "null"
+      ]
+     }
+    ]
+   }
+  },
+  "manques": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "quoi",
+     "pourquoi",
+     "depuis",
+     "source"
+    ]
+   }
+  }
+ }
+}
