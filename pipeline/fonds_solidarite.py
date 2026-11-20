@@ -53,8 +53,8 @@ PAGE = ("https://www.data.gouv.fr/datasets/donnees-relatives-au-fonds-de-solidar
 DEPOT = "https://github.com/etalab/dashboard-aides-entreprises/tree/master/published-data/fonds-solidarite"
 RAW = "https://raw.githubusercontent.com/etalab/dashboard-aides-entreprises/master/published-data/fonds-solidarite"
 SOURCE = ("Etalab et DGFiP, « Données relatives au fonds de solidarité mis en place dans le cadre de l'épidémie de "
-          "COVID-19 », data.gouv.fr (Licence Ouverte 2.0) : " + PAGE + " ; historique quotidien publié avec le jeu : "
-          + DEPOT)
+          "COVID-19 », data.gouv.fr (Licence Ouverte 2.0), fichiers « latest » et ressource « Historique des données "
+          "du fonds de solidarité » : " + PAGE)
 
 # Dernier instantané quotidien de chaque mois dans l'historique Etalab (relevé de l'arborescence du dépôt le
 # 20/11/2026 ; dépôt figé depuis le 29/06/2022). Le dernier est celui des fichiers « latest » du volet 1.
@@ -100,13 +100,22 @@ def nombre(v):
     return int(round(x))
 
 
+NON_RENSEIGNE = ("NR", "Non renseigné dans la source")
+
+
 def lire_csv(octets_ou_chemin) -> list[dict]:
     if isinstance(octets_ou_chemin, Path):
         octets = octets_ou_chemin.read_bytes()
     else:
         octets = octets_ou_chemin
     txt = octets.decode("utf-8-sig", "replace")
-    return list(csv.DictReader(io.StringIO(txt)))
+    lignes = list(csv.DictReader(io.StringIO(txt)))
+    for r in lignes:   # code de section, catégorie ou classe vide dans la source : « NR », jamais reclassé
+        for code, lib in (("code_section", "libelle_section"), ("code_categorie_juridique", "libelle_categorie_juridique"),
+                          ("classe_effectif", "libelle_classe_effectif")):
+            if code in r and not (r[code] or "").strip():
+                r[code], r[lib] = NON_RENSEIGNE
+    return lignes
 
 
 def fichier_latest(prefixe: str) -> Path:
@@ -269,7 +278,7 @@ def produire(sortie: Path = SORTIE_DEFAUT) -> dict:
                         "fichier. Le site publie ces cumuls à la fin de chaque mois et ne calcule pas de différence "
                         "entre deux dates.",
             "depuis": f"Historique quotidien publié du {INSTANTANES[0]} au {INSTANTANES[-1]}.",
-            "source": {"libelle": "Historique des données du fonds de solidarité", "url": DEPOT},
+            "source": {"libelle": "Historique des données du fonds de solidarité, data.gouv.fr", "url": PAGE},
         }],
         "regles": [
             "Montants, nombres d'aides et d'entreprises repris tels que publiés (euros), à la date de chaque fichier.",

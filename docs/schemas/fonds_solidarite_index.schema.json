@@ -58,7 +58,7 @@
   "sections": {
    "type": "object",
    "propertyNames": {
-    "pattern": "^[A-Z]$"
+    "pattern": "^([A-Z]|NR)$"
    }
   },
   "manques": {

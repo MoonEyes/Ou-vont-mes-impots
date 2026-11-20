@@ -50,11 +50,11 @@
      },
      {
       "type": "string",
-      "pattern": "^\\d{2}$"
+      "pattern": "^(\\d{2}|NR)$"
      },
      {
       "type": "string",
-      "pattern": "^[A-Z]$"
+      "pattern": "^([A-Z]|NR)$"
      },
      {
       "type": [

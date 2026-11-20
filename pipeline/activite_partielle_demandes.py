@@ -31,12 +31,11 @@ DOSSIER = ROOT / "data" / "lake" / "aides_entreprises" / "aides_activite_partiel
 SORTIE_DEFAUT = ROOT / "site" / "data" / "activite_partielle_demandes"
 ID = "aides_activite_partielle"
 LICENCE = "Licence Ouverte 2.0"
-PAGE = ("https://www.data.gouv.fr/datasets/donnees-relatives-aux-aides-aux-entreprises-dans-le-cadre-de-la-crise-du-"
-        "covid-19/")
+PAGE = "https://www.data.gouv.fr/fr/datasets/r/cb195a3c-d8a1-4887-a464-d0497842d069"
 URL = ("https://raw.githubusercontent.com/etalab/dashboard-aides-entreprises/master/published-data/"
        "activite-partielle-regional-nace17-latest.csv")
 SOURCE = ("Etalab et ministère du Travail, demandes d'activité partielle par région et secteur (NACE en 17 postes), "
-          "tableau de bord des aides aux entreprises, Licence Ouverte 2.0 : " + URL)
+          "tableau de bord des aides aux entreprises, ressource data.gouv.fr, Licence Ouverte 2.0 : " + PAGE)
 
 RECHERCHE_PUBLIQUE = [
     {"trouvaille": "Etalab, activite-partielle-regional-nace17-latest (ressource data.gouv.fr)",

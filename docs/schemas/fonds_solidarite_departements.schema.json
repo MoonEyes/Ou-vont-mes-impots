@@ -59,7 +59,7 @@
        },
        {
         "type": "string",
-        "pattern": "^[A-Z]$"
+        "pattern": "^([A-Z]|NR)$"
        },
        {
         "type": [
@@ -114,7 +114,7 @@
        },
        {
         "type": "string",
-        "pattern": "^\\d{2}$"
+        "pattern": "^(\\d{2}|NR)$"
        },
        {
         "type": [
@@ -169,7 +169,7 @@
        },
        {
         "type": "string",
-        "pattern": "^[0-9A-Z]{1,3}$"
+        "pattern": "^([0-9A-Z]{1,3})$"
        },
        {
         "type": [
