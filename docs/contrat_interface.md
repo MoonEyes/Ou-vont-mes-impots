@@ -2083,6 +2083,26 @@ data/lake/ma_commune/ma_commune_codes_postaux.csv + site/data/local/geo/<dep>.js
 
 **Recherche publique (règle n°0, 19/11/2026).** Base officielle des codes postaux de La Poste : réutilisable telle quelle (Licence Ouverte 2.0, fichier mis à jour le 17/11/2026). geo.api.gouv.fr (`codesPostaux`, dérivé de la même base ; dépôt etalab/decoupage-administratif, MIT) : inspiration seulement, une requête externe à chaque frappe est exclue. Paquet `codes-postaux` (BaseAdresseNationale, MIT) : inspiration seulement, un seul fichier d'environ 2 Mo. `local/geo/` : réutilisé tel quel.
 
+### 2.80 Budgets des universités et des opérateurs de l'enseignement supérieur et de la recherche : `universites/` (pipeline/universites.py)
+
+Budget de chaque université, école et grand établissement (opérateurs de l'État, personnes morales de droit public), exercice par exercice, tel que le publie le ministère de l'Enseignement supérieur et de la Recherche (SIES) : jeu « Indicateurs financiers des opérateurs de l'enseignement supérieur et de la recherche » (data.enseignementsup-recherche.gouv.fr `fr-esr-operateurs-indicateurs-financiers`, Licence Ouverte 2.0), identifiant `etat_esr_operateurs_financiers` de `collecte/catalogue.json` (contrôle `collecte/integrite.py`). Comptes financiers 2010 à 2025 et budget initial 2026 (prévision, signalé comme tel). Commandes : `python pipeline/universites.py collecter` (réseau), `python pipeline/universites.py produire [--sortie DOSSIER]` (sans réseau). Tests : `pytest tests/test_universites.py`, `web/tests/universites.test.ts`.
+
+```
+data/lake/etat/etat_esr_operateurs_financiers.parquet
+     └─> pipeline/universites.py ─> site/data/universites/index.json, etablissements.json (< 1 Mo chacun)
+```
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `universites/index.json` | `universites_index` | `presentation`, `indicateurs[]` (clé, colonne de la source, libellé, unité `euros`, `euros sur 100 €` ou `jours`, statut « publié par la source », nombre de valeurs absentes), `natures` (compte financier, budget initial), `exercices[]` (année, nature, nombre d'établissements), `couverture`, `fichiers`, `manques[]` (ce que la source ne publie pas, au format de `web/src/composants/manque.ts`), `regles[]`, `limites[]`, `recherche_publique[]`, `ordre` |
+| `universites/etablissements.json` | `universites_etablissements` | `colonnes` (`nature` puis les clés de `indicateurs`), `etablissements[]` : `uai`, `nom` (dernier exercice), `noms_anterieurs`, `commune`, `code_commune`, `region`, `academie`, `responsabilites_elargies_depuis`, `id_paysage`, `exercices.<année>` = liste alignée sur `colonnes` |
+
+**Règles.** Montants en euros tels que publiés ; ratios « sur 100 € de produits encaissables » (charges de personnel, ressources propres) repris de la source, jamais calculés par le site ; cellule vide = `null`, jamais 0 ; aucun total, aucune moyenne, aucun montant par étudiant (règle 13). Ce qui manque à la source : la subvention pour charges de service public de l'État par établissement (comprise dans les produits encaissables, non publiée à part), affichée avec l'encadré « Donnée non publiée à la source ».
+
+**Pour l'écran** (bloc « Le budget de chaque université » de `/explorer/education-recherche`) : choix d'un établissement (ordre alphabétique), puis tableau des exercices ; la nature (compte financier ou budget initial) est écrite à chaque ligne.
+
+**Recherche publique (règle n°0, 20/11/2026).** Jeu du ministère : réutilisable tel quel (Licence Ouverte 2.0, budget initial 2026 compris). Tableau de bord financier des universités (dataESR) : inspiration seulement (application, pas de code). Jaune « Opérateurs de l'État » (déjà lu par `pipeline/operateurs.py`) : à adapter pour la subvention de l'État par établissement, non fait ici.
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.

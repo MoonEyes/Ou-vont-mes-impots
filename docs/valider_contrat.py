@@ -416,6 +416,9 @@ FICHIERS = [
     ("ma_commune_index.schema.json", "ma_commune/index.json", "existant"),
     ("ma_commune_cp.schema.json", "ma_commune/cp/*.json", "existant"),
     ("ma_commune_noms.schema.json", "ma_commune/noms/*.json", "existant"),
+    # Budgets des universités et opérateurs de l'enseignement supérieur (MESR, par établissement) (pipeline/universites.py)
+    ('universites_index.schema.json', 'universites/index.json', "existant"),
+    ('universites_etablissements.schema.json', 'universites/etablissements.json', "existant"),
 ]
 
 # Arbres decoupes : le controle des liens 'fichier' s'applique a ces schemas

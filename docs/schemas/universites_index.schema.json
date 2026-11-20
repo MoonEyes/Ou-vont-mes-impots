@@ -1,0 +1,168 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/universites_index.schema.json",
+ "title": "site/data/universites/index.json : indicateurs, exercices, couverture, manques, règles et limites des budgets des opérateurs de l'enseignement supérieur et de la recherche (pipeline/universites.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "date_sources",
+  "licence",
+  "page_source",
+  "presentation",
+  "indicateurs",
+  "natures",
+  "exercices",
+  "couverture",
+  "fichiers",
+  "manques",
+  "regles",
+  "limites",
+  "recherche_publique",
+  "ordre"
+ ],
+ "properties": {
+  "date_sources": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "licence": {
+   "type": "string"
+  },
+  "page_source": {
+   "type": "string",
+   "pattern": "^https://"
+  },
+  "presentation": {
+   "type": "string",
+   "minLength": 20
+  },
+  "indicateurs": {
+   "type": "array",
+   "minItems": 5,
+   "items": {
+    "type": "object",
+    "required": [
+     "cle",
+     "colonne_source",
+     "libelle",
+     "unite",
+     "statut",
+     "valeurs_absentes"
+    ],
+    "properties": {
+     "cle": {
+      "type": "string"
+     },
+     "colonne_source": {
+      "type": "string"
+     },
+     "libelle": {
+      "type": "string"
+     },
+     "unite": {
+      "enum": [
+       "euros",
+       "euros sur 100 €",
+       "jours"
+      ]
+     },
+     "statut": {
+      "const": "publié par la source"
+     },
+     "valeurs_absentes": {
+      "type": "integer",
+      "minimum": 0
+     }
+    }
+   }
+  },
+  "natures": {
+   "type": "object",
+   "required": [
+    "compte_financier",
+    "budget_initial"
+   ]
+  },
+  "exercices": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "object",
+    "required": [
+     "annee",
+     "nature",
+     "etablissements"
+    ],
+    "properties": {
+     "annee": {
+      "type": "integer",
+      "minimum": 2000
+     },
+     "nature": {
+      "enum": [
+       "compte_financier",
+       "budget_initial"
+      ]
+     },
+     "etablissements": {
+      "type": "integer",
+      "minimum": 1
+     }
+    }
+   }
+  },
+  "couverture": {
+   "type": "object",
+   "required": [
+    "etablissements",
+    "lignes_lues",
+    "premier_exercice",
+    "dernier_compte_financier",
+    "dernier_exercice"
+   ]
+  },
+  "fichiers": {
+   "type": "object",
+   "required": [
+    "etablissements"
+   ]
+  },
+  "manques": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "quoi",
+     "pourquoi",
+     "depuis",
+     "source"
+    ]
+   }
+  },
+  "regles": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "limites": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "recherche_publique": {
+   "type": "array",
+   "minItems": 1
+  },
+  "ordre": {
+   "type": "string"
+  }
+ }
+}

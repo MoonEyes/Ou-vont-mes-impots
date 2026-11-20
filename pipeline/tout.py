@@ -205,6 +205,7 @@ ETAPES: tuple[Etape, ...] = (
     # une dépendance vers une étape absente aussi.
     axe("projets_subventionnes", "Projets subventionnés par l'État : Fonds vert par commune, Action cœur de ville, Petites villes de demain, liens vers les dotations", ("local", "territoires", "subventions"), duree_s=60),
     axe("ma_commune", "Ma commune : code postal et nom vers la commune (base officielle des codes postaux de La Poste)", ("local",), duree_s=10),
+    axe('universites', "Budgets des universités et opérateurs de l'enseignement supérieur (MESR, par établissement)", ('base',), duree_s=30),
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
     # nouvel axe se déclare au-dessus de cette ligne).
     Etape("fraicheur", "Fraîcheur des données (collecte, millésimes, calendriers officiels)", (TOUTES,),

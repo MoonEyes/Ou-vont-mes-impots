@@ -6,7 +6,8 @@
 // « non publié », jamais 0.
 // Deux sources ne sont jamais additionnées. Seuls les organismes que le pipeline a classés personnes morales sont
 // nommés ; les autres restent agrégés. Aucune année n'est écrite ici : elles sont lues dans les fichiers.
-import { fixerChoix, segmente, valeurChoix } from '../composants/choix'
+import { fixerChoix, listeRecherche, remplirListe, segmente, valeurChoix } from '../composants/choix'
+import { encadreManque, type Manque } from '../composants/manque'
 import { partPersonnelle } from '../composants/hub'
 import { chargerSiPresent } from '../donnees'
 import { TOUS_DEPARTEMENTS } from '../departements'
@@ -700,6 +701,117 @@ ${motifs.length ? `<p class="aide">Raisons du regroupement, en nombre de partici
 </details>`
 }
 
+// ---------- Budget de chaque université (site/data/universites/, pipeline/universites.py) ----------
+interface UnivIndicateur {
+  cle: string
+  libelle: string
+  unite: 'euros' | 'euros sur 100 €' | 'jours'
+}
+interface UnivIndex {
+  millesime: string
+  source: string
+  indicateurs: UnivIndicateur[]
+  natures: Record<string, string>
+  manques: Manque[]
+  limites: string[]
+}
+interface UnivEtab {
+  uai: string
+  nom: string
+  noms_anterieurs: string[]
+  commune: string | null
+  region: string | null
+  exercices: Record<string, (string | number | null)[]>
+}
+interface UnivEtabs {
+  millesime: string
+  source: string
+  colonnes: string[]
+  etablissements: UnivEtab[]
+}
+const FICHIER_UNIVERSITES = 'universites/etablissements.json'
+const NATURE_COURTE: Record<string, string> = { compte_financier: 'compte financier (exécution)', budget_initial: 'budget initial (prévision)' }
+
+const UNIV_PLACE = `<section id="er-universites" aria-labelledby="er-universites-titre">
+<h2 id="er-universites-titre">Le budget de chaque université</h2>
+<p class="aide">Chargement des budgets des établissements…</p>
+</section>`
+
+function valeurUniv(v: string | number | null | undefined, unite: UnivIndicateur['unite']): string {
+  if (typeof v !== 'number') return `${badgeStatut('nonpub')} non publié`
+  if (unite === 'euros') return h(eur(v))
+  if (unite === 'jours') return `${h(new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 1 }).format(v))} jours`
+  return `${h(new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v))} €`
+}
+
+export function blocUniversite(idx: UnivIndex, d: UnivEtabs, uai: string, annee: string | null): string {
+  const e = d.etablissements.find((x) => x.uai === uai) ?? d.etablissements[0]
+  const annees = Object.keys(e.exercices).sort().reverse()
+  const an = annee && annees.includes(annee) ? annee : annees.find((a) => e.exercices[a][0] === 'compte_financier') ?? annees[0]
+  const vals = e.exercices[an]
+  const v = (cle: string) => vals[d.colonnes.indexOf(cle)]
+  const nature = String(vals[0])
+  const perso = v('personnel_sur_100')
+  const propres = v('ressources_propres_sur_100')
+  const fmt1 = (x: number) => new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(x)
+  const phrase =
+    typeof perso === 'number' || typeof propres === 'number'
+      ? `<p>${badgeStatut('trace')} Sur 100 € de produits encaissables de ${h(e.nom)} en ${h(an)}${
+          typeof perso === 'number' ? `, ${h(fmt1(perso))} € correspondent aux charges de personnel` : ''
+        }${typeof propres === 'number' ? `${typeof perso === 'number' ? ' et' : ','} ${h(fmt1(propres))} € sont des ressources propres` : ''} (ratios publiés par le ministère, pas calculés par le site).</p>`
+      : ''
+  const lignes = idx.indicateurs
+    .filter((i) => i.unite !== 'euros sur 100 €')
+    .map((i) => `<tr><th scope="row">${h(i.libelle)}</th><td class="nombre">${valeurUniv(v(i.cle) as number | null, i.unite)}</td></tr>`)
+    .join('')
+  return `<p><strong>${h(e.nom)}</strong>${e.commune ? `, ${h(e.commune)}` : ''}${e.region ? ` (${h(e.region)})` : ''}. Exercice ${h(an)} : ${h(NATURE_COURTE[nature] ?? nature)}.</p>
+${e.noms_anterieurs.length ? `<p class="aide">Autres noms dans la source : ${h(e.noms_anterieurs.join(', '))}.</p>` : ''}
+${nature === 'budget_initial' ? `<p class="aide">${h(idx.natures.budget_initial ?? '')}.</p>` : ''}
+${phrase}
+<div class="tableau-defile"><table><caption>${h(e.nom)} : ${h(NATURE_COURTE[nature] ?? nature)} ${h(an)}, en euros</caption><thead><tr><th scope="col">Poste</th><th scope="col" class="nombre">Montant publié</th></tr></thead><tbody>${lignes}</tbody></table></div>`
+}
+
+function optionsAnnees(e: UnivEtab) {
+  return Object.keys(e.exercices)
+    .sort()
+    .reverse()
+    .map((a) => ({ valeur: a, libelle: `${a} : ${NATURE_COURTE[String(e.exercices[a][0])] ?? ''}` }))
+}
+
+async function universitesBloc(cible: HTMLElement, etab: string | null): Promise<void> {
+  const [idx, d] = await Promise.all([chargerSiPresent<UnivIndex>('universites/index.json'), chargerSiPresent<UnivEtabs>(FICHIER_UNIVERSITES)])
+  const zone = cible.querySelector<HTMLElement>('#er-universites')
+  if (!zone) return
+  if (!idx || !d?.etablissements.length) {
+    zone.innerHTML = `<h2 id="er-universites-titre">Le budget de chaque université</h2>${absent('Budgets des établissements non disponibles.')}`
+    return
+  }
+  const uai = etab && d.etablissements.some((x) => x.uai === etab) ? etab : d.etablissements[0].uai
+  const e = d.etablissements.find((x) => x.uai === uai)!
+  zone.innerHTML = `<h2 id="er-universites-titre">Le budget de chaque université</h2>
+<p>Universités, écoles et grands établissements publics : ce que chacun a reçu et dépensé, exercice par exercice, tel que le publie le ministère de l’Enseignement supérieur et de la Recherche. Les montants ne sont ni additionnés entre établissements, ni rapportés au nombre d’étudiants.</p>
+${listeRecherche({ id: 'er-univ', etiquette: 'Établissement', options: d.etablissements.map((x) => ({ valeur: x.uai, libelle: x.commune ? `${x.nom} (${x.commune})` : x.nom })), valeur: uai, recherche: true })}
+${listeRecherche({ id: 'er-univ-annee', etiquette: 'Exercice', options: optionsAnnees(e), recherche: false })}
+<div id="er-univ-detail" aria-live="polite">${blocUniversite(idx, d, uai, null)}</div>
+${idx.manques.map((m) => encadreManque(m)).join('')}
+${idx.limites.length ? `<ul class="limites">${idx.limites.map((x) => `<li>${h(x)}</li>`).join('')}</ul>` : ''}
+${source(d.source, d.millesime)}`
+  const annee = zone.querySelector<HTMLSelectElement>('#er-univ-annee')
+  const detail = zone.querySelector<HTMLElement>('#er-univ-detail')!
+  const montrer = (an: string | null) => {
+    detail.innerHTML = blocUniversite(idx, d, valeurChoix(zone, 'er-univ'), an)
+  }
+  const premiere = (x: UnivEtab) => Object.keys(x.exercices).sort().reverse().find((a) => x.exercices[a][0] === 'compte_financier') ?? ''
+  if (annee) fixerChoix(zone, 'er-univ-annee', premiere(e))
+  zone.querySelector('#er-univ')?.addEventListener('change', () => {
+    const x = d.etablissements.find((y) => y.uai === valeurChoix(zone, 'er-univ'))
+    if (!x || !annee) return
+    remplirListe(annee, optionsAnnees(x), premiere(x))
+    montrer(null)
+  })
+  annee?.addEventListener('change', () => montrer(valeurChoix(zone, 'er-univ-annee')))
+}
+
 // ---------- Écarts, limites, sources ----------
 function blocEcarts(idx: Index | null): string {
   const e = idx?.ecarts ?? []
@@ -816,11 +928,12 @@ ${blocAnr(idx, anr)}
 ${blocEcarts(idx)}`
     : `<div class="en-cours"><p><strong>Données en cours d’intégration.</strong> Budgets des collectivités pour l’enseignement supérieur, lycées de trois régions, projets de l’Agence nationale de la recherche.</p></div>`
 }
+${UNIV_PLACE}
 ${blocLimites(idx, !!compte)}
 ${blocSources(idx)}
 <h2>Pour aller plus loin</h2>
 ${SORTIES}
 ${partPersonnelle()}`
-  return { suite: completer(cible, idx, region) }
+  return { suite: Promise.all([completer(cible, idx, region), universitesBloc(cible, params.get('etab'))]).then(() => undefined) }
 }
 

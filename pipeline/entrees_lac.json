@@ -2468,6 +2468,17 @@
    "hors_catalogue": [],
    "octets_sources": null,
    "note": "zips de l'Assembl\u00e9e et dump Ameli partag\u00e9s avec l'\u00e9tape decisions (aucune collecte en double) ; AMO30 (catalogue qui_a_vote_an_l17_acteurs) et textes examin\u00e9s en s\u00e9ance (data/lake/qui_a_vote/textes/<uid>.html) collect\u00e9s par python pipeline/qui_a_vote.py collecter"
+  },
+  "universites": {
+   "sources": {
+    "etat_esr_operateurs_financiers": [
+     "data/lake/etat/etat_esr_operateurs_financiers.parquet"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": 599935,
+   "note": "entrée collectée par collecte/collecte.py (python pipeline/universites.py collecter)"
   }
  },
  "urls": {

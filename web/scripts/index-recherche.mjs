@@ -126,6 +126,17 @@ const AUTRES_ENTITES = [
     groupe: 'Ministères',
     extraire: (d) => (d.ministeres ?? []).filter((x) => typeof x?.ministere === 'string').map((x) => ({ nom: x.ministere, precision: 'Effectifs et masse salariale' })),
   },
+  {
+    cle: 'universite',
+    fichier: 'universites/etablissements.json',
+    nom: 'Université ou établissement d’enseignement supérieur',
+    groupe: 'Universités et établissements d’enseignement supérieur',
+    // Établissements publics (personnes morales) : le lien ouvre le bloc de l'établissement sur la page Éducation.
+    extraire: (d) =>
+      (d.etablissements ?? [])
+        .filter((x) => typeof x?.nom === 'string' && typeof x?.uai === 'string')
+        .map((x) => ({ nom: x.nom, precision: x.commune ?? '', cible: `#/explorer/education-recherche?etab=${encodeURIComponent(x.uai)}`, cles: (x.noms_anterieurs ?? []).join(' ; ') })),
+  },
 ]
 
 /** Sigles des établissements pénitentiaires (direction de l'administration pénitentiaire). */
