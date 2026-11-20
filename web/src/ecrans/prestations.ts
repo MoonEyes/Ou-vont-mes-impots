@@ -4,6 +4,7 @@
 // additionnées et leurs écarts sont montrés tels que le pipeline les publie. Les liens vers les arbres (budget de
 // l'État, Sécurité sociale) désignent le même argent vu du côté du financeur : jamais ajoutés au montant versé.
 import { choix, listeRecherche, valeurChoix } from '../composants/choix'
+import { brancherTerritoire, repliTerritoire } from './explorer_territoires'
 import { fragmentDepartement } from '../chemins'
 import { partPersonnelle } from '../composants/hub'
 import { TOUS_DEPARTEMENTS } from '../departements'
@@ -588,7 +589,9 @@ ${prestations.map((p) => fiche(p, nat.prestations[p.id], index, annees)).join('\
     .map((s) => `<li><a href="${h(s.page ?? s.url)}" rel="noopener noreferrer">${h(s.titre)}</a> (${s.producteur ? `${h(s.producteur)}, ` : ''}${h(s.millesime)}, ${h(s.licence)})</li>`)
     .join('')}</ul>
 ${index.date_sources ? `<p class="aide">Sources lues le ${h(dateFr(index.date_sources))}. Fichiers publiés par le site : prestations/index.json, prestations/nationales.json et un fichier par année dans prestations/departements/.</p>` : ''}
+${repliTerritoire('unedic', 'Assurance chômage, par département', 'Allocataires et dépense du mois (Unédic)')}
 ${partPersonnelle()}`
+  brancherTerritoire(cible, 'unedic')
 
   // Département et année : le bloc se recalcule sur place, sans recharger la page.
   const zone = cible.querySelector('#pr-dep-resultat') as HTMLElement

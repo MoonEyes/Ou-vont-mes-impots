@@ -253,6 +253,32 @@ const SECTIONS: [string, string, string][] = [
   ['mc-deliberations', 'Délibérations', 'Ce qui est publié'],
   ['mc-comparer', 'Communes semblables', 'Même densité, même taille'],
 ]
+/** Sections du lot 2 (contrat 2.72 à 2.78), chargées à la première ouverture (ma_commune_complements.ts). */
+export const SECTIONS_COMPLEMENTS: [string, string, string][] = [
+  ['mc-solidarite', 'Entre la commune et l’intercommunalité', 'Flux, solidarité entre territoires'],
+  ['mc-moyens', 'Patrimoine, élus, police municipale', 'Biens, indemnités, effectifs'],
+  ['mc-habitants', 'Prestations, emploi, fortune immobilière', 'CAF, France Travail, IFI'],
+]
+const ID_DEP_SERVICES = 'mc-dep-services'
+
+/** Charge le contenu d'une section repliée à sa première ouverture : rien n'est lu tant qu'elle reste fermée. */
+function brancherComplements(racine: HTMLElement, c: import('./ma_commune_complements').Contexte, remplir: (id: string, html: string) => void): void {
+  for (const id of [...SECTIONS_COMPLEMENTS.map(([x]) => x), ID_DEP_SERVICES]) {
+    const d = racine.querySelector<HTMLDetailsElement>(`#${id}-repli`)
+    if (!d) continue
+    let p: Promise<void> | null = null
+    const charger = () =>
+      (p ??= (racine.querySelector(`#${id}`)?.setAttribute('aria-busy', 'true'), import('./ma_commune_complements'))
+        .then((m) => m.CHARGEURS[id](c))
+        .then((html) => remplir(id, html))
+        .catch((e) => {
+          console.error(e)
+          remplir(id, absent())
+        }))
+    if (d.open) void charger()
+    d.addEventListener('toggle', () => d.open && void charger())
+  }
+}
 
 async function synthese(cible: HTMLElement, insee: string): Promise<Rendu | void> {
   const dep = departementDe(insee)
@@ -273,6 +299,8 @@ async function synthese(cible: HTMLElement, insee: string): Promise<Rendu | void
     'mc-region': `La région : ${geo.region.nom}`,
   }
   const zone = (id: string) => `<div id="${id}" class="section-donnees" aria-busy="true"><p class="chargement">Chargement…</p></div>`
+  // Section chargée à l'ouverture : occupée (aria-busy) seulement pendant son chargement.
+  const zoneDemande = (id: string) => `<div id="${id}" class="section-donnees"><p class="chargement">Chargement…</p></div>`
   cible.innerHTML = `<div class="entete-local entete-serre">
   <div>
     <h1>${h(g.nom)}</h1>
@@ -282,8 +310,9 @@ async function synthese(cible: HTMLElement, insee: string): Promise<Rendu | void
   </div>
 </div>
 <div class="onglets-collants">${listeOnglets({ etiquette: 'Budget de chaque collectivité, une à la fois', onglets: ONGLETS.map(([id, , court]) => ({ id: `${id}-onglet`, libelle: court, panneau: `${id}-panneau` })) })}</div>
-${ONGLETS.map(([id, t], i) => `<section role="tabpanel" id="${id}-panneau" aria-labelledby="${id}-onglet" class="ma-commune-bloc"${i === 0 ? '' : ' hidden'}><h2 id="${id}-titre" tabindex="-1">${h(titres[id] ?? t)}</h2>${zone(id)}</section>`).join('\n')}
+${ONGLETS.map(([id, t], i) => `<section role="tabpanel" id="${id}-panneau" aria-labelledby="${id}-onglet" class="ma-commune-bloc"${i === 0 ? '' : ' hidden'}><h2 id="${id}-titre" tabindex="-1">${h(titres[id] ?? t)}</h2>${zone(id)}${id === 'mc-departement' ? `<details id="${ID_DEP_SERVICES}-repli" class="aide"><summary>Pompiers, assurance chômage, santé et établissements publics du département</summary>${zoneDemande(ID_DEP_SERVICES)}</details>` : ''}</section>`).join('\n')}
 ${SECTIONS.map(([id, t, resume]) => repli({ id: `${id}-repli`, idTitre: `${id}-titre`, titre: titres[id] ?? t, resume: h(resume), contenu: zone(id) })).join('\n')}
+${SECTIONS_COMPLEMENTS.map(([id, t, resume]) => repli({ id: `${id}-repli`, idTitre: `${id}-titre`, titre: t, resume: h(resume), contenu: zoneDemande(id) })).join('\n')}
 ${repli({
   id: 'mc-plus-repli',
   idTitre: 'mc-plus-titre',
@@ -406,6 +435,8 @@ ${idxMc ? source(idxMc.source, idxMc.millesime) : ''}`,
       return blocTypologie(insee, idx, com, [a, b])
     })(),
   )
+
+  brancherComplements(cible, { insee, nom: g.nom, dep, nomDep: geo.departement.nom, epci: epci && g.epci ? { siren: g.epci, nom: epci.nom, siege: epci.departement_siege } : null }, remplir)
 
   const suite = Promise.all([budgets.catch((e) => {
     console.error(e)
