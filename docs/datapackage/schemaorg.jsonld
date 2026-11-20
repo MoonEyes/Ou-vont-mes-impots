@@ -2106,6 +2106,54 @@
   },
   {
    "@type": "DataDownload",
+   "name": "indicateurs, exercices, couverture, manques, règles et limites des budgets des opérateurs de l'enseignement supérieur et de la recherche (pipeline/universites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/universites/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "par établissement (code UAI), montants et ratios publiés par la source pour chaque exercice ; colonnes = nature puis indicateurs de index.json (pipeline/universites.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/universites/etablissements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "volets, instantanés, nomenclatures, couverture, manques, règles et limites du fonds de solidarité (pipeline/fonds_solidarite.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "volet 1 au dernier instantané, par département et section d'activité, catégorie juridique, classe d'effectif (agrégats, aucune entreprise nommée)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/departements.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "cumuls publiés à la fin de chaque mois, par volet, région et section d'activité",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/regions_mois.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "jeux de l'Insee repris, nomenclatures (libellés des modalités), années, définitions, règles et limites (pipeline/salaires_fonction_publique.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "observations de l'Insee [année, codes des dimensions, valeur] telles que publiées (pipeline/salaires_fonction_publique.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/series_longues.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "observations de l'Insee [année, codes des dimensions, valeur] telles que publiées (pipeline/salaires_fonction_publique.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/annuel.json"
+  },
+  {
+   "@type": "DataDownload",
    "name": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "encodingFormat": "text/csv",
    "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/beneficiaires/beneficiaires_publies.csv"

@@ -4994,6 +4994,9 @@ fonds_europeens/operations/reunion_1420.json,fonds-europeens-operations-x,fonds_
 fonds_europeens/programmes.json,fonds-europeens-programmes,fonds_europeens_programmes.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_europeens/programmes.json
 fonds_europeens/regions.json,fonds-europeens-regions,fonds_europeens_regions.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_europeens/regions.json
 fonds_europeens/themes.json,fonds-europeens-themes,fonds_europeens_themes.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_europeens/themes.json
+fonds_solidarite/departements.json,fonds-solidarite-departements,fonds_solidarite_departements.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/departements.json
+fonds_solidarite/index.json,fonds-solidarite-index,fonds_solidarite_index.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/index.json
+fonds_solidarite/regions_mois.json,fonds-solidarite-regions-mois,fonds_solidarite_regions_mois.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/regions_mois.json
 formation/cpf_certifications.json,formation-cpf-certifications,formation_cpf_certifications.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/cpf_certifications.json
 formation/cpf_departements.json,formation-cpf-departements,formation_cpf_departements.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/cpf_departements.json
 formation/cpf_mois.json,formation-cpf-mois,formation_cpf_mois.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/cpf_mois.json
@@ -9797,6 +9800,9 @@ revenus_communes/tranches/972.json,revenus-communes-tranches,revenus_communes_tr
 revenus_communes/tranches/973.json,revenus-communes-tranches,revenus_communes_tranches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/revenus_communes/tranches/973.json
 revenus_communes/tranches/974.json,revenus-communes-tranches,revenus_communes_tranches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/revenus_communes/tranches/974.json
 revenus_communes/tranches/976.json,revenus-communes-tranches,revenus_communes_tranches.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/revenus_communes/tranches/976.json
+salaires_fonction_publique/annuel.json,salaires-fonction-publique-annuel,salaires_fonction_publique_annuel.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/annuel.json
+salaires_fonction_publique/index.json,salaires-fonction-publique-index,salaires_fonction_publique_index.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/index.json
+salaires_fonction_publique/series_longues.json,salaires-fonction-publique-series-longues,salaires_fonction_publique_series_longues.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/series_longues.json
 sankey_etat.json,sankey-etat,sankey_etat.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/sankey_etat.json
 sankey_etat_lfi2025.json,sankey-etat,sankey_etat.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/sankey_etat_lfi2025.json
 sante_etablissements/departements.json,sante-etablissements-departements,sante_etablissements_departements.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/sante_etablissements/departements.json
@@ -10438,6 +10444,8 @@ ue/beneficiaires/index.json,ue-beneficiaires-index,ue_beneficiaires_index.schema
 ue/beneficiaires/non_localise.json,ue-beneficiaires-n,ue_beneficiaires_dep.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/beneficiaires/non_localise.json
 ue/contribution.json,ue-contribution,ue_contribution.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/contribution.json
 ue/retours.json,ue-retours,ue_retours.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/ue/retours.json
+universites/etablissements.json,universites-etablissements,universites_etablissements.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/universites/etablissements.json
+universites/index.json,universites-index,universites_index.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/universites/index.json
 vie_politique/annees.json,vie-politique-annees,vie_politique_annees.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/annees.json
 vie_politique/candidats/departementales_2015.json,vie-politique-candidats,vie_politique_candidats.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/candidats/departementales_2015.json
 vie_politique/candidats/departementales_2021.json,vie-politique-candidats,vie_politique_candidats.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/vie_politique/candidats/departementales_2021.json

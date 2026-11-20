@@ -6238,6 +6238,158 @@
   },
   {
    "@type": "dcat:Distribution",
+   "dct:title": "indicateurs, exercices, couverture, manques, règles et limites des budgets des opérateurs de l'enseignement supérieur et de la recherche (pipeline/universites.py)",
+   "dct:description": "site/data/universites/index.json : indicateurs, exercices, couverture, manques, règles et limites des budgets des opérateurs de l'enseignement supérieur et de la recherche (pipeline/universites.py). Fichier site/data/universites/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/universites/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/universites/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/universites_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "par établissement (code UAI), montants et ratios publiés par la source pour chaque exercice ; colonnes = nature puis indicateurs de index.json (pipeline/universites.py)",
+   "dct:description": "site/data/universites/etablissements.json : par établissement (code UAI), montants et ratios publiés par la source pour chaque exercice ; colonnes = nature puis indicateurs de index.json (pipeline/universites.py). Fichier site/data/universites/etablissements.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/universites/etablissements.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/universites/etablissements.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/universites_etablissements.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "volets, instantanés, nomenclatures, couverture, manques, règles et limites du fonds de solidarité (pipeline/fonds_solidarite.py)",
+   "dct:description": "site/data/fonds_solidarite/index.json : volets, instantanés, nomenclatures, couverture, manques, règles et limites du fonds de solidarité (pipeline/fonds_solidarite.py). Fichier site/data/fonds_solidarite/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/fonds_solidarite_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "volet 1 au dernier instantané, par département et section d'activité, catégorie juridique, classe d'effectif (agrégats, aucune entreprise nommée)",
+   "dct:description": "site/data/fonds_solidarite/departements.json : volet 1 au dernier instantané, par département et section d'activité, catégorie juridique, classe d'effectif (agrégats, aucune entreprise nommée). Fichier site/data/fonds_solidarite/departements.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/departements.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/departements.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/fonds_solidarite_departements.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "cumuls publiés à la fin de chaque mois, par volet, région et section d'activité",
+   "dct:description": "site/data/fonds_solidarite/regions_mois.json : cumuls publiés à la fin de chaque mois, par volet, région et section d'activité. Fichier site/data/fonds_solidarite/regions_mois.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/regions_mois.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/regions_mois.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/fonds_solidarite_regions_mois.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "jeux de l'Insee repris, nomenclatures (libellés des modalités), années, définitions, règles et limites (pipeline/salaires_fonction_publique.py)",
+   "dct:description": "site/data/salaires_fonction_publique/index.json : jeux de l'Insee repris, nomenclatures (libellés des modalités), années, définitions, règles et limites (pipeline/salaires_fonction_publique.py). Fichier site/data/salaires_fonction_publique/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/salaires_fonction_publique_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "observations de l'Insee [année, codes des dimensions, valeur] telles que publiées (pipeline/salaires_fonction_publique.py)",
+   "dct:description": "site/data/salaires_fonction_publique/series_longues.json : observations de l'Insee [année, codes des dimensions, valeur] telles que publiées (pipeline/salaires_fonction_publique.py). Fichier site/data/salaires_fonction_publique/series_longues.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/series_longues.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/series_longues.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/salaires_fonction_publique_series_longues.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "observations de l'Insee [année, codes des dimensions, valeur] telles que publiées (pipeline/salaires_fonction_publique.py)",
+   "dct:description": "site/data/salaires_fonction_publique/annuel.json : observations de l'Insee [année, codes des dimensions, valeur] telles que publiées (pipeline/salaires_fonction_publique.py). Fichier site/data/salaires_fonction_publique/annuel.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/annuel.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/annuel.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/salaires_fonction_publique_annuel.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
    "dct:title": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "dct:description": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique. Table CSV (non publiée sur le site, lue dans le dépôt).",
    "dcat:accessURL": {

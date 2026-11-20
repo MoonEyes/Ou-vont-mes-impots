@@ -17186,6 +17186,278 @@
    ]
   },
   {
+   "name": "universites-index",
+   "title": "indicateurs, exercices, couverture, manques, règles et limites des budgets des opérateurs de l'enseignement supérieur et de la recherche (pipeline/universites.py)",
+   "description": "site/data/universites/index.json : indicateurs, exercices, couverture, manques, règles et limites des budgets des opérateurs de l'enseignement supérieur et de la recherche (pipeline/universites.py). Fichier site/data/universites/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/universites/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/universites_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Ministère de l'Enseignement supérieur et de la Recherche (SIES), « Indicateurs financiers des opérateurs de l'enseignement supérieur et de la recherche », data.enseignementsup-recherche.gouv.fr, jeu fr-esr-operateurs-indicateurs-financiers, Licence Ouverte 2.0 : https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-operateurs-indicateurs-financiers/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/universites/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "universites",
+   "millesimes": [
+    "comptes financiers 2010 à 2025, budget initial 2026"
+   ],
+   "sources_declarees": [
+    "Ministère de l'Enseignement supérieur et de la Recherche (SIES), « Indicateurs financiers des opérateurs de l'enseignement supérieur et de la recherche », data.enseignementsup-recherche.gouv.fr, jeu fr-esr-operateurs-indicateurs-financiers, Licence Ouverte 2.0 : https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-operateurs-indicateurs-financiers/"
+   ]
+  },
+  {
+   "name": "universites-etablissements",
+   "title": "par établissement (code UAI), montants et ratios publiés par la source pour chaque exercice ; colonnes = nature puis indicateurs de index.json (pipeline/universites.py)",
+   "description": "site/data/universites/etablissements.json : par établissement (code UAI), montants et ratios publiés par la source pour chaque exercice ; colonnes = nature puis indicateurs de index.json (pipeline/universites.py). Fichier site/data/universites/etablissements.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/universites/etablissements.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/universites_etablissements.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Ministère de l'Enseignement supérieur et de la Recherche (SIES), « Indicateurs financiers des opérateurs de l'enseignement supérieur et de la recherche », data.enseignementsup-recherche.gouv.fr, jeu fr-esr-operateurs-indicateurs-financiers, Licence Ouverte 2.0 : https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-operateurs-indicateurs-financiers/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/universites/etablissements.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "universites",
+   "millesimes": [
+    "comptes financiers 2010 à 2025, budget initial 2026"
+   ],
+   "sources_declarees": [
+    "Ministère de l'Enseignement supérieur et de la Recherche (SIES), « Indicateurs financiers des opérateurs de l'enseignement supérieur et de la recherche », data.enseignementsup-recherche.gouv.fr, jeu fr-esr-operateurs-indicateurs-financiers, Licence Ouverte 2.0 : https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-operateurs-indicateurs-financiers/"
+   ]
+  },
+  {
+   "name": "fonds-solidarite-index",
+   "title": "volets, instantanés, nomenclatures, couverture, manques, règles et limites du fonds de solidarité (pipeline/fonds_solidarite.py)",
+   "description": "site/data/fonds_solidarite/index.json : volets, instantanés, nomenclatures, couverture, manques, règles et limites du fonds de solidarité (pipeline/fonds_solidarite.py). Fichier site/data/fonds_solidarite/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/fonds_solidarite_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Etalab et DGFiP, « Données relatives au fonds de solidarité mis en place dans le cadre de l'épidémie de COVID-19 », data.gouv.fr (Licence Ouverte 2.0) : https://www.data.gouv.fr/datasets/donnees-relatives-au-fonds-de-solidarite-mis-en-place-dans-le-cadre-de-lepidemie-de-covid-19 ; historique quotidien publié avec le jeu : https://github.com/etalab/dashboard-aides-entreprises/tree/master/published-data/fonds-solidarite",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/fonds_solidarite/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "fonds_solidarite",
+   "millesimes": [
+    "fonds de solidarité 2020 à 2022, volet 1 au 2022-06-24"
+   ],
+   "sources_declarees": [
+    "Etalab et DGFiP, « Données relatives au fonds de solidarité mis en place dans le cadre de l'épidémie de COVID-19 », data.gouv.fr (Licence Ouverte 2.0) : https://www.data.gouv.fr/datasets/donnees-relatives-au-fonds-de-solidarite-mis-en-place-dans-le-cadre-de-lepidemie-de-covid-19 ; historique quotidien publié avec le jeu : https://github.com/etalab/dashboard-aides-entreprises/tree/master/published-data/fonds-solidarite"
+   ]
+  },
+  {
+   "name": "fonds-solidarite-departements",
+   "title": "volet 1 au dernier instantané, par département et section d'activité, catégorie juridique, classe d'effectif (agrégats, aucune entreprise nommée)",
+   "description": "site/data/fonds_solidarite/departements.json : volet 1 au dernier instantané, par département et section d'activité, catégorie juridique, classe d'effectif (agrégats, aucune entreprise nommée). Fichier site/data/fonds_solidarite/departements.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/departements.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/fonds_solidarite_departements.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Etalab et DGFiP, « Données relatives au fonds de solidarité mis en place dans le cadre de l'épidémie de COVID-19 », data.gouv.fr (Licence Ouverte 2.0) : https://www.data.gouv.fr/datasets/donnees-relatives-au-fonds-de-solidarite-mis-en-place-dans-le-cadre-de-lepidemie-de-covid-19 ; historique quotidien publié avec le jeu : https://github.com/etalab/dashboard-aides-entreprises/tree/master/published-data/fonds-solidarite",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/fonds_solidarite/departements.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "fonds_solidarite",
+   "millesimes": [
+    "fonds de solidarité 2020 à 2022, volet 1 au 2022-06-24"
+   ],
+   "sources_declarees": [
+    "Etalab et DGFiP, « Données relatives au fonds de solidarité mis en place dans le cadre de l'épidémie de COVID-19 », data.gouv.fr (Licence Ouverte 2.0) : https://www.data.gouv.fr/datasets/donnees-relatives-au-fonds-de-solidarite-mis-en-place-dans-le-cadre-de-lepidemie-de-covid-19 ; historique quotidien publié avec le jeu : https://github.com/etalab/dashboard-aides-entreprises/tree/master/published-data/fonds-solidarite"
+   ]
+  },
+  {
+   "name": "fonds-solidarite-regions-mois",
+   "title": "cumuls publiés à la fin de chaque mois, par volet, région et section d'activité",
+   "description": "site/data/fonds_solidarite/regions_mois.json : cumuls publiés à la fin de chaque mois, par volet, région et section d'activité. Fichier site/data/fonds_solidarite/regions_mois.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/fonds_solidarite/regions_mois.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/fonds_solidarite_regions_mois.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Etalab et DGFiP, « Données relatives au fonds de solidarité mis en place dans le cadre de l'épidémie de COVID-19 », data.gouv.fr (Licence Ouverte 2.0) : https://www.data.gouv.fr/datasets/donnees-relatives-au-fonds-de-solidarite-mis-en-place-dans-le-cadre-de-lepidemie-de-covid-19 ; historique quotidien publié avec le jeu : https://github.com/etalab/dashboard-aides-entreprises/tree/master/published-data/fonds-solidarite",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/fonds_solidarite/regions_mois.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "fonds_solidarite",
+   "millesimes": [
+    "fonds de solidarité, instantanés de fin de mois du 2020-05-31 au 2022-06-24"
+   ],
+   "sources_declarees": [
+    "Etalab et DGFiP, « Données relatives au fonds de solidarité mis en place dans le cadre de l'épidémie de COVID-19 », data.gouv.fr (Licence Ouverte 2.0) : https://www.data.gouv.fr/datasets/donnees-relatives-au-fonds-de-solidarite-mis-en-place-dans-le-cadre-de-lepidemie-de-covid-19 ; historique quotidien publié avec le jeu : https://github.com/etalab/dashboard-aides-entreprises/tree/master/published-data/fonds-solidarite"
+   ]
+  },
+  {
+   "name": "salaires-fonction-publique-index",
+   "title": "jeux de l'Insee repris, nomenclatures (libellés des modalités), années, définitions, règles et limites (pipeline/salaires_fonction_publique.py)",
+   "description": "site/data/salaires_fonction_publique/index.json : jeux de l'Insee repris, nomenclatures (libellés des modalités), années, définitions, règles et limites (pipeline/salaires_fonction_publique.py). Fichier site/data/salaires_fonction_publique/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/salaires_fonction_publique_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Insee, « Salaires dans la fonction publique : séries longues » (DS_DERA_PUBLIC_SERIES_LONGUES, Siasp), Licence Ouverte 2.0 : https://api.insee.fr/melodi/file/DS_DERA_PUBLIC_SERIES_LONGUES/DS_DERA_PUBLIC_SERIES_LONGUES_CSV_FR ; Insee, « Salaires dans la fonction publique par catégorie socioprofessionnelle détaillée » (DS_DERA_PUBLIC_ANNUEL, 2023, Siasp), Licence Ouverte 2.0 : https://api.insee.fr/melodi/file/DS_DERA_PUBLIC_ANNUEL/DS_DERA_PUBLIC_ANNUEL_2023_CSV_FR",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/salaires_fonction_publique/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "salaires_fonction_publique",
+   "millesimes": [
+    "séries longues 1995 à 2023 ; détail par métier 2023"
+   ],
+   "sources_declarees": [
+    "Insee, « Salaires dans la fonction publique : séries longues » (DS_DERA_PUBLIC_SERIES_LONGUES, Siasp), Licence Ouverte 2.0 : https://api.insee.fr/melodi/file/DS_DERA_PUBLIC_SERIES_LONGUES/DS_DERA_PUBLIC_SERIES_LONGUES_CSV_FR ; Insee, « Salaires dans la fonction publique par catégorie socioprofessionnelle détaillée » (DS_DERA_PUBLIC_ANNUEL, 2023, Siasp), Licence Ouverte 2.0 : https://api.insee.fr/melodi/file/DS_DERA_PUBLIC_ANNUEL/DS_DERA_PUBLIC_ANNUEL_2023_CSV_FR"
+   ]
+  },
+  {
+   "name": "salaires-fonction-publique-series-longues",
+   "title": "observations de l'Insee [année, codes des dimensions, valeur] telles que publiées (pipeline/salaires_fonction_publique.py)",
+   "description": "site/data/salaires_fonction_publique/series_longues.json : observations de l'Insee [année, codes des dimensions, valeur] telles que publiées (pipeline/salaires_fonction_publique.py). Fichier site/data/salaires_fonction_publique/series_longues.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/series_longues.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/salaires_fonction_publique_series_longues.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Insee, « Salaires dans la fonction publique : séries longues » (DS_DERA_PUBLIC_SERIES_LONGUES, Siasp), Licence Ouverte 2.0 : https://api.insee.fr/melodi/file/DS_DERA_PUBLIC_SERIES_LONGUES/DS_DERA_PUBLIC_SERIES_LONGUES_CSV_FR",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/salaires_fonction_publique/series_longues.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "salaires_fonction_publique",
+   "millesimes": [
+    "1995 à 2023"
+   ],
+   "sources_declarees": [
+    "Insee, « Salaires dans la fonction publique : séries longues » (DS_DERA_PUBLIC_SERIES_LONGUES, Siasp), Licence Ouverte 2.0 : https://api.insee.fr/melodi/file/DS_DERA_PUBLIC_SERIES_LONGUES/DS_DERA_PUBLIC_SERIES_LONGUES_CSV_FR"
+   ]
+  },
+  {
+   "name": "salaires-fonction-publique-annuel",
+   "title": "observations de l'Insee [année, codes des dimensions, valeur] telles que publiées (pipeline/salaires_fonction_publique.py)",
+   "description": "site/data/salaires_fonction_publique/annuel.json : observations de l'Insee [année, codes des dimensions, valeur] telles que publiées (pipeline/salaires_fonction_publique.py). Fichier site/data/salaires_fonction_publique/annuel.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/salaires_fonction_publique/annuel.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/salaires_fonction_publique_annuel.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "Insee, « Salaires dans la fonction publique par catégorie socioprofessionnelle détaillée » (DS_DERA_PUBLIC_ANNUEL, 2023, Siasp), Licence Ouverte 2.0 : https://api.insee.fr/melodi/file/DS_DERA_PUBLIC_ANNUEL/DS_DERA_PUBLIC_ANNUEL_2023_CSV_FR",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/salaires_fonction_publique/annuel.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "salaires_fonction_publique",
+   "millesimes": [
+    "2023"
+   ],
+   "sources_declarees": [
+    "Insee, « Salaires dans la fonction publique par catégorie socioprofessionnelle détaillée » (DS_DERA_PUBLIC_ANNUEL, 2023, Siasp), Licence Ouverte 2.0 : https://api.insee.fr/melodi/file/DS_DERA_PUBLIC_ANNUEL/DS_DERA_PUBLIC_ANNUEL_2023_CSV_FR"
+   ]
+  },
+  {
    "name": "beneficiaires_publies",
    "type": "table",
    "title": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
