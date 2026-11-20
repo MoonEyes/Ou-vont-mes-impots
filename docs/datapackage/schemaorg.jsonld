@@ -2154,6 +2154,30 @@
   },
   {
    "@type": "DataDownload",
+   "name": "critères, rubriques du plan de classement, juridictions, couverture, fichiers, manques, règles et limites des comptes de décisions de la base JADE (pipeline/jurisprudence.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/index.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "nombre de décisions par année et juridiction, dont classées, matière fiscale (deux critères, jamais additionnés) et budgétaire",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/comptes.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "nombre de décisions classées par année et rubrique du plan de classement (une décision peut relever de plusieurs rubriques)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/rubriques.json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "décisions classées en matière fiscale ou budgétaire, sans texte ni nom : identifiant (lien Légifrance), juridiction (rang), date, numéro, matière, publication au Recueil, sous-rubriques",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/decisions/1965.json"
+  },
+  {
+   "@type": "DataDownload",
    "name": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "encodingFormat": "text/csv",
    "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/beneficiaires/beneficiaires_publies.csv"

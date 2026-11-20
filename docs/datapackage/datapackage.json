@@ -17458,6 +17458,181 @@
    ]
   },
   {
+   "name": "jurisprudence-index",
+   "title": "critères, rubriques du plan de classement, juridictions, couverture, fichiers, manques, règles et limites des comptes de décisions de la base JADE (pipeline/jurisprudence.py)",
+   "description": "site/data/jurisprudence/index.json : critères, rubriques du plan de classement, juridictions, couverture, fichiers, manques, règles et limites des comptes de décisions de la base JADE (pipeline/jurisprudence.py). Fichier site/data/jurisprudence/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/jurisprudence_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DILA, base JADE (jurisprudence administrative), Licence Ouverte 2.0 : https://echanges.dila.gouv.fr/OPENDATA/JADE/ ; fiche https://www.data.gouv.fr/datasets/jade/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/jurisprudence/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "jurisprudence",
+   "millesimes": [
+    "décisions de 1965 à 2026, base JADE au 2026-11-20"
+   ],
+   "sources_declarees": [
+    "DILA, base JADE (jurisprudence administrative), Licence Ouverte 2.0 : https://echanges.dila.gouv.fr/OPENDATA/JADE/ ; fiche https://www.data.gouv.fr/datasets/jade/"
+   ]
+  },
+  {
+   "name": "jurisprudence-comptes",
+   "title": "nombre de décisions par année et juridiction, dont classées, matière fiscale (deux critères, jamais additionnés) et budgétaire",
+   "description": "site/data/jurisprudence/comptes.json : nombre de décisions par année et juridiction, dont classées, matière fiscale (deux critères, jamais additionnés) et budgétaire. Fichier site/data/jurisprudence/comptes.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/comptes.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/jurisprudence_comptes.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DILA, base JADE (jurisprudence administrative), Licence Ouverte 2.0 : https://echanges.dila.gouv.fr/OPENDATA/JADE/ ; fiche https://www.data.gouv.fr/datasets/jade/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/jurisprudence/comptes.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "jurisprudence",
+   "millesimes": [
+    "décisions de 1965 à 2026, base JADE au 2026-11-20"
+   ],
+   "sources_declarees": [
+    "DILA, base JADE (jurisprudence administrative), Licence Ouverte 2.0 : https://echanges.dila.gouv.fr/OPENDATA/JADE/ ; fiche https://www.data.gouv.fr/datasets/jade/"
+   ]
+  },
+  {
+   "name": "jurisprudence-rubriques",
+   "title": "nombre de décisions classées par année et rubrique du plan de classement (une décision peut relever de plusieurs rubriques)",
+   "description": "site/data/jurisprudence/rubriques.json : nombre de décisions classées par année et rubrique du plan de classement (une décision peut relever de plusieurs rubriques). Fichier site/data/jurisprudence/rubriques.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/rubriques.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/jurisprudence_rubriques.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DILA, base JADE (jurisprudence administrative), Licence Ouverte 2.0 : https://echanges.dila.gouv.fr/OPENDATA/JADE/ ; fiche https://www.data.gouv.fr/datasets/jade/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/jurisprudence/rubriques.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "jurisprudence",
+   "millesimes": [
+    "décisions de 1965 à 2026, base JADE au 2026-11-20"
+   ],
+   "sources_declarees": [
+    "DILA, base JADE (jurisprudence administrative), Licence Ouverte 2.0 : https://echanges.dila.gouv.fr/OPENDATA/JADE/ ; fiche https://www.data.gouv.fr/datasets/jade/"
+   ]
+  },
+  {
+   "name": "jurisprudence-decisions",
+   "title": "décisions classées en matière fiscale ou budgétaire, sans texte ni nom : identifiant (lien Légifrance), juridiction (rang), date, numéro, matière, publication au Recueil, sous-rubriques",
+   "description": "site/data/jurisprudence/decisions/<année>.json : décisions classées en matière fiscale ou budgétaire, sans texte ni nom : identifiant (lien Légifrance), juridiction (rang), date, numéro, matière, publication au Recueil, sous-rubriques. Famille de 62 fichiers (motif site/data/jurisprudence/decisions/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/decisions/1965.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/jurisprudence_decisions.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "DILA, base JADE (jurisprudence administrative), Licence Ouverte 2.0 : https://echanges.dila.gouv.fr/OPENDATA/JADE/ ; fiche https://www.data.gouv.fr/datasets/jade/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/jurisprudence/decisions/*.json",
+   "nombre_fichiers": 62,
+   "etape_pipeline": "jurisprudence",
+   "millesimes": [
+    "décisions de 1965 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1966 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1967 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1968 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1969 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1970 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1971 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1972 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1973 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1974 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1975 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1976 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1977 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1978 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1979 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1980 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1981 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1982 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1983 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1984 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1985 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1986 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1987 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1988 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1989 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1990 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1991 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1992 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1993 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1994 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1995 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1996 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1997 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1998 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 1999 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 2000 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 2001 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 2002 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 2003 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20",
+    "décisions de 2004 classées en matière fiscale ou budgétaire, base JADE au 2026-11-20"
+   ],
+   "sources_declarees": [
+    "DILA, base JADE (jurisprudence administrative), Licence Ouverte 2.0 : https://echanges.dila.gouv.fr/OPENDATA/JADE/ ; fiche https://www.data.gouv.fr/datasets/jade/"
+   ]
+  },
+  {
    "name": "beneficiaires_publies",
    "type": "table",
    "title": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",

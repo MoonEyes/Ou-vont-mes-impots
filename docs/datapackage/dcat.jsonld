@@ -6390,6 +6390,82 @@
   },
   {
    "@type": "dcat:Distribution",
+   "dct:title": "critères, rubriques du plan de classement, juridictions, couverture, fichiers, manques, règles et limites des comptes de décisions de la base JADE (pipeline/jurisprudence.py)",
+   "dct:description": "site/data/jurisprudence/index.json : critères, rubriques du plan de classement, juridictions, couverture, fichiers, manques, règles et limites des comptes de décisions de la base JADE (pipeline/jurisprudence.py). Fichier site/data/jurisprudence/index.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/index.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/index.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/jurisprudence_index.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "nombre de décisions par année et juridiction, dont classées, matière fiscale (deux critères, jamais additionnés) et budgétaire",
+   "dct:description": "site/data/jurisprudence/comptes.json : nombre de décisions par année et juridiction, dont classées, matière fiscale (deux critères, jamais additionnés) et budgétaire. Fichier site/data/jurisprudence/comptes.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/comptes.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/comptes.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/jurisprudence_comptes.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "nombre de décisions classées par année et rubrique du plan de classement (une décision peut relever de plusieurs rubriques)",
+   "dct:description": "site/data/jurisprudence/rubriques.json : nombre de décisions classées par année et rubrique du plan de classement (une décision peut relever de plusieurs rubriques). Fichier site/data/jurisprudence/rubriques.json.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/rubriques.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/rubriques.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/jurisprudence_rubriques.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
+   "dct:title": "décisions classées en matière fiscale ou budgétaire, sans texte ni nom : identifiant (lien Légifrance), juridiction (rang), date, numéro, matière, publication au Recueil, sous-rubriques",
+   "dct:description": "site/data/jurisprudence/decisions/<année>.json : décisions classées en matière fiscale ou budgétaire, sans texte ni nom : identifiant (lien Légifrance), juridiction (rang), date, numéro, matière, publication au Recueil, sous-rubriques. Famille de 62 fichiers (motif site/data/jurisprudence/decisions/*.json) ; `path` désigne le premier, liste complète dans la ressource `inventaire`.",
+   "dcat:accessURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/decisions/1965.json"
+   },
+   "dcat:downloadURL": {
+    "@id": "https://mooneyes.github.io/Ou-vont-mes-impots/data/jurisprudence/decisions/1965.json"
+   },
+   "dct:format": "JSON",
+   "dcat:mediaType": "application/json",
+   "dct:license": {
+    "@id": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+   },
+   "dct:conformsTo": {
+    "@id": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/jurisprudence_decisions.schema.json"
+   }
+  },
+  {
+   "@type": "dcat:Distribution",
    "dct:title": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "dct:description": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique. Table CSV (non publiée sur le site, lue dans le dépôt).",
    "dcat:accessURL": {
