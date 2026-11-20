@@ -17667,6 +17667,40 @@
    ]
   },
   {
+   "name": "hopitaux-totaux-index",
+   "title": "totaux publiés par l'ATIH (secteur, catégorie, activité) des comptes des hôpitaux publics et privés à but non lucratif (pipeline/hopitaux_totaux.py)",
+   "description": "site/data/hopitaux_totaux/index.json : totaux publiés par l'ATIH (secteur, catégorie, activité) des comptes des hôpitaux publics et privés à but non lucratif (pipeline/hopitaux_totaux.py). Fichier site/data/hopitaux_totaux/index.json.",
+   "path": "https://mooneyes.github.io/Ou-vont-mes-impots/data/hopitaux_totaux/index.json",
+   "format": "json",
+   "mediatype": "application/json",
+   "encoding": "utf-8",
+   "jsonSchema": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/docs/schemas/hopitaux_totaux_index.schema.json",
+   "licenses": [
+    {
+     "name": "etalab-2.0",
+     "path": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+     "title": "Licence Ouverte 2.0 (Etalab)"
+    }
+   ],
+   "licence_motif": "Licence Ouverte 2.0 ; lignée non relevée pour cette étape : voir le champ source de chaque fichier.",
+   "sources": [
+    {
+     "title": "ATIH, indicateurs de suivi financier : données financières des établissements publics ou à but non lucratif, totaux (data-essentiel.atih.sante.fr, isf-finance-ebnl-public-tot), ODbL 1.0 : https://data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public-tot/",
+     "licence": "voir la source citée",
+     "licence_normalisee": "non-precisee"
+    }
+   ],
+   "motif": "site/data/hopitaux_totaux/index.json",
+   "nombre_fichiers": 1,
+   "etape_pipeline": "hopitaux_totaux",
+   "millesimes": [
+    "exercices 2020 à 2024"
+   ],
+   "sources_declarees": [
+    "ATIH, indicateurs de suivi financier : données financières des établissements publics ou à but non lucratif, totaux (data-essentiel.atih.sante.fr, isf-finance-ebnl-public-tot), ODbL 1.0 : https://data-essentiel.atih.sante.fr/explore/dataset/isf-finance-ebnl-public-tot/"
+   ]
+  },
+  {
    "name": "beneficiaires_publies",
    "type": "table",
    "title": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",

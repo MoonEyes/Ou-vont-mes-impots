@@ -5007,6 +5007,7 @@ formation/elus.json,formation-elus,formation_elus.schema.json,https://mooneyes.g
 formation/fiphfp.json,formation-fiphfp,formation_fiphfp.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/fiphfp.json
 formation/index.json,formation-index,formation_index.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/formation/index.json
 fraicheur/index.json,fraicheur-index,fraicheur_index.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/fraicheur/index.json
+hopitaux_totaux/index.json,hopitaux-totaux-index,hopitaux_totaux_index.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/hopitaux_totaux/index.json
 immobilier_etat/cessions.json,immobilier-etat-cessions,immobilier_etat_cessions.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/immobilier_etat/cessions.json
 immobilier_etat/compte.json,immobilier-etat-compte,immobilier_etat_compte.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/immobilier_etat/compte.json
 immobilier_etat/index.json,immobilier-etat-index,immobilier_etat_index.schema.json,https://mooneyes.github.io/Ou-vont-mes-impots/data/immobilier_etat/index.json

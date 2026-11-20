@@ -2184,6 +2184,12 @@
   },
   {
    "@type": "DataDownload",
+   "name": "totaux publiés par l'ATIH (secteur, catégorie, activité) des comptes des hôpitaux publics et privés à but non lucratif (pipeline/hopitaux_totaux.py)",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://mooneyes.github.io/Ou-vont-mes-impots/data/hopitaux_totaux/index.json"
+  },
+  {
+   "@type": "DataDownload",
    "name": "Personnes morales nommees dans site/data/beneficiaires (top 50 par groupe). Aucune personne physique.",
    "encodingFormat": "text/csv",
    "contentUrl": "https://raw.githubusercontent.com/MoonEyes/Ou-vont-mes-impots/main/site/data/beneficiaires/beneficiaires_publies.csv"

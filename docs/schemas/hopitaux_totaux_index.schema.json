@@ -1,0 +1,111 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://ou-vont-mes-impots.fr/contrat/v1/hopitaux_totaux_index.schema.json",
+ "title": "site/data/hopitaux_totaux/index.json : totaux publiés par l'ATIH (secteur, catégorie, activité) des comptes des hôpitaux publics et privés à but non lucratif (pipeline/hopitaux_totaux.py)",
+ "allOf": [
+  {
+   "$ref": "commun.schema.json#/$defs/entete"
+  }
+ ],
+ "type": "object",
+ "required": [
+  "millesime",
+  "source",
+  "date_sources",
+  "licence",
+  "presentation",
+  "unite",
+  "definitions",
+  "secteurs",
+  "colonnes",
+  "lignes",
+  "regles",
+  "limites",
+  "recherche_publique",
+  "ordre"
+ ],
+ "properties": {
+  "licence": {
+   "const": "ODbL 1.0"
+  },
+  "colonnes": {
+   "type": "array",
+   "minItems": 12,
+   "maxItems": 12
+  },
+  "lignes": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "array",
+    "minItems": 12,
+    "maxItems": 12,
+    "prefixItems": [
+     {
+      "type": "integer"
+     },
+     {
+      "type": "string"
+     },
+     {
+      "type": "string"
+     },
+     {
+      "type": "string"
+     },
+     {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    ],
+    "contains": {
+     "const": "TOT"
+    }
+   }
+  }
+ }
+}

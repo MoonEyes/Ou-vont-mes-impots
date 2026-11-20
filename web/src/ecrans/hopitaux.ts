@@ -659,6 +659,56 @@ function sectionSources(idx: Index): string {
 <details><summary>Les sigles de cette page</summary><ul>${SIGLES.map(([s, d]) => `<li><strong>${s}</strong> : ${h(d)}</li>`).join('')}</ul></details>`
 }
 
+
+// ---------- Totaux publiés par l'ATIH (site/data/hopitaux_totaux/, pipeline/hopitaux_totaux.py) ----------
+interface HopTotaux {
+  millesime: string
+  source: string
+  definitions: Record<string, string>
+  secteurs: Record<string, string>
+  colonnes: string[]
+  lignes: (string | number | null)[][]
+  regles: string[]
+  limites: string[]
+}
+const HT_PLACE = `<section id="ht" aria-labelledby="ht-titre"><h2 id="ht-titre">Les totaux publiés par l’ATIH</h2><p class="aide">Chargement…</p></section>`
+const HT_MESURES = ['etablissements', 'produits_eur', 'charges_eur', 'charges_personnel_eur', 'resultat_principal_eur', 'capacite_autofinancement_eur', 'encours_dette_eur', 'taux_caf_pct']
+
+export function blocHopTotaux(d: HopTotaux, annee: number): string {
+  const i = (c: string) => d.colonnes.indexOf(c)
+  const secteurs = Object.keys(d.secteurs).map((sct) => d.lignes.find((l) => l[0] === annee && l[1] === sct && l[2] === 'TOT' && l[3] === 'TOT'))
+  const cell = (l: (string | number | null)[] | undefined, c: string) => {
+    const v = l?.[i(c)]
+    if (typeof v !== 'number') return `${badgeStatut('nonpub')} non publié`
+    if (c === 'etablissements') return h(entier(v))
+    if (c === 'taux_caf_pct') return `${h(new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 2 }).format(v))} %`
+    return h(eurLisible(v))
+  }
+  return `<div class="tableau-defile"><table><caption>Hôpitaux publics et établissements privés à but non lucratif, exercice ${annee} : totaux publiés par l’ATIH</caption><thead><tr><th scope="col">Poste</th>${Object.values(d.secteurs)
+    .map((x) => `<th scope="col" class="nombre">${h(x)}</th>`)
+    .join('')}</tr></thead><tbody>${HT_MESURES.map((c) => `<tr><th scope="row">${h(d.definitions[c] ?? c)}</th>${secteurs.map((l) => `<td class="nombre">${cell(l, c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`
+}
+
+async function hopitauxTotaux(cible: HTMLElement): Promise<void> {
+  const d = await chargerSiPresent<HopTotaux>('hopitaux_totaux/index.json')
+  const zone = cible.querySelector<HTMLElement>('#ht')
+  if (!zone) return
+  if (!d) {
+    zone.innerHTML = `<h2 id="ht-titre">Les totaux publiés par l’ATIH</h2>${absent('Totaux non disponibles.')}`
+    return
+  }
+  const annees = [...new Set(d.lignes.map((l) => l[0] as number))].sort((a, b) => b - a)
+  zone.innerHTML = `<h2 id="ht-titre">Les totaux publiés par l’ATIH</h2>
+<p>${badgeStatut('trace')} Pour chaque exercice, l’Agence technique de l’information sur l’hospitalisation publie aussi ses propres totaux : ensemble, hôpitaux publics, établissements privés à but non lucratif. Le site les reprend tels quels, sans additionner de lignes.</p>
+${listeRecherche({ id: 'ht-an', etiquette: 'Exercice', options: annees.map((a) => ({ valeur: String(a), libelle: String(a) })), valeur: String(annees[0]), recherche: false })}
+<div id="ht-detail" aria-live="polite">${blocHopTotaux(d, annees[0])}</div>
+<ul class="limites">${[...d.regles, ...d.limites].map((x) => `<li>${h(x)}</li>`).join('')}</ul>
+<p class="source">${h(d.source)} (${h(d.millesime)}). Données sous licence ODbL : elles gardent cette licence et la mention de l’ATIH.</p>`
+  zone.querySelector('#ht-an')?.addEventListener('change', () => {
+    zone.querySelector<HTMLElement>('#ht-detail')!.innerHTML = blocHopTotaux(d, Number(valeurChoix(zone, 'ht-an')))
+  })
+}
+
 export async function rendre(cible: HTMLElement, params: URLSearchParams) {
   const [idx, fin, lim, deps] = await Promise.all([
     chargerSiPresent<Index>('sante_etablissements/index.json'),
@@ -715,6 +765,7 @@ ${absent(
   }`,
 )}
 ${sectionComptes(fin, secu.fir, etat.segur, idx)}
+${HT_PLACE}
 ${sectionRecherche(idx, deps, depInitial, qInitial)}
 ${sectionLimites(lim)}
 ${sectionSources(idx)}
@@ -722,7 +773,7 @@ ${sectionSources(idx)}
 ${partPersonnelle()}`
 
   brancherComptes(cible, fin)
-  return { suite: brancherRecherche(cible, idx, deps, firInfo, depInitial, qInitial) }
+  return { suite: Promise.all([brancherRecherche(cible, idx, deps, firInfo, depInitial, qInitial), hopitauxTotaux(cible)]).then(() => undefined) }
 }
 
 function brancherComptes(cible: HTMLElement, f: Finances | null) {

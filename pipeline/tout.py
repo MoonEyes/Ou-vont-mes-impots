@@ -210,6 +210,7 @@ ETAPES: tuple[Etape, ...] = (
     axe('salaires_fonction_publique', 'Salaires dans la fonction publique, séries longues et détail par métier (Insee, Melodi)', ('base',), duree_s=10),
     axe('jurisprudence', 'Jurisprudence administrative en matière fiscale et budgétaire (DILA, JADE ; comptes et liens)', ('base',), duree_s=900),
     axe('activite_partielle_demandes', 'Activité partielle 2020 : demandes déposées par région et secteur (Etalab)', ('base',), duree_s=10),
+    axe('hopitaux_totaux', "Comptes des hôpitaux : totaux publiés par l'ATIH (2020 à 2024)", ('base',), duree_s=10),
     # Fraîcheur : lit les sorties de toutes les étapes précédentes ; reste la dernière avant « datapackage » (un
     # nouvel axe se déclare au-dessus de cette ligne).
     Etape("fraicheur", "Fraîcheur des données (collecte, millésimes, calendriers officiels)", (TOUTES,),

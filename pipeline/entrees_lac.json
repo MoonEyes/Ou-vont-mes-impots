@@ -2526,6 +2526,17 @@
    "hors_catalogue": [],
    "octets_sources": 35359,
    "note": "entrée collectée par collecte/collecte.py (python pipeline/activite_partielle_demandes.py collecter)"
+  },
+  "hopitaux_totaux": {
+   "sources": {
+    "secu_atih_finances_ebnl_tot": [
+     "data/lake/secu/secu_atih_finances_ebnl_tot.parquet"
+    ]
+   },
+   "caches": [],
+   "hors_catalogue": [],
+   "octets_sources": null,
+   "note": "entrée collectée par collecte/collecte.py (python pipeline/hopitaux_totaux.py collecter)"
   }
  },
  "urls": {

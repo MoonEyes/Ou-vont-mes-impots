@@ -2178,6 +2178,16 @@ Demandes d'autorisation d'activité partielle déposées par les employeurs (nom
 
 **Règles.** Demandes, pas heures indemnisées ni montants : jamais additionnées ni comparées par différence aux montants de `emploi/activite_partielle.json` (Unédic, Urssaf). Agrégats, aucun employeur nommé ; `null` jamais 0. **Pour l'écran** : bloc « Le chômage partiel demandé en 2020 » de `/decisions/controle` (choix de la région). **Recherche publique (20/11/2026).** Ressource Etalab : réutilisable telle quelle ; séries Dares : inspiration seulement (autre mesure, déjà notée par `pipeline/emploi.py`).
 
+### 2.85 Comptes des hôpitaux : totaux publiés par l'ATIH : `hopitaux_totaux/` (pipeline/hopitaux_totaux.py)
+
+Lignes de total (secteur, catégorie ou activité « TOT ») du jeu ATIH `isf-finance-ebnl-public-tot` (ODbL 1.0), identifiant `secu_atih_finances_ebnl_tot` de `collecte/catalogue.json`, exercices 2020 à 2024 : nombre d'établissements, produits, charges, charges de personnel, résultat principal, capacité d'autofinancement, encours de la dette, taux de capacité d'autofinancement de l'ATIH. Les lignes de détail, identiques au jeu `isf-finance-ebnl-public`, restent publiées par `sante_etablissements/finances_agregees.json` (2.29) et ne sont pas recopiées. Commandes : `python pipeline/hopitaux_totaux.py collecter|produire`. Tests : `pytest tests/test_hopitaux_totaux.py`, `web/tests/hopitaux_totaux.test.ts`.
+
+| Fichier | Schéma | Contenu |
+|---|---|---|
+| `hopitaux_totaux/index.json` | `hopitaux_totaux_index` | `presentation`, `definitions`, `secteurs`, `colonnes` `[annee, secteur, categorie, activite_principale, etablissements, produits_eur, charges_eur, charges_personnel_eur, resultat_principal_eur, capacite_autofinancement_eur, encours_dette_eur, taux_caf_pct]`, `lignes` (chacune porte au moins un « TOT »), `regles[]`, `limites[]`, `recherche_publique[]`, `ordre` |
+
+**Règles.** Totaux de la source seulement : le site n'additionne aucune ligne (règle 13). ODbL : licence et mention de l'ATIH gardées. Aucun établissement identifié. **Pour l'écran** : bloc « Les totaux publiés par l'ATIH » de `/explorer/hopitaux` (choix de l'exercice). **Recherche publique (20/11/2026).** Jeu ATIH : réutilisable tel quel ; `isf-finance-ebnl-public` : déjà repris ; Hospi Diag : inspiration seulement.
+
 ## 3. Module de calcul personnel
 
 Exécuté dans le navigateur avec `modele-social` et `publicodes` (MIT). Entrée : un **profil** (`profil.schema.json`). Sortie : un **résultat** (`resultat.schema.json`, succès ou erreur). Exemples validés : `docs/exemples/`.
