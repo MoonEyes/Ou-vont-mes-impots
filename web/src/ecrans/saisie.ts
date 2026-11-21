@@ -207,7 +207,7 @@ ${params.get('retour') ? '<p class="avertissement" role="status">Indique d’abo
   <div class="actions"><button class="bouton-principal" type="submit">Calculer</button></div>
   <div id="retour" aria-live="polite"></div>
 </form>
-<p class="aide">Aucune donnée ne quitte ton téléphone ou ton ordinateur : pas de cookie, pas de mesure d’audience. Voir <a href="#/mentions">confidentialité</a>.</p>
+<p class="aide">Aucune donnée ne quitte ton téléphone ou ton ordinateur : pas de cookie, pas de traceur. Voir <a href="#/mentions">confidentialité</a>.</p>
 <p><a href="#/explorer">Explorer sans saisir mon salaire</a></p>
 ${cartesRayons('/calcul')}`
 

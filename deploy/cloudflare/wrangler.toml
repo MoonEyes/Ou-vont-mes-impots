@@ -1,4 +1,6 @@
-# Publication du site sur Cloudflare Workers Static Assets (aucun code serveur : fichiers statiques seulement).
+# Publication du site sur Cloudflare Workers Static Assets. Seul code serveur : site.ts, qui renvoie les fichiers
+# statiques tels quels et compte les pages vues de façon anonyme (audience.ts, docs/AUDIENCE.md) si la base D1
+# AUDIENCE est liée ; sans elle, rien ne change.
 # Aucun identifiant ici : wrangler lit CLOUDFLARE_ACCOUNT_ID et CLOUDFLARE_API_TOKEN dans l'environnement
 # (voir docs/DEPLOIEMENT.md). Publier avec deploy/cloudflare/publier.sh, qui contrôle les limites avant l'envoi.
 #
@@ -8,6 +10,7 @@
 
 name = "ou-vont-mes-impots"
 compatibility_date = "2026-11-01"
+main = "site.ts"
 
 # adresse <name>.<sous-domaine>.workers.dev ; le domaine personnalisé s'ajoute dans le tableau de bord
 # (Workers > ou-vont-mes-impots > Settings > Domains & Routes), ce qui évite des droits de zone au jeton.
@@ -21,3 +24,19 @@ directory = "../../web/dist"
 # routage par fragment (#/…) : une adresse inconnue est une vraie 404, pas index.html
 not_found_handling = "none"
 html_handling = "auto-trailing-slash"
+binding = "ASSETS"
+# Le Worker ne passe que sur les pages : assets, données et service worker sont servis directement (pas de
+# requête Worker facturée, pas de latence ajoutée). Les règles de _headers et _redirects s'appliquent toujours.
+run_worker_first = ["/*", "!/assets/*", "!/data/*", "!/sw.js"]
+
+# Purge quotidienne des agrégats d'audience de plus de 13 mois (sans effet tant que AUDIENCE n'est pas liée).
+[triggers]
+crons = ["17 3 * * *"]
+
+# >>> AUDIENCE : base D1 du comptage anonyme (docs/AUDIENCE.md). À ACTIVER PAR BENJAMIN :
+# >>> créer la base « audience » (tableau de bord > Stockage et bases de données > D1), puis retirer le « # »
+# >>> des 4 lignes ci-dessous et remplacer COLLER_ICI_L_IDENTIFIANT_DE_LA_BASE par son identifiant (pas un secret).
+# [[d1_databases]]
+# binding = "AUDIENCE"
+# database_name = "audience"
+# database_id = "COLLER_ICI_L_IDENTIFIANT_DE_LA_BASE"

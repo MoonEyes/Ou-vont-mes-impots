@@ -128,7 +128,7 @@ ${tuiles()}
     <p><a class="bouton" href="#/demarche">Lire la démarche</a></p>
   </div>
   <ul class="garanties">
-    <li><strong>Rien ne quitte ton navigateur</strong>Pas de compte, pas de cookie, pas de mesure d’audience.</li>
+    <li><strong>Rien ne quitte ton navigateur</strong>Pas de compte, pas de cookie, pas de traceur. Seules les pages vues sont comptées, de façon anonyme.</li>
     <li><strong id="nb-sources">Des sources publiques</strong>Vérifiées et reliées entre elles. Chaque montant renvoie au document public d’où il vient.</li>
     <li><strong>Gratuit et ouvert</strong>Le code est public, chacun peut le vérifier. Il ne remplace pas impots.gouv.fr ni ta fiche de paie.</li>
   </ul>

@@ -144,7 +144,9 @@ Cloudflare construit et publie le site à chaque push sur `main` (dépôt relié
 - commande de déploiement : `cd deploy/cloudflare && npm ci && npx wrangler deploy` ;
 - variable de build : `NODE_VERSION=22` ; préversions désactivées ; jeton créé et gardé par Cloudflare.
 
-`_headers` et `_redirects` sont dans `web/public/` pour être copiés dans `web/dist` par Vite, sans dépendre de `publier.sh`. GitHub Pages reste publié en secours par `pages.yml`.
+`_headers` et `_redirects` sont dans `web/public/` pour être copiés dans `web/dist` par Vite, sans dépendre de `publier.sh`.
+
+Depuis le 21/11/2026, `wrangler.toml` déclare un Worker (`main = "site.ts"`) qui ne passe que sur les pages (`run_worker_first`, ni assets, ni données, ni `sw.js`) : il renvoie la réponse des fichiers statiques telle quelle (en-têtes de `_headers` et `_redirects` compris, vérifié avec `wrangler dev`) et compte les pages vues de façon anonyme dans la base D1 `audience` une fois celle-ci liée. Voir `docs/AUDIENCE.md`. GitHub Pages reste publié en secours par `pages.yml`.
 
 ## 5. Entrepôt durable des entrées du pipeline (pas à pas pour Benjamin, ajouté le 19/11/2026)
 

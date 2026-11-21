@@ -98,6 +98,10 @@ describe('recette', () => {
     expect(t).not.toContain('À COMPLÉTER')
     expect(t).toContain('proton.me.easel124@passinbox.com')
     expect(t).toContain('hébergeur')
+    // Comptage anonyme côté serveur (deploy/cloudflare/audience.ts, docs/AUDIENCE.md) décrit exactement.
+    expect(t).not.toMatch(/aucune mesure d.audience/i)
+    for (const f of ['Comptage anonyme des pages vues', 'Aucune adresse IP, aucun identifiant, aucun cookie', 'Conservation : 13 mois, puis suppression automatique', 'Do Not Track', 'Global Privacy Control', 'pour l’éditeur seul'])
+      expect(t).toContain(f)
     // Décision du 19/11/2026 : plus aucun lien vers les tickets ni vers le dépôt GitHub ; l'adresse dédiée est le
     // seul contact, en texte simple (pas de lien mailto).
     expect(main.querySelector('a[href*="github.com"]')).toBeNull()

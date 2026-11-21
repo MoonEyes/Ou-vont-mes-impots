@@ -99,7 +99,9 @@ describe('navigation et métadonnées', () => {
     // Titres du pied en H3 (lot 3 du design : un H2 a toujours la même taille, les petits titres sont des H3).
     for (const t of ['Le site', 'Sources et méthode', 'Le projet']) expect(pied).toContain(`>${t}</h3>`)
     for (const l of ['#/calcul', '#/explorer', '#/local', '#/beneficiaires', '#/decisions', '#/methode', '#/methode/tracabilite', '#/methode/limites', '#/demarche', '#/mentions']) expect(pied).toContain(`href="${l}"`)
-    expect(pied).toContain('Aucun cookie, aucune mesure d’audience')
+    expect(pied).toContain('Aucun cookie, aucun traceur')
+    expect(pied).toContain('comptées, de façon anonyme')
+    expect(pied).not.toContain('aucune mesure d’audience')
   })
   it('pied replié au téléphone (finitions du 19/11 : 745 px avant, 216 px après à 360 px) : marque et liens essentiels visibles, le reste dans un repli ouvert sur grand écran', () => {
     const pied = /<footer class="pied">[\s\S]*?<\/footer>/.exec(html)![0]
