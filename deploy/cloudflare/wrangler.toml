@@ -33,10 +33,10 @@ run_worker_first = ["/*", "!/assets/*", "!/data/*", "!/sw.js"]
 [triggers]
 crons = ["17 3 * * *"]
 
-# >>> AUDIENCE : base D1 du comptage anonyme (docs/AUDIENCE.md). À ACTIVER PAR BENJAMIN :
+# >>> AUDIENCE : base D1 du comptage anonyme (docs/AUDIENCE.md), créée le 21/11/2026 (juridiction UE).
 # >>> créer la base « audience » (tableau de bord > Stockage et bases de données > D1), puis retirer le « # »
 # >>> des 4 lignes ci-dessous et remplacer COLLER_ICI_L_IDENTIFIANT_DE_LA_BASE par son identifiant (pas un secret).
-# [[d1_databases]]
-# binding = "AUDIENCE"
-# database_name = "audience"
-# database_id = "COLLER_ICI_L_IDENTIFIANT_DE_LA_BASE"
+[[d1_databases]]
+binding = "AUDIENCE"
+database_name = "audience"
+database_id = "ba87ca3c-462f-4315-a9e5-47dd0d1c5937"
